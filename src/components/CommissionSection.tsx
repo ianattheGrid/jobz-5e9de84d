@@ -1,9 +1,7 @@
 import { useState, useEffect } from "react";
 import { FormField, FormItem, FormLabel, FormControl } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
-import { Button } from "@/components/ui/button";
 import {
   AlertDialog,
   AlertDialogContent,
@@ -25,8 +23,15 @@ const CommissionSection = ({ salary, form }: CommissionSectionProps) => {
   const [feePercentage, setFeePercentage] = useState(7);
   const [splitPercentage, setSplitPercentage] = useState(50);
   const [totalCommission, setTotalCommission] = useState(0);
-  const [showCommissionDialog, setShowCommissionDialog] = useState(true);
+  const [showCommissionDialog, setShowCommissionDialog] = useState(false);
   const [showCommissionStructure, setShowCommissionStructure] = useState(false);
+
+  useEffect(() => {
+    // Show the commission dialog only after job description is filled
+    if (form.getValues("description")) {
+      setShowCommissionDialog(true);
+    }
+  }, [form.getValues("description")]);
 
   useEffect(() => {
     if (salary) {
@@ -51,10 +56,6 @@ const CommissionSection = ({ salary, form }: CommissionSectionProps) => {
     form.setValue("offerReferralCommission", confirmed);
   };
 
-  if (!showCommissionStructure && !showCommissionDialog) {
-    return null;
-  }
-
   return (
     <div className="space-y-6">
       <AlertDialog open={showCommissionDialog} onOpenChange={setShowCommissionDialog}>
@@ -62,7 +63,7 @@ const CommissionSection = ({ salary, form }: CommissionSectionProps) => {
           <AlertDialogHeader>
             <AlertDialogTitle>Commission Structure</AlertDialogTitle>
             <AlertDialogDescription>
-              Do you want to offer a "You're Hired" bonus to the successful candidate and commission to the person who recommends the hired candidate?
+              Would you like to offer a "You're Hired" bonus to the successful candidate and commission to the person who recommends the hired candidate?
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
