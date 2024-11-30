@@ -1,4 +1,4 @@
-import { Briefcase, Building2, MapPin } from "lucide-react";
+import { Briefcase, Building2, MapPin, DollarSign, Clock } from "lucide-react";
 import { Card } from "./ui/card";
 
 interface JobCardProps {
@@ -6,10 +6,12 @@ interface JobCardProps {
   company: string;
   location: string;
   description: string;
+  salary: string;
+  type: string;
   onSwipe: (direction: "left" | "right") => void;
 }
 
-const JobCard = ({ title, company, location, description, onSwipe }: JobCardProps) => {
+const JobCard = ({ title, company, location, description, salary, type, onSwipe }: JobCardProps) => {
   return (
     <Card className="w-full max-w-md mx-auto bg-white shadow-lg rounded-xl p-6 cursor-pointer hover:shadow-xl transition-shadow">
       <div className="space-y-4">
@@ -28,6 +30,17 @@ const JobCard = ({ title, company, location, description, onSwipe }: JobCardProp
           <Briefcase className="w-8 h-8 text-primary-DEFAULT" />
         </div>
         
+        <div className="flex items-center space-x-4 text-gray-600">
+          <div className="flex items-center space-x-1">
+            <DollarSign className="w-4 h-4" />
+            <span>{salary}</span>
+          </div>
+          <div className="flex items-center space-x-1">
+            <Clock className="w-4 h-4" />
+            <span>{type}</span>
+          </div>
+        </div>
+        
         <p className="text-gray-600">{description}</p>
         
         <div className="flex justify-between pt-4">
@@ -41,7 +54,7 @@ const JobCard = ({ title, company, location, description, onSwipe }: JobCardProp
             onClick={() => onSwipe("right")}
             className="px-6 py-2 rounded-full bg-primary-DEFAULT text-white hover:bg-primary-dark transition-colors"
           >
-            Like
+            Apply
           </button>
         </div>
       </div>
