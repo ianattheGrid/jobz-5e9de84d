@@ -75,7 +75,7 @@ const CommissionSection = ({ salary, form }: CommissionSectionProps) => {
       {showCommissionStructure && (
         <div className="space-y-4 p-4 bg-muted/50 rounded-lg">
           <div className="space-y-2">
-            <FormLabel>Total Commission Fee ({feePercentage}%)</FormLabel>
+            <FormLabel>Please select the commission you are prepared to pay ({feePercentage}%)</FormLabel>
             <Slider
               value={[feePercentage]}
               onValueChange={(value) => setFeePercentage(value[0])}
