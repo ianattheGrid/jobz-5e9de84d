@@ -1,4 +1,4 @@
-import { Briefcase, Building2, MapPin, DollarSign, Clock } from "lucide-react";
+import { Briefcase, Building2, MapPin, DollarSign, Clock, Gift } from "lucide-react";
 import { Card } from "./ui/card";
 
 interface JobCardProps {
@@ -8,10 +8,22 @@ interface JobCardProps {
   description: string;
   salary: string;
   type: string;
+  candidateCommission?: string;
+  referralCommission?: string;
   onSwipe: (direction: "left" | "right") => void;
 }
 
-const JobCard = ({ title, company, location, description, salary, type, onSwipe }: JobCardProps) => {
+const JobCard = ({ 
+  title, 
+  company, 
+  location, 
+  description, 
+  salary, 
+  type, 
+  candidateCommission,
+  referralCommission,
+  onSwipe 
+}: JobCardProps) => {
   return (
     <Card className="w-full max-w-md mx-auto bg-white shadow-lg rounded-xl p-6 cursor-pointer hover:shadow-xl transition-shadow">
       <div className="space-y-4">
@@ -40,6 +52,25 @@ const JobCard = ({ title, company, location, description, salary, type, onSwipe 
             <span>{type}</span>
           </div>
         </div>
+        
+        {(candidateCommission || referralCommission) && (
+          <div className="space-y-2 bg-primary-light/20 p-3 rounded-lg">
+            <h4 className="font-medium flex items-center gap-2">
+              <Gift className="w-4 h-4 text-primary-DEFAULT" />
+              Commission Opportunities
+            </h4>
+            {candidateCommission && (
+              <p className="text-sm text-gray-600">
+                <span className="font-medium">Candidate Bonus:</span> {candidateCommission}
+              </p>
+            )}
+            {referralCommission && (
+              <p className="text-sm text-gray-600">
+                <span className="font-medium">Referral Bonus:</span> {referralCommission}
+              </p>
+            )}
+          </div>
+        )}
         
         <p className="text-gray-600">{description}</p>
         

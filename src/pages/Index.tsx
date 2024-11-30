@@ -14,6 +14,8 @@ const MOCK_JOBS = [
     description: "We're looking for an experienced React developer to join our team and help build amazing products.",
     salary: "$120,000 - $150,000",
     type: "Full-time",
+    candidateCommission: "$5,000 signing bonus",
+    referralCommission: "$2,500 for successful referrals",
   },
   {
     id: 2,
@@ -23,6 +25,8 @@ const MOCK_JOBS = [
     description: "Join our creative team to design beautiful and functional user interfaces.",
     salary: "$90,000 - $110,000",
     type: "Contract",
+    candidateCommission: "$3,000 signing bonus",
+    referralCommission: "$1,500 for successful referrals",
   },
   {
     id: 3,
@@ -32,6 +36,8 @@ const MOCK_JOBS = [
     description: "Help us build the next generation of web applications using modern technologies.",
     salary: "$100,000 - $130,000",
     type: "Full-time",
+    candidateCommission: "$4,000 signing bonus",
+    referralCommission: "$2,000 for successful referrals",
   },
 ];
 
