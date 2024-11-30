@@ -85,7 +85,7 @@ const CommissionSection = ({ salary, form }: CommissionSectionProps) => {
               className="w-full"
             />
             <div className="text-sm text-muted-foreground">
-              Total Commission: {formatCurrency(totalCommission)}
+              Total Commission: {formatCurrency(totalCommission)} ({feePercentage}%)
             </div>
           </div>
 
