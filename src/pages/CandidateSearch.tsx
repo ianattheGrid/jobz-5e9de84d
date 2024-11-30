@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -14,8 +13,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/components/ui/use-toast";
+import CommissionSection from "@/components/CommissionSection";
 
 const formSchema = z.object({
   title: z.string().min(2, {
@@ -53,14 +52,7 @@ export default function CandidateSearch() {
   });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    // Transform the data to include commission values only if they're enabled
-    const jobData = {
-      ...values,
-      candidateCommission: values.offerCandidateCommission ? values.candidateCommission : undefined,
-      referralCommission: values.offerReferralCommission ? values.referralCommission : undefined,
-    };
-
-    console.log(jobData);
+    console.log(values);
     toast({
       title: "Job Posted Successfully",
       description: "Your job listing has been created.",
@@ -140,7 +132,7 @@ export default function CandidateSearch() {
                 <FormItem>
                   <FormLabel>Salary Range</FormLabel>
                   <FormControl>
-                    <Input placeholder="e.g. $100,000 - $130,000" {...field} />
+                    <Input placeholder="e.g. £40,000" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -165,89 +157,10 @@ export default function CandidateSearch() {
               )}
             />
 
-            <div className="space-y-6">
-              <div className="space-y-4">
-                <FormField
-                  control={form.control}
-                  name="offerCandidateCommission"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                      <div className="space-y-0.5">
-                        <FormLabel className="text-base">
-                          Offer Candidate Commission
-                        </FormLabel>
-                        <FormDescription>
-                          Offer a signing bonus to successful candidates
-                        </FormDescription>
-                      </div>
-                      <FormControl>
-                        <Switch
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-
-                {form.watch("offerCandidateCommission") && (
-                  <FormField
-                    control={form.control}
-                    name="candidateCommission"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Candidate Commission Amount</FormLabel>
-                        <FormControl>
-                          <Input placeholder="e.g. $5,000 signing bonus" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                )}
-              </div>
-
-              <div className="space-y-4">
-                <FormField
-                  control={form.control}
-                  name="offerReferralCommission"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                      <div className="space-y-0.5">
-                        <FormLabel className="text-base">
-                          Offer Referral Commission
-                        </FormLabel>
-                        <FormDescription>
-                          Offer a bonus for successful referrals
-                        </FormDescription>
-                      </div>
-                      <FormControl>
-                        <Switch
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-
-                {form.watch("offerReferralCommission") && (
-                  <FormField
-                    control={form.control}
-                    name="referralCommission"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Referral Commission Amount</FormLabel>
-                        <FormControl>
-                          <Input placeholder="e.g. $2,500 for successful referrals" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                )}
-              </div>
-            </div>
+            <CommissionSection 
+              salary={form.watch("salary")} 
+              form={form}
+            />
 
             <Button type="submit">Post Job</Button>
           </form>
