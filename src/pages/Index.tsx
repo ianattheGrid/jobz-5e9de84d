@@ -4,7 +4,6 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Search } from "lucide-react";
 
-// Mock data - in a real app this would come from an API
 const MOCK_JOBS = [
   {
     id: 1,
@@ -66,17 +65,9 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-primary-light to-white">
       <div className="container max-w-4xl mx-auto pt-12 px-4">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-800">
-            Find Your Perfect Job Match
-          </h1>
-          <a 
-            href="/candidates" 
-            className="text-primary-DEFAULT hover:text-primary-dark transition-colors"
-          >
-            For Employers
-          </a>
-        </div>
+        <h1 className="text-4xl font-bold text-gray-800 mb-8">
+          Find Your Perfect Job Match
+        </h1>
 
         <div className="space-y-4 mb-8">
           <div className="relative">
