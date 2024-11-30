@@ -2,16 +2,7 @@ import { useState, useEffect } from "react";
 import { FormField, FormItem, FormLabel, FormControl } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
-import {
-  AlertDialog,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogCancel,
-  AlertDialogAction,
-} from "@/components/ui/alert-dialog";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { calculateTotalCommission, calculateSplitCommissions, formatCurrency } from "@/utils/commissionCalculations";
 
 interface CommissionSectionProps {
@@ -23,15 +14,7 @@ const CommissionSection = ({ salary, form }: CommissionSectionProps) => {
   const [feePercentage, setFeePercentage] = useState(7);
   const [splitPercentage, setSplitPercentage] = useState(50);
   const [totalCommission, setTotalCommission] = useState(0);
-  const [showCommissionDialog, setShowCommissionDialog] = useState(false);
   const [showCommissionStructure, setShowCommissionStructure] = useState(false);
-
-  useEffect(() => {
-    // Show the commission dialog only after job description is filled
-    if (form.getValues("description")) {
-      setShowCommissionDialog(true);
-    }
-  }, [form.getValues("description")]);
 
   useEffect(() => {
     if (salary) {
@@ -49,29 +32,32 @@ const CommissionSection = ({ salary, form }: CommissionSectionProps) => {
     }
   }, [salary, feePercentage, splitPercentage, form]);
 
-  const handleCommissionConfirmation = (confirmed: boolean) => {
-    setShowCommissionDialog(false);
-    setShowCommissionStructure(confirmed);
-    form.setValue("offerCandidateCommission", confirmed);
-    form.setValue("offerReferralCommission", confirmed);
+  const handleCommissionChange = (value: string) => {
+    const isOffering = value === "yes";
+    setShowCommissionStructure(isOffering);
+    form.setValue("offerCandidateCommission", isOffering);
+    form.setValue("offerReferralCommission", isOffering);
   };
 
   return (
     <div className="space-y-6">
-      <AlertDialog open={showCommissionDialog} onOpenChange={setShowCommissionDialog}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Commission Structure</AlertDialogTitle>
-            <AlertDialogDescription>
-              Would you like to offer a "You're Hired" bonus to the successful candidate and commission to the person who recommends the hired candidate?
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel onClick={() => handleCommissionConfirmation(false)}>No</AlertDialogCancel>
-            <AlertDialogAction onClick={() => handleCommissionConfirmation(true)}>Yes</AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <FormItem className="space-y-3">
+        <FormLabel>Would you like to offer a "You're Hired" bonus to the successful candidate and commission to the person who recommends the hired candidate?</FormLabel>
+        <RadioGroup
+          defaultValue="no"
+          onValueChange={handleCommissionChange}
+          className="flex flex-row space-x-4"
+        >
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="yes" id="yes" />
+            <label htmlFor="yes">Yes</label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="no" id="no" />
+            <label htmlFor="no">No</label>
+          </div>
+        </RadioGroup>
+      </FormItem>
 
       {showCommissionStructure && (
         <div className="space-y-4 p-4 bg-muted/50 rounded-lg">
