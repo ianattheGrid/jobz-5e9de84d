@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
-import { Search, Filter } from "lucide-react";
+import { Search } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 // Mock data - in a real app this would come from an API
@@ -40,16 +40,16 @@ const MOCK_CANDIDATES = [
 
 const CandidateSearch = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [experienceFilter, setExperienceFilter] = useState("");
-  const [locationFilter, setLocationFilter] = useState("");
+  const [experienceFilter, setExperienceFilter] = useState("all");
+  const [locationFilter, setLocationFilter] = useState("all");
   
   const filteredCandidates = MOCK_CANDIDATES.filter((candidate) => {
     const matchesSearch = Object.values(candidate).some((value) =>
       value.toString().toLowerCase().includes(searchQuery.toLowerCase())
     );
     
-    const matchesExperience = !experienceFilter || candidate.experience.includes(experienceFilter);
-    const matchesLocation = !locationFilter || candidate.location === locationFilter;
+    const matchesExperience = experienceFilter === "all" || candidate.experience.includes(experienceFilter);
+    const matchesLocation = locationFilter === "all" || candidate.location === locationFilter;
     
     return matchesSearch && matchesExperience && matchesLocation;
   });
@@ -86,7 +86,7 @@ const CandidateSearch = () => {
                   <SelectValue placeholder="Filter by experience" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Experience Levels</SelectItem>
+                  <SelectItem value="all">All Experience Levels</SelectItem>
                   <SelectItem value="5 years">5+ Years</SelectItem>
                   <SelectItem value="8 years">8+ Years</SelectItem>
                 </SelectContent>
@@ -99,7 +99,7 @@ const CandidateSearch = () => {
                   <SelectValue placeholder="Filter by location" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Locations</SelectItem>
+                  <SelectItem value="all">All Locations</SelectItem>
                   <SelectItem value="Remote">Remote</SelectItem>
                   <SelectItem value="San Francisco, CA">San Francisco, CA</SelectItem>
                   <SelectItem value="New York, NY">New York, NY</SelectItem>

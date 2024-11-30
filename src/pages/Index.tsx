@@ -37,16 +37,16 @@ const MOCK_JOBS = [
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [locationFilter, setLocationFilter] = useState("");
-  const [typeFilter, setTypeFilter] = useState("");
+  const [locationFilter, setLocationFilter] = useState("all");
+  const [typeFilter, setTypeFilter] = useState("all");
   const [currentJobIndex, setCurrentJobIndex] = useState(0);
 
   const filteredJobs = MOCK_JOBS.filter((job) => {
     const matchesSearch = Object.values(job).some((value) =>
       value.toString().toLowerCase().includes(searchQuery.toLowerCase())
     );
-    const matchesLocation = !locationFilter || job.location === locationFilter;
-    const matchesType = !typeFilter || job.type === typeFilter;
+    const matchesLocation = locationFilter === "all" || job.location === locationFilter;
+    const matchesType = typeFilter === "all" || job.type === typeFilter;
     return matchesSearch && matchesLocation && matchesType;
   });
 
@@ -91,7 +91,7 @@ const Index = () => {
                   <SelectValue placeholder="Filter by location" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Locations</SelectItem>
+                  <SelectItem value="all">All Locations</SelectItem>
                   <SelectItem value="Remote">Remote</SelectItem>
                   <SelectItem value="San Francisco, CA">San Francisco, CA</SelectItem>
                   <SelectItem value="New York, NY">New York, NY</SelectItem>
@@ -105,7 +105,7 @@ const Index = () => {
                   <SelectValue placeholder="Filter by job type" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Types</SelectItem>
+                  <SelectItem value="all">All Types</SelectItem>
                   <SelectItem value="Full-time">Full-time</SelectItem>
                   <SelectItem value="Contract">Contract</SelectItem>
                   <SelectItem value="Part-time">Part-time</SelectItem>
