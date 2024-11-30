@@ -42,7 +42,7 @@ const CommissionSection = ({ salary, form }: CommissionSectionProps) => {
   return (
     <div className="space-y-6">
       <FormItem className="space-y-3">
-        <FormLabel>Would you like to offer a "You're Hired" bonus to the successful candidate and commission to the person who recommends the hired candidate?</FormLabel>
+        <FormLabel>Would you like to attract candidates by offering a "You're Hired" bonus and/or anonymously use recruiters by offering commission?</FormLabel>
         <RadioGroup
           defaultValue="no"
           onValueChange={handleCommissionChange}
