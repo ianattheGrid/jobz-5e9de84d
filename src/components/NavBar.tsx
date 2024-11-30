@@ -9,7 +9,7 @@ const NavBar = () => {
           <div className="flex items-center">
             <Link to="/" className="flex items-center">
               <Building2 className="h-8 w-8 text-primary-DEFAULT" />
-              <span className="ml-2 text-xl font-semibold text-gray-900">TalentFlare</span>
+              <span className="ml-2 text-xl font-semibold text-gray-900">Jobz</span>
             </Link>
           </div>
           
