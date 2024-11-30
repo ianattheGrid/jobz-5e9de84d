@@ -3,6 +3,17 @@ import { FormField, FormItem, FormLabel, FormControl } from "@/components/ui/for
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
+import { Button } from "@/components/ui/button";
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogCancel,
+  AlertDialogAction,
+} from "@/components/ui/alert-dialog";
 import { calculateTotalCommission, calculateSplitCommissions, formatCurrency } from "@/utils/commissionCalculations";
 
 interface CommissionSectionProps {
@@ -14,6 +25,8 @@ const CommissionSection = ({ salary, form }: CommissionSectionProps) => {
   const [feePercentage, setFeePercentage] = useState(7);
   const [splitPercentage, setSplitPercentage] = useState(50);
   const [totalCommission, setTotalCommission] = useState(0);
+  const [showCommissionDialog, setShowCommissionDialog] = useState(true);
+  const [showCommissionStructure, setShowCommissionStructure] = useState(false);
 
   useEffect(() => {
     if (salary) {
@@ -31,57 +44,35 @@ const CommissionSection = ({ salary, form }: CommissionSectionProps) => {
     }
   }, [salary, feePercentage, splitPercentage, form]);
 
+  const handleCommissionConfirmation = (confirmed: boolean) => {
+    setShowCommissionDialog(false);
+    setShowCommissionStructure(confirmed);
+    form.setValue("offerCandidateCommission", confirmed);
+    form.setValue("offerReferralCommission", confirmed);
+  };
+
+  if (!showCommissionStructure && !showCommissionDialog) {
+    return null;
+  }
+
   return (
     <div className="space-y-6">
-      <div className="space-y-4">
-        <FormField
-          control={form.control}
-          name="offerCandidateCommission"
-          render={({ field }) => (
-            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-              <div className="space-y-0.5">
-                <FormLabel className="text-base">
-                  Offer Candidate Commission
-                </FormLabel>
-                <div className="text-sm text-muted-foreground">
-                  Offer a signing bonus to successful candidates
-                </div>
-              </div>
-              <FormControl>
-                <Switch
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
-              </FormControl>
-            </FormItem>
-          )}
-        />
+      <AlertDialog open={showCommissionDialog} onOpenChange={setShowCommissionDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Commission Structure</AlertDialogTitle>
+            <AlertDialogDescription>
+              Do you want to offer a "You're Hired" bonus to the successful candidate and commission to the person who recommends the hired candidate?
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => handleCommissionConfirmation(false)}>No</AlertDialogCancel>
+            <AlertDialogAction onClick={() => handleCommissionConfirmation(true)}>Yes</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
-        <FormField
-          control={form.control}
-          name="offerReferralCommission"
-          render={({ field }) => (
-            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-              <div className="space-y-0.5">
-                <FormLabel className="text-base">
-                  Offer Referral Commission
-                </FormLabel>
-                <div className="text-sm text-muted-foreground">
-                  Offer a bonus for successful referrals
-                </div>
-              </div>
-              <FormControl>
-                <Switch
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
-              </FormControl>
-            </FormItem>
-          )}
-        />
-      </div>
-
-      {(form.watch("offerCandidateCommission") || form.watch("offerReferralCommission")) && (
+      {showCommissionStructure && (
         <div className="space-y-4 p-4 bg-muted/50 rounded-lg">
           <div className="space-y-2">
             <FormLabel>Total Commission Fee ({feePercentage}%)</FormLabel>
@@ -113,35 +104,31 @@ const CommissionSection = ({ salary, form }: CommissionSectionProps) => {
             </div>
           </div>
 
-          {form.watch("offerCandidateCommission") && (
-            <FormField
-              control={form.control}
-              name="candidateCommission"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Candidate Commission Amount</FormLabel>
-                  <FormControl>
-                    <Input {...field} readOnly />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-          )}
+          <FormField
+            control={form.control}
+            name="candidateCommission"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Candidate Commission Amount</FormLabel>
+                <FormControl>
+                  <Input {...field} readOnly />
+                </FormControl>
+              </FormItem>
+            )}
+          />
 
-          {form.watch("offerReferralCommission") && (
-            <FormField
-              control={form.control}
-              name="referralCommission"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Referral Commission Amount</FormLabel>
-                  <FormControl>
-                    <Input {...field} readOnly />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-          )}
+          <FormField
+            control={form.control}
+            name="referralCommission"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Referral Commission Amount</FormLabel>
+                <FormControl>
+                  <Input {...field} readOnly />
+                </FormControl>
+              </FormItem>
+            )}
+          />
         </div>
       )}
     </div>
