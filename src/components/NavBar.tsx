@@ -1,32 +1,29 @@
+import { Building2 } from "lucide-react";
 import { Link } from "react-router-dom";
-import { Building2, Search } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useMobile } from "@/hooks/use-mobile";
 
 const NavBar = () => {
+  const isMobile = useMobile();
   return (
-    <nav className="bg-white shadow-sm border-b">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
+    <nav className="border-b">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex h-16 justify-between">
           <div className="flex items-center">
             <Link to="/" className="flex items-center">
               <Building2 className="h-8 w-8 text-primary-DEFAULT" />
-              <span className="ml-2 text-xl font-semibold text-gray-900">Jobz</span>
+              <span className="ml-2 text-xl font-semibold text-gray-900">jobz</span>
             </Link>
           </div>
-          
-          <div className="flex items-center space-x-4">
-            <Link 
-              to="/" 
-              className="text-gray-700 hover:text-primary-DEFAULT px-3 py-2 rounded-md text-sm font-medium"
-            >
-              Find Jobs
-            </Link>
-            <Link 
-              to="/candidates" 
-              className="flex items-center text-gray-700 hover:text-primary-DEFAULT px-3 py-2 rounded-md text-sm font-medium"
-            >
-              <Search className="h-4 w-4 mr-1" />
-              For Employers
-            </Link>
+
+          <div className="hidden md:flex md:space-x-8">
+            <Link to="/jobs" className="text-gray-900 hover:text-gray-500">Jobs</Link>
+            <Link to="/about" className="text-gray-900 hover:text-gray-500">About</Link>
+            <Link to="/contact" className="text-gray-900 hover:text-gray-500">Contact</Link>
+          </div>
+
+          <div className="flex items-center md:hidden">
+            <Button variant="outline" className="hover:bg-gray-100">Menu</Button>
           </div>
         </div>
       </div>
