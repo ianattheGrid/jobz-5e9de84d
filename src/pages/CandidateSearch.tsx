@@ -1,156 +1,258 @@
 import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
-import { Search } from "lucide-react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
+import { useToast } from "@/components/ui/use-toast";
 
-// Mock data - in a real app this would come from an API
-const MOCK_CANDIDATES = [
-  {
-    id: 1,
-    name: "John Doe",
-    title: "Senior React Developer",
-    location: "San Francisco, CA",
-    experience: "8 years",
-    skills: ["React", "TypeScript", "Node.js"],
-    expectedSalary: "$120,000 - $150,000",
-    availability: "Immediate",
-  },
-  {
-    id: 2,
-    name: "Jane Smith",
-    title: "UX Designer",
-    location: "Remote",
-    experience: "5 years",
-    skills: ["Figma", "User Research", "UI Design"],
-    expectedSalary: "$90,000 - $110,000",
-    availability: "2 weeks",
-  },
-  {
-    id: 3,
-    name: "Mike Johnson",
-    title: "Full Stack Engineer",
-    location: "New York, NY",
-    experience: "6 years",
-    skills: ["Python", "React", "PostgreSQL"],
-    expectedSalary: "$100,000 - $130,000",
-    availability: "1 month",
-  },
-];
+const formSchema = z.object({
+  title: z.string().min(2, {
+    message: "Job title must be at least 2 characters.",
+  }),
+  company: z.string().min(2, {
+    message: "Company name must be at least 2 characters.",
+  }),
+  location: z.string().min(2, {
+    message: "Location must be at least 2 characters.",
+  }),
+  description: z.string().min(10, {
+    message: "Job description must be at least 10 characters.",
+  }),
+  salary: z.string().min(1, {
+    message: "Salary is required",
+  }),
+  type: z.string().min(1, {
+    message: "Job type is required",
+  }),
+  offerCandidateCommission: z.boolean().default(false),
+  candidateCommission: z.string().optional(),
+  offerReferralCommission: z.boolean().default(false),
+  referralCommission: z.string().optional(),
+});
 
-const CandidateSearch = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [experienceFilter, setExperienceFilter] = useState("all");
-  const [locationFilter, setLocationFilter] = useState("all");
-  
-  const filteredCandidates = MOCK_CANDIDATES.filter((candidate) => {
-    const matchesSearch = Object.values(candidate).some((value) =>
-      value.toString().toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    
-    const matchesExperience = experienceFilter === "all" || candidate.experience.includes(experienceFilter);
-    const matchesLocation = locationFilter === "all" || candidate.location === locationFilter;
-    
-    return matchesSearch && matchesExperience && matchesLocation;
+export default function CandidateSearch() {
+  const { toast } = useToast();
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      offerCandidateCommission: false,
+      offerReferralCommission: false,
+    },
   });
 
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
+    // Transform the data to include commission values only if they're enabled
+    const jobData = {
+      ...values,
+      candidateCommission: values.offerCandidateCommission ? values.candidateCommission : undefined,
+      referralCommission: values.offerReferralCommission ? values.referralCommission : undefined,
+    };
+
+    console.log(jobData);
+    toast({
+      title: "Job Posted Successfully",
+      description: "Your job listing has been created.",
+    });
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-primary-light to-white p-8">
-      <div className="max-w-6xl mx-auto space-y-8">
-        <div className="flex justify-between items-center">
-          <h1 className="text-4xl font-bold text-gray-800">Find Candidates</h1>
-          <a 
-            href="/" 
-            className="text-primary-DEFAULT hover:text-primary-dark transition-colors"
-          >
-            View Job Listings
-          </a>
-        </div>
-        
-        <div className="space-y-4">
-          <div className="relative">
-            <Search className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
-            <Input
-              type="text"
-              placeholder="Search candidates by name, skills, or location..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 w-full"
-            />
-          </div>
-          
-          <div className="flex gap-4">
-            <div className="w-1/3">
-              <Select value={experienceFilter} onValueChange={setExperienceFilter}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Filter by experience" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Experience Levels</SelectItem>
-                  <SelectItem value="5 years">5+ Years</SelectItem>
-                  <SelectItem value="8 years">8+ Years</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            
-            <div className="w-1/3">
-              <Select value={locationFilter} onValueChange={setLocationFilter}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Filter by location" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Locations</SelectItem>
-                  <SelectItem value="Remote">Remote</SelectItem>
-                  <SelectItem value="San Francisco, CA">San Francisco, CA</SelectItem>
-                  <SelectItem value="New York, NY">New York, NY</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
+    <div className="container max-w-2xl mx-auto py-10">
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-2xl font-semibold">Post a New Job</h1>
+          <p className="text-muted-foreground">Create a new job listing for candidates</p>
         </div>
 
-        <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Title</TableHead>
-                <TableHead>Location</TableHead>
-                <TableHead>Experience</TableHead>
-                <TableHead>Expected Salary</TableHead>
-                <TableHead>Availability</TableHead>
-                <TableHead>Skills</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredCandidates.map((candidate) => (
-                <TableRow key={candidate.id} className="hover:bg-gray-50">
-                  <TableCell className="font-medium">{candidate.name}</TableCell>
-                  <TableCell>{candidate.title}</TableCell>
-                  <TableCell>{candidate.location}</TableCell>
-                  <TableCell>{candidate.experience}</TableCell>
-                  <TableCell>{candidate.expectedSalary}</TableCell>
-                  <TableCell>{candidate.availability}</TableCell>
-                  <TableCell>
-                    <div className="flex flex-wrap gap-1">
-                      {candidate.skills.map((skill) => (
-                        <span
-                          key={skill}
-                          className="px-2 py-1 text-xs rounded-full bg-primary-light text-primary-DEFAULT"
-                        >
-                          {skill}
-                        </span>
-                      ))}
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <FormField
+              control={form.control}
+              name="title"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Job Title</FormLabel>
+                  <FormControl>
+                    <Input placeholder="e.g. Senior React Developer" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="company"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Company Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Your company name" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="location"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Location</FormLabel>
+                  <FormControl>
+                    <Input placeholder="e.g. San Francisco, CA or Remote" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="type"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Job Type</FormLabel>
+                  <FormControl>
+                    <Input placeholder="e.g. Full-time, Contract, Part-time" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="salary"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Salary Range</FormLabel>
+                  <FormControl>
+                    <Input placeholder="e.g. $100,000 - $130,000" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Job Description</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="Describe the role, requirements, and benefits..."
+                      className="min-h-[200px]"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <div className="space-y-6">
+              <div className="space-y-4">
+                <FormField
+                  control={form.control}
+                  name="offerCandidateCommission"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                      <div className="space-y-0.5">
+                        <FormLabel className="text-base">
+                          Offer Candidate Commission
+                        </FormLabel>
+                        <FormDescription>
+                          Offer a signing bonus to successful candidates
+                        </FormDescription>
+                      </div>
+                      <FormControl>
+                        <Switch
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+
+                {form.watch("offerCandidateCommission") && (
+                  <FormField
+                    control={form.control}
+                    name="candidateCommission"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Candidate Commission Amount</FormLabel>
+                        <FormControl>
+                          <Input placeholder="e.g. $5,000 signing bonus" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
+              </div>
+
+              <div className="space-y-4">
+                <FormField
+                  control={form.control}
+                  name="offerReferralCommission"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                      <div className="space-y-0.5">
+                        <FormLabel className="text-base">
+                          Offer Referral Commission
+                        </FormLabel>
+                        <FormDescription>
+                          Offer a bonus for successful referrals
+                        </FormDescription>
+                      </div>
+                      <FormControl>
+                        <Switch
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+
+                {form.watch("offerReferralCommission") && (
+                  <FormField
+                    control={form.control}
+                    name="referralCommission"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Referral Commission Amount</FormLabel>
+                        <FormControl>
+                          <Input placeholder="e.g. $2,500 for successful referrals" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
+              </div>
+            </div>
+
+            <Button type="submit">Post Job</Button>
+          </form>
+        </Form>
       </div>
     </div>
   );
-};
-
-export default CandidateSearch;
+}
