@@ -1,10 +1,10 @@
 import { Building2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { useMobile } from "@/hooks/use-mobile";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const NavBar = () => {
-  const isMobile = useMobile();
+  const isMobile = useIsMobile();
   return (
     <nav className="border-b">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
