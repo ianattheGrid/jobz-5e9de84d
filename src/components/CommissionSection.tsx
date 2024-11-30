@@ -91,6 +91,9 @@ const CommissionSection = ({ salary, form }: CommissionSectionProps) => {
 
           <div className="space-y-2">
             <FormLabel>Commission Split</FormLabel>
+            <div className="text-sm text-muted-foreground mb-2">
+              Adjust how the commission is split between the successful candidate and the referrer. This flexibility allows you to incentivize either direct applications or referrals based on your recruitment needs.
+            </div>
             <Slider
               value={[splitPercentage]}
               onValueChange={(value) => setSplitPercentage(value[0])}
