@@ -6,10 +6,47 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[]
 
-export type Database = {
+export interface Database {
   public: {
     Tables: {
-      [_ in never]: never
+      jobs: {
+        Row: {
+          id: number
+          title: string
+          description: string
+          company: string
+          location: string
+          salary_min: number
+          salary_max: number
+          candidate_commission: number | null
+          type: string
+          created_at: string
+        }
+        Insert: {
+          id?: number
+          title: string
+          description: string
+          company: string
+          location: string
+          salary_min: number
+          salary_max: number
+          candidate_commission?: number | null
+          type: string
+          created_at?: string
+        }
+        Update: {
+          id?: number
+          title?: string
+          description?: string
+          company?: string
+          location?: string
+          salary_min?: number
+          salary_max?: number
+          candidate_commission?: number | null
+          type?: string
+          created_at?: string
+        }
+      }
     }
     Views: {
       [_ in never]: never
