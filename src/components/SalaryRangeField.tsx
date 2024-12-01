@@ -61,11 +61,11 @@ const SalaryRangeField = ({ control }: SalaryRangeFieldProps) => {
           <FormControl>
             <Select onValueChange={field.onChange} defaultValue={field.value}>
               <SelectTrigger className="w-full font-semibold">
-                <SelectValue placeholder="Select salary range" className="font-semibold" />
+                <SelectValue placeholder="Select salary range" />
               </SelectTrigger>
               <SelectContent>
                 {salaryRanges.map((range) => (
-                  <SelectItem key={range} value={range} className="font-semibold">
+                  <SelectItem key={range} value={range}>
                     {range}
                   </SelectItem>
                 ))}
