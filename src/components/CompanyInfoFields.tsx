@@ -1,6 +1,6 @@
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Control } from "react-hook-form";
+import { Control, useWatch } from "react-hook-form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 interface CompanyInfoFieldsProps {
@@ -8,6 +8,11 @@ interface CompanyInfoFieldsProps {
 }
 
 const CompanyInfoFields = ({ control }: CompanyInfoFieldsProps) => {
+  const showCompanyName = useWatch({
+    control,
+    name: "showCompanyName",
+  });
+
   return (
     <div className="space-y-4">
       <FormField
@@ -41,7 +46,7 @@ const CompanyInfoFields = ({ control }: CompanyInfoFieldsProps) => {
         )}
       />
 
-      {showCompanyNameField.value === "yes" && (
+      {showCompanyName === "yes" && (
         <FormField
           control={control}
           name="company"
