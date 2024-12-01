@@ -21,17 +21,22 @@ const HOLIDAY_ENTITLEMENTS = [
 ];
 
 const COMPANY_BENEFITS = [
-  "Health Insurance",
-  "Dental Insurance",
-  "Life Insurance",
-  "Pension Scheme",
-  "Flexible Working Hours",
-  "Remote Work Options",
-  "Professional Development",
-  "Gym Membership",
-  "Company Car",
-  "Performance Bonus",
-  "Stock Options",
+  "Pension",
+  "Childcare",
+  "Health",
+  "Dental",
+  "Gym",
+  "Car",
+  "Optical",
+  "Wellness",
+  "Counselling",
+  "Travel",
+  "Parking",
+  "Insurance",
+  "Food/Drink",
+  "Share options",
+  "Commission",
+  "Bonuses",
   "Other"
 ];
 
