@@ -2,7 +2,6 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import JobCard from "@/components/JobCard";
 import { Database } from "@/integrations/supabase/types";
-import { toast } from "sonner";
 
 type Job = Database['public']['Tables']['jobs']['Row'];
 
@@ -10,18 +9,18 @@ const Jobs = () => {
   const { data: jobs, isLoading, error } = useQuery({
     queryKey: ['jobs'],
     queryFn: async () => {
+      console.log('Fetching jobs...');
       const { data, error } = await supabase
         .from('jobs')
         .select('*')
         .order('created_at', { ascending: false });
 
       if (error) {
-        toast.error('Failed to load jobs', {
-          description: error.message
-        });
+        console.error('Error fetching jobs:', error);
         throw error;
       }
       
+      console.log('Fetched jobs:', data);
       return data as Job[];
     },
   });
@@ -60,7 +59,7 @@ const Jobs = () => {
 
   return (
     <div className="container mx-auto py-8 px-4">
-      <h1 className="text-3xl font-bold mb-8">Available Positions</h1>
+      <h1 className="text-3xl font-bold mb-8">Available Positions ({jobs.length})</h1>
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {jobs.map((job) => (
           <JobCard key={job.id} job={job} />
