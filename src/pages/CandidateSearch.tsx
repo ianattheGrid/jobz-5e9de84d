@@ -23,6 +23,7 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import LocationField from "@/components/LocationField";
 import JobDetailsFields from "@/components/JobDetailsFields";
+import WorkAreaField from "@/components/WorkAreaField";
 
 const formSchema = z.object({
   title: z.string().min(2, {
@@ -30,6 +31,9 @@ const formSchema = z.object({
   }),
   yearsExperience: z.string({
     required_error: "Please select required years of experience in that job title.",
+  }),
+  workArea: z.string({
+    required_error: "Please select the area of work for this vacancy.",
   }),
   showCompanyName: z.enum(["yes", "no"]),
   company: z.string().min(2, {
@@ -44,7 +48,10 @@ const formSchema = z.object({
   salary: z.string().min(1, {
     message: "Salary is required",
   }),
-  type: z.literal("Full-time"), // Changed to only allow Full-time
+  actualSalary: z.string().min(1, {
+    message: "Actual salary is required",
+  }),
+  type: z.literal("Full-time"),
   offerCandidateCommission: z.boolean().default(false),
   candidateCommission: z.string().optional(),
   offerReferralCommission: z.boolean().default(false),
@@ -59,7 +66,7 @@ export default function CandidateSearch() {
       offerCandidateCommission: false,
       offerReferralCommission: false,
       showCompanyName: "no",
-      type: "Full-time", // Set default value to Full-time
+      type: "Full-time",
     },
   });
 
@@ -116,6 +123,8 @@ export default function CandidateSearch() {
               </FormItem>
             )}
           />
+
+          <WorkAreaField control={form.control} />
 
           <FormField
             control={form.control}
