@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase";
 import JobCard from "@/components/JobCard";
 import type { Database } from "@/integrations/supabase/types";
 
