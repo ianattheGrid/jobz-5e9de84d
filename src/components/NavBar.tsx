@@ -13,21 +13,21 @@ const NavBar = () => {
   const isMobile = useIsMobile();
 
   return (
-    <nav className="border-b">
+    <nav className="border-b bg-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 justify-between">
           <div className="flex items-center">
             <Link to="/" className="flex items-center">
-              <Building2 className="h-8 w-8 text-primary-DEFAULT" />
-              <span className="ml-2 text-xl font-semibold text-gray-900">jobz</span>
+              <Building2 className="h-8 w-8 text-red-800" />
+              <span className="ml-2 text-xl font-semibold text-red-800">jobz</span>
             </Link>
           </div>
 
           <div className="hidden md:flex md:space-x-8">
-            <Link to="/jobs" className="inline-flex items-center px-1 pt-1 text-gray-900 hover:text-gray-500">
+            <Link to="/jobs" className="inline-flex items-center px-1 pt-1 text-gray-600 hover:text-gray-900">
               Vacancies
             </Link>
-            <Link to="/candidates" className="inline-flex items-center px-1 pt-1 text-gray-900 hover:text-gray-500">
+            <Link to="/candidates" className="inline-flex items-center px-1 pt-1 text-gray-600 hover:text-gray-900">
               Post a vacancy
             </Link>
           </div>
