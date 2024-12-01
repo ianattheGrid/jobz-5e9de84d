@@ -60,7 +60,7 @@ const SalaryRangeField = ({ control }: SalaryRangeFieldProps) => {
           <FormLabel>Salary Range</FormLabel>
           <FormControl>
             <Select onValueChange={field.onChange} defaultValue={field.value}>
-              <SelectTrigger className="w-full font-semibold">
+              <SelectTrigger className="w-full bg-background">
                 <SelectValue placeholder="Select salary range" />
               </SelectTrigger>
               <SelectContent>
