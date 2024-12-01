@@ -49,7 +49,7 @@ const EmployerSignIn = () => {
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
           <div className="flex items-center justify-center gap-2">
-            <Building2 className="h-8 w-8 text-primary" />
+            <Building2 className="h-8 w-8 text-red-800" />
             <CardTitle className="text-2xl">Employer Sign In</CardTitle>
           </div>
           <CardDescription>
@@ -80,13 +80,13 @@ const EmployerSignIn = () => {
                 required
               />
             </div>
-            <Button className="w-full" type="submit" disabled={loading}>
+            <Button className="w-full bg-red-800 hover:bg-red-900" type="submit" disabled={loading}>
               {loading ? "Signing in..." : "Sign In"}
             </Button>
           </form>
           <div className="text-center text-sm text-muted-foreground">
             Don't have an account?{" "}
-            <Link to="/employer/signup" className="text-primary hover:underline">
+            <Link to="/employer/signup" className="text-red-800 hover:underline">
               Sign Up
             </Link>
           </div>

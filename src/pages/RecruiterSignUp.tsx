@@ -58,7 +58,7 @@ const RecruiterSignUp = () => {
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
           <div className="flex items-center justify-center gap-2">
-            <Users className="h-8 w-8 text-primary" />
+            <Users className="h-8 w-8 text-red-800" />
             <CardTitle className="text-2xl">Virtual Recruiter Sign Up</CardTitle>
           </div>
           <CardDescription>
@@ -110,13 +110,13 @@ const RecruiterSignUp = () => {
                 required
               />
             </div>
-            <Button className="w-full" type="submit" disabled={loading}>
+            <Button className="w-full bg-red-800 hover:bg-red-900" type="submit" disabled={loading}>
               {loading ? "Signing up..." : "Sign Up"}
             </Button>
           </form>
           <div className="text-center text-sm text-muted-foreground">
             Already have an account?{" "}
-            <Link to="/recruiter/signin" className="text-primary hover:underline">
+            <Link to="/recruiter/signin" className="text-red-800 hover:underline">
               Sign In
             </Link>
           </div>
