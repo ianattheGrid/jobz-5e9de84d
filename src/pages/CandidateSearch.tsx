@@ -123,7 +123,7 @@ export default function CandidateSearch() {
             name="showCompanyName"
             render={({ field }) => (
               <FormItem className="space-y-3">
-                <FormLabel>Do you want our company name on the Job Vacancy?</FormLabel>
+                <FormLabel>Do you want your company name on the Job Vacancy?</FormLabel>
                 <FormControl>
                   <RadioGroup
                     onValueChange={field.onChange}

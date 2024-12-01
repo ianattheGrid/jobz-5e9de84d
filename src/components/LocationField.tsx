@@ -17,12 +17,12 @@ const LocationField = ({ control }: LocationFieldProps) => {
           <FormLabel>Location (Bristol Area)</FormLabel>
           <FormControl>
             <Select onValueChange={field.onChange} defaultValue={field.value}>
-              <SelectTrigger>
+              <SelectTrigger className="bg-background">
                 <SelectValue placeholder="Select a postcode area" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-background">
                 {bristolPostcodes.map((postcode) => (
-                  <SelectItem key={postcode} value={postcode}>
+                  <SelectItem key={postcode} value={postcode} className="hover:bg-accent">
                     {postcode}
                   </SelectItem>
                 ))}
