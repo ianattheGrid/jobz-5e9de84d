@@ -50,6 +50,81 @@ export type Database = {
           },
         ]
       }
+      candidate_profiles: {
+        Row: {
+          created_at: string
+          id: string
+          job_title: string
+          location: string
+          max_salary: number
+          min_salary: number
+          updated_at: string
+          years_experience: number
+        }
+        Insert: {
+          created_at?: string
+          id: string
+          job_title: string
+          location: string
+          max_salary: number
+          min_salary: number
+          updated_at?: string
+          years_experience: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          job_title?: string
+          location?: string
+          max_salary?: number
+          min_salary?: number
+          updated_at?: string
+          years_experience?: number
+        }
+        Relationships: []
+      }
+      job_matches: {
+        Row: {
+          candidate_id: string | null
+          created_at: string
+          id: number
+          is_notified: boolean | null
+          job_id: number | null
+          match_score: number
+        }
+        Insert: {
+          candidate_id?: string | null
+          created_at?: string
+          id?: number
+          is_notified?: boolean | null
+          job_id?: number | null
+          match_score: number
+        }
+        Update: {
+          candidate_id?: string | null
+          created_at?: string
+          id?: number
+          is_notified?: boolean | null
+          job_id?: number | null
+          match_score?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "job_matches_candidate_id_fkey"
+            columns: ["candidate_id"]
+            isOneToOne: false
+            referencedRelation: "candidate_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "job_matches_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       jobs: {
         Row: {
           candidate_commission: number | null
@@ -174,7 +249,29 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      calculate_match_score: {
+        Args: {
+          job_title_a: string
+          job_title_b: string
+          years_exp_a: number
+          years_exp_b: number
+          location_a: string
+          location_b: string
+          salary_min_a: number
+          salary_max_a: number
+          salary_min_b: number
+          salary_max_b: number
+        }
+        Returns: number
+      }
+      http_process_matches: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      process_job_matches: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never
