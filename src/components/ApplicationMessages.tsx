@@ -3,7 +3,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import MessageList from "./messages/MessageList";
 import MessageInput from "./messages/MessageInput";
-import { containsSuspiciousContent } from "@/utils/messageValidation";
+import { validateMessage } from "./messages/MessageValidation";
 
 interface Message {
   id: number;
@@ -44,7 +44,7 @@ const ApplicationMessages = ({ applicationId, currentUserId }: ApplicationMessag
 
   const handleSendMessage = async (messageText: string) => {
     setLoading(true);
-    const isSuspicious = containsSuspiciousContent(messageText);
+    const { text, isSuspicious } = validateMessage(messageText);
 
     try {
       const { error } = await supabase
@@ -53,7 +53,7 @@ const ApplicationMessages = ({ applicationId, currentUserId }: ApplicationMessag
           {
             application_id: applicationId,
             sender_id: currentUserId,
-            message_text: messageText,
+            message_text: text,
             is_flagged: isSuspicious,
           }
         ]);
