@@ -27,49 +27,32 @@ const NavBar = () => {
               />
             </Link>
             <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-              <NavigationMenu>
-                <NavigationMenuList>
-                  <NavigationMenuItem>
-                    <NavigationMenuTrigger>Menu</NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                      <div className="grid gap-3 p-4 w-[200px]">
-                        <NavigationMenuLink asChild>
-                          <Link
-                            to="/jobs"
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                          >
-                            Jobs
-                          </Link>
-                        </NavigationMenuLink>
-                        {user && (
-                          <>
-                            {userType === 'employer' && (
-                              <NavigationMenuLink asChild>
-                                <Link
-                                  to="/employer/dashboard"
-                                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                >
-                                  Dashboard
-                                </Link>
-                              </NavigationMenuLink>
-                            )}
-                            {userType === 'recruiter' && (
-                              <NavigationMenuLink asChild>
-                                <Link
-                                  to="/recruiter/dashboard"
-                                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                >
-                                  Dashboard
-                                </Link>
-                              </NavigationMenuLink>
-                            )}
-                          </>
-                        )}
-                      </div>
-                    </NavigationMenuContent>
-                  </NavigationMenuItem>
-                </NavigationMenuList>
-              </NavigationMenu>
+              <Link
+                to="/jobs"
+                className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+              >
+                Jobs
+              </Link>
+              {user && (
+                <>
+                  {userType === 'employer' && (
+                    <Link
+                      to="/employer/dashboard"
+                      className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                    >
+                      Dashboard
+                    </Link>
+                  )}
+                  {userType === 'recruiter' && (
+                    <Link
+                      to="/recruiter/dashboard"
+                      className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                    >
+                      Dashboard
+                    </Link>
+                  )}
+                </>
+              )}
             </div>
           </div>
           <div className="flex items-center">
