@@ -30,9 +30,6 @@ const NavBar = () => {
             <Link to="/candidates" className="inline-flex items-center px-1 pt-1 text-gray-600 hover:text-gray-900">
               Post a vacancy
             </Link>
-            <Link to="/employer/dashboard" className="inline-flex items-center px-1 pt-1 text-gray-600 hover:text-gray-900">
-              Applications Dashboard
-            </Link>
           </div>
 
           <div className="flex items-center">
@@ -49,9 +46,6 @@ const NavBar = () => {
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link to="/employer/signin">Employer Sign In</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/employer/dashboard">Applications Dashboard</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link to="/candidates">Post a Vacancy</Link>
