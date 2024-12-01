@@ -15,10 +15,20 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import CommissionSection from "@/components/CommissionSection";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const formSchema = z.object({
   title: z.string().min(2, {
     message: "Job title must be at least 2 characters.",
+  }),
+  yearsExperience: z.string({
+    required_error: "Please select required years of experience.",
   }),
   company: z.string().min(2, {
     message: "Company name must be at least 2 characters.",
@@ -72,6 +82,32 @@ export default function CandidateSearch() {
                 <FormControl>
                   <Input placeholder="e.g. Senior React Developer" {...field} />
                 </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="yearsExperience"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Years of Experience Required</FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select required experience" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {[...Array(19)].map((_, i) => (
+                      <SelectItem key={i + 1} value={String(i + 1)}>
+                        {i + 1} {i === 0 ? 'year' : 'years'}
+                      </SelectItem>
+                    ))}
+                    <SelectItem value="20+">20+ years</SelectItem>
+                  </SelectContent>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}
