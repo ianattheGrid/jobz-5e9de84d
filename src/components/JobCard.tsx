@@ -7,30 +7,58 @@ interface JobCardProps {
 }
 
 const JobCard = ({ job }: JobCardProps) => {
+  const formatSalary = (amount: number) => `£${amount.toLocaleString()}`;
+  
+  const calculateReferralCommission = (totalCommission: number) => {
+    return Math.floor(totalCommission * 0.3);
+  };
+
   return (
-    <div className="rounded-lg border bg-card p-4 text-card-foreground shadow-sm">
-      <div className="mb-4 flex items-center justify-between">
-        <h3 className="text-lg font-semibold">{job.title}</h3>
-        <span className="text-sm text-muted-foreground">{job.type}</span>
+    <div className="rounded-lg border bg-card p-6 text-card-foreground shadow-sm hover:shadow-md transition-shadow">
+      <div className="mb-4 flex items-start justify-between">
+        <div>
+          <h3 className="text-xl font-semibold text-primary">{job.title}</h3>
+          <p className="text-sm text-muted-foreground mt-1">{job.company}</p>
+        </div>
+        <span className="text-sm font-medium px-3 py-1 bg-primary/10 rounded-full">
+          {job.type}
+        </span>
       </div>
-      <div className="space-y-2">
-        <p className="text-sm text-muted-foreground">{job.company}</p>
-        <p className="text-sm text-muted-foreground">{job.location}</p>
-        <p className="text-sm">
-          £{job.salary_min.toLocaleString()} - £{job.salary_max.toLocaleString()}
-        </p>
+      
+      <div className="space-y-4">
+        <div className="flex items-center text-sm text-muted-foreground">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          {job.location}
+        </div>
+
+        <div className="text-sm">
+          <span className="font-medium">Salary Range: </span>
+          {formatSalary(job.salary_min)} - {formatSalary(job.salary_max)}
+        </div>
+
         {job.candidate_commission && (
-          <div className="space-y-1">
-            <p className="text-sm font-medium text-green-600">
-              Total Commission: £{job.candidate_commission.toLocaleString()}
+          <div className="space-y-2 p-3 bg-green-50 rounded-md">
+            <p className="text-sm font-medium text-green-700">
+              Commission Structure
             </p>
-            <div className="text-xs text-muted-foreground">
-              <p>Candidate: £{Math.floor(job.candidate_commission).toLocaleString()}</p>
-              <p>Referral: £{Math.floor(job.candidate_commission * 0.3).toLocaleString()}</p>
+            <div className="text-sm text-green-600 space-y-1">
+              <p>Total Commission: {formatSalary(job.candidate_commission)}</p>
+              <div className="text-xs space-y-0.5">
+                <p>• Candidate: {formatSalary(job.candidate_commission - calculateReferralCommission(job.candidate_commission))}</p>
+                <p>• Referral: {formatSalary(calculateReferralCommission(job.candidate_commission))}</p>
+              </div>
             </div>
           </div>
         )}
-        <p className="text-sm mt-2 text-muted-foreground line-clamp-3">{job.description}</p>
+
+        <div className="pt-2">
+          <p className="text-sm text-gray-600 whitespace-pre-line">
+            {job.description}
+          </p>
+        </div>
       </div>
     </div>
   );
