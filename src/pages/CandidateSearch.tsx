@@ -24,6 +24,8 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import LocationField from "@/components/LocationField";
 import JobDetailsFields from "@/components/JobDetailsFields";
 import WorkAreaField from "@/components/WorkAreaField";
+import ApplicationPreferencesField from "@/components/ApplicationPreferencesField";
+import CompanyInfoFields from "@/components/CompanyInfoFields";
 
 const formSchema = z.object({
   title: z.string().min(2, {
@@ -66,6 +68,9 @@ const formSchema = z.object({
     message: "Company benefits are required",
   }),
   otherBenefits: z.string().optional(),
+  applicationMethod: z.enum(["platform", "email", "custom"]).default("platform"),
+  applicationEmail: z.string().email().optional().or(z.literal("")),
+  applicationInstructions: z.string().optional().or(z.literal("")),
 });
 
 export default function CandidateSearch() {
@@ -77,6 +82,7 @@ export default function CandidateSearch() {
       offerReferralCommission: false,
       showCompanyName: "no",
       type: "Full-time",
+      applicationMethod: "platform",
     },
   });
 
@@ -136,52 +142,7 @@ export default function CandidateSearch() {
 
           <WorkAreaField control={form.control} />
 
-          <FormField
-            control={form.control}
-            name="showCompanyName"
-            render={({ field }) => (
-              <FormItem className="space-y-3">
-                <FormLabel>Do you want your company name on the Job Vacancy?</FormLabel>
-                <FormControl>
-                  <RadioGroup
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                    className="flex flex-row space-x-4"
-                  >
-                    <FormItem className="flex items-center space-x-2">
-                      <FormControl>
-                        <RadioGroupItem value="yes" />
-                      </FormControl>
-                      <FormLabel className="font-normal">Yes</FormLabel>
-                    </FormItem>
-                    <FormItem className="flex items-center space-x-2">
-                      <FormControl>
-                        <RadioGroupItem value="no" />
-                      </FormControl>
-                      <FormLabel className="font-normal">No</FormLabel>
-                    </FormItem>
-                  </RadioGroup>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          {showCompanyName === "yes" && (
-            <FormField
-              control={form.control}
-              name="company"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Company Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Your company name" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          )}
+          <CompanyInfoFields control={form.control} />
 
           <FormField
             control={form.control}
@@ -217,6 +178,8 @@ export default function CandidateSearch() {
             form={form}
           />
 
+          <ApplicationPreferencesField control={form.control} />
+          
           <Button type="submit">Post Job</Button>
         </form>
       </Form>
