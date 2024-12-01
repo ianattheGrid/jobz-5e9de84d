@@ -22,6 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 const formSchema = z.object({
   title: z.string().min(2, {
@@ -30,9 +31,10 @@ const formSchema = z.object({
   yearsExperience: z.string({
     required_error: "Please select required years of experience in that job title.",
   }),
+  showCompanyName: z.enum(["yes", "no"]),
   company: z.string().min(2, {
     message: "Company name must be at least 2 characters.",
-  }),
+  }).optional(),
   location: z.string().min(2, {
     message: "Location must be at least 2 characters.",
   }),
@@ -58,8 +60,11 @@ export default function CandidateSearch() {
     defaultValues: {
       offerCandidateCommission: false,
       offerReferralCommission: false,
+      showCompanyName: "no",
     },
   });
+
+  const showCompanyName = form.watch("showCompanyName");
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     console.log(values);
@@ -115,17 +120,50 @@ export default function CandidateSearch() {
 
           <FormField
             control={form.control}
-            name="company"
+            name="showCompanyName"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Company Name</FormLabel>
+              <FormItem className="space-y-3">
+                <FormLabel>Do you want our company name on the Job Vacancy?</FormLabel>
                 <FormControl>
-                  <Input placeholder="Your company name" {...field} />
+                  <RadioGroup
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                    className="flex flex-row space-x-4"
+                  >
+                    <FormItem className="flex items-center space-x-2">
+                      <FormControl>
+                        <RadioGroupItem value="yes" />
+                      </FormControl>
+                      <FormLabel className="font-normal">Yes</FormLabel>
+                    </FormItem>
+                    <FormItem className="flex items-center space-x-2">
+                      <FormControl>
+                        <RadioGroupItem value="no" />
+                      </FormControl>
+                      <FormLabel className="font-normal">No</FormLabel>
+                    </FormItem>
+                  </RadioGroup>
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
+
+          {showCompanyName === "yes" && (
+            <FormField
+              control={form.control}
+              name="company"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Company Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Your company name" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
 
           <FormField
             control={form.control}
