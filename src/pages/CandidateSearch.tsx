@@ -52,11 +52,20 @@ const formSchema = z.object({
   actualSalary: z.string().min(1, {
     message: "Actual salary is required",
   }),
+  workLocation: z.enum(["office", "hybrid", "remote"]).default("office"),
+  officePercentage: z.number().min(0).max(100).optional(),
   type: z.literal("Full-time"),
   offerCandidateCommission: z.boolean().default(false),
   candidateCommission: z.string().optional(),
   offerReferralCommission: z.boolean().default(false),
   referralCommission: z.string().optional(),
+  holidayEntitlement: z.string().min(1, {
+    message: "Holiday entitlement is required",
+  }),
+  companyBenefits: z.string().min(1, {
+    message: "Company benefits are required",
+  }),
+  otherBenefits: z.string().optional(),
 });
 
 export default function CandidateSearch() {
