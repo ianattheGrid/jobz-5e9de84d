@@ -44,9 +44,7 @@ const formSchema = z.object({
   salary: z.string().min(1, {
     message: "Salary is required",
   }),
-  type: z.string().min(1, {
-    message: "Job type is required",
-  }),
+  type: z.literal("Full-time"), // Changed to only allow Full-time
   offerCandidateCommission: z.boolean().default(false),
   candidateCommission: z.string().optional(),
   offerReferralCommission: z.boolean().default(false),
@@ -61,6 +59,7 @@ export default function CandidateSearch() {
       offerCandidateCommission: false,
       offerReferralCommission: false,
       showCompanyName: "no",
+      type: "Full-time", // Set default value to Full-time
     },
   });
 
@@ -164,6 +163,31 @@ export default function CandidateSearch() {
               )}
             />
           )}
+
+          <FormField
+            control={form.control}
+            name="type"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Job Type</FormLabel>
+                <FormControl>
+                  <Select 
+                    onValueChange={field.onChange} 
+                    defaultValue="Full-time"
+                    value="Full-time"
+                  >
+                    <SelectTrigger>
+                      <SelectValue>Full-time</SelectValue>
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Full-time">Full-time</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
           <LocationField control={form.control} />
           

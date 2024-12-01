@@ -11,20 +11,6 @@ const JobDetailsFields = ({ control }: JobDetailsFieldsProps) => {
     <>
       <FormField
         control={control}
-        name="type"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Job Type</FormLabel>
-            <FormControl>
-              <Input placeholder="e.g. Full-time, Contract, Part-time" {...field} />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-
-      <FormField
-        control={control}
         name="salary"
         render={({ field }) => (
           <FormItem>
