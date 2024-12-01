@@ -6,50 +6,10 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[]
 
-export interface Database {
+export type Database = {
   public: {
     Tables: {
-      jobs: {
-        Row: {
-          id: string
-          title: string
-          company: string
-          location: string
-          description: string
-          salary_min: number
-          salary_max: number
-          type: 'full-time' | 'part-time' | 'contract' | 'internship'
-          candidate_commission: number | null
-          referral_commission: number | null
-          created_at: string
-        }
-        Insert: {
-          id?: string
-          title: string
-          company: string
-          location: string
-          description: string
-          salary_min: number
-          salary_max: number
-          type: 'full-time' | 'part-time' | 'contract' | 'internship'
-          candidate_commission?: number | null
-          referral_commission?: number | null
-          created_at?: string
-        }
-        Update: {
-          id?: string
-          title?: string
-          company?: string
-          location?: string
-          description?: string
-          salary_min?: number
-          salary_max?: number
-          type?: 'full-time' | 'part-time' | 'contract' | 'internship'
-          candidate_commission?: number | null
-          referral_commission?: number | null
-          created_at?: string
-        }
-      }
+      [_ in never]: never
     }
     Views: {
       [_ in never]: never
@@ -58,7 +18,7 @@ export interface Database {
       [_ in never]: never
     }
     Enums: {
-      job_type: 'full-time' | 'part-time' | 'contract' | 'internship'
+      [_ in never]: never
     }
     CompositeTypes: {
       [_ in never]: never
