@@ -11,17 +11,20 @@ Deno.serve(async (req) => {
   }
 
   try {
+    console.log('Starting job matching process...')
+    
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     )
 
-    console.log('Starting job matching process...')
-
     // Call the database function to process matches
     const { error } = await supabaseClient.rpc('http_process_matches')
 
-    if (error) throw error
+    if (error) {
+      console.error('Error processing matches:', error)
+      throw error
+    }
 
     console.log('Job matching process completed successfully')
 

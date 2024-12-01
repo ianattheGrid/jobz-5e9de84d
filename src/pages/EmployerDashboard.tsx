@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import ApplicationMessages from "@/components/ApplicationMessages";
+import CandidateMatches from "@/components/CandidateMatches";
 
 interface Application {
   id: number;
@@ -22,6 +23,7 @@ const EmployerDashboard = () => {
   const [applications, setApplications] = useState<Application[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedApplication, setSelectedApplication] = useState<number | null>(null);
+  const [selectedJobId, setSelectedJobId] = useState<number | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -96,16 +98,18 @@ const EmployerDashboard = () => {
     <div className="container mx-auto p-4">
       <Card>
         <CardHeader>
-          <CardTitle>Applications Dashboard</CardTitle>
+          <CardTitle>Employer Dashboard</CardTitle>
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="applications">
             <TabsList>
               <TabsTrigger value="applications">Applications</TabsTrigger>
+              <TabsTrigger value="matches">Candidate Matches</TabsTrigger>
               {selectedApplication && (
                 <TabsTrigger value="messages">Messages</TabsTrigger>
               )}
             </TabsList>
+            
             <TabsContent value="applications">
               <div className="space-y-4">
                 {applications.map((application) => (
@@ -134,7 +138,10 @@ const EmployerDashboard = () => {
                           <option value="rejected">Rejected</option>
                         </select>
                         <button
-                          onClick={() => setSelectedApplication(application.id)}
+                          onClick={() => {
+                            setSelectedApplication(application.id);
+                            setSelectedJobId(application.job_id);
+                          }}
                           className="text-blue-600 hover:underline"
                         >
                           View Messages
@@ -145,6 +152,17 @@ const EmployerDashboard = () => {
                 ))}
               </div>
             </TabsContent>
+
+            <TabsContent value="matches">
+              {selectedJobId ? (
+                <CandidateMatches jobId={selectedJobId} />
+              ) : (
+                <div className="text-center text-gray-500 py-8">
+                  Select a job to view potential candidate matches
+                </div>
+              )}
+            </TabsContent>
+
             {selectedApplication && userId && (
               <TabsContent value="messages">
                 <ApplicationMessages
