@@ -13,13 +13,13 @@ const CompanyInfoFields = ({ control }: CompanyInfoFieldsProps) => {
       <FormField
         control={control}
         name="showCompanyName"
-        render={({ field }) => (
+        render={({ field: showCompanyNameField }) => (
           <FormItem className="space-y-3">
             <FormLabel>Do you want your company name on the Job Vacancy?</FormLabel>
             <FormControl>
               <RadioGroup
-                onValueChange={field.onChange}
-                defaultValue={field.value}
+                onValueChange={showCompanyNameField.onChange}
+                defaultValue={showCompanyNameField.value}
                 className="flex flex-row space-x-4"
               >
                 <FormItem className="flex items-center space-x-2">
@@ -41,15 +41,15 @@ const CompanyInfoFields = ({ control }: CompanyInfoFieldsProps) => {
         )}
       />
 
-      {field.value === "yes" && (
+      {showCompanyNameField.value === "yes" && (
         <FormField
           control={control}
           name="company"
-          render={({ field }) => (
+          render={({ field: companyField }) => (
             <FormItem>
               <FormLabel>Company Name</FormLabel>
               <FormControl>
-                <Input placeholder="Your company name" {...field} />
+                <Input placeholder="Your company name" {...companyField} />
               </FormControl>
               <FormMessage />
             </FormItem>
