@@ -15,7 +15,7 @@ const NavBar = () => {
               <img
                 className="h-8 w-auto"
                 src="/logo.png"
-                alt="Logo"
+                alt="jobz"
               />
             </Link>
             <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
@@ -23,7 +23,7 @@ const NavBar = () => {
                 to="/jobs"
                 className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
               >
-                Jobs
+                Job Board
               </Link>
               {user && (
                 <>
@@ -47,20 +47,44 @@ const NavBar = () => {
               )}
             </div>
           </div>
-          <div className="flex items-center">
+          <div className="flex items-center space-x-4">
             {!user ? (
-              <div className="space-x-4">
+              <div className="hidden sm:flex sm:space-x-4">
+                <Link
+                  to="/employer/signup"
+                  className="text-gray-500 hover:text-gray-700 px-3 py-2 text-sm font-medium"
+                >
+                  Employer Sign Up
+                </Link>
                 <Link
                   to="/employer/signin"
-                  className="text-gray-500 hover:text-gray-700"
+                  className="text-gray-500 hover:text-gray-700 px-3 py-2 text-sm font-medium"
                 >
                   Employer Sign In
                 </Link>
                 <Link
-                  to="/recruiter/signin"
-                  className="text-gray-500 hover:text-gray-700"
+                  to="/candidate/signup"
+                  className="text-gray-500 hover:text-gray-700 px-3 py-2 text-sm font-medium"
                 >
-                  Recruiter Sign In
+                  Candidate Sign Up
+                </Link>
+                <Link
+                  to="/candidate/signin"
+                  className="text-gray-500 hover:text-gray-700 px-3 py-2 text-sm font-medium"
+                >
+                  Candidate Sign In
+                </Link>
+                <Link
+                  to="/recruiter/signup"
+                  className="text-gray-500 hover:text-gray-700 px-3 py-2 text-sm font-medium"
+                >
+                  VR Sign Up
+                </Link>
+                <Link
+                  to="/recruiter/signin"
+                  className="text-gray-500 hover:text-gray-700 px-3 py-2 text-sm font-medium"
+                >
+                  VR Sign In
                 </Link>
               </div>
             ) : (
@@ -68,7 +92,7 @@ const NavBar = () => {
                 {userType === 'recruiter' && <RecruiterNotifications />}
                 <button
                   onClick={() => supabase.auth.signOut()}
-                  className="text-gray-500 hover:text-gray-700"
+                  className="text-gray-500 hover:text-gray-700 px-3 py-2 text-sm font-medium"
                 >
                   Sign Out
                 </button>
