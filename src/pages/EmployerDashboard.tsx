@@ -1,121 +1,161 @@
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/lib/supabase";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { useToast } from "@/components/ui/use-toast";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import ApplicationMessages from "@/components/ApplicationMessages";
+
+interface Application {
+  id: number;
+  job_id: number;
+  applicant_id: string;
+  status: string;
+  created_at: string;
+  job: {
+    title: string;
+    company: string;
+  };
+}
 
 const EmployerDashboard = () => {
+  const [applications, setApplications] = useState<Application[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedApplication, setSelectedApplication] = useState<number | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
+  const navigate = useNavigate();
   const { toast } = useToast();
 
-  const { data: applications, isLoading, refetch } = useQuery({
-    queryKey: ['applications'],
-    queryFn: async () => {
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        navigate('/employer/signin');
+        return;
+      }
+      setUserId(user.id);
+      loadApplications();
+    };
+
+    checkAuth();
+  }, [navigate]);
+
+  const loadApplications = async () => {
+    try {
       const { data, error } = await supabase
         .from('applications')
         .select(`
           *,
-          jobs (
-            title,
-            company
-          )
+          job:jobs(title, company)
         `)
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      return data;
-    },
-  });
+
+      setApplications(data || []);
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to load applications",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const updateApplicationStatus = async (applicationId: number, newStatus: string) => {
-    const { error } = await supabase
-      .from('applications')
-      .update({ status: newStatus })
-      .eq('id', applicationId);
+    try {
+      const { error } = await supabase
+        .from('applications')
+        .update({ status: newStatus })
+        .eq('id', applicationId);
 
-    if (error) {
-      toast({
-        title: "Error",
-        description: "Failed to update application status",
-        variant: "destructive",
-      });
-    } else {
+      if (error) throw error;
+
       toast({
         title: "Success",
         description: "Application status updated",
       });
-      refetch();
+
+      loadApplications();
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: error.message,
+      });
     }
   };
 
-  if (isLoading) {
-    return <div className="container mx-auto py-8">Loading...</div>;
+  if (loading) {
+    return <div className="container mx-auto p-4">Loading...</div>;
   }
 
   return (
-    <div className="container mx-auto py-8">
-      <h1 className="text-2xl font-bold mb-6">Applications Dashboard</h1>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Job Title</TableHead>
-            <TableHead>Company</TableHead>
-            <TableHead>Date Applied</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {applications?.map((application) => (
-            <TableRow key={application.id}>
-              <TableCell>{application.jobs?.title}</TableCell>
-              <TableCell>{application.jobs?.company}</TableCell>
-              <TableCell>
-                {new Date(application.created_at).toLocaleDateString()}
-              </TableCell>
-              <TableCell>
-                <Select
-                  defaultValue={application.status}
-                  onValueChange={(value) => updateApplicationStatus(application.id, value)}
-                >
-                  <SelectTrigger className="w-32">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="pending">Pending</SelectItem>
-                    <SelectItem value="reviewing">Reviewing</SelectItem>
-                    <SelectItem value="interviewed">Interviewed</SelectItem>
-                    <SelectItem value="rejected">Rejected</SelectItem>
-                    <SelectItem value="hired">Hired</SelectItem>
-                  </SelectContent>
-                </Select>
-              </TableCell>
-              <TableCell>
-                <a
-                  href={application.resume_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-500 hover:underline"
-                >
-                  View Resume
-                </a>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+    <div className="container mx-auto p-4">
+      <Card>
+        <CardHeader>
+          <CardTitle>Applications Dashboard</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Tabs defaultValue="applications">
+            <TabsList>
+              <TabsTrigger value="applications">Applications</TabsTrigger>
+              {selectedApplication && (
+                <TabsTrigger value="messages">Messages</TabsTrigger>
+              )}
+            </TabsList>
+            <TabsContent value="applications">
+              <div className="space-y-4">
+                {applications.map((application) => (
+                  <Card key={application.id} className="p-4">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <h3 className="font-semibold">
+                          {application.job?.title} - {application.job?.company}
+                        </h3>
+                        <p className="text-sm text-gray-500">
+                          Applied: {new Date(application.created_at).toLocaleDateString()}
+                        </p>
+                        <p className="text-sm text-gray-500">
+                          Status: {application.status}
+                        </p>
+                      </div>
+                      <div className="space-x-2">
+                        <select
+                          value={application.status}
+                          onChange={(e) => updateApplicationStatus(application.id, e.target.value)}
+                          className="border rounded p-1"
+                        >
+                          <option value="pending">Pending</option>
+                          <option value="reviewing">Reviewing</option>
+                          <option value="accepted">Accepted</option>
+                          <option value="rejected">Rejected</option>
+                        </select>
+                        <button
+                          onClick={() => setSelectedApplication(application.id)}
+                          className="text-blue-600 hover:underline"
+                        >
+                          View Messages
+                        </button>
+                      </div>
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            </TabsContent>
+            {selectedApplication && userId && (
+              <TabsContent value="messages">
+                <ApplicationMessages
+                  applicationId={selectedApplication}
+                  currentUserId={userId}
+                />
+              </TabsContent>
+            )}
+          </Tabs>
+        </CardContent>
+      </Card>
     </div>
   );
 };
