@@ -23,6 +23,7 @@ const NavBar = () => {
                 className="h-8 w-auto"
                 src="/logo.png"
                 alt="jobz"
+                style={{ objectFit: 'contain' }}
               />
             </Link>
           </div>
