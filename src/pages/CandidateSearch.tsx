@@ -5,14 +5,12 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import CommissionSection from "@/components/CommissionSection";
 import {
@@ -23,6 +21,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import LocationField from "@/components/LocationField";
+import JobDetailsFields from "@/components/JobDetailsFields";
 
 const formSchema = z.object({
   title: z.string().min(2, {
@@ -165,65 +165,9 @@ export default function CandidateSearch() {
             />
           )}
 
-          <FormField
-            control={form.control}
-            name="location"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Location</FormLabel>
-                <FormControl>
-                  <Input placeholder="e.g. San Francisco, CA or Remote" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="type"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Job Type</FormLabel>
-                <FormControl>
-                  <Input placeholder="e.g. Full-time, Contract, Part-time" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="salary"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Salary Range</FormLabel>
-                <FormControl>
-                  <Input placeholder="e.g. £40,000" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="description"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Job Description</FormLabel>
-                <FormControl>
-                  <Textarea
-                    placeholder="Describe the role, requirements, and benefits..."
-                    className="min-h-[200px]"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <LocationField control={form.control} />
+          
+          <JobDetailsFields control={form.control} />
 
           <CommissionSection 
             salary={form.watch("salary")} 
