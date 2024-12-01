@@ -35,6 +35,7 @@ const formSchema = z.object({
   workArea: z.string({
     required_error: "Please select the area of work for this vacancy.",
   }),
+  otherWorkArea: z.string().optional(),
   showCompanyName: z.enum(["yes", "no"]),
   company: z.string().min(2, {
     message: "Company name must be at least 2 characters.",
