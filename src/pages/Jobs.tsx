@@ -25,7 +25,7 @@ const Jobs = () => {
 
   return (
     <div className="container mx-auto py-8">
-      <h1 className="mb-8 text-3xl font-bold">Job Listings</h1>
+      <h1 className="mb-8 text-3xl font-bold">Available Positions</h1>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {jobs?.map((job) => (
           <JobCard key={job.id} job={job} />
