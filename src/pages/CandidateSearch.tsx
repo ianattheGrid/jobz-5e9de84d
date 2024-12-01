@@ -28,7 +28,7 @@ const formSchema = z.object({
     message: "Job title must be at least 2 characters.",
   }),
   yearsExperience: z.string({
-    required_error: "Please select required years of experience.",
+    required_error: "Please select required years of experience in that job title.",
   }),
   company: z.string().min(2, {
     message: "Company name must be at least 2 characters.",
@@ -92,7 +92,7 @@ export default function CandidateSearch() {
             name="yearsExperience"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Years of Experience Required</FormLabel>
+                <FormLabel>Minimum Years of Experience Required in that Job Title</FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
                     <SelectTrigger>
