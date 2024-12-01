@@ -10,6 +10,7 @@ import CandidateSearch from "./pages/CandidateSearch";
 import EmployerSignUp from "./pages/EmployerSignUp";
 import EmployerSignIn from "./pages/EmployerSignIn";
 import CandidateSignUp from "./pages/CandidateSignUp";
+import CandidateSignIn from "./pages/CandidateSignIn";
 import RecruiterSignUp from "./pages/RecruiterSignUp";
 
 const queryClient = new QueryClient();
@@ -30,6 +31,7 @@ const App = () => (
               <Route path="/employer/signup" element={<EmployerSignUp />} />
               <Route path="/employer/signin" element={<EmployerSignIn />} />
               <Route path="/candidate/signup" element={<CandidateSignUp />} />
+              <Route path="/candidate/signin" element={<CandidateSignIn />} />
               <Route path="/recruiter/signup" element={<RecruiterSignUp />} />
             </Routes>
           </main>
