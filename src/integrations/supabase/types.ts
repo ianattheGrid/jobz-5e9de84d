@@ -208,6 +208,38 @@ export type Database = {
           },
         ]
       }
+      recruiter_notifications: {
+        Row: {
+          created_at: string
+          id: number
+          is_read: boolean | null
+          job_id: number
+          recruiter_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          is_read?: boolean | null
+          job_id: number
+          recruiter_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          is_read?: boolean | null
+          job_id?: number
+          recruiter_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "recruiter_notifications_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       recruiter_profiles: {
         Row: {
           created_at: string

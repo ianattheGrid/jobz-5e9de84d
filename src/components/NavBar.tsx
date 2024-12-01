@@ -1,66 +1,78 @@
-import { Building2, Menu } from "lucide-react";
 import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { useIsMobile } from "@/hooks/use-mobile";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { useAuth } from "@/hooks/useAuth";
+import RecruiterNotifications from "./RecruiterNotifications";
 
 const NavBar = () => {
-  const isMobile = useIsMobile();
+  const { user, userType } = useAuth();
 
   return (
-    <nav className="border-b bg-white">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 justify-between">
-          <div className="flex items-center">
-            <Link to="/" className="flex items-center">
-              <Building2 className="h-8 w-8 text-red-800" />
-              <span className="ml-2 text-xl font-semibold text-red-800">jobz</span>
+    <nav className="bg-white shadow-sm">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between h-16">
+          <div className="flex">
+            <Link to="/" className="flex-shrink-0 flex items-center">
+              <img
+                className="h-8 w-auto"
+                src="/logo.png"
+                alt="Logo"
+              />
             </Link>
+            <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
+              <Link
+                to="/jobs"
+                className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+              >
+                Jobs
+              </Link>
+              {user && (
+                <>
+                  {userType === 'employer' && (
+                    <Link
+                      to="/employer/dashboard"
+                      className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                    >
+                      Dashboard
+                    </Link>
+                  )}
+                  {userType === 'recruiter' && (
+                    <Link
+                      to="/recruiter/dashboard"
+                      className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                    >
+                      Dashboard
+                    </Link>
+                  )}
+                </>
+              )}
+            </div>
           </div>
-
-          <div className="hidden md:flex md:space-x-8">
-            <Link to="/jobs" className="inline-flex items-center px-1 pt-1 text-gray-600 hover:text-gray-900">
-              Job Board
-            </Link>
-            <Link to="/candidates" className="inline-flex items-center px-1 pt-1 text-gray-600 hover:text-gray-900">
-              Post a vacancy
-            </Link>
-          </div>
-
           <div className="flex items-center">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="icon">
-                  <Menu className="h-5 w-5" />
-                  <span className="sr-only">Open menu</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
-                <DropdownMenuItem asChild>
-                  <Link to="/employer/signup">Employer Sign Up</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/employer/signin">Employer Sign In</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/candidates">Post a Vacancy</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/jobs">Job Board</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/recruiter/signup">Virtual Recruiter Sign Up</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/recruiter/signin">Virtual Recruiter Sign In</Link>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            {!user ? (
+              <div className="space-x-4">
+                <Link
+                  to="/employer/signin"
+                  className="text-gray-500 hover:text-gray-700"
+                >
+                  Employer Sign In
+                </Link>
+                <Link
+                  to="/recruiter/signin"
+                  className="text-gray-500 hover:text-gray-700"
+                >
+                  Recruiter Sign In
+                </Link>
+              </div>
+            ) : (
+              <div className="flex items-center space-x-4">
+                {userType === 'recruiter' && <RecruiterNotifications />}
+                <button
+                  onClick={() => supabase.auth.signOut()}
+                  className="text-gray-500 hover:text-gray-700"
+                >
+                  Sign Out
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
