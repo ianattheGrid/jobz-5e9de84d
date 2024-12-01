@@ -95,6 +95,80 @@ export type Database = {
         }
         Relationships: []
       }
+      recruiter_messages: {
+        Row: {
+          application_id: number
+          created_at: string
+          id: number
+          is_flagged: boolean | null
+          message_text: string
+          sender_id: string
+          updated_at: string
+        }
+        Insert: {
+          application_id: number
+          created_at?: string
+          id?: number
+          is_flagged?: boolean | null
+          message_text: string
+          sender_id: string
+          updated_at?: string
+        }
+        Update: {
+          application_id?: number
+          created_at?: string
+          id?: number
+          is_flagged?: boolean | null
+          message_text?: string
+          sender_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "recruiter_messages_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "applications"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      recruiter_profiles: {
+        Row: {
+          created_at: string
+          experience_years: number
+          full_name: string
+          id: string
+          is_probation: boolean | null
+          rating: number | null
+          successful_placements: number | null
+          updated_at: string
+          verification_status: string
+        }
+        Insert: {
+          created_at?: string
+          experience_years: number
+          full_name: string
+          id: string
+          is_probation?: boolean | null
+          rating?: number | null
+          successful_placements?: number | null
+          updated_at?: string
+          verification_status?: string
+        }
+        Update: {
+          created_at?: string
+          experience_years?: number
+          full_name?: string
+          id?: string
+          is_probation?: boolean | null
+          rating?: number | null
+          successful_placements?: number | null
+          updated_at?: string
+          verification_status?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

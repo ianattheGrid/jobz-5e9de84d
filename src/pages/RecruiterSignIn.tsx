@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Users } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/lib/supabase";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 
 const RecruiterSignIn = () => {
   const [email, setEmail] = useState("");
@@ -20,12 +20,41 @@ const RecruiterSignIn = () => {
     setLoading(true);
 
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
-      if (error) throw error;
+      if (authError) throw authError;
+
+      // Check recruiter verification status
+      const { data: profileData, error: profileError } = await supabase
+        .from('recruiter_profiles')
+        .select('verification_status')
+        .eq('id', authData.user.id)
+        .single();
+
+      if (profileError) throw profileError;
+
+      if (profileData.verification_status === 'pending') {
+        toast({
+          variant: "destructive",
+          title: "Account Pending",
+          description: "Your account is still pending verification. Please wait for admin approval.",
+        });
+        await supabase.auth.signOut();
+        return;
+      }
+
+      if (profileData.verification_status === 'rejected') {
+        toast({
+          variant: "destructive",
+          title: "Account Rejected",
+          description: "Your account verification was rejected. Please contact support.",
+        });
+        await supabase.auth.signOut();
+        return;
+      }
 
       toast({
         title: "Welcome back!",

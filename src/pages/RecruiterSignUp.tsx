@@ -22,23 +22,37 @@ const RecruiterSignUp = () => {
     setLoading(true);
 
     try {
-      const { data, error } = await supabase.auth.signUp({
+      // Sign up the user
+      const { data: authData, error: authError } = await supabase.auth.signUp({
         email,
         password,
         options: {
           data: {
             full_name: fullName,
-            experience: Number(experience),
             user_type: 'recruiter'
           }
         }
       });
 
-      if (error) throw error;
+      if (authError) throw authError;
+
+      // Create recruiter profile
+      const { error: profileError } = await supabase
+        .from('recruiter_profiles')
+        .insert([
+          {
+            id: authData.user?.id,
+            full_name: fullName,
+            experience_years: parseInt(experience),
+            verification_status: 'pending'
+          }
+        ]);
+
+      if (profileError) throw profileError;
 
       toast({
         title: "Success!",
-        description: "Please check your email to confirm your account.",
+        description: "Your account is pending verification. We'll review your application shortly.",
       });
       
       navigate('/jobs');
