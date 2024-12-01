@@ -83,13 +83,16 @@ const JobDetailsFields = ({ control }: JobDetailsFieldsProps) => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Holiday Entitlement (days)</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select 
+                onValueChange={field.onChange} 
+                defaultValue={field.value}
+              >
                 <FormControl>
-                  <SelectTrigger>
+                  <SelectTrigger className="bg-white border border-gray-300">
                     <SelectValue placeholder="Select holiday entitlement" />
                   </SelectTrigger>
                 </FormControl>
-                <SelectContent>
+                <SelectContent className="bg-white">
                   {HOLIDAY_ENTITLEMENTS.map((days) => (
                     <SelectItem key={days} value={days}>
                       {days}
@@ -116,11 +119,11 @@ const JobDetailsFields = ({ control }: JobDetailsFieldsProps) => {
                 defaultValue={field.value}
               >
                 <FormControl>
-                  <SelectTrigger>
+                  <SelectTrigger className="bg-white border border-gray-300">
                     <SelectValue placeholder="Select company benefits" />
                   </SelectTrigger>
                 </FormControl>
-                <SelectContent>
+                <SelectContent className="bg-white">
                   {COMPANY_BENEFITS.map((benefit) => (
                     <SelectItem key={benefit} value={benefit}>
                       {benefit}
