@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NavBar from "./components/NavBar";
 import Index from "./pages/Index";
+import Jobs from "./pages/Jobs";
 import CandidateSearch from "./pages/CandidateSearch";
 
 const queryClient = new QueryClient();
@@ -20,6 +21,7 @@ const App = () => (
           <main>
             <Routes>
               <Route path="/" element={<Index />} />
+              <Route path="/jobs" element={<Jobs />} />
               <Route path="/candidates" element={<CandidateSearch />} />
             </Routes>
           </main>
