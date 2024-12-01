@@ -1,6 +1,7 @@
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Control } from "react-hook-form";
+import SalaryRangeField from "./SalaryRangeField";
 
 interface JobDetailsFieldsProps {
   control: Control<any>;
@@ -9,19 +10,7 @@ interface JobDetailsFieldsProps {
 const JobDetailsFields = ({ control }: JobDetailsFieldsProps) => {
   return (
     <>
-      <FormField
-        control={control}
-        name="salary"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Salary Range</FormLabel>
-            <FormControl>
-              <Input placeholder="e.g. £40,000" {...field} />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
+      <SalaryRangeField control={control} />
 
       <FormField
         control={control}
