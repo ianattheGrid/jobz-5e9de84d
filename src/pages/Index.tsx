@@ -113,7 +113,7 @@ const Index = () => {
         </div>
 
         <div className="relative">
-          {currentJobIndex < filteredJobs.length ? (
+          {filteredJobs.length > 0 && currentJobIndex < filteredJobs.length ? (
             <JobCard
               {...filteredJobs[currentJobIndex]}
               onSwipe={handleSwipe}
