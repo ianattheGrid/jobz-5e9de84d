@@ -20,10 +20,17 @@ const JobCard = ({ job }: JobCardProps) => {
           £{job.salary_min.toLocaleString()} - £{job.salary_max.toLocaleString()}
         </p>
         {job.candidate_commission && (
-          <p className="text-sm text-green-600">
-            £{job.candidate_commission.toLocaleString()} commission
-          </p>
+          <div className="space-y-1">
+            <p className="text-sm font-medium text-green-600">
+              Total Commission: £{job.candidate_commission.toLocaleString()}
+            </p>
+            <div className="text-xs text-muted-foreground">
+              <p>Candidate: £{Math.floor(job.candidate_commission).toLocaleString()}</p>
+              <p>Referral: £{Math.floor(job.candidate_commission * 0.3).toLocaleString()}</p>
+            </div>
+          </div>
         )}
+        <p className="text-sm mt-2 text-muted-foreground line-clamp-3">{job.description}</p>
       </div>
     </div>
   );
