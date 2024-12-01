@@ -17,9 +17,8 @@ const NavBar = () => {
           </div>
 
           <div className="hidden md:flex md:space-x-8">
-            <Link to="/jobs" className="text-gray-900 hover:text-gray-500">Jobs</Link>
-            <Link to="/about" className="text-gray-900 hover:text-gray-500">About</Link>
-            <Link to="/contact" className="text-gray-900 hover:text-gray-500">Contact</Link>
+            <Link to="/jobs" className="inline-flex items-center px-1 pt-1 text-gray-900 hover:text-gray-500">Jobs</Link>
+            <Link to="/candidates" className="inline-flex items-center px-1 pt-1 text-gray-900 hover:text-gray-500">Candidates</Link>
           </div>
 
           <div className="flex items-center md:hidden">
