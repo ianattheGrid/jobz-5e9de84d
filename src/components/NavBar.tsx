@@ -25,7 +25,7 @@ const NavBar = () => {
 
           <div className="hidden md:flex md:space-x-8">
             <Link to="/jobs" className="inline-flex items-center px-1 pt-1 text-gray-600 hover:text-gray-900">
-              Vacancies
+              Job Board
             </Link>
             <Link to="/candidates" className="inline-flex items-center px-1 pt-1 text-gray-600 hover:text-gray-900">
               Post a vacancy
