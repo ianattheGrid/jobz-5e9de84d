@@ -6,56 +6,10 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[]
 
-export interface Database {
+export type Database = {
   public: {
     Tables: {
-      jobs: {
-        Row: {
-          id: string
-          title: string
-          company: string
-          location: string
-          description: string
-          salary_min: number
-          salary_max: number
-          type: string
-          candidate_commission: string | null
-          referral_commission: string | null
-          created_at: string
-          updated_at: string
-          employer_id: string
-        }
-        Insert: {
-          id?: string
-          title: string
-          company: string
-          location: string
-          description: string
-          salary_min: number
-          salary_max: number
-          type: string
-          candidate_commission?: string | null
-          referral_commission?: string | null
-          created_at?: string
-          updated_at?: string
-          employer_id: string
-        }
-        Update: {
-          id?: string
-          title?: string
-          company?: string
-          location?: string
-          description?: string
-          salary_min?: number
-          salary_max?: number
-          type?: string
-          candidate_commission?: string | null
-          referral_commission?: string | null
-          created_at?: string
-          updated_at?: string
-          employer_id?: string
-        }
-      }
+      [_ in never]: never
     }
     Views: {
       [_ in never]: never

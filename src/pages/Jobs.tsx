@@ -6,19 +6,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Search } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
+import type { Database } from "@/integrations/supabase/types";
 
-interface Job {
-  id: string;
-  title: string;
-  company: string;
-  location: string;
-  description: string;
-  salary_min: number;
-  salary_max: number;
-  type: string;
-  candidate_commission?: string;
-  referral_commission?: string;
-}
+type Job = Database['public']['Tables']['jobs']['Row'];
 
 const Jobs = () => {
   const [searchQuery, setSearchQuery] = useState("");
