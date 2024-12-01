@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Control } from "react-hook-form";
 import SalaryRangeField from "./SalaryRangeField";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useState } from "react";
 
 interface JobDetailsFieldsProps {
   control: Control<any>;
@@ -41,6 +42,8 @@ const COMPANY_BENEFITS = [
 ];
 
 const JobDetailsFields = ({ control }: JobDetailsFieldsProps) => {
+  const [showOtherBenefits, setShowOtherBenefits] = useState(false);
+
   return (
     <>
       <div className="space-y-4">
@@ -105,7 +108,13 @@ const JobDetailsFields = ({ control }: JobDetailsFieldsProps) => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Company Benefits</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select 
+                onValueChange={(value) => {
+                  field.onChange(value);
+                  setShowOtherBenefits(value === "Other");
+                }} 
+                defaultValue={field.value}
+              >
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue placeholder="Select company benefits" />
@@ -123,6 +132,22 @@ const JobDetailsFields = ({ control }: JobDetailsFieldsProps) => {
             </FormItem>
           )}
         />
+
+        {showOtherBenefits && (
+          <FormField
+            control={control}
+            name="otherBenefits"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Please specify the benefits</FormLabel>
+                <FormControl>
+                  <Input placeholder="Enter the benefits..." {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
       </div>
     </>
   );
