@@ -21,6 +21,11 @@ const JobCard = ({ job }: JobCardProps) => {
     setIsFlipped(!isFlipped);
   };
 
+  const formatBenefits = (benefits: string | null) => {
+    if (!benefits) return [];
+    return benefits.split(',');
+  };
+
   return (
     <div 
       className="relative h-[400px] perspective-1000"
@@ -100,11 +105,11 @@ const JobCard = ({ job }: JobCardProps) => {
 
               <div>
                 <h4 className="font-medium mb-2">Benefits</h4>
-                <ul className="text-sm text-gray-600 list-disc pl-4">
+                <ul className="text-sm text-gray-600 list-disc pl-4 space-y-1">
                   <li>Holiday Entitlement: {job.holiday_entitlement} days</li>
-                  {job.company_benefits && (
-                    <li>{job.company_benefits}</li>
-                  )}
+                  {job.company_benefits && formatBenefits(job.company_benefits).map((benefit, index) => (
+                    <li key={index}>{benefit.trim()}</li>
+                  ))}
                 </ul>
               </div>
 

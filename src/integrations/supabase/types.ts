@@ -21,8 +21,6 @@ export type Database = {
           salary_min: number
           title: string
           type: string
-          holiday_entitlement: number | null
-          company_benefits: string | null
         }
         Insert: {
           candidate_commission?: number | null
@@ -35,8 +33,6 @@ export type Database = {
           salary_min: number
           title: string
           type: string
-          holiday_entitlement?: number | null
-          company_benefits?: string | null
         }
         Update: {
           candidate_commission?: number | null
@@ -49,8 +45,6 @@ export type Database = {
           salary_min?: number
           title?: string
           type?: string
-          holiday_entitlement?: number | null
-          company_benefits?: string | null
         }
         Relationships: []
       }
