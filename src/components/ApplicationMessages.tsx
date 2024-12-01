@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
@@ -103,7 +103,7 @@ const ApplicationMessages = ({ applicationId, currentUserId }: ApplicationMessag
   };
 
   // Load messages on component mount
-  useState(() => {
+  useEffect(() => {
     loadMessages();
   }, [applicationId]);
 
