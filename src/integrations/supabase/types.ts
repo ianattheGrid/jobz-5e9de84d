@@ -13,8 +13,10 @@ export type Database = {
         Row: {
           candidate_commission: number | null
           company: string
+          company_benefits: string | null
           created_at: string
           description: string
+          holiday_entitlement: number | null
           id: number
           location: string
           salary_max: number
@@ -25,8 +27,10 @@ export type Database = {
         Insert: {
           candidate_commission?: number | null
           company: string
+          company_benefits?: string | null
           created_at?: string
           description: string
+          holiday_entitlement?: number | null
           id?: number
           location: string
           salary_max: number
@@ -37,8 +41,10 @@ export type Database = {
         Update: {
           candidate_commission?: number | null
           company?: string
+          company_benefits?: string | null
           created_at?: string
           description?: string
+          holiday_entitlement?: number | null
           id?: number
           location?: string
           salary_max?: number

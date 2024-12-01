@@ -23,7 +23,7 @@ const JobCard = ({ job }: JobCardProps) => {
 
   const formatBenefits = (benefits: string | null) => {
     if (!benefits) return [];
-    return benefits.split(',');
+    return benefits.split(',').map(benefit => benefit.trim());
   };
 
   return (
@@ -106,9 +106,9 @@ const JobCard = ({ job }: JobCardProps) => {
               <div>
                 <h4 className="font-medium mb-2">Benefits</h4>
                 <ul className="text-sm text-gray-600 list-disc pl-4 space-y-1">
-                  <li>Holiday Entitlement: {job.holiday_entitlement} days</li>
-                  {job.company_benefits && formatBenefits(job.company_benefits).map((benefit, index) => (
-                    <li key={index}>{benefit.trim()}</li>
+                  <li>Holiday Entitlement: {job.holiday_entitlement || 25} days</li>
+                  {formatBenefits(job.company_benefits).map((benefit, index) => (
+                    <li key={index}>{benefit}</li>
                   ))}
                 </ul>
               </div>
