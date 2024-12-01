@@ -80,7 +80,7 @@ const RecruiterSignIn = () => {
                 required
               />
             </div>
-            <Button className="w-full bg-red-800 hover:bg-red-900" type="submit" disabled={loading}>
+            <Button className="w-full bg-red-800 hover:bg-red-900 text-white" type="submit" disabled={loading}>
               {loading ? "Signing in..." : "Sign In"}
             </Button>
           </form>
