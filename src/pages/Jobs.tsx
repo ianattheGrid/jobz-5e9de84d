@@ -1,55 +1,58 @@
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import JobCard from "@/components/JobCard";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Search } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/components/ui/use-toast";
 
-const MOCK_JOBS = [
-  {
-    id: 1,
-    title: "Senior React Developer",
-    company: "Tech Corp",
-    location: "San Francisco, CA",
-    description: "We're looking for an experienced React developer to join our team and help build amazing products.",
-    salary: "$120,000 - $150,000",
-    type: "Full-time",
-    candidateCommission: "$5,000 signing bonus",
-    referralCommission: "$2,500 for successful referrals",
-  },
-  {
-    id: 2,
-    title: "Product Designer",
-    company: "Design Studio",
-    location: "Remote",
-    description: "Join our creative team to design beautiful and functional user interfaces.",
-    salary: "$90,000 - $110,000",
-    type: "Contract",
-    candidateCommission: "$3,000 signing bonus",
-    referralCommission: "$1,500 for successful referrals",
-  },
-  {
-    id: 3,
-    title: "Full Stack Engineer",
-    company: "Startup Inc",
-    location: "New York, NY",
-    description: "Help us build the next generation of web applications using modern technologies.",
-    salary: "$100,000 - $130,000",
-    type: "Full-time",
-    candidateCommission: "$4,000 signing bonus",
-    referralCommission: "$2,000 for successful referrals",
-  },
-];
+interface Job {
+  id: string;
+  title: string;
+  company: string;
+  location: string;
+  description: string;
+  salary_min: number;
+  salary_max: number;
+  type: string;
+  candidate_commission?: string;
+  referral_commission?: string;
+}
 
 const Jobs = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [locationFilter, setLocationFilter] = useState("all");
   const [typeFilter, setTypeFilter] = useState("all");
   const [currentJobIndex, setCurrentJobIndex] = useState(0);
+  const { toast } = useToast();
 
-  const filteredJobs = MOCK_JOBS.filter((job) => {
-    const matchesSearch = Object.values(job).some((value) =>
-      value.toString().toLowerCase().includes(searchQuery.toLowerCase())
-    );
+  const { data: jobs = [], isLoading, error } = useQuery({
+    queryKey: ['jobs'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('jobs')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      return data as Job[];
+    }
+  });
+
+  if (error) {
+    toast({
+      variant: "destructive",
+      title: "Error",
+      description: "Failed to load jobs. Please try again later.",
+    });
+  }
+
+  const filteredJobs = jobs.filter((job) => {
+    const matchesSearch = 
+      job.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      job.company.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      job.description.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesLocation = locationFilter === "all" || job.location === locationFilter;
     const matchesType = typeFilter === "all" || job.type === typeFilter;
     return matchesSearch && matchesLocation && matchesType;
@@ -57,10 +60,16 @@ const Jobs = () => {
 
   const handleSwipe = (direction: "left" | "right") => {
     if (direction === "right") {
-      console.log("Applied to job:", filteredJobs[currentJobIndex].title);
+      toast({
+        title: "Application Submitted",
+        description: `You've applied to ${filteredJobs[currentJobIndex].title} at ${filteredJobs[currentJobIndex].company}`,
+      });
     }
     setCurrentJobIndex((prev) => Math.min(prev + 1, filteredJobs.length - 1));
   };
+
+  const uniqueLocations = Array.from(new Set(jobs.map(job => job.location)));
+  const uniqueTypes = Array.from(new Set(jobs.map(job => job.type)));
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-primary-light to-white">
@@ -89,9 +98,9 @@ const Jobs = () => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Locations</SelectItem>
-                  <SelectItem value="Remote">Remote</SelectItem>
-                  <SelectItem value="San Francisco, CA">San Francisco, CA</SelectItem>
-                  <SelectItem value="New York, NY">New York, NY</SelectItem>
+                  {uniqueLocations.map((location) => (
+                    <SelectItem key={location} value={location}>{location}</SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
@@ -103,9 +112,9 @@ const Jobs = () => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Types</SelectItem>
-                  <SelectItem value="Full-time">Full-time</SelectItem>
-                  <SelectItem value="Contract">Contract</SelectItem>
-                  <SelectItem value="Part-time">Part-time</SelectItem>
+                  {uniqueTypes.map((type) => (
+                    <SelectItem key={type} value={type}>{type}</SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
@@ -113,18 +122,24 @@ const Jobs = () => {
         </div>
 
         <div className="relative">
-          {filteredJobs.length > 0 && currentJobIndex < filteredJobs.length ? (
+          {isLoading ? (
+            <div className="text-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+              <p className="text-gray-600 mt-4">Loading jobs...</p>
+            </div>
+          ) : filteredJobs.length > 0 && currentJobIndex < filteredJobs.length ? (
             <JobCard
               {...filteredJobs[currentJobIndex]}
+              salary={`£${filteredJobs[currentJobIndex].salary_min.toLocaleString()} - £${filteredJobs[currentJobIndex].salary_max.toLocaleString()}`}
               onSwipe={handleSwipe}
             />
           ) : (
             <div className="text-center py-12">
               <h2 className="text-2xl font-semibold text-gray-700">
-                No more jobs to show!
+                No jobs found
               </h2>
               <p className="text-gray-600 mt-2">
-                Check back later for new opportunities
+                Try adjusting your filters or check back later for new opportunities
               </p>
             </div>
           )}
