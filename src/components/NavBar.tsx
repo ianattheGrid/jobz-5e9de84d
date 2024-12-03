@@ -19,12 +19,7 @@ const NavBar = () => {
         <div className="flex justify-between h-16">
           <div className="flex">
             <Link to="/" className="flex-shrink-0 flex items-center">
-              <img
-                className="h-8 w-auto"
-                src="/logo.png"
-                alt="jobz"
-                style={{ objectFit: 'contain' }}
-              />
+              <span className="text-2xl font-bold text-primary-DEFAULT">jobz</span>
             </Link>
           </div>
           
