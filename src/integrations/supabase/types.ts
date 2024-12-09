@@ -132,6 +132,7 @@ export type Database = {
           company_benefits: string | null
           created_at: string
           description: string
+          employer_id: string | null
           holiday_entitlement: number | null
           id: number
           location: string
@@ -146,6 +147,7 @@ export type Database = {
           company_benefits?: string | null
           created_at?: string
           description: string
+          employer_id?: string | null
           holiday_entitlement?: number | null
           id?: number
           location: string
@@ -160,6 +162,7 @@ export type Database = {
           company_benefits?: string | null
           created_at?: string
           description?: string
+          employer_id?: string | null
           holiday_entitlement?: number | null
           id?: number
           location?: string

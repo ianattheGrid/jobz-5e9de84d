@@ -41,7 +41,7 @@ const NavBar = () => {
               Job Board
             </Link>
             <Link to="/jobs" className="text-gray-600 hover:text-gray-900">
-              Jobs
+              View Jobs
             </Link>
             {isAuthenticated && userType === 'employer' && (
               <Link to="/employer/create-vacancy" className="text-gray-600 hover:text-gray-900">
