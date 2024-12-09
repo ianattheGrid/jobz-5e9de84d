@@ -19,28 +19,22 @@ const EmployerSignIn = () => {
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    console.log("Attempting sign in with email:", email);
 
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const { data: { user }, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
-      console.log("Sign in response:", { data, error });
-
       if (error) {
-        console.error("Sign in error:", error);
         throw error;
       }
 
-      if (!data?.user) {
-        console.error("No user data returned");
+      if (!user) {
         throw new Error('No user returned after successful sign in');
       }
 
-      console.log("User metadata:", data.user.user_metadata);
-      const userType = data.user.user_metadata?.user_type;
+      const userType = user.user_metadata?.user_type;
       
       if (userType !== 'employer') {
         await supabase.auth.signOut();
@@ -54,8 +48,6 @@ const EmployerSignIn = () => {
       
       navigate('/employer/dashboard');
     } catch (error: any) {
-      console.error("Full error object:", error);
-      
       let errorMessage = "An error occurred during sign in.";
       
       if (error.message?.includes('Invalid login credentials')) {
