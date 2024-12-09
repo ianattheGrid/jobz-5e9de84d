@@ -74,18 +74,18 @@ const JobCardBack = ({ job }: JobCardBackProps) => {
 
   return (
     <div className="rounded-lg border bg-card p-6 text-card-foreground shadow-sm h-full overflow-y-auto">
-      <h3 className="text-xl font-semibold text-primary mb-4">{job.title}</h3>
+      <h3 className="text-xl font-semibold text-red-800 mb-4">{job.title}</h3>
       
       <div className="space-y-4">
         <div>
-          <h4 className="font-medium mb-2">Full Description</h4>
+          <h4 className="font-medium mb-2 text-red-800">Full Description</h4>
           <p className="text-sm text-gray-600 whitespace-pre-line">
             {job.description}
           </p>
         </div>
 
         <div>
-          <h4 className="font-medium mb-2">Benefits</h4>
+          <h4 className="font-medium mb-2 text-red-800">Benefits</h4>
           <ul className="text-sm text-gray-600 list-disc pl-4 space-y-1">
             <li>Holiday Entitlement: {job.holiday_entitlement || 25} days</li>
             {formatBenefits(job.company_benefits).map((benefit, index) => (
@@ -97,7 +97,7 @@ const JobCardBack = ({ job }: JobCardBackProps) => {
         <div>
           {!isApplying ? (
             <Button 
-              className="w-full"
+              className="w-full bg-red-800 hover:bg-red-900"
               onClick={(e) => {
                 e.stopPropagation();
                 setIsApplying(true);
@@ -108,7 +108,7 @@ const JobCardBack = ({ job }: JobCardBackProps) => {
           ) : (
             <form onSubmit={handleApply} onClick={(e) => e.stopPropagation()} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium mb-1">Resume</label>
+                <label className="block text-sm font-medium mb-1 text-red-800">Resume</label>
                 <Input
                   type="file"
                   accept=".pdf,.doc,.docx"
@@ -117,7 +117,7 @@ const JobCardBack = ({ job }: JobCardBackProps) => {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">Cover Letter</label>
+                <label className="block text-sm font-medium mb-1 text-red-800">Cover Letter</label>
                 <Textarea
                   value={coverLetter}
                   onChange={(e) => setCoverLetter(e.target.value)}
@@ -126,11 +126,17 @@ const JobCardBack = ({ job }: JobCardBackProps) => {
                 />
               </div>
               <div className="flex space-x-2">
-                <Button type="submit" className="flex-1">Submit Application</Button>
+                <Button 
+                  type="submit" 
+                  className="flex-1 bg-red-800 hover:bg-red-900"
+                >
+                  Submit Application
+                </Button>
                 <Button 
                   type="button" 
                   variant="outline"
                   onClick={() => setIsApplying(false)}
+                  className="border-red-800 text-red-800 hover:bg-red-50"
                 >
                   Cancel
                 </Button>
