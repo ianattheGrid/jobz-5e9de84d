@@ -109,15 +109,17 @@ export default function CreateVacancy() {
 
   return (
     <div className="container max-w-2xl mx-auto py-10">
-      <h1 className="text-2xl font-bold mb-6">Create New Job Vacancy</h1>
+      <h1 className="text-2xl font-bold mb-6 text-left">Create New Job Vacancy</h1>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 text-left">
           <CompanyInfoFields control={form.control} />
           <WorkAreaField control={form.control} />
           <LocationField control={form.control} />
           <JobDetailsFields control={form.control} />
           <ApplicationPreferencesField control={form.control} />
-          <Button type="submit">Post Job Vacancy</Button>
+          <div className="flex justify-start">
+            <Button type="submit">Post Job Vacancy</Button>
+          </div>
         </form>
       </Form>
     </div>
