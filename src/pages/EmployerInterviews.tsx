@@ -19,10 +19,8 @@ interface Interview {
     title: string;
     company: string;
   };
-  candidate: {
-    email: string;
-  };
   candidate_id: string;
+  candidate_email: string;
   interviewer_name: string;
   scheduled_at: string;
   status: string;
@@ -40,12 +38,17 @@ const EmployerInterviews = () => {
         .select(`
           *,
           job:jobs(id, title, company),
-          candidate:candidate_id(email)
+          candidate_email:candidate_id(email)
         `)
         .order("scheduled_at", { ascending: true });
 
       if (error) throw error;
-      return data as Interview[];
+
+      // Transform the data to match our Interview interface
+      return (data || []).map(interview => ({
+        ...interview,
+        candidate_email: interview.candidate_email?.[0]?.email || 'Email not found'
+      })) as Interview[];
     },
     enabled: !!user,
   });
@@ -118,7 +121,7 @@ const EmployerInterviews = () => {
                     <TableRow key={interview.id}>
                       <TableCell>#{interview.job.id}</TableCell>
                       <TableCell>{interview.job.title}</TableCell>
-                      <TableCell>{interview.candidate.email}</TableCell>
+                      <TableCell>{interview.candidate_email}</TableCell>
                       <TableCell>{interview.interviewer_name}</TableCell>
                       <TableCell>{date}</TableCell>
                       <TableCell>{time}</TableCell>
@@ -155,7 +158,7 @@ const EmployerInterviews = () => {
                     <TableRow key={interview.id}>
                       <TableCell>#{interview.job.id}</TableCell>
                       <TableCell>{interview.job.title}</TableCell>
-                      <TableCell>{interview.candidate.email}</TableCell>
+                      <TableCell>{interview.candidate_email}</TableCell>
                       <TableCell>{interview.interviewer_name}</TableCell>
                       <TableCell>{date}</TableCell>
                       <TableCell>{time}</TableCell>
