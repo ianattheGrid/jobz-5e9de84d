@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useEffect } from "react";
 import CompanyInfoFields from "@/components/CompanyInfoFields";
 import JobDetailsFields from "@/components/JobDetailsFields";
@@ -119,9 +119,9 @@ export default function CreateVacancy() {
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink href="/employer/dashboard" className="text-red-800 hover:text-red-900">
+            <Link to="/employer/dashboard" className="text-red-800 hover:text-red-900">
               Employer Dashboard
-            </BreadcrumbLink>
+            </Link>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
