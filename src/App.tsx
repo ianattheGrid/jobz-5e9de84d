@@ -9,6 +9,7 @@ import EmployerSignIn from "./pages/EmployerSignIn";
 import RecruiterSignUp from "./pages/RecruiterSignUp";
 import RecruiterSignIn from "./pages/RecruiterSignIn";
 import CreateVacancy from "./pages/CreateVacancy";
+import EmployerInterviews from "./pages/EmployerInterviews";
 import { Toaster } from "./components/ui/toaster";
 import "./App.css";
 
@@ -27,6 +28,7 @@ function App() {
           <Route path="/recruiter/signup" element={<RecruiterSignUp />} />
           <Route path="/recruiter/signin" element={<RecruiterSignIn />} />
           <Route path="/employer/create-vacancy" element={<CreateVacancy />} />
+          <Route path="/employer/interviews" element={<EmployerInterviews />} />
         </Routes>
         <Toaster />
       </div>
