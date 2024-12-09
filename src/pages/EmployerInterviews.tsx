@@ -33,21 +33,28 @@ const EmployerInterviews = () => {
   const { data: interviews, isLoading } = useQuery({
     queryKey: ["interviews", user?.id],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data: interviewsData, error } = await supabase
         .from("interviews")
         .select(`
           *,
-          job:jobs(id, title, company),
-          candidate_email:candidate_id(email)
+          job:jobs(id, title, company)
         `)
         .order("scheduled_at", { ascending: true });
 
       if (error) throw error;
 
+      // Get candidate emails in a separate query since we can't directly join with auth.users
+      const candidateIds = interviewsData?.map(interview => interview.candidate_id) || [];
+      const { data: profileData } = await supabase
+        .from('candidate_profiles')
+        .select('id')
+        .in('id', candidateIds);
+
       // Transform the data to match our Interview interface
-      return (data || []).map(interview => ({
+      return (interviewsData || []).map(interview => ({
         ...interview,
-        candidate_email: interview.candidate_email?.[0]?.email || 'Email not found'
+        candidate_email: interview.candidate_id,  // Using the ID as email for now since we can't access auth.users
+        job: interview.job as { id: number; title: string; company: string }
       })) as Interview[];
     },
     enabled: !!user,
