@@ -1,14 +1,8 @@
-import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Menu } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import Logo from "./navbar/Logo";
+import NavigationLinks from "./navbar/NavigationLinks";
+import AuthMenu from "./navbar/AuthMenu";
 
 const NavBar = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -44,63 +38,11 @@ const NavBar = () => {
       <div className="container mx-auto px-4">
         <div className="flex justify-between h-16 items-center">
           <div className="flex items-center space-x-4">
-            <Link to="/" className="flex items-center space-x-2">
-              <span className="text-xl font-bold text-black">jobz.</span>
-            </Link>
-            <div className="hidden md:flex space-x-4">
-              <Link to="/jobs" className="text-gray-600 hover:text-gray-900">Job Board</Link>
-              {isAuthenticated && userType === 'employer' && (
-                <>
-                  <Link to="/employer/create-vacancy" className="text-gray-600 hover:text-gray-900">Post Job</Link>
-                  <Link to="/employer/interviews" className="text-gray-600 hover:text-gray-900">Interviews</Link>
-                </>
-              )}
-            </div>
+            <Logo />
+            <NavigationLinks isAuthenticated={isAuthenticated} userType={userType} />
           </div>
-          
           <div className="flex space-x-4">
-            {!isAuthenticated ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon">
-                    <Menu className="h-6 w-6" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56">
-                  <DropdownMenuItem asChild>
-                    <Link to="/candidate/signup">Candidate Sign Up</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/candidate/signin">Candidate Sign In</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/employer/signup">Employer Sign Up</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/employer/signin">Employer Sign In</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/recruiter/signup">Virtual Recruiter Sign Up</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/recruiter/signin">Virtual Recruiter Sign In</Link>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon">
-                    <Menu className="h-6 w-6" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem onClick={handleSignOut}>
-                    Sign Out
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            )}
+            <AuthMenu isAuthenticated={isAuthenticated} handleSignOut={handleSignOut} />
           </div>
         </div>
       </div>
