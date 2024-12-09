@@ -45,7 +45,7 @@ const Index = () => {
           <div className="flex flex-col items-center p-8 rounded-lg bg-white shadow-lg">
             <Users className="w-16 h-16 text-primary-DEFAULT mb-4" />
             <h2 className="text-xl font-semibold text-red-800 mb-2">Virtual Recruiter</h2>
-            <p className="text-gray-600 text-center mb-4">Earn commissions by matching talent with opportunities</p>
+            <p className="text-gray-600 text-center mb-4">Earn commission by matching talent</p>
             <div className="flex flex-col gap-2 w-full">
               <Button asChild variant="outline" className="w-full">
                 <Link to="/recruiter/signup">Sign Up</Link>
