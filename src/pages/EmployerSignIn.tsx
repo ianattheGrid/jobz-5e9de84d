@@ -21,45 +21,27 @@ const EmployerSignIn = () => {
     setLoading(true);
 
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const { data: { user }, error: signInError } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
-      if (error) {
-        if (error.message.includes('Email not confirmed')) {
-          await supabase.auth.resend({
-            type: 'signup',
-            email,
-          });
-          
-          toast({
-            variant: "default",
-            title: "Email not confirmed",
-            description: "We've sent you another confirmation email. Please check your inbox and spam folder.",
-          });
-        } else {
-          throw error;
+      if (signInError) throw signInError;
+
+      if (user) {
+        // Check if the user is an employer
+        const userType = user.user_metadata?.user_type;
+        
+        if (userType !== 'employer') {
+          await supabase.auth.signOut();
+          throw new Error('This login is only for employers. Please use the appropriate sign in page.');
         }
-      } else if (data.user) {
-        if (!data.user.email_confirmed_at) {
-          await supabase.auth.resend({
-            type: 'signup',
-            email,
-          });
-          
-          toast({
-            variant: "default",
-            title: "Email not confirmed",
-            description: "We've sent you another confirmation email. Please check your inbox and spam folder.",
-          });
-        } else {
-          toast({
-            title: "Welcome back!",
-            description: "Successfully signed in.",
-          });
-          navigate('/jobs');
-        }
+
+        toast({
+          title: "Welcome back!",
+          description: "Successfully signed in.",
+        });
+        navigate('/employer/dashboard');
       }
     } catch (error: any) {
       toast({
@@ -67,6 +49,14 @@ const EmployerSignIn = () => {
         title: "Error",
         description: error.message,
       });
+      
+      if (error.message.includes('Invalid login credentials')) {
+        toast({
+          variant: "destructive",
+          title: "Invalid credentials",
+          description: "Please check your email and password and try again.",
+        });
+      }
     } finally {
       setLoading(false);
     }
