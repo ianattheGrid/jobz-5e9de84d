@@ -15,8 +15,12 @@ import { useNavigate } from "react-router-dom";
 interface Interview {
   id: number;
   job: {
+    id: number;
     title: string;
     company: string;
+  };
+  candidate: {
+    email: string;
   };
   candidate_id: string;
   interviewer_name: string;
@@ -35,7 +39,8 @@ const EmployerInterviews = () => {
         .from("interviews")
         .select(`
           *,
-          job:jobs(title, company)
+          job:jobs(id, title, company),
+          candidate:candidate_id(email)
         `)
         .order("scheduled_at", { ascending: true });
 
@@ -76,6 +81,14 @@ const EmployerInterviews = () => {
 
   const { upcoming, past } = groupInterviewsByStatus(interviews);
 
+  const formatDateTime = (dateString: string) => {
+    const date = new Date(dateString);
+    return {
+      date: format(date, "PPP"),
+      time: format(date, "p"),
+    };
+  };
+
   return (
     <div className="container mx-auto py-8">
       <h1 className="text-3xl font-bold mb-8">Interviews</h1>
@@ -89,25 +102,30 @@ const EmployerInterviews = () => {
             <Table>
               <TableHeader>
                 <TableRow>
+                  <TableHead>Vacancy Ref</TableHead>
                   <TableHead>Position</TableHead>
-                  <TableHead>Company</TableHead>
+                  <TableHead>Interviewee</TableHead>
                   <TableHead>Interviewer</TableHead>
-                  <TableHead>Date & Time</TableHead>
+                  <TableHead>Date</TableHead>
+                  <TableHead>Time</TableHead>
                   <TableHead>Status</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {upcoming.map((interview) => (
-                  <TableRow key={interview.id}>
-                    <TableCell>{interview.job.title}</TableCell>
-                    <TableCell>{interview.job.company}</TableCell>
-                    <TableCell>{interview.interviewer_name}</TableCell>
-                    <TableCell>
-                      {format(new Date(interview.scheduled_at), "PPp")}
-                    </TableCell>
-                    <TableCell className="capitalize">{interview.status}</TableCell>
-                  </TableRow>
-                ))}
+                {upcoming.map((interview) => {
+                  const { date, time } = formatDateTime(interview.scheduled_at);
+                  return (
+                    <TableRow key={interview.id}>
+                      <TableCell>#{interview.job.id}</TableCell>
+                      <TableCell>{interview.job.title}</TableCell>
+                      <TableCell>{interview.candidate.email}</TableCell>
+                      <TableCell>{interview.interviewer_name}</TableCell>
+                      <TableCell>{date}</TableCell>
+                      <TableCell>{time}</TableCell>
+                      <TableCell className="capitalize">{interview.status}</TableCell>
+                    </TableRow>
+                  );
+                })}
               </TableBody>
             </Table>
           )}
@@ -121,25 +139,30 @@ const EmployerInterviews = () => {
             <Table>
               <TableHeader>
                 <TableRow>
+                  <TableHead>Vacancy Ref</TableHead>
                   <TableHead>Position</TableHead>
-                  <TableHead>Company</TableHead>
+                  <TableHead>Interviewee</TableHead>
                   <TableHead>Interviewer</TableHead>
-                  <TableHead>Date & Time</TableHead>
+                  <TableHead>Date</TableHead>
+                  <TableHead>Time</TableHead>
                   <TableHead>Status</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {past.map((interview) => (
-                  <TableRow key={interview.id}>
-                    <TableCell>{interview.job.title}</TableCell>
-                    <TableCell>{interview.job.company}</TableCell>
-                    <TableCell>{interview.interviewer_name}</TableCell>
-                    <TableCell>
-                      {format(new Date(interview.scheduled_at), "PPp")}
-                    </TableCell>
-                    <TableCell className="capitalize">{interview.status}</TableCell>
-                  </TableRow>
-                ))}
+                {past.map((interview) => {
+                  const { date, time } = formatDateTime(interview.scheduled_at);
+                  return (
+                    <TableRow key={interview.id}>
+                      <TableCell>#{interview.job.id}</TableCell>
+                      <TableCell>{interview.job.title}</TableCell>
+                      <TableCell>{interview.candidate.email}</TableCell>
+                      <TableCell>{interview.interviewer_name}</TableCell>
+                      <TableCell>{date}</TableCell>
+                      <TableCell>{time}</TableCell>
+                      <TableCell className="capitalize">{interview.status}</TableCell>
+                    </TableRow>
+                  );
+                })}
               </TableBody>
             </Table>
           )}
