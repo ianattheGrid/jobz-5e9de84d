@@ -13,39 +13,37 @@ interface AuthMenuProps {
 }
 
 const AuthMenu = ({ isAuthenticated, handleSignOut }: AuthMenuProps) => {
+  if (isAuthenticated) {
+    return null;
+  }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline">
-          {isAuthenticated ? "" : "Sign In"}
+          Sign In
         </Button>
       </DropdownMenuTrigger>
-      {!isAuthenticated ? (
-        <DropdownMenuContent align="end" className="w-56">
-          <DropdownMenuItem asChild>
-            <Link to="/candidate/signup">Candidate Sign Up</Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <Link to="/candidate/signin">Candidate Sign In</Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <Link to="/employer/signup">Employer Sign Up</Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <Link to="/employer/signin">Employer Sign In</Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <Link to="/recruiter/signup">Virtual Recruiter Sign Up</Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <Link to="/recruiter/signin">Virtual Recruiter Sign In</Link>
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      ) : (
-        <DropdownMenuContent align="end">
-          {/* Intentionally left empty as per user request */}
-        </DropdownMenuContent>
-      )}
+      <DropdownMenuContent align="end" className="w-56">
+        <DropdownMenuItem asChild>
+          <Link to="/candidate/signup">Candidate Sign Up</Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link to="/candidate/signin">Candidate Sign In</Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link to="/employer/signup">Employer Sign Up</Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link to="/employer/signin">Employer Sign In</Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link to="/recruiter/signup">Virtual Recruiter Sign Up</Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link to="/recruiter/signin">Virtual Recruiter Sign In</Link>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
     </DropdownMenu>
   );
 };
