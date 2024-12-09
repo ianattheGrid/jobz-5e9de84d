@@ -19,18 +19,21 @@ const EmployerSignIn = () => {
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    console.log("Attempting to sign in with email:", email);
 
     try {
-      const { data: { user }, error: signInError } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
-      if (signInError) throw signInError;
+      console.log("Sign in response:", { data, error });
 
-      if (user) {
-        // Check if the user is an employer
-        const userType = user.user_metadata?.user_type;
+      if (error) throw error;
+
+      if (data.user) {
+        const userType = data.user.user_metadata?.user_type;
+        console.log("User type from metadata:", userType);
         
         if (userType !== 'employer') {
           await supabase.auth.signOut();
@@ -44,19 +47,21 @@ const EmployerSignIn = () => {
         navigate('/employer/dashboard');
       }
     } catch (error: any) {
+      console.error("Sign in error:", error);
+      
+      let errorMessage = "An error occurred during sign in.";
+      
+      if (error.message.includes('Invalid login credentials')) {
+        errorMessage = "Invalid email or password. Please check your credentials and try again.";
+      } else if (error.message.includes('only for employers')) {
+        errorMessage = error.message;
+      }
+
       toast({
         variant: "destructive",
         title: "Error",
-        description: error.message,
+        description: errorMessage,
       });
-      
-      if (error.message.includes('Invalid login credentials')) {
-        toast({
-          variant: "destructive",
-          title: "Invalid credentials",
-          description: "Please check your email and password and try again.",
-        });
-      }
     } finally {
       setLoading(false);
     }
@@ -65,6 +70,7 @@ const EmployerSignIn = () => {
   const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    console.log("Attempting to reset password for email:", email);
 
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
@@ -79,6 +85,7 @@ const EmployerSignIn = () => {
       });
       setResetMode(false);
     } catch (error: any) {
+      console.error("Password reset error:", error);
       toast({
         variant: "destructive",
         title: "Error",
