@@ -36,40 +36,25 @@ const NavBar = () => {
     <nav className="bg-white shadow-sm">
       <div className="container mx-auto px-4">
         <div className="flex justify-between h-16 items-center">
-          <div className="flex space-x-4">
-            <Link to="/" className="text-xl font-bold">
-              Job Board
+          <div className="flex items-center space-x-4">
+            <Link to="/" className="flex items-center space-x-2">
+              <img src="/logo.png" alt="jobz" className="h-8 w-auto" />
             </Link>
-            <Link to="/jobs" className="text-gray-600 hover:text-gray-900">
-              View Jobs
-            </Link>
-            {isAuthenticated && userType === 'employer' && (
-              <>
-                <Link to="/employer/create-vacancy" className="text-gray-600 hover:text-gray-900">
-                  Post a Job
-                </Link>
-                <Link to="/employer/interviews" className="text-gray-600 hover:text-gray-900">
-                  Interviews
-                </Link>
-              </>
-            )}
           </div>
           
           <div className="flex space-x-4">
             {!isAuthenticated ? (
-              <>
-                <div className="space-x-2">
-                  <Link to="/candidate/signin">
-                    <Button variant="outline">Candidate Sign In</Button>
-                  </Link>
-                  <Link to="/employer/signin">
-                    <Button variant="outline">Employer Sign In</Button>
-                  </Link>
-                  <Link to="/recruiter/signin">
-                    <Button variant="outline">Recruiter Sign In</Button>
-                  </Link>
-                </div>
-              </>
+              <div className="space-x-2">
+                <Link to="/candidate/signin">
+                  <Button variant="outline">Candidate Sign In</Button>
+                </Link>
+                <Link to="/employer/signin">
+                  <Button variant="outline">Employer Sign In</Button>
+                </Link>
+                <Link to="/recruiter/signin">
+                  <Button variant="outline">Recruiter Sign In</Button>
+                </Link>
+              </div>
             ) : (
               <Button onClick={handleSignOut} variant="outline">
                 Sign Out
