@@ -38,7 +38,7 @@ const NavBar = () => {
         <div className="flex justify-between h-16 items-center">
           <div className="flex items-center space-x-4">
             <Link to="/" className="flex items-center space-x-2">
-              <img src="/logo.png" alt="jobz" className="h-8 w-auto" />
+              <span className="text-xl font-bold text-primary">jobz.</span>
             </Link>
           </div>
           
