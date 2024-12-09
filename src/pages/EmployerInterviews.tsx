@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { format } from "date-fns";
+import { format, isToday } from "date-fns";
 import {
   Table,
   TableBody,
@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/table";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface Interview {
   id: number;
@@ -39,21 +40,20 @@ const EmployerInterviews = () => {
           *,
           job:jobs(id, title, company)
         `)
+        .eq('employer_id', user?.id)
         .order("scheduled_at", { ascending: true });
 
       if (error) throw error;
 
-      // Get candidate emails in a separate query since we can't directly join with auth.users
       const candidateIds = interviewsData?.map(interview => interview.candidate_id) || [];
       const { data: profileData } = await supabase
         .from('candidate_profiles')
         .select('id')
         .in('id', candidateIds);
 
-      // Transform the data to match our Interview interface
       return (interviewsData || []).map(interview => ({
         ...interview,
-        candidate_email: interview.candidate_id,  // Using the ID as email for now since we can't access auth.users
+        candidate_email: interview.candidate_id,
         job: interview.job as { id: number; title: string; company: string }
       })) as Interview[];
     },
@@ -69,7 +69,7 @@ const EmployerInterviews = () => {
     return (
       <div className="container mx-auto py-8">
         <div className="text-center">
-          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-primary border-r-transparent" role="status">
+          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-red-800 border-r-transparent" role="status">
             <span className="sr-only">Loading...</span>
           </div>
         </div>
@@ -77,19 +77,20 @@ const EmployerInterviews = () => {
     );
   }
 
-  const groupInterviewsByStatus = (interviews: Interview[] = []) => {
+  const groupInterviewsByTime = (interviews: Interview[] = []) => {
     const now = new Date();
     return {
-      upcoming: interviews.filter(
-        (interview) => new Date(interview.scheduled_at) > now && interview.status !== "cancelled"
-      ),
       past: interviews.filter(
-        (interview) => new Date(interview.scheduled_at) <= now || interview.status === "cancelled"
+        (interview) => new Date(interview.scheduled_at) < now && !isToday(new Date(interview.scheduled_at))
+      ),
+      today: interviews.filter(
+        (interview) => isToday(new Date(interview.scheduled_at))
+      ),
+      future: interviews.filter(
+        (interview) => new Date(interview.scheduled_at) > now && !isToday(new Date(interview.scheduled_at))
       ),
     };
   };
-
-  const { upcoming, past } = groupInterviewsByStatus(interviews);
 
   const formatDateTime = (dateString: string) => {
     const date = new Date(dateString);
@@ -99,85 +100,90 @@ const EmployerInterviews = () => {
     };
   };
 
+  const InterviewTable = ({ interviews }: { interviews: Interview[] }) => (
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead className="text-red-800">Vacancy Ref</TableHead>
+          <TableHead className="text-red-800">Position</TableHead>
+          <TableHead className="text-red-800">Interviewee</TableHead>
+          <TableHead className="text-red-800">Interviewer</TableHead>
+          <TableHead className="text-red-800">Date</TableHead>
+          <TableHead className="text-red-800">Time</TableHead>
+          <TableHead className="text-red-800">Status</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {interviews.map((interview) => {
+          const { date, time } = formatDateTime(interview.scheduled_at);
+          return (
+            <TableRow key={interview.id}>
+              <TableCell>#{interview.job.id}</TableCell>
+              <TableCell>{interview.job.title}</TableCell>
+              <TableCell>{interview.candidate_email}</TableCell>
+              <TableCell>{interview.interviewer_name}</TableCell>
+              <TableCell>{date}</TableCell>
+              <TableCell>{time}</TableCell>
+              <TableCell className="capitalize">{interview.status}</TableCell>
+            </TableRow>
+          );
+        })}
+      </TableBody>
+    </Table>
+  );
+
+  const { past, today, future } = groupInterviewsByTime(interviews);
+
   return (
     <div className="container mx-auto py-8">
-      <h1 className="text-3xl font-bold mb-8">Interviews</h1>
+      <h1 className="text-3xl font-bold mb-8 text-red-800">Interview Schedule</h1>
 
-      <div className="space-y-8">
-        <div>
-          <h2 className="text-2xl font-semibold mb-4">Upcoming Interviews</h2>
-          {upcoming.length === 0 ? (
+      <Tabs defaultValue="today" className="space-y-6">
+        <TabsList className="bg-red-50">
+          <TabsTrigger 
+            value="today"
+            className="data-[state=active]:bg-red-800 data-[state=active]:text-white"
+          >
+            Today's Interviews ({today.length})
+          </TabsTrigger>
+          <TabsTrigger 
+            value="upcoming"
+            className="data-[state=active]:bg-red-800 data-[state=active]:text-white"
+          >
+            Upcoming Interviews ({future.length})
+          </TabsTrigger>
+          <TabsTrigger 
+            value="past"
+            className="data-[state=active]:bg-red-800 data-[state=active]:text-white"
+          >
+            Past Interviews ({past.length})
+          </TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="today">
+          {today.length === 0 ? (
+            <p className="text-gray-500">No interviews scheduled for today.</p>
+          ) : (
+            <InterviewTable interviews={today} />
+          )}
+        </TabsContent>
+
+        <TabsContent value="upcoming">
+          {future.length === 0 ? (
             <p className="text-gray-500">No upcoming interviews scheduled.</p>
           ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Vacancy Ref</TableHead>
-                  <TableHead>Position</TableHead>
-                  <TableHead>Interviewee</TableHead>
-                  <TableHead>Interviewer</TableHead>
-                  <TableHead>Date</TableHead>
-                  <TableHead>Time</TableHead>
-                  <TableHead>Status</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {upcoming.map((interview) => {
-                  const { date, time } = formatDateTime(interview.scheduled_at);
-                  return (
-                    <TableRow key={interview.id}>
-                      <TableCell>#{interview.job.id}</TableCell>
-                      <TableCell>{interview.job.title}</TableCell>
-                      <TableCell>{interview.candidate_email}</TableCell>
-                      <TableCell>{interview.interviewer_name}</TableCell>
-                      <TableCell>{date}</TableCell>
-                      <TableCell>{time}</TableCell>
-                      <TableCell className="capitalize">{interview.status}</TableCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
+            <InterviewTable interviews={future} />
           )}
-        </div>
+        </TabsContent>
 
-        <div>
-          <h2 className="text-2xl font-semibold mb-4">Past Interviews</h2>
+        <TabsContent value="past">
           {past.length === 0 ? (
             <p className="text-gray-500">No past interviews.</p>
           ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Vacancy Ref</TableHead>
-                  <TableHead>Position</TableHead>
-                  <TableHead>Interviewee</TableHead>
-                  <TableHead>Interviewer</TableHead>
-                  <TableHead>Date</TableHead>
-                  <TableHead>Time</TableHead>
-                  <TableHead>Status</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {past.map((interview) => {
-                  const { date, time } = formatDateTime(interview.scheduled_at);
-                  return (
-                    <TableRow key={interview.id}>
-                      <TableCell>#{interview.job.id}</TableCell>
-                      <TableCell>{interview.job.title}</TableCell>
-                      <TableCell>{interview.candidate_email}</TableCell>
-                      <TableCell>{interview.interviewer_name}</TableCell>
-                      <TableCell>{date}</TableCell>
-                      <TableCell>{time}</TableCell>
-                      <TableCell className="capitalize">{interview.status}</TableCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
+            <InterviewTable interviews={past} />
           )}
-        </div>
-      </div>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };
