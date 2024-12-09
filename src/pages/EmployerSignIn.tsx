@@ -106,6 +106,43 @@ const EmployerSignIn = () => {
     }
   };
 
+  const createTestAccount = async () => {
+    setLoading(true);
+    const testEmail = "test.employer@example.com";
+    const testPassword = "password123";
+
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email: testEmail,
+        password: testPassword,
+        options: {
+          data: {
+            user_type: 'employer'
+          }
+        }
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Test account created!",
+        description: `Email: ${testEmail}, Password: ${testPassword}`,
+      });
+
+      // Auto-fill the form
+      setEmail(testEmail);
+      setPassword(testPassword);
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Error creating test account",
+        description: error.message,
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="container mx-auto flex min-h-screen items-center justify-center">
       <Card className="w-full max-w-md">
@@ -171,6 +208,17 @@ const EmployerSignIn = () => {
               <Link to="/employer/signup" className="text-red-800 hover:underline">
                 Sign Up
               </Link>
+            </div>
+            <div className="pt-4">
+              <Button 
+                type="button" 
+                variant="outline" 
+                className="w-full"
+                onClick={createTestAccount}
+                disabled={loading}
+              >
+                Create Test Account
+              </Button>
             </div>
           </div>
         </CardContent>
