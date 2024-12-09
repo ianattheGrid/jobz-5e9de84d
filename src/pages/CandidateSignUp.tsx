@@ -56,7 +56,7 @@ const CandidateSignUp = () => {
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
           <div className="flex items-center justify-center gap-2">
-            <UserCircle className="h-8 w-8 text-primary" />
+            <UserCircle className="h-8 w-8 text-red-800" />
             <CardTitle className="text-2xl">Candidate Sign Up</CardTitle>
           </div>
           <CardDescription>
@@ -97,13 +97,13 @@ const CandidateSignUp = () => {
                 required
               />
             </div>
-            <Button className="w-full" type="submit" disabled={loading}>
+            <Button className="w-full bg-red-800 hover:bg-red-900 text-white" type="submit" disabled={loading}>
               {loading ? "Signing up..." : "Sign Up"}
             </Button>
           </form>
           <div className="text-center text-sm text-muted-foreground">
             Already have an account?{" "}
-            <Link to="/candidate/signin" className="text-primary hover:underline">
+            <Link to="/candidate/signin" className="text-red-800 hover:underline">
               Sign In
             </Link>
           </div>
