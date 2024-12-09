@@ -44,7 +44,7 @@ const Jobs = () => {
     return (
       <div className="container mx-auto py-8">
         <div className="text-center">
-          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-primary border-r-transparent" role="status">
+          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-red-800 border-r-transparent" role="status">
             <span className="sr-only">Loading...</span>
           </div>
         </div>
@@ -71,7 +71,7 @@ const Jobs = () => {
               <p>You haven't posted any jobs yet.</p>
               <button
                 onClick={() => navigate('/employer/create-vacancy')}
-                className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+                className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-red-800 hover:bg-red-900 text-white h-10 px-4 py-2"
               >
                 Post Your First Job
               </button>
@@ -93,7 +93,7 @@ const Jobs = () => {
         {userType === 'employer' && (
           <button
             onClick={() => navigate('/employer/create-vacancy')}
-            className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+            className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-red-800 hover:bg-red-900 text-white h-10 px-4 py-2"
           >
             Post New Job
           </button>
