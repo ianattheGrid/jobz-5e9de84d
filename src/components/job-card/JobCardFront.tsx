@@ -15,7 +15,7 @@ const JobCardFront = ({ job }: JobCardFrontProps) => {
   return (
     <div className="rounded-lg border bg-card p-6 text-card-foreground shadow-sm h-full">
       <div className="mb-4 flex items-start justify-between">
-        <div>
+        <div className="text-left">
           <h3 className="text-xl font-semibold text-red-800">{job.title}</h3>
           <p className="text-sm text-muted-foreground mt-1">{job.company}</p>
         </div>
@@ -24,7 +24,7 @@ const JobCardFront = ({ job }: JobCardFrontProps) => {
         </span>
       </div>
       
-      <div className="space-y-4">
+      <div className="space-y-4 text-left">
         <div className="flex items-center text-sm text-muted-foreground">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -54,7 +54,7 @@ const JobCardFront = ({ job }: JobCardFrontProps) => {
         )}
 
         <div className="pt-2">
-          <p className="text-sm text-gray-600 line-clamp-3">
+          <p className="text-sm text-gray-600">
             {job.description}
           </p>
         </div>
