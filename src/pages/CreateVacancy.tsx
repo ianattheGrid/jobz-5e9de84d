@@ -12,6 +12,13 @@ import JobDetailsFields from "@/components/JobDetailsFields";
 import WorkAreaField from "@/components/WorkAreaField";
 import LocationField from "@/components/LocationField";
 import ApplicationPreferencesField from "@/components/ApplicationPreferencesField";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
 const formSchema = z.object({
   title: z.string().min(2, {
@@ -109,6 +116,20 @@ export default function CreateVacancy() {
 
   return (
     <div className="container max-w-2xl mx-auto py-10">
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/employer/dashboard" className="text-red-800 hover:text-red-900">
+              Employer Dashboard
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink className="text-red-800">Create New Job Vacancy</BreadcrumbLink>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+
       <h1 className="text-2xl font-bold mb-6 text-left text-red-800">Create New Job Vacancy</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 text-left">
