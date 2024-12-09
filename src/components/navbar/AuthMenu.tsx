@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,8 +16,8 @@ const AuthMenu = ({ isAuthenticated, handleSignOut }: AuthMenuProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon">
-          <Menu className="h-6 w-6" />
+        <Button variant="outline">
+          {isAuthenticated ? "Account" : "Sign In"}
         </Button>
       </DropdownMenuTrigger>
       {!isAuthenticated ? (
