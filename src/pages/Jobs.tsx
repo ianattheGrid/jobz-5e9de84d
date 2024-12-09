@@ -16,40 +16,28 @@ const Jobs = () => {
   const { data: jobs, isLoading, error } = useQuery({
     queryKey: ['jobs'],
     queryFn: async () => {
-      console.log('Fetching jobs...');
+      console.log('Fetching jobs...', { userType, userId: user?.id });
       
-      // If user is an employer, show only their jobs
-      if (user && userType === 'employer') {
-        const { data, error } = await supabase
-          .from('jobs')
-          .select('*')
-          .eq('employer_id', user.id)
-          .order('created_at', { ascending: false });
-
-        if (error) {
-          console.error('Error fetching employer jobs:', error);
-          throw error;
-        }
-        
-        console.log('Fetched employer jobs:', data);
-        return data as Job[];
-      }
-
-      // For non-employers or non-authenticated users, show all jobs
-      const { data, error } = await supabase
+      let query = supabase
         .from('jobs')
         .select('*')
         .order('created_at', { ascending: false });
 
+      // If user is an employer, only show their jobs
+      if (user && userType === 'employer') {
+        query = query.eq('employer_id', user.id);
+      }
+
+      const { data, error } = await query;
+
       if (error) {
-        console.error('Error fetching all jobs:', error);
+        console.error('Error fetching jobs:', error);
         throw error;
       }
       
-      console.log('Fetched all jobs:', data);
+      console.log('Fetched jobs:', data);
       return data as Job[];
-    },
-    // Remove the enabled condition so the query runs immediately
+    }
   });
 
   if (isLoading) {
