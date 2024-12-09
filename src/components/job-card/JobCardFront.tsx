@@ -16,10 +16,10 @@ const JobCardFront = ({ job }: JobCardFrontProps) => {
     <div className="rounded-lg border bg-card p-6 text-card-foreground shadow-sm h-full">
       <div className="mb-4 flex items-start justify-between">
         <div>
-          <h3 className="text-xl font-semibold text-primary">{job.title}</h3>
+          <h3 className="text-xl font-semibold text-red-800">{job.title}</h3>
           <p className="text-sm text-muted-foreground mt-1">{job.company}</p>
         </div>
-        <span className="text-sm font-medium px-3 py-1 bg-primary/10 rounded-full">
+        <span className="text-sm font-medium px-3 py-1 bg-red-800/10 rounded-full">
           {job.type}
         </span>
       </div>
@@ -39,11 +39,11 @@ const JobCardFront = ({ job }: JobCardFrontProps) => {
         </div>
 
         {job.candidate_commission && (
-          <div className="space-y-2 p-3 bg-green-50 rounded-md">
-            <p className="text-sm font-medium text-green-700">
+          <div className="space-y-2 p-3 bg-red-50 rounded-md">
+            <p className="text-sm font-medium text-red-700">
               Commission Structure
             </p>
-            <div className="text-sm text-green-600 space-y-1">
+            <div className="text-sm text-red-600 space-y-1">
               <p>Total Commission: {formatSalary(job.candidate_commission)}</p>
               <div className="text-xs space-y-0.5">
                 <p>• Candidate: {formatSalary(job.candidate_commission - calculateReferralCommission(job.candidate_commission))}</p>
