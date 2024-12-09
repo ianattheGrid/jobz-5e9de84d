@@ -12,6 +12,7 @@ const EmployerSignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [resetMode, setResetMode] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -27,7 +28,6 @@ const EmployerSignIn = () => {
 
       if (error) {
         if (error.message.includes('Email not confirmed')) {
-          // Resend confirmation email
           await supabase.auth.resend({
             type: 'signup',
             email,
@@ -43,7 +43,6 @@ const EmployerSignIn = () => {
         }
       } else if (data.user) {
         if (!data.user.email_confirmed_at) {
-          // Resend confirmation email if not confirmed
           await supabase.auth.resend({
             type: 'signup',
             email,
@@ -73,6 +72,33 @@ const EmployerSignIn = () => {
     }
   };
 
+  const handleResetPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/employer/signin`,
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Check your email",
+        description: "We've sent you a password reset link.",
+      });
+      setResetMode(false);
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: error.message,
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="container mx-auto flex min-h-screen items-center justify-center">
       <Card className="w-full max-w-md">
@@ -82,11 +108,11 @@ const EmployerSignIn = () => {
             <CardTitle className="text-2xl">Employer Sign In</CardTitle>
           </div>
           <CardDescription>
-            Sign in to manage your job postings
+            {resetMode ? "Reset your password" : "Sign in to manage your job postings"}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <form onSubmit={handleSignIn} className="space-y-4">
+          <form onSubmit={resetMode ? handleResetPassword : handleSignIn} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input 
@@ -98,26 +124,47 @@ const EmployerSignIn = () => {
                 required
               />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <Input 
-                id="password" 
-                type="password" 
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter your password" 
-                required
-              />
-            </div>
+            {!resetMode && (
+              <div className="space-y-2">
+                <Label htmlFor="password">Password</Label>
+                <Input 
+                  id="password" 
+                  type="password" 
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter your password" 
+                  required
+                />
+              </div>
+            )}
             <Button className="w-full bg-red-800 hover:bg-red-900 text-white" type="submit" disabled={loading}>
-              {loading ? "Signing in..." : "Sign In"}
+              {loading ? (resetMode ? "Sending..." : "Signing in...") : (resetMode ? "Send Reset Link" : "Sign In")}
             </Button>
           </form>
-          <div className="text-center text-sm text-muted-foreground">
-            Don't have an account?{" "}
-            <Link to="/employer/signup" className="text-red-800 hover:underline">
-              Sign Up
-            </Link>
+          <div className="space-y-2 text-center text-sm text-muted-foreground">
+            <div>
+              {resetMode ? (
+                <button 
+                  onClick={() => setResetMode(false)} 
+                  className="text-red-800 hover:underline"
+                >
+                  Back to Sign In
+                </button>
+              ) : (
+                <button 
+                  onClick={() => setResetMode(true)} 
+                  className="text-red-800 hover:underline"
+                >
+                  Forgot Password?
+                </button>
+              )}
+            </div>
+            <div>
+              Don't have an account?{" "}
+              <Link to="/employer/signup" className="text-red-800 hover:underline">
+                Sign Up
+              </Link>
+            </div>
           </div>
         </CardContent>
       </Card>
