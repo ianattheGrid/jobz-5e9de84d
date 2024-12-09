@@ -2,6 +2,13 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { Menu } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const NavBar = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -38,27 +45,43 @@ const NavBar = () => {
         <div className="flex justify-between h-16 items-center">
           <div className="flex items-center space-x-4">
             <Link to="/" className="flex items-center space-x-2">
-              <span className="text-xl font-bold text-primary">jobz.</span>
+              <span className="text-xl font-bold text-black">jobz.</span>
             </Link>
           </div>
           
           <div className="flex space-x-4">
             {!isAuthenticated ? (
-              <div className="space-x-2">
-                <Link to="/candidate/signin">
-                  <Button variant="outline">Candidate Sign In</Button>
-                </Link>
-                <Link to="/employer/signin">
-                  <Button variant="outline">Employer Sign In</Button>
-                </Link>
-                <Link to="/recruiter/signin">
-                  <Button variant="outline">Recruiter Sign In</Button>
-                </Link>
-              </div>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="icon">
+                    <Menu className="h-6 w-6" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem asChild>
+                    <Link to="/candidate/signin">Candidate Sign In</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/employer/signin">Employer Sign In</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/recruiter/signin">Recruiter Sign In</Link>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             ) : (
-              <Button onClick={handleSignOut} variant="outline">
-                Sign Out
-              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="icon">
+                    <Menu className="h-6 w-6" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem onClick={handleSignOut}>
+                    Sign Out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             )}
           </div>
         </div>
