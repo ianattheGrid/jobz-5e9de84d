@@ -25,14 +25,43 @@ const EmployerSignIn = () => {
         password,
       });
 
-      if (error) throw error;
-
-      toast({
-        title: "Welcome back!",
-        description: "Successfully signed in.",
-      });
-      
-      navigate('/jobs');
+      if (error) {
+        if (error.message.includes('Email not confirmed')) {
+          // Resend confirmation email
+          await supabase.auth.resend({
+            type: 'signup',
+            email,
+          });
+          
+          toast({
+            variant: "default",
+            title: "Email not confirmed",
+            description: "We've sent you another confirmation email. Please check your inbox and spam folder.",
+          });
+        } else {
+          throw error;
+        }
+      } else if (data.user) {
+        if (!data.user.email_confirmed_at) {
+          // Resend confirmation email if not confirmed
+          await supabase.auth.resend({
+            type: 'signup',
+            email,
+          });
+          
+          toast({
+            variant: "default",
+            title: "Email not confirmed",
+            description: "We've sent you another confirmation email. Please check your inbox and spam folder.",
+          });
+        } else {
+          toast({
+            title: "Welcome back!",
+            description: "Successfully signed in.",
+          });
+          navigate('/jobs');
+        }
+      }
     } catch (error: any) {
       toast({
         variant: "destructive",
