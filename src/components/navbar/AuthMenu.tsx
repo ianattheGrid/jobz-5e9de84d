@@ -17,7 +17,7 @@ const AuthMenu = ({ isAuthenticated, handleSignOut }: AuthMenuProps) => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline">
-          {isAuthenticated ? "Account" : "Sign In"}
+          {isAuthenticated ? "" : "Sign In"}
         </Button>
       </DropdownMenuTrigger>
       {!isAuthenticated ? (
@@ -43,9 +43,7 @@ const AuthMenu = ({ isAuthenticated, handleSignOut }: AuthMenuProps) => {
         </DropdownMenuContent>
       ) : (
         <DropdownMenuContent align="end">
-          <DropdownMenuItem onClick={handleSignOut}>
-            Sign Out
-          </DropdownMenuItem>
+          {/* Intentionally left empty as per user request */}
         </DropdownMenuContent>
       )}
     </DropdownMenu>
