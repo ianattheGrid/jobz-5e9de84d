@@ -47,6 +47,15 @@ const NavBar = () => {
             <Link to="/" className="flex items-center space-x-2">
               <span className="text-xl font-bold text-black">jobz.</span>
             </Link>
+            <div className="hidden md:flex space-x-4">
+              <Link to="/jobs" className="text-gray-600 hover:text-gray-900">Jobs</Link>
+              {userType === 'employer' && (
+                <>
+                  <Link to="/employer/create-vacancy" className="text-gray-600 hover:text-gray-900">Post Job</Link>
+                  <Link to="/employer/interviews" className="text-gray-600 hover:text-gray-900">Interviews</Link>
+                </>
+              )}
+            </div>
           </div>
           
           <div className="flex space-x-4">
