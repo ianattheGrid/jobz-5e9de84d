@@ -7,8 +7,8 @@ interface NavigationLinksProps {
 
 const NavigationLinks = ({ isAuthenticated, userType }: NavigationLinksProps) => {
   return (
-    <div className="ml-auto">
-      <div className="hidden md:flex space-x-4">
+    <div className="flex-1 flex justify-end items-center">
+      <div className="flex space-x-4">
         <Link to="/jobs" className="text-gray-600 hover:text-gray-900">Job Board</Link>
       </div>
     </div>

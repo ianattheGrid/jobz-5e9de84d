@@ -36,14 +36,12 @@ const NavBar = () => {
   return (
     <nav className="bg-white shadow-sm">
       <div className="container mx-auto px-4">
-        <div className="flex justify-between h-16 items-center">
-          <div className="flex items-center space-x-4">
-            <Logo />
+        <div className="flex h-16 items-center justify-between">
+          <Logo />
+          <div className="flex-1">
             <NavigationLinks isAuthenticated={isAuthenticated} userType={userType} />
           </div>
-          <div className="flex space-x-4">
-            <AuthMenu isAuthenticated={isAuthenticated} handleSignOut={handleSignOut} />
-          </div>
+          <AuthMenu isAuthenticated={isAuthenticated} handleSignOut={handleSignOut} />
         </div>
       </div>
     </nav>
