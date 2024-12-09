@@ -48,8 +48,8 @@ const NavBar = () => {
               <span className="text-xl font-bold text-black">jobz.</span>
             </Link>
             <div className="hidden md:flex space-x-4">
-              <Link to="/jobs" className="text-gray-600 hover:text-gray-900">Jobs</Link>
-              {userType === 'employer' && (
+              <Link to="/jobs" className="text-gray-600 hover:text-gray-900">Job Board</Link>
+              {isAuthenticated && userType === 'employer' && (
                 <>
                   <Link to="/employer/create-vacancy" className="text-gray-600 hover:text-gray-900">Post Job</Link>
                   <Link to="/employer/interviews" className="text-gray-600 hover:text-gray-900">Interviews</Link>
@@ -66,15 +66,24 @@ const NavBar = () => {
                     <Menu className="h-6 w-6" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
+                <DropdownMenuContent align="end" className="w-56">
+                  <DropdownMenuItem asChild>
+                    <Link to="/candidate/signup">Candidate Sign Up</Link>
+                  </DropdownMenuItem>
                   <DropdownMenuItem asChild>
                     <Link to="/candidate/signin">Candidate Sign In</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/employer/signup">Employer Sign Up</Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
                     <Link to="/employer/signin">Employer Sign In</Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link to="/recruiter/signin">Recruiter Sign In</Link>
+                    <Link to="/recruiter/signup">Virtual Recruiter Sign Up</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/recruiter/signin">Virtual Recruiter Sign In</Link>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
