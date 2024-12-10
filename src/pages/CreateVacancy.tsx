@@ -85,16 +85,31 @@ export default function CreateVacancy() {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "You must be signed in to post a job vacancy.",
+        });
+        navigate('/employer/signin');
+        return;
+      }
+
+      const [minSalary, maxSalary] = values.salary.split("-").map(s => parseInt(s.trim()));
+      const holidayDays = parseInt(values.holidayEntitlement);
+
       const { error } = await supabase.from('jobs').insert({
         title: values.title,
         description: values.description,
         company: values.showCompanyName === "yes" ? values.company : "Company name hidden",
         location: values.location,
-        salary_min: parseInt(values.salary.split("-")[0]),
-        salary_max: parseInt(values.salary.split("-")[1]),
+        salary_min: minSalary,
+        salary_max: maxSalary,
         type: values.type,
-        holiday_entitlement: parseInt(values.holidayEntitlement),
-        company_benefits: values.companyBenefits
+        holiday_entitlement: holidayDays,
+        company_benefits: values.companyBenefits,
+        employer_id: session.user.id
       });
 
       if (error) throw error;
@@ -104,12 +119,13 @@ export default function CreateVacancy() {
         description: "Job vacancy has been posted successfully.",
       });
       
-      navigate('/jobs');
+      navigate('/employer/dashboard');
     } catch (error: any) {
+      console.error('Error creating vacancy:', error);
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Failed to post job vacancy. Please try again.",
+        description: error.message || "Failed to post job vacancy. Please try again.",
       });
     }
   };
