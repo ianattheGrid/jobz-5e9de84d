@@ -10,6 +10,7 @@ import { Users, Briefcase, MessageSquare, TrendingUp } from "lucide-react";
 import ApplicationMessages from "@/components/ApplicationMessages";
 import CandidateMatches from "@/components/CandidateMatches";
 import InterviewsSection from "@/components/employer/InterviewsSection";
+import ActionButtons from "@/components/employer/ActionButtons";
 
 interface Application {
   id: number;
@@ -192,6 +193,7 @@ const EmployerDashboard = () => {
     <div className="container mx-auto p-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-6">Employer Dashboard</h1>
+        <ActionButtons />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <Card>
             <CardHeader className="pb-2">

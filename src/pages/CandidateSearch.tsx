@@ -12,7 +12,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
-import CommissionSection from "@/components/CommissionSection";
 import {
   Select,
   SelectContent,
@@ -20,12 +19,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import LocationField from "@/components/LocationField";
-import JobDetailsFields from "@/components/JobDetailsFields";
 import WorkAreaField from "@/components/WorkAreaField";
-import ApplicationPreferencesField from "@/components/ApplicationPreferencesField";
-import CompanyInfoFields from "@/components/CompanyInfoFields";
 
 const formSchema = z.object({
   title: z.string().min(2, {
@@ -35,71 +30,48 @@ const formSchema = z.object({
     required_error: "Please select required years of experience in that job title.",
   }),
   workArea: z.string({
-    required_error: "Please select the area of work for this vacancy.",
+    required_error: "Please select the area of work.",
   }),
   otherWorkArea: z.string().optional(),
-  showCompanyName: z.enum(["yes", "no"]),
-  company: z.string().min(2, {
-    message: "Company name must be at least 2 characters.",
-  }).optional(),
   location: z.string().min(2, {
     message: "Location must be at least 2 characters.",
   }),
-  description: z.string().min(10, {
-    message: "Job description must be at least 10 characters.",
+  minSalary: z.string().min(1, {
+    message: "Minimum salary is required",
   }),
-  salary: z.string().min(1, {
-    message: "Salary is required",
+  maxSalary: z.string().min(1, {
+    message: "Maximum salary is required",
   }),
-  actualSalary: z.string().min(1, {
-    message: "Actual salary is required",
-  }),
-  workLocation: z.enum(["office", "hybrid", "remote"]).default("office"),
-  officePercentage: z.number().min(0).max(100).optional(),
-  type: z.literal("Full-time"),
-  offerCandidateCommission: z.boolean().default(false),
-  candidateCommission: z.string().optional(),
-  offerReferralCommission: z.boolean().default(false),
-  referralCommission: z.string().optional(),
-  holidayEntitlement: z.string().min(1, {
-    message: "Holiday entitlement is required",
-  }),
-  companyBenefits: z.string().min(1, {
-    message: "Company benefits are required",
-  }),
-  otherBenefits: z.string().optional(),
-  applicationMethod: z.enum(["platform", "email", "custom"]).default("platform"),
-  applicationEmail: z.string().email().optional().or(z.literal("")),
-  applicationInstructions: z.string().optional().or(z.literal("")),
 });
 
 export default function CandidateSearch() {
   const { toast } = useToast();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      offerCandidateCommission: false,
-      offerReferralCommission: false,
-      showCompanyName: "no",
-      type: "Full-time",
-      applicationMethod: "platform",
-    },
   });
 
-  const showCompanyName = form.watch("showCompanyName");
-
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
-    toast({
-      title: "Job Posted Successfully",
-      description: "Your job listing has been created.",
-    });
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    try {
+      // We'll implement the search functionality later
+      console.log(values);
+      toast({
+        title: "Search Completed",
+        description: "Matching candidates will be displayed below.",
+      });
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to search candidates. Please try again.",
+      });
+    }
   };
 
   return (
     <div className="container max-w-2xl mx-auto py-10">
+      <h1 className="text-2xl font-bold mb-6 text-left text-red-800">Search Candidate Database</h1>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 text-left">
           <FormField
             control={form.control}
             name="title"
@@ -119,7 +91,7 @@ export default function CandidateSearch() {
             name="yearsExperience"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Minimum Years of Experience Required in that Job Title</FormLabel>
+                <FormLabel>Minimum Years of Experience Required</FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
                     <SelectTrigger>
@@ -141,46 +113,41 @@ export default function CandidateSearch() {
           />
 
           <WorkAreaField control={form.control} />
-
-          <CompanyInfoFields control={form.control} />
-
-          <FormField
-            control={form.control}
-            name="type"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Job Type</FormLabel>
-                <FormControl>
-                  <Select 
-                    onValueChange={field.onChange} 
-                    defaultValue="Full-time"
-                    value="Full-time"
-                  >
-                    <SelectTrigger>
-                      <SelectValue>Full-time</SelectValue>
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Full-time">Full-time</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
           <LocationField control={form.control} />
-          
-          <JobDetailsFields control={form.control} />
 
-          <CommissionSection 
-            salary={form.watch("salary")} 
-            form={form}
-          />
+          <div className="grid grid-cols-2 gap-4">
+            <FormField
+              control={form.control}
+              name="minSalary"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Minimum Salary</FormLabel>
+                  <FormControl>
+                    <Input type="number" placeholder="e.g. 30000" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <ApplicationPreferencesField control={form.control} />
-          
-          <Button type="submit">Post Job</Button>
+            <FormField
+              control={form.control}
+              name="maxSalary"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Maximum Salary</FormLabel>
+                  <FormControl>
+                    <Input type="number" placeholder="e.g. 50000" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <div className="flex justify-start">
+            <Button type="submit" className="bg-red-800 hover:bg-red-900">Search Candidates</Button>
+          </div>
         </form>
       </Form>
     </div>
