@@ -53,7 +53,7 @@ const EmployerDashboard = () => {
       }
       setUserId(user.id);
       await Promise.all([
-        loadApplications(),
+        loadApplications(user.id),
         loadDashboardStats(user.id),
       ]);
     };
@@ -63,28 +63,34 @@ const EmployerDashboard = () => {
 
   const loadDashboardStats = async (userId: string) => {
     try {
-      const [applicationsData, jobsData, matchesData] = await Promise.all([
+      // First get all jobs for this employer
+      const { data: jobsData, error: jobsError } = await supabase
+        .from('jobs')
+        .select('id')
+        .eq('employer_id', userId);
+
+      if (jobsError) throw jobsError;
+      
+      const jobIds = jobsData?.map(job => job.id) || [];
+
+      // Then get applications and matches for these jobs
+      const [applicationsData, matchesData] = await Promise.all([
         supabase
           .from('applications')
           .select('id, status')
-          .eq('employer_id', userId),
-        supabase
-          .from('jobs')
-          .select('id')
-          .eq('employer_id', userId),
+          .in('job_id', jobIds),
         supabase
           .from('job_matches')
           .select('id')
-          .eq('employer_id', userId),
+          .in('job_id', jobIds),
       ]);
 
       if (applicationsData.error) throw applicationsData.error;
-      if (jobsData.error) throw jobsData.error;
       if (matchesData.error) throw matchesData.error;
 
       setStats({
         totalApplications: applicationsData.data?.length || 0,
-        activeJobs: jobsData.data?.length || 0,
+        activeJobs: jobsData?.length || 0,
         pendingApplications: applicationsData.data?.filter(app => app.status === 'pending').length || 0,
         totalMatches: matchesData.data?.length || 0,
       });
@@ -94,17 +100,28 @@ const EmployerDashboard = () => {
         title: "Error",
         description: "Failed to load dashboard statistics",
       });
+      console.error('Error loading stats:', error);
     }
   };
 
-  const loadApplications = async () => {
+  const loadApplications = async (userId: string) => {
     try {
+      const { data: jobsData, error: jobsError } = await supabase
+        .from('jobs')
+        .select('id')
+        .eq('employer_id', userId);
+
+      if (jobsError) throw jobsError;
+      
+      const jobIds = jobsData?.map(job => job.id) || [];
+
       const { data, error } = await supabase
         .from('applications')
         .select(`
           *,
           job:jobs(title, company)
         `)
+        .in('job_id', jobIds)
         .order('created_at', { ascending: false });
 
       if (error) throw error;
@@ -115,6 +132,7 @@ const EmployerDashboard = () => {
         title: "Error",
         description: "Failed to load applications",
       });
+      console.error('Error loading applications:', error);
     } finally {
       setLoading(false);
     }
