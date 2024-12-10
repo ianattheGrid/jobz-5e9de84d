@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Building2 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 
 const EmployerSignIn = () => {
   const [email, setEmail] = useState("");
@@ -112,6 +112,7 @@ const EmployerSignIn = () => {
     const testPassword = "password123";
 
     try {
+      console.log("Creating test account with:", { testEmail, testPassword });
       const { data, error } = await supabase.auth.signUp({
         email: testEmail,
         password: testPassword,
@@ -122,7 +123,12 @@ const EmployerSignIn = () => {
         }
       });
 
-      if (error) throw error;
+      console.log("Test account creation response:", { data, error });
+
+      if (error) {
+        console.error("Test account creation error:", error);
+        throw error;
+      }
 
       toast({
         title: "Test account created!",
@@ -133,6 +139,7 @@ const EmployerSignIn = () => {
       setEmail(testEmail);
       setPassword(testPassword);
     } catch (error: any) {
+      console.error("Error in createTestAccount:", error);
       toast({
         variant: "destructive",
         title: "Error creating test account",
