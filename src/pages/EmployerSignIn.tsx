@@ -7,6 +7,7 @@ import { Building2 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { TestAccountButton } from "@/components/employer/TestAccountButton";
 
 const EmployerSignIn = () => {
   const [email, setEmail] = useState("");
@@ -106,48 +107,9 @@ const EmployerSignIn = () => {
     }
   };
 
-  const createTestAccount = async () => {
-    setLoading(true);
-    const testEmail = "test.employer@example.com";
-    const testPassword = "password123";
-
-    try {
-      console.log("Creating test account with:", { testEmail, testPassword });
-      const { data, error } = await supabase.auth.signUp({
-        email: testEmail,
-        password: testPassword,
-        options: {
-          data: {
-            user_type: 'employer'
-          }
-        }
-      });
-
-      console.log("Test account creation response:", { data, error });
-
-      if (error) {
-        console.error("Test account creation error:", error);
-        throw error;
-      }
-
-      toast({
-        title: "Test account created!",
-        description: `Email: ${testEmail}, Password: ${testPassword}`,
-      });
-
-      // Auto-fill the form
-      setEmail(testEmail);
-      setPassword(testPassword);
-    } catch (error: any) {
-      console.error("Error in createTestAccount:", error);
-      toast({
-        variant: "destructive",
-        title: "Error creating test account",
-        description: error.message,
-      });
-    } finally {
-      setLoading(false);
-    }
+  const handleTestAccountCreated = (testEmail: string, testPassword: string) => {
+    setEmail(testEmail);
+    setPassword(testPassword);
   };
 
   return (
@@ -217,15 +179,7 @@ const EmployerSignIn = () => {
               </Link>
             </div>
             <div className="pt-4">
-              <Button 
-                type="button" 
-                variant="outline" 
-                className="w-full"
-                onClick={createTestAccount}
-                disabled={loading}
-              >
-                Create Test Account
-              </Button>
+              <TestAccountButton onAccountCreated={handleTestAccountCreated} />
             </div>
           </div>
         </CardContent>
