@@ -36,9 +36,21 @@ export const TestAccountButton = ({ onAccountCreated }: TestAccountButtonProps) 
         throw error;
       }
 
+      // Send welcome email
+      const { error: emailError } = await supabase.functions.invoke('send-welcome-email', {
+        body: {
+          to: [testEmail],
+          userType: 'employer'
+        }
+      });
+
+      if (emailError) {
+        console.error("Error sending welcome email:", emailError);
+      }
+
       toast({
         title: "Test account created!",
-        description: `Email: ${testEmail}, Password: ${testPassword}`,
+        description: `Email: ${testEmail}, Password: ${testPassword}. Please check your inbox for the welcome email.`,
       });
 
       onAccountCreated(testEmail, testPassword);
