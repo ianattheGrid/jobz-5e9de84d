@@ -152,7 +152,10 @@ const EmployerDashboard = () => {
         description: "Application status updated",
       });
 
-      loadApplications();
+      // Pass userId when calling loadApplications
+      if (userId) {
+        loadApplications(userId);
+      }
     } catch (error: any) {
       toast({
         variant: "destructive",
