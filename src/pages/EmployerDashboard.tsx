@@ -9,6 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Users, Briefcase, MessageSquare, TrendingUp } from "lucide-react";
 import ApplicationMessages from "@/components/ApplicationMessages";
 import CandidateMatches from "@/components/CandidateMatches";
+import InterviewsSection from "@/components/employer/InterviewsSection";
 
 interface Application {
   id: number;
@@ -63,7 +64,6 @@ const EmployerDashboard = () => {
 
   const loadDashboardStats = async (userId: string) => {
     try {
-      // First get all jobs for this employer
       const { data: jobsData, error: jobsError } = await supabase
         .from('jobs')
         .select('id')
@@ -73,7 +73,6 @@ const EmployerDashboard = () => {
       
       const jobIds = jobsData?.map(job => job.id) || [];
 
-      // Then get applications and matches for these jobs
       const [applicationsData, matchesData] = await Promise.all([
         supabase
           .from('applications')
@@ -152,7 +151,6 @@ const EmployerDashboard = () => {
         description: "Application status updated",
       });
 
-      // Pass userId when calling loadApplications
       if (userId) {
         loadApplications(userId);
       }
@@ -346,6 +344,8 @@ const EmployerDashboard = () => {
           )}
         </CardContent>
       </Card>
+
+      {userId && <InterviewsSection employerId={userId} />}
     </div>
   );
 };
