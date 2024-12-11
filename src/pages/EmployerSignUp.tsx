@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Building2 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 
 const EmployerSignUp = () => {
   const [company, setCompany] = useState("");
@@ -28,15 +28,16 @@ const EmployerSignUp = () => {
           data: {
             company_name: company,
             user_type: 'employer'
-          }
+          },
+          emailRedirectTo: `${window.location.origin}/employer/signin`
         }
       });
 
       if (error) throw error;
 
       toast({
-        title: "Success!",
-        description: "Please check your email to confirm your account.",
+        title: "Verification email sent!",
+        description: "Please check your email to verify your account before signing in.",
       });
       
       navigate('/employer/signin');
