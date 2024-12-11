@@ -135,21 +135,21 @@ export default function CreateVacancy() {
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <Link to="/employer/dashboard" className="text-red-800 hover:text-red-900">
+            <Link to="/employer/dashboard" className="text-black hover:text-gray-800">
               Employer Dashboard
             </Link>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbLink className="text-red-800">Create New Job Vacancy</BreadcrumbLink>
+            <BreadcrumbLink className="text-black">Create New Vacancy</BreadcrumbLink>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
 
-      <h1 className="text-2xl font-bold mb-6 text-left text-red-800">Create New Job Vacancy</h1>
+      <h1 className="text-2xl font-bold mb-6 text-left text-black">Create New Vacancy</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 text-left">
-          <div className="space-y-8 [&_label]:text-red-800 [&_h3]:text-red-800">
+          <div className="space-y-8 [&_label]:text-black [&_h3]:text-black">
             <CompanyInfoFields control={form.control} />
             <WorkAreaField control={form.control} />
             <LocationField control={form.control} />
@@ -157,7 +157,7 @@ export default function CreateVacancy() {
             <ApplicationPreferencesField control={form.control} />
           </div>
           <div className="flex justify-start">
-            <Button type="submit" className="bg-red-800 hover:bg-red-900">Post Job Vacancy</Button>
+            <Button type="submit" className="bg-red-800 hover:bg-red-900">Post Vacancy</Button>
           </div>
         </form>
       </Form>
