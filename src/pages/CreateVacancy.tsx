@@ -157,7 +157,7 @@ export default function CreateVacancy() {
             <ApplicationPreferencesField control={form.control} />
           </div>
           <div className="flex justify-start">
-            <Button type="submit" className="bg-red-800 hover:bg-red-900">Post Vacancy</Button>
+            <Button type="submit" className="bg-red-800 hover:bg-red-900 text-white">Post Vacancy</Button>
           </div>
         </form>
       </Form>
