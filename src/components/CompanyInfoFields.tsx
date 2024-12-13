@@ -3,19 +3,12 @@ import { Input } from "@/components/ui/input";
 import { Control } from "react-hook-form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import WorkAreaField from "./WorkAreaField";
-import ITJobTitleField from "./job-details/ITJobTitleField";
-import { useWatch } from "react-hook-form";
 
 interface CompanyInfoFieldsProps {
   control: Control<any>;
 }
 
 const CompanyInfoFields = ({ control }: CompanyInfoFieldsProps) => {
-  const workArea = useWatch({
-    control,
-    name: "workArea",
-  });
-
   return (
     <div className="space-y-4">
       <h3 className="text-lg font-semibold">Company Information</h3>
@@ -74,23 +67,19 @@ const CompanyInfoFields = ({ control }: CompanyInfoFieldsProps) => {
 
       <WorkAreaField control={control} />
 
-      {workArea === "IT" ? (
-        <ITJobTitleField control={control} />
-      ) : (
-        <FormField
-          control={control}
-          name="title"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Job Title</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      )}
+      <FormField
+        control={control}
+        name="title"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Job Title</FormLabel>
+            <FormControl>
+              <Input {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
     </div>
   );
 };
