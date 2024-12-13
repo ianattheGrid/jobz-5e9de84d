@@ -75,7 +75,7 @@ const ITJobTitleField = ({ control }: ITJobTitleFieldProps) => {
               </FormControl>
             </PopoverTrigger>
             <PopoverContent className="w-full p-0" align="start">
-              <Command>
+              <Command shouldFilter={false}>
                 <CommandInput 
                   placeholder="Search IT job titles..." 
                   value={searchValue}
