@@ -1,12 +1,7 @@
-import { useState } from "react";
-import { Control } from "react-hook-form";
-import {
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormMessage,
-} from "@/components/ui/form";
+import * as React from "react";
+import { Check, ChevronsUpDown } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import {
   Command,
   CommandEmpty,
@@ -14,60 +9,58 @@ import {
   CommandInput,
   CommandItem,
 } from "@/components/ui/command";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
-import { Check, ChevronsUpDown } from "lucide-react";
-import { cn } from "@/lib/utils";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Control } from "react-hook-form";
+
+const itJobTitles = [
+  { value: "android-developer", label: "Android Developer" },
+  { value: "backend-developer", label: "Backend Developer" },
+  { value: "business-analyst", label: "Business Analyst" },
+  { value: "cloud-architect", label: "Cloud Architect" },
+  { value: "data-analyst", label: "Data Analyst" },
+  { value: "data-engineer", label: "Data Engineer" },
+  { value: "data-scientist", label: "Data Scientist" },
+  { value: "database-administrator", label: "Database Administrator" },
+  { value: "devops-engineer", label: "DevOps Engineer" },
+  { value: "frontend-developer", label: "Frontend Developer" },
+  { value: "full-stack-developer", label: "Full Stack Developer" },
+  { value: "ios-developer", label: "iOS Developer" },
+  { value: "it-consultant", label: "IT Consultant" },
+  { value: "it-manager", label: "IT Manager" },
+  { value: "it-project-manager", label: "IT Project Manager" },
+  { value: "it-support-specialist", label: "IT Support Specialist" },
+  { value: "network-administrator", label: "Network Administrator" },
+  { value: "network-engineer", label: "Network Engineer" },
+  { value: "product-manager", label: "Product Manager" },
+  { value: "qa-engineer", label: "QA Engineer" },
+  { value: "security-analyst", label: "Security Analyst" },
+  { value: "software-architect", label: "Software Architect" },
+  { value: "software-engineer", label: "Software Engineer" },
+  { value: "systems-administrator", label: "Systems Administrator" },
+  { value: "technical-lead", label: "Technical Lead" },
+  { value: "ui-designer", label: "UI Designer" },
+  { value: "ux-designer", label: "UX Designer" },
+  { value: "web-designer", label: "Web Designer" },
+  { value: "web-developer", label: "Web Developer" },
+].sort((a, b) => a.label.localeCompare(b.label));
 
 interface ITJobTitleFieldProps {
   control: Control<any>;
 }
 
-const itJobTitles = [
-  "AI Engineer",
-  "Android Developer",
-  "Application Support Engineer",
-  "Backend Developer",
-  "Business Analyst",
-  "Cloud Architect",
-  "Cloud Engineer",
-  "Data Analyst",
-  "Data Engineer",
-  "Data Scientist",
-  "Database Administrator",
-  "DevOps Engineer",
-  "Frontend Developer",
-  "Full Stack Developer",
-  "Information Security Analyst",
-  "iOS Developer",
-  "IT Project Manager",
-  "IT Support Specialist",
-  "Java Developer",
-  "Machine Learning Engineer",
-  "Mobile Developer",
-  "Network Administrator",
-  "Network Engineer",
-  "PHP Developer",
-  "Python Developer",
-  "Quality Assurance Engineer",
-  "React Developer",
-  "Ruby Developer",
-  "Scrum Master",
-  "Software Architect",
-  "Software Developer",
-  "Software Engineer",
-  "Solutions Architect",
-  "Systems Administrator",
-  "Systems Analyst",
-  "Technical Lead",
-  "UI Designer",
-  "UX Designer",
-  "Web Designer",
-  "Web Developer"
-].sort();
-
-const ITJobTitleField = ({ control }: ITJobTitleFieldProps) => {
-  const [open, setOpen] = useState(false);
+export default function ITJobTitleField({ control }: ITJobTitleFieldProps) {
+  const [open, setOpen] = React.useState(false);
 
   return (
     <FormField
@@ -88,32 +81,34 @@ const ITJobTitleField = ({ control }: ITJobTitleFieldProps) => {
                     !field.value && "text-muted-foreground"
                   )}
                 >
-                  {field.value || "Select job title..."}
+                  {field.value
+                    ? itJobTitles.find((title) => title.value === field.value)?.label
+                    : "Select IT job title..."}
                   <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
               </FormControl>
             </PopoverTrigger>
             <PopoverContent className="w-full p-0">
               <Command>
-                <CommandInput placeholder="Search job title..." />
+                <CommandInput placeholder="Search IT job titles..." />
                 <CommandEmpty>No job title found.</CommandEmpty>
                 <CommandGroup className="max-h-64 overflow-y-auto">
                   {itJobTitles.map((title) => (
                     <CommandItem
-                      key={title}
-                      value={title}
+                      key={title.value}
+                      value={title.value}
                       onSelect={() => {
-                        field.onChange(title);
+                        field.onChange(title.value);
                         setOpen(false);
                       }}
                     >
                       <Check
                         className={cn(
                           "mr-2 h-4 w-4",
-                          field.value === title ? "opacity-100" : "opacity-0"
+                          field.value === title.value ? "opacity-100" : "opacity-0"
                         )}
                       />
-                      {title}
+                      {title.label}
                     </CommandItem>
                   ))}
                 </CommandGroup>
@@ -125,6 +120,4 @@ const ITJobTitleField = ({ control }: ITJobTitleFieldProps) => {
       )}
     />
   );
-};
-
-export default ITJobTitleField;
+}
