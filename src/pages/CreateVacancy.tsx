@@ -12,6 +12,7 @@ import JobDetailsFields from "@/components/JobDetailsFields";
 import LocationField from "@/components/LocationField";
 import ApplicationPreferencesField from "@/components/ApplicationPreferencesField";
 import CommissionSection from "@/components/CommissionSection";
+import WorkAreaField from "@/components/WorkAreaField";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -176,6 +177,7 @@ export default function CreateVacancy() {
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 text-left">
           <div className="space-y-8 [&_label]:text-black [&_h3]:text-black">
             <CompanyInfoFields control={form.control} />
+            <WorkAreaField control={form.control} />
             <LocationField control={form.control} />
             <JobDetailsFields control={form.control} />
             <CommissionSection salary={form.watch("actualSalary")} form={form} />

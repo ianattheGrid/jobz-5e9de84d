@@ -64,10 +64,21 @@ const softwareDevTitles = [
   "Embedded Systems Developer"
 ];
 
+const itSupportTitles = [
+  "IT Support Specialist",
+  "Help Desk Technician",
+  "IT Technician",
+  "IT Operations Manager",
+  "System Administrator",
+  "Network Administrator",
+  "Desktop Support Technician"
+];
+
 const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
   const [showOtherInput, setShowOtherInput] = useState(false);
   const [showITSpecialization, setShowITSpecialization] = useState(false);
   const [showSoftwareDevTitles, setShowSoftwareDevTitles] = useState(false);
+  const [showITSupportTitles, setShowITSupportTitles] = useState(false);
 
   return (
     <div className="space-y-4">
@@ -85,6 +96,7 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
                   setShowITSpecialization(value === "IT");
                   if (value !== "IT") {
                     setShowSoftwareDevTitles(false);
+                    setShowITSupportTitles(false);
                   }
                 }} 
                 defaultValue={field.value}
@@ -118,6 +130,7 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
                   onValueChange={(value) => {
                     field.onChange(value);
                     setShowSoftwareDevTitles(value === "Software Development and Programming");
+                    setShowITSupportTitles(value === "IT Support and Operations");
                   }}
                   defaultValue={field.value}
                 >
@@ -156,6 +169,36 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
                   </SelectTrigger>
                   <SelectContent className="bg-white">
                     {softwareDevTitles.map((title) => (
+                      <SelectItem key={title} value={title}>
+                        {title}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      )}
+
+      {showITSupportTitles && (
+        <FormField
+          control={control}
+          name="title"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Job Title</FormLabel>
+              <FormControl>
+                <Select 
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <SelectTrigger className="w-full bg-white border border-gray-300">
+                    <SelectValue placeholder="Select the job title" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white">
+                    {itSupportTitles.map((title) => (
                       <SelectItem key={title} value={title}>
                         {title}
                       </SelectItem>
