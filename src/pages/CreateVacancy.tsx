@@ -81,23 +81,41 @@ export default function CreateVacancy() {
   useEffect(() => {
     const checkAuth = async () => {
       const { data: { session } } = await supabase.auth.getSession();
+      
       if (!session) {
+        toast({
+          variant: "destructive",
+          title: "Access Denied",
+          description: "Please sign in as an employer to post a job vacancy.",
+        });
         navigate('/employer/signin');
+        return;
+      }
+
+      // Check if the user is an employer
+      const userType = session.user.user_metadata.user_type;
+      if (userType !== 'employer') {
+        toast({
+          variant: "destructive",
+          title: "Access Denied",
+          description: "Only employers can post job vacancies.",
+        });
+        navigate('/');
         return;
       }
     };
 
     checkAuth();
-  }, [navigate]);
+  }, [navigate, toast]);
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
+      if (!session || session.user.user_metadata.user_type !== 'employer') {
         toast({
           variant: "destructive",
           title: "Error",
-          description: "You must be signed in to post a job vacancy.",
+          description: "You must be signed in as an employer to post a job vacancy.",
         });
         navigate('/employer/signin');
         return;
