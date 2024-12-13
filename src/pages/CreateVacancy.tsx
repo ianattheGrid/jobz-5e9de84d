@@ -12,6 +12,7 @@ import JobDetailsFields from "@/components/JobDetailsFields";
 import WorkAreaField from "@/components/WorkAreaField";
 import LocationField from "@/components/LocationField";
 import ApplicationPreferencesField from "@/components/ApplicationPreferencesField";
+import CommissionSection from "@/components/CommissionSection";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -57,6 +58,10 @@ const formSchema = z.object({
   applicationMethod: z.enum(["platform", "email", "custom"]).default("platform"),
   applicationEmail: z.string().email().optional().or(z.literal("")),
   applicationInstructions: z.string().optional().or(z.literal("")),
+  offerCandidateCommission: z.boolean().default(false),
+  offerReferralCommission: z.boolean().default(false),
+  candidateCommission: z.string().optional(),
+  referralCommission: z.string().optional(),
 });
 
 export default function CreateVacancy() {
@@ -68,6 +73,8 @@ export default function CreateVacancy() {
       showCompanyName: "no",
       type: "Full-time",
       applicationMethod: "platform",
+      offerCandidateCommission: false,
+      offerReferralCommission: false,
     },
   });
 
@@ -109,7 +116,9 @@ export default function CreateVacancy() {
         type: values.type,
         holiday_entitlement: holidayDays,
         company_benefits: values.companyBenefits,
-        employer_id: session.user.id
+        employer_id: session.user.id,
+        candidate_commission: values.offerCandidateCommission ? 
+          parseInt(values.candidateCommission?.replace(/[^0-9.-]+/g, "") || "0") : null
       });
 
       if (error) throw error;
@@ -154,6 +163,7 @@ export default function CreateVacancy() {
             <WorkAreaField control={form.control} />
             <LocationField control={form.control} />
             <JobDetailsFields control={form.control} />
+            <CommissionSection salary={form.watch("actualSalary")} form={form} />
             <ApplicationPreferencesField control={form.control} />
           </div>
           <div className="flex justify-start">
