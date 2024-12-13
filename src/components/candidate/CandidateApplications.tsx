@@ -53,7 +53,7 @@ const CandidateApplications = ({ userId }: CandidateApplicationsProps) => {
                   </div>
                   <Badge variant={application.status === 'pending' ? 'secondary' : 
                                 application.status === 'reviewing' ? 'default' :
-                                application.status === 'accepted' ? 'success' : 'destructive'}>
+                                application.status === 'accepted' ? 'default' : 'destructive'}>
                     {application.status.charAt(0).toUpperCase() + application.status.slice(1)}
                   </Badge>
                 </div>
