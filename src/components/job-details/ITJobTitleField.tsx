@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
@@ -37,14 +37,8 @@ const itJobTitles: ITJobTitle[] = [
 
 const ITJobTitleField = ({ control }: ITJobTitleFieldProps) => {
   const [open, setOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [filteredTitles, setFilteredTitles] = useState<ITJobTitle[]>(itJobTitles);
-
-  useEffect(() => {
-    setMounted(true);
-    return () => setMounted(false);
-  }, []);
 
   const handleSearch = (value: string) => {
     setSearchValue(value);
@@ -53,29 +47,6 @@ const ITJobTitleField = ({ control }: ITJobTitleFieldProps) => {
     );
     setFilteredTitles(filtered);
   };
-
-  if (!mounted) {
-    return (
-      <FormField
-        control={control}
-        name="title"
-        render={({ field }) => (
-          <FormItem className="flex flex-col">
-            <FormLabel>Job Title</FormLabel>
-            <FormControl>
-              <Button
-                variant="outline"
-                role="combobox"
-                className="w-full justify-between"
-              >
-                Loading...
-              </Button>
-            </FormControl>
-          </FormItem>
-        )}
-      />
-    );
-  }
 
   return (
     <FormField
@@ -111,7 +82,7 @@ const ITJobTitleField = ({ control }: ITJobTitleFieldProps) => {
                   onValueChange={handleSearch}
                 />
                 <CommandEmpty>No job title found.</CommandEmpty>
-                <CommandGroup className="max-h-64 overflow-y-auto">
+                <CommandGroup>
                   {filteredTitles.map((title) => (
                     <CommandItem
                       key={title.value}
