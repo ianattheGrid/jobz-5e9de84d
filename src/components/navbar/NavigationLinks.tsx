@@ -13,6 +13,12 @@ const NavigationLinks = ({ isAuthenticated, userType }: NavigationLinksProps) =>
         {isAuthenticated && userType === 'candidate' && (
           <Link to="/candidate/dashboard" className="text-gray-600 hover:text-gray-900">Dashboard</Link>
         )}
+        {isAuthenticated && userType === 'employer' && (
+          <>
+            <Link to="/employer/dashboard" className="text-gray-600 hover:text-gray-900">Dashboard</Link>
+            <Link to="/employer/candidate-search" className="text-gray-600 hover:text-gray-900">Search Candidates</Link>
+          </>
+        )}
       </div>
     </div>
   );
