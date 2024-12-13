@@ -12,6 +12,10 @@ interface ITJobTitle {
   value: string;
 }
 
+interface ITJobTitleFieldProps {
+  control: Control<any>;
+}
+
 const itJobTitles: ITJobTitle[] = [
   { label: "Backend Developer", value: "Backend Developer" },
   { label: "Cloud Architect", value: "Cloud Architect" },
@@ -31,41 +35,18 @@ const itJobTitles: ITJobTitle[] = [
   { label: "Web Designer", value: "Web Designer" },
 ].sort((a, b) => a.label.localeCompare(b.label));
 
-interface ITJobTitleFieldProps {
-  control: Control<any>;
-}
-
 const ITJobTitleField = ({ control }: ITJobTitleFieldProps) => {
   const [open, setOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+  const [filteredTitles, setFilteredTitles] = useState<ITJobTitle[]>(itJobTitles);
 
-  useEffect(() => {
-    setMounted(true);
-    return () => setMounted(false);
-  }, []);
-
-  if (!mounted) {
-    return (
-      <FormField
-        control={control}
-        name="title"
-        render={({ field }) => (
-          <FormItem className="flex flex-col">
-            <FormLabel>Job Title</FormLabel>
-            <FormControl>
-              <Button
-                variant="outline"
-                role="combobox"
-                className="w-full justify-between"
-              >
-                Loading...
-              </Button>
-            </FormControl>
-          </FormItem>
-        )}
-      />
+  const handleSearch = (value: string) => {
+    setSearchValue(value);
+    const filtered = itJobTitles.filter(title => 
+      title.label.toLowerCase().includes(value.toLowerCase())
     );
-  }
+    setFilteredTitles(filtered);
+  };
 
   return (
     <FormField
@@ -94,19 +75,20 @@ const ITJobTitleField = ({ control }: ITJobTitleFieldProps) => {
               </FormControl>
             </PopoverTrigger>
             <PopoverContent className="w-full p-0" align="start">
-              <Command shouldFilter={false}>
+              <Command>
                 <CommandInput 
                   placeholder="Search IT job titles..." 
-                  className="h-9"
+                  value={searchValue}
+                  onValueChange={handleSearch}
                 />
                 <CommandEmpty>No job title found.</CommandEmpty>
                 <CommandGroup className="max-h-64 overflow-y-auto">
-                  {itJobTitles.map((title) => (
+                  {filteredTitles.map((title) => (
                     <CommandItem
                       key={title.value}
                       value={title.value}
-                      onSelect={(currentValue) => {
-                        field.onChange(currentValue === field.value ? "" : currentValue);
+                      onSelect={() => {
+                        field.onChange(title.value);
                         setOpen(false);
                       }}
                     >
