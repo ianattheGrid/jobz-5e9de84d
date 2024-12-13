@@ -9,7 +9,6 @@ import { useNavigate, Link } from "react-router-dom";
 import { useEffect } from "react";
 import CompanyInfoFields from "@/components/CompanyInfoFields";
 import JobDetailsFields from "@/components/JobDetailsFields";
-import WorkAreaField from "@/components/WorkAreaField";
 import LocationField from "@/components/LocationField";
 import ApplicationPreferencesField from "@/components/ApplicationPreferencesField";
 import CommissionSection from "@/components/CommissionSection";
@@ -22,12 +21,11 @@ import {
 } from "@/components/ui/breadcrumb";
 
 const formSchema = z.object({
-  title: z.string().min(2, {
-    message: "Job title must be at least 2 characters.",
-  }),
   workArea: z.string({
     required_error: "Please select the area of work for this vacancy.",
   }),
+  itSpecialization: z.string().optional(),
+  title: z.string().optional(),
   otherWorkArea: z.string().optional(),
   showCompanyName: z.enum(["yes", "no"]),
   company: z.string().min(2, {
@@ -178,7 +176,6 @@ export default function CreateVacancy() {
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 text-left">
           <div className="space-y-8 [&_label]:text-black [&_h3]:text-black">
             <CompanyInfoFields control={form.control} />
-            <WorkAreaField control={form.control} />
             <LocationField control={form.control} />
             <JobDetailsFields control={form.control} />
             <CommissionSection salary={form.watch("actualSalary")} form={form} />
