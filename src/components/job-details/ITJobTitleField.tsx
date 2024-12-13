@@ -38,15 +38,12 @@ const itJobTitles: ITJobTitle[] = [
 const ITJobTitleField = ({ control }: ITJobTitleFieldProps) => {
   const [open, setOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
-  const [filteredTitles, setFilteredTitles] = useState<ITJobTitle[]>(itJobTitles);
 
-  const handleSearch = (value: string) => {
-    setSearchValue(value);
-    const filtered = itJobTitles.filter(title => 
-      title.label.toLowerCase().includes(value.toLowerCase())
-    );
-    setFilteredTitles(filtered);
-  };
+  const filteredTitles = searchValue === "" 
+    ? [] 
+    : itJobTitles.filter(title => 
+        title.label.toLowerCase().includes(searchValue.toLowerCase())
+      );
 
   return (
     <FormField
@@ -79,31 +76,35 @@ const ITJobTitleField = ({ control }: ITJobTitleFieldProps) => {
                 <CommandInput 
                   placeholder="Search IT job titles..." 
                   value={searchValue}
-                  onValueChange={handleSearch}
+                  onValueChange={setSearchValue}
                 />
-                <CommandEmpty>No job title found.</CommandEmpty>
-                <CommandGroup className="max-h-[200px] overflow-y-auto">
-                  {filteredTitles.map((title) => (
-                    <CommandItem
-                      key={title.value}
-                      value={title.value}
-                      onSelect={() => {
-                        field.onChange(title.value);
-                        setOpen(false);
-                        setSearchValue("");
-                        setFilteredTitles(itJobTitles);
-                      }}
-                    >
-                      {title.label}
-                      <Check
-                        className={cn(
-                          "ml-auto h-4 w-4",
-                          field.value === title.value ? "opacity-100" : "opacity-0"
-                        )}
-                      />
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
+                {searchValue === "" ? (
+                  <CommandEmpty>Start typing to search for job titles...</CommandEmpty>
+                ) : filteredTitles.length === 0 ? (
+                  <CommandEmpty>No job title found.</CommandEmpty>
+                ) : (
+                  <CommandGroup className="max-h-[200px] overflow-y-auto">
+                    {filteredTitles.map((title) => (
+                      <CommandItem
+                        key={title.value}
+                        value={title.value}
+                        onSelect={() => {
+                          field.onChange(title.value);
+                          setOpen(false);
+                          setSearchValue("");
+                        }}
+                      >
+                        {title.label}
+                        <Check
+                          className={cn(
+                            "ml-auto h-4 w-4",
+                            field.value === title.value ? "opacity-100" : "opacity-0"
+                          )}
+                        />
+                      </CommandItem>
+                    ))}
+                  </CommandGroup>
+                )}
               </Command>
             </PopoverContent>
           </Popover>
