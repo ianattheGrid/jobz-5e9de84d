@@ -39,8 +39,22 @@ const workAreas = [
   "Other"
 ];
 
+const itSpecializations = [
+  "Software Development and Programming",
+  "IT Support and Operations",
+  "Networking and Infrastructure",
+  "Cybersecurity",
+  "Data and Analytics",
+  "Cloud Computing",
+  "Artificial Intelligence and Machine Learning",
+  "Testing and Quality Assurance",
+  "IT Management",
+  "Specialised IT Roles"
+];
+
 const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
   const [showOtherInput, setShowOtherInput] = useState(false);
+  const [showITSpecialization, setShowITSpecialization] = useState(false);
 
   return (
     <div className="space-y-4">
@@ -55,6 +69,7 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
                 onValueChange={(value) => {
                   field.onChange(value);
                   setShowOtherInput(value === "Other");
+                  setShowITSpecialization(value === "IT");
                 }} 
                 defaultValue={field.value}
               >
@@ -74,6 +89,36 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
           </FormItem>
         )}
       />
+
+      {showITSpecialization && (
+        <FormField
+          control={control}
+          name="itSpecialization"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>IT Specialization</FormLabel>
+              <FormControl>
+                <Select 
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <SelectTrigger className="w-full bg-white border border-gray-300">
+                    <SelectValue placeholder="Select your IT specialization" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white">
+                    {itSpecializations.map((specialization) => (
+                      <SelectItem key={specialization} value={specialization}>
+                        {specialization}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      )}
 
       {showOtherInput && (
         <FormField
