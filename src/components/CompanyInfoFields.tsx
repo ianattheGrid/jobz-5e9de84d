@@ -2,7 +2,6 @@ import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/comp
 import { Input } from "@/components/ui/input";
 import { Control } from "react-hook-form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import WorkAreaField from "./WorkAreaField";
 
 interface CompanyInfoFieldsProps {
   control: Control<any>;
@@ -64,8 +63,6 @@ const CompanyInfoFields = ({ control }: CompanyInfoFieldsProps) => {
           )}
         />
       )}
-
-      <WorkAreaField control={control} />
 
       <FormField
         control={control}
