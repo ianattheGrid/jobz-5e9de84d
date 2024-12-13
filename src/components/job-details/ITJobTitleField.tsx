@@ -88,7 +88,7 @@ export default function ITJobTitleField({ control }: ITJobTitleFieldProps) {
                 </Button>
               </FormControl>
             </PopoverTrigger>
-            <PopoverContent className="w-full p-0">
+            <PopoverContent className="w-full p-0" align="start">
               <Command>
                 <CommandInput placeholder="Search IT job titles..." />
                 <CommandEmpty>No job title found.</CommandEmpty>
@@ -97,8 +97,8 @@ export default function ITJobTitleField({ control }: ITJobTitleFieldProps) {
                     <CommandItem
                       key={title.value}
                       value={title.value}
-                      onSelect={() => {
-                        field.onChange(title.value);
+                      onSelect={(currentValue) => {
+                        field.onChange(currentValue === field.value ? "" : currentValue);
                         setOpen(false);
                       }}
                     >
