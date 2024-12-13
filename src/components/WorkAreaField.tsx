@@ -1,84 +1,26 @@
-import {
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormMessage,
-} from "@/components/ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Control } from "react-hook-form";
 import { useState } from "react";
+import { workAreas, softwareDevTitles, itSupportTitles } from "./work-area/constants";
+import ITSpecializationSelect from "./work-area/ITSpecializationSelect";
+import JobTitleSelect from "./work-area/JobTitleSelect";
 
 interface WorkAreaFieldProps {
   control: Control<any>;
 }
-
-const workAreas = [
-  "R&D",
-  "Quality Assurance",
-  "Sales",
-  "Marketing",
-  "Customer Service",
-  "IT",
-  "Accounting & Finance",
-  "Human Resources",
-  "Legal",
-  "Manufacturing",
-  "Energy & Utilities",
-  "Pharma",
-  "Public Sector",
-  "Engineering",
-  "Hospitality & Tourism",
-  "Other"
-];
-
-const itSpecializations = [
-  "Software Development and Programming",
-  "IT Support and Operations",
-  "Networking and Infrastructure",
-  "Cybersecurity",
-  "Data and Analytics",
-  "Cloud Computing",
-  "Artificial Intelligence and Machine Learning",
-  "Testing and Quality Assurance",
-  "IT Management",
-  "Specialised IT Roles"
-];
-
-const softwareDevTitles = [
-  "Software Developer / Engineer",
-  "Front-End Developer",
-  "Back-End Developer",
-  "Full-Stack Developer",
-  "Mobile App Developer",
-  "Game Developer",
-  "DevOps Engineer",
-  "API Developer",
-  "Embedded Systems Developer"
-];
-
-const itSupportTitles = [
-  "IT Support Specialist",
-  "Help Desk Technician",
-  "IT Technician",
-  "IT Operations Manager",
-  "System Administrator",
-  "Network Administrator",
-  "Desktop Support Technician"
-];
 
 const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
   const [showOtherInput, setShowOtherInput] = useState(false);
   const [showITSpecialization, setShowITSpecialization] = useState(false);
   const [showSoftwareDevTitles, setShowSoftwareDevTitles] = useState(false);
   const [showITSupportTitles, setShowITSupportTitles] = useState(false);
+
+  const handleSpecializationChange = (value: string) => {
+    setShowSoftwareDevTitles(value === "Software Development and Programming");
+    setShowITSupportTitles(value === "IT Support and Operations");
+  };
 
   return (
     <div className="space-y-4">
@@ -119,97 +61,18 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
       />
 
       {showITSpecialization && (
-        <FormField
+        <ITSpecializationSelect 
           control={control}
-          name="itSpecialization"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>IT Specialization</FormLabel>
-              <FormControl>
-                <Select 
-                  onValueChange={(value) => {
-                    field.onChange(value);
-                    setShowSoftwareDevTitles(value === "Software Development and Programming");
-                    setShowITSupportTitles(value === "IT Support and Operations");
-                  }}
-                  defaultValue={field.value}
-                >
-                  <SelectTrigger className="w-full bg-white border border-gray-300">
-                    <SelectValue placeholder="Select your IT specialization" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white">
-                    {itSpecializations.map((specialization) => (
-                      <SelectItem key={specialization} value={specialization}>
-                        {specialization}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+          onSpecializationChange={handleSpecializationChange}
         />
       )}
 
       {showSoftwareDevTitles && (
-        <FormField
-          control={control}
-          name="title"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Job Title</FormLabel>
-              <FormControl>
-                <Select 
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <SelectTrigger className="w-full bg-white border border-gray-300">
-                    <SelectValue placeholder="Select the job title" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white">
-                    {softwareDevTitles.map((title) => (
-                      <SelectItem key={title} value={title}>
-                        {title}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <JobTitleSelect control={control} titles={softwareDevTitles} />
       )}
 
       {showITSupportTitles && (
-        <FormField
-          control={control}
-          name="title"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Job Title</FormLabel>
-              <FormControl>
-                <Select 
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <SelectTrigger className="w-full bg-white border border-gray-300">
-                    <SelectValue placeholder="Select the job title" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white">
-                    {itSupportTitles.map((title) => (
-                      <SelectItem key={title} value={title}>
-                        {title}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <JobTitleSelect control={control} titles={itSupportTitles} />
       )}
 
       {showOtherInput && (
