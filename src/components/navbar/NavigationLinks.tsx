@@ -10,6 +10,9 @@ const NavigationLinks = ({ isAuthenticated, userType }: NavigationLinksProps) =>
     <div className="flex-1 flex justify-end items-center">
       <div className="flex space-x-4">
         <Link to="/jobs" className="text-gray-600 hover:text-gray-900">Job Board</Link>
+        {isAuthenticated && userType === 'candidate' && (
+          <Link to="/candidate/dashboard" className="text-gray-600 hover:text-gray-900">Dashboard</Link>
+        )}
       </div>
     </div>
   );
