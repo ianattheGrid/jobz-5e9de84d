@@ -39,13 +39,32 @@ const ITJobTitleField = ({ control }: ITJobTitleFieldProps) => {
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
-  // Ensure component is mounted before rendering Command
   useEffect(() => {
     setMounted(true);
+    return () => setMounted(false);
   }, []);
 
   if (!mounted) {
-    return null;
+    return (
+      <FormField
+        control={control}
+        name="title"
+        render={({ field }) => (
+          <FormItem className="flex flex-col">
+            <FormLabel>Job Title</FormLabel>
+            <FormControl>
+              <Button
+                variant="outline"
+                role="combobox"
+                className="w-full justify-between"
+              >
+                Loading...
+              </Button>
+            </FormControl>
+          </FormItem>
+        )}
+      />
+    );
   }
 
   return (
@@ -75,7 +94,7 @@ const ITJobTitleField = ({ control }: ITJobTitleFieldProps) => {
               </FormControl>
             </PopoverTrigger>
             <PopoverContent className="w-full p-0" align="start">
-              <Command>
+              <Command shouldFilter={false}>
                 <CommandInput 
                   placeholder="Search IT job titles..." 
                   className="h-9"
