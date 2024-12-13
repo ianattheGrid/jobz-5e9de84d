@@ -62,7 +62,7 @@ const ITJobTitleField = ({ control }: ITJobTitleFieldProps) => {
                   role="combobox"
                   aria-expanded={open}
                   className={cn(
-                    "w-full justify-between",
+                    "w-full justify-between bg-white",
                     !field.value && "text-muted-foreground"
                   )}
                 >
@@ -73,16 +73,15 @@ const ITJobTitleField = ({ control }: ITJobTitleFieldProps) => {
                 </Button>
               </FormControl>
             </PopoverTrigger>
-            <PopoverContent className="w-full p-0" align="start">
-              <Command className="w-full bg-white border rounded-lg shadow-md">
+            <PopoverContent className="w-full p-0 bg-white" align="start">
+              <Command className="w-full">
                 <CommandInput 
                   placeholder="Search IT job titles..." 
                   value={searchValue}
                   onValueChange={handleSearch}
-                  className="border-none focus:ring-0"
                 />
-                <div className="max-h-[300px] overflow-y-auto bg-white">
-                  <CommandEmpty className="py-6 text-center text-sm text-gray-500">
+                <div className="max-h-[300px] overflow-y-auto">
+                  <CommandEmpty className="py-6 text-center text-sm">
                     No job title found
                   </CommandEmpty>
                   <CommandGroup>
@@ -95,7 +94,6 @@ const ITJobTitleField = ({ control }: ITJobTitleFieldProps) => {
                           setOpen(false);
                           setSearchValue("");
                         }}
-                        className="cursor-pointer hover:bg-gray-100"
                       >
                         {title.label}
                         <Check
