@@ -66,20 +66,6 @@ const CompanyInfoFields = ({ control }: CompanyInfoFieldsProps) => {
       )}
 
       <WorkAreaField control={control} />
-
-      <FormField
-        control={control}
-        name="title"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Job Title</FormLabel>
-            <FormControl>
-              <Input {...field} />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
     </div>
   );
 };
