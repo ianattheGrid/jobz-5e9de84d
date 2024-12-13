@@ -36,26 +36,26 @@ const EmployerDashboard = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-6">Employer Dashboard</h1>
+      <h1 className="text-2xl font-bold mb-6 text-white">Employer Dashboard</h1>
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         <div className="p-6 bg-white rounded-lg shadow-md">
-          <h2 className="text-xl font-semibold mb-4">Quick Actions</h2>
+          <h2 className="text-xl font-semibold mb-4 text-black">Quick Actions</h2>
           <div className="space-y-4">
             <Button
               onClick={() => navigate('/employer/create-vacancy')}
-              className="w-full bg-red-800 hover:bg-red-900"
+              className="w-full bg-red-800 hover:bg-red-900 text-white"
             >
               Post New Job
             </Button>
             <Button
               onClick={() => navigate('/employer/candidate-search')}
-              className="w-full bg-red-800 hover:bg-red-900"
+              className="w-full bg-red-800 hover:bg-red-900 text-white"
             >
               Search Candidates
             </Button>
             <Button
               onClick={() => navigate('/employer/interviews')}
-              className="w-full bg-red-800 hover:bg-red-900"
+              className="w-full bg-red-800 hover:bg-red-900 text-white"
             >
               View Interviews
             </Button>
