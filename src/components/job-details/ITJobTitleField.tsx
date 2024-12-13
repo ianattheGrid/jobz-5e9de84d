@@ -39,6 +39,10 @@ const ITJobTitleField = ({ control }: ITJobTitleFieldProps) => {
   const [open, setOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
 
+  const handleSearch = (value: string) => {
+    setSearchValue(value);
+  };
+
   const filteredTitles = searchValue === "" 
     ? [] 
     : itJobTitles.filter(title => 
@@ -79,7 +83,7 @@ const ITJobTitleField = ({ control }: ITJobTitleFieldProps) => {
                 <CommandInput 
                   placeholder="Search IT job titles..." 
                   value={searchValue}
-                  onValueChange={setSearchValue}
+                  onValueChange={handleSearch}
                   className="border-none focus:ring-0"
                 />
                 <div className="bg-white">
