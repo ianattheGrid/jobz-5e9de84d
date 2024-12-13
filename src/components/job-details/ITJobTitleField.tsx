@@ -75,14 +75,14 @@ const ITJobTitleField = ({ control }: ITJobTitleFieldProps) => {
               </FormControl>
             </PopoverTrigger>
             <PopoverContent className="w-full p-0" align="start">
-              <Command shouldFilter={false}>
+              <Command>
                 <CommandInput 
                   placeholder="Search IT job titles..." 
                   value={searchValue}
                   onValueChange={handleSearch}
                 />
                 <CommandEmpty>No job title found.</CommandEmpty>
-                <CommandGroup>
+                <CommandGroup className="max-h-[200px] overflow-y-auto">
                   {filteredTitles.map((title) => (
                     <CommandItem
                       key={title.value}
@@ -90,6 +90,8 @@ const ITJobTitleField = ({ control }: ITJobTitleFieldProps) => {
                       onSelect={() => {
                         field.onChange(title.value);
                         setOpen(false);
+                        setSearchValue("");
+                        setFilteredTitles(itJobTitles);
                       }}
                     >
                       {title.label}
