@@ -1,43 +1,52 @@
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Control, useWatch } from "react-hook-form";
+import { Control } from "react-hook-form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import WorkAreaField from "./WorkAreaField";
+import ITJobTitleField from "./job-details/ITJobTitleField";
+import { useWatch } from "react-hook-form";
 
 interface CompanyInfoFieldsProps {
   control: Control<any>;
 }
 
 const CompanyInfoFields = ({ control }: CompanyInfoFieldsProps) => {
-  const showCompanyName = useWatch({
+  const workArea = useWatch({
     control,
-    name: "showCompanyName",
+    name: "workArea",
   });
 
   return (
     <div className="space-y-4">
+      <h3 className="text-lg font-semibold">Company Information</h3>
+
       <FormField
         control={control}
         name="showCompanyName"
-        render={({ field: showCompanyNameField }) => (
+        render={({ field }) => (
           <FormItem className="space-y-3">
-            <FormLabel>Do you want your company name on the Job Vacancy?</FormLabel>
+            <FormLabel>Show company name in job listing?</FormLabel>
             <FormControl>
               <RadioGroup
-                onValueChange={showCompanyNameField.onChange}
-                defaultValue={showCompanyNameField.value}
-                className="flex flex-row space-x-4"
+                onValueChange={field.onChange}
+                defaultValue={field.value}
+                className="flex flex-col space-y-1"
               >
-                <FormItem className="flex items-center space-x-2">
+                <FormItem className="flex items-center space-x-3 space-y-0">
                   <FormControl>
                     <RadioGroupItem value="yes" />
                   </FormControl>
-                  <FormLabel className="font-normal">Yes</FormLabel>
+                  <FormLabel className="font-normal">
+                    Yes, show my company name
+                  </FormLabel>
                 </FormItem>
-                <FormItem className="flex items-center space-x-2">
+                <FormItem className="flex items-center space-x-3 space-y-0">
                   <FormControl>
                     <RadioGroupItem value="no" />
                   </FormControl>
-                  <FormLabel className="font-normal">No</FormLabel>
+                  <FormLabel className="font-normal">
+                    No, keep my company name hidden
+                  </FormLabel>
                 </FormItem>
               </RadioGroup>
             </FormControl>
@@ -46,15 +55,36 @@ const CompanyInfoFields = ({ control }: CompanyInfoFieldsProps) => {
         )}
       />
 
-      {showCompanyName === "yes" && (
+      {/* Only show company name field if they want to show company name */}
+      {control._formValues.showCompanyName === "yes" && (
         <FormField
           control={control}
           name="company"
-          render={({ field: companyField }) => (
+          render={({ field }) => (
             <FormItem>
               <FormLabel>Company Name</FormLabel>
               <FormControl>
-                <Input placeholder="Your company name" {...companyField} />
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      )}
+
+      <WorkAreaField control={control} />
+
+      {workArea === "IT" ? (
+        <ITJobTitleField control={control} />
+      ) : (
+        <FormField
+          control={control}
+          name="title"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Job Title</FormLabel>
+              <FormControl>
+                <Input {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
