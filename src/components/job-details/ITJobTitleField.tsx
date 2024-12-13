@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
@@ -37,6 +37,16 @@ interface ITJobTitleFieldProps {
 
 const ITJobTitleField = ({ control }: ITJobTitleFieldProps) => {
   const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  // Ensure component is mounted before rendering Command
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <FormField
@@ -64,7 +74,7 @@ const ITJobTitleField = ({ control }: ITJobTitleFieldProps) => {
                 </Button>
               </FormControl>
             </PopoverTrigger>
-            <PopoverContent className="w-full p-0" align="start" side="bottom">
+            <PopoverContent className="w-full p-0" align="start">
               <Command>
                 <CommandInput 
                   placeholder="Search IT job titles..." 
@@ -77,7 +87,7 @@ const ITJobTitleField = ({ control }: ITJobTitleFieldProps) => {
                       key={title.value}
                       value={title.value}
                       onSelect={(currentValue) => {
-                        field.onChange(currentValue);
+                        field.onChange(currentValue === field.value ? "" : currentValue);
                         setOpen(false);
                       }}
                     >
