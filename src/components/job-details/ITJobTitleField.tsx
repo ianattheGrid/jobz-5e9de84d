@@ -43,11 +43,9 @@ const ITJobTitleField = ({ control }: ITJobTitleFieldProps) => {
     setSearchValue(value);
   };
 
-  const filteredTitles = searchValue === "" 
-    ? [] 
-    : itJobTitles.filter(title => 
-        title.label.toLowerCase().includes(searchValue.toLowerCase())
-      );
+  const filteredTitles = itJobTitles.filter(title => 
+    title.label.toLowerCase().includes(searchValue.toLowerCase())
+  );
 
   return (
     <FormField
@@ -75,50 +73,40 @@ const ITJobTitleField = ({ control }: ITJobTitleFieldProps) => {
                 </Button>
               </FormControl>
             </PopoverTrigger>
-            <PopoverContent 
-              className="w-full p-0 bg-white shadow-lg border border-gray-200" 
-              align="start"
-            >
-              <Command className="bg-white">
+            <PopoverContent className="w-full p-0" align="start">
+              <Command className="w-full bg-white border rounded-lg shadow-md">
                 <CommandInput 
                   placeholder="Search IT job titles..." 
                   value={searchValue}
                   onValueChange={handleSearch}
                   className="border-none focus:ring-0"
                 />
-                <div className="bg-white">
-                  {searchValue === "" ? (
-                    <CommandEmpty className="py-6 text-sm text-gray-500">
-                      Start typing to search for job titles...
-                    </CommandEmpty>
-                  ) : filteredTitles.length === 0 ? (
-                    <CommandEmpty className="py-6 text-sm text-gray-500">
-                      No job title found.
-                    </CommandEmpty>
-                  ) : (
-                    <CommandGroup className="max-h-[200px] overflow-y-auto bg-white">
-                      {filteredTitles.map((title) => (
-                        <CommandItem
-                          key={title.value}
-                          value={title.value}
-                          onSelect={() => {
-                            field.onChange(title.value);
-                            setOpen(false);
-                            setSearchValue("");
-                          }}
-                          className="cursor-pointer hover:bg-gray-100"
-                        >
-                          {title.label}
-                          <Check
-                            className={cn(
-                              "ml-auto h-4 w-4",
-                              field.value === title.value ? "opacity-100" : "opacity-0"
-                            )}
-                          />
-                        </CommandItem>
-                      ))}
-                    </CommandGroup>
-                  )}
+                <div className="max-h-[300px] overflow-y-auto bg-white">
+                  <CommandEmpty className="py-6 text-center text-sm text-gray-500">
+                    No job title found
+                  </CommandEmpty>
+                  <CommandGroup>
+                    {filteredTitles.map((title) => (
+                      <CommandItem
+                        key={title.value}
+                        value={title.value}
+                        onSelect={() => {
+                          field.onChange(title.value);
+                          setOpen(false);
+                          setSearchValue("");
+                        }}
+                        className="cursor-pointer hover:bg-gray-100"
+                      >
+                        {title.label}
+                        <Check
+                          className={cn(
+                            "ml-auto h-4 w-4",
+                            field.value === title.value ? "opacity-100" : "opacity-0"
+                          )}
+                        />
+                      </CommandItem>
+                    ))}
+                  </CommandGroup>
                 </div>
               </Command>
             </PopoverContent>
