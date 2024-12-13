@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -71,40 +71,51 @@ const ITJobTitleField = ({ control }: ITJobTitleFieldProps) => {
                 </Button>
               </FormControl>
             </PopoverTrigger>
-            <PopoverContent className="w-full p-0" align="start">
-              <Command>
+            <PopoverContent 
+              className="w-full p-0 bg-white shadow-lg border border-gray-200" 
+              align="start"
+            >
+              <Command className="bg-white">
                 <CommandInput 
                   placeholder="Search IT job titles..." 
                   value={searchValue}
                   onValueChange={setSearchValue}
+                  className="border-none focus:ring-0"
                 />
-                {searchValue === "" ? (
-                  <CommandEmpty>Start typing to search for job titles...</CommandEmpty>
-                ) : filteredTitles.length === 0 ? (
-                  <CommandEmpty>No job title found.</CommandEmpty>
-                ) : (
-                  <CommandGroup className="max-h-[200px] overflow-y-auto">
-                    {filteredTitles.map((title) => (
-                      <CommandItem
-                        key={title.value}
-                        value={title.value}
-                        onSelect={() => {
-                          field.onChange(title.value);
-                          setOpen(false);
-                          setSearchValue("");
-                        }}
-                      >
-                        {title.label}
-                        <Check
-                          className={cn(
-                            "ml-auto h-4 w-4",
-                            field.value === title.value ? "opacity-100" : "opacity-0"
-                          )}
-                        />
-                      </CommandItem>
-                    ))}
-                  </CommandGroup>
-                )}
+                <div className="bg-white">
+                  {searchValue === "" ? (
+                    <CommandEmpty className="py-6 text-sm text-gray-500">
+                      Start typing to search for job titles...
+                    </CommandEmpty>
+                  ) : filteredTitles.length === 0 ? (
+                    <CommandEmpty className="py-6 text-sm text-gray-500">
+                      No job title found.
+                    </CommandEmpty>
+                  ) : (
+                    <CommandGroup className="max-h-[200px] overflow-y-auto bg-white">
+                      {filteredTitles.map((title) => (
+                        <CommandItem
+                          key={title.value}
+                          value={title.value}
+                          onSelect={() => {
+                            field.onChange(title.value);
+                            setOpen(false);
+                            setSearchValue("");
+                          }}
+                          className="cursor-pointer hover:bg-gray-100"
+                        >
+                          {title.label}
+                          <Check
+                            className={cn(
+                              "ml-auto h-4 w-4",
+                              field.value === title.value ? "opacity-100" : "opacity-0"
+                            )}
+                          />
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                  )}
+                </div>
               </Command>
             </PopoverContent>
           </Popover>
