@@ -134,7 +134,7 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
         <OtherWorkAreaInput control={control} />
       )}
 
-      {jobTitle && (
+      {jobTitle && !showOtherInput && (
         <ExperienceSelect control={control} jobTitle={jobTitle} />
       )}
     </div>
