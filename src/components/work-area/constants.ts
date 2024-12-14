@@ -106,3 +106,14 @@ export const testingTitles = [
   "Test Analyst",
   "Performance Tester"
 ];
+
+export const itManagementTitles = [
+  "IT Manager",
+  "IT Director",
+  "Chief Information Officer (CIO)",
+  "Chief Technology Officer (CTO)",
+  "IT Project Manager",
+  "IT Service Manager",
+  "Scrum Master",
+  "Product Owner"
+];
