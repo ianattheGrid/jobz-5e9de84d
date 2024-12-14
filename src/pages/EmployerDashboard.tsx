@@ -48,6 +48,12 @@ const EmployerDashboard = () => {
               Post New Job
             </Button>
             <Button
+              onClick={() => navigate('/employer/manage-jobs')}
+              className="w-full bg-red-800 hover:bg-red-900 text-white"
+            >
+              Manage Jobs
+            </Button>
+            <Button
               onClick={() => navigate('/employer/candidate-search')}
               className="w-full bg-red-800 hover:bg-red-900 text-white"
             >
