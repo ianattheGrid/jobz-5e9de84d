@@ -10,7 +10,7 @@ import { searchFormSchema } from "./searchFormSchema";
 import QualificationSelector from "@/components/job-details/QualificationSelector";
 import ITSkillsField from "@/components/job-details/ITSkillsField";
 import SecurityClearanceFields from "@/components/job-details/SecurityClearanceFields";
-import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
+import SignupPeriodField from "./SignupPeriodField";
 
 interface SearchFormProps {
   onSubmit: (values: z.infer<typeof searchFormSchema>) => Promise<void>;
@@ -27,6 +27,7 @@ export function SearchForm({ onSubmit }: SearchFormProps) {
       required_skills: [],
       requiresSecurityClearance: false,
       securityClearanceLevel: undefined,
+      signupPeriod: "",
     },
   });
 
@@ -56,6 +57,7 @@ export function SearchForm({ onSubmit }: SearchFormProps) {
 
         <ITSkillsField control={form.control} />
         <SecurityClearanceFields control={form.control} />
+        <SignupPeriodField control={form.control} />
         
         <div className="flex justify-start">
           <Button type="submit" className="bg-red-800 hover:bg-red-900">

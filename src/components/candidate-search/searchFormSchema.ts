@@ -17,4 +17,5 @@ export const searchFormSchema = z.object({
   required_skills: z.array(z.string()).optional(),
   requiresSecurityClearance: z.boolean().optional(),
   securityClearanceLevel: z.string().optional(),
+  signupPeriod: z.string().optional(),
 });
