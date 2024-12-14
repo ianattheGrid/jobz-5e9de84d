@@ -1,6 +1,6 @@
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Control } from "react-hook-form";
 import { useState } from "react";
 
@@ -25,19 +25,32 @@ const SecurityClearanceFields = ({ control }: SecurityClearanceFieldsProps) => {
         control={control}
         name="requiresSecurityClearance"
         render={({ field }) => (
-          <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md">
+          <FormItem className="space-y-3">
+            <FormLabel>Does this role require security clearance?</FormLabel>
             <FormControl>
-              <Checkbox
-                checked={field.value}
-                onCheckedChange={(checked) => {
-                  field.onChange(checked);
-                  setRequiresClearance(checked as boolean);
+              <RadioGroup
+                onValueChange={(value) => {
+                  field.onChange(value === "yes");
+                  setRequiresClearance(value === "yes");
                 }}
-              />
+                defaultValue={field.value ? "yes" : "no"}
+                className="flex flex-col space-y-1"
+              >
+                <FormItem className="flex items-center space-x-3 space-y-0">
+                  <FormControl>
+                    <RadioGroupItem value="yes" />
+                  </FormControl>
+                  <FormLabel className="font-normal">Yes</FormLabel>
+                </FormItem>
+                <FormItem className="flex items-center space-x-3 space-y-0">
+                  <FormControl>
+                    <RadioGroupItem value="no" />
+                  </FormControl>
+                  <FormLabel className="font-normal">No</FormLabel>
+                </FormItem>
+              </RadioGroup>
             </FormControl>
-            <FormLabel className="font-normal">
-              Does this role require security clearance?
-            </FormLabel>
+            <FormMessage />
           </FormItem>
         )}
       />
