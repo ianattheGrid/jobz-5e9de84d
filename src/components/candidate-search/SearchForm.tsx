@@ -31,7 +31,7 @@ export function SearchForm({ onSubmit }: SearchFormProps) {
       securityClearanceLevel: undefined,
       signupPeriod: "",
       workEligibility: undefined,
-      minCommissionPercentage: 0,
+      includeCommissionCandidates: false,
     },
   });
 

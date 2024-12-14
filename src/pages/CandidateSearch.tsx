@@ -93,11 +93,12 @@ export default function CandidateSearch() {
       query = query
         .or(`min_salary.lte.${flexibleMaxSalary},max_salary.gte.${flexibleMinSalary}`);
 
-      // Apply commission percentage filter if specified
-      if (values.minCommissionPercentage && values.minCommissionPercentage > 0) {
-        query = query.gte('commission_percentage', values.minCommissionPercentage);
+      // Apply commission filter if selected
+      if (values.includeCommissionCandidates) {
+        query = query.not('commission_percentage', 'is', null);
       }
 
+      // Apply qualification filter if specified
       if (values.qualification && values.qualification !== 'None') {
         query = query.contains('required_qualifications', [values.qualification]);
       }

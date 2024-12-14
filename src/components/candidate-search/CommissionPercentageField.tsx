@@ -1,5 +1,5 @@
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
-import { Slider } from "@/components/ui/slider";
+import { Switch } from "@/components/ui/switch";
 import { Control } from "react-hook-form";
 
 interface CommissionPercentageFieldProps {
@@ -10,26 +10,19 @@ const CommissionPercentageField = ({ control }: CommissionPercentageFieldProps) 
   return (
     <FormField
       control={control}
-      name="minCommissionPercentage"
+      name="includeCommissionCandidates"
       render={({ field }) => (
-        <FormItem>
-          <FormLabel>Minimum "You're Hired" Bonus Percentage</FormLabel>
+        <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+          <div className="space-y-0.5">
+            <FormLabel className="text-base">Include "You're Hired" Bonus Candidates</FormLabel>
+            <FormMessage />
+          </div>
           <FormControl>
-            <div className="space-y-2">
-              <Slider
-                value={[field.value || 0]}
-                onValueChange={(value) => field.onChange(value[0])}
-                min={0}
-                max={14}
-                step={0.5}
-                className="w-full"
-              />
-              <div className="text-sm text-muted-foreground">
-                {field.value ? `${field.value}% of salary` : 'No minimum percentage'}
-              </div>
-            </div>
+            <Switch
+              checked={field.value}
+              onCheckedChange={field.onChange}
+            />
           </FormControl>
-          <FormMessage />
         </FormItem>
       )}
     />
