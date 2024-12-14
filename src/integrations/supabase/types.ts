@@ -373,21 +373,39 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      calculate_match_score: {
-        Args: {
-          job_title_a: string
-          job_title_b: string
-          years_exp_a: number
-          years_exp_b: number
-          location_a: string
-          location_b: string
-          salary_min_a: number
-          salary_max_a: number
-          salary_min_b: number
-          salary_max_b: number
-        }
-        Returns: number
-      }
+      calculate_match_score:
+        | {
+            Args: {
+              job_title_a: string
+              job_title_b: string
+              years_exp_a: number
+              years_exp_b: number
+              location_a: string
+              location_b: string
+              salary_min_a: number
+              salary_max_a: number
+              salary_min_b: number
+              salary_max_b: number
+            }
+            Returns: number
+          }
+        | {
+            Args: {
+              job_title_a: string
+              job_title_b: string
+              years_exp_a: number
+              years_exp_b: number
+              location_a: string
+              location_b: string
+              salary_min_a: number
+              salary_max_a: number
+              salary_min_b: number
+              salary_max_b: number
+              skills_a: string[]
+              skills_b: string[]
+            }
+            Returns: number
+          }
       http_process_matches: {
         Args: Record<PropertyKey, never>
         Returns: undefined
