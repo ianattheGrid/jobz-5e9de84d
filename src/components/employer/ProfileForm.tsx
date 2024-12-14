@@ -48,7 +48,7 @@ export const ProfileForm = ({ profile, setProfile, email }: ProfileFormProps) =>
 
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-3 gap-4">
+      <div className="space-y-4">
         <div className="space-y-2">
           <label className="text-sm font-medium" htmlFor="company-name">
             Company Name
@@ -60,13 +60,6 @@ export const ProfileForm = ({ profile, setProfile, email }: ProfileFormProps) =>
               setProfile({ ...profile, company_name: e.target.value })
             }
           />
-        </div>
-        <div className="col-span-2">
-          <div className="h-full flex items-end">
-            <span className="text-sm text-gray-500">
-              This will be displayed on your job postings
-            </span>
-          </div>
         </div>
 
         <div className="space-y-2">
@@ -81,13 +74,6 @@ export const ProfileForm = ({ profile, setProfile, email }: ProfileFormProps) =>
             }
           />
         </div>
-        <div className="col-span-2">
-          <div className="h-full flex items-end">
-            <span className="text-sm text-gray-500">
-              Your name as the company representative
-            </span>
-          </div>
-        </div>
 
         <div className="space-y-2">
           <label className="text-sm font-medium" htmlFor="job-title">
@@ -101,13 +87,6 @@ export const ProfileForm = ({ profile, setProfile, email }: ProfileFormProps) =>
             }
           />
         </div>
-        <div className="col-span-2">
-          <div className="h-full flex items-end">
-            <span className="text-sm text-gray-500">
-              Your role within the company
-            </span>
-          </div>
-        </div>
 
         <div className="space-y-2">
           <label className="text-sm font-medium" htmlFor="email">
@@ -115,20 +94,13 @@ export const ProfileForm = ({ profile, setProfile, email }: ProfileFormProps) =>
           </label>
           <Input id="email" value={email} disabled />
         </div>
-        <div className="col-span-2">
-          <div className="h-full flex items-end">
-            <span className="text-sm text-gray-500">
-              Your account email (cannot be changed)
-            </span>
-          </div>
-        </div>
       </div>
 
       <div className="flex justify-end">
         <Button
           onClick={handleSave}
           disabled={saving}
-          className="bg-red-800 hover:bg-red-900"
+          className="bg-red-800 hover:bg-red-900 text-white"
         >
           {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           Save Changes
