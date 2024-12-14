@@ -70,3 +70,13 @@ export const cybersecurityTitles = [
   "Incident Response Specialist",
   "Chief Information Security Officer (CISO)"
 ];
+
+export const dataAnalyticsTitles = [
+  "Data Scientist",
+  "Data Analyst", 
+  "Data Engineer",
+  "Database Administrator (DBA)",
+  "Machine Learning Engineer", 
+  "Business Intelligence Analyst",
+  "Data Architect"
+];

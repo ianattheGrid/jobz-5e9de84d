@@ -3,27 +3,32 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input";
 import { Control } from "react-hook-form";
 import { useState } from "react";
-import { workAreas, softwareDevTitles, itSupportTitles, networkingTitles, cybersecurityTitles } from "./work-area/constants";
+import { 
+  workAreas, 
+  softwareDevTitles, 
+  itSupportTitles, 
+  networkingTitles, 
+  cybersecurityTitles,
+  dataAnalyticsTitles 
+} from "./work-area/constants";
 import ITSpecializationSelect from "./work-area/ITSpecializationSelect";
 import JobTitleSelect from "./work-area/JobTitleSelect";
 
-interface WorkAreaFieldProps {
-  control: Control<any>;
-}
-
-const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
+const WorkAreaField = ({ control }: { control: Control<any> }) => {
   const [showOtherInput, setShowOtherInput] = useState(false);
   const [showITSpecialization, setShowITSpecialization] = useState(false);
   const [showSoftwareDevTitles, setShowSoftwareDevTitles] = useState(false);
   const [showITSupportTitles, setShowITSupportTitles] = useState(false);
   const [showNetworkingTitles, setShowNetworkingTitles] = useState(false);
   const [showCybersecurityTitles, setShowCybersecurityTitles] = useState(false);
+  const [showDataAnalyticsTitles, setShowDataAnalyticsTitles] = useState(false);
 
   const handleSpecializationChange = (value: string) => {
     setShowSoftwareDevTitles(value === "Software Development and Programming");
     setShowITSupportTitles(value === "IT Support and Operations");
     setShowNetworkingTitles(value === "Networking and Infrastructure");
     setShowCybersecurityTitles(value === "Cybersecurity");
+    setShowDataAnalyticsTitles(value === "Data and Analytics");
   };
 
   return (
@@ -45,6 +50,7 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
                     setShowITSupportTitles(false);
                     setShowNetworkingTitles(false);
                     setShowCybersecurityTitles(false);
+                    setShowDataAnalyticsTitles(false);
                   }
                 }} 
                 defaultValue={field.value}
@@ -87,6 +93,10 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
 
       {showCybersecurityTitles && (
         <JobTitleSelect control={control} titles={cybersecurityTitles} />
+      )}
+
+      {showDataAnalyticsTitles && (
+        <JobTitleSelect control={control} titles={dataAnalyticsTitles} />
       )}
 
       {showOtherInput && (
