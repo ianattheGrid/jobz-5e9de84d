@@ -123,10 +123,7 @@ export default function CreateVacancy() {
 
       <h1 className="text-2xl font-bold mb-4 text-left text-black">Create New Vacancy</h1>
       <p className="text-[#ea384c] mb-8 text-left text-sm">
-        We function as a platform that intelligently matches candidates 
-        to your vacancy based on multiple criteria including job titles, experience levels, technical skills, 
-        salary expectations, and location preferences. Attract top talent by offering a "You're Hired" bonus 
-        that incentivises candidates and sets your opportunity apart from standard job listings.
+        Post your job vacancy and find the right candidates.
       </p>
       <VacancyForm form={form} onSubmit={onSubmit} />
     </div>
