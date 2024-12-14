@@ -2,6 +2,7 @@ import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/comp
 import { Control } from "react-hook-form";
 import SalaryFields from "./job-details/SalaryFields";
 import WorkLocationFields from "./job-details/WorkLocationFields";
+import WorkEligibilityField from "./job-details/WorkEligibilityField";
 import BenefitsFields from "./job-details/BenefitsFields";
 import { Textarea } from "@/components/ui/textarea";
 import ITQualificationsField from "./job-details/ITQualificationsField";
@@ -57,6 +58,7 @@ const JobDetailsFields = ({ control }: JobDetailsFieldsProps) => {
       />
 
       <WorkLocationFields control={control} />
+      <WorkEligibilityField control={control} />
       <BenefitsFields control={control} />
     </div>
   );
