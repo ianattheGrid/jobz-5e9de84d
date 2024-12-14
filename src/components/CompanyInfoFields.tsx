@@ -9,16 +9,13 @@ interface CompanyInfoFieldsProps {
 const CompanyInfoFields = ({ control }: CompanyInfoFieldsProps) => {
   return (
     <div className="space-y-4">
-      <h3 className="text-lg font-semibold">Company Information</h3>
-
       <FormField
         control={control}
         name="company"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Company Name</FormLabel>
             <FormControl>
-              <Input {...field} />
+              <Input {...field} placeholder="Enter company name" />
             </FormControl>
             <FormMessage />
           </FormItem>
