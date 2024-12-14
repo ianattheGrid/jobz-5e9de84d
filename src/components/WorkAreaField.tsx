@@ -3,7 +3,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input";
 import { Control } from "react-hook-form";
 import { useState } from "react";
-import { workAreas, softwareDevTitles, itSupportTitles, networkingTitles } from "./work-area/constants";
+import { workAreas, softwareDevTitles, itSupportTitles, networkingTitles, cybersecurityTitles } from "./work-area/constants";
 import ITSpecializationSelect from "./work-area/ITSpecializationSelect";
 import JobTitleSelect from "./work-area/JobTitleSelect";
 
@@ -17,11 +17,13 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
   const [showSoftwareDevTitles, setShowSoftwareDevTitles] = useState(false);
   const [showITSupportTitles, setShowITSupportTitles] = useState(false);
   const [showNetworkingTitles, setShowNetworkingTitles] = useState(false);
+  const [showCybersecurityTitles, setShowCybersecurityTitles] = useState(false);
 
   const handleSpecializationChange = (value: string) => {
     setShowSoftwareDevTitles(value === "Software Development and Programming");
     setShowITSupportTitles(value === "IT Support and Operations");
     setShowNetworkingTitles(value === "Networking and Infrastructure");
+    setShowCybersecurityTitles(value === "Cybersecurity");
   };
 
   return (
@@ -42,6 +44,7 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
                     setShowSoftwareDevTitles(false);
                     setShowITSupportTitles(false);
                     setShowNetworkingTitles(false);
+                    setShowCybersecurityTitles(false);
                   }
                 }} 
                 defaultValue={field.value}
@@ -80,6 +83,10 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
 
       {showNetworkingTitles && (
         <JobTitleSelect control={control} titles={networkingTitles} />
+      )}
+
+      {showCybersecurityTitles && (
+        <JobTitleSelect control={control} titles={cybersecurityTitles} />
       )}
 
       {showOtherInput && (

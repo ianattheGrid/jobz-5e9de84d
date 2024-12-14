@@ -60,3 +60,13 @@ export const networkingTitles = [
   "VoIP Engineer",
   "Wireless Network Engineer"
 ];
+
+export const cybersecurityTitles = [
+  "Cybersecurity Analyst",
+  "Cybersecurity Engineer",
+  "Information Security Analyst",
+  "Penetration Tester (Ethical Hacker)",
+  "Security Architect",
+  "Incident Response Specialist",
+  "Chief Information Security Officer (CISO)"
+];
