@@ -1,4 +1,4 @@
-import { Database } from "@/integrations/supabase/types";
+import { Job } from "@/integrations/supabase/types/jobs";
 import { Button } from "@/components/ui/button";
 import { formatBenefits } from "./utils";
 import { useState } from "react";
@@ -15,10 +15,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-
-type Job = Database['public']['Tables']['jobs']['Row'];
 
 interface JobCardBackProps {
   job: Job;
