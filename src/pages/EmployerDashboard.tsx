@@ -40,7 +40,7 @@ const EmployerDashboard = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-800"></div>
       </div>
     );
   }
@@ -80,19 +80,19 @@ const EmployerDashboard = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8 text-primary">Employer Dashboard</h1>
+      <h1 className="text-3xl font-bold mb-8 text-red-800">Employer Dashboard</h1>
       
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {menuItems.map((item, index) => (
           <Button
             key={index}
             variant="outline"
-            className="h-auto p-6 flex flex-col items-center gap-4 bg-white hover:bg-primary-light transition-all duration-200 border border-gray-200 rounded-lg shadow-sm hover:shadow-md"
+            className="h-auto p-6 flex flex-col items-center gap-4 bg-white hover:bg-red-50 transition-all duration-200 border border-gray-200 rounded-lg shadow-sm hover:shadow-md"
             onClick={() => navigate(item.path)}
           >
-            <div className="text-primary">{item.icon}</div>
+            <div className="text-red-800">{item.icon}</div>
             <div className="text-center">
-              <h3 className="font-semibold text-lg mb-2 text-primary">{item.title}</h3>
+              <h3 className="font-semibold text-lg mb-2 text-red-800">{item.title}</h3>
               <p className="text-sm text-gray-600">{item.description}</p>
             </div>
           </Button>
