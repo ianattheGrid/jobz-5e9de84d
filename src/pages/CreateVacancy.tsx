@@ -1,17 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import * as z from "zod";
-import { Button } from "@/components/ui/button";
-import { Form } from "@/components/ui/form";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate, Link } from "react-router-dom";
 import { useEffect } from "react";
-import JobDetailsFields from "@/components/JobDetailsFields";
-import LocationField from "@/components/LocationField";
-import ApplicationPreferencesField from "@/components/ApplicationPreferencesField";
-import CommissionSection from "@/components/CommissionSection";
-import WorkAreaField from "@/components/WorkAreaField";
+import { VacancyForm } from "@/components/vacancy/VacancyForm";
+import { vacancyFormSchema, type VacancyFormValues } from "@/components/vacancy/VacancyFormSchema";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -20,53 +14,11 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 
-const formSchema = z.object({
-  workArea: z.string({
-    required_error: "Please select the area of work for this vacancy.",
-  }),
-  itSpecialization: z.string().optional(),
-  title: z.string().optional(),
-  otherWorkArea: z.string().optional(),
-  location: z.string().min(2, {
-    message: "Location must be at least 2 characters.",
-  }),
-  description: z.string()
-    .min(10, {
-      message: "Job description must be at least 10 characters.",
-    })
-    .max(2000, {
-      message: "Job description cannot exceed 2000 characters.",
-    }),
-  salary: z.string().min(1, {
-    message: "Salary is required",
-  }),
-  actualSalary: z.string().min(1, {
-    message: "Actual salary is required",
-  }),
-  workLocation: z.enum(["office", "hybrid", "remote"]).default("office"),
-  officePercentage: z.number().min(0).max(100).optional(),
-  type: z.literal("Full-time"),
-  holidayEntitlement: z.string().min(1, {
-    message: "Holiday entitlement is required",
-  }),
-  companyBenefits: z.string().min(1, {
-    message: "Company benefits are required",
-  }),
-  otherBenefits: z.string().optional(),
-  applicationMethod: z.enum(["platform", "email", "custom"]).default("platform"),
-  applicationEmail: z.string().email().optional().or(z.literal("")),
-  applicationInstructions: z.string().optional().or(z.literal("")),
-  offerCandidateCommission: z.boolean().default(false),
-  offerReferralCommission: z.boolean().default(false),
-  candidateCommission: z.string().optional(),
-  referralCommission: z.string().optional(),
-});
-
 export default function CreateVacancy() {
   const { toast } = useToast();
   const navigate = useNavigate();
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<VacancyFormValues>({
+    resolver: zodResolver(vacancyFormSchema),
     defaultValues: {
       type: "Full-time",
       applicationMethod: "platform",
@@ -89,7 +41,6 @@ export default function CreateVacancy() {
         return;
       }
 
-      // Check if the user is an employer
       const userType = session.user.user_metadata.user_type;
       if (userType !== 'employer') {
         toast({
@@ -105,7 +56,7 @@ export default function CreateVacancy() {
     checkAuth();
   }, [navigate, toast]);
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: VacancyFormValues) => {
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session || session.user.user_metadata.user_type !== 'employer') {
@@ -171,20 +122,7 @@ export default function CreateVacancy() {
       </Breadcrumb>
 
       <h1 className="text-2xl font-bold mb-6 text-left text-black">Create New Vacancy</h1>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 text-left">
-          <div className="space-y-8 [&_label]:text-black [&_h3]:text-black">
-            <WorkAreaField control={form.control} />
-            <LocationField control={form.control} />
-            <JobDetailsFields control={form.control} />
-            <CommissionSection salary={form.watch("actualSalary")} form={form} />
-            <ApplicationPreferencesField control={form.control} />
-          </div>
-          <div className="flex justify-start">
-            <Button type="submit" className="bg-red-800 hover:bg-red-900 text-white">Post Vacancy</Button>
-          </div>
-        </form>
-      </Form>
+      <VacancyForm form={form} onSubmit={onSubmit} />
     </div>
   );
 }
