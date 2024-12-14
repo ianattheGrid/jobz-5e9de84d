@@ -47,7 +47,7 @@ const ITSkillsField = ({ control }: ITSkillsFieldProps) => {
                 value=""
               >
                 <SelectTrigger className="w-full bg-white">
-                  <SelectValue placeholder="Select required IT skills" />
+                  <SelectValue placeholder="None">None</SelectValue>
                 </SelectTrigger>
                 <SelectContent className="bg-white max-h-[300px]">
                   <SelectItem value="none">None</SelectItem>
