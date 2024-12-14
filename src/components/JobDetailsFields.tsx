@@ -5,6 +5,7 @@ import WorkLocationFields from "./job-details/WorkLocationFields";
 import BenefitsFields from "./job-details/BenefitsFields";
 import { Textarea } from "@/components/ui/textarea";
 import ITQualificationsField from "./job-details/ITQualificationsField";
+import ITSkillsField from "./job-details/ITSkillsField";
 
 interface JobDetailsFieldsProps {
   control: Control<any>;
@@ -40,6 +41,8 @@ const JobDetailsFields = ({ control }: JobDetailsFieldsProps) => {
           </FormItem>
         )}
       />
+
+      <ITSkillsField control={control} />
 
       <FormField
         control={control}
