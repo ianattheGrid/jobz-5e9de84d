@@ -40,6 +40,7 @@ export const vacancyFormSchema = z.object({
   offerReferralCommission: z.boolean().default(false),
   candidateCommission: z.string().optional(),
   referralCommission: z.string().optional(),
+  matchThreshold: z.number().min(0).max(100).default(60),
 });
 
 export type VacancyFormValues = z.infer<typeof vacancyFormSchema>;

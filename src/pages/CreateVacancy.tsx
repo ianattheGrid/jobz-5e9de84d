@@ -24,6 +24,7 @@ export default function CreateVacancy() {
       applicationMethod: "platform",
       offerCandidateCommission: false,
       offerReferralCommission: false,
+      matchThreshold: 60,
     },
   });
 
@@ -83,6 +84,7 @@ export default function CreateVacancy() {
         holiday_entitlement: holidayDays,
         company_benefits: values.companyBenefits,
         employer_id: session.user.id,
+        match_threshold: values.matchThreshold,
         candidate_commission: values.offerCandidateCommission ? 
           parseInt(values.candidateCommission?.replace(/[^0-9.-]+/g, "") || "0") : null
       });

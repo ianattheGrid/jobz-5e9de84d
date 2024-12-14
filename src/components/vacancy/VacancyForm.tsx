@@ -7,6 +7,7 @@ import LocationField from "@/components/LocationField";
 import JobDetailsFields from "@/components/JobDetailsFields";
 import CommissionSection from "@/components/CommissionSection";
 import ApplicationPreferencesField from "@/components/ApplicationPreferencesField";
+import MatchThresholdField from "./MatchThresholdField";
 
 interface VacancyFormProps {
   form: UseFormReturn<VacancyFormValues>;
@@ -21,6 +22,7 @@ export function VacancyForm({ form, onSubmit }: VacancyFormProps) {
           <WorkAreaField control={form.control} />
           <LocationField control={form.control} />
           <JobDetailsFields control={form.control} />
+          <MatchThresholdField control={form.control} />
           <CommissionSection salary={form.watch("actualSalary")} form={form} />
           <ApplicationPreferencesField control={form.control} />
         </div>
