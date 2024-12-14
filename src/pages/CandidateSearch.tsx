@@ -17,7 +17,7 @@ interface CandidateProfile {
   required_qualifications?: string[];
   required_skills?: string[];
   security_clearance?: string;
-  work_eligibility?: string;
+  commission_percentage?: number;
 }
 
 export default function CandidateSearch() {
@@ -92,6 +92,11 @@ export default function CandidateSearch() {
       // Apply flexible salary range filter
       query = query
         .or(`min_salary.lte.${flexibleMaxSalary},max_salary.gte.${flexibleMinSalary}`);
+
+      // Apply commission percentage filter if specified
+      if (values.minCommissionPercentage && values.minCommissionPercentage > 0) {
+        query = query.gte('commission_percentage', values.minCommissionPercentage);
+      }
 
       if (values.qualification && values.qualification !== 'None') {
         query = query.contains('required_qualifications', [values.qualification]);

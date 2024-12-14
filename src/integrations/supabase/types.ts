@@ -52,6 +52,7 @@ export type Database = {
       }
       candidate_profiles: {
         Row: {
+          commission_percentage: number | null
           created_at: string
           id: string
           job_title: string
@@ -66,6 +67,7 @@ export type Database = {
           years_experience: number
         }
         Insert: {
+          commission_percentage?: number | null
           created_at?: string
           id: string
           job_title: string
@@ -80,6 +82,7 @@ export type Database = {
           years_experience: number
         }
         Update: {
+          commission_percentage?: number | null
           created_at?: string
           id?: string
           job_title?: string

@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
-import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
+import { Form } from "@/components/ui/form";
 import WorkAreaField from "@/components/WorkAreaField";
 import LocationField from "@/components/LocationField";
 import SalaryRangeField from "@/components/SalaryRangeField";
@@ -12,6 +12,7 @@ import ITSkillsField from "@/components/job-details/ITSkillsField";
 import SecurityClearanceFields from "@/components/job-details/SecurityClearanceFields";
 import SignupPeriodField from "./SignupPeriodField";
 import WorkEligibilityField from "@/components/job-details/WorkEligibilityField";
+import CommissionPercentageField from "./CommissionPercentageField";
 
 interface SearchFormProps {
   onSubmit: (values: z.infer<typeof searchFormSchema>) => Promise<void>;
@@ -30,6 +31,7 @@ export function SearchForm({ onSubmit }: SearchFormProps) {
       securityClearanceLevel: undefined,
       signupPeriod: "",
       workEligibility: undefined,
+      minCommissionPercentage: 0,
     },
   });
 
@@ -39,6 +41,7 @@ export function SearchForm({ onSubmit }: SearchFormProps) {
         <WorkAreaField control={form.control} />
         <LocationField control={form.control} />
         <SalaryRangeField control={form.control} />
+        <CommissionPercentageField control={form.control} />
         
         <FormField
           control={form.control}

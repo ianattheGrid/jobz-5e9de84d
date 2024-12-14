@@ -10,6 +10,7 @@ interface CandidateProfile {
   required_qualifications?: string[];
   required_skills?: string[];
   security_clearance?: string;
+  commission_percentage?: number;
 }
 
 interface SearchResultsProps {
@@ -33,6 +34,9 @@ export function SearchResults({ candidates }: SearchResultsProps) {
               <p><span className="font-semibold">Experience:</span> {candidate.years_experience} years</p>
               <p><span className="font-semibold">Location:</span> {candidate.location}</p>
               <p><span className="font-semibold">Salary Range:</span> £{candidate.min_salary.toLocaleString()} - £{candidate.max_salary.toLocaleString()}</p>
+              {candidate.commission_percentage !== null && candidate.commission_percentage !== undefined && (
+                <p><span className="font-semibold">Desired "You're Hired" Bonus:</span> {candidate.commission_percentage}%</p>
+              )}
               {candidate.required_qualifications && candidate.required_qualifications.length > 0 && (
                 <p><span className="font-semibold">Qualifications:</span> {candidate.required_qualifications.join(', ')}</p>
               )}
