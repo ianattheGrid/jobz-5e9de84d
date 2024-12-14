@@ -60,7 +60,7 @@ export function SearchForm({ onSubmit }: SearchFormProps) {
         <SignupPeriodField control={form.control} />
         
         <div className="flex justify-start">
-          <Button type="submit" className="bg-red-800 hover:bg-red-900">
+          <Button type="submit" className="bg-red-800 hover:bg-red-900 text-white">
             Search Candidates
           </Button>
         </div>
