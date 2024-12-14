@@ -1,16 +1,8 @@
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Control } from "react-hook-form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { itQualifications } from "./constants";
-import { Badge } from "@/components/ui/badge";
-import { X, CheckSquare, Square } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { CheckSquare, Square } from "lucide-react";
+import QualificationBadge from "./QualificationBadge";
+import QualificationSelector from "./QualificationSelector";
 
 interface Qualification {
   name: string;
@@ -53,56 +45,20 @@ const ITQualificationsField = ({ control, value, onChange }: ITQualificationsFie
           <FormItem>
             <FormLabel>IT Qualifications</FormLabel>
             <FormControl>
-              <Select onValueChange={handleSelect}>
-                <SelectTrigger className="w-full bg-white">
-                  <SelectValue placeholder="Select required qualifications" />
-                </SelectTrigger>
-                <SelectContent className="bg-white max-h-[300px]">
-                  {itQualifications.map((qualification) => (
-                    <SelectItem 
-                      key={qualification} 
-                      value={qualification}
-                      disabled={value.some(q => q.name === qualification)}
-                    >
-                      {qualification}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <QualificationSelector
+                selectedQualifications={value.map(q => q.name)}
+                onSelect={handleSelect}
+              />
             </FormControl>
             <div className="flex flex-wrap gap-2 mt-2">
               {value.map((qualification) => (
-                <Badge 
-                  key={qualification.name} 
-                  variant="secondary"
-                  className="flex items-center gap-2 pr-1"
-                >
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-4 p-0 hover:bg-transparent"
-                    onClick={(e) => toggleType(e, qualification.name)}
-                    type="button"
-                    aria-label={`Toggle ${qualification.name} as ${qualification.type === 'essential' ? 'desirable' : 'essential'}`}
-                  >
-                    {qualification.type === 'essential' ? (
-                      <CheckSquare className="h-4 w-4" />
-                    ) : (
-                      <Square className="h-4 w-4" />
-                    )}
-                  </Button>
-                  {qualification.name}
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-4 w-4 p-0 hover:bg-transparent ml-1"
-                    onClick={(e) => handleRemove(e, qualification.name)}
-                    type="button"
-                    aria-label={`Remove ${qualification.name}`}
-                  >
-                    <X className="h-3 w-3" />
-                  </Button>
-                </Badge>
+                <QualificationBadge
+                  key={qualification.name}
+                  name={qualification.name}
+                  type={qualification.type}
+                  onRemove={(e) => handleRemove(e, qualification.name)}
+                  onToggleType={(e) => toggleType(e, qualification.name)}
+                />
               ))}
             </div>
             <div className="text-sm text-muted-foreground mt-2">
