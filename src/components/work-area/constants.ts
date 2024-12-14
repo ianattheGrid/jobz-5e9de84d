@@ -89,3 +89,12 @@ export const cloudComputingTitles = [
   "Google Cloud Engineer",
   "Cloud DevOps Engineer"
 ];
+
+export const aiTitles = [
+  "AI Engineer",
+  "Machine Learning Engineer",
+  "Natural Language Processing (NLP) Specialist",
+  "Computer Vision Engineer",
+  "AI Research Scientist",
+  "Robotics Engineer"
+];
