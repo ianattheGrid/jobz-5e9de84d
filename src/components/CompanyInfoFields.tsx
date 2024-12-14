@@ -2,7 +2,6 @@ import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/comp
 import { Input } from "@/components/ui/input";
 import { Control } from "react-hook-form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import WorkAreaField from "./WorkAreaField";
 
 interface CompanyInfoFieldsProps {
   control: Control<any>;
@@ -51,7 +50,7 @@ const CompanyInfoFields = ({ control }: CompanyInfoFieldsProps) => {
       {/* Only show company name field if they want to show company name */}
       {control._formValues.showCompanyName === "yes" && (
         <FormField
-          control={control}
+          control={form.control}
           name="company"
           render={({ field }) => (
             <FormItem>
@@ -64,8 +63,6 @@ const CompanyInfoFields = ({ control }: CompanyInfoFieldsProps) => {
           )}
         />
       )}
-
-      <WorkAreaField control={control} />
     </div>
   );
 };
