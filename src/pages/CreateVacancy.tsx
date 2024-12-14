@@ -28,7 +28,6 @@ const formSchema = z.object({
   itSpecialization: z.string().optional(),
   title: z.string().optional(),
   otherWorkArea: z.string().optional(),
-  // Removed showCompanyName enum
   company: z.string().min(2, {
     message: "Company name must be at least 2 characters.",
   }),
@@ -73,7 +72,6 @@ export default function CreateVacancy() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      // Removed default showCompanyName value
       type: "Full-time",
       applicationMethod: "platform",
       offerCandidateCommission: false,
@@ -130,7 +128,7 @@ export default function CreateVacancy() {
       const { error } = await supabase.from('jobs').insert({
         title: values.title,
         description: values.description,
-        company: values.showCompanyName === "yes" ? values.company : "Company name hidden",
+        company: values.company,
         location: values.location,
         salary_min: minSalary,
         salary_max: maxSalary,

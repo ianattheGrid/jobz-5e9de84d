@@ -1,4 +1,4 @@
-import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
+import { FormField, FormItem, FormControl, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Control } from "react-hook-form";
 
@@ -15,7 +15,7 @@ const CompanyInfoFields = ({ control }: CompanyInfoFieldsProps) => {
         render={({ field }) => (
           <FormItem>
             <FormControl>
-              <Input {...field} placeholder="Enter company name" />
+              <Input {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>
