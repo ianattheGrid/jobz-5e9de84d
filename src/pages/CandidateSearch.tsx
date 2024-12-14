@@ -5,8 +5,6 @@ import { useToast } from "@/components/ui/use-toast";
 import { SearchForm } from "@/components/candidate-search/SearchForm";
 import { SearchResults } from "@/components/candidate-search/SearchResults";
 import { searchFormSchema } from "@/components/candidate-search/searchFormSchema";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { InfoIcon } from "lucide-react";
 import type { z } from "zod";
 
 interface CandidateProfile {
@@ -95,7 +93,6 @@ export default function CandidateSearch() {
       query = query
         .or(`min_salary.lte.${flexibleMaxSalary},max_salary.gte.${flexibleMinSalary}`);
 
-      // Apply qualification filter if selected
       if (values.qualification && values.qualification !== 'None') {
         query = query.contains('required_qualifications', [values.qualification]);
       }
@@ -153,13 +150,6 @@ export default function CandidateSearch() {
     <div className="container max-w-5xl mx-auto py-10">
       <h1 className="text-2xl font-bold mb-6 text-left text-red-800">Search Candidate Database</h1>
       
-      <Alert className="mb-6 bg-blue-50 border-blue-200">
-        <InfoIcon className="h-4 w-4 text-blue-600" />
-        <AlertDescription className="text-blue-700">
-          When searching by salary range, we'll also show you candidates whose salary expectations are within £5,000 of your selected range. This helps you find qualified candidates who might be flexible with their salary requirements.
-        </AlertDescription>
-      </Alert>
-
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div>
           <SearchForm onSubmit={onSubmit} />
