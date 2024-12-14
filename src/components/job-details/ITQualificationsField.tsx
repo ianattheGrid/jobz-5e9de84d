@@ -22,13 +22,11 @@ const ITQualificationsField = ({ control, value, onChange }: ITQualificationsFie
     }
   };
 
-  const handleRemove = (e: React.MouseEvent, qualificationName: string) => {
-    e.stopPropagation();
+  const handleRemove = (qualificationName: string) => {
     onChange(value.filter(q => q.name !== qualificationName));
   };
 
-  const toggleType = (e: React.MouseEvent, qualificationName: string) => {
-    e.stopPropagation();
+  const toggleType = (qualificationName: string) => {
     onChange(value.map(q => 
       q.name === qualificationName 
         ? { ...q, type: q.type === 'essential' ? 'desirable' : 'essential' }
@@ -56,8 +54,8 @@ const ITQualificationsField = ({ control, value, onChange }: ITQualificationsFie
                   key={qualification.name}
                   name={qualification.name}
                   type={qualification.type}
-                  onRemove={(e) => handleRemove(e, qualification.name)}
-                  onToggleType={(e) => toggleType(e, qualification.name)}
+                  onRemove={() => handleRemove(qualification.name)}
+                  onToggleType={() => toggleType(qualification.name)}
                 />
               ))}
             </div>

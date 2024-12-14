@@ -5,8 +5,8 @@ import { CheckSquare, Square, X } from "lucide-react";
 interface QualificationBadgeProps {
   name: string;
   type: 'essential' | 'desirable';
-  onRemove: (e: React.MouseEvent) => void;
-  onToggleType: (e: React.MouseEvent) => void;
+  onRemove: () => void;
+  onToggleType: () => void;
 }
 
 const QualificationBadge = ({ name, type, onRemove, onToggleType }: QualificationBadgeProps) => {
@@ -19,7 +19,11 @@ const QualificationBadge = ({ name, type, onRemove, onToggleType }: Qualificatio
         variant="ghost"
         size="sm"
         className="h-4 p-0 hover:bg-transparent"
-        onClick={onToggleType}
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          onToggleType();
+        }}
         type="button"
         aria-label={`Toggle ${name} as ${type === 'essential' ? 'desirable' : 'essential'}`}
       >
@@ -34,7 +38,11 @@ const QualificationBadge = ({ name, type, onRemove, onToggleType }: Qualificatio
         variant="ghost"
         size="sm"
         className="h-4 w-4 p-0 hover:bg-transparent ml-1"
-        onClick={onRemove}
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          onRemove();
+        }}
         type="button"
         aria-label={`Remove ${name}`}
       >
