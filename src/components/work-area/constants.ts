@@ -51,3 +51,12 @@ export const itSupportTitles = [
   "Network Administrator",
   "Desktop Support Technician"
 ];
+
+export const networkingTitles = [
+  "Network Engineer",
+  "Network Architect",
+  "Cloud Engineer",
+  "Infrastructure Engineer",
+  "VoIP Engineer",
+  "Wireless Network Engineer"
+];

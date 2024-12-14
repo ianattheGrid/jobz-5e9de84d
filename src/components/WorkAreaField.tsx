@@ -3,7 +3,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input";
 import { Control } from "react-hook-form";
 import { useState } from "react";
-import { workAreas, softwareDevTitles, itSupportTitles } from "./work-area/constants";
+import { workAreas, softwareDevTitles, itSupportTitles, networkingTitles } from "./work-area/constants";
 import ITSpecializationSelect from "./work-area/ITSpecializationSelect";
 import JobTitleSelect from "./work-area/JobTitleSelect";
 
@@ -16,10 +16,12 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
   const [showITSpecialization, setShowITSpecialization] = useState(false);
   const [showSoftwareDevTitles, setShowSoftwareDevTitles] = useState(false);
   const [showITSupportTitles, setShowITSupportTitles] = useState(false);
+  const [showNetworkingTitles, setShowNetworkingTitles] = useState(false);
 
   const handleSpecializationChange = (value: string) => {
     setShowSoftwareDevTitles(value === "Software Development and Programming");
     setShowITSupportTitles(value === "IT Support and Operations");
+    setShowNetworkingTitles(value === "Networking and Infrastructure");
   };
 
   return (
@@ -39,6 +41,7 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
                   if (value !== "IT") {
                     setShowSoftwareDevTitles(false);
                     setShowITSupportTitles(false);
+                    setShowNetworkingTitles(false);
                   }
                 }} 
                 defaultValue={field.value}
@@ -73,6 +76,10 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
 
       {showITSupportTitles && (
         <JobTitleSelect control={control} titles={itSupportTitles} />
+      )}
+
+      {showNetworkingTitles && (
+        <JobTitleSelect control={control} titles={networkingTitles} />
       )}
 
       {showOtherInput && (
