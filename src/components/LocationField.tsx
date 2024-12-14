@@ -21,6 +21,9 @@ const LocationField = ({ control }: LocationFieldProps) => {
                 <SelectValue placeholder="Select a postcode area" />
               </SelectTrigger>
               <SelectContent className="bg-background">
+                <SelectItem value="All" className="hover:bg-accent">
+                  All Areas
+                </SelectItem>
                 {bristolPostcodes.map((postcode) => (
                   <SelectItem key={postcode} value={postcode} className="hover:bg-accent">
                     {postcode}
