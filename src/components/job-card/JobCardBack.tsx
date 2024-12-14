@@ -6,6 +6,17 @@ import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 type Job = Database['public']['Tables']['jobs']['Row'];
 
@@ -18,6 +29,56 @@ const JobCardBack = ({ job }: JobCardBackProps) => {
   const [isApplying, setIsApplying] = useState(false);
   const [resumeFile, setResumeFile] = useState<File | null>(null);
   const [coverLetter, setCoverLetter] = useState("");
+  const [matchScore, setMatchScore] = useState<number | null>(null);
+  const [showMatchWarning, setShowMatchWarning] = useState(false);
+
+  const calculateMatchScore = async () => {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) return null;
+
+      const { data: candidateProfile } = await supabase
+        .from('candidate_profiles')
+        .select('*')
+        .eq('id', session.user.id)
+        .single();
+
+      if (!candidateProfile) return null;
+
+      const { data, error } = await supabase.rpc('calculate_match_score', {
+        job_title_a: job.title,
+        job_title_b: candidateProfile.job_title,
+        years_exp_a: 0,
+        years_exp_b: candidateProfile.years_experience,
+        location_a: job.location,
+        location_b: candidateProfile.location,
+        salary_min_a: job.salary_min,
+        salary_max_a: job.salary_max,
+        salary_min_b: candidateProfile.min_salary,
+        salary_max_b: candidateProfile.max_salary,
+        skills_a: job.required_skills || [],
+        skills_b: candidateProfile.required_skills || []
+      });
+
+      if (error) throw error;
+      return data;
+    } catch (error) {
+      console.error('Error calculating match score:', error);
+      return null;
+    }
+  };
+
+  const handleStartApply = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const score = await calculateMatchScore();
+    setMatchScore(score);
+    
+    if (score !== null && score < (job.match_threshold || 60)) {
+      setShowMatchWarning(true);
+    } else {
+      setIsApplying(true);
+    }
+  };
 
   const handleApply = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -54,6 +115,7 @@ const JobCardBack = ({ job }: JobCardBackProps) => {
         applicant_id: session.user.id,
         resume_url: resumeUrl,
         cover_letter: coverLetter,
+        match_score: matchScore
       });
 
       if (error) throw error;
@@ -98,10 +160,7 @@ const JobCardBack = ({ job }: JobCardBackProps) => {
           {!isApplying ? (
             <Button 
               className="w-full bg-red-800 hover:bg-red-900"
-              onClick={(e) => {
-                e.stopPropagation();
-                setIsApplying(true);
-              }}
+              onClick={handleStartApply}
             >
               Apply Now
             </Button>
@@ -145,6 +204,28 @@ const JobCardBack = ({ job }: JobCardBackProps) => {
           )}
         </div>
       </div>
+
+      <AlertDialog open={showMatchWarning} onOpenChange={setShowMatchWarning}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Low Match Score Warning</AlertDialogTitle>
+            <AlertDialogDescription>
+              Your profile has a match score of {matchScore}%, which is below the employer's minimum threshold of {job.match_threshold || 60}%. 
+              While you can still apply, please note that your application might have a lower chance of being selected.
+              Would you like to proceed with your application?
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setShowMatchWarning(false)}>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={() => {
+              setShowMatchWarning(false);
+              setIsApplying(true);
+            }}>
+              Proceed Anyway
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };

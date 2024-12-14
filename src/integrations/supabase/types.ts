@@ -222,6 +222,7 @@ export type Database = {
           holiday_entitlement: number | null
           id: number
           location: string
+          match_threshold: number
           required_qualifications: string[] | null
           salary_max: number
           salary_min: number
@@ -238,6 +239,7 @@ export type Database = {
           holiday_entitlement?: number | null
           id?: number
           location: string
+          match_threshold?: number
           required_qualifications?: string[] | null
           salary_max: number
           salary_min: number
@@ -254,6 +256,7 @@ export type Database = {
           holiday_entitlement?: number | null
           id?: number
           location?: string
+          match_threshold?: number
           required_qualifications?: string[] | null
           salary_max?: number
           salary_min?: number
