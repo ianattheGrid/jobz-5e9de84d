@@ -18,15 +18,15 @@ const CommissionPercentageField = ({ control }: CommissionPercentageFieldProps) 
             <RadioGroup
               onValueChange={(value) => field.onChange(value === 'yes')}
               defaultValue={field.value ? 'yes' : 'no'}
-              className="flex flex-row space-x-4"
+              className="flex flex-row space-x-2"
             >
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="yes" id="yes" />
-                <label htmlFor="yes">Yes</label>
+              <div className="flex items-center space-x-1">
+                <RadioGroupItem value="yes" id="yes" className="h-3 w-3" />
+                <label htmlFor="yes" className="text-xs">Yes</label>
               </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="no" id="no" />
-                <label htmlFor="no">No</label>
+              <div className="flex items-center space-x-1">
+                <RadioGroupItem value="no" id="no" className="h-3 w-3" />
+                <label htmlFor="no" className="text-xs">No</label>
               </div>
             </RadioGroup>
           </FormControl>
