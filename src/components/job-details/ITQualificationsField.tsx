@@ -9,23 +9,37 @@ import {
 } from "@/components/ui/select";
 import { itQualifications } from "./constants";
 import { Badge } from "@/components/ui/badge";
-import { X } from "lucide-react";
+import { X, CheckSquare, Square } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
+interface Qualification {
+  name: string;
+  type: 'essential' | 'desirable';
+}
 
 interface ITQualificationsFieldProps {
   control: Control<any>;
-  value: string[];
-  onChange: (value: string[]) => void;
+  value: Qualification[];
+  onChange: (value: Qualification[]) => void;
 }
 
 const ITQualificationsField = ({ control, value, onChange }: ITQualificationsFieldProps) => {
-  const handleSelect = (qualification: string) => {
-    if (!value.includes(qualification)) {
-      onChange([...value, qualification]);
+  const handleSelect = (qualificationName: string) => {
+    if (!value.find(q => q.name === qualificationName)) {
+      onChange([...value, { name: qualificationName, type: 'desirable' }]);
     }
   };
 
-  const handleRemove = (qualification: string) => {
-    onChange(value.filter(q => q !== qualification));
+  const handleRemove = (qualificationName: string) => {
+    onChange(value.filter(q => q.name !== qualificationName));
+  };
+
+  const toggleType = (qualificationName: string) => {
+    onChange(value.map(q => 
+      q.name === qualificationName 
+        ? { ...q, type: q.type === 'essential' ? 'desirable' : 'essential' }
+        : q
+    ));
   };
 
   return (
@@ -35,7 +49,7 @@ const ITQualificationsField = ({ control, value, onChange }: ITQualificationsFie
         name="required_qualifications"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Required IT Qualifications</FormLabel>
+            <FormLabel>IT Qualifications</FormLabel>
             <FormControl>
               <Select onValueChange={handleSelect}>
                 <SelectTrigger className="w-full bg-white">
@@ -46,7 +60,7 @@ const ITQualificationsField = ({ control, value, onChange }: ITQualificationsFie
                     <SelectItem 
                       key={qualification} 
                       value={qualification}
-                      disabled={value.includes(qualification)}
+                      disabled={value.some(q => q.name === qualification)}
                     >
                       {qualification}
                     </SelectItem>
@@ -57,17 +71,33 @@ const ITQualificationsField = ({ control, value, onChange }: ITQualificationsFie
             <div className="flex flex-wrap gap-2 mt-2">
               {value.map((qualification) => (
                 <Badge 
-                  key={qualification} 
+                  key={qualification.name} 
                   variant="secondary"
-                  className="flex items-center gap-1"
+                  className="flex items-center gap-2 pr-1"
                 >
-                  {qualification}
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-4 p-0 hover:bg-transparent"
+                    onClick={() => toggleType(qualification.name)}
+                  >
+                    {qualification.type === 'essential' ? (
+                      <CheckSquare className="h-4 w-4" />
+                    ) : (
+                      <Square className="h-4 w-4" />
+                    )}
+                  </Button>
+                  {qualification.name}
                   <X 
-                    className="h-3 w-3 cursor-pointer" 
-                    onClick={() => handleRemove(qualification)}
+                    className="h-3 w-3 cursor-pointer ml-1" 
+                    onClick={() => handleRemove(qualification.name)}
                   />
                 </Badge>
               ))}
+            </div>
+            <div className="text-sm text-muted-foreground mt-2">
+              <CheckSquare className="h-4 w-4 inline-block mr-1" /> Essential
+              <Square className="h-4 w-4 inline-block ml-3 mr-1" /> Desirable
             </div>
             <FormMessage />
           </FormItem>
