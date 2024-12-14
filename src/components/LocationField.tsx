@@ -1,13 +1,18 @@
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { bristolPostcodes } from "@/data/bristolPostcodes";
 import { Control } from "react-hook-form";
+import { MultiSelect } from "@/components/ui/multi-select";
 
 interface LocationFieldProps {
   control: Control<any>;
 }
 
 const LocationField = ({ control }: LocationFieldProps) => {
+  const locationOptions = [
+    { value: "All", label: "All Areas" },
+    ...bristolPostcodes.map(postcode => ({ value: postcode, label: postcode }))
+  ];
+
   return (
     <FormField
       control={control}
@@ -16,21 +21,12 @@ const LocationField = ({ control }: LocationFieldProps) => {
         <FormItem>
           <FormLabel>Location (Bristol Area)</FormLabel>
           <FormControl>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
-              <SelectTrigger className="bg-background">
-                <SelectValue placeholder="Select a postcode area" />
-              </SelectTrigger>
-              <SelectContent className="bg-background">
-                <SelectItem value="All" className="hover:bg-accent">
-                  All Areas
-                </SelectItem>
-                {bristolPostcodes.map((postcode) => (
-                  <SelectItem key={postcode} value={postcode} className="hover:bg-accent">
-                    {postcode}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <MultiSelect
+              options={locationOptions}
+              selected={Array.isArray(field.value) ? field.value : []}
+              onChange={field.onChange}
+              placeholder="Select postcode areas"
+            />
           </FormControl>
           <FormMessage />
         </FormItem>
