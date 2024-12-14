@@ -122,12 +122,12 @@ export default function CreateVacancy() {
       </Breadcrumb>
 
       <h1 className="text-2xl font-bold mb-4 text-left text-black">Create New Vacancy</h1>
-      <p className="text-gray-600 mb-8 text-left text-sm">
-        Welcome to jobz, where we revolutionize tech recruitment. Unlike traditional job boards, 
+      <p className="text-[#ea384c] mb-8 text-left text-sm">
+        Welcome to jobz, where we revolutionise tech recruitment. Unlike traditional job boards, 
         we function as a sophisticated recruitment platform that intelligently matches candidates 
         to your vacancy based on multiple criteria including job titles, experience levels, technical skills, 
-        salary expectations, and location preferences. Our advanced matching algorithm ensures 
-        you connect with the most suitable candidates, saving you time and resources in your hiring process.
+        salary expectations, and location preferences. Attract top talent by offering a "You're Hired" bonus 
+        that incentivizes candidates and sets your opportunity apart from standard job listings.
       </p>
       <VacancyForm form={form} onSubmit={onSubmit} />
     </div>
