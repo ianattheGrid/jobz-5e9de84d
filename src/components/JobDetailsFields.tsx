@@ -1,10 +1,10 @@
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Control, useWatch } from "react-hook-form";
 import SalaryFields from "./job-details/SalaryFields";
 import WorkLocationFields from "./job-details/WorkLocationFields";
 import BenefitsFields from "./job-details/BenefitsFields";
 import { Textarea } from "@/components/ui/textarea";
+import ITQualificationsField from "./job-details/ITQualificationsField";
 
 interface JobDetailsFieldsProps {
   control: Control<any>;
@@ -15,6 +15,12 @@ const JobDetailsFields = ({ control }: JobDetailsFieldsProps) => {
     control,
     name: "description",
     defaultValue: "",
+  });
+
+  const qualifications = useWatch({
+    control,
+    name: "required_qualifications",
+    defaultValue: [],
   });
 
   const characterCount = description?.length || 0;
@@ -43,6 +49,12 @@ const JobDetailsFields = ({ control }: JobDetailsFieldsProps) => {
             <FormMessage />
           </FormItem>
         )}
+      />
+
+      <ITQualificationsField 
+        control={control}
+        value={qualifications}
+        onChange={(newValue) => control.setValue("required_qualifications", newValue)}
       />
 
       <WorkLocationFields control={control} />
