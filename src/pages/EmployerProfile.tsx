@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import {
   Card,
   CardContent,
@@ -44,7 +44,6 @@ export default function EmployerProfile() {
 
   useEffect(() => {
     checkUser();
-    loadProfile();
   }, []);
 
   const checkUser = async () => {
@@ -55,6 +54,7 @@ export default function EmployerProfile() {
         return;
       }
       setEmail(session.user.email || "");
+      await loadProfile(session.user.id);
     } catch (error) {
       console.error('Error:', error);
       toast({
@@ -65,20 +65,42 @@ export default function EmployerProfile() {
     }
   };
 
-  const loadProfile = async () => {
+  const loadProfile = async (userId: string) => {
     try {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) return;
-
       const { data, error } = await supabase
         .from('employer_profiles')
         .select('*')
-        .eq('id', session.user.id)
-        .single();
+        .eq('id', userId)
+        .maybeSingle();
 
       if (error) throw error;
+
       if (data) {
         setProfile(data);
+      } else {
+        // Create a new profile if none exists
+        const { error: createError } = await supabase
+          .from('employer_profiles')
+          .insert([
+            {
+              id: userId,
+              company_name: "",
+              full_name: "",
+              job_title: "",
+            }
+          ]);
+
+        if (createError) throw createError;
+        
+        // Fetch the newly created profile
+        const { data: newProfile, error: fetchError } = await supabase
+          .from('employer_profiles')
+          .select('*')
+          .eq('id', userId)
+          .single();
+
+        if (fetchError) throw fetchError;
+        if (newProfile) setProfile(newProfile);
       }
     } catch (error: any) {
       toast({
