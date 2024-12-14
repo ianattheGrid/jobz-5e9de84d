@@ -48,10 +48,10 @@ export const ProfileForm = ({ profile, setProfile, email }: ProfileFormProps) =>
 
   return (
     <div className="container mx-auto py-8 px-4">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="max-w-full">
         <div className="space-y-6">
           <div className="space-y-4">
-            <div className="space-y-2">
+            <div className="grid grid-cols-[200px_1fr] gap-4 items-center">
               <label className="text-sm font-medium" htmlFor="company-name">
                 Company Name
               </label>
@@ -64,7 +64,7 @@ export const ProfileForm = ({ profile, setProfile, email }: ProfileFormProps) =>
               />
             </div>
 
-            <div className="space-y-2">
+            <div className="grid grid-cols-[200px_1fr] gap-4 items-center">
               <label className="text-sm font-medium" htmlFor="full-name">
                 Full Name
               </label>
@@ -77,7 +77,7 @@ export const ProfileForm = ({ profile, setProfile, email }: ProfileFormProps) =>
               />
             </div>
 
-            <div className="space-y-2">
+            <div className="grid grid-cols-[200px_1fr] gap-4 items-center">
               <label className="text-sm font-medium" htmlFor="job-title">
                 Job Title
               </label>
@@ -90,14 +90,14 @@ export const ProfileForm = ({ profile, setProfile, email }: ProfileFormProps) =>
               />
             </div>
 
-            <div className="space-y-2">
+            <div className="grid grid-cols-[200px_1fr] gap-4 items-center">
               <label className="text-sm font-medium" htmlFor="email">
                 Email Address
               </label>
               <Input id="email" value={email} disabled />
             </div>
 
-            <div className="flex justify-end">
+            <div className="flex justify-end mt-6">
               <Button
                 onClick={handleSave}
                 disabled={saving}
@@ -108,10 +108,6 @@ export const ProfileForm = ({ profile, setProfile, email }: ProfileFormProps) =>
               </Button>
             </div>
           </div>
-        </div>
-        
-        <div>
-          {/* Placeholder for future content on the right side */}
         </div>
       </div>
     </div>
