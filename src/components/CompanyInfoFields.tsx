@@ -50,7 +50,7 @@ const CompanyInfoFields = ({ control }: CompanyInfoFieldsProps) => {
       {/* Only show company name field if they want to show company name */}
       {control._formValues.showCompanyName === "yes" && (
         <FormField
-          control={form.control}
+          control={control}
           name="company"
           render={({ field }) => (
             <FormItem>

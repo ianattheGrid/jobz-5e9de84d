@@ -1,5 +1,5 @@
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
-import { Control, useWatch } from "react-hook-form";
+import { Control, UseFormSetValue } from "react-hook-form";
 import SalaryFields from "./job-details/SalaryFields";
 import WorkLocationFields from "./job-details/WorkLocationFields";
 import BenefitsFields from "./job-details/BenefitsFields";
@@ -11,19 +11,9 @@ interface JobDetailsFieldsProps {
 }
 
 const JobDetailsFields = ({ control }: JobDetailsFieldsProps) => {
-  const description = useWatch({
-    control,
-    name: "description",
-    defaultValue: "",
-  });
-
-  const qualifications = useWatch({
-    control,
-    name: "required_qualifications",
-    defaultValue: [],
-  });
-
-  const characterCount = description?.length || 0;
+  const description = control._formValues.description || "";
+  const qualifications = control._formValues.required_qualifications || [];
+  const characterCount = description.length;
   const maxCharacters = 2000;
 
   return (
@@ -54,7 +44,11 @@ const JobDetailsFields = ({ control }: JobDetailsFieldsProps) => {
       <ITQualificationsField 
         control={control}
         value={qualifications}
-        onChange={(newValue) => control.setValue("required_qualifications", newValue)}
+        onChange={(newValue) => {
+          if (control._formState.defaultValues) {
+            control._formState.defaultValues.required_qualifications = newValue;
+          }
+        }}
       />
 
       <WorkLocationFields control={control} />
