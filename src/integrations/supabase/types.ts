@@ -58,6 +58,8 @@ export type Database = {
           location: string
           max_salary: number
           min_salary: number
+          required_skills: string[] | null
+          security_clearance: string | null
           updated_at: string
           years_experience: number
         }
@@ -68,6 +70,8 @@ export type Database = {
           location: string
           max_salary: number
           min_salary: number
+          required_skills?: string[] | null
+          security_clearance?: string | null
           updated_at?: string
           years_experience: number
         }
@@ -78,6 +82,8 @@ export type Database = {
           location?: string
           max_salary?: number
           min_salary?: number
+          required_skills?: string[] | null
+          security_clearance?: string | null
           updated_at?: string
           years_experience?: number
         }
