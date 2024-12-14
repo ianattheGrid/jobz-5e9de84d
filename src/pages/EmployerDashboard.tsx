@@ -3,6 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
+import { 
+  Briefcase, 
+  Building2, 
+  Search, 
+  Calendar, 
+  UserCircle 
+} from "lucide-react";
 
 const EmployerDashboard = () => {
   const navigate = useNavigate();
@@ -31,48 +38,65 @@ const EmployerDashboard = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
   }
+
+  const menuItems = [
+    {
+      title: "Post New Job",
+      icon: <Briefcase className="h-6 w-6" />,
+      path: "/employer/create-vacancy",
+      description: "Create a new job posting"
+    },
+    {
+      title: "Manage Jobs",
+      icon: <Building2 className="h-6 w-6" />,
+      path: "/employer/manage-jobs",
+      description: "View and edit your job listings"
+    },
+    {
+      title: "Search Candidates",
+      icon: <Search className="h-6 w-6" />,
+      path: "/employer/candidate-search",
+      description: "Find potential candidates"
+    },
+    {
+      title: "View Interviews",
+      icon: <Calendar className="h-6 w-6" />,
+      path: "/employer/interviews",
+      description: "Manage scheduled interviews"
+    },
+    {
+      title: "Profile Settings",
+      icon: <UserCircle className="h-6 w-6" />,
+      path: "/employer/profile",
+      description: "Update your company profile"
+    }
+  ];
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-6 text-white">Employer Dashboard</h1>
+      <h1 className="text-3xl font-bold mb-8 text-primary">Employer Dashboard</h1>
+      
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <div className="p-6 bg-white rounded-lg shadow-md">
-          <h2 className="text-xl font-semibold mb-4 text-black">Quick Actions</h2>
-          <div className="space-y-4">
-            <Button
-              onClick={() => navigate('/employer/create-vacancy')}
-              className="w-full bg-red-800 hover:bg-red-900 text-white"
-            >
-              Post New Job
-            </Button>
-            <Button
-              onClick={() => navigate('/employer/manage-jobs')}
-              className="w-full bg-red-800 hover:bg-red-900 text-white"
-            >
-              Manage Jobs
-            </Button>
-            <Button
-              onClick={() => navigate('/employer/candidate-search')}
-              className="w-full bg-red-800 hover:bg-red-900 text-white"
-            >
-              Search Candidates
-            </Button>
-            <Button
-              onClick={() => navigate('/employer/interviews')}
-              className="w-full bg-red-800 hover:bg-red-900 text-white"
-            >
-              View Interviews
-            </Button>
-            <Button
-              onClick={() => navigate('/employer/profile')}
-              className="w-full bg-red-800 hover:bg-red-900 text-white"
-            >
-              Manage Profile
-            </Button>
-          </div>
-        </div>
+        {menuItems.map((item, index) => (
+          <Button
+            key={index}
+            variant="outline"
+            className="h-auto p-6 flex flex-col items-center gap-4 bg-white hover:bg-primary-light transition-all duration-200 border border-gray-200 rounded-lg shadow-sm hover:shadow-md"
+            onClick={() => navigate(item.path)}
+          >
+            <div className="text-primary">{item.icon}</div>
+            <div className="text-center">
+              <h3 className="font-semibold text-lg mb-2 text-primary">{item.title}</h3>
+              <p className="text-sm text-gray-600">{item.description}</p>
+            </div>
+          </Button>
+        ))}
       </div>
     </div>
   );
