@@ -19,15 +19,16 @@ const QualificationSelector = ({ selectedQualifications, onSelect }: Qualificati
         <SelectValue placeholder="Select required qualifications" />
       </SelectTrigger>
       <SelectContent className="bg-white max-h-[300px]">
-        {itQualifications.map((qualification) => (
-          <SelectItem 
-            key={qualification} 
-            value={qualification}
-            disabled={selectedQualifications.includes(qualification)}
-          >
-            {qualification}
-          </SelectItem>
-        ))}
+        {itQualifications
+          .filter(qualification => !selectedQualifications.includes(qualification))
+          .map((qualification) => (
+            <SelectItem 
+              key={qualification} 
+              value={qualification}
+            >
+              {qualification}
+            </SelectItem>
+          ))}
       </SelectContent>
     </Select>
   );

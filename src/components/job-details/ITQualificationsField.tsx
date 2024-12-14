@@ -48,20 +48,28 @@ const ITQualificationsField = ({ control, value, onChange }: ITQualificationsFie
                 onSelect={handleSelect}
               />
             </FormControl>
-            <div className="flex flex-wrap gap-2 mt-2">
-              {value.map((qualification) => (
-                <QualificationBadge
-                  key={qualification.name}
-                  name={qualification.name}
-                  type={qualification.type}
-                  onRemove={() => handleRemove(qualification.name)}
-                  onToggleType={() => toggleType(qualification.name)}
-                />
-              ))}
-            </div>
-            <div className="text-sm text-muted-foreground mt-2">
-              <CheckSquare className="h-4 w-4 inline-block mr-1" /> Essential
-              <Square className="h-4 w-4 inline-block ml-3 mr-1" /> Desirable
+            <div className="mt-4">
+              <div className="text-sm text-muted-foreground mb-2 flex items-center gap-2">
+                <div className="flex items-center">
+                  <CheckSquare className="h-4 w-4 mr-1" />
+                  Essential
+                </div>
+                <div className="flex items-center">
+                  <Square className="h-4 w-4 mr-1" />
+                  Desirable
+                </div>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {value.map((qualification) => (
+                  <QualificationBadge
+                    key={qualification.name}
+                    name={qualification.name}
+                    type={qualification.type}
+                    onRemove={() => handleRemove(qualification.name)}
+                    onToggleType={() => toggleType(qualification.name)}
+                  />
+                ))}
+              </div>
             </div>
             <FormMessage />
           </FormItem>

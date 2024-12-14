@@ -13,41 +13,29 @@ const QualificationBadge = ({ name, type, onRemove, onToggleType }: Qualificatio
   return (
     <Badge 
       variant="secondary"
-      className="flex items-center gap-2 pr-1"
+      className="flex items-center gap-1 py-1 px-2"
     >
-      <Button
-        variant="ghost"
-        size="sm"
-        className="h-4 p-0 hover:bg-transparent"
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          onToggleType();
-        }}
+      <button
         type="button"
+        className="p-0.5 hover:bg-secondary rounded-sm transition-colors"
+        onClick={onToggleType}
         aria-label={`Toggle ${name} as ${type === 'essential' ? 'desirable' : 'essential'}`}
       >
         {type === 'essential' ? (
-          <CheckSquare className="h-4 w-4" />
+          <CheckSquare className="h-3.5 w-3.5" />
         ) : (
-          <Square className="h-4 w-4" />
+          <Square className="h-3.5 w-3.5" />
         )}
-      </Button>
-      {name}
-      <Button
-        variant="ghost"
-        size="sm"
-        className="h-4 w-4 p-0 hover:bg-transparent ml-1"
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          onRemove();
-        }}
+      </button>
+      <span className="mx-1">{name}</span>
+      <button
         type="button"
+        className="p-0.5 hover:bg-secondary rounded-sm transition-colors"
+        onClick={onRemove}
         aria-label={`Remove ${name}`}
       >
-        <X className="h-3 w-3" />
-      </Button>
+        <X className="h-3.5 w-3.5" />
+      </button>
     </Badge>
   );
 };
