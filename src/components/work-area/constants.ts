@@ -80,3 +80,12 @@ export const dataAnalyticsTitles = [
   "Business Intelligence Analyst",
   "Data Architect"
 ];
+
+export const cloudComputingTitles = [
+  "Cloud Architect",
+  "Cloud Operations Engineer",
+  "Azure Administrator",
+  "AWS Solutions Architect",
+  "Google Cloud Engineer",
+  "Cloud DevOps Engineer"
+];

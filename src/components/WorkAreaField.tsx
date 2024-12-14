@@ -9,7 +9,8 @@ import {
   itSupportTitles, 
   networkingTitles, 
   cybersecurityTitles,
-  dataAnalyticsTitles 
+  dataAnalyticsTitles,
+  cloudComputingTitles 
 } from "./work-area/constants";
 import ITSpecializationSelect from "./work-area/ITSpecializationSelect";
 import JobTitleSelect from "./work-area/JobTitleSelect";
@@ -22,6 +23,7 @@ const WorkAreaField = ({ control }: { control: Control<any> }) => {
   const [showNetworkingTitles, setShowNetworkingTitles] = useState(false);
   const [showCybersecurityTitles, setShowCybersecurityTitles] = useState(false);
   const [showDataAnalyticsTitles, setShowDataAnalyticsTitles] = useState(false);
+  const [showCloudComputingTitles, setShowCloudComputingTitles] = useState(false);
 
   const handleSpecializationChange = (value: string) => {
     setShowSoftwareDevTitles(value === "Software Development and Programming");
@@ -29,6 +31,7 @@ const WorkAreaField = ({ control }: { control: Control<any> }) => {
     setShowNetworkingTitles(value === "Networking and Infrastructure");
     setShowCybersecurityTitles(value === "Cybersecurity");
     setShowDataAnalyticsTitles(value === "Data and Analytics");
+    setShowCloudComputingTitles(value === "Cloud Computing");
   };
 
   return (
@@ -51,6 +54,7 @@ const WorkAreaField = ({ control }: { control: Control<any> }) => {
                     setShowNetworkingTitles(false);
                     setShowCybersecurityTitles(false);
                     setShowDataAnalyticsTitles(false);
+                    setShowCloudComputingTitles(false);
                   }
                 }} 
                 defaultValue={field.value}
@@ -97,6 +101,10 @@ const WorkAreaField = ({ control }: { control: Control<any> }) => {
 
       {showDataAnalyticsTitles && (
         <JobTitleSelect control={control} titles={dataAnalyticsTitles} />
+      )}
+
+      {showCloudComputingTitles && (
+        <JobTitleSelect control={control} titles={cloudComputingTitles} />
       )}
 
       {showOtherInput && (
