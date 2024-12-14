@@ -1,5 +1,5 @@
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
-import { Control, UseFormSetValue } from "react-hook-form";
+import { Control } from "react-hook-form";
 import SalaryFields from "./job-details/SalaryFields";
 import WorkLocationFields from "./job-details/WorkLocationFields";
 import BenefitsFields from "./job-details/BenefitsFields";
@@ -41,14 +41,16 @@ const JobDetailsFields = ({ control }: JobDetailsFieldsProps) => {
         )}
       />
 
-      <ITQualificationsField 
+      <FormField
         control={control}
-        value={qualifications}
-        onChange={(newValue) => {
-          if (control._formState.defaultValues) {
-            control._formState.defaultValues.required_qualifications = newValue;
-          }
-        }}
+        name="required_qualifications"
+        render={({ field }) => (
+          <ITQualificationsField 
+            control={control}
+            value={qualifications}
+            onChange={field.onChange}
+          />
+        )}
       />
 
       <WorkLocationFields control={control} />
