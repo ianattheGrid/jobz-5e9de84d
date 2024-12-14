@@ -7,7 +7,6 @@ import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate, Link } from "react-router-dom";
 import { useEffect } from "react";
-import CompanyInfoFields from "@/components/CompanyInfoFields";
 import JobDetailsFields from "@/components/JobDetailsFields";
 import LocationField from "@/components/LocationField";
 import ApplicationPreferencesField from "@/components/ApplicationPreferencesField";
@@ -28,9 +27,6 @@ const formSchema = z.object({
   itSpecialization: z.string().optional(),
   title: z.string().optional(),
   otherWorkArea: z.string().optional(),
-  company: z.string().min(2, {
-    message: "Company name must be at least 2 characters.",
-  }),
   location: z.string().min(2, {
     message: "Location must be at least 2 characters.",
   }),
@@ -128,7 +124,7 @@ export default function CreateVacancy() {
       const { error } = await supabase.from('jobs').insert({
         title: values.title,
         description: values.description,
-        company: values.company,
+        company: session.user.user_metadata.company_name || "Unknown Company",
         location: values.location,
         salary_min: minSalary,
         salary_max: maxSalary,
@@ -178,7 +174,6 @@ export default function CreateVacancy() {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 text-left">
           <div className="space-y-8 [&_label]:text-black [&_h3]:text-black">
-            <CompanyInfoFields control={form.control} />
             <WorkAreaField control={form.control} />
             <LocationField control={form.control} />
             <JobDetailsFields control={form.control} />
