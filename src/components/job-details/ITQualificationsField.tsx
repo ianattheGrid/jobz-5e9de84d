@@ -30,11 +30,13 @@ const ITQualificationsField = ({ control, value, onChange }: ITQualificationsFie
     }
   };
 
-  const handleRemove = (qualificationName: string) => {
+  const handleRemove = (e: React.MouseEvent, qualificationName: string) => {
+    e.stopPropagation();
     onChange(value.filter(q => q.name !== qualificationName));
   };
 
-  const toggleType = (qualificationName: string) => {
+  const toggleType = (e: React.MouseEvent, qualificationName: string) => {
+    e.stopPropagation();
     onChange(value.map(q => 
       q.name === qualificationName 
         ? { ...q, type: q.type === 'essential' ? 'desirable' : 'essential' }
@@ -79,7 +81,9 @@ const ITQualificationsField = ({ control, value, onChange }: ITQualificationsFie
                     variant="ghost"
                     size="sm"
                     className="h-4 p-0 hover:bg-transparent"
-                    onClick={() => toggleType(qualification.name)}
+                    onClick={(e) => toggleType(e, qualification.name)}
+                    type="button"
+                    aria-label={`Toggle ${qualification.name} as ${qualification.type === 'essential' ? 'desirable' : 'essential'}`}
                   >
                     {qualification.type === 'essential' ? (
                       <CheckSquare className="h-4 w-4" />
@@ -88,10 +92,16 @@ const ITQualificationsField = ({ control, value, onChange }: ITQualificationsFie
                     )}
                   </Button>
                   {qualification.name}
-                  <X 
-                    className="h-3 w-3 cursor-pointer ml-1" 
-                    onClick={() => handleRemove(qualification.name)}
-                  />
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-4 w-4 p-0 hover:bg-transparent ml-1"
+                    onClick={(e) => handleRemove(e, qualification.name)}
+                    type="button"
+                    aria-label={`Remove ${qualification.name}`}
+                  >
+                    <X className="h-3 w-3" />
+                  </Button>
                 </Badge>
               ))}
             </div>
