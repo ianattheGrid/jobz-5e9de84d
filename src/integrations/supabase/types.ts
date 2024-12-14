@@ -98,6 +98,33 @@ export type Database = {
         }
         Relationships: []
       }
+      employer_profiles: {
+        Row: {
+          company_name: string
+          created_at: string
+          full_name: string
+          id: string
+          job_title: string
+          updated_at: string
+        }
+        Insert: {
+          company_name: string
+          created_at?: string
+          full_name: string
+          id: string
+          job_title: string
+          updated_at?: string
+        }
+        Update: {
+          company_name?: string
+          created_at?: string
+          full_name?: string
+          id?: string
+          job_title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       interviews: {
         Row: {
           candidate_id: string

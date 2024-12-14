@@ -65,6 +65,12 @@ const EmployerDashboard = () => {
             >
               View Interviews
             </Button>
+            <Button
+              onClick={() => navigate('/employer/profile')}
+              className="w-full bg-red-800 hover:bg-red-900 text-white"
+            >
+              Manage Profile
+            </Button>
           </div>
         </div>
       </div>
