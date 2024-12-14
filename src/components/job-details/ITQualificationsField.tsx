@@ -1,38 +1,31 @@
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Control } from "react-hook-form";
-import { CheckSquare, Square } from "lucide-react";
-import QualificationBadge from "./QualificationBadge";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 import QualificationSelector from "./QualificationSelector";
-
-interface Qualification {
-  name: string;
-  type: 'essential' | 'desirable';
-}
 
 interface ITQualificationsFieldProps {
   control: Control<any>;
-  value: Qualification[];
-  onChange: (value: Qualification[]) => void;
+  value: { name: string; type: 'essential' | 'desirable' }[];
+  onChange: (value: { name: string; type: 'essential' | 'desirable' }[]) => void;
 }
 
 const ITQualificationsField = ({ control, value, onChange }: ITQualificationsFieldProps) => {
   const handleSelect = (qualificationName: string) => {
-    if (!value.find(q => q.name === qualificationName)) {
-      onChange([...value, { name: qualificationName, type: 'desirable' }]);
+    if (qualificationName === "None") {
+      onChange([]);
+    } else {
+      onChange([{ name: qualificationName, type: 'desirable' }]);
     }
   };
 
-  const handleRemove = (qualificationName: string) => {
-    onChange(value.filter(q => q.name !== qualificationName));
+  const handleTypeChange = (type: 'essential' | 'desirable') => {
+    if (value.length > 0) {
+      onChange([{ ...value[0], type }]);
+    }
   };
 
-  const toggleType = (qualificationName: string) => {
-    onChange(value.map(q => 
-      q.name === qualificationName 
-        ? { ...q, type: q.type === 'essential' ? 'desirable' : 'essential' }
-        : q
-    ));
-  };
+  const selectedQualification = value[0]?.name || "None";
 
   return (
     <div className="space-y-4">
@@ -41,36 +34,32 @@ const ITQualificationsField = ({ control, value, onChange }: ITQualificationsFie
         name="required_qualifications"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>IT Qualifications</FormLabel>
+            <FormLabel>IT Qualification Required</FormLabel>
             <FormControl>
               <QualificationSelector
-                selectedQualifications={value.map(q => q.name)}
+                selectedQualification={selectedQualification}
                 onSelect={handleSelect}
               />
             </FormControl>
-            <div className="mt-4">
-              <div className="text-sm text-muted-foreground mb-2 flex items-center gap-2">
-                <div className="flex items-center">
-                  <CheckSquare className="h-4 w-4 mr-1" />
-                  Essential
-                </div>
-                <div className="flex items-center">
-                  <Square className="h-4 w-4 mr-1" />
-                  Desirable
-                </div>
+            {selectedQualification !== "None" && (
+              <div className="mt-4 space-y-3">
+                <Label>Is this qualification essential or desirable?</Label>
+                <RadioGroup
+                  defaultValue={value[0]?.type || 'desirable'}
+                  onValueChange={(val) => handleTypeChange(val as 'essential' | 'desirable')}
+                  className="flex items-center space-x-4"
+                >
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="essential" id="essential" />
+                    <Label htmlFor="essential">Essential</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="desirable" id="desirable" />
+                    <Label htmlFor="desirable">Desirable</Label>
+                  </div>
+                </RadioGroup>
               </div>
-              <div className="flex flex-wrap gap-2">
-                {value.map((qualification) => (
-                  <QualificationBadge
-                    key={qualification.name}
-                    name={qualification.name}
-                    type={qualification.type}
-                    onRemove={() => handleRemove(qualification.name)}
-                    onToggleType={() => toggleType(qualification.name)}
-                  />
-                ))}
-              </div>
-            </div>
+            )}
             <FormMessage />
           </FormItem>
         )}

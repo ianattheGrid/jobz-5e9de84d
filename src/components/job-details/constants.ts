@@ -1,4 +1,5 @@
 export const itQualifications = [
+  "None",
   "AWS Certified Cloud Practitioner",
   "AWS Certified Developer",
   "AWS Certified Solutions Architect",

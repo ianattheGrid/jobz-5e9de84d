@@ -8,27 +8,25 @@ import {
 import { itQualifications } from "./constants";
 
 interface QualificationSelectorProps {
-  selectedQualifications: string[];
+  selectedQualification: string;
   onSelect: (qualificationName: string) => void;
 }
 
-const QualificationSelector = ({ selectedQualifications, onSelect }: QualificationSelectorProps) => {
+const QualificationSelector = ({ selectedQualification, onSelect }: QualificationSelectorProps) => {
   return (
-    <Select onValueChange={onSelect}>
+    <Select onValueChange={onSelect} value={selectedQualification}>
       <SelectTrigger className="w-full bg-white">
-        <SelectValue placeholder="Select required qualifications" />
+        <SelectValue placeholder="Select a qualification" />
       </SelectTrigger>
       <SelectContent className="bg-white max-h-[300px]">
-        {itQualifications
-          .filter(qualification => !selectedQualifications.includes(qualification))
-          .map((qualification) => (
-            <SelectItem 
-              key={qualification} 
-              value={qualification}
-            >
-              {qualification}
-            </SelectItem>
-          ))}
+        {itQualifications.map((qualification) => (
+          <SelectItem 
+            key={qualification} 
+            value={qualification}
+          >
+            {qualification}
+          </SelectItem>
+        ))}
       </SelectContent>
     </Select>
   );
