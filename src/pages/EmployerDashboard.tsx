@@ -8,7 +8,8 @@ import {
   Building2, 
   Search, 
   Calendar, 
-  UserCircle 
+  UserCircle,
+  MessageSquare
 } from "lucide-react";
 
 const EmployerDashboard = () => {
@@ -75,6 +76,12 @@ const EmployerDashboard = () => {
       icon: <UserCircle className="h-6 w-6" />,
       path: "/employer/profile",
       description: "Update your company profile"
+    },
+    {
+      title: "Contact Us",
+      icon: <MessageSquare className="h-6 w-6" />,
+      path: "#", // We'll update this path later
+      description: "Get in touch with our support team"
     }
   ];
 
