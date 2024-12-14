@@ -7,7 +7,7 @@ import { useState } from "react";
 const SECURITY_CLEARANCE_LEVELS = [
   "BPSS",
   "SC",
-  "CTC",
+  "CTC", 
   "DV",
   "eDV"
 ];
