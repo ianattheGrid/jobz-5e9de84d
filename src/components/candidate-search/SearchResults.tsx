@@ -8,6 +8,8 @@ interface CandidateProfile {
   min_salary: number;
   max_salary: number;
   required_qualifications?: string[];
+  required_skills?: string[];
+  security_clearance?: string;
 }
 
 interface SearchResultsProps {
@@ -33,6 +35,12 @@ export function SearchResults({ candidates }: SearchResultsProps) {
               <p><span className="font-semibold">Salary Range:</span> £{candidate.min_salary.toLocaleString()} - £{candidate.max_salary.toLocaleString()}</p>
               {candidate.required_qualifications && candidate.required_qualifications.length > 0 && (
                 <p><span className="font-semibold">Qualifications:</span> {candidate.required_qualifications.join(', ')}</p>
+              )}
+              {candidate.required_skills && candidate.required_skills.length > 0 && (
+                <p><span className="font-semibold">IT Skills:</span> {candidate.required_skills.join(', ')}</p>
+              )}
+              {candidate.security_clearance && (
+                <p><span className="font-semibold">Security Clearance:</span> {candidate.security_clearance}</p>
               )}
             </div>
           </CardContent>

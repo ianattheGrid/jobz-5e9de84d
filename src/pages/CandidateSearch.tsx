@@ -15,6 +15,8 @@ interface CandidateProfile {
   min_salary: number;
   max_salary: number;
   required_qualifications?: string[];
+  required_skills?: string[];
+  security_clearance?: string;
 }
 
 export default function CandidateSearch() {
@@ -68,6 +70,16 @@ export default function CandidateSearch() {
       // Apply qualification filter if selected
       if (values.qualification && values.qualification !== 'None') {
         query = query.contains('required_qualifications', [values.qualification]);
+      }
+
+      // Apply IT skills filter if selected
+      if (values.required_skills && values.required_skills.length > 0) {
+        query = query.contains('required_skills', values.required_skills);
+      }
+
+      // Apply security clearance filter if selected
+      if (values.requiresSecurityClearance && values.securityClearanceLevel) {
+        query = query.eq('security_clearance', values.securityClearanceLevel);
       }
 
       const { data: candidateProfiles, error } = await query;

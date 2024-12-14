@@ -8,6 +8,8 @@ import LocationField from "@/components/LocationField";
 import SalaryRangeField from "@/components/SalaryRangeField";
 import { searchFormSchema } from "./searchFormSchema";
 import QualificationSelector from "@/components/job-details/QualificationSelector";
+import ITSkillsField from "@/components/job-details/ITSkillsField";
+import SecurityClearanceFields from "@/components/job-details/SecurityClearanceFields";
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 
 interface SearchFormProps {
@@ -22,6 +24,9 @@ export function SearchForm({ onSubmit }: SearchFormProps) {
       location: [],
       salary: "",
       qualification: "None",
+      required_skills: [],
+      requiresSecurityClearance: false,
+      securityClearanceLevel: undefined,
     },
   });
 
@@ -48,6 +53,9 @@ export function SearchForm({ onSubmit }: SearchFormProps) {
             </FormItem>
           )}
         />
+
+        <ITSkillsField control={form.control} />
+        <SecurityClearanceFields control={form.control} />
         
         <div className="flex justify-start">
           <Button type="submit" className="bg-red-800 hover:bg-red-900">
