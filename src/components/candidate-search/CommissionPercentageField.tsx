@@ -12,17 +12,15 @@ const CommissionPercentageField = ({ control }: CommissionPercentageFieldProps) 
       control={control}
       name="includeCommissionCandidates"
       render={({ field }) => (
-        <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-          <div className="space-y-0.5">
-            <FormLabel className="text-base">Include "You're Hired" Bonus Candidates</FormLabel>
-            <FormMessage />
-          </div>
+        <FormItem>
+          <FormLabel>Do you want to include candidates who have asked for a "You're Hired" bonus?</FormLabel>
           <FormControl>
             <Switch
               checked={field.value}
               onCheckedChange={field.onChange}
             />
           </FormControl>
+          <FormMessage />
         </FormItem>
       )}
     />
