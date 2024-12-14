@@ -11,6 +11,7 @@ import QualificationSelector from "@/components/job-details/QualificationSelecto
 import ITSkillsField from "@/components/job-details/ITSkillsField";
 import SecurityClearanceFields from "@/components/job-details/SecurityClearanceFields";
 import SignupPeriodField from "./SignupPeriodField";
+import WorkEligibilityField from "@/components/job-details/WorkEligibilityField";
 
 interface SearchFormProps {
   onSubmit: (values: z.infer<typeof searchFormSchema>) => Promise<void>;
@@ -28,6 +29,7 @@ export function SearchForm({ onSubmit }: SearchFormProps) {
       requiresSecurityClearance: false,
       securityClearanceLevel: undefined,
       signupPeriod: "",
+      workEligibility: undefined,
     },
   });
 
@@ -57,6 +59,7 @@ export function SearchForm({ onSubmit }: SearchFormProps) {
 
         <ITSkillsField control={form.control} />
         <SecurityClearanceFields control={form.control} />
+        <WorkEligibilityField control={form.control} />
         <SignupPeriodField control={form.control} />
         
         <div className="flex justify-start">

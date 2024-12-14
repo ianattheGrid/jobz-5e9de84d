@@ -17,6 +17,7 @@ interface CandidateProfile {
   required_qualifications?: string[];
   required_skills?: string[];
   security_clearance?: string;
+  work_eligibility?: string;
 }
 
 export default function CandidateSearch() {
@@ -102,6 +103,11 @@ export default function CandidateSearch() {
       // Apply security clearance filter if selected
       if (values.requiresSecurityClearance && values.securityClearanceLevel) {
         query = query.eq('security_clearance', values.securityClearanceLevel);
+      }
+
+      // Apply work eligibility filter if selected
+      if (values.workEligibility) {
+        query = query.eq('work_eligibility', values.workEligibility);
       }
 
       // Apply signup date filter if selected

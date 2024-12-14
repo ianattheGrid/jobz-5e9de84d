@@ -62,6 +62,7 @@ export type Database = {
           security_clearance: string | null
           signup_date: string | null
           updated_at: string
+          work_eligibility: string | null
           years_experience: number
         }
         Insert: {
@@ -75,6 +76,7 @@ export type Database = {
           security_clearance?: string | null
           signup_date?: string | null
           updated_at?: string
+          work_eligibility?: string | null
           years_experience: number
         }
         Update: {
@@ -88,6 +90,7 @@ export type Database = {
           security_clearance?: string | null
           signup_date?: string | null
           updated_at?: string
+          work_eligibility?: string | null
           years_experience?: number
         }
         Relationships: []
