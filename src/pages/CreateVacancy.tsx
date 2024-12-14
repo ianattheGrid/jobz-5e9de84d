@@ -127,7 +127,7 @@ export default function CreateVacancy() {
         we function as a sophisticated recruitment platform that intelligently matches candidates 
         to your vacancy based on multiple criteria including job titles, experience levels, technical skills, 
         salary expectations, and location preferences. Attract top talent by offering a "You're Hired" bonus 
-        that incentivizes candidates and sets your opportunity apart from standard job listings.
+        that incentivises candidates and sets your opportunity apart from standard job listings.
       </p>
       <VacancyForm form={form} onSubmit={onSubmit} />
     </div>
