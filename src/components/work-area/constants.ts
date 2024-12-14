@@ -119,3 +119,12 @@ export const itManagementTitles = [
   "Programme Manager",
   "Head of Department"
 ];
+
+export const specializedITTitles = [
+  "Blockchain Developer",
+  "IoT Engineer",
+  "AR/VR Developer",
+  "ERP Specialist (SAP Consultant)",
+  "Site Reliability Engineer (SRE)",
+  "Technical Writer"
+];
