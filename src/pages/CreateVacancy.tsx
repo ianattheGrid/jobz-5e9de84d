@@ -28,10 +28,10 @@ const formSchema = z.object({
   itSpecialization: z.string().optional(),
   title: z.string().optional(),
   otherWorkArea: z.string().optional(),
-  showCompanyName: z.enum(["yes", "no"]),
+  // Removed showCompanyName enum
   company: z.string().min(2, {
     message: "Company name must be at least 2 characters.",
-  }).optional(),
+  }),
   location: z.string().min(2, {
     message: "Location must be at least 2 characters.",
   }),
@@ -73,7 +73,7 @@ export default function CreateVacancy() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      showCompanyName: "no",
+      // Removed default showCompanyName value
       type: "Full-time",
       applicationMethod: "platform",
       offerCandidateCommission: false,
