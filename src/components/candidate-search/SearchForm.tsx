@@ -17,7 +17,7 @@ export function SearchForm({ onSubmit }: SearchFormProps) {
     resolver: zodResolver(searchFormSchema),
     defaultValues: {
       workArea: "",
-      location: "",
+      location: [], // Change from string to array
       salary: "",
     },
   });
