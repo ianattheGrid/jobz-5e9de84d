@@ -98,3 +98,11 @@ export const aiTitles = [
   "AI Research Scientist",
   "Robotics Engineer"
 ];
+
+export const testingTitles = [
+  "QA Engineer",
+  "Software Tester",
+  "Automation Tester",
+  "Test Analyst",
+  "Performance Tester"
+];
