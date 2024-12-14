@@ -115,5 +115,7 @@ export const itManagementTitles = [
   "IT Project Manager",
   "IT Service Manager",
   "Scrum Master",
-  "Product Owner"
+  "Product Owner",
+  "Programme Manager",
+  "Head of Department"
 ];
