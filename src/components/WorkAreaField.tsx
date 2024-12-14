@@ -1,13 +1,15 @@
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
 import { Control } from "react-hook-form";
-import { useState } from "react";
-import { 
-  workAreas, 
-  softwareDevTitles, 
-  itSupportTitles, 
-  networkingTitles, 
+import { workAreas } from "./work-area/constants";
+import ITSpecializationSelect from "./work-area/ITSpecializationSelect";
+import JobTitleSelect from "./work-area/JobTitleSelect";
+import OtherWorkAreaInput from "./work-area/OtherWorkAreaInput";
+import { useWorkAreaState } from "./work-area/useWorkAreaState";
+import {
+  softwareDevTitles,
+  itSupportTitles,
+  networkingTitles,
   cybersecurityTitles,
   dataAnalyticsTitles,
   cloudComputingTitles,
@@ -16,35 +18,30 @@ import {
   itManagementTitles,
   specializedITTitles
 } from "./work-area/constants";
-import ITSpecializationSelect from "./work-area/ITSpecializationSelect";
-import JobTitleSelect from "./work-area/JobTitleSelect";
 
-const WorkAreaField = ({ control }: { control: Control<any> }) => {
-  const [showOtherInput, setShowOtherInput] = useState(false);
-  const [showITSpecialization, setShowITSpecialization] = useState(false);
-  const [showSoftwareDevTitles, setShowSoftwareDevTitles] = useState(false);
-  const [showITSupportTitles, setShowITSupportTitles] = useState(false);
-  const [showNetworkingTitles, setShowNetworkingTitles] = useState(false);
-  const [showCybersecurityTitles, setShowCybersecurityTitles] = useState(false);
-  const [showDataAnalyticsTitles, setShowDataAnalyticsTitles] = useState(false);
-  const [showCloudComputingTitles, setShowCloudComputingTitles] = useState(false);
-  const [showAITitles, setShowAITitles] = useState(false);
-  const [showTestingTitles, setShowTestingTitles] = useState(false);
-  const [showITManagementTitles, setShowITManagementTitles] = useState(false);
-  const [showSpecializedITTitles, setShowSpecializedITTitles] = useState(false);
+interface WorkAreaFieldProps {
+  control: Control<any>;
+}
 
-  const handleSpecializationChange = (value: string) => {
-    setShowSoftwareDevTitles(value === "Software Development and Programming");
-    setShowITSupportTitles(value === "IT Support and Operations");
-    setShowNetworkingTitles(value === "Networking and Infrastructure");
-    setShowCybersecurityTitles(value === "Cybersecurity");
-    setShowDataAnalyticsTitles(value === "Data and Analytics");
-    setShowCloudComputingTitles(value === "Cloud Computing");
-    setShowAITitles(value === "Artificial Intelligence and Machine Learning");
-    setShowTestingTitles(value === "Testing and Quality Assurance");
-    setShowITManagementTitles(value === "IT Management");
-    setShowSpecializedITTitles(value === "Specialised IT Roles");
-  };
+const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
+  const {
+    showOtherInput,
+    setShowOtherInput,
+    showITSpecialization,
+    setShowITSpecialization,
+    showSoftwareDevTitles,
+    showITSupportTitles,
+    showNetworkingTitles,
+    showCybersecurityTitles,
+    showDataAnalyticsTitles,
+    showCloudComputingTitles,
+    showAITitles,
+    showTestingTitles,
+    showITManagementTitles,
+    showSpecializedITTitles,
+    handleSpecializationChange,
+    resetITTitles
+  } = useWorkAreaState();
 
   return (
     <div className="space-y-4">
@@ -61,16 +58,7 @@ const WorkAreaField = ({ control }: { control: Control<any> }) => {
                   setShowOtherInput(value === "Other");
                   setShowITSpecialization(value === "IT");
                   if (value !== "IT") {
-                    setShowSoftwareDevTitles(false);
-                    setShowITSupportTitles(false);
-                    setShowNetworkingTitles(false);
-                    setShowCybersecurityTitles(false);
-                    setShowDataAnalyticsTitles(false);
-                    setShowCloudComputingTitles(false);
-                    setShowAITitles(false);
-                    setShowTestingTitles(false);
-                    setShowITManagementTitles(false);
-                    setShowSpecializedITTitles(false);
+                    resetITTitles();
                   }
                 }} 
                 defaultValue={field.value}
@@ -140,19 +128,7 @@ const WorkAreaField = ({ control }: { control: Control<any> }) => {
       )}
 
       {showOtherInput && (
-        <FormField
-          control={control}
-          name="otherWorkArea"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Please specify the area of work</FormLabel>
-              <FormControl>
-                <Input placeholder="Enter the area of work..." {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <OtherWorkAreaInput control={control} />
       )}
     </div>
   );
