@@ -14,6 +14,7 @@ interface CandidateProfile {
   location: string;
   min_salary: number;
   max_salary: number;
+  required_qualifications?: string[];
 }
 
 export default function CandidateSearch() {
@@ -50,12 +51,26 @@ export default function CandidateSearch() {
         parseInt(s.replace(/[£,]/g, ""))
       );
 
-      const { data: candidateProfiles, error } = await supabase
+      let query = supabase
         .from('candidate_profiles')
-        .select('*')
-        .eq('location', values.location)
+        .select('*');
+
+      // Apply location filter if specific locations are selected
+      if (!values.location.includes('All')) {
+        query = query.in('location', values.location);
+      }
+
+      // Apply salary range filter
+      query = query
         .gte('min_salary', minSalary)
         .lte('max_salary', maxSalary);
+
+      // Apply qualification filter if selected
+      if (values.qualification && values.qualification !== 'None') {
+        query = query.contains('required_qualifications', [values.qualification]);
+      }
+
+      const { data: candidateProfiles, error } = await query;
 
       if (error) throw error;
 

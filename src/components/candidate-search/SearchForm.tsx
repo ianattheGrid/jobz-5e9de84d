@@ -7,6 +7,8 @@ import WorkAreaField from "@/components/WorkAreaField";
 import LocationField from "@/components/LocationField";
 import SalaryRangeField from "@/components/SalaryRangeField";
 import { searchFormSchema } from "./searchFormSchema";
+import QualificationSelector from "@/components/job-details/QualificationSelector";
+import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 
 interface SearchFormProps {
   onSubmit: (values: z.infer<typeof searchFormSchema>) => Promise<void>;
@@ -17,8 +19,9 @@ export function SearchForm({ onSubmit }: SearchFormProps) {
     resolver: zodResolver(searchFormSchema),
     defaultValues: {
       workArea: "",
-      location: [], // Change from string to array
+      location: [],
       salary: "",
+      qualification: "None",
     },
   });
 
@@ -28,6 +31,23 @@ export function SearchForm({ onSubmit }: SearchFormProps) {
         <WorkAreaField control={form.control} />
         <LocationField control={form.control} />
         <SalaryRangeField control={form.control} />
+        
+        <FormField
+          control={form.control}
+          name="qualification"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>IT Qualification</FormLabel>
+              <FormControl>
+                <QualificationSelector
+                  selectedQualification={field.value}
+                  onSelect={field.onChange}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         
         <div className="flex justify-start">
           <Button type="submit" className="bg-red-800 hover:bg-red-900">

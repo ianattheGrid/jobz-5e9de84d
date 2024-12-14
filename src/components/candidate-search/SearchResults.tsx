@@ -7,6 +7,7 @@ interface CandidateProfile {
   location: string;
   min_salary: number;
   max_salary: number;
+  required_qualifications?: string[];
 }
 
 interface SearchResultsProps {
@@ -30,6 +31,9 @@ export function SearchResults({ candidates }: SearchResultsProps) {
               <p><span className="font-semibold">Experience:</span> {candidate.years_experience} years</p>
               <p><span className="font-semibold">Location:</span> {candidate.location}</p>
               <p><span className="font-semibold">Salary Range:</span> £{candidate.min_salary.toLocaleString()} - £{candidate.max_salary.toLocaleString()}</p>
+              {candidate.required_qualifications && candidate.required_qualifications.length > 0 && (
+                <p><span className="font-semibold">Qualifications:</span> {candidate.required_qualifications.join(', ')}</p>
+              )}
             </div>
           </CardContent>
         </Card>
