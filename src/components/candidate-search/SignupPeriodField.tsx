@@ -35,13 +35,13 @@ export default function SignupPeriodField({ control }: SignupPeriodFieldProps) {
       name="signupPeriod"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Candidate Signup Period</FormLabel>
+          <FormLabel>Candidate sign up date</FormLabel>
           <FormControl>
             <Select onValueChange={field.onChange} value={field.value || "all"}>
-              <SelectTrigger>
+              <SelectTrigger className="bg-white border border-gray-300">
                 <SelectValue placeholder="Any time" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-white border border-gray-300 z-50">
                 <SelectItem value="all">Any time</SelectItem>
                 {SIGNUP_PERIODS.map((period) => (
                   <SelectItem key={period.value} value={period.value}>
