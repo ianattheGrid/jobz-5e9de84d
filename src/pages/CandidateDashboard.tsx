@@ -37,15 +37,20 @@ const CandidateDashboard = () => {
         return;
       }
       setUserId(session.user.id);
-      
-      // First, check if profile exists
-      const { data: existingProfile, error: fetchError } = await supabase
+
+      // First check if profile exists
+      const { data: profileData, error: profileError } = await supabase
         .from('candidate_profiles')
         .select('profile_picture_url, cv_url')
         .eq('id', session.user.id)
-        .single();
+        .maybeSingle();
 
-      if (fetchError && fetchError.code === 'PGRST116') {
+      if (profileError) {
+        console.error('Error fetching profile:', profileError);
+        throw profileError;
+      }
+
+      if (!profileData) {
         // Profile doesn't exist, create it
         const { error: insertError } = await supabase
           .from('candidate_profiles')
@@ -59,19 +64,19 @@ const CandidateDashboard = () => {
             max_salary: 0
           });
 
-        if (insertError) throw insertError;
-        
-        // Set empty profile
+        if (insertError) {
+          console.error('Error creating profile:', insertError);
+          throw insertError;
+        }
+
         setProfile({
           profile_picture_url: null,
           cv_url: null
         });
-      } else if (fetchError) {
-        throw fetchError;
       } else {
-        setProfile(existingProfile);
+        setProfile(profileData);
       }
-      
+
       setLoading(false);
     } catch (error) {
       console.error('Error:', error);
