@@ -80,6 +80,20 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
         )}
       />
 
+      <FormField
+        control={control}
+        name="location"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Location</FormLabel>
+            <FormControl>
+              <Input placeholder="Enter your location (e.g., London, Manchester)" {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
       <FormItem>
         <FormLabel>Address</FormLabel>
         <AddressFinder control={control} />

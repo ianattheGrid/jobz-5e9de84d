@@ -8,6 +8,7 @@ export const candidateFormSchema = z.object({
   email: z.string().email("Invalid email address"),
   phone_number: z.string().optional(),
   address: z.string().optional(),
+  location: z.string().min(1, "Location is required"),
   workArea: z.string({
     required_error: "Please select your area of work.",
   }),
@@ -17,9 +18,6 @@ export const candidateFormSchema = z.object({
   desired_job_title: z.string().optional(),
   desired_years_experience: z.string().optional(),
   wantsCareerChange: z.string().optional(),
-  location: z.array(z.string()).min(1, {
-    message: "Please select at least one location",
-  }),
   salary: z.string().min(1, {
     message: "Please specify your salary expectations",
   }),
