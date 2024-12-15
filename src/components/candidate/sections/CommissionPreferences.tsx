@@ -166,28 +166,26 @@ const CommissionPreferences = ({ control }: CommissionPreferencesProps) => {
         )}
       />
 
-      {field.value && (
-        <FormField
-          control={control}
-          name="commission_percentage"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>What is your desired commission percentage? (2.5% - 14%)</FormLabel>
-              <FormControl>
-                <Input
-                  type="number"
-                  min="2.5"
-                  max="14"
-                  step="0.5"
-                  {...field}
-                  onChange={(e) => field.onChange(parseFloat(e.target.value))}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      )}
+      <FormField
+        control={control}
+        name="commission_percentage"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>What is your desired commission percentage? (2.5% - 14%)</FormLabel>
+            <FormControl>
+              <Input
+                type="number"
+                min="2.5"
+                max="14"
+                step="0.5"
+                {...field}
+                onChange={(e) => field.onChange(parseFloat(e.target.value))}
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
     </>
   );
 };
