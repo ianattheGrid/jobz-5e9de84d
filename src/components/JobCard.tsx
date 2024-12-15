@@ -1,10 +1,8 @@
-import { Database } from "@/integrations/supabase/types";
+import { Job } from "@/integrations/supabase/types/jobs";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import JobCardFront from "./job-card/JobCardFront";
 import JobCardBack from "./job-card/JobCardBack";
-
-type Job = Database['public']['Tables']['jobs']['Row'];
 
 interface JobCardProps {
   job: Job;

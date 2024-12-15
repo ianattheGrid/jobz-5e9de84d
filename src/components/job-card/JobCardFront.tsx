@@ -43,8 +43,9 @@ const JobCardFront = ({ job }: JobCardFrontProps) => {
           </div>
         )}
 
-        <div className="pt-2">
-          <p className="text-sm text-gray-600">
+        <div>
+          <h4 className="font-medium mb-2 text-red-800">Full Description</h4>
+          <p className="text-sm text-gray-600 whitespace-pre-line">
             {job.description}
           </p>
         </div>
