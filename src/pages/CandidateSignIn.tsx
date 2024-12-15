@@ -1,9 +1,8 @@
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { SignInFormValues, signInFormSchema } from "./signInFormSchema";
 
 const CandidateSignIn = () => {
@@ -24,12 +23,9 @@ const CandidateSignIn = () => {
         password: values.password,
       });
 
-      console.log("Sign in response:", { data, error });
-
       if (error) throw error;
 
       if (!data?.user) {
-        console.error("No user data returned");
         throw new Error("No user data returned");
       }
 
