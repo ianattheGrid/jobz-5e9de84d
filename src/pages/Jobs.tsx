@@ -6,16 +6,26 @@ import LoadingSpinner from "@/components/jobs/LoadingSpinner";
 import EmptyJobsList from "@/components/jobs/EmptyJobsList";
 import JobList from "@/components/jobs/JobList";
 import JobsHeader from "@/components/jobs/JobsHeader";
+import JobSearch from "@/components/jobs/JobSearch";
+import { useState } from "react";
 
 type Job = Database['public']['Tables']['jobs']['Row'];
 
+interface SearchFilters {
+  workArea?: string;
+  location?: string[];
+  salary?: string;
+  title?: string;
+}
+
 const Jobs = () => {
   const { user, userType } = useAuth();
+  const [searchFilters, setSearchFilters] = useState<SearchFilters | null>(null);
 
   const { data: jobs, isLoading, error } = useQuery({
-    queryKey: ['jobs'],
+    queryKey: ['jobs', searchFilters],
     queryFn: async () => {
-      console.log('Fetching jobs...', { userType, userId: user?.id });
+      console.log('Fetching jobs...', { userType, userId: user?.id, searchFilters });
       
       let query = supabase
         .from('jobs')
@@ -24,6 +34,32 @@ const Jobs = () => {
 
       if (user && userType === 'employer') {
         query = query.eq('employer_id', user.id);
+      }
+
+      // Apply search filters
+      if (searchFilters) {
+        if (searchFilters.workArea) {
+          query = query.eq('workArea', searchFilters.workArea);
+        }
+
+        if (searchFilters.location && searchFilters.location.length > 0) {
+          query = query.in('location', searchFilters.location);
+        }
+
+        if (searchFilters.salary) {
+          const [minSalary, maxSalary] = searchFilters.salary
+            .replace(/[£,]/g, '')
+            .split(' - ')
+            .map(Number);
+
+          query = query
+            .gte('salary_min', minSalary)
+            .lte('salary_max', maxSalary);
+        }
+
+        if (searchFilters.title) {
+          query = query.ilike('title', `%${searchFilters.title}%`);
+        }
       }
 
       const { data, error } = await query;
@@ -37,6 +73,11 @@ const Jobs = () => {
       return data as Job[];
     }
   });
+
+  const handleSearch = (filters: SearchFilters) => {
+    console.log('Applying search filters:', filters);
+    setSearchFilters(filters);
+  };
 
   if (isLoading) {
     return <LoadingSpinner />;
@@ -59,6 +100,7 @@ const Jobs = () => {
   return (
     <div className="container mx-auto py-8 px-4">
       <JobsHeader userType={userType} jobCount={jobs.length} />
+      <JobSearch onSearch={handleSearch} />
       <JobList jobs={jobs} />
     </div>
   );
