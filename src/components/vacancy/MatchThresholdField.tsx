@@ -25,7 +25,7 @@ const MatchThresholdField = ({ control }: MatchThresholdFieldProps) => {
   return (
     <div className="space-y-6">
       <FormItem className="space-y-3">
-        <FormLabel>Would you like to use Jobz's intelligent matching algorithm to automatically filter candidates who don't meet your requirements?</FormLabel>
+        <FormLabel>Would you like to use jobz's intelligent matching algorithm to automatically filter candidates who don't meet your requirements?</FormLabel>
         <RadioGroup
           defaultValue="yes"
           onValueChange={handleMatchingChange}
