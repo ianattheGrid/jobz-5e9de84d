@@ -32,34 +32,38 @@ export function CandidateForm() {
 
   useEffect(() => {
     const loadProfile = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) return;
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) return;
 
-      const { data: profile, error } = await supabase
-        .from('candidate_profiles')
-        .select('*')
-        .eq('id', session.user.id)
-        .single();
+        const { data: profile, error } = await supabase
+          .from('candidate_profiles')
+          .select('*')
+          .eq('id', session.user.id)
+          .maybeSingle(); // Changed from single() to maybeSingle()
 
-      if (error) {
+        if (error && error.code !== 'PGRST116') {
+          console.error('Error loading profile:', error);
+          return;
+        }
+
+        if (profile) {
+          form.reset({
+            workArea: profile.job_title,
+            location: [profile.location],
+            salary: `${profile.min_salary}-${profile.max_salary}`,
+            required_skills: profile.required_skills || [],
+            security_clearance: profile.security_clearance,
+            work_eligibility: profile.work_eligibility,
+            years_experience: profile.years_experience.toString(),
+            commission_percentage: profile.commission_percentage,
+            open_to_commission: profile.commission_percentage !== null,
+            preferred_work_type: (profile.preferred_work_type as WorkType) || "office",
+            additional_skills: profile.additional_skills || "",
+          });
+        }
+      } catch (error) {
         console.error('Error loading profile:', error);
-        return;
-      }
-
-      if (profile) {
-        form.reset({
-          workArea: profile.job_title,
-          location: [profile.location],
-          salary: `${profile.min_salary}-${profile.max_salary}`,
-          required_skills: profile.required_skills || [],
-          security_clearance: profile.security_clearance,
-          work_eligibility: profile.work_eligibility,
-          years_experience: profile.years_experience.toString(),
-          commission_percentage: profile.commission_percentage,
-          open_to_commission: profile.commission_percentage !== null,
-          preferred_work_type: (profile.preferred_work_type as WorkType) || "office",
-          additional_skills: profile.additional_skills || "",
-        });
       }
     };
 
