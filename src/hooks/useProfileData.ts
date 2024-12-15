@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { UseFormReset } from 'react-hook-form';
 import { supabase } from '@/integrations/supabase/client';
-import { CandidateFormValues } from '@/components/candidate/candidateFormSchema';
+import { CandidateFormValues, WorkType } from '@/components/candidate/candidateFormSchema';
 import { useToast } from '@/components/ui/use-toast';
 
 export const useProfileData = (reset: UseFormReset<CandidateFormValues>) => {
@@ -37,6 +37,11 @@ export const useProfileData = (reset: UseFormReset<CandidateFormValues>) => {
         }
 
         if (profile) {
+          // Ensure preferred_work_type is one of the allowed values
+          const validWorkType = (type: string): WorkType => {
+            return ['remote', 'hybrid', 'office'].includes(type) ? (type as WorkType) : 'office';
+          };
+
           reset({
             full_name: profile.full_name || '',
             email: profile.email || '',
@@ -52,7 +57,7 @@ export const useProfileData = (reset: UseFormReset<CandidateFormValues>) => {
             years_experience: profile.years_experience?.toString() || '',
             commission_percentage: profile.commission_percentage,
             open_to_commission: profile.commission_percentage !== null,
-            preferred_work_type: profile.preferred_work_type || "office",
+            preferred_work_type: validWorkType(profile.preferred_work_type || 'office'),
             additional_skills: profile.additional_skills || "",
             availability: profile.availability || "Immediate",
           });
