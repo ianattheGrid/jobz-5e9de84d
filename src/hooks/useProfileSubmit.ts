@@ -34,7 +34,7 @@ export const useProfileSubmit = (toast: ToastFunction) => {
           security_clearance: values.security_clearance,
           work_eligibility: values.work_eligibility,
           commission_percentage: values.commission_percentage,
-          preferred_work_type: values.preferred_work_type ? values.preferred_work_type[0] : null,
+          preferred_work_type: values.preferred_work_type,
           additional_skills: values.additional_skills,
           availability: values.availability
         });

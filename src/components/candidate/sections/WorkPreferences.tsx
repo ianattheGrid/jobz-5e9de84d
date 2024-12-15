@@ -29,12 +29,10 @@ const WorkPreferences = ({ control }: WorkPreferencesProps) => {
                   <Checkbox
                     checked={field.value?.includes(option.id)}
                     onCheckedChange={(checked) => {
-                      const currentValue = field.value || [];
-                      if (checked) {
-                        field.onChange([...currentValue, option.id]);
-                      } else {
-                        field.onChange(currentValue.filter((value) => value !== option.id));
-                      }
+                      const updatedValue = checked
+                        ? [...(field.value || []), option.id]
+                        : (field.value || []).filter((value) => value !== option.id);
+                      field.onChange(updatedValue);
                     }}
                   />
                 </FormControl>
