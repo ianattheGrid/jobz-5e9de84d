@@ -13,6 +13,8 @@ export const useWorkAreaState = () => {
   const [showTestingTitles, setShowTestingTitles] = useState(false);
   const [showITManagementTitles, setShowITManagementTitles] = useState(false);
   const [showSpecializedITTitles, setShowSpecializedITTitles] = useState(false);
+  const [showCareerChange, setShowCareerChange] = useState(false);
+  const [wantsCareerChange, setWantsCareerChange] = useState(false);
 
   const handleSpecializationChange = (value: string) => {
     setShowSoftwareDevTitles(value === "Software Development and Programming");
@@ -56,6 +58,10 @@ export const useWorkAreaState = () => {
     showITManagementTitles,
     showSpecializedITTitles,
     handleSpecializationChange,
-    resetITTitles
+    resetITTitles,
+    showCareerChange,
+    setShowCareerChange,
+    wantsCareerChange,
+    setWantsCareerChange
   };
 };
