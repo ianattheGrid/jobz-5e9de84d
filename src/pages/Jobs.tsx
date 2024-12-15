@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Database } from "@/integrations/supabase/types";
+import { Job } from "@/integrations/supabase/types/jobs";
 import { useAuth } from "@/hooks/useAuth";
 import LoadingSpinner from "@/components/jobs/LoadingSpinner";
 import EmptyJobsList from "@/components/jobs/EmptyJobsList";
@@ -9,8 +9,6 @@ import JobsHeader from "@/components/jobs/JobsHeader";
 import JobSearch from "@/components/jobs/JobSearch";
 import { useState } from "react";
 import { JobSearchValues } from "@/components/jobs/JobSearchSchema";
-
-type Job = Database['public']['Tables']['jobs']['Row'];
 
 const Jobs = () => {
   const { user, userType } = useAuth();
@@ -68,7 +66,7 @@ const Jobs = () => {
       }
       
       console.log('Fetched jobs:', data);
-      return data as Job[];
+      return data as Job[];  // Explicitly cast to Job[]
     }
   });
 
