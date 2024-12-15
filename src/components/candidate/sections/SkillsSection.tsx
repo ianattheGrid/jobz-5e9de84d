@@ -1,8 +1,8 @@
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Control } from "react-hook-form";
 import { CandidateFormValues } from "../candidateFormSchema";
 import ITSkillsField from "@/components/job-details/ITSkillsField";
+import QualificationSelector from "@/components/job-details/QualificationSelector";
 
 interface SkillsSectionProps {
   control: Control<CandidateFormValues>;
@@ -18,9 +18,12 @@ const SkillsSection = ({ control }: SkillsSectionProps) => {
         name="additional_skills"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Additional Skills or Certifications</FormLabel>
+            <FormLabel>Your Certifications</FormLabel>
             <FormControl>
-              <Input {...field} placeholder="e.g., AWS Certified, Scrum Master, etc." />
+              <QualificationSelector
+                selectedQualification={field.value || "None"}
+                onSelect={(value) => field.onChange(value === "None" ? "" : value)}
+              />
             </FormControl>
             <FormMessage />
           </FormItem>

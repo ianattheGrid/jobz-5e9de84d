@@ -16,7 +16,7 @@ const QualificationSelector = ({ selectedQualification, onSelect }: Qualificatio
   return (
     <Select onValueChange={onSelect} value={selectedQualification}>
       <SelectTrigger className="w-full bg-white">
-        <SelectValue placeholder="Select a qualification" />
+        <SelectValue placeholder="None" />
       </SelectTrigger>
       <SelectContent className="bg-white max-h-[300px]">
         {itQualifications.map((qualification) => (
