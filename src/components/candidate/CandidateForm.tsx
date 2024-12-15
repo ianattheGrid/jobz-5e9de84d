@@ -6,6 +6,7 @@ import { useToast } from "@/components/ui/use-toast";
 import WorkAreaField from "@/components/WorkAreaField";
 import SalaryRangeField from "@/components/SalaryRangeField";
 import AvailabilityField from "@/components/AvailabilityField";
+import WorkPreferencesField from "@/components/WorkPreferencesField";
 import SecurityClearanceFields from "@/components/job-details/SecurityClearanceFields";
 import WorkEligibilityField from "@/components/job-details/WorkEligibilityField";
 import { candidateFormSchema, type CandidateFormValues } from "./candidateFormSchema";
@@ -31,6 +32,7 @@ export function CandidateForm() {
       work_eligibility: undefined,
       open_to_commission: false,
       availability: "Immediate",
+      work_preferences: "",
       workArea: "",
       years_experience: "",
       min_salary: undefined,
@@ -62,6 +64,9 @@ export function CandidateForm() {
           </div>
           <div className="text-left">
             <AvailabilityField control={form.control} />
+          </div>
+          <div className="text-left">
+            <WorkPreferencesField control={form.control} />
           </div>
           <div className="text-left">
             <SkillsSection control={form.control} />

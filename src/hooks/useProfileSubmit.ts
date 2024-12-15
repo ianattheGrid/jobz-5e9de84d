@@ -17,11 +17,6 @@ export const useProfileSubmit = (toast: ToastFunction) => {
         return;
       }
 
-      // Convert the array to a single string for storage
-      const preferredWorkType = values.preferred_work_type.length > 0 
-        ? values.preferred_work_type[0] 
-        : 'office';
-
       const { error } = await supabase
         .from('candidate_profiles')
         .upsert({
@@ -39,9 +34,9 @@ export const useProfileSubmit = (toast: ToastFunction) => {
           security_clearance: values.security_clearance,
           work_eligibility: values.work_eligibility,
           commission_percentage: values.commission_percentage,
-          preferred_work_type: preferredWorkType,
           additional_skills: values.additional_skills,
-          availability: values.availability
+          availability: values.availability,
+          work_preferences: values.work_preferences
         });
 
       if (error) {
