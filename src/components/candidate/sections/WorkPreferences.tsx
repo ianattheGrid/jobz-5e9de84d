@@ -13,10 +13,10 @@ const WorkPreferences = ({ control }: WorkPreferencesProps) => {
       name="preferred_work_type"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Preferred Work Type</FormLabel>
+          <FormLabel className="text-sm">Preferred Work Type</FormLabel>
           <FormControl>
             <select
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded text-sm"
               {...field}
             >
               <option value="remote">Remote</option>
