@@ -34,8 +34,8 @@ const Jobs = () => {
           query = query.eq('workArea', searchFilters.workArea);
         }
 
-        if (searchFilters.location && searchFilters.location.length > 0) {
-          query = query.in('location', searchFilters.location);
+        if (searchFilters.location) {
+          query = query.ilike('location', `%${searchFilters.location}%`);
         }
 
         if (searchFilters.salary) {
@@ -66,7 +66,7 @@ const Jobs = () => {
       }
       
       console.log('Fetched jobs:', data);
-      return data as Job[];  // Explicitly cast to Job[]
+      return data as Job[];
     }
   });
 
