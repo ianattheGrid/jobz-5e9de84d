@@ -5,13 +5,13 @@ interface JobsHeaderProps {
   jobCount: number;
 }
 
-const JobsHeader = ({ userType, jobCount }: JobsHeaderProps) => {
+const JobsHeader = ({ userType }: JobsHeaderProps) => {
   const navigate = useNavigate();
 
   return (
     <div className="flex justify-between items-center mb-8">
       <h1 className="text-3xl font-bold">
-        {userType === 'employer' ? 'Your Job Postings' : 'Available Positions'} ({jobCount})
+        Job Board
       </h1>
       {userType === 'employer' && (
         <button
