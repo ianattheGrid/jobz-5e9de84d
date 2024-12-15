@@ -74,6 +74,7 @@ export type Database = {
           signup_date: string | null
           updated_at: string
           work_eligibility: string | null
+          work_preferences: string | null
           years_experience: number
         }
         Insert: {
@@ -99,6 +100,7 @@ export type Database = {
           signup_date?: string | null
           updated_at?: string
           work_eligibility?: string | null
+          work_preferences?: string | null
           years_experience?: number
         }
         Update: {
@@ -124,6 +126,7 @@ export type Database = {
           signup_date?: string | null
           updated_at?: string
           work_eligibility?: string | null
+          work_preferences?: string | null
           years_experience?: number
         }
         Relationships: []
