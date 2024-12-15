@@ -30,17 +30,7 @@ const CandidateSignIn = () => {
 
       console.log("Sign in response:", { data, error });
 
-      if (error) {
-        if (error.message.includes('Email not confirmed')) {
-          toast({
-            variant: "destructive",
-            title: "Email Not Verified",
-            description: "Please check your email and verify your account before signing in.",
-          });
-          return;
-        }
-        throw error;
-      }
+      if (error) throw error;
 
       if (!data?.user) {
         console.error("No user data returned");
