@@ -26,7 +26,7 @@ export function CandidateForm() {
       email: "",
       phone_number: "",
       address: "",
-      location: [], // Ensure this is initialized as an empty array
+      location: [], // Initialize as empty array
       required_skills: [],
       security_clearance: undefined,
       work_eligibility: undefined,
@@ -36,10 +36,19 @@ export function CandidateForm() {
       workArea: "",
       years_experience: "",
       salary: "",
+      commission_percentage: null,
+      additional_skills: "",
     },
   });
 
-  useProfileData(form.reset);
+  useProfileData((data) => {
+    // Ensure location is always an array when resetting form
+    form.reset({
+      ...data,
+      location: Array.isArray(data?.location) ? data.location : [],
+    });
+  });
+  
   const { onSubmit } = useProfileSubmit(toast);
 
   return (
