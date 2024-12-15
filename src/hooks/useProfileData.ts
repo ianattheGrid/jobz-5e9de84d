@@ -36,11 +36,12 @@ export const useProfileData = (reset: UseFormReset<CandidateFormValues>) => {
         }
 
         if (profile) {
-          const workTypes = profile.preferred_work_type ? 
-            (typeof profile.preferred_work_type === 'string' ? 
-              [profile.preferred_work_type] : 
+          // Convert preferred_work_type to string, using the first value if it's an array
+          const workType = profile.preferred_work_type ? 
+            (Array.isArray(profile.preferred_work_type) ? 
+              profile.preferred_work_type[0] : 
               profile.preferred_work_type) : 
-            [];
+            undefined;
 
           reset({
             full_name: profile.full_name || '',
@@ -57,7 +58,7 @@ export const useProfileData = (reset: UseFormReset<CandidateFormValues>) => {
             years_experience: profile.years_experience?.toString() || '',
             commission_percentage: profile.commission_percentage,
             open_to_commission: profile.commission_percentage !== null,
-            preferred_work_type: workTypes,
+            preferred_work_type: workType,
             additional_skills: profile.additional_skills || "",
             availability: profile.availability || "Immediate",
           });
