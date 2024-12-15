@@ -26,7 +26,7 @@ export function CandidateForm() {
       email: "",
       phone_number: "",
       address: "",
-      location: [], // Initialize as empty array
+      location: "All",
       required_skills: [],
       security_clearance: undefined,
       work_eligibility: undefined,
@@ -42,10 +42,9 @@ export function CandidateForm() {
   });
 
   useProfileData((data) => {
-    // Ensure location is always an array when resetting form
     form.reset({
       ...data,
-      location: Array.isArray(data?.location) ? data.location : [],
+      location: data?.location || "All",
     });
   });
   
