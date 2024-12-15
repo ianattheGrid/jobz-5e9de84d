@@ -4,7 +4,6 @@ import { Control } from "react-hook-form";
 import { CandidateFormValues } from "../candidateFormSchema";
 import { FileUploadSection } from "../FileUploadSection";
 import AddressFinder from "@/components/AddressFinder";
-import LocationField from "@/components/LocationField";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -85,8 +84,6 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
         <FormLabel>Address</FormLabel>
         <AddressFinder control={control} />
       </FormItem>
-
-      <LocationField control={control} />
 
       {userId && (
         <FileUploadSection

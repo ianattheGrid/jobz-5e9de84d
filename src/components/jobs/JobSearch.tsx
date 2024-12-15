@@ -5,7 +5,6 @@ import { Search } from "lucide-react";
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import WorkAreaField from "@/components/WorkAreaField";
-import LocationField from "@/components/LocationField";
 import SalaryRangeField from "@/components/SalaryRangeField";
 import CommissionFilterField from "./CommissionFilterField";
 import { jobSearchSchema, type JobSearchValues } from "./JobSearchSchema";
@@ -21,7 +20,6 @@ const JobSearch = ({ onSearch }: JobSearchProps) => {
     resolver: zodResolver(jobSearchSchema),
     defaultValues: {
       workArea: "",
-      location: [],
       salary: "",
       title: "",
       includeCommission: false,
@@ -48,7 +46,6 @@ const JobSearch = ({ onSearch }: JobSearchProps) => {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
             <WorkAreaField control={form.control} />
-            <LocationField control={form.control} />
             <SalaryRangeField control={form.control} />
             <CommissionFilterField control={form.control} />
             

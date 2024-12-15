@@ -4,7 +4,6 @@ import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import WorkAreaField from "@/components/WorkAreaField";
-import LocationField from "@/components/LocationField";
 import SalaryRangeField from "@/components/SalaryRangeField";
 import { searchFormSchema } from "./searchFormSchema";
 import QualificationSelector from "@/components/job-details/QualificationSelector";
@@ -23,7 +22,6 @@ export function SearchForm({ onSubmit }: SearchFormProps) {
     resolver: zodResolver(searchFormSchema),
     defaultValues: {
       workArea: "",
-      location: [],
       salary: "",
       qualification: "None",
       required_skills: [],
@@ -39,7 +37,6 @@ export function SearchForm({ onSubmit }: SearchFormProps) {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 text-left">
         <WorkAreaField control={form.control} />
-        <LocationField control={form.control} />
         <SalaryRangeField control={form.control} />
         <CommissionPercentageField control={form.control} />
         

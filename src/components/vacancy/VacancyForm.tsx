@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { UseFormReturn } from "react-hook-form";
 import { VacancyFormValues } from "./VacancyFormSchema";
 import WorkAreaField from "@/components/WorkAreaField";
-import LocationField from "@/components/LocationField";
 import JobDetailsFields from "@/components/JobDetailsFields";
 import CommissionSection from "@/components/CommissionSection";
 import ApplicationPreferencesField from "@/components/ApplicationPreferencesField";
@@ -20,7 +19,6 @@ export function VacancyForm({ form, onSubmit }: VacancyFormProps) {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 text-left">
         <div className="space-y-8 [&_label]:text-black [&_h3]:text-black">
           <WorkAreaField control={form.control} />
-          <LocationField control={form.control} />
           <JobDetailsFields control={form.control} />
           <MatchThresholdField control={form.control} />
           <CommissionSection salary={form.watch("actualSalary")} form={form} />
