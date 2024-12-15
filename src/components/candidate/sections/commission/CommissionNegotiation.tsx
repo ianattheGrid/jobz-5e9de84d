@@ -88,7 +88,16 @@ const CommissionNegotiation = () => {
 
   return (
     <div className="space-y-4">
-      <h3 className="text-lg font-semibold">Active Bonus Negotiations</h3>
+      <div className="space-y-2">
+        <h3 className="text-lg font-semibold">Active Bonus Negotiations</h3>
+        <p className="text-sm text-muted-foreground">
+          When employers are interested in your profile, they may initiate a bonus negotiation. 
+          Here you can view and respond to bonus offers in real-time. Each offer shows the initial 
+          and current bonus percentage being offered. You can choose to accept or decline these offers, 
+          and employers may adjust their offers based on your response. All negotiations are handled 
+          securely and transparently through our platform.
+        </p>
+      </div>
       {negotiations.length === 0 ? (
         <p className="text-sm text-muted-foreground">No active negotiations</p>
       ) : (
