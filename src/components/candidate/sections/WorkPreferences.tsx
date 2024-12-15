@@ -1,10 +1,17 @@
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Control } from "react-hook-form";
 import { CandidateFormValues, WorkType } from "../candidateFormSchema";
+import { MultiSelect } from "@/components/ui/multi-select";
 
 interface WorkPreferencesProps {
   control: Control<CandidateFormValues>;
 }
+
+const workTypeOptions = [
+  { value: "remote", label: "Remote" },
+  { value: "hybrid", label: "Hybrid" },
+  { value: "office", label: "Office-based" }
+];
 
 const WorkPreferences = ({ control }: WorkPreferencesProps) => {
   return (
@@ -13,17 +20,19 @@ const WorkPreferences = ({ control }: WorkPreferencesProps) => {
       name="preferred_work_type"
       render={({ field }) => (
         <FormItem>
-          <FormLabel className="text-sm">Preferred Work Type</FormLabel>
+          <FormLabel className="text-sm">Preferred Work Types</FormLabel>
           <FormControl>
-            <select
-              className="w-full p-2 border rounded text-sm"
-              {...field}
-            >
-              <option value="remote">Remote</option>
-              <option value="hybrid">Hybrid</option>
-              <option value="office">Office-based</option>
-            </select>
+            <MultiSelect
+              options={workTypeOptions}
+              selected={field.value ? [field.value] : []}
+              onChange={(values) => field.onChange(values[0] || 'office')}
+              placeholder="Select work types"
+              className="w-full bg-white border border-gray-300"
+            />
           </FormControl>
+          <div className="text-sm text-gray-600 mt-1">
+            Select your preferred work arrangements
+          </div>
           <FormMessage />
         </FormItem>
       )}
