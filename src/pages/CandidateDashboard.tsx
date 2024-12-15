@@ -38,15 +38,39 @@ const CandidateDashboard = () => {
       }
       setUserId(session.user.id);
       
-      // Fetch profile data
-      const { data: profileData, error: profileError } = await supabase
+      // First, check if profile exists
+      const { data: existingProfile, error: fetchError } = await supabase
         .from('candidate_profiles')
         .select('profile_picture_url, cv_url')
         .eq('id', session.user.id)
         .single();
 
-      if (profileError) throw profileError;
-      setProfile(profileData);
+      if (fetchError && fetchError.code === 'PGRST116') {
+        // Profile doesn't exist, create it
+        const { error: insertError } = await supabase
+          .from('candidate_profiles')
+          .insert({
+            id: session.user.id,
+            email: session.user.email,
+            job_title: 'Not specified',
+            years_experience: 0,
+            location: 'Not specified',
+            min_salary: 0,
+            max_salary: 0
+          });
+
+        if (insertError) throw insertError;
+        
+        // Set empty profile
+        setProfile({
+          profile_picture_url: null,
+          cv_url: null
+        });
+      } else if (fetchError) {
+        throw fetchError;
+      } else {
+        setProfile(existingProfile);
+      }
       
       setLoading(false);
     } catch (error) {
