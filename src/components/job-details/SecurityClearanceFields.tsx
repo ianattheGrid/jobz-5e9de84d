@@ -26,7 +26,7 @@ const SecurityClearanceFields = ({ control }: SecurityClearanceFieldsProps) => {
         name="requiresSecurityClearance"
         render={({ field }) => (
           <FormItem className="space-y-3">
-            <FormLabel>Does this role require security clearance?</FormLabel>
+            <FormLabel>Are you security cleared?</FormLabel>
             <FormControl>
               <RadioGroup
                 onValueChange={(value) => {
