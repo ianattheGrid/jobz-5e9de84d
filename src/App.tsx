@@ -4,6 +4,8 @@ import Index from "./pages/Index";
 import Jobs from "./pages/Jobs";
 import EmployerSignUp from "./pages/EmployerSignUp";
 import EmployerSignIn from "./pages/EmployerSignIn";
+import CandidateSignUp from "./pages/CandidateSignUp";
+import CandidateSignIn from "./pages/CandidateSignIn";
 import CreateVacancy from "./pages/CreateVacancy";
 import EmployerInterviews from "./pages/EmployerInterviews";
 import EmployerDashboard from "./pages/EmployerDashboard";
@@ -24,6 +26,8 @@ function App() {
           <Route path="/jobs" element={<Jobs />} />
           <Route path="/employer/signup" element={<EmployerSignUp />} />
           <Route path="/employer/signin" element={<EmployerSignIn />} />
+          <Route path="/candidate/signup" element={<CandidateSignUp />} />
+          <Route path="/candidate/signin" element={<CandidateSignIn />} />
           <Route path="/employer/create-vacancy" element={<CreateVacancy />} />
           <Route path="/employer/interviews" element={<EmployerInterviews />} />
           <Route path="/employer/dashboard" element={<EmployerDashboard />} />
