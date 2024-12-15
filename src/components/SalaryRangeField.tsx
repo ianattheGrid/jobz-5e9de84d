@@ -1,7 +1,6 @@
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Control } from "react-hook-form";
-import { InfoIcon } from "lucide-react";
 
 interface SalaryRangeFieldProps {
   control: Control<any>;
@@ -50,8 +49,7 @@ const SalaryRangeField = ({ control }: SalaryRangeFieldProps) => {
             </Select>
           </FormControl>
           <div className="flex items-center gap-2 mt-1 text-sm text-blue-600">
-            <InfoIcon className="h-3 w-3" />
-            <span>Results include candidates within £5,000 of selected range</span>
+            You can select up to 3 salary ranges
           </div>
           <FormMessage />
         </FormItem>
