@@ -31,7 +31,7 @@ export function CandidateForm() {
       security_clearance: undefined,
       work_eligibility: undefined,
       open_to_commission: false,
-      preferred_work_type: [],
+      preferred_work_type: undefined,
       availability: "Immediate",
       workArea: "",
       years_experience: "",

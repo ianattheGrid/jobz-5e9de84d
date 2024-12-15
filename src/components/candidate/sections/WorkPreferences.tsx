@@ -24,8 +24,8 @@ const WorkPreferences = ({ control }: WorkPreferencesProps) => {
           <FormLabel className="text-sm">Preferred Work Type</FormLabel>
           <FormControl>
             <RadioGroup
-              onValueChange={(value) => field.onChange([value])}
-              value={field.value?.[0]}
+              onValueChange={field.onChange}
+              value={field.value}
               className="grid gap-4"
             >
               {workTypeOptions.map((option) => (
