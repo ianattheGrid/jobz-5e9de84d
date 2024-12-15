@@ -14,11 +14,11 @@ const ExperienceSelect = ({ control, jobTitle }: ExperienceSelectProps) => {
       name="yearsExperience"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Required years of experience in {jobTitle}</FormLabel>
+          <FormLabel>Years experience in {jobTitle}</FormLabel>
           <Select onValueChange={field.onChange} defaultValue={field.value}>
             <FormControl>
               <SelectTrigger>
-                <SelectValue placeholder="Select required experience" />
+                <SelectValue placeholder="Select years of experience" />
               </SelectTrigger>
             </FormControl>
             <SelectContent>
