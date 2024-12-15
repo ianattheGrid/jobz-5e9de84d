@@ -110,6 +110,50 @@ export type Database = {
         }
         Relationships: []
       }
+      commission_negotiations: {
+        Row: {
+          candidate_id: string | null
+          created_at: string | null
+          current_commission: number | null
+          employer_id: string | null
+          id: number
+          initial_commission: number | null
+          job_id: number | null
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          candidate_id?: string | null
+          created_at?: string | null
+          current_commission?: number | null
+          employer_id?: string | null
+          id?: number
+          initial_commission?: number | null
+          job_id?: number | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          candidate_id?: string | null
+          created_at?: string | null
+          current_commission?: number | null
+          employer_id?: string | null
+          id?: number
+          initial_commission?: number | null
+          job_id?: number | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "commission_negotiations_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       employer_profiles: {
         Row: {
           company_name: string
