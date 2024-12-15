@@ -37,7 +37,7 @@ const CommissionPreferences = ({ control }: CommissionPreferencesProps) => {
   const { candidateCommission, referralCommission } = calculateSplitCommissions(totalCommission, splitPercentage);
 
   return (
-    <>
+    <div className="space-y-4">
       <FormField
         control={control}
         name="view_scheme"
@@ -77,9 +77,6 @@ const CommissionPreferences = ({ control }: CommissionPreferencesProps) => {
               </li>
               <li>
                 You'll be able to see the exact bonus amount and split on job listings that offer this incentive
-              </li>
-              <li>
-                By enabling this option, your profile will be visible to jobs offering this bonus scheme
               </li>
             </ul>
           </div>
@@ -145,25 +142,27 @@ const CommissionPreferences = ({ control }: CommissionPreferencesProps) => {
         </div>
       )}
 
-      <FormField
-        control={control}
-        name="open_to_commission"
-        render={({ field }) => (
-          <FormItem>
-            <div className="flex flex-row items-center justify-between rounded-md border p-3">
-              <div>
-                <FormLabel className="text-sm">Would you like to participate in the bonus scheme?</FormLabel>
+      <div className="mt-6">
+        <FormField
+          control={control}
+          name="open_to_commission"
+          render={({ field }) => (
+            <FormItem>
+              <div className="flex flex-row items-center justify-between rounded-md border p-3">
+                <div>
+                  <FormLabel className="text-sm">Would you like to participate in the bonus scheme?</FormLabel>
+                </div>
+                <FormControl>
+                  <Switch
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
               </div>
-              <FormControl>
-                <Switch
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
-              </FormControl>
-            </div>
-          </FormItem>
-        )}
-      />
+            </FormItem>
+          )}
+        />
+      </div>
 
       <FormField
         control={control}
@@ -185,7 +184,7 @@ const CommissionPreferences = ({ control }: CommissionPreferencesProps) => {
           </FormItem>
         )}
       />
-    </>
+    </div>
   );
 };
 
