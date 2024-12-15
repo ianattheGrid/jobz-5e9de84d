@@ -23,7 +23,7 @@ const LocationField = ({ control }: LocationFieldProps) => {
           <FormControl>
             <MultiSelect
               options={locationOptions}
-              selected={field.value || []}
+              selected={Array.isArray(field.value) ? field.value : []}
               onChange={(value) => field.onChange(value)}
               placeholder="Select postcode areas"
             />
