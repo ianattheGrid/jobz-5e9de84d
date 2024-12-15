@@ -1,11 +1,11 @@
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Control } from "react-hook-form";
 import { CandidateFormValues } from "../candidateFormSchema";
 import { useState } from "react";
 import CommissionToggle from "./commission/CommissionToggle";
 import SchemeExplanation from "./commission/SchemeExplanation";
 import BonusCalculator from "./commission/BonusCalculator";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface CommissionPreferencesProps {
   control: Control<CandidateFormValues>;
@@ -16,6 +16,15 @@ const CommissionPreferences = ({ control }: CommissionPreferencesProps) => {
   const [sampleSalary, setSampleSalary] = useState("");
   const [feePercentage, setFeePercentage] = useState(7);
   const [splitPercentage, setSplitPercentage] = useState(50);
+
+  // Generate commission percentage options
+  const commissionOptions = [
+    { value: "flexible", label: "Flexible - consider all commission rates" },
+    ...Array.from({ length: 24 }, (_, i) => ({
+      value: (2.5 + i * 0.5).toString(),
+      label: `${(2.5 + i * 0.5).toFixed(1)}%`
+    }))
+  ];
 
   return (
     <div className="space-y-4">
@@ -57,16 +66,29 @@ const CommissionPreferences = ({ control }: CommissionPreferencesProps) => {
           name="commission_percentage"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>What is your desired commission percentage? (2.5% - 14%)</FormLabel>
+              <FormLabel>What is the minimum commission percentage you would consider?</FormLabel>
               <FormControl>
-                <Input
-                  type="number"
-                  min="2.5"
-                  max="14"
-                  step="0.5"
-                  {...field}
-                  onChange={(e) => field.onChange(parseFloat(e.target.value))}
-                />
+                <Select
+                  value={field.value?.toString() || "flexible"}
+                  onValueChange={(value) => {
+                    if (value === "flexible") {
+                      field.onChange(null);
+                    } else {
+                      field.onChange(parseFloat(value));
+                    }
+                  }}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select minimum commission percentage" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {commissionOptions.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </FormControl>
               <FormMessage />
             </FormItem>

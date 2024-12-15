@@ -26,11 +26,11 @@ export const candidateFormSchema = z.object({
   security_clearance: z.string().optional(),
   work_eligibility: z.string().optional(),
   years_experience: z.string().min(1, "Years of experience is required"),
-  commission_percentage: z.number().min(0).max(100).optional(),
+  commission_percentage: z.number().min(2.5).max(14).nullable(),
   open_to_commission: z.boolean().default(false),
   additional_skills: z.string().optional(),
   preferred_work_type: WorkType.default("office"),
-  view_scheme: z.boolean().optional(), // Add this line
+  view_scheme: z.boolean().optional(),
 });
 
 export type CandidateFormValues = z.infer<typeof candidateFormSchema>;
