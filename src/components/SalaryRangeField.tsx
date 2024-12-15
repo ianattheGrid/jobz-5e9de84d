@@ -34,7 +34,7 @@ const SalaryRangeField = ({ control }: SalaryRangeFieldProps) => {
         name="min_salary"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Minimum Salary</FormLabel>
+            <FormLabel>Minimum Salary (required)</FormLabel>
             <FormControl>
               <Select
                 value={field.value?.toString()}
@@ -62,7 +62,7 @@ const SalaryRangeField = ({ control }: SalaryRangeFieldProps) => {
         name="max_salary"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Maximum Salary</FormLabel>
+            <FormLabel>Maximum Salary (required)</FormLabel>
             <FormControl>
               <Select
                 value={field.value?.toString()}
