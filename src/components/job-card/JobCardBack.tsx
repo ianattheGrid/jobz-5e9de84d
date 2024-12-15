@@ -1,12 +1,11 @@
 import { Job } from "@/integrations/supabase/types/jobs";
-import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import JobDetails from "./details/JobDetails";
-import ApplicationForm from "./application/ApplicationForm";
+import CommissionDetails from "./details/CommissionDetails";
+import ApplicationSection from "./application/ApplicationSection";
 import MatchWarningDialog from "./match/MatchWarningDialog";
-import { formatSalary } from "./utils";
 
 interface JobCardBackProps {
   job: Job;
@@ -14,15 +13,10 @@ interface JobCardBackProps {
 
 const JobCardBack = ({ job }: JobCardBackProps) => {
   const { toast } = useToast();
-  const [isApplying, setIsApplying] = useState(false);
   const [resumeFile, setResumeFile] = useState<File | null>(null);
   const [coverLetter, setCoverLetter] = useState("");
   const [matchScore, setMatchScore] = useState<number | null>(null);
   const [showMatchWarning, setShowMatchWarning] = useState(false);
-
-  const calculateReferralCommission = (totalCommission: number) => {
-    return Math.floor(totalCommission * 0.3);
-  };
 
   const calculateMatchScore = async () => {
     try {
@@ -67,8 +61,6 @@ const JobCardBack = ({ job }: JobCardBackProps) => {
     
     if (score !== null && score < (job.match_threshold || 60)) {
       setShowMatchWarning(true);
-    } else {
-      setIsApplying(true);
     }
   };
 
@@ -116,7 +108,6 @@ const JobCardBack = ({ job }: JobCardBackProps) => {
         title: "Success",
         description: "Application submitted successfully",
       });
-      setIsApplying(false);
     } catch (error) {
       toast({
         title: "Error",
@@ -131,41 +122,18 @@ const JobCardBack = ({ job }: JobCardBackProps) => {
       <h3 className="text-xl font-semibold text-red-800 mb-4">{job.title}</h3>
       
       {job.candidate_commission && (
-        <div className="mb-4 p-3 bg-red-50 rounded-md">
-          <p className="text-sm font-medium text-red-700 mb-2">
-            "You're Hired" Bonus Details
-          </p>
-          <div className="text-sm text-red-600 space-y-1">
-            <p>Total Bonus: {formatSalary(job.candidate_commission)}</p>
-            <div className="text-xs space-y-0.5">
-              <p>• Candidate: {formatSalary(job.candidate_commission - calculateReferralCommission(job.candidate_commission))}</p>
-              <p>• Referral: {formatSalary(calculateReferralCommission(job.candidate_commission))}</p>
-            </div>
-          </div>
-        </div>
+        <CommissionDetails candidateCommission={job.candidate_commission} />
       )}
 
       <JobDetails job={job} />
 
-      <div className="mt-6">
-        {!isApplying ? (
-          <Button 
-            className="w-1/2 mx-auto block bg-red-800 hover:bg-red-900 text-white"
-            onClick={handleStartApply}
-            size="sm"
-          >
-            Apply Now
-          </Button>
-        ) : (
-          <ApplicationForm
-            onSubmit={handleApply}
-            onCancel={() => setIsApplying(false)}
-            setCoverLetter={setCoverLetter}
-            setResumeFile={setResumeFile}
-            coverLetter={coverLetter}
-          />
-        )}
-      </div>
+      <ApplicationSection
+        onStartApply={handleStartApply}
+        onSubmit={handleApply}
+        coverLetter={coverLetter}
+        setCoverLetter={setCoverLetter}
+        setResumeFile={setResumeFile}
+      />
 
       <MatchWarningDialog
         open={showMatchWarning}
@@ -174,7 +142,6 @@ const JobCardBack = ({ job }: JobCardBackProps) => {
         matchThreshold={job.match_threshold || 60}
         onProceed={() => {
           setShowMatchWarning(false);
-          setIsApplying(true);
         }}
       />
     </div>
