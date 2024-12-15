@@ -1,7 +1,5 @@
 import JobCard from "@/components/JobCard";
-import { Database } from "@/integrations/supabase/types";
-
-type Job = Database['public']['Tables']['jobs']['Row'];
+import { Job } from "@/integrations/supabase/types/jobs";
 
 interface JobListProps {
   jobs: Job[];

@@ -147,11 +147,12 @@ const JobCardBack = ({ job }: JobCardBackProps) => {
 
       <JobDetails job={job} />
 
-      <div>
+      <div className="mt-6">
         {!isApplying ? (
           <Button 
-            className="w-full bg-red-800 hover:bg-red-900"
+            className="w-1/2 mx-auto block bg-red-800 hover:bg-red-900 text-white"
             onClick={handleStartApply}
+            size="sm"
           >
             Apply Now
           </Button>
