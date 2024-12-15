@@ -21,7 +21,7 @@ const ITSkillsField = ({ control }: ITSkillsFieldProps) => {
 
     if (selectedSkills.includes(skill)) {
       setSelectedSkills(selectedSkills.filter((s) => s !== skill));
-    } else if (selectedSkills.length < 5) {
+    } else if (selectedSkills.length < 10) {
       setSelectedSkills([...selectedSkills, skill]);
     }
   };
@@ -36,7 +36,7 @@ const ITSkillsField = ({ control }: ITSkillsFieldProps) => {
       name="required_skills"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Required IT Skills (Max 5)</FormLabel>
+          <FormLabel className="text-sm">Your top skills (Max 10)</FormLabel>
           <FormControl>
             <div className="space-y-2">
               <Select 
@@ -55,7 +55,7 @@ const ITSkillsField = ({ control }: ITSkillsFieldProps) => {
                     <SelectItem 
                       key={skill} 
                       value={skill}
-                      disabled={selectedSkills.length >= 5 && !selectedSkills.includes(skill)}
+                      disabled={selectedSkills.length >= 10 && !selectedSkills.includes(skill)}
                     >
                       {skill}
                     </SelectItem>
@@ -85,9 +85,9 @@ const ITSkillsField = ({ control }: ITSkillsFieldProps) => {
               </div>
             </div>
           </FormControl>
-          {selectedSkills.length >= 5 && (
+          {selectedSkills.length >= 10 && (
             <p className="text-sm text-muted-foreground mt-1">
-              Maximum of 5 skills reached
+              Maximum of 10 skills reached
             </p>
           )}
           <FormMessage />
