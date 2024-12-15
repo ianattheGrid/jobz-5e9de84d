@@ -71,10 +71,6 @@ export const FileUploadSection = ({ userId, currentProfilePicture, currentCV }: 
       <div className="space-y-4">
         <FormLabel>Profile Picture</FormLabel>
         <div className="flex items-center gap-4">
-          <Avatar className="h-20 w-20">
-            <AvatarImage src={currentProfilePicture || undefined} />
-            <AvatarFallback>{/* Intentionally left blank */}</AvatarFallback>
-          </Avatar>
           <Button
             variant="outline"
             onClick={() => document.getElementById('profile-picture-input')?.click()}
@@ -87,6 +83,10 @@ export const FileUploadSection = ({ userId, currentProfilePicture, currentCV }: 
             )}
             Upload Picture
           </Button>
+          <Avatar className="h-20 w-20">
+            <AvatarImage src={currentProfilePicture || undefined} />
+            <AvatarFallback>{/* Intentionally left blank */}</AvatarFallback>
+          </Avatar>
           <input
             type="file"
             id="profile-picture-input"
@@ -103,16 +103,6 @@ export const FileUploadSection = ({ userId, currentProfilePicture, currentCV }: 
       <div className="space-y-4">
         <FormLabel>CV / Resume</FormLabel>
         <div className="flex items-center gap-4">
-          {currentCV && (
-            <a
-              href={currentCV}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm text-blue-600 hover:underline"
-            >
-              View Current CV
-            </a>
-          )}
           <Button
             variant="outline"
             onClick={() => document.getElementById('cv-input')?.click()}
@@ -125,6 +115,16 @@ export const FileUploadSection = ({ userId, currentProfilePicture, currentCV }: 
             )}
             Upload CV
           </Button>
+          {currentCV && (
+            <a
+              href={currentCV}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm text-blue-600 hover:underline"
+            >
+              View Current CV
+            </a>
+          )}
           <input
             type="file"
             id="cv-input"
