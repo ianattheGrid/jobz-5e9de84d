@@ -11,7 +11,7 @@ const workTypeOptions = [
   { id: "flexible", label: "Flexible" },
   { id: "office", label: "Office based" },
   { id: "hybrid", label: "Hybrid" },
-  { id: "remote", label: "Working from home" }
+  { id: "home", label: "Home working" }
 ];
 
 const WorkPreferences = ({ control }: WorkPreferencesProps) => {
