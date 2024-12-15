@@ -43,7 +43,7 @@ const CommissionPreferences = ({ control }: CommissionPreferencesProps) => {
         name="view_scheme"
         render={({ field }) => (
           <FormItem>
-            <div className="flex flex-row items-center justify-between rounded-md border p-3">
+            <div className="flex flex-row items-center justify-between rounded-lg border p-3">
               <FormLabel className="text-sm">Would you like to view the "You're Hired" bonus scheme?</FormLabel>
               <FormControl>
                 <Switch
@@ -148,7 +148,7 @@ const CommissionPreferences = ({ control }: CommissionPreferencesProps) => {
           name="open_to_commission"
           render={({ field }) => (
             <FormItem>
-              <div className="flex flex-row items-center justify-between rounded-md border p-3">
+              <div className="flex flex-row items-center justify-between rounded-lg border p-3">
                 <div>
                   <FormLabel className="text-sm">Would you like to participate in the bonus scheme?</FormLabel>
                 </div>
@@ -164,26 +164,28 @@ const CommissionPreferences = ({ control }: CommissionPreferencesProps) => {
         />
       </div>
 
-      <FormField
-        control={control}
-        name="commission_percentage"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>What is your desired commission percentage? (2.5% - 14%)</FormLabel>
-            <FormControl>
-              <Input
-                type="number"
-                min="2.5"
-                max="14"
-                step="0.5"
-                {...field}
-                onChange={(e) => field.onChange(parseFloat(e.target.value))}
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
+      {control._formValues.open_to_commission && (
+        <FormField
+          control={control}
+          name="commission_percentage"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>What is your desired commission percentage? (2.5% - 14%)</FormLabel>
+              <FormControl>
+                <Input
+                  type="number"
+                  min="2.5"
+                  max="14"
+                  step="0.5"
+                  {...field}
+                  onChange={(e) => field.onChange(parseFloat(e.target.value))}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      )}
     </div>
   );
 };
