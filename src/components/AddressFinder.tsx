@@ -2,8 +2,11 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Control } from "react-hook-form";
 import { CandidateFormValues } from "./candidate/candidateFormSchema";
+import { lookupAddresses } from "@/lib/addressLookup";
+import { useToast } from "@/components/ui/use-toast";
 
 interface AddressFinderProps {
   control: Control<CandidateFormValues>;
@@ -18,26 +21,44 @@ const AddressFinder = ({ control }: AddressFinderProps) => {
   const [postcode, setPostcode] = useState("");
   const [addresses, setAddresses] = useState<Address[]>([]);
   const [loading, setLoading] = useState(false);
+  const { toast } = useToast();
 
   const findAddresses = async () => {
-    if (!postcode) return;
+    if (!postcode) {
+      toast({
+        title: "Please enter a postcode",
+        variant: "destructive",
+      });
+      return;
+    }
     
     setLoading(true);
     try {
-      const response = await fetch(`https://api.postcodes.io/postcodes/${postcode}/autocomplete`);
-      const data = await response.json();
+      const foundAddresses = await lookupAddresses(postcode);
+      setAddresses(foundAddresses);
       
-      if (data.result) {
-        const formattedAddresses = data.result.map((pc: string) => ({
-          postcode: pc,
-          address: pc
-        }));
-        setAddresses(formattedAddresses);
+      if (foundAddresses.length === 0) {
+        toast({
+          title: "No addresses found",
+          description: "Please check the postcode and try again",
+          variant: "destructive",
+        });
       }
     } catch (error) {
-      console.error('Error fetching addresses:', error);
+      toast({
+        title: "Error finding addresses",
+        description: "Please try again later",
+        variant: "destructive",
+      });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      findAddresses();
     }
   };
 
@@ -47,7 +68,8 @@ const AddressFinder = ({ control }: AddressFinderProps) => {
         <Input
           placeholder="Enter postcode"
           value={postcode}
-          onChange={(e) => setPostcode(e.target.value)}
+          onChange={(e) => setPostcode(e.target.value.toUpperCase())}
+          onKeyPress={handleKeyPress}
           className="max-w-[200px]"
         />
         <Button 
@@ -67,20 +89,20 @@ const AddressFinder = ({ control }: AddressFinderProps) => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Select Address</FormLabel>
-              <FormControl>
-                <select
-                  className="w-full p-2 border rounded"
-                  onChange={(e) => field.onChange(e.target.value)}
-                  value={field.value || ""}
-                >
-                  <option value="">Select an address</option>
+              <Select onValueChange={field.onChange} value={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select an address" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
                   {addresses.map((addr, index) => (
-                    <option key={index} value={addr.address}>
+                    <SelectItem key={index} value={addr.address}>
                       {addr.address}
-                    </option>
+                    </SelectItem>
                   ))}
-                </select>
-              </FormControl>
+                </SelectContent>
+              </Select>
               <FormMessage />
             </FormItem>
           )}
