@@ -1,4 +1,7 @@
+import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Eye } from "lucide-react";
 
 interface CandidateProfile {
   id: string;
@@ -18,9 +21,15 @@ interface SearchResultsProps {
 }
 
 export function SearchResults({ candidates }: SearchResultsProps) {
+  const navigate = useNavigate();
+
   if (candidates.length === 0) {
     return <p className="text-gray-500">No candidates found matching your criteria.</p>;
   }
+
+  const handleViewProfile = (candidateId: string) => {
+    navigate(`/employer/view-candidate/${candidateId}`);
+  };
 
   return (
     <div className="space-y-4">
@@ -46,6 +55,16 @@ export function SearchResults({ candidates }: SearchResultsProps) {
               {candidate.security_clearance && (
                 <p><span className="font-semibold">Security Clearance:</span> {candidate.security_clearance}</p>
               )}
+              <div className="mt-4">
+                <Button 
+                  onClick={() => handleViewProfile(candidate.id)}
+                  variant="outline"
+                  className="w-full sm:w-auto flex items-center justify-center gap-2"
+                >
+                  <Eye className="h-4 w-4" />
+                  View Full Profile
+                </Button>
+              </div>
             </div>
           </CardContent>
         </Card>
