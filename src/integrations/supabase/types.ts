@@ -53,15 +53,19 @@ export type Database = {
       candidate_profiles: {
         Row: {
           additional_skills: string | null
+          address: string | null
           availability: string | null
           commission_percentage: number | null
           created_at: string
           desired_job_title: string | null
+          email: string
+          full_name: string | null
           id: string
           job_title: string
           location: string
           max_salary: number
           min_salary: number
+          phone_number: string | null
           preferred_work_type: string | null
           required_skills: string[] | null
           security_clearance: string | null
@@ -72,15 +76,19 @@ export type Database = {
         }
         Insert: {
           additional_skills?: string | null
+          address?: string | null
           availability?: string | null
           commission_percentage?: number | null
           created_at?: string
           desired_job_title?: string | null
+          email: string
+          full_name?: string | null
           id: string
           job_title: string
           location: string
           max_salary: number
           min_salary: number
+          phone_number?: string | null
           preferred_work_type?: string | null
           required_skills?: string[] | null
           security_clearance?: string | null
@@ -91,15 +99,19 @@ export type Database = {
         }
         Update: {
           additional_skills?: string | null
+          address?: string | null
           availability?: string | null
           commission_percentage?: number | null
           created_at?: string
           desired_job_title?: string | null
+          email?: string
+          full_name?: string | null
           id?: string
           job_title?: string
           location?: string
           max_salary?: number
           min_salary?: number
+          phone_number?: string | null
           preferred_work_type?: string | null
           required_skills?: string[] | null
           security_clearance?: string | null

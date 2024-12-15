@@ -23,6 +23,10 @@ export const useProfileSubmit = (toast: ToastFunction) => {
         .from('candidate_profiles')
         .upsert({
           id: session.user.id,
+          full_name: values.full_name,
+          email: values.email,
+          phone_number: values.phone_number,
+          address: values.address,
           job_title: values.workArea,
           years_experience: parseInt(values.years_experience),
           location: values.location[0],

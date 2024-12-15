@@ -13,6 +13,7 @@ import { candidateFormSchema, type CandidateFormValues } from "./candidateFormSc
 import WorkPreferences from "./sections/WorkPreferences";
 import CommissionPreferences from "./sections/CommissionPreferences";
 import SkillsSection from "./sections/SkillsSection";
+import ContactInformation from "./sections/ContactInformation";
 import { useProfileData } from "@/hooks/useProfileData";
 import { useProfileSubmit } from "@/hooks/useProfileSubmit";
 
@@ -39,6 +40,9 @@ export function CandidateForm() {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full max-w-2xl">
         <div className="space-y-8">
+          <div className="text-left">
+            <ContactInformation control={form.control} />
+          </div>
           <div className="text-left">
             <WorkAreaField control={form.control} />
           </div>

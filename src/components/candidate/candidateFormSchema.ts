@@ -4,6 +4,10 @@ export const WorkType = z.enum(["remote", "hybrid", "office"]);
 export type WorkType = z.infer<typeof WorkType>;
 
 export const candidateFormSchema = z.object({
+  full_name: z.string().min(1, "Full name is required"),
+  email: z.string().email("Invalid email address"),
+  phone_number: z.string().optional(),
+  address: z.string().optional(),
   workArea: z.string({
     required_error: "Please select your area of work.",
   }),
