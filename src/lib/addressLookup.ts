@@ -22,13 +22,21 @@ export async function lookupAddresses(postcode: string): Promise<Address[]> {
     }
     
     if (data.result) {
-      // Create a formatted address from the API response
-      const address = {
-        postcode: data.result.postcode,
-        address: `${data.result.postcode}, ${data.result.admin_district}, ${data.result.region}`
-      };
-      
-      return [address];
+      // Create multiple formatted addresses from the API response
+      return [
+        {
+          postcode: data.result.postcode,
+          address: `${data.result.postcode}`
+        },
+        {
+          postcode: data.result.postcode,
+          address: `${data.result.postcode}, ${data.result.admin_district}`
+        },
+        {
+          postcode: data.result.postcode,
+          address: `${data.result.postcode}, ${data.result.admin_district}, ${data.result.region}`
+        }
+      ];
     }
     
     return [];
