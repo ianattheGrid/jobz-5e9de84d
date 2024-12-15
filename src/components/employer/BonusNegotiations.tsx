@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import EmployerNegotiationCard from "./sections/bonus/EmployerNegotiationCard";
 
 interface BonusNegotiation {
   id: number;
@@ -16,11 +14,9 @@ interface BonusNegotiation {
 
 const BonusNegotiations = ({ employerId }: { employerId: string }) => {
   const [negotiations, setNegotiations] = useState<BonusNegotiation[]>([]);
-  const [newBonus, setNewBonus] = useState<string>("");
   const { toast } = useToast();
 
   useEffect(() => {
-    // Subscribe to real-time updates
     const channel = supabase
       .channel('bonus-negotiations')
       .on(
@@ -43,7 +39,6 @@ const BonusNegotiations = ({ employerId }: { employerId: string }) => {
       )
       .subscribe();
 
-    // Initial fetch
     fetchNegotiations();
 
     return () => {
@@ -111,52 +106,11 @@ const BonusNegotiations = ({ employerId }: { employerId: string }) => {
       ) : (
         <div className="space-y-4">
           {negotiations.map((negotiation) => (
-            <Card key={negotiation.id}>
-              <CardHeader>
-                <CardTitle className="text-base">
-                  Bonus Negotiation for Job #{negotiation.job_id}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="space-y-2">
-                    <p className="text-sm text-muted-foreground">
-                      Initial offer: {negotiation.initial_commission}%
-                    </p>
-                    <p className="text-sm text-muted-foreground">
-                      Current offer: {negotiation.current_commission}%
-                    </p>
-                    <p className="text-sm text-muted-foreground">
-                      Status: {negotiation.status}
-                    </p>
-                  </div>
-
-                  {negotiation.status !== 'accepted' && (
-                    <div className="flex items-center space-x-2">
-                      <Input
-                        type="number"
-                        placeholder="New bonus percentage"
-                        value={newBonus}
-                        onChange={(e) => setNewBonus(e.target.value)}
-                        className="w-40"
-                      />
-                      <Button
-                        variant="default"
-                        onClick={() => {
-                          const amount = parseFloat(newBonus);
-                          if (!isNaN(amount)) {
-                            updateOffer(negotiation.id, amount);
-                            setNewBonus("");
-                          }
-                        }}
-                      >
-                        Update Offer
-                      </Button>
-                    </div>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
+            <EmployerNegotiationCard
+              key={negotiation.id}
+              negotiation={negotiation}
+              onUpdateOffer={updateOffer}
+            />
           ))}
         </div>
       )}

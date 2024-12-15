@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import NegotiationCard from "./NegotiationCard";
 
 interface CommissionNegotiation {
   id: number;
@@ -17,7 +16,6 @@ const CommissionNegotiation = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    // Subscribe to real-time updates
     const channel = supabase
       .channel('commission-negotiations')
       .on(
@@ -40,7 +38,6 @@ const CommissionNegotiation = () => {
       )
       .subscribe();
 
-    // Initial fetch
     fetchNegotiations();
 
     return () => {
@@ -106,39 +103,11 @@ const CommissionNegotiation = () => {
       ) : (
         <div className="space-y-4">
           {negotiations.map((negotiation) => (
-            <Card key={negotiation.id}>
-              <CardHeader>
-                <CardTitle className="text-base">
-                  Bonus Offer: {negotiation.current_commission}%
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2">
-                  <p className="text-sm text-muted-foreground">
-                    Initial offer: {negotiation.initial_commission}%
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    Status: {negotiation.status}
-                  </p>
-                  {negotiation.status === 'pending' && (
-                    <div className="flex space-x-2 mt-4">
-                      <Button
-                        variant="default"
-                        onClick={() => respondToOffer(negotiation.id, true)}
-                      >
-                        Accept
-                      </Button>
-                      <Button
-                        variant="outline"
-                        onClick={() => respondToOffer(negotiation.id, false)}
-                      >
-                        Decline
-                      </Button>
-                    </div>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
+            <NegotiationCard
+              key={negotiation.id}
+              negotiation={negotiation}
+              onRespond={respondToOffer}
+            />
           ))}
         </div>
       )}
