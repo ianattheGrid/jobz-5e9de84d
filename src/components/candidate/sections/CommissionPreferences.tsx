@@ -153,9 +153,6 @@ const CommissionPreferences = ({ control }: CommissionPreferencesProps) => {
             <div className="flex flex-row items-center justify-between border p-4">
               <div>
                 <FormLabel className="text-sm">Would you like to participate in the bonus scheme?</FormLabel>
-                <p className="text-sm text-muted-foreground">
-                  Your profile will be visible to employers offering commission-based roles
-                </p>
               </div>
               <FormControl>
                 <Switch
