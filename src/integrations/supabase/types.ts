@@ -52,6 +52,7 @@ export type Database = {
       }
       candidate_profiles: {
         Row: {
+          additional_skills: string | null
           commission_percentage: number | null
           created_at: string
           id: string
@@ -59,6 +60,7 @@ export type Database = {
           location: string
           max_salary: number
           min_salary: number
+          preferred_work_type: string | null
           required_skills: string[] | null
           security_clearance: string | null
           signup_date: string | null
@@ -67,6 +69,7 @@ export type Database = {
           years_experience: number
         }
         Insert: {
+          additional_skills?: string | null
           commission_percentage?: number | null
           created_at?: string
           id: string
@@ -74,14 +77,16 @@ export type Database = {
           location: string
           max_salary: number
           min_salary: number
+          preferred_work_type?: string | null
           required_skills?: string[] | null
           security_clearance?: string | null
           signup_date?: string | null
           updated_at?: string
           work_eligibility?: string | null
-          years_experience: number
+          years_experience?: number
         }
         Update: {
+          additional_skills?: string | null
           commission_percentage?: number | null
           created_at?: string
           id?: string
@@ -89,6 +94,7 @@ export type Database = {
           location?: string
           max_salary?: number
           min_salary?: number
+          preferred_work_type?: string | null
           required_skills?: string[] | null
           security_clearance?: string | null
           signup_date?: string | null
