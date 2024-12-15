@@ -1,7 +1,5 @@
-import { Database } from "@/integrations/supabase/types";
+import { Job } from "@/integrations/supabase/types/jobs";
 import { formatSalary } from "./utils";
-
-type Job = Database['public']['Tables']['jobs']['Row'];
 
 interface JobCardFrontProps {
   job: Job;
@@ -9,7 +7,7 @@ interface JobCardFrontProps {
 
 const JobCardFront = ({ job }: JobCardFrontProps) => {
   return (
-    <div className="rounded-lg border bg-card p-6 text-card-foreground shadow-sm h-full">
+    <div className="rounded-lg border bg-card p-6 text-card-foreground shadow-sm h-full flex flex-col">
       <div className="mb-4 flex items-start justify-between">
         <div className="text-left">
           <h3 className="text-xl font-semibold text-red-800">{job.title}</h3>
@@ -20,7 +18,7 @@ const JobCardFront = ({ job }: JobCardFrontProps) => {
         </span>
       </div>
       
-      <div className="space-y-4 text-left">
+      <div className="space-y-4 text-left flex-grow">
         <div className="flex items-center text-sm text-muted-foreground">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -50,6 +48,21 @@ const JobCardFront = ({ job }: JobCardFrontProps) => {
           </p>
         </div>
       </div>
+
+      <button 
+        className="w-full mt-6 text-sm text-red-800 hover:text-red-900 flex items-center justify-center group"
+      >
+        View more details
+        <svg 
+          xmlns="http://www.w3.org/2000/svg" 
+          className="h-4 w-4 ml-2 transform transition-transform group-hover:translate-x-1" 
+          fill="none" 
+          viewBox="0 0 24 24" 
+          stroke="currentColor"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
     </div>
   );
 };
