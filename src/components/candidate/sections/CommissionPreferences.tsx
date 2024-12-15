@@ -44,7 +44,7 @@ const CommissionPreferences = ({ control }: CommissionPreferencesProps) => {
         render={({ field }) => (
           <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
             <div className="space-y-0.5">
-              <FormLabel className="text-base">Would you like to view the "You're Hired" bonus scheme?</FormLabel>
+              <FormLabel className="text-sm">Would you like to view the "You're Hired" bonus scheme?</FormLabel>
             </div>
             <FormControl>
               <Switch
@@ -151,7 +151,7 @@ const CommissionPreferences = ({ control }: CommissionPreferencesProps) => {
         render={({ field }) => (
           <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
             <div className="space-y-0.5">
-              <FormLabel className="text-base">Would you like to participate in the bonus scheme?</FormLabel>
+              <FormLabel className="text-sm">Would you like to participate in the bonus scheme?</FormLabel>
               <p className="text-sm text-muted-foreground">
                 Your profile will be visible to employers offering commission-based roles
               </p>
