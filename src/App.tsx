@@ -13,6 +13,7 @@ import EmployerProfile from "./pages/EmployerProfile";
 import CandidateSearch from "./pages/CandidateSearch";
 import ManageJobs from "./pages/ManageJobs";
 import CandidateProfile from "./pages/CandidateProfile";
+import CandidateDashboard from "./pages/CandidateDashboard";
 import { Toaster } from "./components/ui/toaster";
 import "./App.css";
 
@@ -35,6 +36,7 @@ function App() {
           <Route path="/employer/candidate-search" element={<CandidateSearch />} />
           <Route path="/employer/manage-jobs" element={<ManageJobs />} />
           <Route path="/candidate/profile" element={<CandidateProfile />} />
+          <Route path="/candidate/dashboard" element={<CandidateDashboard />} />
         </Routes>
         <Toaster />
       </div>
