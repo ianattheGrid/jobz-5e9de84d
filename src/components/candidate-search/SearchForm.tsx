@@ -12,6 +12,7 @@ import SecurityClearanceFields from "@/components/job-details/SecurityClearanceF
 import SignupPeriodField from "./SignupPeriodField";
 import WorkEligibilityField from "@/components/job-details/WorkEligibilityField";
 import CommissionPercentageField from "./CommissionPercentageField";
+import LocationInput from "./LocationInput";
 
 interface SearchFormProps {
   onSubmit: (values: z.infer<typeof searchFormSchema>) => Promise<void>;
@@ -22,6 +23,7 @@ export function SearchForm({ onSubmit }: SearchFormProps) {
     resolver: zodResolver(searchFormSchema),
     defaultValues: {
       workArea: "",
+      location: "",
       salary: "",
       qualification: "None",
       required_skills: [],
@@ -37,6 +39,7 @@ export function SearchForm({ onSubmit }: SearchFormProps) {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 text-left">
         <WorkAreaField control={form.control} />
+        <LocationInput control={form.control} />
         <SalaryRangeField control={form.control} />
         <CommissionPercentageField control={form.control} />
         

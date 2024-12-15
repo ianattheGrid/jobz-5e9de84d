@@ -7,6 +7,7 @@ export const searchFormSchema = z.object({
   otherWorkArea: z.string().optional(),
   itSpecialization: z.string().optional(),
   title: z.string().optional(),
+  location: z.string().optional(),
   salary: z.string().min(1, {
     message: "Salary range is required",
   }),

@@ -76,20 +76,19 @@ export default function CandidateSearch() {
         parseInt(s.replace(/[£,]/g, ""))
       );
 
-      // Add flexibility to salary range (£5,000 buffer)
-      const flexibleMinSalary = minSalary - 5000;
-      const flexibleMaxSalary = maxSalary + 5000;
-
       let query = supabase
         .from('candidate_profiles')
         .select('*');
 
-      // Apply location filter if specific locations are selected
-      if (!values.location.includes('All')) {
-        query = query.in('location', values.location);
+      // Apply location filter if provided
+      if (values.location) {
+        query = query.ilike('location', `%${values.location}%`);
       }
 
       // Apply flexible salary range filter
+      const flexibleMinSalary = minSalary - 5000;
+      const flexibleMaxSalary = maxSalary + 5000;
+      
       query = query
         .or(`min_salary.lte.${flexibleMaxSalary},max_salary.gte.${flexibleMinSalary}`);
 
