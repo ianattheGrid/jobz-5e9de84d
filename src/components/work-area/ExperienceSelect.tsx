@@ -14,7 +14,7 @@ const ExperienceSelect = ({ control, jobTitle }: ExperienceSelectProps) => {
       name="yearsExperience"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Years experience in {jobTitle}</FormLabel>
+          <FormLabel>Years experience in this Job Title</FormLabel>
           <Select onValueChange={field.onChange} defaultValue={field.value}>
             <FormControl>
               <SelectTrigger>
