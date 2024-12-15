@@ -21,6 +21,7 @@ const AddressFinder = ({ control }: AddressFinderProps) => {
   const [postcode, setPostcode] = useState("");
   const [addresses, setAddresses] = useState<Address[]>([]);
   const [loading, setLoading] = useState(false);
+  const [showSelect, setShowSelect] = useState(false);
   const { toast } = useToast();
 
   const findAddresses = async () => {
@@ -36,6 +37,7 @@ const AddressFinder = ({ control }: AddressFinderProps) => {
     try {
       const foundAddresses = await lookupAddresses(postcode);
       setAddresses(foundAddresses);
+      setShowSelect(true);
       
       if (foundAddresses.length === 0) {
         toast({
@@ -43,6 +45,7 @@ const AddressFinder = ({ control }: AddressFinderProps) => {
           description: "Please check the postcode and try again",
           variant: "destructive",
         });
+        setShowSelect(false);
       }
     } catch (error) {
       toast({
@@ -50,6 +53,7 @@ const AddressFinder = ({ control }: AddressFinderProps) => {
         description: "Please try again later",
         variant: "destructive",
       });
+      setShowSelect(false);
     } finally {
       setLoading(false);
     }
@@ -82,7 +86,7 @@ const AddressFinder = ({ control }: AddressFinderProps) => {
         </Button>
       </div>
 
-      {addresses.length > 0 && (
+      {showSelect && addresses.length > 0 && (
         <FormField
           control={control}
           name="address"
