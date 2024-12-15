@@ -1,41 +1,34 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
+import { Search } from "lucide-react";
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import WorkAreaField from "@/components/WorkAreaField";
 import LocationField from "@/components/LocationField";
 import SalaryRangeField from "@/components/SalaryRangeField";
-import { Search } from "lucide-react";
-
-const searchFormSchema = z.object({
-  workArea: z.string().optional(),
-  location: z.array(z.string()),
-  salary: z.string().optional(),
-  title: z.string().optional(),
-});
-
-type SearchFormValues = z.infer<typeof searchFormSchema>;
+import CommissionFilterField from "./CommissionFilterField";
+import { jobSearchSchema, type JobSearchValues } from "./JobSearchSchema";
 
 interface JobSearchProps {
-  onSearch: (values: SearchFormValues) => void;
+  onSearch: (values: JobSearchValues) => void;
 }
 
 const JobSearch = ({ onSearch }: JobSearchProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const form = useForm<SearchFormValues>({
-    resolver: zodResolver(searchFormSchema),
+  const form = useForm<JobSearchValues>({
+    resolver: zodResolver(jobSearchSchema),
     defaultValues: {
       workArea: "",
       location: [],
       salary: "",
       title: "",
+      includeCommission: false,
     },
   });
 
-  const handleSubmit = (values: SearchFormValues) => {
+  const handleSubmit = (values: JobSearchValues) => {
     onSearch(values);
   };
 
@@ -57,6 +50,7 @@ const JobSearch = ({ onSearch }: JobSearchProps) => {
             <WorkAreaField control={form.control} />
             <LocationField control={form.control} />
             <SalaryRangeField control={form.control} />
+            <CommissionFilterField control={form.control} />
             
             <div className="flex justify-start">
               <Button 

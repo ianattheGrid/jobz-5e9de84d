@@ -8,19 +8,13 @@ import JobList from "@/components/jobs/JobList";
 import JobsHeader from "@/components/jobs/JobsHeader";
 import JobSearch from "@/components/jobs/JobSearch";
 import { useState } from "react";
+import { JobSearchValues } from "@/components/jobs/JobSearchSchema";
 
 type Job = Database['public']['Tables']['jobs']['Row'];
 
-interface SearchFilters {
-  workArea?: string;
-  location?: string[];
-  salary?: string;
-  title?: string;
-}
-
 const Jobs = () => {
   const { user, userType } = useAuth();
-  const [searchFilters, setSearchFilters] = useState<SearchFilters | null>(null);
+  const [searchFilters, setSearchFilters] = useState<JobSearchValues | null>(null);
 
   const { data: jobs, isLoading, error } = useQuery({
     queryKey: ['jobs', searchFilters],
@@ -57,6 +51,10 @@ const Jobs = () => {
             .lte('salary_max', maxSalary);
         }
 
+        if (searchFilters.includeCommission) {
+          query = query.not('candidate_commission', 'is', null);
+        }
+
         if (searchFilters.title) {
           query = query.ilike('title', `%${searchFilters.title}%`);
         }
@@ -74,7 +72,7 @@ const Jobs = () => {
     }
   });
 
-  const handleSearch = (filters: SearchFilters) => {
+  const handleSearch = (filters: JobSearchValues) => {
     console.log('Applying search filters:', filters);
     setSearchFilters(filters);
   };
