@@ -78,10 +78,10 @@ const CandidateDashboard = () => {
       description: "Manage your account"
     },
     {
-      title: "Contact Us",
+      title: "Contact AI Support",
       icon: <Mail className="h-6 w-6" />,
       path: "#", // We'll implement this later
-      description: "Get in touch with our support team"
+      description: "Get in touch with our AI support team"
     }
   ];
 
