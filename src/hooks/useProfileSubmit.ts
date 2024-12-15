@@ -1,8 +1,8 @@
-import { Toast } from "@/components/ui/use-toast";
+import { type ToastProps } from "@/components/ui/toast";
 import { CandidateFormValues } from "@/components/candidate/candidateFormSchema";
 import { supabase } from "@/integrations/supabase/client";
 
-export const useProfileSubmit = (toast: (props: Toast) => void) => {
+export const useProfileSubmit = (toast: (props: ToastProps) => void) => {
   const onSubmit = async (values: CandidateFormValues) => {
     try {
       const { data: { session } } = await supabase.auth.getSession();
