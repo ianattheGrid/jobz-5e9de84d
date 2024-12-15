@@ -31,7 +31,18 @@ const CandidateSignUp = () => {
         }
       });
 
-      if (error) throw error;
+      if (error) {
+        if (error.message.includes('User already registered')) {
+          toast({
+            variant: "destructive",
+            title: "Account Already Exists",
+            description: "This email is already registered. Please sign in instead.",
+          });
+          navigate('/candidate/signin');
+          return;
+        }
+        throw error;
+      }
 
       toast({
         title: "Verification email sent!",
