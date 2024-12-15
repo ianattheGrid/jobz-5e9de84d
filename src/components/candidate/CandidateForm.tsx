@@ -26,7 +26,7 @@ export function CandidateForm() {
       email: "",
       phone_number: "",
       address: "",
-      location: "All",
+      location: ["All"],
       required_skills: [],
       security_clearance: undefined,
       work_eligibility: undefined,
@@ -44,7 +44,7 @@ export function CandidateForm() {
   useProfileData((data) => {
     form.reset({
       ...data,
-      location: data?.location || "All",
+      location: data?.location ? (Array.isArray(data.location) ? data.location : [data.location]) : ["All"],
     });
   });
   
