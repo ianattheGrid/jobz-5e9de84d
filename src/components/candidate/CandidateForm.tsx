@@ -26,6 +26,7 @@ export function CandidateForm() {
       email: "",
       phone_number: "",
       address: "",
+      location: "Bristol",
       required_skills: [],
       security_clearance: undefined,
       work_eligibility: undefined,
