@@ -57,6 +57,7 @@ export type Database = {
           availability: string | null
           commission_percentage: number | null
           created_at: string
+          cv_url: string | null
           desired_job_title: string | null
           email: string
           full_name: string | null
@@ -67,6 +68,7 @@ export type Database = {
           min_salary: number
           phone_number: string | null
           preferred_work_type: string | null
+          profile_picture_url: string | null
           required_skills: string[] | null
           security_clearance: string | null
           signup_date: string | null
@@ -80,6 +82,7 @@ export type Database = {
           availability?: string | null
           commission_percentage?: number | null
           created_at?: string
+          cv_url?: string | null
           desired_job_title?: string | null
           email: string
           full_name?: string | null
@@ -90,6 +93,7 @@ export type Database = {
           min_salary: number
           phone_number?: string | null
           preferred_work_type?: string | null
+          profile_picture_url?: string | null
           required_skills?: string[] | null
           security_clearance?: string | null
           signup_date?: string | null
@@ -103,6 +107,7 @@ export type Database = {
           availability?: string | null
           commission_percentage?: number | null
           created_at?: string
+          cv_url?: string | null
           desired_job_title?: string | null
           email?: string
           full_name?: string | null
@@ -113,6 +118,7 @@ export type Database = {
           min_salary?: number
           phone_number?: string | null
           preferred_work_type?: string | null
+          profile_picture_url?: string | null
           required_skills?: string[] | null
           security_clearance?: string | null
           signup_date?: string | null

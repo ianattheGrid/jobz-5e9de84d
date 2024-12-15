@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
+import { FileUploadSection } from "@/components/candidate/FileUploadSection";
 import { 
   UserCircle,
   Briefcase,
@@ -12,10 +13,17 @@ import {
   Mail
 } from "lucide-react";
 
+interface Profile {
+  profile_picture_url: string | null;
+  cv_url: string | null;
+}
+
 const CandidateDashboard = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [loading, setLoading] = useState(true);
+  const [userId, setUserId] = useState<string | null>(null);
+  const [profile, setProfile] = useState<Profile | null>(null);
 
   useEffect(() => {
     checkUser();
@@ -26,7 +34,20 @@ const CandidateDashboard = () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session || session.user.user_metadata.user_type !== 'candidate') {
         navigate('/candidate/signin');
+        return;
       }
+      setUserId(session.user.id);
+      
+      // Fetch profile data
+      const { data: profileData, error: profileError } = await supabase
+        .from('candidate_profiles')
+        .select('profile_picture_url, cv_url')
+        .eq('id', session.user.id)
+        .single();
+
+      if (profileError) throw profileError;
+      setProfile(profileData);
+      
       setLoading(false);
     } catch (error) {
       console.error('Error:', error);
@@ -62,25 +83,25 @@ const CandidateDashboard = () => {
     {
       title: "My Applications",
       icon: <Database className="h-6 w-6" />,
-      path: "#", // We'll implement this later
+      path: "#",
       description: "Track your job applications"
     },
     {
       title: "Messages",
       icon: <MessageSquare className="h-6 w-6" />,
-      path: "#", // We'll implement this later
+      path: "#",
       description: "View recruiter messages"
     },
     {
       title: "Account Settings",
       icon: <Settings className="h-6 w-6" />,
-      path: "#", // We'll implement this later
+      path: "#",
       description: "Manage your account"
     },
     {
       title: "Contact AI Support",
       icon: <Mail className="h-6 w-6" />,
-      path: "#", // We'll implement this later
+      path: "#",
       description: "Get in touch with our AI support team"
     }
   ];
@@ -89,6 +110,16 @@ const CandidateDashboard = () => {
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-8 text-red-800">Candidate Dashboard</h1>
       
+      {userId && (
+        <div className="mb-8">
+          <FileUploadSection
+            userId={userId}
+            currentProfilePicture={profile?.profile_picture_url}
+            currentCV={profile?.cv_url}
+          />
+        </div>
+      )}
+
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {menuItems.map((item, index) => (
           <Button
