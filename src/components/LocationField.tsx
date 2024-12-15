@@ -24,7 +24,7 @@ const LocationField = ({ control }: LocationFieldProps) => {
             <MultiSelect
               options={locationOptions}
               selected={field.value || []}
-              onChange={field.onChange}
+              onChange={(value) => field.onChange(value)}
               placeholder="Select postcode areas"
             />
           </FormControl>
