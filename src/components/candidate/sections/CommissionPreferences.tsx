@@ -42,19 +42,19 @@ const CommissionPreferences = ({ control }: CommissionPreferencesProps) => {
         control={control}
         name="view_scheme"
         render={({ field }) => (
-          <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-            <div className="space-y-0.5">
+          <FormItem className="w-full rounded-lg border p-4">
+            <div className="flex flex-row items-center justify-between">
               <FormLabel className="text-sm">Would you like to view the "You're Hired" bonus scheme?</FormLabel>
+              <FormControl>
+                <Switch
+                  checked={field.value || false}
+                  onCheckedChange={(checked) => {
+                    field.onChange(checked);
+                    setShowSchemeDetails(checked);
+                  }}
+                />
+              </FormControl>
             </div>
-            <FormControl>
-              <Switch
-                checked={field.value || false}
-                onCheckedChange={(checked) => {
-                  field.onChange(checked);
-                  setShowSchemeDetails(checked);
-                }}
-              />
-            </FormControl>
           </FormItem>
         )}
       />
@@ -149,19 +149,21 @@ const CommissionPreferences = ({ control }: CommissionPreferencesProps) => {
         control={control}
         name="open_to_commission"
         render={({ field }) => (
-          <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-            <div className="space-y-0.5">
-              <FormLabel className="text-sm">Would you like to participate in the bonus scheme?</FormLabel>
-              <p className="text-sm text-muted-foreground">
-                Your profile will be visible to employers offering commission-based roles
-              </p>
+          <FormItem className="w-full rounded-lg border p-4">
+            <div className="flex flex-row items-center justify-between">
+              <div>
+                <FormLabel className="text-sm">Would you like to participate in the bonus scheme?</FormLabel>
+                <p className="text-sm text-muted-foreground">
+                  Your profile will be visible to employers offering commission-based roles
+                </p>
+              </div>
+              <FormControl>
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
             </div>
-            <FormControl>
-              <Switch
-                checked={field.value}
-                onCheckedChange={field.onChange}
-              />
-            </FormControl>
           </FormItem>
         )}
       />
