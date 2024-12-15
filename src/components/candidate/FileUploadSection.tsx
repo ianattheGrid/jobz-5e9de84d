@@ -76,6 +76,7 @@ export const FileUploadSection = ({ userId, currentProfilePicture, currentCV }: 
             size="default"  // Explicitly set to match Upload CV button
             onClick={() => document.getElementById('profile-picture-input')?.click()}
             disabled={uploadingPicture}
+            className="w-[200px]"  // Added explicit width to match buttons
           >
             {uploadingPicture ? (
               <Loader2 className="h-4 w-4 animate-spin mr-2" />
@@ -109,6 +110,7 @@ export const FileUploadSection = ({ userId, currentProfilePicture, currentCV }: 
             size="default"  // Explicitly set to match Upload Picture button
             onClick={() => document.getElementById('cv-input')?.click()}
             disabled={uploadingCV}
+            className="w-[200px]"  // Added explicit width to match buttons
           >
             {uploadingCV ? (
               <Loader2 className="h-4 w-4 animate-spin mr-2" />
