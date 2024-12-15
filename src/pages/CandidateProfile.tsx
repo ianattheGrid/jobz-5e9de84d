@@ -39,11 +39,13 @@ export default function CandidateProfile() {
 
   return (
     <div className="container mx-auto px-4 py-10">
-      <h1 className="text-2xl font-bold mb-4 text-black">Update Your Profile</h1>
-      <p className="text-[#ea384c] mb-8 text-sm">
+      <h1 className="text-2xl font-bold mb-4 text-black text-left">Update Your Profile</h1>
+      <p className="text-[#ea384c] mb-8 text-sm text-left">
         Keep your profile up to date to find the best job matches.
       </p>
-      <CandidateForm />
+      <div className="flex justify-center">
+        <CandidateForm />
+      </div>
     </div>
   );
 }
