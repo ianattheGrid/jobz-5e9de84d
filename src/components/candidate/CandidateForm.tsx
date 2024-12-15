@@ -1,6 +1,5 @@
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import * as z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { useToast } from "@/components/ui/use-toast";
@@ -8,41 +7,13 @@ import { supabase } from "@/integrations/supabase/client";
 import WorkAreaField from "@/components/WorkAreaField";
 import LocationField from "@/components/LocationField";
 import SalaryRangeField from "@/components/SalaryRangeField";
-import ITSkillsField from "@/components/job-details/ITSkillsField";
 import SecurityClearanceFields from "@/components/job-details/SecurityClearanceFields";
 import WorkEligibilityField from "@/components/job-details/WorkEligibilityField";
-import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Switch } from "@/components/ui/switch";
 import { useEffect } from "react";
-
-const WorkType = z.enum(["remote", "hybrid", "office"]);
-type WorkType = z.infer<typeof WorkType>;
-
-const candidateFormSchema = z.object({
-  workArea: z.string({
-    required_error: "Please select your area of work.",
-  }),
-  otherWorkArea: z.string().optional(),
-  itSpecialization: z.string().optional(),
-  title: z.string().optional(),
-  location: z.array(z.string()).min(1, {
-    message: "Please select at least one location",
-  }),
-  salary: z.string().min(1, {
-    message: "Please specify your salary expectations",
-  }),
-  required_skills: z.array(z.string()).optional(),
-  security_clearance: z.string().optional(),
-  work_eligibility: z.string().optional(),
-  years_experience: z.string().min(1, "Years of experience is required"),
-  commission_percentage: z.number().min(0).max(100).optional(),
-  open_to_commission: z.boolean().default(false),
-  additional_skills: z.string().optional(),
-  preferred_work_type: WorkType.default("office"),
-});
-
-type CandidateFormValues = z.infer<typeof candidateFormSchema>;
+import { candidateFormSchema, type CandidateFormValues, type WorkType } from "./candidateFormSchema";
+import WorkPreferences from "./sections/WorkPreferences";
+import CommissionPreferences from "./sections/CommissionPreferences";
+import SkillsSection from "./sections/SkillsSection";
 
 export function CandidateForm() {
   const { toast } = useToast();
@@ -124,6 +95,7 @@ export function CandidateForm() {
         years_experience: parseInt(values.years_experience),
         commission_percentage: values.open_to_commission ? values.commission_percentage : null,
         preferred_work_type: values.preferred_work_type,
+        additional_skills: values.additional_skills,
       });
 
       if (error) throw error;
@@ -149,99 +121,13 @@ export function CandidateForm() {
         <LocationField control={form.control} />
         <SalaryRangeField control={form.control} />
         
-        <FormField
-          control={form.control}
-          name="years_experience"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Years of Experience</FormLabel>
-              <FormControl>
-                <Input type="number" min="0" max="50" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="preferred_work_type"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Preferred Work Type</FormLabel>
-              <FormControl>
-                <select
-                  className="w-full p-2 border rounded"
-                  {...field}
-                >
-                  <option value="remote">Remote</option>
-                  <option value="hybrid">Hybrid</option>
-                  <option value="office">Office-based</option>
-                </select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <ITSkillsField control={form.control} />
+        <WorkPreferences control={form.control} />
+        <SkillsSection control={form.control} />
         
-        <FormField
-          control={form.control}
-          name="additional_skills"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Additional Skills or Certifications</FormLabel>
-              <FormControl>
-                <Input {...field} placeholder="e.g., AWS Certified, Scrum Master, etc." />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
         <SecurityClearanceFields control={form.control} />
         <WorkEligibilityField control={form.control} />
 
-        <FormField
-          control={form.control}
-          name="open_to_commission"
-          render={({ field }) => (
-            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-              <div className="space-y-0.5">
-                <FormLabel className="text-base">Open to Commission-Based Roles</FormLabel>
-              </div>
-              <FormControl>
-                <Switch
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
-              </FormControl>
-            </FormItem>
-          )}
-        />
-
-        {form.watch("open_to_commission") && (
-          <FormField
-            control={form.control}
-            name="commission_percentage"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Desired Commission Percentage</FormLabel>
-                <FormControl>
-                  <Input
-                    type="number"
-                    min="0"
-                    max="100"
-                    {...field}
-                    onChange={(e) => field.onChange(parseFloat(e.target.value))}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        )}
+        <CommissionPreferences control={form.control} />
         
         <div className="flex justify-start">
           <Button type="submit" className="bg-red-800 hover:bg-red-900 text-white">
