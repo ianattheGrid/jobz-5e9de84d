@@ -7,11 +7,11 @@ interface WorkEligibilityFieldProps {
 }
 
 const WORK_ELIGIBILITY_OPTIONS = [
-  "UK citizens only",
-  "UK citizens and individuals with settled or pre-settled status under the EU Settlement Scheme",
-  "Individuals who already have the legal right to work in the UK (e.g., UK citizens, settled/pre-settled status, or valid work visas)",
-  "Individuals who require visa sponsorship to work in the UK",
-  "Open to all candidates, regardless of current right to work, as long as they meet the role's requirements"
+  "I am a UK citizen",
+  "I have settled or pre-settled status under the EU Settlement Scheme",
+  "I have an existing valid work visa",
+  "I require visa sponsorship to work in the UK",
+  "I am not currently eligible to work in the UK"
 ];
 
 const WorkEligibilityField = ({ control }: WorkEligibilityFieldProps) => {
@@ -21,11 +21,11 @@ const WorkEligibilityField = ({ control }: WorkEligibilityFieldProps) => {
       name="workEligibility"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>What type of candidates are you willing to consider for this role based on their right to work in the UK?</FormLabel>
+          <FormLabel>What is your UK work status?</FormLabel>
           <FormControl>
             <Select onValueChange={field.onChange} defaultValue={field.value}>
               <SelectTrigger className="w-full bg-white border border-gray-300">
-                <SelectValue placeholder="UK citizens only" />
+                <SelectValue placeholder="Select your work status" />
               </SelectTrigger>
               <SelectContent className="bg-white">
                 {WORK_ELIGIBILITY_OPTIONS.map((option) => (
