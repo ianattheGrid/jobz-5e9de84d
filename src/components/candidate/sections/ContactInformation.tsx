@@ -92,7 +92,7 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
           <FormItem>
             <FormLabel>Location you are looking to work in</FormLabel>
             <FormControl>
-              <Input placeholder="Bristol" {...field} />
+              <Input placeholder="Enter location (e.g. Bristol)" {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>
