@@ -7,7 +7,6 @@ import BonusCalculator from "./commission/BonusCalculator";
 import CommissionNegotiation from "./commission/CommissionNegotiation";
 import BonusPreferencesHeader from "./bonus/BonusPreferencesHeader";
 import MinimumBonusSelect from "./bonus/MinimumBonusSelect";
-import BonusNegotiationExplanation from "./bonus/BonusNegotiationExplanation";
 
 interface CommissionPreferencesProps {
   control: Control<CandidateFormValues>;
@@ -54,10 +53,7 @@ const CommissionPreferences = ({ control }: CommissionPreferencesProps) => {
       {control._formValues.open_to_commission && (
         <>
           <MinimumBonusSelect control={control} />
-          <div className="mt-8">
-            <BonusNegotiationExplanation />
-            <CommissionNegotiation />
-          </div>
+          <CommissionNegotiation />
         </>
       )}
     </div>
