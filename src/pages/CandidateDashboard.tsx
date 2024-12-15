@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
-import { FileUploadSection } from "@/components/candidate/FileUploadSection";
 import { 
   UserCircle,
   Briefcase,
@@ -13,17 +12,10 @@ import {
   Mail
 } from "lucide-react";
 
-interface Profile {
-  profile_picture_url: string | null;
-  cv_url: string | null;
-}
-
 const CandidateDashboard = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [loading, setLoading] = useState(true);
-  const [userId, setUserId] = useState<string | null>(null);
-  const [profile, setProfile] = useState<Profile | null>(null);
 
   useEffect(() => {
     checkUser();
@@ -35,46 +27,6 @@ const CandidateDashboard = () => {
       if (!session || session.user.user_metadata.user_type !== 'candidate') {
         navigate('/candidate/signin');
         return;
-      }
-      setUserId(session.user.id);
-
-      // First check if profile exists
-      const { data: profileData, error: profileError } = await supabase
-        .from('candidate_profiles')
-        .select('profile_picture_url, cv_url')
-        .eq('id', session.user.id)
-        .maybeSingle();
-
-      if (profileError) {
-        console.error('Error fetching profile:', profileError);
-        throw profileError;
-      }
-
-      if (!profileData) {
-        // Profile doesn't exist, create it
-        const { error: insertError } = await supabase
-          .from('candidate_profiles')
-          .insert({
-            id: session.user.id,
-            email: session.user.email,
-            job_title: 'Not specified',
-            years_experience: 0,
-            location: 'Not specified',
-            min_salary: 0,
-            max_salary: 0
-          });
-
-        if (insertError) {
-          console.error('Error creating profile:', insertError);
-          throw insertError;
-        }
-
-        setProfile({
-          profile_picture_url: null,
-          cv_url: null
-        });
-      } else {
-        setProfile(profileData);
       }
 
       setLoading(false);
@@ -139,16 +91,6 @@ const CandidateDashboard = () => {
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-8 text-red-800">Candidate Dashboard</h1>
       
-      {userId && (
-        <div className="mb-8">
-          <FileUploadSection
-            userId={userId}
-            currentProfilePicture={profile?.profile_picture_url}
-            currentCV={profile?.cv_url}
-          />
-        </div>
-      )}
-
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {menuItems.map((item, index) => (
           <Button
