@@ -17,7 +17,7 @@ const salaryRanges = [
   { value: "£55,000 - £60,000", label: "£55,000 - £60,000" },
   { value: "£60,000 - £65,000", label: "£60,000 - £65,000" },
   { value: "£65,000 - £70,000", label: "£65,000 - £70,000" },
-  { value: "£70,000 - £75,000", label: "£70,000 - £75,000" },
+  { value: "£70,000 - £75,000", label: "£75,000 - £75,000" },
   { value: "£75,000 - £80,000", label: "£75,000 - £80,000" },
   { value: "£80,000 - £85,000", label: "£80,000 - £85,000" },
   { value: "£85,000 - £90,000", label: "£85,000 - £90,000" },
@@ -37,15 +37,14 @@ const SalaryRangeField = ({ control }: SalaryRangeFieldProps) => {
           <FormControl>
             <MultiSelect
               options={salaryRanges}
-              selected={field.value ? field.value.split(',') : []}
+              selected={field.value ? field.value.split(',').filter(Boolean) : []}
               onChange={(values) => field.onChange(values.join(','))}
               placeholder="Select salary range"
               className="w-full bg-white border border-gray-300"
-              maxSelected={3}
             />
           </FormControl>
           <div className="flex items-center gap-2 mt-1 text-sm text-blue-600">
-            You can select up to 3 salary ranges
+            You can select multiple salary ranges
           </div>
           <FormMessage />
         </FormItem>
