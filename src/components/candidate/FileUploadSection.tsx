@@ -73,6 +73,7 @@ export const FileUploadSection = ({ userId, currentProfilePicture, currentCV }: 
         <div className="flex items-center gap-4">
           <Button
             variant="outline"
+            size="default"  // Explicitly set to match Upload CV button
             onClick={() => document.getElementById('profile-picture-input')?.click()}
             disabled={uploadingPicture}
           >
@@ -105,6 +106,7 @@ export const FileUploadSection = ({ userId, currentProfilePicture, currentCV }: 
         <div className="flex items-center gap-4">
           <Button
             variant="outline"
+            size="default"  // Explicitly set to match Upload Picture button
             onClick={() => document.getElementById('cv-input')?.click()}
             disabled={uploadingCV}
           >
