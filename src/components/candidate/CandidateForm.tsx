@@ -23,6 +23,10 @@ export function CandidateForm() {
   const form = useForm<CandidateFormValues>({
     resolver: zodResolver(candidateFormSchema),
     defaultValues: {
+      full_name: "",
+      email: "",
+      phone_number: "",
+      address: "",
       location: [],
       required_skills: [],
       security_clearance: undefined,
@@ -30,6 +34,9 @@ export function CandidateForm() {
       open_to_commission: false,
       preferred_work_type: "office",
       availability: "Immediate",
+      workArea: "",
+      years_experience: "",
+      salary: "",
     },
   });
 
