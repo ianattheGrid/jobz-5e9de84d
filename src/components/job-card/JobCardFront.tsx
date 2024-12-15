@@ -1,5 +1,6 @@
 import { Job } from "@/integrations/supabase/types/jobs";
 import { formatSalary } from "./utils";
+import { PoundSterling } from "lucide-react";
 
 interface JobCardFrontProps {
   job: Job;
@@ -34,26 +35,7 @@ const JobCardFront = ({ job }: JobCardFrontProps) => {
 
         {job.candidate_commission && (
           <div className="flex items-center space-x-2 text-sm text-red-600">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15 9a2 2 0 00-2-2h-2a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2V9z"
-              />
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 9h6"
-              />
-            </svg>
+            <PoundSterling className="h-4 w-4" />
             <span>Bonus available - Click to view details</span>
           </div>
         )}

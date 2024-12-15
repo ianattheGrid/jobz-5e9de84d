@@ -14,7 +14,7 @@ export interface Job {
   holiday_entitlement: number | null;
   company_benefits: string | null;
   employer_id: string | null;
-  required_skills: string[] | null;  // Ensure this is included
+  required_skills: string[] | null;
   match_threshold: number;
 }
 
