@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Control } from "react-hook-form";
 import { CandidateFormValues } from "../candidateFormSchema";
 import { FileUploadSection } from "../FileUploadSection";
+import AddressFinder from "@/components/AddressFinder";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -79,19 +80,10 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
         )}
       />
 
-      <FormField
-        control={control}
-        name="address"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Address</FormLabel>
-            <FormControl>
-              <Input placeholder="Enter your address" {...field} />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
+      <FormItem>
+        <FormLabel>Address</FormLabel>
+        <AddressFinder control={control} />
+      </FormItem>
 
       {userId && (
         <FileUploadSection
