@@ -1,4 +1,3 @@
-import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Control } from "react-hook-form";
 import { CandidateFormValues } from "../candidateFormSchema";
 import { useState } from "react";
@@ -6,7 +5,9 @@ import CommissionToggle from "./commission/CommissionToggle";
 import SchemeExplanation from "./commission/SchemeExplanation";
 import BonusCalculator from "./commission/BonusCalculator";
 import CommissionNegotiation from "./commission/CommissionNegotiation";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import BonusPreferencesHeader from "./bonus/BonusPreferencesHeader";
+import MinimumBonusSelect from "./bonus/MinimumBonusSelect";
+import BonusNegotiationExplanation from "./bonus/BonusNegotiationExplanation";
 
 interface CommissionPreferencesProps {
   control: Control<CandidateFormValues>;
@@ -17,15 +18,6 @@ const CommissionPreferences = ({ control }: CommissionPreferencesProps) => {
   const [sampleSalary, setSampleSalary] = useState("");
   const [feePercentage, setFeePercentage] = useState(7);
   const [splitPercentage, setSplitPercentage] = useState(50);
-
-  // Generate commission percentage options
-  const commissionOptions = [
-    { value: "flexible", label: "Flexible - consider all commission rates" },
-    ...Array.from({ length: 24 }, (_, i) => ({
-      value: (2.5 + i * 0.5).toString(),
-      label: `${(2.5 + i * 0.5).toFixed(1)}%`
-    }))
-  ];
 
   return (
     <div className="space-y-4">
@@ -38,9 +30,7 @@ const CommissionPreferences = ({ control }: CommissionPreferencesProps) => {
 
       {showSchemeDetails && (
         <div className="mb-6 space-y-4">
-          <h3 className="text-lg font-semibold text-gray-900">
-            "You're Hired" Bonus Scheme
-          </h3>
+          <BonusPreferencesHeader />
           <SchemeExplanation />
           <BonusCalculator
             sampleSalary={sampleSalary}
@@ -63,41 +53,9 @@ const CommissionPreferences = ({ control }: CommissionPreferencesProps) => {
 
       {control._formValues.open_to_commission && (
         <>
-          <FormField
-            control={control}
-            name="commission_percentage"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>What is the minimum bonus percentage you would consider?</FormLabel>
-                <FormControl>
-                  <Select
-                    value={field.value?.toString() || "flexible"}
-                    onValueChange={(value) => {
-                      if (value === "flexible") {
-                        field.onChange(null);
-                      } else {
-                        field.onChange(parseFloat(value));
-                      }
-                    }}
-                  >
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select minimum commission percentage" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {commissionOptions.map((option) => (
-                        <SelectItem key={option.value} value={option.value}>
-                          {option.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
+          <MinimumBonusSelect control={control} />
           <div className="mt-8">
+            <BonusNegotiationExplanation />
             <CommissionNegotiation />
           </div>
         </>
