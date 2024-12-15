@@ -31,7 +31,7 @@ export const candidateFormSchema = z.object({
   commission_percentage: z.number().min(2.5).max(14).nullable(),
   open_to_commission: z.boolean().default(false),
   additional_skills: z.string().optional(),
-  preferred_work_type: WorkType.default("office"),
+  preferred_work_type: z.array(z.string()).default([]),
   view_scheme: z.boolean().optional(),
 });
 

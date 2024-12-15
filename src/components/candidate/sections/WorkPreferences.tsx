@@ -1,6 +1,6 @@
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Control } from "react-hook-form";
-import { CandidateFormValues, WorkType } from "../candidateFormSchema";
+import { CandidateFormValues } from "../candidateFormSchema";
 import { MultiSelect } from "@/components/ui/multi-select";
 
 interface WorkPreferencesProps {
@@ -24,8 +24,8 @@ const WorkPreferences = ({ control }: WorkPreferencesProps) => {
           <FormControl>
             <MultiSelect
               options={workTypeOptions}
-              selected={field.value ? [field.value] : []}
-              onChange={(values) => field.onChange(values[0] || 'office')}
+              selected={Array.isArray(field.value) ? field.value : []}
+              onChange={(values) => field.onChange(values)}
               placeholder="Select work types"
               className="w-full bg-white border border-gray-300"
             />

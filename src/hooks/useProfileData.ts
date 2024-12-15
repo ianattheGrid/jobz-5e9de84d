@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { UseFormReset } from 'react-hook-form';
 import { supabase } from '@/integrations/supabase/client';
-import { CandidateFormValues, WorkType } from '@/components/candidate/candidateFormSchema';
+import { CandidateFormValues } from '@/components/candidate/candidateFormSchema';
 import { useToast } from '@/components/ui/use-toast';
 
 export const useProfileData = (reset: UseFormReset<CandidateFormValues>) => {
@@ -29,7 +29,6 @@ export const useProfileData = (reset: UseFormReset<CandidateFormValues>) => {
 
         if (error) {
           if (error.code === 'PGRST116') {
-            // Record not found - this is fine for new users
             console.log('No profile found for user');
             return;
           }
@@ -37,10 +36,12 @@ export const useProfileData = (reset: UseFormReset<CandidateFormValues>) => {
         }
 
         if (profile) {
-          // Ensure preferred_work_type is one of the allowed values
-          const validWorkType = (type: string): WorkType => {
-            return ['remote', 'hybrid', 'office'].includes(type) ? (type as WorkType) : 'office';
-          };
+          // Convert string to array if needed
+          const workTypes = profile.preferred_work_type ? 
+            (typeof profile.preferred_work_type === 'string' ? 
+              [profile.preferred_work_type] : 
+              profile.preferred_work_type) : 
+            [];
 
           reset({
             full_name: profile.full_name || '',
@@ -57,7 +58,7 @@ export const useProfileData = (reset: UseFormReset<CandidateFormValues>) => {
             years_experience: profile.years_experience?.toString() || '',
             commission_percentage: profile.commission_percentage,
             open_to_commission: profile.commission_percentage !== null,
-            preferred_work_type: validWorkType(profile.preferred_work_type || 'office'),
+            preferred_work_type: workTypes,
             additional_skills: profile.additional_skills || "",
             availability: profile.availability || "Immediate",
           });
