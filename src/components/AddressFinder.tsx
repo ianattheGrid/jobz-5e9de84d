@@ -1,12 +1,10 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Control } from "react-hook-form";
 import { CandidateFormValues } from "./candidate/candidateFormSchema";
 import { lookupAddresses } from "@/lib/addressLookup";
 import { useToast } from "@/components/ui/use-toast";
+import { PostcodeInput } from "./address/PostcodeInput";
+import { AddressSelect } from "./address/AddressSelect";
 
 interface AddressFinderProps {
   control: Control<CandidateFormValues>;
@@ -18,21 +16,12 @@ interface Address {
 }
 
 const AddressFinder = ({ control }: AddressFinderProps) => {
-  const [postcode, setPostcode] = useState("");
   const [addresses, setAddresses] = useState<Address[]>([]);
   const [loading, setLoading] = useState(false);
   const [showSelect, setShowSelect] = useState(false);
   const { toast } = useToast();
 
-  const findAddresses = async () => {
-    if (!postcode) {
-      toast({
-        title: "Please enter a postcode",
-        variant: "destructive",
-      });
-      return;
-    }
-    
+  const findAddresses = async (postcode: string) => {
     setLoading(true);
     try {
       const foundAddresses = await lookupAddresses(postcode);
@@ -59,58 +48,11 @@ const AddressFinder = ({ control }: AddressFinderProps) => {
     }
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      findAddresses();
-    }
-  };
-
   return (
     <div className="space-y-4">
-      <div className="flex gap-2">
-        <Input
-          placeholder="Enter postcode"
-          value={postcode}
-          onChange={(e) => setPostcode(e.target.value.toUpperCase())}
-          onKeyPress={handleKeyPress}
-          className="max-w-[200px]"
-        />
-        <Button 
-          type="button"
-          onClick={findAddresses}
-          disabled={loading}
-          variant="outline"
-        >
-          {loading ? "Searching..." : "Find Address"}
-        </Button>
-      </div>
-
+      <PostcodeInput onSearch={findAddresses} loading={loading} />
       {showSelect && addresses.length > 0 && (
-        <FormField
-          control={control}
-          name="address"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Select Address</FormLabel>
-              <Select onValueChange={field.onChange} value={field.value}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select an address" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {addresses.map((addr, index) => (
-                    <SelectItem key={index} value={addr.address}>
-                      {addr.address}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <AddressSelect control={control} addresses={addresses} />
       )}
     </div>
   );
