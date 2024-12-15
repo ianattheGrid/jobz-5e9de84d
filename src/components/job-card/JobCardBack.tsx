@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import JobDetails from "./details/JobDetails";
 import ApplicationForm from "./application/ApplicationForm";
 import MatchWarningDialog from "./match/MatchWarningDialog";
+import { formatSalary } from "./utils";
 
 interface JobCardBackProps {
   job: Job;
@@ -18,6 +19,10 @@ const JobCardBack = ({ job }: JobCardBackProps) => {
   const [coverLetter, setCoverLetter] = useState("");
   const [matchScore, setMatchScore] = useState<number | null>(null);
   const [showMatchWarning, setShowMatchWarning] = useState(false);
+
+  const calculateReferralCommission = (totalCommission: number) => {
+    return Math.floor(totalCommission * 0.3);
+  };
 
   const calculateMatchScore = async () => {
     try {
@@ -125,6 +130,21 @@ const JobCardBack = ({ job }: JobCardBackProps) => {
     <div className="rounded-lg border bg-card p-6 text-card-foreground shadow-sm h-full overflow-y-auto">
       <h3 className="text-xl font-semibold text-red-800 mb-4">{job.title}</h3>
       
+      {job.candidate_commission && (
+        <div className="mb-4 p-3 bg-red-50 rounded-md">
+          <p className="text-sm font-medium text-red-700 mb-2">
+            "You're Hired" Bonus Details
+          </p>
+          <div className="text-sm text-red-600 space-y-1">
+            <p>Total Bonus: {formatSalary(job.candidate_commission)}</p>
+            <div className="text-xs space-y-0.5">
+              <p>• Candidate: {formatSalary(job.candidate_commission - calculateReferralCommission(job.candidate_commission))}</p>
+              <p>• Referral: {formatSalary(calculateReferralCommission(job.candidate_commission))}</p>
+            </div>
+          </div>
+        </div>
+      )}
+
       <JobDetails job={job} />
 
       <div>
