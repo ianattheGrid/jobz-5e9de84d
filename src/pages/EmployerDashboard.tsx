@@ -3,19 +3,22 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
+import BonusNegotiations from "@/components/employer/BonusNegotiations";
 import { 
   Briefcase, 
   Building2, 
   Search, 
   Calendar, 
   UserCircle,
-  MessageSquare
+  MessageSquare,
+  PoundSterling
 } from "lucide-react";
 
 const EmployerDashboard = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [loading, setLoading] = useState(true);
+  const [userId, setUserId] = useState<string | null>(null);
 
   useEffect(() => {
     checkUser();
@@ -26,7 +29,9 @@ const EmployerDashboard = () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session || session.user.user_metadata.user_type !== 'employer') {
         navigate('/employer/signin');
+        return;
       }
+      setUserId(session.user.id);
       setLoading(false);
     } catch (error) {
       console.error('Error:', error);
@@ -80,7 +85,7 @@ const EmployerDashboard = () => {
     {
       title: "Contact Us",
       icon: <MessageSquare className="h-6 w-6" />,
-      path: "#", // We'll update this path later
+      path: "#",
       description: "Get in touch with our support team"
     }
   ];
@@ -105,6 +110,12 @@ const EmployerDashboard = () => {
           </Button>
         ))}
       </div>
+
+      {userId && (
+        <div className="mt-8">
+          <BonusNegotiations employerId={userId} />
+        </div>
+      )}
     </div>
   );
 };
