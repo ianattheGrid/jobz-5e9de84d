@@ -43,10 +43,11 @@ export function CandidateForm() {
 
   useProfileData((data) => {
     if (!data) return;
-    form.reset({
+    const formattedData = {
       ...data,
       location: data.location ? (Array.isArray(data.location) ? data.location : [data.location]) : ["All"]
-    });
+    };
+    form.reset(formattedData);
   });
   
   const { onSubmit } = useProfileSubmit(toast);
