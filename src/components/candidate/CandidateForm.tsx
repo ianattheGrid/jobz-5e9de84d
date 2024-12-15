@@ -16,6 +16,9 @@ import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { useEffect } from "react";
 
+const WorkType = z.enum(["remote", "hybrid", "office"]);
+type WorkType = z.infer<typeof WorkType>;
+
 const candidateFormSchema = z.object({
   workArea: z.string({
     required_error: "Please select your area of work.",
@@ -36,7 +39,7 @@ const candidateFormSchema = z.object({
   commission_percentage: z.number().min(0).max(100).optional(),
   open_to_commission: z.boolean().default(false),
   additional_skills: z.string().optional(),
-  preferred_work_type: z.enum(["remote", "hybrid", "office"]).optional(),
+  preferred_work_type: WorkType.default("office"),
 });
 
 type CandidateFormValues = z.infer<typeof candidateFormSchema>;
@@ -83,7 +86,8 @@ export function CandidateForm() {
           years_experience: profile.years_experience.toString(),
           commission_percentage: profile.commission_percentage,
           open_to_commission: profile.commission_percentage !== null,
-          preferred_work_type: profile.preferred_work_type || "office",
+          preferred_work_type: (profile.preferred_work_type as WorkType) || "office",
+          additional_skills: profile.additional_skills || "",
         });
       }
     };
