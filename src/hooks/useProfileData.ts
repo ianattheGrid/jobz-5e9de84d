@@ -24,7 +24,7 @@ export const useProfileData = (reset: UseFormReset<CandidateFormValues>) => {
         if (profile) {
           reset({
             workArea: profile.job_title,
-            location: [profile.location],
+            location: profile.location,
             salary: `${profile.min_salary}-${profile.max_salary}`,
             required_skills: profile.required_skills || [],
             security_clearance: profile.security_clearance,
