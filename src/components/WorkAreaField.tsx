@@ -1,7 +1,19 @@
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Control } from "react-hook-form";
-import { workAreas } from "./work-area/constants";
+import { 
+  workAreas, 
+  softwareDevTitles,
+  itSupportTitles,
+  networkingTitles,
+  cybersecurityTitles,
+  dataAnalyticsTitles,
+  cloudComputingTitles,
+  aiTitles,
+  testingTitles,
+  itManagementTitles,
+  specializedITTitles
+} from "./work-area/constants";
 import ITSpecializationSelect from "./work-area/ITSpecializationSelect";
 import JobTitleSelect from "./work-area/JobTitleSelect";
 import OtherWorkAreaInput from "./work-area/OtherWorkAreaInput";
