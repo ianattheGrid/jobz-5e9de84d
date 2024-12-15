@@ -22,7 +22,7 @@ export async function lookupAddresses(postcode: string): Promise<Address[]> {
     }
     
     if (data.result) {
-      // Create multiple formatted addresses with different levels of detail
+      // Create formatted addresses with increasing detail levels
       return [
         {
           postcode: data.result.postcode,
@@ -30,17 +30,27 @@ export async function lookupAddresses(postcode: string): Promise<Address[]> {
         },
         {
           postcode: data.result.postcode,
-          address: `${data.result.admin_ward || ''}, ${data.result.postcode}`
+          address: `${data.result.parliamentary_constituency || ''}, ${data.result.postcode}`
         },
         {
           postcode: data.result.postcode,
-          address: `${data.result.admin_ward || ''}, ${data.result.admin_district || ''}, ${data.result.postcode}`
+          address: `${data.result.admin_ward || ''}, ${data.result.parliamentary_constituency || ''}, ${data.result.postcode}`
         },
         {
           postcode: data.result.postcode,
           address: `${data.result.admin_ward || ''}, ${data.result.admin_district || ''}, ${data.result.region || ''}, ${data.result.postcode}`
         }
-      ].filter(addr => addr.address.trim().replace(/^,\s*/, '').length > 0); // Remove empty addresses
+      ].filter(addr => {
+        // Remove empty addresses and clean up any leading/trailing commas
+        const cleanAddress = addr.address
+          .split(',')
+          .map(part => part.trim())
+          .filter(part => part.length > 0)
+          .join(', ');
+        
+        addr.address = cleanAddress;
+        return cleanAddress.length > 0;
+      });
     }
     
     return [];
