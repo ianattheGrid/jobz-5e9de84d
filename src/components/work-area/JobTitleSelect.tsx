@@ -5,13 +5,14 @@ import { Control } from "react-hook-form";
 interface JobTitleSelectProps {
   control: Control<any>;
   titles: string[];
+  name?: string;
 }
 
-const JobTitleSelect = ({ control, titles }: JobTitleSelectProps) => {
+const JobTitleSelect = ({ control, titles, name = "title" }: JobTitleSelectProps) => {
   return (
     <FormField
       control={control}
-      name="title"
+      name={name}
       render={({ field }) => (
         <FormItem>
           <FormLabel>Job Title</FormLabel>
@@ -23,7 +24,7 @@ const JobTitleSelect = ({ control, titles }: JobTitleSelectProps) => {
               <SelectTrigger className="w-full bg-white border border-gray-300">
                 <SelectValue placeholder="Select the job title" />
               </SelectTrigger>
-              <SelectContent className="bg-white">
+              <SelectContent className="bg-white z-50">
                 {titles.map((title) => (
                   <SelectItem key={title} value={title}>
                     {title}
