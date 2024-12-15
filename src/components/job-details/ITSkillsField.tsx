@@ -1,10 +1,10 @@
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Control } from "react-hook-form";
-import { itSkills } from "./constants";
 import { Badge } from "@/components/ui/badge";
 import { X } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getSkillsByWorkArea } from "@/components/work-area/skills-data";
 
 interface ITSkillsFieldProps {
   control: Control<any>;
@@ -12,6 +12,14 @@ interface ITSkillsFieldProps {
 
 const ITSkillsField = ({ control }: ITSkillsFieldProps) => {
   const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
+  const [availableSkills, setAvailableSkills] = useState<string[]>([]);
+
+  useEffect(() => {
+    const workArea = control._formValues.workArea;
+    if (workArea) {
+      setAvailableSkills(getSkillsByWorkArea(workArea));
+    }
+  }, [control._formValues.workArea]);
 
   const handleSkillSelect = (skill: string) => {
     if (skill === "none") {
@@ -51,7 +59,7 @@ const ITSkillsField = ({ control }: ITSkillsFieldProps) => {
                 </SelectTrigger>
                 <SelectContent className="bg-white max-h-[300px]">
                   <SelectItem value="none">None</SelectItem>
-                  {itSkills.map((skill) => (
+                  {availableSkills.map((skill) => (
                     <SelectItem 
                       key={skill} 
                       value={skill}
