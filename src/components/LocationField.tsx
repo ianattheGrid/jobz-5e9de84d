@@ -17,15 +17,14 @@ const LocationField = ({ control }: LocationFieldProps) => {
     <FormField
       control={control}
       name="location"
-      defaultValue={[]}
       render={({ field }) => (
         <FormItem>
           <FormLabel>What locations are you looking to work in (Bristol postcodes only)</FormLabel>
           <FormControl>
             <MultiSelect
               options={locationOptions}
-              selected={field.value ?? []}
-              onChange={(value) => field.onChange(value)}
+              selected={field.value || []}
+              onChange={field.onChange}
               placeholder="Select postcode areas"
             />
           </FormControl>

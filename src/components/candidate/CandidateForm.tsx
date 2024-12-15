@@ -26,7 +26,7 @@ export function CandidateForm() {
       email: "",
       phone_number: "",
       address: "",
-      location: [],
+      location: [], // Ensure this is initialized as an empty array
       required_skills: [],
       security_clearance: undefined,
       work_eligibility: undefined,
