@@ -19,7 +19,7 @@ const LocationField = ({ control }: LocationFieldProps) => {
       name="location"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Location (Bristol Area)</FormLabel>
+          <FormLabel>What locations are you looking to work in (Bristol postcodes only)</FormLabel>
           <FormControl>
             <MultiSelect
               options={locationOptions}
@@ -28,6 +28,9 @@ const LocationField = ({ control }: LocationFieldProps) => {
               placeholder="Select postcode areas"
             />
           </FormControl>
+          <p className="text-sm text-muted-foreground mt-2">
+            You can select multiple postcodes to increase your job match opportunities
+          </p>
           <FormMessage />
         </FormItem>
       )}
