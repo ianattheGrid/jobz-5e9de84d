@@ -31,9 +31,6 @@ export const candidateFormSchema = z.object({
   commission_percentage: z.number().min(2.5).max(14).nullable(),
   open_to_commission: z.boolean().default(false),
   additional_skills: z.string().optional(),
-  preferred_work_type: z.string({
-    required_error: "Please select your preferred work type",
-  }),
   view_scheme: z.boolean().optional(),
 }).refine((data) => data.max_salary >= data.min_salary, {
   message: "Maximum salary must be greater than or equal to minimum salary",

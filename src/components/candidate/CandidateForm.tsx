@@ -9,7 +9,6 @@ import AvailabilityField from "@/components/AvailabilityField";
 import SecurityClearanceFields from "@/components/job-details/SecurityClearanceFields";
 import WorkEligibilityField from "@/components/job-details/WorkEligibilityField";
 import { candidateFormSchema, type CandidateFormValues } from "./candidateFormSchema";
-import WorkPreferences from "./sections/WorkPreferences";
 import CommissionPreferences from "./sections/CommissionPreferences";
 import SkillsSection from "./sections/SkillsSection";
 import ContactInformation from "./sections/ContactInformation";
@@ -31,7 +30,6 @@ export function CandidateForm() {
       security_clearance: undefined,
       work_eligibility: undefined,
       open_to_commission: false,
-      preferred_work_type: undefined,
       availability: "Immediate",
       workArea: "",
       years_experience: "",
@@ -65,21 +63,15 @@ export function CandidateForm() {
           <div className="text-left">
             <AvailabilityField control={form.control} />
           </div>
-          
-          <div className="text-left">
-            <WorkPreferences control={form.control} />
-          </div>
           <div className="text-left">
             <SkillsSection control={form.control} />
           </div>
-          
           <div className="text-left">
             <SecurityClearanceFields control={form.control} />
           </div>
           <div className="text-left">
             <WorkEligibilityField control={form.control} />
           </div>
-
           <div className="text-left">
             <CommissionPreferences control={form.control} />
           </div>
