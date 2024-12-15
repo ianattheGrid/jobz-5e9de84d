@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface CommissionNegotiation {
@@ -29,6 +29,12 @@ const CommissionNegotiation = () => {
         },
         (payload) => {
           console.log('Real-time update:', payload);
+          if (payload.eventType === 'INSERT') {
+            toast({
+              title: "New Bonus Negotiation",
+              description: "A new bonus negotiation has been initiated.",
+            });
+          }
           fetchNegotiations();
         }
       )
@@ -53,7 +59,7 @@ const CommissionNegotiation = () => {
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Failed to load commission negotiations"
+        description: "Failed to load bonus negotiations"
       });
       return;
     }
@@ -87,15 +93,12 @@ const CommissionNegotiation = () => {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 mt-8">
       <div className="space-y-2">
         <h3 className="text-lg font-semibold">Active Bonus Negotiations</h3>
         <p className="text-sm text-muted-foreground">
           When employers are interested in your profile, they may initiate a bonus negotiation. 
-          Here you can view and respond to bonus offers in real-time. Each offer shows the initial 
-          and current bonus percentage being offered. You can choose to accept or decline these offers, 
-          and employers may adjust their offers based on your response. All negotiations are handled 
-          securely and transparently through our platform.
+          You can view and respond to bonus offers in real-time.
         </p>
       </div>
       {negotiations.length === 0 ? (
@@ -106,7 +109,7 @@ const CommissionNegotiation = () => {
             <Card key={negotiation.id}>
               <CardHeader>
                 <CardTitle className="text-base">
-                  Commission Offer: {negotiation.current_commission}%
+                  Bonus Offer: {negotiation.current_commission}%
                 </CardTitle>
               </CardHeader>
               <CardContent>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 
@@ -32,6 +32,12 @@ const BonusNegotiations = ({ employerId }: { employerId: string }) => {
         },
         (payload) => {
           console.log('Real-time update:', payload);
+          if (payload.eventType === 'UPDATE' && payload.new.status) {
+            toast({
+              title: "Bonus Negotiation Updated",
+              description: `Candidate has ${payload.new.status} your offer.`,
+            });
+          }
           fetchNegotiations();
         }
       )
@@ -96,8 +102,7 @@ const BonusNegotiations = ({ employerId }: { employerId: string }) => {
         <h3 className="text-lg font-semibold">Active Bonus Negotiations</h3>
         <p className="text-sm text-muted-foreground">
           Here you can manage bonus negotiations with candidates. You can view the status 
-          of each negotiation and adjust your offers based on candidate responses. 
-          All negotiations are handled securely and transparently through our platform.
+          of each negotiation and adjust your offers based on candidate responses.
         </p>
       </div>
 
