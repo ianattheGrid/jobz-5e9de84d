@@ -1,5 +1,4 @@
 import { CandidateForm } from "@/components/candidate/CandidateForm";
-import { FileUploadSection } from "@/components/candidate/FileUploadSection";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
@@ -8,8 +7,6 @@ import { supabase } from "@/integrations/supabase/client";
 export default function CandidateProfile() {
   const { toast } = useToast();
   const navigate = useNavigate();
-  const [userId, setUserId] = useState<string | null>(null);
-  const [profile, setProfile] = useState<{ profile_picture_url: string | null; cv_url: string | null; } | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -38,21 +35,6 @@ export default function CandidateProfile() {
           return;
         }
 
-        setUserId(session.user.id);
-
-        // Fetch profile data
-        const { data: profileData, error: profileError } = await supabase
-          .from('candidate_profiles')
-          .select('profile_picture_url, cv_url')
-          .eq('id', session.user.id)
-          .maybeSingle();
-
-        if (profileError) {
-          console.error('Error fetching profile:', profileError);
-          throw profileError;
-        }
-
-        setProfile(profileData || { profile_picture_url: null, cv_url: null });
         setLoading(false);
       } catch (error) {
         console.error('Error:', error);
@@ -81,18 +63,9 @@ export default function CandidateProfile() {
       <p className="text-[#ea384c] mb-8 text-sm text-left">
         Keep your profile up to date to find the best job matches.
       </p>
-      {userId && profile && (
-        <div className="space-y-8">
-          <FileUploadSection
-            userId={userId}
-            currentProfilePicture={profile.profile_picture_url}
-            currentCV={profile.cv_url}
-          />
-          <div className="flex justify-center">
-            <CandidateForm />
-          </div>
-        </div>
-      )}
+      <div className="flex justify-center">
+        <CandidateForm />
+      </div>
     </div>
   );
 }

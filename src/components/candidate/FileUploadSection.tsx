@@ -4,6 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2, Upload } from "lucide-react";
+import { FormLabel } from "@/components/ui/form";
 
 interface FileUploadSectionProps {
   userId: string;
@@ -66,9 +67,9 @@ export const FileUploadSection = ({ userId, currentProfilePicture, currentCV }: 
   };
 
   return (
-    <div className="space-y-6 bg-white p-6 rounded-lg shadow-sm">
+    <div className="space-y-6">
       <div className="space-y-4">
-        <h3 className="text-lg font-semibold">Profile Picture</h3>
+        <FormLabel>Profile Picture</FormLabel>
         <div className="flex items-center gap-4">
           <Avatar className="h-20 w-20">
             <AvatarImage src={currentProfilePicture || undefined} />
@@ -100,7 +101,7 @@ export const FileUploadSection = ({ userId, currentProfilePicture, currentCV }: 
       </div>
 
       <div className="space-y-4">
-        <h3 className="text-lg font-semibold">CV / Resume</h3>
+        <FormLabel>CV / Resume</FormLabel>
         <div className="flex items-center gap-4">
           {currentCV && (
             <a
