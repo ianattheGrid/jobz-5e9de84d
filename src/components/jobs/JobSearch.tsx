@@ -40,7 +40,7 @@ const JobSearch = ({ onSearch }: JobSearchProps) => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border p-4 mb-6">
+    <div className="bg-white rounded-lg shadow-sm border p-4 mb-6 text-left">
       <div 
         className="flex items-center cursor-pointer mb-4"
         onClick={() => setIsExpanded(!isExpanded)}
@@ -56,7 +56,7 @@ const JobSearch = ({ onSearch }: JobSearchProps) => {
             <LocationField control={form.control} />
             <SalaryRangeField control={form.control} />
             
-            <div className="flex justify-end">
+            <div className="flex justify-start">
               <Button 
                 type="submit"
                 className="bg-red-800 hover:bg-red-900 text-white"
