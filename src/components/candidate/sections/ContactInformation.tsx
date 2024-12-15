@@ -6,6 +6,7 @@ import { FileUploadSection } from "../FileUploadSection";
 import AddressFinder from "@/components/AddressFinder";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import LocationField from "@/components/LocationField";
 
 interface ContactInformationProps {
   control: Control<CandidateFormValues>;
@@ -84,6 +85,8 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
         <FormLabel>Address</FormLabel>
         <AddressFinder control={control} />
       </FormItem>
+
+      <LocationField control={control} />
 
       {userId && (
         <FileUploadSection
