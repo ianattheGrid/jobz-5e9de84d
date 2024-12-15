@@ -37,17 +37,33 @@ export function CandidateForm() {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full max-w-2xl">
         <div className="space-y-8">
-          <WorkAreaField control={form.control} />
-          <LocationField control={form.control} />
-          <SalaryRangeField control={form.control} />
+          <div className="text-left">
+            <WorkAreaField control={form.control} />
+          </div>
+          <div className="text-left">
+            <LocationField control={form.control} />
+          </div>
+          <div className="text-left">
+            <SalaryRangeField control={form.control} />
+          </div>
           
-          <WorkPreferences control={form.control} />
-          <SkillsSection control={form.control} />
+          <div className="text-left">
+            <WorkPreferences control={form.control} />
+          </div>
+          <div className="text-left">
+            <SkillsSection control={form.control} />
+          </div>
           
-          <SecurityClearanceFields control={form.control} />
-          <WorkEligibilityField control={form.control} />
+          <div className="text-left">
+            <SecurityClearanceFields control={form.control} />
+          </div>
+          <div className="text-left">
+            <WorkEligibilityField control={form.control} />
+          </div>
 
-          <CommissionPreferences control={form.control} />
+          <div className="text-left">
+            <CommissionPreferences control={form.control} />
+          </div>
         </div>
         
         <div className="flex justify-start">
