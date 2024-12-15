@@ -1,5 +1,6 @@
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
 import { Control } from "react-hook-form";
 import { workAreas } from "./work-area/constants";
 import ITSpecializationSelect from "./work-area/ITSpecializationSelect";
@@ -53,7 +54,7 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
         name="workArea"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Area of Work</FormLabel>
+            <FormLabel>Current Area of Work</FormLabel>
             <FormControl>
               <Select 
                 onValueChange={(value) => {
@@ -67,7 +68,7 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
                 defaultValue={field.value}
               >
                 <SelectTrigger className="w-full bg-white border border-gray-300">
-                  <SelectValue placeholder="Select the area of work" />
+                  <SelectValue placeholder="Select your current area of work" />
                 </SelectTrigger>
                 <SelectContent className="bg-white">
                   {workAreas.map((area) => (
@@ -133,6 +134,24 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
       {showOtherInput && (
         <OtherWorkAreaInput control={control} />
       )}
+
+      <FormField
+        control={control}
+        name="desired_job_title"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Desired Job Title</FormLabel>
+            <FormControl>
+              <Input 
+                {...field} 
+                placeholder="What role would you like to move into next?" 
+                className="bg-white"
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
 
       {jobTitle && !showOtherInput && (
         <ExperienceSelect control={control} jobTitle={jobTitle} />

@@ -10,6 +10,7 @@ export const candidateFormSchema = z.object({
   otherWorkArea: z.string().optional(),
   itSpecialization: z.string().optional(),
   title: z.string().optional(),
+  desired_job_title: z.string().optional(),
   location: z.array(z.string()).min(1, {
     message: "Please select at least one location",
   }),

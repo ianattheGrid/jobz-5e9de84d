@@ -55,6 +55,7 @@ export type Database = {
           additional_skills: string | null
           commission_percentage: number | null
           created_at: string
+          desired_job_title: string | null
           id: string
           job_title: string
           location: string
@@ -72,6 +73,7 @@ export type Database = {
           additional_skills?: string | null
           commission_percentage?: number | null
           created_at?: string
+          desired_job_title?: string | null
           id: string
           job_title: string
           location: string
@@ -89,6 +91,7 @@ export type Database = {
           additional_skills?: string | null
           commission_percentage?: number | null
           created_at?: string
+          desired_job_title?: string | null
           id?: string
           job_title?: string
           location?: string

@@ -34,6 +34,7 @@ export const useProfileData = (reset: UseFormReset<CandidateFormValues>) => {
             open_to_commission: profile.commission_percentage !== null,
             preferred_work_type: (profile.preferred_work_type as WorkType) || "office",
             additional_skills: profile.additional_skills || "",
+            desired_job_title: profile.desired_job_title || "",
           });
         }
       } catch (error) {
