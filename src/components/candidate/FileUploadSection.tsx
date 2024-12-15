@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useToast } from "@/components/ui/use-toast";
@@ -73,7 +73,7 @@ export const FileUploadSection = ({ userId, currentProfilePicture, currentCV }: 
         <div className="flex items-center gap-4">
           <Avatar className="h-20 w-20">
             <AvatarImage src={currentProfilePicture || undefined} />
-            <AvatarFallback>PP</AvatarFallback>
+            <AvatarFallback>{/* Intentionally left blank */}</AvatarFallback>
           </Avatar>
           <Button
             variant="outline"
