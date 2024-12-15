@@ -26,7 +26,6 @@ export function CandidateForm() {
       email: "",
       phone_number: "",
       address: "",
-      location: ["All"],
       required_skills: [],
       security_clearance: undefined,
       work_eligibility: undefined,
@@ -43,11 +42,7 @@ export function CandidateForm() {
 
   useProfileData((data) => {
     if (!data) return;
-    const formattedData = {
-      ...data,
-      location: data.location ? (Array.isArray(data.location) ? data.location : [data.location]) : ["All"]
-    };
-    form.reset(formattedData);
+    form.reset(data);
   });
   
   const { onSubmit } = useProfileSubmit(toast);
