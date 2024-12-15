@@ -19,6 +19,9 @@ export const candidateFormSchema = z.object({
   salary: z.string().min(1, {
     message: "Please specify your salary expectations",
   }),
+  availability: z.string().min(1, {
+    message: "Please specify your availability",
+  }),
   required_skills: z.array(z.string()).optional(),
   security_clearance: z.string().optional(),
   work_eligibility: z.string().optional(),

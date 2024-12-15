@@ -53,6 +53,7 @@ export type Database = {
       candidate_profiles: {
         Row: {
           additional_skills: string | null
+          availability: string | null
           commission_percentage: number | null
           created_at: string
           desired_job_title: string | null
@@ -71,6 +72,7 @@ export type Database = {
         }
         Insert: {
           additional_skills?: string | null
+          availability?: string | null
           commission_percentage?: number | null
           created_at?: string
           desired_job_title?: string | null
@@ -89,6 +91,7 @@ export type Database = {
         }
         Update: {
           additional_skills?: string | null
+          availability?: string | null
           commission_percentage?: number | null
           created_at?: string
           desired_job_title?: string | null
