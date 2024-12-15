@@ -4,7 +4,7 @@ import { Control } from "react-hook-form";
 import { Badge } from "@/components/ui/badge";
 import { X } from "lucide-react";
 import { useState, useEffect } from "react";
-import { getSkillsByWorkArea } from "@/components/work-area/skills-data";
+import { getSkillsByWorkArea } from "@/components/work-area/skills";
 
 interface ITSkillsFieldProps {
   control: Control<any>;

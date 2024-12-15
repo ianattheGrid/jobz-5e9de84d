@@ -1,0 +1,22 @@
+export const itSkills = [
+  "JavaScript",
+  "Python",
+  "Java",
+  "C++",
+  "Ruby",
+  "PHP",
+  "Swift",
+  "SQL",
+  "React",
+  "Angular",
+  "Vue.js",
+  "Node.js",
+  "AWS",
+  "Azure",
+  "Docker",
+  "Kubernetes",
+  "Git",
+  "DevOps",
+  "Machine Learning",
+  "Artificial Intelligence"
+];
