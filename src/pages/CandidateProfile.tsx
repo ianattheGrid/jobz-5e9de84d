@@ -38,9 +38,9 @@ export default function CandidateProfile() {
   }, [navigate, toast]);
 
   return (
-    <div className="container max-w-2xl mx-auto py-10">
-      <h1 className="text-2xl font-bold mb-4 text-left text-black">Update Your Profile</h1>
-      <p className="text-[#ea384c] mb-8 text-left text-sm">
+    <div className="container mx-auto px-4 py-10">
+      <h1 className="text-2xl font-bold mb-4 text-black">Update Your Profile</h1>
+      <p className="text-[#ea384c] mb-8 text-sm">
         Keep your profile up to date to find the best job matches.
       </p>
       <CandidateForm />

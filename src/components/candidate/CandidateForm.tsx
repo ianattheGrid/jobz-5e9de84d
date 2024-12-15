@@ -35,7 +35,7 @@ export function CandidateForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 max-w-2xl">
         <WorkAreaField control={form.control} />
         <LocationField control={form.control} />
         <SalaryRangeField control={form.control} />
