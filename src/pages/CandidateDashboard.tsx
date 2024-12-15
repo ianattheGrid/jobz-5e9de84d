@@ -8,7 +8,8 @@ import {
   Briefcase,
   MessageSquare,
   Settings,
-  Database
+  Database,
+  Mail
 } from "lucide-react";
 
 const CandidateDashboard = () => {
@@ -75,6 +76,12 @@ const CandidateDashboard = () => {
       icon: <Settings className="h-6 w-6" />,
       path: "#", // We'll implement this later
       description: "Manage your account"
+    },
+    {
+      title: "Contact Us",
+      icon: <Mail className="h-6 w-6" />,
+      path: "#", // We'll implement this later
+      description: "Get in touch with our support team"
     }
   ];
 
