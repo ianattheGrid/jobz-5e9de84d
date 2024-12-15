@@ -46,7 +46,9 @@ const JobSearch = ({ onSearch }: JobSearchProps) => {
         onClick={() => setIsExpanded(!isExpanded)}
       >
         <Search className="h-5 w-5 text-red-800 mr-2" />
-        <h2 className="text-lg font-semibold text-red-800">Search Jobs</h2>
+        <h2 className="text-lg font-semibold text-red-800">
+          Find Your Perfect Job Match
+        </h2>
       </div>
 
       {isExpanded && (
