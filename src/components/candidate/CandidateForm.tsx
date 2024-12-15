@@ -43,16 +43,9 @@ export function CandidateForm() {
 
   useProfileData((data) => {
     if (!data) return;
-    
-    const formattedLocation = data.location 
-      ? Array.isArray(data.location) 
-        ? data.location 
-        : [data.location]
-      : ["All"];
-
     form.reset({
       ...data,
-      location: formattedLocation,
+      location: data.location ? (Array.isArray(data.location) ? data.location : [data.location]) : ["All"]
     });
   });
   
