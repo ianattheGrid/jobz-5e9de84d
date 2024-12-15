@@ -9,6 +9,8 @@ interface CommissionPreferencesProps {
 }
 
 const CommissionPreferences = ({ control }: CommissionPreferencesProps) => {
+  const open_to_commission = control._formValues.open_to_commission;
+
   return (
     <>
       <div className="mb-6 space-y-4">
@@ -42,7 +44,10 @@ const CommissionPreferences = ({ control }: CommissionPreferencesProps) => {
         render={({ field }) => (
           <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
             <div className="space-y-0.5">
-              <FormLabel className="text-base">Open to Commission-Based Roles</FormLabel>
+              <FormLabel className="text-base">Would you like to participate in the bonus scheme?</FormLabel>
+              <p className="text-sm text-muted-foreground">
+                Your profile will be visible to employers offering commission-based roles
+              </p>
             </div>
             <FormControl>
               <Switch
@@ -54,25 +59,28 @@ const CommissionPreferences = ({ control }: CommissionPreferencesProps) => {
         )}
       />
 
-      <FormField
-        control={control}
-        name="commission_percentage"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Desired Commission Percentage</FormLabel>
-            <FormControl>
-              <Input
-                type="number"
-                min="0"
-                max="100"
-                {...field}
-                onChange={(e) => field.onChange(parseFloat(e.target.value))}
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
+      {open_to_commission && (
+        <FormField
+          control={control}
+          name="commission_percentage"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>What is your desired commission percentage? (2.5% - 14%)</FormLabel>
+              <FormControl>
+                <Input
+                  type="number"
+                  min="2.5"
+                  max="14"
+                  step="0.5"
+                  {...field}
+                  onChange={(e) => field.onChange(parseFloat(e.target.value))}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      )}
     </>
   );
 };
