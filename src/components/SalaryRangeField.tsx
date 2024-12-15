@@ -1,29 +1,29 @@
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Control } from "react-hook-form";
+import { MultiSelect } from "@/components/ui/multi-select";
 
 interface SalaryRangeFieldProps {
   control: Control<any>;
 }
 
 const salaryRanges = [
-  "£20,000 - £25,000",
-  "£25,000 - £30,000",
-  "£30,000 - £35,000",
-  "£35,000 - £40,000",
-  "£40,000 - £45,000",
-  "£45,000 - £50,000",
-  "£50,000 - £55,000",
-  "£55,000 - £60,000",
-  "£60,000 - £65,000",
-  "£65,000 - £70,000",
-  "£70,000 - £75,000",
-  "£75,000 - £80,000",
-  "£80,000 - £85,000",
-  "£85,000 - £90,000",
-  "£90,000 - £95,000",
-  "£95,000 - £100,000",
-  "£100,000+"
+  { value: "£20,000 - £25,000", label: "£20,000 - £25,000" },
+  { value: "£25,000 - £30,000", label: "£25,000 - £30,000" },
+  { value: "£30,000 - £35,000", label: "£30,000 - £35,000" },
+  { value: "£35,000 - £40,000", label: "£35,000 - £40,000" },
+  { value: "£40,000 - £45,000", label: "£40,000 - £45,000" },
+  { value: "£45,000 - £50,000", label: "£45,000 - £50,000" },
+  { value: "£50,000 - £55,000", label: "£50,000 - £55,000" },
+  { value: "£55,000 - £60,000", label: "£55,000 - £60,000" },
+  { value: "£60,000 - £65,000", label: "£60,000 - £65,000" },
+  { value: "£65,000 - £70,000", label: "£65,000 - £70,000" },
+  { value: "£70,000 - £75,000", label: "£70,000 - £75,000" },
+  { value: "£75,000 - £80,000", label: "£75,000 - £80,000" },
+  { value: "£80,000 - £85,000", label: "£80,000 - £85,000" },
+  { value: "£85,000 - £90,000", label: "£85,000 - £90,000" },
+  { value: "£90,000 - £95,000", label: "£90,000 - £95,000" },
+  { value: "£95,000 - £100,000", label: "£95,000 - £100,000" },
+  { value: "£100,000+", label: "£100,000+" }
 ];
 
 const SalaryRangeField = ({ control }: SalaryRangeFieldProps) => {
@@ -35,18 +35,14 @@ const SalaryRangeField = ({ control }: SalaryRangeFieldProps) => {
         <FormItem>
           <FormLabel>Salary Range</FormLabel>
           <FormControl>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
-              <SelectTrigger className="w-full bg-white border border-gray-300">
-                <SelectValue placeholder="Select salary range" />
-              </SelectTrigger>
-              <SelectContent className="bg-white">
-                {salaryRanges.map((range) => (
-                  <SelectItem key={range} value={range}>
-                    {range}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <MultiSelect
+              options={salaryRanges}
+              selected={field.value ? field.value.split(',') : []}
+              onChange={(values) => field.onChange(values.join(','))}
+              placeholder="Select salary range"
+              className="w-full bg-white border border-gray-300"
+              maxSelected={3}
+            />
           </FormControl>
           <div className="flex items-center gap-2 mt-1 text-sm text-blue-600">
             You can select up to 3 salary ranges
