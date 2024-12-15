@@ -14,8 +14,14 @@ export interface CandidateProfile {
   signup_date: string | null;
   work_eligibility: string | null;
   commission_percentage: number | null;
-  preferred_work_type: string | null;  // Added this field
-  additional_skills: string | null;  // Added this field
+  preferred_work_type: string | null;
+  additional_skills: string | null;
+  full_name: string | null;
+  email: string;
+  phone_number: string | null;
+  address: string | null;
+  profile_picture_url: string | null;
+  cv_url: string | null;
 }
 
 export interface EmployerProfile {

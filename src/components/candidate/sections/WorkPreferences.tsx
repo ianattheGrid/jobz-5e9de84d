@@ -1,7 +1,7 @@
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Control } from "react-hook-form";
 import { CandidateFormValues } from "../candidateFormSchema";
-import { Checkbox } from "@/components/ui/checkbox";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 interface WorkPreferencesProps {
   control: Control<CandidateFormValues>;
@@ -21,27 +21,25 @@ const WorkPreferences = ({ control }: WorkPreferencesProps) => {
       name="preferred_work_type"
       render={({ field }) => (
         <FormItem>
-          <FormLabel className="text-sm">Preferred Work Types</FormLabel>
-          <div className="grid gap-4">
-            {workTypeOptions.map((option) => (
-              <div key={option.id} className="flex items-center space-x-3">
-                <FormControl>
-                  <Checkbox
-                    checked={field.value?.includes(option.id)}
-                    onCheckedChange={(checked) => {
-                      const updatedValue = checked
-                        ? [...(field.value || []), option.id]
-                        : (field.value || []).filter((value) => value !== option.id);
-                      field.onChange(updatedValue);
-                    }}
-                  />
-                </FormControl>
-                <FormLabel className="text-sm font-normal">{option.label}</FormLabel>
-              </div>
-            ))}
-          </div>
+          <FormLabel className="text-sm">Preferred Work Type</FormLabel>
+          <FormControl>
+            <RadioGroup
+              onValueChange={(value) => field.onChange([value])}
+              value={field.value?.[0] || "office"}
+              className="grid gap-4"
+            >
+              {workTypeOptions.map((option) => (
+                <div key={option.id} className="flex items-center space-x-3">
+                  <RadioGroupItem value={option.id} id={option.id} />
+                  <FormLabel htmlFor={option.id} className="text-sm font-normal">
+                    {option.label}
+                  </FormLabel>
+                </div>
+              ))}
+            </RadioGroup>
+          </FormControl>
           <div className="text-sm text-gray-600 mt-1">
-            Select all work arrangements that you would consider
+            Select your preferred work arrangement
           </div>
           <FormMessage />
         </FormItem>
