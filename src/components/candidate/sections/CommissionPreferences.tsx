@@ -68,7 +68,7 @@ const CommissionPreferences = ({ control }: CommissionPreferencesProps) => {
             name="commission_percentage"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>What is the minimum commission percentage you would consider?</FormLabel>
+                <FormLabel>What is the minimum bonus percentage you would consider?</FormLabel>
                 <FormControl>
                   <Select
                     value={field.value?.toString() || "flexible"}

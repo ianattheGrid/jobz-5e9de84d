@@ -88,7 +88,7 @@ const CommissionNegotiation = () => {
 
   return (
     <div className="space-y-4">
-      <h3 className="text-lg font-semibold">Active Commission Negotiations</h3>
+      <h3 className="text-lg font-semibold">Active Bonus Negotiations</h3>
       {negotiations.length === 0 ? (
         <p className="text-sm text-muted-foreground">No active negotiations</p>
       ) : (
