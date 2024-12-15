@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { useToast } from "@/components/ui/use-toast";
 import WorkAreaField from "@/components/WorkAreaField";
-import LocationField from "@/components/LocationField";
 import SalaryRangeField from "@/components/SalaryRangeField";
 import AvailabilityField from "@/components/AvailabilityField";
 import SecurityClearanceFields from "@/components/job-details/SecurityClearanceFields";
@@ -52,9 +51,6 @@ export function CandidateForm() {
           </div>
           <div className="text-left">
             <WorkAreaField control={form.control} />
-          </div>
-          <div className="text-left">
-            <LocationField control={form.control} />
           </div>
           <div className="text-left">
             <SalaryRangeField control={form.control} />
