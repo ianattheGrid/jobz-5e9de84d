@@ -1,8 +1,5 @@
 import * as z from "zod";
 
-export const WorkType = z.enum(["remote", "hybrid", "office"]);
-export type WorkType = z.infer<typeof WorkType>;
-
 export const candidateFormSchema = z.object({
   full_name: z.string().min(1, "Full name is required"),
   email: z.string().email("Invalid email address"),
@@ -18,8 +15,11 @@ export const candidateFormSchema = z.object({
   desired_job_title: z.string().optional(),
   desired_years_experience: z.string().optional(),
   wantsCareerChange: z.string().optional(),
-  salary: z.string().min(1, {
-    message: "Please specify your salary expectations",
+  min_salary: z.number({
+    required_error: "Please specify your minimum salary expectation",
+  }),
+  max_salary: z.number({
+    required_error: "Please specify your maximum salary expectation",
   }),
   availability: z.string().min(1, {
     message: "Please specify your availability",
@@ -33,6 +33,9 @@ export const candidateFormSchema = z.object({
   additional_skills: z.string().optional(),
   preferred_work_type: z.array(z.string()).default([]),
   view_scheme: z.boolean().optional(),
+}).refine((data) => data.max_salary >= data.min_salary, {
+  message: "Maximum salary must be greater than or equal to minimum salary",
+  path: ["max_salary"],
 });
 
 export type CandidateFormValues = z.infer<typeof candidateFormSchema>;

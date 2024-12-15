@@ -1,25 +1,25 @@
 import { Control } from "react-hook-form";
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
-import { MultiSelect } from "@/components/ui/multi-select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-const salaryRanges = [
-  { value: "£20,000 - £25,000", label: "£20,000 - £25,000" },
-  { value: "£25,000 - £30,000", label: "£25,000 - £30,000" },
-  { value: "£30,000 - £35,000", label: "£30,000 - £35,000" },
-  { value: "£35,000 - £40,000", label: "£35,000 - £40,000" },
-  { value: "£40,000 - £45,000", label: "£40,000 - £45,000" },
-  { value: "£45,000 - £50,000", label: "£45,000 - £50,000" },
-  { value: "£50,000 - £55,000", label: "£50,000 - £55,000" },
-  { value: "£55,000 - £60,000", label: "£55,000 - £60,000" },
-  { value: "£60,000 - £65,000", label: "£60,000 - £65,000" },
-  { value: "£65,000 - £70,000", label: "£65,000 - £70,000" },
-  { value: "£70,000 - £75,000", label: "£70,000 - £75,000" },
-  { value: "£75,000 - £80,000", label: "£75,000 - £80,000" },
-  { value: "£80,000 - £85,000", label: "£80,000 - £85,000" },
-  { value: "£85,000 - £90,000", label: "£85,000 - £90,000" },
-  { value: "£90,000 - £95,000", label: "£90,000 - £95,000" },
-  { value: "£95,000 - £100,000", label: "£95,000 - £100,000" },
-  { value: "£100,000+", label: "£100,000+" },
+const salaryOptions = [
+  { value: "20000", label: "£20,000" },
+  { value: "25000", label: "£25,000" },
+  { value: "30000", label: "£30,000" },
+  { value: "35000", label: "£35,000" },
+  { value: "40000", label: "£40,000" },
+  { value: "45000", label: "£45,000" },
+  { value: "50000", label: "£50,000" },
+  { value: "55000", label: "£55,000" },
+  { value: "60000", label: "£60,000" },
+  { value: "65000", label: "£65,000" },
+  { value: "70000", label: "£70,000" },
+  { value: "75000", label: "£75,000" },
+  { value: "80000", label: "£80,000" },
+  { value: "85000", label: "£85,000" },
+  { value: "90000", label: "£90,000" },
+  { value: "95000", label: "£95,000" },
+  { value: "100000", label: "£100,000" },
 ];
 
 interface SalaryRangeFieldProps {
@@ -28,28 +28,63 @@ interface SalaryRangeFieldProps {
 
 const SalaryRangeField = ({ control }: SalaryRangeFieldProps) => {
   return (
-    <FormField
-      control={control}
-      name="salary"
-      render={({ field }) => (
-        <FormItem>
-          <FormLabel>Salary Range</FormLabel>
-          <FormControl>
-            <MultiSelect
-              options={salaryRanges}
-              selected={field.value ? field.value.split(',').filter(Boolean) : []}
-              onChange={(values) => field.onChange(values.join(','))}
-              placeholder="Select salary ranges"
-              className="w-full bg-white border border-gray-300"
-            />
-          </FormControl>
-          <div className="flex items-center gap-2 mt-1 text-sm text-gray-600">
-            Select your preferred salary ranges
-          </div>
-          <FormMessage />
-        </FormItem>
-      )}
-    />
+    <div className="space-y-4">
+      <FormField
+        control={control}
+        name="min_salary"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Minimum Salary</FormLabel>
+            <FormControl>
+              <Select
+                value={field.value?.toString()}
+                onValueChange={(value) => field.onChange(parseInt(value))}
+              >
+                <SelectTrigger className="w-full bg-white">
+                  <SelectValue placeholder="Select minimum salary" />
+                </SelectTrigger>
+                <SelectContent>
+                  {salaryOptions.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
+      <FormField
+        control={control}
+        name="max_salary"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Maximum Salary</FormLabel>
+            <FormControl>
+              <Select
+                value={field.value?.toString()}
+                onValueChange={(value) => field.onChange(parseInt(value))}
+              >
+                <SelectTrigger className="w-full bg-white">
+                  <SelectValue placeholder="Select maximum salary" />
+                </SelectTrigger>
+                <SelectContent>
+                  {salaryOptions.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    </div>
   );
 };
 

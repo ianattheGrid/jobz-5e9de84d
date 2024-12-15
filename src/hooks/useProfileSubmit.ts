@@ -17,8 +17,6 @@ export const useProfileSubmit = (toast: ToastFunction) => {
         return;
       }
 
-      const [minSalary, maxSalary] = values.salary.split('-').map(Number);
-
       const { error } = await supabase
         .from('candidate_profiles')
         .upsert({
@@ -29,9 +27,9 @@ export const useProfileSubmit = (toast: ToastFunction) => {
           address: values.address,
           job_title: values.workArea,
           years_experience: parseInt(values.years_experience),
-          location: values.location[0],
-          min_salary: minSalary,
-          max_salary: maxSalary,
+          location: values.location,
+          min_salary: values.min_salary,
+          max_salary: values.max_salary,
           required_skills: values.required_skills,
           security_clearance: values.security_clearance,
           work_eligibility: values.work_eligibility,

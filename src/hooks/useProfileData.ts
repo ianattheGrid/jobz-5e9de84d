@@ -36,7 +36,6 @@ export const useProfileData = (reset: UseFormReset<CandidateFormValues>) => {
         }
 
         if (profile) {
-          // Convert string to array if needed
           const workTypes = profile.preferred_work_type ? 
             (typeof profile.preferred_work_type === 'string' ? 
               [profile.preferred_work_type] : 
@@ -50,8 +49,8 @@ export const useProfileData = (reset: UseFormReset<CandidateFormValues>) => {
             address: profile.address || '',
             location: profile.location || 'Bristol',
             workArea: profile.job_title || '',
-            salary: profile.min_salary && profile.max_salary ? 
-              `${profile.min_salary}-${profile.max_salary}` : '',
+            min_salary: profile.min_salary,
+            max_salary: profile.max_salary,
             required_skills: profile.required_skills || [],
             security_clearance: profile.security_clearance || undefined,
             work_eligibility: profile.work_eligibility || undefined,
