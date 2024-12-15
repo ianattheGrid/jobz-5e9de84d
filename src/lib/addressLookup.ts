@@ -22,7 +22,7 @@ export async function lookupAddresses(postcode: string): Promise<Address[]> {
     }
     
     if (data.result) {
-      // Create multiple formatted addresses from the API response
+      // Create multiple formatted addresses with different levels of detail
       return [
         {
           postcode: data.result.postcode,
@@ -30,13 +30,17 @@ export async function lookupAddresses(postcode: string): Promise<Address[]> {
         },
         {
           postcode: data.result.postcode,
-          address: `${data.result.postcode}, ${data.result.admin_district}`
+          address: `${data.result.admin_ward || ''}, ${data.result.postcode}`
         },
         {
           postcode: data.result.postcode,
-          address: `${data.result.postcode}, ${data.result.admin_district}, ${data.result.region}`
+          address: `${data.result.admin_ward || ''}, ${data.result.admin_district || ''}, ${data.result.postcode}`
+        },
+        {
+          postcode: data.result.postcode,
+          address: `${data.result.admin_ward || ''}, ${data.result.admin_district || ''}, ${data.result.region || ''}, ${data.result.postcode}`
         }
-      ];
+      ].filter(addr => addr.address.trim().replace(/^,\s*/, '').length > 0); // Remove empty addresses
     }
     
     return [];
