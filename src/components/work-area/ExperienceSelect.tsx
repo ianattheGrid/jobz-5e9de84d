@@ -21,7 +21,7 @@ const ExperienceSelect = ({ control, jobTitle }: ExperienceSelectProps) => {
                 <SelectValue placeholder="Select years of experience" />
               </SelectTrigger>
             </FormControl>
-            <SelectContent>
+            <SelectContent className="bg-white z-50">  {/* Added solid background and high z-index */}
               <SelectItem value="0">No experience required</SelectItem>
               <SelectItem value="1-2">1-2 years</SelectItem>
               <SelectItem value="3-4">3-4 years</SelectItem>
