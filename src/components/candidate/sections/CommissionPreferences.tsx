@@ -42,8 +42,8 @@ const CommissionPreferences = ({ control }: CommissionPreferencesProps) => {
         control={control}
         name="view_scheme"
         render={({ field }) => (
-          <FormItem className="w-full rounded-lg border p-4">
-            <div className="flex flex-row items-center justify-between">
+          <FormItem>
+            <div className="flex flex-row items-center justify-between border p-4">
               <FormLabel className="text-sm">Would you like to view the "You're Hired" bonus scheme?</FormLabel>
               <FormControl>
                 <Switch
@@ -149,8 +149,8 @@ const CommissionPreferences = ({ control }: CommissionPreferencesProps) => {
         control={control}
         name="open_to_commission"
         render={({ field }) => (
-          <FormItem className="w-full rounded-lg border p-4">
-            <div className="flex flex-row items-center justify-between">
+          <FormItem>
+            <div className="flex flex-row items-center justify-between border p-4">
               <div>
                 <FormLabel className="text-sm">Would you like to participate in the bonus scheme?</FormLabel>
                 <p className="text-sm text-muted-foreground">
