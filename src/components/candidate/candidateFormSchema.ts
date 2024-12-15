@@ -30,6 +30,7 @@ export const candidateFormSchema = z.object({
   open_to_commission: z.boolean().default(false),
   additional_skills: z.string().optional(),
   preferred_work_type: WorkType.default("office"),
+  view_scheme: z.boolean().optional(), // Add this line
 });
 
 export type CandidateFormValues = z.infer<typeof candidateFormSchema>;

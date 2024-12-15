@@ -12,7 +12,6 @@ interface CommissionPreferencesProps {
 }
 
 const CommissionPreferences = ({ control }: CommissionPreferencesProps) => {
-  const open_to_commission = control._formValues.open_to_commission;
   const [showSchemeDetails, setShowSchemeDetails] = useState(false);
   const [sampleSalary, setSampleSalary] = useState("");
   const [feePercentage, setFeePercentage] = useState(7);
@@ -45,12 +44,15 @@ const CommissionPreferences = ({ control }: CommissionPreferencesProps) => {
         render={({ field }) => (
           <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
             <div className="space-y-0.5">
-              <FormLabel className="text-base">Would you like to learn about our "You're Hired" bonus scheme?</FormLabel>
+              <FormLabel className="text-base">Would you like to view the "You're Hired" bonus scheme?</FormLabel>
             </div>
             <FormControl>
               <Switch
-                checked={showSchemeDetails}
-                onCheckedChange={setShowSchemeDetails}
+                checked={field.value || false}
+                onCheckedChange={(checked) => {
+                  field.onChange(checked);
+                  setShowSchemeDetails(checked);
+                }}
               />
             </FormControl>
           </FormItem>
@@ -164,7 +166,7 @@ const CommissionPreferences = ({ control }: CommissionPreferencesProps) => {
         )}
       />
 
-      {open_to_commission && (
+      {field.value && (
         <FormField
           control={control}
           name="commission_percentage"
