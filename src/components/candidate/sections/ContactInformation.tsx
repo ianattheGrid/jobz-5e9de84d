@@ -80,24 +80,24 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
         )}
       />
 
+      <FormItem>
+        <FormLabel>Address</FormLabel>
+        <AddressFinder control={control} />
+      </FormItem>
+
       <FormField
         control={control}
         name="location"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Location</FormLabel>
+            <FormLabel>Location you are looking to work in</FormLabel>
             <FormControl>
-              <Input placeholder="Enter your location (e.g., London, Manchester)" {...field} />
+              <Input placeholder="Bristol" {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>
         )}
       />
-
-      <FormItem>
-        <FormLabel>Address</FormLabel>
-        <AddressFinder control={control} />
-      </FormItem>
 
       {userId && (
         <FileUploadSection
