@@ -22,7 +22,7 @@ interface ApplicationResponse {
     title: string;
     employer_id: string;
   };
-  candidate_profiles: CandidateData;
+  candidate_profiles: CandidateData | null;
 }
 
 const ApplicationNotifications = () => {
@@ -71,7 +71,7 @@ const ApplicationNotifications = () => {
     if (!data) return;
 
     // Transform and validate the data
-    const validApplications = data.map(app => ({
+    const validApplications = (data as ApplicationResponse[]).map(app => ({
       ...app,
       candidate_profiles: app.candidate_profiles && {
         job_title: app.candidate_profiles.job_title,
