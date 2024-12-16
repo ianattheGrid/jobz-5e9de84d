@@ -1,7 +1,4 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.3'
-import { Resend } from 'https://esm.sh/@resend/server'
-
-const resend = new Resend(Deno.env.get('RESEND_API_KEY'))
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -30,37 +27,61 @@ Deno.serve(async (req) => {
     const { candidateEmail, employerEmail, jobTitle, matchScore, companyName }: EmailPayload = await req.json()
 
     // Send email to candidate
-    await resend.emails.send({
-      from: 'Job Matches <notifications@yourdomain.com>',
-      to: candidateEmail,
-      subject: `New Job Match: ${jobTitle} at ${companyName}`,
-      html: `
-        <h1>You have a new job match!</h1>
-        <p>Great news! You've been matched with a job that aligns with your profile:</p>
-        <ul>
-          <li>Position: ${jobTitle}</li>
-          <li>Company: ${companyName}</li>
-          <li>Match Score: ${matchScore}%</li>
-        </ul>
-        <p>Log in to your account to view more details and apply!</p>
-      `
+    const candidateEmailResponse = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${Deno.env.get('RESEND_API_KEY')}`
+      },
+      body: JSON.stringify({
+        from: 'Job Matches <notifications@yourdomain.com>',
+        to: candidateEmail,
+        subject: `New Job Match: ${jobTitle} at ${companyName}`,
+        html: `
+          <h1>You have a new job match!</h1>
+          <p>Great news! You've been matched with a job that aligns with your profile:</p>
+          <ul>
+            <li>Position: ${jobTitle}</li>
+            <li>Company: ${companyName}</li>
+            <li>Match Score: ${matchScore}%</li>
+          </ul>
+          <p>Log in to your account to view more details and apply!</p>
+        `
+      })
     })
 
+    if (!candidateEmailResponse.ok) {
+      console.error('Error sending candidate email:', await candidateEmailResponse.text())
+      throw new Error('Failed to send candidate email')
+    }
+
     // Send email to employer
-    await resend.emails.send({
-      from: 'Job Matches <notifications@yourdomain.com>',
-      to: employerEmail,
-      subject: `New Candidate Match for ${jobTitle}`,
-      html: `
-        <h1>You have a new candidate match!</h1>
-        <p>A candidate has matched with your job posting:</p>
-        <ul>
-          <li>Position: ${jobTitle}</li>
-          <li>Match Score: ${matchScore}%</li>
-        </ul>
-        <p>Log in to your account to view the candidate's profile!</p>
-      `
+    const employerEmailResponse = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${Deno.env.get('RESEND_API_KEY')}`
+      },
+      body: JSON.stringify({
+        from: 'Job Matches <notifications@yourdomain.com>',
+        to: employerEmail,
+        subject: `New Candidate Match for ${jobTitle}`,
+        html: `
+          <h1>You have a new candidate match!</h1>
+          <p>A candidate has matched with your job posting:</p>
+          <ul>
+            <li>Position: ${jobTitle}</li>
+            <li>Match Score: ${matchScore}%</li>
+          </ul>
+          <p>Log in to your account to view the candidate's profile!</p>
+        `
+      })
     })
+
+    if (!employerEmailResponse.ok) {
+      console.error('Error sending employer email:', await employerEmailResponse.text())
+      throw new Error('Failed to send employer email')
+    }
 
     return new Response(
       JSON.stringify({ message: 'Notifications sent successfully' }),
@@ -70,6 +91,7 @@ Deno.serve(async (req) => {
       }
     )
   } catch (error) {
+    console.error('Error in notify-match function:', error)
     return new Response(
       JSON.stringify({ error: error.message }),
       {
