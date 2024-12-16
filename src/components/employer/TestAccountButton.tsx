@@ -17,14 +17,17 @@ export const TestAccountButton = ({ onAccountCreated }: TestAccountButtonProps) 
     const testPassword = "password123";
 
     try {
-      // First check if the user already exists
-      const { data: existingUser } = await supabase.auth.signInWithPassword({
-        email: testEmail,
-        password: testPassword,
+      // First check if the user exists using admin auth
+      const { data: { users }, error: getUserError } = await supabase.auth.admin.listUsers({
+        filters: {
+          email: 'eq.' + testEmail,
+        },
       });
 
-      if (existingUser?.user) {
-        // If user exists, just return the credentials
+      if (getUserError) throw getUserError;
+
+      if (users && users.length > 0) {
+        // User exists, return credentials
         toast({
           title: "Test account exists!",
           description: `Email: ${testEmail}, Password: ${testPassword}. You can use these credentials to sign in.`,
@@ -33,7 +36,7 @@ export const TestAccountButton = ({ onAccountCreated }: TestAccountButtonProps) 
         return;
       }
 
-      // If user doesn't exist, create new account
+      // User doesn't exist, create new account
       const { data, error } = await supabase.auth.signUp({
         email: testEmail,
         password: testPassword,
@@ -41,18 +44,27 @@ export const TestAccountButton = ({ onAccountCreated }: TestAccountButtonProps) 
           data: {
             user_type: 'employer',
             company_name: 'Test Company Ltd'
-          }
+          },
+          emailRedirectTo: window.location.origin + '/employer/signin'
         }
       });
 
-      if (error) throw error;
-
-      toast({
-        title: "Test account created!",
-        description: `Email: ${testEmail}, Password: ${testPassword}. You can now sign in with these credentials.`,
-      });
-
-      onAccountCreated(testEmail, testPassword);
+      if (error) {
+        if (error.message.includes('Email not confirmed')) {
+          toast({
+            title: "Account exists but not confirmed",
+            description: "Please check your email to confirm your account before signing in.",
+          });
+        } else {
+          throw error;
+        }
+      } else {
+        toast({
+          title: "Test account created!",
+          description: `Email: ${testEmail}, Password: ${testPassword}. You can now sign in with these credentials.`,
+        });
+        onAccountCreated(testEmail, testPassword);
+      }
     } catch (error: any) {
       console.error("Error in createTestAccount:", error);
       toast({
