@@ -51,7 +51,7 @@ const ApplicationNotifications = () => {
           title,
           employer_id
         ),
-        candidate:applicant_id (
+        candidate:candidate_profiles!applications_applicant_id_fkey (
           job_title,
           years_experience
         )
