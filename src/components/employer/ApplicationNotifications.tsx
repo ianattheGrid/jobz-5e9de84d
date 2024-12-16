@@ -36,7 +36,7 @@ const ApplicationNotifications = () => {
           title,
           employer_id
         ),
-        candidate_profiles (
+        candidate_profiles!inner (
           job_title,
           years_experience
         )
@@ -54,11 +54,16 @@ const ApplicationNotifications = () => {
       return;
     }
 
-    // Cast the data to the correct type after validation
-    const validApplications = data?.filter(app => 
-      app.jobs && (!app.candidate_profiles || 
-      (app.candidate_profiles.job_title && typeof app.candidate_profiles.years_experience === 'number'))
-    ) as ApplicationWithDetails[] || [];
+    if (!data) return;
+
+    // Transform and validate the data
+    const validApplications = data.map(app => ({
+      ...app,
+      candidate_profiles: app.candidate_profiles && {
+        job_title: app.candidate_profiles.job_title,
+        years_experience: app.candidate_profiles.years_experience
+      }
+    })) as ApplicationWithDetails[];
 
     setApplications(validApplications);
     setUnreadCount(validApplications.length);
