@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import { useLoadApplications } from "./applications/useLoadApplications";
 import { useApplicationActions } from "./applications/useApplicationActions";
-import { ApplicationWithDetails } from "@/types/applications";
 
 export const useApplications = () => {
   const { applications, unreadCount, loadApplications } = useLoadApplications();
@@ -9,21 +9,18 @@ export const useApplications = () => {
 
   useEffect(() => {
     loadApplications();
+
     const channel = supabase
-      .channel('application_notifications')
+      .channel('applications')
       .on(
         'postgres_changes',
         {
-          event: 'INSERT',
+          event: '*',
           schema: 'public',
-          table: 'applications',
+          table: 'applications'
         },
         () => {
           loadApplications();
-          toast({
-            title: "New Application",
-            description: "You have a new candidate application!",
-          });
         }
       )
       .subscribe();
