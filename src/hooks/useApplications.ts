@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { ApplicationWithDetails, ApplicationResponse } from "@/types/applicationTypes";
+import { ApplicationWithDetails } from "@/types/applications";
 
 export const useApplications = () => {
   const [applications, setApplications] = useState<ApplicationWithDetails[]>([]);
@@ -20,7 +20,7 @@ export const useApplications = () => {
           title,
           employer_id
         ),
-        candidate_profiles:applicant_id (
+        candidate_profiles!applications_applicant_id_fkey (
           job_title,
           years_experience
         )
@@ -45,6 +45,10 @@ export const useApplications = () => {
       .filter(app => app.candidate_profiles !== null)
       .map(app => ({
         ...app,
+        jobs: {
+          title: app.jobs?.title || '',
+          employer_id: app.jobs?.employer_id || ''
+        },
         candidate_profiles: app.candidate_profiles ? {
           job_title: app.candidate_profiles.job_title,
           years_experience: app.candidate_profiles.years_experience
