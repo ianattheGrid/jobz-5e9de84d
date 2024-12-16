@@ -81,7 +81,7 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
       />
 
       <FormItem>
-        <FormLabel>Address</FormLabel>
+        <FormLabel>Your home postcode</FormLabel>
         <AddressFinder control={control} />
       </FormItem>
 
