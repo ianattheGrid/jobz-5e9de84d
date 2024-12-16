@@ -2,6 +2,18 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { ApplicationWithDetails } from "@/types/applications";
+import { Database } from "@/integrations/supabase/types";
+
+type ApplicationResponse = Database['public']['Tables']['applications']['Row'] & {
+  jobs: {
+    title: string;
+    employer_id: string;
+  };
+  candidate_profiles: {
+    job_title: string;
+    years_experience: number;
+  } | null;
+};
 
 export const useApplications = () => {
   const [applications, setApplications] = useState<ApplicationWithDetails[]>([]);
@@ -27,7 +39,8 @@ export const useApplications = () => {
       `)
       .eq('jobs.employer_id', session.user.id)
       .is('employer_viewed_at', null)
-      .order('created_at', { ascending: false });
+      .order('created_at', { ascending: false })
+      .returns<ApplicationResponse[]>();
 
     if (error) {
       console.error('Error loading applications:', error);
@@ -44,7 +57,7 @@ export const useApplications = () => {
     const validApplications = data
       .filter(app => app.candidate_profiles !== null)
       .map(app => ({
-        ...app,
+        id: app.id,
         jobs: {
           title: app.jobs?.title || '',
           employer_id: app.jobs?.employer_id || ''
