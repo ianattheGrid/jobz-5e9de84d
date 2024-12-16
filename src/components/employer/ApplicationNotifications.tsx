@@ -36,7 +36,7 @@ const ApplicationNotifications = () => {
           title,
           employer_id
         ),
-        candidate_profiles!applications_applicant_id_fkey (
+        candidate:applicant_id (
           job_title,
           years_experience
         )
@@ -59,9 +59,9 @@ const ApplicationNotifications = () => {
     // Transform and validate the data
     const validApplications = data.map(app => ({
       ...app,
-      candidate_profiles: app.candidate_profiles && {
-        job_title: app.candidate_profiles.job_title,
-        years_experience: app.candidate_profiles.years_experience
+      candidate_profiles: app.candidate && {
+        job_title: app.candidate.job_title,
+        years_experience: app.candidate.years_experience
       }
     })) as ApplicationWithDetails[];
 
