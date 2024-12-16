@@ -4,15 +4,20 @@ import { PoundSterling } from "lucide-react";
 
 interface JobCardFrontProps {
   job: Job;
+  showEmployerDetails?: boolean;
 }
 
-const JobCardFront = ({ job }: JobCardFrontProps) => {
+const JobCardFront = ({ job, showEmployerDetails = false }: JobCardFrontProps) => {
   return (
     <div className="rounded-lg border bg-card p-6 text-card-foreground shadow-sm h-full flex flex-col">
       <div className="mb-4 flex items-start justify-between">
         <div className="text-left">
           <h3 className="text-xl font-semibold text-red-800">{job.title}</h3>
-          <p className="text-sm text-muted-foreground mt-1">{job.company}</p>
+          {showEmployerDetails ? (
+            <p className="text-sm text-muted-foreground mt-1">{job.company}</p>
+          ) : (
+            <p className="text-sm text-muted-foreground mt-1">Company details hidden until match</p>
+          )}
         </div>
         <span className="text-sm font-medium px-3 py-1 bg-red-800/10 rounded-full">
           {job.type}
