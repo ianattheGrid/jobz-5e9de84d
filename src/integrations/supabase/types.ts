@@ -72,6 +72,7 @@ export type Database = {
           required_skills: string[] | null
           security_clearance: string | null
           signup_date: string | null
+          travel_radius: number | null
           updated_at: string
           work_eligibility: string | null
           work_preferences: string | null
@@ -98,6 +99,7 @@ export type Database = {
           required_skills?: string[] | null
           security_clearance?: string | null
           signup_date?: string | null
+          travel_radius?: number | null
           updated_at?: string
           work_eligibility?: string | null
           work_preferences?: string | null
@@ -124,6 +126,7 @@ export type Database = {
           required_skills?: string[] | null
           security_clearance?: string | null
           signup_date?: string | null
+          travel_radius?: number | null
           updated_at?: string
           work_eligibility?: string | null
           work_preferences?: string | null

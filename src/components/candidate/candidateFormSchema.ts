@@ -6,6 +6,7 @@ export const candidateFormSchema = z.object({
   phone_number: z.string().optional(),
   address: z.string().optional(),
   location: z.string().min(1, "Location is required"),
+  travel_radius: z.number().min(1, "Please select your maximum travel distance"),
   workArea: z.string({
     required_error: "Please select your area of work.",
   }),
