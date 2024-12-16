@@ -17,51 +17,45 @@ export const TestAccountButton = ({ onAccountCreated }: TestAccountButtonProps) 
     const testPassword = "password123";
 
     try {
-      // First check if the user exists using admin auth
-      const { data: { users }, error: getUserError } = await supabase.auth.admin.listUsers({
-        filters: {
-          email: 'eq.' + testEmail,
-        },
+      // Try to sign in first to check if the account exists
+      const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+        email: testEmail,
+        password: testPassword,
       });
 
-      if (getUserError) throw getUserError;
+      if (signInError) {
+        if (signInError.message.includes('Invalid login credentials')) {
+          // Account doesn't exist, create it
+          const { data, error } = await supabase.auth.signUp({
+            email: testEmail,
+            password: testPassword,
+            options: {
+              data: {
+                user_type: 'employer',
+                company_name: 'Test Company Ltd'
+              },
+              emailRedirectTo: window.location.origin + '/employer/signin'
+            }
+          });
 
-      if (users && users.length > 0) {
-        // User exists, return credentials
+          if (error) {
+            throw error;
+          }
+
+          toast({
+            title: "Test account created!",
+            description: `Email: ${testEmail}, Password: ${testPassword}. You can now sign in with these credentials.`,
+          });
+          onAccountCreated(testEmail, testPassword);
+        } else {
+          throw signInError;
+        }
+      } else {
+        // Account exists and sign in successful
+        await supabase.auth.signOut(); // Sign out immediately since we just want to check existence
         toast({
           title: "Test account exists!",
           description: `Email: ${testEmail}, Password: ${testPassword}. You can use these credentials to sign in.`,
-        });
-        onAccountCreated(testEmail, testPassword);
-        return;
-      }
-
-      // User doesn't exist, create new account
-      const { data, error } = await supabase.auth.signUp({
-        email: testEmail,
-        password: testPassword,
-        options: {
-          data: {
-            user_type: 'employer',
-            company_name: 'Test Company Ltd'
-          },
-          emailRedirectTo: window.location.origin + '/employer/signin'
-        }
-      });
-
-      if (error) {
-        if (error.message.includes('Email not confirmed')) {
-          toast({
-            title: "Account exists but not confirmed",
-            description: "Please check your email to confirm your account before signing in.",
-          });
-        } else {
-          throw error;
-        }
-      } else {
-        toast({
-          title: "Test account created!",
-          description: `Email: ${testEmail}, Password: ${testPassword}. You can now sign in with these credentials.`,
         });
         onAccountCreated(testEmail, testPassword);
       }
