@@ -1,4 +1,3 @@
-import { Job } from "@/integrations/supabase/types/jobs";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -6,7 +5,8 @@ import JobDetails from "./details/JobDetails";
 import CommissionDetails from "./details/CommissionDetails";
 import ApplicationSection from "./application/ApplicationSection";
 import MatchWarningDialog from "./match/MatchWarningDialog";
-import { useNavigate } from "react-router-dom";
+import { useAuthenticationCheck, useProfileCheck } from "./utils/authChecks";
+import { Job } from "@/integrations/supabase/types";
 
 interface JobCardBackProps {
   job: Job;
@@ -14,11 +14,14 @@ interface JobCardBackProps {
 
 const JobCardBack = ({ job }: JobCardBackProps) => {
   const { toast } = useToast();
-  const navigate = useNavigate();
   const [resumeFile, setResumeFile] = useState<File | null>(null);
   const [coverLetter, setCoverLetter] = useState("");
   const [matchScore, setMatchScore] = useState<number | null>(null);
   const [showMatchWarning, setShowMatchWarning] = useState(false);
+  const [isApplying, setIsApplying] = useState(false);
+  
+  const checkAuthentication = useAuthenticationCheck();
+  const checkProfile = useProfileCheck();
 
   const calculateMatchScore = async () => {
     try {
@@ -56,125 +59,128 @@ const JobCardBack = ({ job }: JobCardBackProps) => {
     }
   };
 
+  const handleFileChange = (file: File | null) => {
+    setResumeFile(file);
+  };
+
+  const handleCoverLetterChange = (text: string) => {
+    setCoverLetter(text);
+  };
+
   const handleStartApply = async (e: React.MouseEvent) => {
     e.stopPropagation();
     
-    // Check if user is authenticated
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) {
-      toast({
-        title: "Authentication Required",
-        description: "Please sign up or sign in to apply for jobs.",
-        variant: "destructive",
-      });
-      navigate('/candidate/signup');
-      return;
-    }
+    const session = await checkAuthentication();
+    if (!session) return;
 
-    // Check if profile exists and is complete
-    const { data: profile } = await supabase
-      .from('candidate_profiles')
-      .select('*')
-      .eq('id', session.user.id)
-      .single();
-
-    if (!profile) {
-      toast({
-        title: "Profile Required",
-        description: "Please complete your profile before applying.",
-        variant: "destructive",
-      });
-      navigate('/candidate/profile');
-      return;
-    }
+    const profile = await checkProfile(session.user.id);
+    if (!profile) return;
 
     const score = await calculateMatchScore();
     setMatchScore(score);
     
-    if (score !== null && score < (job.match_threshold || 60)) {
+    if (score && score < job.match_threshold) {
       setShowMatchWarning(true);
+      return;
     }
+    
+    setIsApplying(true);
   };
 
-  const handleApply = async (e: React.FormEvent) => {
+  const handleSubmitApplication = async (e: React.FormEvent) => {
     e.preventDefault();
     e.stopPropagation();
 
     try {
-      const { data: { session } } = await supabase.auth.getSession();
+      const session = await checkAuthentication();
+      if (!session) return;
 
-      if (!session) {
+      if (!resumeFile) {
         toast({
-          title: "Authentication Required",
-          description: "Please sign up or sign in to apply for jobs.",
+          title: "Resume Required",
+          description: "Please upload your resume",
           variant: "destructive",
         });
-        navigate('/candidate/signup');
         return;
       }
 
-      let resumeUrl = "";
-      if (resumeFile) {
-        const fileExt = resumeFile.name.split('.').pop();
-        const fileName = `${Math.random()}.${fileExt}`;
-        const { error: uploadError, data } = await supabase.storage
-          .from('resumes')
-          .upload(fileName, resumeFile);
+      const fileExt = resumeFile.name.split('.').pop();
+      const fileName = `${session.user.id}/${Date.now()}.${fileExt}`;
 
-        if (uploadError) throw uploadError;
-        resumeUrl = data.path;
-      }
+      const { error: uploadError, data } = await supabase.storage
+        .from('cvs')
+        .upload(fileName, resumeFile);
 
-      const { error } = await supabase.from('applications').insert({
-        job_id: job.id,
-        applicant_id: session.user.id,
-        resume_url: resumeUrl,
-        cover_letter: coverLetter,
-        match_score: matchScore
-      });
+      if (uploadError) throw uploadError;
 
-      if (error) throw error;
+      const { data: urlData } = supabase.storage
+        .from('cvs')
+        .getPublicUrl(fileName);
+
+      const { error: applicationError } = await supabase
+        .from('applications')
+        .insert({
+          job_id: job.id,
+          applicant_id: session.user.id,
+          resume_url: urlData.publicUrl,
+          cover_letter: coverLetter,
+        });
+
+      if (applicationError) throw applicationError;
 
       toast({
         title: "Success",
-        description: "Application submitted successfully",
+        description: "Your application has been submitted",
       });
-    } catch (error) {
+
+      setIsApplying(false);
+      setResumeFile(null);
+      setCoverLetter("");
+    } catch (error: any) {
       toast({
         title: "Error",
-        description: "Failed to submit application",
+        description: error.message || "Failed to submit application",
         variant: "destructive",
       });
     }
   };
 
   return (
-    <div className="rounded-lg border bg-card p-6 text-card-foreground shadow-sm h-full overflow-y-auto">
-      <h3 className="text-xl font-semibold text-red-800 mb-4">{job.title}</h3>
+    <div 
+      className="absolute inset-0 bg-white p-6 transform transition-transform duration-500 ease-in-out"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <JobDetails job={job} />
+      <CommissionDetails commission={job.candidate_commission} />
       
-      {job.candidate_commission && (
-        <CommissionDetails candidateCommission={job.candidate_commission} />
+      {isApplying ? (
+        <ApplicationSection
+          onSubmit={handleSubmitApplication}
+          onFileChange={handleFileChange}
+          onCoverLetterChange={handleCoverLetterChange}
+          coverLetter={coverLetter}
+        />
+      ) : (
+        <button
+          onClick={handleStartApply}
+          className="mt-4 w-full bg-red-800 text-white py-2 px-4 rounded hover:bg-red-900 transition-colors"
+        >
+          Apply Now
+        </button>
       )}
 
-      <JobDetails job={job} />
-
-      <ApplicationSection
-        onStartApply={handleStartApply}
-        onSubmit={handleApply}
-        coverLetter={coverLetter}
-        setCoverLetter={setCoverLetter}
-        setResumeFile={setResumeFile}
-      />
-
-      <MatchWarningDialog
-        open={showMatchWarning}
-        onOpenChange={setShowMatchWarning}
-        matchScore={matchScore}
-        matchThreshold={job.match_threshold || 60}
-        onProceed={() => {
-          setShowMatchWarning(false);
-        }}
-      />
+      {showMatchWarning && matchScore !== null && (
+        <MatchWarningDialog
+          open={showMatchWarning}
+          onClose={() => setShowMatchWarning(false)}
+          onConfirm={() => {
+            setShowMatchWarning(false);
+            setIsApplying(true);
+          }}
+          matchScore={matchScore}
+          threshold={job.match_threshold}
+        />
+      )}
     </div>
   );
 };
