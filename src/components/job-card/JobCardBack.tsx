@@ -124,6 +124,8 @@ const JobCardBack = ({ job }: JobCardBackProps) => {
           applicant_id: session.user.id,
           resume_url: urlData.publicUrl,
           cover_letter: coverLetter,
+          employer_accepted: false,
+          candidate_accepted: false,
         });
 
       if (applicationError) throw applicationError;
@@ -155,6 +157,8 @@ const JobCardBack = ({ job }: JobCardBackProps) => {
       
       {isApplying ? (
         <ApplicationSection
+          jobId={job.id}
+          employerId={job.employer_id || ''}
           onSubmit={handleSubmitApplication}
           setResumeFile={handleFileChange}
           setCoverLetter={handleCoverLetterChange}

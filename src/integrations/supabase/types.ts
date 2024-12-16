@@ -12,30 +12,45 @@ export type Database = {
       applications: {
         Row: {
           applicant_id: string
+          candidate_accepted: boolean | null
+          candidate_viewed_at: string | null
           cover_letter: string | null
           created_at: string
+          employer_accepted: boolean | null
+          employer_viewed_at: string | null
           id: number
           job_id: number
+          profile_visibility_enabled: boolean | null
           resume_url: string | null
           status: string
           updated_at: string
         }
         Insert: {
           applicant_id: string
+          candidate_accepted?: boolean | null
+          candidate_viewed_at?: string | null
           cover_letter?: string | null
           created_at?: string
+          employer_accepted?: boolean | null
+          employer_viewed_at?: string | null
           id?: number
           job_id: number
+          profile_visibility_enabled?: boolean | null
           resume_url?: string | null
           status?: string
           updated_at?: string
         }
         Update: {
           applicant_id?: string
+          candidate_accepted?: boolean | null
+          candidate_viewed_at?: string | null
           cover_letter?: string | null
           created_at?: string
+          employer_accepted?: boolean | null
+          employer_viewed_at?: string | null
           id?: number
           job_id?: number
+          profile_visibility_enabled?: boolean | null
           resume_url?: string | null
           status?: string
           updated_at?: string

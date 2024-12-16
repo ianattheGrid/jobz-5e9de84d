@@ -8,14 +8,9 @@ import {
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { Application } from "@/integrations/supabase/types/applications";
 
-interface Application {
-  id: number;
-  job_id: number;
-  applicant_id: string;
-  created_at: string;
-  employer_accepted: boolean;
-  candidate_accepted: boolean;
+interface ApplicationWithDetails extends Application {
   jobs: {
     title: string;
   };
@@ -26,7 +21,7 @@ interface Application {
 }
 
 const ApplicationNotifications = () => {
-  const [applications, setApplications] = useState<Application[]>([]);
+  const [applications, setApplications] = useState<ApplicationWithDetails[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const { toast } = useToast();
 

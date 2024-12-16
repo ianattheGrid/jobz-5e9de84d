@@ -50,15 +50,13 @@ const ApplicationSection = ({
     setApplication(data);
   };
 
-  const handleStartApply = async (e: React.MouseEvent) => {
-    e.stopPropagation();
-    await onStartApply(e);
-  };
-
   const handleAccept = async () => {
     const { error } = await supabase
       .from('applications')
-      .update({ candidate_accepted: true })
+      .update({ 
+        candidate_accepted: true,
+        candidate_viewed_at: new Date().toISOString()
+      })
       .eq('id', application.id);
 
     if (error) {
@@ -121,7 +119,7 @@ const ApplicationSection = ({
       {!isApplying ? (
         <Button 
           className="w-1/2 mx-auto block bg-red-800 hover:bg-red-900 text-white"
-          onClick={handleStartApply}
+          onClick={onStartApply}
           size="sm"
         >
           Express Interest

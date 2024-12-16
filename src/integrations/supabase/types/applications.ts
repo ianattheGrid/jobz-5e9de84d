@@ -9,6 +9,11 @@ export interface Application {
   cover_letter: string | null;
   created_at: string;
   updated_at: string;
+  employer_accepted: boolean | null;
+  candidate_accepted: boolean | null;
+  employer_viewed_at: string | null;
+  candidate_viewed_at: string | null;
+  profile_visibility_enabled: boolean | null;
 }
 
 export interface Interview {
