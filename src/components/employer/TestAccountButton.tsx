@@ -17,40 +17,39 @@ export const TestAccountButton = ({ onAccountCreated }: TestAccountButtonProps) 
     const testPassword = "password123";
 
     try {
-      console.log("Creating test account with:", { testEmail, testPassword });
+      // First check if the user already exists
+      const { data: existingUser } = await supabase.auth.signInWithPassword({
+        email: testEmail,
+        password: testPassword,
+      });
+
+      if (existingUser?.user) {
+        // If user exists, just return the credentials
+        toast({
+          title: "Test account exists!",
+          description: `Email: ${testEmail}, Password: ${testPassword}. You can use these credentials to sign in.`,
+        });
+        onAccountCreated(testEmail, testPassword);
+        return;
+      }
+
+      // If user doesn't exist, create new account
       const { data, error } = await supabase.auth.signUp({
         email: testEmail,
         password: testPassword,
         options: {
           data: {
             user_type: 'employer',
-            company_name: 'Test Company'
+            company_name: 'Test Company Ltd'
           }
         }
       });
 
-      console.log("Test account creation response:", { data, error });
-
-      if (error) {
-        console.error("Test account creation error:", error);
-        throw error;
-      }
-
-      // Send welcome email
-      const { error: emailError } = await supabase.functions.invoke('send-welcome-email', {
-        body: {
-          to: [testEmail],
-          userType: 'employer'
-        }
-      });
-
-      if (emailError) {
-        console.error("Error sending welcome email:", emailError);
-      }
+      if (error) throw error;
 
       toast({
         title: "Test account created!",
-        description: `Email: ${testEmail}, Password: ${testPassword}. Please check your inbox for the welcome email.`,
+        description: `Email: ${testEmail}, Password: ${testPassword}. You can now sign in with these credentials.`,
       });
 
       onAccountCreated(testEmail, testPassword);
@@ -59,7 +58,7 @@ export const TestAccountButton = ({ onAccountCreated }: TestAccountButtonProps) 
       toast({
         variant: "destructive",
         title: "Error creating test account",
-        description: error.message,
+        description: error.message || "An unexpected error occurred",
       });
     } finally {
       setLoading(false);
@@ -74,7 +73,7 @@ export const TestAccountButton = ({ onAccountCreated }: TestAccountButtonProps) 
       onClick={createTestAccount}
       disabled={loading}
     >
-      Create Test Account
+      {loading ? "Creating..." : "Create Test Account"}
     </Button>
   );
 };
