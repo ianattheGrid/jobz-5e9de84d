@@ -10,14 +10,15 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Application } from "@/integrations/supabase/types/applications";
 
-interface ApplicationWithDetails extends Application {
+interface ApplicationWithDetails extends Omit<Application, 'candidate_profiles'> {
   jobs: {
     title: string;
+    employer_id: string;
   };
   candidate_profiles: {
     job_title: string;
     years_experience: number;
-  };
+  } | null;
 }
 
 const ApplicationNotifications = () => {
@@ -60,7 +61,7 @@ const ApplicationNotifications = () => {
       return;
     }
 
-    setApplications(data || []);
+    setApplications(data as ApplicationWithDetails[] || []);
     setUnreadCount(data?.length || 0);
   };
 
@@ -169,7 +170,10 @@ const ApplicationNotifications = () => {
                     {application.jobs.title}
                   </p>
                   <p className="text-sm text-muted-foreground">
-                    Candidate: {application.candidate_profiles.job_title} with {application.candidate_profiles.years_experience} years experience
+                    {application.candidate_profiles ? 
+                      `Candidate: ${application.candidate_profiles.job_title} with ${application.candidate_profiles.years_experience} years experience`
+                      : 'Candidate profile not available'
+                    }
                   </p>
                   <div className="mt-2 flex gap-2">
                     <Button
