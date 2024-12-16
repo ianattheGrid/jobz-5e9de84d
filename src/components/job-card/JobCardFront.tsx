@@ -5,9 +5,10 @@ import { PoundSterling } from "lucide-react";
 interface JobCardFrontProps {
   job: Job;
   showEmployerDetails?: boolean;
+  onApply: () => Promise<void>;
 }
 
-const JobCardFront = ({ job, showEmployerDetails = false }: JobCardFrontProps) => {
+const JobCardFront = ({ job, showEmployerDetails = false, onApply }: JobCardFrontProps) => {
   return (
     <div className="rounded-lg border bg-card p-6 text-card-foreground shadow-sm h-full flex flex-col">
       <div className="mb-4 flex items-start justify-between">
@@ -54,6 +55,7 @@ const JobCardFront = ({ job, showEmployerDetails = false }: JobCardFrontProps) =
       </div>
 
       <button 
+        onClick={onApply}
         className="w-full mt-6 text-sm text-red-800 hover:text-red-900 flex items-center justify-center group"
       >
         View more details

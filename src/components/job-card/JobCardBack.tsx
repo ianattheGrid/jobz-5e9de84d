@@ -10,9 +10,10 @@ import { Job } from "@/integrations/supabase/types/jobs";
 
 interface JobCardBackProps {
   job: Job;
+  onClose: () => void;
 }
 
-const JobCardBack = ({ job }: JobCardBackProps) => {
+const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
   const { toast } = useToast();
   const [resumeFile, setResumeFile] = useState<File | null>(null);
   const [coverLetter, setCoverLetter] = useState("");
@@ -138,6 +139,7 @@ const JobCardBack = ({ job }: JobCardBackProps) => {
       setIsApplying(false);
       setResumeFile(null);
       setCoverLetter("");
+      onClose();
     } catch (error: any) {
       toast({
         title: "Error",
