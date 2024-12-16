@@ -36,7 +36,8 @@ export const useProfileSubmit = (toast: ToastFunction) => {
           commission_percentage: values.commission_percentage,
           additional_skills: values.additional_skills,
           availability: values.availability,
-          work_preferences: values.work_preferences
+          work_preferences: values.work_preferences,
+          current_employer: values.current_employer
         });
 
       if (error) {

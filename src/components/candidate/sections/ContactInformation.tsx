@@ -81,6 +81,26 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
         )}
       />
 
+      <FormField
+        control={control}
+        name="current_employer"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Current Employer</FormLabel>
+            <FormControl>
+              <Input 
+                placeholder="Enter your current employer's name" 
+                {...field} 
+              />
+            </FormControl>
+            <p className="text-sm text-muted-foreground mt-1">
+              This helps us ensure you don't accidentally apply to positions at your current company
+            </p>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
       <FormItem>
         <FormLabel>Your home postcode</FormLabel>
         <AddressFinder control={control} />

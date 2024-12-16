@@ -72,6 +72,7 @@ export type Database = {
           availability: string | null
           commission_percentage: number | null
           created_at: string
+          current_employer: string | null
           cv_url: string | null
           desired_job_title: string | null
           email: string
@@ -99,6 +100,7 @@ export type Database = {
           availability?: string | null
           commission_percentage?: number | null
           created_at?: string
+          current_employer?: string | null
           cv_url?: string | null
           desired_job_title?: string | null
           email: string
@@ -126,6 +128,7 @@ export type Database = {
           availability?: string | null
           commission_percentage?: number | null
           created_at?: string
+          current_employer?: string | null
           cv_url?: string | null
           desired_job_title?: string | null
           email?: string
