@@ -1,12 +1,6 @@
-import { Job } from "@/integrations/supabase/types/jobs";
-import { formatSalary } from "./utils";
 import { PoundSterling } from "lucide-react";
-
-interface JobCardFrontProps {
-  job: Job;
-  showEmployerDetails?: boolean;
-  onApply: () => Promise<void>;
-}
+import { formatSalary } from "./utils";
+import { JobCardFrontProps } from "./types";
 
 const JobCardFront = ({ job, showEmployerDetails = false, onApply }: JobCardFrontProps) => {
   return (
