@@ -22,6 +22,7 @@ type ApplicationResponse = {
     title: string;
     employer_id: string;
   };
+  applicant_id: string;
   candidate_profiles: CandidateData | null;
 }
 
@@ -50,7 +51,7 @@ const ApplicationNotifications = () => {
           title,
           employer_id
         ),
-        candidate_profiles!applications_applicant_id_fkey (
+        candidate_profiles:applicant_id (
           job_title,
           years_experience
         )
@@ -60,6 +61,7 @@ const ApplicationNotifications = () => {
       .order('created_at', { ascending: false });
 
     if (error) {
+      console.error('Error loading applications:', error);
       toast({
         variant: "destructive",
         title: "Error",
@@ -79,7 +81,7 @@ const ApplicationNotifications = () => {
           job_title: app.candidate_profiles.job_title,
           years_experience: app.candidate_profiles.years_experience
         } : null
-      })) as ApplicationWithDetails[];
+      }));
 
     setApplications(validApplications);
     setUnreadCount(validApplications.length);
