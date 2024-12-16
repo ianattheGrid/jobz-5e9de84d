@@ -36,7 +36,7 @@ const ApplicationNotifications = () => {
           title,
           employer_id
         ),
-        candidate_profiles!inner (
+        candidate_profiles!applicant_id (
           job_title,
           years_experience
         )
