@@ -16,7 +16,7 @@ interface CandidateData {
   years_experience: number;
 }
 
-interface ApplicationResponse {
+type ApplicationResponse = {
   id: number;
   jobs: {
     title: string;
@@ -71,13 +71,15 @@ const ApplicationNotifications = () => {
     if (!data) return;
 
     // Transform and validate the data
-    const validApplications = (data as ApplicationResponse[]).map(app => ({
-      ...app,
-      candidate_profiles: app.candidate_profiles && {
-        job_title: app.candidate_profiles.job_title,
-        years_experience: app.candidate_profiles.years_experience
-      }
-    })) as ApplicationWithDetails[];
+    const validApplications = data
+      .filter(app => app.candidate_profiles !== null)
+      .map(app => ({
+        ...app,
+        candidate_profiles: app.candidate_profiles ? {
+          job_title: app.candidate_profiles.job_title,
+          years_experience: app.candidate_profiles.years_experience
+        } : null
+      })) as ApplicationWithDetails[];
 
     setApplications(validApplications);
     setUnreadCount(validApplications.length);
