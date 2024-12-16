@@ -8,18 +8,8 @@ import {
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { Application } from "@/integrations/supabase/types/applications";
-
-interface ApplicationWithDetails extends Omit<Application, 'candidate_profiles'> {
-  jobs: {
-    title: string;
-    employer_id: string;
-  };
-  candidate_profiles: {
-    job_title: string;
-    years_experience: number;
-  } | null;
-}
+import { ApplicationWithDetails } from "@/types/applications";
+import ApplicationList from "./notifications/ApplicationList";
 
 const ApplicationNotifications = () => {
   const [applications, setApplications] = useState<ApplicationWithDetails[]>([]);
@@ -28,7 +18,10 @@ const ApplicationNotifications = () => {
 
   useEffect(() => {
     loadApplications();
-    subscribeToApplications();
+    const unsubscribe = subscribeToApplications();
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   const loadApplications = async () => {
@@ -61,8 +54,14 @@ const ApplicationNotifications = () => {
       return;
     }
 
-    setApplications(data as ApplicationWithDetails[] || []);
-    setUnreadCount(data?.length || 0);
+    // Cast the data to the correct type after validation
+    const validApplications = data?.filter(app => 
+      app.jobs && (!app.candidate_profiles || 
+      (app.candidate_profiles.job_title && typeof app.candidate_profiles.years_experience === 'number'))
+    ) as ApplicationWithDetails[] || [];
+
+    setApplications(validApplications);
+    setUnreadCount(validApplications.length);
   };
 
   const subscribeToApplications = () => {
@@ -75,7 +74,7 @@ const ApplicationNotifications = () => {
           schema: 'public',
           table: 'applications',
         },
-        (payload) => {
+        () => {
           loadApplications();
           toast({
             title: "New Application",
@@ -157,44 +156,11 @@ const ApplicationNotifications = () => {
       <PopoverContent className="w-80">
         <div className="space-y-4">
           <h4 className="font-medium">Applications</h4>
-          {applications.length === 0 ? (
-            <p className="text-sm text-muted-foreground">No new applications</p>
-          ) : (
-            <div className="space-y-2">
-              {applications.map((application) => (
-                <div
-                  key={application.id}
-                  className="p-3 rounded-lg bg-muted"
-                >
-                  <p className="text-sm font-medium">
-                    {application.jobs.title}
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    {application.candidate_profiles ? 
-                      `Candidate: ${application.candidate_profiles.job_title} with ${application.candidate_profiles.years_experience} years experience`
-                      : 'Candidate profile not available'
-                    }
-                  </p>
-                  <div className="mt-2 flex gap-2">
-                    <Button
-                      size="sm"
-                      variant="default"
-                      onClick={() => handleAccept(application.id)}
-                    >
-                      Accept
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => handleReject(application.id)}
-                    >
-                      Reject
-                    </Button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
+          <ApplicationList 
+            applications={applications}
+            onAccept={handleAccept}
+            onReject={handleReject}
+          />
         </div>
       </PopoverContent>
     </Popover>
