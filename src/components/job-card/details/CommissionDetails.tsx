@@ -1,13 +1,18 @@
-import { formatSalary } from "../utils";
-
 interface CommissionDetailsProps {
-  candidateCommission: number;
+  candidateCommission: number | null;
 }
 
 const CommissionDetails = ({ candidateCommission }: CommissionDetailsProps) => {
   const calculateReferralCommission = (totalCommission: number) => {
     return Math.floor(totalCommission * 0.3);
   };
+
+  const formatSalary = (amount: number | null) => {
+    if (!amount) return '£0';
+    return `£${amount.toLocaleString()}`;
+  };
+
+  if (!candidateCommission) return null;
 
   return (
     <div className="mb-4 p-3 bg-red-50 rounded-md">

@@ -12,7 +12,7 @@ import {
 interface MatchWarningDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  matchScore: number | null;
+  matchScore: number;
   matchThreshold: number;
   onProceed: () => void;
 }

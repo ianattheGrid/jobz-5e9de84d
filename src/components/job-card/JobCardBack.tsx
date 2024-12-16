@@ -6,7 +6,7 @@ import CommissionDetails from "./details/CommissionDetails";
 import ApplicationSection from "./application/ApplicationSection";
 import MatchWarningDialog from "./match/MatchWarningDialog";
 import { useAuthenticationCheck, useProfileCheck } from "./utils/authChecks";
-import { Job } from "@/integrations/supabase/types";
+import { Job } from "@/integrations/supabase/types/jobs";
 
 interface JobCardBackProps {
   job: Job;
@@ -151,14 +151,15 @@ const JobCardBack = ({ job }: JobCardBackProps) => {
       onClick={(e) => e.stopPropagation()}
     >
       <JobDetails job={job} />
-      <CommissionDetails commission={job.candidate_commission} />
+      <CommissionDetails candidateCommission={job.candidate_commission} />
       
       {isApplying ? (
         <ApplicationSection
           onSubmit={handleSubmitApplication}
-          onFileChange={handleFileChange}
-          onCoverLetterChange={handleCoverLetterChange}
+          setResumeFile={handleFileChange}
+          setCoverLetter={handleCoverLetterChange}
           coverLetter={coverLetter}
+          onStartApply={handleStartApply}
         />
       ) : (
         <button
@@ -172,13 +173,13 @@ const JobCardBack = ({ job }: JobCardBackProps) => {
       {showMatchWarning && matchScore !== null && (
         <MatchWarningDialog
           open={showMatchWarning}
-          onClose={() => setShowMatchWarning(false)}
-          onConfirm={() => {
+          onOpenChange={setShowMatchWarning}
+          matchScore={matchScore}
+          matchThreshold={job.match_threshold}
+          onProceed={() => {
             setShowMatchWarning(false);
             setIsApplying(true);
           }}
-          matchScore={matchScore}
-          threshold={job.match_threshold}
         />
       )}
     </div>
