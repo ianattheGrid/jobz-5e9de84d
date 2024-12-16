@@ -20,7 +20,7 @@ export const AddressSelect = ({ control, addresses }: AddressSelectProps) => {
       name="address"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Select Address</FormLabel>
+          <FormLabel>Select your full address</FormLabel>
           <Select 
             onValueChange={field.onChange} 
             value={field.value || undefined}
@@ -28,7 +28,7 @@ export const AddressSelect = ({ control, addresses }: AddressSelectProps) => {
           >
             <FormControl>
               <SelectTrigger>
-                <SelectValue placeholder="Select an address" />
+                <SelectValue placeholder="Choose your address from the list" />
               </SelectTrigger>
             </FormControl>
             <SelectContent>
