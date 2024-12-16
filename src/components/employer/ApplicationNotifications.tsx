@@ -11,6 +11,21 @@ import { useToast } from "@/hooks/use-toast";
 import { ApplicationWithDetails } from "@/types/applications";
 import ApplicationList from "./notifications/ApplicationList";
 
+interface CandidateData {
+  job_title: string;
+  years_experience: number;
+}
+
+interface ApplicationResponse {
+  id: number;
+  jobs: {
+    title: string;
+    employer_id: string;
+  };
+  candidate: CandidateData;
+  // ... other application fields
+}
+
 const ApplicationNotifications = () => {
   const [applications, setApplications] = useState<ApplicationWithDetails[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
