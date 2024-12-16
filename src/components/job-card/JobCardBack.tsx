@@ -6,6 +6,7 @@ import JobDetails from "./details/JobDetails";
 import CommissionDetails from "./details/CommissionDetails";
 import ApplicationSection from "./application/ApplicationSection";
 import MatchWarningDialog from "./match/MatchWarningDialog";
+import { useNavigate } from "react-router-dom";
 
 interface JobCardBackProps {
   job: Job;
@@ -13,6 +14,7 @@ interface JobCardBackProps {
 
 const JobCardBack = ({ job }: JobCardBackProps) => {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [resumeFile, setResumeFile] = useState<File | null>(null);
   const [coverLetter, setCoverLetter] = useState("");
   const [matchScore, setMatchScore] = useState<number | null>(null);
@@ -56,6 +58,36 @@ const JobCardBack = ({ job }: JobCardBackProps) => {
 
   const handleStartApply = async (e: React.MouseEvent) => {
     e.stopPropagation();
+    
+    // Check if user is authenticated
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      toast({
+        title: "Authentication Required",
+        description: "Please sign up or sign in to apply for jobs.",
+        variant: "destructive",
+      });
+      navigate('/candidate/signup');
+      return;
+    }
+
+    // Check if profile exists and is complete
+    const { data: profile } = await supabase
+      .from('candidate_profiles')
+      .select('*')
+      .eq('id', session.user.id)
+      .single();
+
+    if (!profile) {
+      toast({
+        title: "Profile Required",
+        description: "Please complete your profile before applying.",
+        variant: "destructive",
+      });
+      navigate('/candidate/profile');
+      return;
+    }
+
     const score = await calculateMatchScore();
     setMatchScore(score);
     
@@ -69,16 +101,15 @@ const JobCardBack = ({ job }: JobCardBackProps) => {
     e.stopPropagation();
 
     try {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
+      const { data: { session } } = await supabase.auth.getSession();
 
       if (!session) {
         toast({
-          title: "Error",
-          description: "Please sign in to apply",
+          title: "Authentication Required",
+          description: "Please sign up or sign in to apply for jobs.",
           variant: "destructive",
         });
+        navigate('/candidate/signup');
         return;
       }
 
