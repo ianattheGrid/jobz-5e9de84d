@@ -4,11 +4,11 @@ import { JobCardFrontProps } from "./types";
 
 const JobCardFront = ({ job, showEmployerDetails = false, onApply }: JobCardFrontProps) => {
   return (
-    <div className="rounded-lg border bg-card p-6 text-card-foreground shadow-sm h-full flex flex-col">
+    <div className="h-full p-6 flex flex-col">
       <div className="mb-4">
         <div className="flex justify-between items-start gap-4">
-          <h3 className="text-lg font-semibold text-primary">{job.title}</h3>
-          <span className="px-2 py-1 text-xs font-medium bg-primary-light text-primary rounded-full whitespace-nowrap">
+          <h3 className="text-lg font-semibold text-primary line-clamp-2">{job.title}</h3>
+          <span className="px-2 py-1 text-xs font-medium bg-primary-light text-primary rounded-full whitespace-nowrap flex-shrink-0">
             {job.type}
           </span>
         </div>
@@ -19,7 +19,7 @@ const JobCardFront = ({ job, showEmployerDetails = false, onApply }: JobCardFron
       
       <div className="space-y-4 flex-grow">
         <div className="flex items-center text-sm text-muted-foreground">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
           </svg>
@@ -35,7 +35,7 @@ const JobCardFront = ({ job, showEmployerDetails = false, onApply }: JobCardFron
 
         {job.candidate_commission && (
           <div className="flex items-center space-x-2 text-sm text-primary">
-            <PoundSterling className="h-4 w-4 shrink-0" />
+            <PoundSterling className="h-4 w-4 flex-shrink-0" />
             <span>Bonus available - Click to view details</span>
           </div>
         )}

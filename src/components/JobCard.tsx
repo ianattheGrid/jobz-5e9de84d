@@ -45,11 +45,11 @@ const JobCard = ({ job }: JobCardProps) => {
   };
 
   return (
-    <div className="perspective-1000">
+    <div className="h-full">
       <Card 
-        className={`relative w-full h-full transition-transform duration-500 preserve-3d ${
+        className={`relative w-full h-full transition-transform duration-500 ${
           isFlipped ? "rotate-y-180" : ""
-        }`}
+        } preserve-3d`}
       >
         <div className="absolute w-full h-full backface-hidden">
           <JobCardFront job={job} onApply={handleStartApplication} />
