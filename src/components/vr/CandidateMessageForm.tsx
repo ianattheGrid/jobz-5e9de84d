@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { validateMessage } from "@/components/messages/MessageValidation";
 
 interface CandidateMessageFormProps {
   candidateEmail: string;
@@ -23,6 +24,8 @@ const CandidateMessageForm = ({
     e.preventDefault();
     setIsSending(true);
 
+    const validatedMessage = validateMessage(message);
+
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("Not authenticated");
@@ -33,14 +36,20 @@ const CandidateMessageForm = ({
           vr_id: user.id,
           candidate_email: candidateEmail,
           recommendation_id: recommendationId,
-          message_text: message
+          message_text: message,
+          is_flagged: validatedMessage.isSuspicious
         });
 
       if (error) throw error;
 
       toast({
-        title: "Message sent",
-        description: "Your message has been sent to the candidate via Jobz",
+        title: validatedMessage.isSuspicious 
+          ? "Message sent with caution" 
+          : "Message sent",
+        description: validatedMessage.isSuspicious
+          ? "Your message contains suspicious content and has been flagged."
+          : "Your message has been sent to the candidate via Jobz",
+        variant: validatedMessage.isSuspicious ? "destructive" : "default"
       });
 
       setMessage("");

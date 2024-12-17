@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import CandidateMessageForm from "@/components/vr/CandidateMessageForm";
+import CandidateMessageList from "@/components/vr/CandidateMessageList";
 
 interface Recommendation {
   id: number;
@@ -80,12 +81,13 @@ const VirtualRecruiterRecommendations = () => {
             </div>
             
             {selectedRecommendation === recommendation.id && (
-              <div className="mt-4">
+              <div className="mt-4 space-y-4">
                 <CandidateMessageForm
                   candidateEmail={recommendation.candidate_email}
                   recommendationId={recommendation.id}
                   onMessageSent={() => setSelectedRecommendation(null)}
                 />
+                <CandidateMessageList recommendationId={recommendation.id} />
               </div>
             )}
           </Card>
