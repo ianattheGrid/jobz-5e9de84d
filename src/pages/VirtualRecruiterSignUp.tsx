@@ -42,7 +42,11 @@ const VirtualRecruiterSignUp = () => {
             id: data.user.id,
             full_name: fullName,
             email,
-            location
+            location,
+            is_active: true,
+            recommendations_count: 0,
+            successful_placements: 0,
+            bank_account_verified: false
           });
 
         if (profileError) throw profileError;
