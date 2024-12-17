@@ -46,7 +46,9 @@ const VirtualRecruiterSignUp = () => {
             is_active: true,
             recommendations_count: 0,
             successful_placements: 0,
-            bank_account_verified: false
+            bank_account_verified: false,
+            bank_account_details: null,
+            national_insurance_number: null
           });
 
         if (profileError) throw profileError;
