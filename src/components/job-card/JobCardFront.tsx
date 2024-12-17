@@ -7,14 +7,14 @@ const JobCardFront = ({ job, showEmployerDetails = false, onApply }: JobCardFron
     <div className="rounded-lg border bg-card p-6 text-card-foreground shadow-sm h-full flex flex-col">
       <div className="mb-4 flex items-start justify-between">
         <div>
-          <h3 className="text-xl font-semibold text-primary">{job.title}</h3>
+          <h3 className="text-xl font-semibold text-red-800">{job.title}</h3>
           {showEmployerDetails ? (
             <p className="text-sm text-muted-foreground mt-1">{job.company}</p>
           ) : (
             <p className="text-sm text-muted-foreground mt-1">Company details hidden until match</p>
           )}
         </div>
-        <span className="text-sm font-medium px-3 py-1 bg-primary-light text-primary rounded-full">
+        <span className="text-sm font-medium px-3 py-1 bg-red-50 text-red-800 rounded-full">
           {job.type}
         </span>
       </div>
@@ -34,7 +34,7 @@ const JobCardFront = ({ job, showEmployerDetails = false, onApply }: JobCardFron
         </div>
 
         {job.candidate_commission && (
-          <div className="flex items-center space-x-2 text-sm text-secondary">
+          <div className="flex items-center space-x-2 text-sm text-red-800">
             <PoundSterling className="h-4 w-4" />
             <span>Bonus available - Click to view details</span>
           </div>
@@ -50,9 +50,9 @@ const JobCardFront = ({ job, showEmployerDetails = false, onApply }: JobCardFron
 
       <button 
         onClick={onApply}
-        className="w-full mt-6 text-sm text-primary hover:text-primary-dark flex items-center justify-center group bg-primary-light py-2 rounded-md"
+        className="w-full mt-8 text-sm text-red-800 hover:text-red-900 flex items-center justify-center group bg-red-50 py-2 rounded-md"
       >
-        View Job Details & Apply
+        Apply Now
         <svg 
           xmlns="http://www.w3.org/2000/svg" 
           className="h-4 w-4 ml-2 transform transition-transform group-hover:translate-x-1" 
