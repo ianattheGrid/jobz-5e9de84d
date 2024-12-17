@@ -22,7 +22,7 @@ const NavigationLinks = ({ isAuthenticated, userType }: NavigationLinksProps) =>
             Dashboard
           </Link>
         )}
-        {isAuthenticated && userType === 'recruiter' && (
+        {isAuthenticated && userType === 'vr' && (
           <Link to="/vr/dashboard" className="text-gray-600 hover:text-gray-900">
             Dashboard
           </Link>

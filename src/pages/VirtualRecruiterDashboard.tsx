@@ -27,9 +27,9 @@ const VirtualRecruiterDashboard = () => {
   useEffect(() => {
     const loadDashboardData = async () => {
       try {
-        const { data: { user } } = await supabase.auth.getUser();
+        const { data: { session } } = await supabase.auth.getSession();
         
-        if (!user) {
+        if (!session || session.user.user_metadata.user_type !== 'vr') {
           navigate("/vr/signin");
           return;
         }
@@ -37,7 +37,7 @@ const VirtualRecruiterDashboard = () => {
         const { data: profile, error: profileError } = await supabase
           .from("virtual_recruiter_profiles")
           .select("*")
-          .eq("id", user.id)
+          .eq("id", session.user.id)
           .single();
 
         if (profileError) throw profileError;
@@ -45,7 +45,7 @@ const VirtualRecruiterDashboard = () => {
         const { data: recommendations, error: recommendationsError } = await supabase
           .from("candidate_recommendations")
           .select("status")
-          .eq("vr_id", user.id);
+          .eq("vr_id", session.user.id);
 
         if (recommendationsError) throw recommendationsError;
 
@@ -91,7 +91,7 @@ const VirtualRecruiterDashboard = () => {
               <p className="text-sm font-medium text-gray-600">Total Recommendations</p>
               <p className="text-2xl font-bold">{stats.recommendations_count}</p>
             </div>
-            <Users className="h-8 w-8 text-blue-500" />
+            <Users className="h-8 w-8 text-[#ea384c]" />
           </div>
         </Card>
 
@@ -101,7 +101,7 @@ const VirtualRecruiterDashboard = () => {
               <p className="text-sm font-medium text-gray-600">Successful Placements</p>
               <p className="text-2xl font-bold">{stats.successful_placements}</p>
             </div>
-            <CheckCircle className="h-8 w-8 text-green-500" />
+            <CheckCircle className="h-8 w-8 text-[#ea384c]" />
           </div>
         </Card>
 
@@ -111,7 +111,7 @@ const VirtualRecruiterDashboard = () => {
               <p className="text-sm font-medium text-gray-600">Pending Recommendations</p>
               <p className="text-2xl font-bold">{stats.pending_recommendations}</p>
             </div>
-            <AlertCircle className="h-8 w-8 text-yellow-500" />
+            <AlertCircle className="h-8 w-8 text-[#ea384c]" />
           </div>
         </Card>
 
@@ -121,16 +121,23 @@ const VirtualRecruiterDashboard = () => {
               <p className="text-sm font-medium text-gray-600">Total Commission</p>
               <p className="text-2xl font-bold">£{stats.total_commission}</p>
             </div>
-            <Briefcase className="h-8 w-8 text-purple-500" />
+            <Briefcase className="h-8 w-8 text-[#ea384c]" />
           </div>
         </Card>
       </div>
 
       <div className="flex justify-center space-x-4">
-        <Button onClick={() => navigate("/vr/recommend")}>
+        <Button 
+          onClick={() => navigate("/vr/recommend")} 
+          className="bg-[#ea384c] hover:bg-[#d32d3f] text-white"
+        >
           New Recommendation
         </Button>
-        <Button variant="outline" onClick={() => navigate("/vr/recommendations")}>
+        <Button 
+          variant="outline" 
+          onClick={() => navigate("/vr/recommendations")}
+          className="border-[#ea384c] text-[#ea384c] hover:bg-[#ea384c] hover:text-white"
+        >
           View All Recommendations
         </Button>
       </div>
