@@ -5,44 +5,44 @@ import { JobCardFrontProps } from "./types";
 const JobCardFront = ({ job, showEmployerDetails = false, onApply }: JobCardFrontProps) => {
   return (
     <div className="rounded-lg border bg-card p-6 text-card-foreground shadow-sm h-full flex flex-col">
-      <div className="mb-4 flex items-start justify-between">
-        <div>
-          <h3 className="text-xl font-semibold text-red-800">{job.title}</h3>
-          {showEmployerDetails ? (
-            <p className="text-sm text-muted-foreground mt-1">{job.company}</p>
-          ) : (
-            <p className="text-sm text-muted-foreground mt-1">Company details hidden until match</p>
-          )}
+      <div className="mb-4">
+        <div className="flex justify-between items-start gap-4">
+          <h3 className="text-lg font-semibold text-primary">{job.title}</h3>
+          <span className="px-2 py-1 text-xs font-medium bg-primary-light text-primary rounded-full whitespace-nowrap">
+            {job.type}
+          </span>
         </div>
-        <span className="text-sm font-medium px-3 py-1 bg-red-50 text-red-800 rounded-full">
-          {job.type}
-        </span>
+        <p className="text-sm text-muted-foreground mt-1">
+          {showEmployerDetails ? job.company : "Company details hidden until match"}
+        </p>
       </div>
       
       <div className="space-y-4 flex-grow">
         <div className="flex items-center text-sm text-muted-foreground">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
           </svg>
-          {job.location}
+          <span className="truncate">{job.location}</span>
         </div>
 
         <div className="text-sm">
           <span className="font-medium">Salary Range: </span>
-          {formatSalary(job.salary_min)} - {formatSalary(job.salary_max)}
+          <span className="text-muted-foreground">
+            {formatSalary(job.salary_min)} - {formatSalary(job.salary_max)}
+          </span>
         </div>
 
         {job.candidate_commission && (
-          <div className="flex items-center space-x-2 text-sm text-red-800">
-            <PoundSterling className="h-4 w-4" />
+          <div className="flex items-center space-x-2 text-sm text-primary">
+            <PoundSterling className="h-4 w-4 shrink-0" />
             <span>Bonus available - Click to view details</span>
           </div>
         )}
 
-        <div className="mt-4">
-          <h4 className="font-medium mb-2">Job Description</h4>
-          <p className="text-sm text-muted-foreground line-clamp-4">
+        <div>
+          <h4 className="font-medium mb-2 text-sm">Job Description</h4>
+          <p className="text-sm text-muted-foreground line-clamp-3">
             {job.description}
           </p>
         </div>
@@ -50,7 +50,7 @@ const JobCardFront = ({ job, showEmployerDetails = false, onApply }: JobCardFron
 
       <button 
         onClick={onApply}
-        className="w-full mt-8 text-sm text-red-800 hover:text-red-900 flex items-center justify-center group bg-red-50 py-2 rounded-md"
+        className="w-full mt-6 text-sm bg-primary-light text-primary hover:bg-primary hover:text-white transition-colors py-2 rounded-md flex items-center justify-center group"
       >
         Apply Now
         <svg 
