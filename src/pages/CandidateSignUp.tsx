@@ -33,7 +33,7 @@ const CandidateSignUp = () => {
         .from('vr_referrals')
         .select(`
           vr_id,
-          virtual_recruiter_profiles (
+          virtual_recruiter_profiles!vr_referrals_vr_id_fkey (
             full_name
           )
         `)
@@ -51,7 +51,7 @@ const CandidateSignUp = () => {
       }
 
       setReferralDetails({
-        vrName: data.virtual_recruiter_profiles?.full_name || "Virtual Recruiter",
+        vrName: (data as VRReferralResponse).virtual_recruiter_profiles?.full_name || "Virtual Recruiter",
       });
     };
 
