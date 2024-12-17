@@ -13,6 +13,7 @@ import {
   Settings,
   UserCheck
 } from "lucide-react";
+import { TestAccountsCreator } from "@/components/test/TestAccountsCreator";
 
 interface DashboardStats {
   totalReferrals: number;
@@ -188,6 +189,8 @@ const VirtualRecruiterDashboard = () => {
           </Card>
         </div>
       </div>
+
+      <TestAccountsCreator />
     </div>
   );
 };
