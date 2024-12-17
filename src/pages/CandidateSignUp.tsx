@@ -7,11 +7,15 @@ import { useSearchParams } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 
+interface ReferralDetails {
+  vrName: string;
+}
+
 const CandidateSignUp = () => {
   const [searchParams] = useSearchParams();
   const { toast } = useToast();
   const referralCode = searchParams.get("ref");
-  const [referralDetails, setReferralDetails] = useState<{ vrName: string } | null>(null);
+  const [referralDetails, setReferralDetails] = useState<ReferralDetails | null>(null);
   const { handleSignUp, loading } = useSignUp();
 
   useEffect(() => {
@@ -22,7 +26,7 @@ const CandidateSignUp = () => {
         .from("vr_referrals")
         .select(`
           vr_id,
-          virtual_recruiter_profiles!vr_referrals_vr_id_fkey (
+          virtual_recruiter_profiles!inner (
             full_name
           )
         `)
