@@ -23,7 +23,6 @@ export default function Index() {
             navigate('/candidate/dashboard');
             break;
           default:
-            // If user type is not recognized, show them the jobs page
             navigate('/jobs');
         }
       } else {
