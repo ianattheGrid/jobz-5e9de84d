@@ -44,3 +44,19 @@ export interface RecruiterProfile {
   created_at: string;
   updated_at: string;
 }
+
+export interface VirtualRecruiterProfile {
+  id: string;
+  vr_number: string;
+  full_name: string;
+  email: string;
+  location: string;
+  created_at: string;
+  updated_at: string;
+  is_active: boolean | null;
+  recommendations_count: number | null;
+  successful_placements: number | null;
+  bank_account_verified: boolean | null;
+  national_insurance_number: string | null;
+  bank_account_details: Json | null;
+}
