@@ -23,15 +23,15 @@ const CandidateSignUp = () => {
       if (!referralCode) return;
 
       const { data, error } = await supabase
-        .from("vr_referrals")
+        .from('vr_referrals')
         .select(`
           vr_id,
-          virtual_recruiter_profiles!vr_referrals_vr_id_fkey (
+          virtual_recruiter: virtual_recruiter_profiles!vr_referrals_vr_id_fkey (
             full_name
           )
         `)
-        .eq("referral_code", referralCode)
-        .eq("status", "pending")
+        .eq('referral_code', referralCode)
+        .eq('status', 'pending')
         .single();
 
       if (error || !data) {
@@ -44,7 +44,7 @@ const CandidateSignUp = () => {
       }
 
       setReferralDetails({
-        vrName: data.virtual_recruiter_profiles?.full_name || "Virtual Recruiter",
+        vrName: data.virtual_recruiter?.full_name || "Virtual Recruiter",
       });
     };
 
