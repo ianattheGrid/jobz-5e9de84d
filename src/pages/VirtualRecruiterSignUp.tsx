@@ -38,14 +38,12 @@ const VirtualRecruiterSignUp = () => {
       if (data.user) {
         const { error: profileError } = await supabase
           .from('virtual_recruiter_profiles')
-          .insert([
-            {
-              id: data.user.id,
-              full_name: fullName,
-              email,
-              location
-            }
-          ]);
+          .insert({
+            id: data.user.id,
+            full_name: fullName,
+            email,
+            location
+          });
 
         if (profileError) throw profileError;
       }
