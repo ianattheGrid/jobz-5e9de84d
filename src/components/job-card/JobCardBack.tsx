@@ -6,12 +6,10 @@ import CommissionDetails from "./details/CommissionDetails";
 import ApplicationSection from "./application/ApplicationSection";
 import MatchWarningDialog from "./match/MatchWarningDialog";
 import { useAuthenticationCheck, useProfileCheck } from "./utils/authChecks";
-import { Job } from "@/integrations/supabase/types/jobs";
-
-interface JobCardBackProps {
-  job: Job;
-  onClose: () => void;
-}
+import { JobCardBackProps } from "./types";
+import ApplicationStatus from "./application/ApplicationStatus";
+import ApplicationControls from "./application/ApplicationControls";
+import MatchWarningContent from "./match/MatchWarningContent";
 
 const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
   const { toast } = useToast();
@@ -20,6 +18,7 @@ const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
   const [matchScore, setMatchScore] = useState<number | null>(null);
   const [showMatchWarning, setShowMatchWarning] = useState(false);
   const [isApplying, setIsApplying] = useState(false);
+  const [application, setApplication] = useState<any>(null);
   
   const checkAuthentication = useAuthenticationCheck();
   const checkProfile = useProfileCheck();
@@ -58,14 +57,6 @@ const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
       console.error('Error calculating match score:', error);
       return null;
     }
-  };
-
-  const handleFileChange = (file: File | null) => {
-    setResumeFile(file);
-  };
-
-  const handleCoverLetterChange = (text: string) => {
-    setCoverLetter(text);
   };
 
   const handleStartApply = async (e: React.MouseEvent) => {
@@ -149,6 +140,34 @@ const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
     }
   };
 
+  const handleAccept = async () => {
+    if (!application) return;
+    
+    const { error } = await supabase
+      .from('applications')
+      .update({ 
+        candidate_accepted: true,
+        candidate_viewed_at: new Date().toISOString()
+      })
+      .eq('id', application.id);
+
+    if (error) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to accept application",
+      });
+      return;
+    }
+
+    toast({
+      title: "Success",
+      description: "You have accepted this opportunity",
+    });
+    
+    loadApplication();
+  };
+
   return (
     <div 
       className="absolute inset-0 bg-white p-6 transform transition-transform duration-500 ease-in-out"
@@ -157,23 +176,29 @@ const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
       <JobDetails job={job} />
       <CommissionDetails candidateCommission={job.candidate_commission} />
       
-      {isApplying ? (
-        <ApplicationSection
-          jobId={job.id}
-          employerId={job.employer_id || ''}
-          onSubmit={handleSubmitApplication}
-          setResumeFile={handleFileChange}
-          setCoverLetter={handleCoverLetterChange}
-          coverLetter={coverLetter}
-          onStartApply={handleStartApply}
+      {application ? (
+        <ApplicationStatus 
+          status={application}
+          onAccept={handleAccept}
+          onChat={() => window.location.href = `/messages/${application.id}`}
         />
       ) : (
-        <button
-          onClick={handleStartApply}
-          className="mt-4 w-full bg-red-800 text-white py-2 px-4 rounded hover:bg-red-900 transition-colors"
-        >
-          Apply Now
-        </button>
+        isApplying ? (
+          <ApplicationSection
+            jobId={job.id}
+            employerId={job.employer_id || ''}
+            onSubmit={handleSubmitApplication}
+            setResumeFile={setResumeFile}
+            setCoverLetter={setCoverLetter}
+            coverLetter={coverLetter}
+            onStartApply={handleStartApply}
+          />
+        ) : (
+          <ApplicationControls 
+            isApplying={isApplying}
+            onStartApply={handleStartApply}
+          />
+        )
       )}
 
       {showMatchWarning && matchScore !== null && (
