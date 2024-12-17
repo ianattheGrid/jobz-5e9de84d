@@ -10,33 +10,6 @@ export default function Index() {
         <p className="text-gray-600 text-center mb-8">Choose how you want to join our platform</p>
         
         <div className="grid gap-6 md:grid-cols-3">
-          {/* Employer Card */}
-          <Card className="hover:shadow-lg transition-shadow h-full">
-            <CardHeader className="text-center">
-              <div className="mx-auto mb-4">
-                <Building2 className="h-12 w-12 text-red-800" />
-              </div>
-              <CardTitle>Employer</CardTitle>
-              <CardDescription>
-                Post jobs and find the perfect candidates
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              <Link 
-                to="/employer/signin"
-                className="block w-full bg-red-800 text-white text-center py-2 rounded hover:bg-red-900 transition-colors"
-              >
-                Sign In
-              </Link>
-              <Link 
-                to="/employer/signup"
-                className="block w-full border border-red-800 text-red-800 text-center py-2 rounded hover:bg-red-50 transition-colors"
-              >
-                Sign Up
-              </Link>
-            </CardContent>
-          </Card>
-
           {/* Candidate Card */}
           <Card className="hover:shadow-lg transition-shadow h-full">
             <CardHeader className="text-center">
@@ -57,6 +30,33 @@ export default function Index() {
               </Link>
               <Link 
                 to="/candidate/signup"
+                className="block w-full border border-red-800 text-red-800 text-center py-2 rounded hover:bg-red-50 transition-colors"
+              >
+                Sign Up
+              </Link>
+            </CardContent>
+          </Card>
+
+          {/* Employer Card */}
+          <Card className="hover:shadow-lg transition-shadow h-full">
+            <CardHeader className="text-center">
+              <div className="mx-auto mb-4">
+                <Building2 className="h-12 w-12 text-red-800" />
+              </div>
+              <CardTitle>Employer</CardTitle>
+              <CardDescription>
+                Post jobs and find the perfect candidates
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              <Link 
+                to="/employer/signin"
+                className="block w-full bg-red-800 text-white text-center py-2 rounded hover:bg-red-900 transition-colors"
+              >
+                Sign In
+              </Link>
+              <Link 
+                to="/employer/signup"
                 className="block w-full border border-red-800 text-red-800 text-center py-2 rounded hover:bg-red-50 transition-colors"
               >
                 Sign Up

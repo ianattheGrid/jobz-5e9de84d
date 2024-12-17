@@ -50,9 +50,9 @@ const JobCardFront = ({ job, showEmployerDetails = false, onApply }: JobCardFron
 
       <button 
         onClick={onApply}
-        className="w-full mt-6 text-sm text-red-800 hover:text-red-900 flex items-center justify-center group"
+        className="w-full mt-8 text-sm text-red-800 hover:text-red-900 flex items-center justify-center group bg-red-50 py-2 rounded-md"
       >
-        View more details
+        View Job Details & Apply
         <svg 
           xmlns="http://www.w3.org/2000/svg" 
           className="h-4 w-4 ml-2 transform transition-transform group-hover:translate-x-1" 
