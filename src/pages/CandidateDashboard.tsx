@@ -11,7 +11,6 @@ import {
   Database,
   Mail
 } from "lucide-react";
-import { TestAccountsCreator } from "@/components/test/TestAccountsCreator";
 
 const CandidateDashboard = () => {
   const navigate = useNavigate();
@@ -108,8 +107,6 @@ const CandidateDashboard = () => {
           </Button>
         ))}
       </div>
-
-      <TestAccountsCreator />
     </div>
   );
 };
