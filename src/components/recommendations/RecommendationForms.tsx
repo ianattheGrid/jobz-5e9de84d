@@ -119,13 +119,35 @@ export function RecommendationForms() {
 
   return (
     <div className="w-full max-w-2xl mx-auto p-6">
-      <Tabs defaultValue="general" className="w-full">
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="general">General Recommendation</TabsTrigger>
-          <TabsTrigger value="job-specific">Job-Specific Recommendation</TabsTrigger>
+      <Tabs defaultValue="general" className="w-full space-y-6">
+        <div className="text-center mb-6">
+          <h2 className="text-2xl font-bold mb-4">Submit a Recommendation</h2>
+          <p className="text-gray-600">Choose the type of recommendation you want to submit:</p>
+        </div>
+        
+        <TabsList className="grid w-full grid-cols-2 mb-6">
+          <TabsTrigger 
+            value="general" 
+            className="data-[state=active]:bg-[#ea384c] data-[state=active]:text-white"
+          >
+            General Recommendation
+          </TabsTrigger>
+          <TabsTrigger 
+            value="job-specific"
+            className="data-[state=active]:bg-[#ea384c] data-[state=active]:text-white"
+          >
+            Job-Specific Recommendation
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="general">
+          <div className="bg-gray-50 p-4 rounded-lg mb-6">
+            <h3 className="font-medium mb-2">About General Recommendations</h3>
+            <p className="text-sm text-gray-600">
+              Use this form to recommend a candidate for our talent pool. This recommendation
+              will be considered for all suitable job opportunities.
+            </p>
+          </div>
           <Form {...generalForm}>
             <form onSubmit={generalForm.handleSubmit(onSubmitGeneral)} className="space-y-4">
               <div>
@@ -148,7 +170,11 @@ export function RecommendationForms() {
                   placeholder="Additional Notes (optional)"
                 />
               </div>
-              <Button type="submit" disabled={isSubmitting} className="w-full">
+              <Button 
+                type="submit" 
+                disabled={isSubmitting} 
+                className="w-full bg-[#ea384c] hover:bg-[#d32d3f] text-white"
+              >
                 Submit General Recommendation
               </Button>
             </form>
@@ -156,6 +182,13 @@ export function RecommendationForms() {
         </TabsContent>
 
         <TabsContent value="job-specific">
+          <div className="bg-gray-50 p-4 rounded-lg mb-6">
+            <h3 className="font-medium mb-2">About Job-Specific Recommendations</h3>
+            <p className="text-sm text-gray-600">
+              Use this form when you have a specific job in mind for your candidate. 
+              You'll need the job ID which can be found in the job listing.
+            </p>
+          </div>
           <Form {...jobSpecificForm}>
             <form onSubmit={jobSpecificForm.handleSubmit(onSubmitJobSpecific)} className="space-y-4">
               <div>
@@ -185,7 +218,11 @@ export function RecommendationForms() {
                   placeholder="Additional Notes (optional)"
                 />
               </div>
-              <Button type="submit" disabled={isSubmitting} className="w-full">
+              <Button 
+                type="submit" 
+                disabled={isSubmitting} 
+                className="w-full bg-[#ea384c] hover:bg-[#d32d3f] text-white"
+              >
                 Submit Job-Specific Recommendation
               </Button>
             </form>
