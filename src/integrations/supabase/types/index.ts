@@ -1,8 +1,8 @@
 import { Json } from "./common";
 import { Job, JobMatch } from "./jobs";
-import { CandidateProfile, EmployerProfile, RecruiterProfile } from "./profiles";
+import { CandidateProfile, EmployerProfile, RecruiterProfile, VirtualRecruiterProfile } from "./profiles";
 import { Application, Interview } from "./applications";
-import { RecruiterMessage, RecruiterNotification } from "./messages";
+import { RecruiterMessage, RecruiterNotification, VRCandidateMessage } from "./messages";
 
 export interface Database {
   public: {
@@ -52,6 +52,16 @@ export interface Database {
         Insert: Partial<RecruiterProfile>;
         Update: Partial<RecruiterProfile>;
       };
+      virtual_recruiter_profiles: {
+        Row: VirtualRecruiterProfile;
+        Insert: Partial<VirtualRecruiterProfile>;
+        Update: Partial<VirtualRecruiterProfile>;
+      };
+      vr_candidate_messages: {
+        Row: VRCandidateMessage;
+        Insert: Partial<VRCandidateMessage>;
+        Update: Partial<VRCandidateMessage>;
+      };
     };
     Views: {
       [_ in never]: never;
@@ -94,6 +104,6 @@ export interface Database {
 
 export type { Json } from "./common";
 export type { Job, JobMatch } from "./jobs";
-export type { CandidateProfile, EmployerProfile, RecruiterProfile } from "./profiles";
+export type { CandidateProfile, EmployerProfile, RecruiterProfile, VirtualRecruiterProfile } from "./profiles";
 export type { Application, Interview } from "./applications";
-export type { RecruiterMessage, RecruiterNotification } from "./messages";
+export type { RecruiterMessage, RecruiterNotification, VRCandidateMessage } from "./messages";

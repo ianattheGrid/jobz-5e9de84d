@@ -565,6 +565,47 @@ export type Database = {
         }
         Relationships: []
       }
+      vr_candidate_messages: {
+        Row: {
+          candidate_email: string
+          created_at: string
+          id: number
+          is_flagged: boolean | null
+          message_text: string
+          recommendation_id: number
+          updated_at: string
+          vr_id: string
+        }
+        Insert: {
+          candidate_email: string
+          created_at?: string
+          id?: number
+          is_flagged?: boolean | null
+          message_text: string
+          recommendation_id: number
+          updated_at?: string
+          vr_id: string
+        }
+        Update: {
+          candidate_email?: string
+          created_at?: string
+          id?: number
+          is_flagged?: boolean | null
+          message_text?: string
+          recommendation_id?: number
+          updated_at?: string
+          vr_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vr_candidate_messages_recommendation_id_fkey"
+            columns: ["recommendation_id"]
+            isOneToOne: false
+            referencedRelation: "candidate_recommendations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never

@@ -24,9 +24,13 @@ const CandidateMessageForm = ({
     setIsSending(true);
 
     try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error("Not authenticated");
+
       const { error } = await supabase
         .from('vr_candidate_messages')
         .insert({
+          vr_id: user.id,
           candidate_email: candidateEmail,
           recommendation_id: recommendationId,
           message_text: message
