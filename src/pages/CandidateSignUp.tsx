@@ -1,10 +1,51 @@
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { UserRound } from "lucide-react";
 import { SignUpForm } from "@/components/auth/SignUpForm";
 import { useSignUp } from "@/hooks/useSignUp";
+import { useSearchParams } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const CandidateSignUp = () => {
+  const [searchParams] = useSearchParams();
+  const { toast } = useToast();
+  const referralCode = searchParams.get("ref");
+  const [referralDetails, setReferralDetails] = useState<{ vrName: string } | null>(null);
   const { handleSignUp, loading } = useSignUp();
+
+  useEffect(() => {
+    const validateReferralCode = async () => {
+      if (!referralCode) return;
+
+      const { data, error } = await supabase
+        .from("vr_referrals")
+        .select(`
+          vr_id,
+          virtual_recruiter_profiles (
+            full_name
+          )
+        `)
+        .eq("referral_code", referralCode)
+        .eq("status", "pending")
+        .single();
+
+      if (error || !data) {
+        toast({
+          variant: "destructive",
+          title: "Invalid Referral Code",
+          description: "This referral link is no longer valid.",
+        });
+        return;
+      }
+
+      setReferralDetails({
+        vrName: data.virtual_recruiter_profiles.full_name,
+      });
+    };
+
+    validateReferralCode();
+  }, [referralCode, toast]);
 
   return (
     <div className="container mx-auto flex min-h-screen items-center justify-center">
@@ -15,7 +56,9 @@ const CandidateSignUp = () => {
             <CardTitle className="text-2xl">Candidate Sign Up</CardTitle>
           </div>
           <CardDescription>
-            Create a candidate account to apply for jobs
+            {referralDetails 
+              ? `Create your account - Recommended by ${referralDetails.vrName}`
+              : "Create a candidate account to apply for jobs"}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">

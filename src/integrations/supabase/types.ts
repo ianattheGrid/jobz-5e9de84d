@@ -606,6 +606,39 @@ export type Database = {
           },
         ]
       }
+      vr_referrals: {
+        Row: {
+          candidate_email: string
+          candidate_id: string | null
+          created_at: string
+          id: number
+          referral_code: string
+          signed_up_at: string | null
+          status: string
+          vr_id: string | null
+        }
+        Insert: {
+          candidate_email: string
+          candidate_id?: string | null
+          created_at?: string
+          id?: number
+          referral_code: string
+          signed_up_at?: string | null
+          status?: string
+          vr_id?: string | null
+        }
+        Update: {
+          candidate_email?: string
+          candidate_id?: string | null
+          created_at?: string
+          id?: number
+          referral_code?: string
+          signed_up_at?: string | null
+          status?: string
+          vr_id?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -662,6 +695,10 @@ export type Database = {
             }
             Returns: number
           }
+      generate_referral_code: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
       generate_vr_number: {
         Args: Record<PropertyKey, never>
         Returns: string
