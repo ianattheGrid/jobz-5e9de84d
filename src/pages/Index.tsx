@@ -9,9 +9,9 @@ export default function Index() {
         <h1 className="text-3xl font-bold mb-2 text-center text-red-800">Welcome to Jobz</h1>
         <p className="text-gray-600 text-center mb-8">Choose how you want to join our platform</p>
         
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-3">
           {/* Employer Card */}
-          <Card className="hover:shadow-lg transition-shadow">
+          <Card className="hover:shadow-lg transition-shadow h-full">
             <CardHeader className="text-center">
               <div className="mx-auto mb-4">
                 <Building2 className="h-12 w-12 text-red-800" />
@@ -38,7 +38,7 @@ export default function Index() {
           </Card>
 
           {/* Candidate Card */}
-          <Card className="hover:shadow-lg transition-shadow">
+          <Card className="hover:shadow-lg transition-shadow h-full">
             <CardHeader className="text-center">
               <div className="mx-auto mb-4">
                 <User className="h-12 w-12 text-red-800" />
@@ -65,7 +65,7 @@ export default function Index() {
           </Card>
 
           {/* Virtual Recruiter Card */}
-          <Card className="hover:shadow-lg transition-shadow">
+          <Card className="hover:shadow-lg transition-shadow h-full">
             <CardHeader className="text-center">
               <div className="mx-auto mb-4">
                 <Users className="h-12 w-12 text-red-800" />
