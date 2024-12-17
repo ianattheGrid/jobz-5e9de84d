@@ -152,6 +152,54 @@ export type Database = {
         }
         Relationships: []
       }
+      candidate_recommendations: {
+        Row: {
+          candidate_email: string
+          candidate_phone: string | null
+          created_at: string
+          id: number
+          job_id: number | null
+          status: string | null
+          updated_at: string
+          vr_id: string | null
+        }
+        Insert: {
+          candidate_email: string
+          candidate_phone?: string | null
+          created_at?: string
+          id?: number
+          job_id?: number | null
+          status?: string | null
+          updated_at?: string
+          vr_id?: string | null
+        }
+        Update: {
+          candidate_email?: string
+          candidate_phone?: string | null
+          created_at?: string
+          id?: number
+          job_id?: number | null
+          status?: string | null
+          updated_at?: string
+          vr_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "candidate_recommendations_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "candidate_recommendations_vr_id_fkey"
+            columns: ["vr_id"]
+            isOneToOne: false
+            referencedRelation: "virtual_recruiter_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       commission_negotiations: {
         Row: {
           candidate_id: string | null
@@ -469,6 +517,54 @@ export type Database = {
         }
         Relationships: []
       }
+      virtual_recruiter_profiles: {
+        Row: {
+          bank_account_details: Json | null
+          bank_account_verified: boolean | null
+          created_at: string
+          email: string
+          full_name: string
+          id: string
+          is_active: boolean | null
+          location: string
+          national_insurance_number: string | null
+          recommendations_count: number | null
+          successful_placements: number | null
+          updated_at: string
+          vr_number: string
+        }
+        Insert: {
+          bank_account_details?: Json | null
+          bank_account_verified?: boolean | null
+          created_at?: string
+          email: string
+          full_name: string
+          id: string
+          is_active?: boolean | null
+          location: string
+          national_insurance_number?: string | null
+          recommendations_count?: number | null
+          successful_placements?: number | null
+          updated_at?: string
+          vr_number: string
+        }
+        Update: {
+          bank_account_details?: Json | null
+          bank_account_verified?: boolean | null
+          created_at?: string
+          email?: string
+          full_name?: string
+          id?: string
+          is_active?: boolean | null
+          location?: string
+          national_insurance_number?: string | null
+          recommendations_count?: number | null
+          successful_placements?: number | null
+          updated_at?: string
+          vr_number?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -525,6 +621,10 @@ export type Database = {
             }
             Returns: number
           }
+      generate_vr_number: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
       http_process_matches: {
         Args: Record<PropertyKey, never>
         Returns: undefined
