@@ -44,12 +44,16 @@ const JobCard = ({ job }: JobCardProps) => {
     setIsFlipped(true);
   };
 
+  const handleCardClick = () => {
+    setIsFlipped(!isFlipped);
+  };
+
   return (
-    <div className="relative h-[600px] w-full">
+    <div className="relative h-[600px] w-full cursor-pointer" onClick={handleCardClick}>
       <Card 
-        className={`absolute inset-0 w-full h-full transition-all duration-500 ${
+        className={`absolute inset-0 w-full h-full transition-transform duration-500 preserve-3d ${
           isFlipped ? "rotate-y-180" : ""
-        } preserve-3d`}
+        }`}
       >
         <div className="absolute inset-0 w-full h-full backface-hidden">
           <JobCardFront job={job} onApply={handleStartApplication} />
