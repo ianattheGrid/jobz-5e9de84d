@@ -11,6 +11,13 @@ interface ReferralDetails {
   vrName: string;
 }
 
+interface VRReferralResponse {
+  vr_id: string;
+  virtual_recruiter: {
+    full_name: string;
+  } | null;
+}
+
 const CandidateSignUp = () => {
   const [searchParams] = useSearchParams();
   const { toast } = useToast();
@@ -26,7 +33,7 @@ const CandidateSignUp = () => {
         .from('vr_referrals')
         .select(`
           vr_id,
-          virtual_recruiter: virtual_recruiter_profiles!vr_referrals_vr_id_fkey (
+          virtual_recruiter:virtual_recruiter_profiles!vr_referrals_vr_id_fkey (
             full_name
           )
         `)
@@ -43,8 +50,9 @@ const CandidateSignUp = () => {
         return;
       }
 
+      const typedData = data as VRReferralResponse;
       setReferralDetails({
-        vrName: data.virtual_recruiter?.full_name || "Virtual Recruiter",
+        vrName: typedData.virtual_recruiter?.full_name || "Virtual Recruiter",
       });
     };
 
