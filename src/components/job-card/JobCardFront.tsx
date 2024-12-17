@@ -7,7 +7,7 @@ const JobCardFront = ({ job, showEmployerDetails = false, onApply }: JobCardFron
     <div className="h-full p-6 flex flex-col">
       <div className="mb-4">
         <div className="flex justify-between items-start gap-4">
-          <h3 className="text-lg font-semibold text-primary line-clamp-2">{job.title}</h3>
+          <h3 className="text-lg font-semibold text-[#ea384c] line-clamp-2">{job.title}</h3>
           <span className="px-2 py-1 text-xs font-medium bg-primary-light text-primary rounded-full whitespace-nowrap flex-shrink-0">
             {job.type}
           </span>
