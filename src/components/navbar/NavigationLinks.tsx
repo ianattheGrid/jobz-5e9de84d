@@ -22,6 +22,11 @@ const NavigationLinks = ({ isAuthenticated, userType }: NavigationLinksProps) =>
             Dashboard
           </Link>
         )}
+        {isAuthenticated && userType === 'recruiter' && (
+          <Link to="/vr/dashboard" className="text-gray-600 hover:text-gray-900">
+            Dashboard
+          </Link>
+        )}
       </div>
     </div>
   );

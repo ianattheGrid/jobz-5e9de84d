@@ -8,6 +8,7 @@ import CandidateSignUp from "./pages/CandidateSignUp";
 import CandidateSignIn from "./pages/CandidateSignIn";
 import VirtualRecruiterSignUp from "./pages/VirtualRecruiterSignUp";
 import VirtualRecruiterSignIn from "./pages/VirtualRecruiterSignIn";
+import VirtualRecruiterDashboard from "./pages/VirtualRecruiterDashboard";
 import CreateVacancy from "./pages/CreateVacancy";
 import EmployerInterviews from "./pages/EmployerInterviews";
 import EmployerDashboard from "./pages/EmployerDashboard";
@@ -34,6 +35,7 @@ function App() {
           <Route path="/candidate/signin" element={<CandidateSignIn />} />
           <Route path="/vr/signup" element={<VirtualRecruiterSignUp />} />
           <Route path="/vr/signin" element={<VirtualRecruiterSignIn />} />
+          <Route path="/vr/dashboard" element={<VirtualRecruiterDashboard />} />
           <Route path="/employer/create-vacancy" element={<CreateVacancy />} />
           <Route path="/employer/interviews" element={<EmployerInterviews />} />
           <Route path="/employer/dashboard" element={<EmployerDashboard />} />
