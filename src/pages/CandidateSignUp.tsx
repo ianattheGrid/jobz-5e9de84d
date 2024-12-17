@@ -26,7 +26,7 @@ const CandidateSignUp = () => {
         .from("vr_referrals")
         .select(`
           vr_id,
-          virtual_recruiter_profiles (
+          virtual_recruiter_profiles!vr_referrals_vr_id_fkey (
             full_name
           )
         `)
