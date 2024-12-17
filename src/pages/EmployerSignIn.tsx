@@ -7,7 +7,6 @@ import { Building2 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { TestAccountButton } from "@/components/employer/TestAccountButton";
 
 const EmployerSignIn = () => {
   const [email, setEmail] = useState("");
@@ -102,11 +101,6 @@ const EmployerSignIn = () => {
     }
   };
 
-  const handleTestAccountCreated = (testEmail: string, testPassword: string) => {
-    setEmail(testEmail);
-    setPassword(testPassword);
-  };
-
   return (
     <div className="container mx-auto flex min-h-screen items-center justify-center">
       <Card className="w-full max-w-md">
@@ -172,9 +166,6 @@ const EmployerSignIn = () => {
               <Link to="/employer/signup" className="text-red-800 hover:underline">
                 Sign Up
               </Link>
-            </div>
-            <div className="pt-4">
-              <TestAccountButton onAccountCreated={handleTestAccountCreated} />
             </div>
           </div>
         </CardContent>
