@@ -45,16 +45,16 @@ const JobCard = ({ job }: JobCardProps) => {
   };
 
   return (
-    <div className="h-full">
+    <div className="relative h-[600px] w-full">
       <Card 
-        className={`relative w-full h-full transition-transform duration-500 ${
+        className={`absolute inset-0 w-full h-full transition-all duration-500 ${
           isFlipped ? "rotate-y-180" : ""
         } preserve-3d`}
       >
-        <div className="absolute w-full h-full backface-hidden">
+        <div className="absolute inset-0 w-full h-full backface-hidden">
           <JobCardFront job={job} onApply={handleStartApplication} />
         </div>
-        <div className="absolute w-full h-full backface-hidden rotate-y-180">
+        <div className="absolute inset-0 w-full h-full backface-hidden rotate-y-180">
           <JobCardBack job={job} onClose={() => setIsFlipped(false)} />
         </div>
       </Card>
