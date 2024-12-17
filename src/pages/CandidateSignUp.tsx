@@ -15,7 +15,7 @@ interface VRReferralResponse {
   vr_id: string;
   virtual_recruiter_profiles: {
     full_name: string;
-  } | null;
+  };
 }
 
 const CandidateSignUp = () => {
@@ -50,8 +50,9 @@ const CandidateSignUp = () => {
         return;
       }
 
+      const vrData = data as unknown as VRReferralResponse;
       setReferralDetails({
-        vrName: (data as VRReferralResponse).virtual_recruiter_profiles?.full_name || "Virtual Recruiter",
+        vrName: vrData.virtual_recruiter_profiles?.full_name || "Virtual Recruiter",
       });
     };
 
