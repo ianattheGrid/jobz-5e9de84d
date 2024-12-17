@@ -8,22 +8,26 @@ export const useApplication = (job: Job) => {
   const { toast } = useToast();
 
   const loadApplication = async () => {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) return;
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) return;
 
-    const { data, error } = await supabase
-      .from('applications')
-      .select('*')
-      .eq('job_id', job.id)
-      .eq('applicant_id', session.user.id)
-      .single();
+      const { data, error } = await supabase
+        .from('applications')
+        .select('*')
+        .eq('job_id', job.id)
+        .eq('applicant_id', session.user.id)
+        .maybeSingle(); // Changed from .single() to .maybeSingle()
 
-    if (error) {
-      console.error('Error loading application:', error);
-      return;
+      if (error && error.code !== 'PGRST116') {
+        console.error('Error loading application:', error);
+        return;
+      }
+
+      setApplication(data);
+    } catch (error) {
+      console.error('Error in loadApplication:', error);
     }
-
-    setApplication(data);
   };
 
   const handleAccept = async () => {
