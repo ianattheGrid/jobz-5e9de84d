@@ -45,16 +45,20 @@ const JobCard = ({ job }: JobCardProps) => {
   };
 
   return (
-    <Card className="relative w-full transform-gpu transition-all duration-500" style={{ perspective: "1000px" }}>
-      <div
-        className={`relative w-full transition-transform duration-500 transform-gpu ${
+    <div className="perspective-1000">
+      <Card 
+        className={`relative w-full h-full transition-transform duration-500 preserve-3d ${
           isFlipped ? "rotate-y-180" : ""
         }`}
       >
-        <JobCardFront job={job} onApply={handleStartApplication} />
-        <JobCardBack job={job} onClose={() => setIsFlipped(false)} />
-      </div>
-    </Card>
+        <div className="absolute w-full h-full backface-hidden">
+          <JobCardFront job={job} onApply={handleStartApplication} />
+        </div>
+        <div className="absolute w-full h-full backface-hidden rotate-y-180">
+          <JobCardBack job={job} onClose={() => setIsFlipped(false)} />
+        </div>
+      </Card>
+    </div>
   );
 };
 
