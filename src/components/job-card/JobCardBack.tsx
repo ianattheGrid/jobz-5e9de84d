@@ -4,13 +4,11 @@ import { supabase } from "@/integrations/supabase/client";
 import JobDetails from "./details/JobDetails";
 import CommissionDetails from "./details/CommissionDetails";
 import ApplicationSection from "./application/ApplicationSection";
-import MatchWarningDialog from "./match/MatchWarningDialog";
 import { useAuthenticationCheck, useProfileCheck } from "./utils/authChecks";
 import { JobCardBackProps } from "./types";
 import ApplicationStatus from "./application/ApplicationStatus";
 import ApplicationControls from "./application/ApplicationControls";
 import { useApplication } from "./hooks/useApplication";
-import { useMatchScore } from "./hooks/useMatchScore";
 import { validateEssentialCriteria } from "./utils/applicationValidation";
 
 const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
@@ -23,13 +21,6 @@ const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
   const checkProfile = useProfileCheck();
   
   const { application, handleAccept } = useApplication(job);
-  const { 
-    matchScore, 
-    setMatchScore, 
-    showMatchWarning, 
-    setShowMatchWarning, 
-    calculateMatchScore 
-  } = useMatchScore(job);
 
   const handleStartApply = async (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -57,14 +48,6 @@ const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
           </div>
         )
       });
-      return;
-    }
-
-    const score = await calculateMatchScore();
-    setMatchScore(score);
-    
-    if (score && score < job.match_threshold) {
-      setShowMatchWarning(true);
       return;
     }
     
@@ -172,19 +155,6 @@ const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
             onStartApply={handleStartApply}
           />
         )
-      )}
-
-      {showMatchWarning && matchScore !== null && (
-        <MatchWarningDialog
-          open={showMatchWarning}
-          onOpenChange={setShowMatchWarning}
-          matchScore={matchScore}
-          matchThreshold={job.match_threshold}
-          onProceed={() => {
-            setShowMatchWarning(false);
-            setIsApplying(true);
-          }}
-        />
       )}
     </div>
   );
