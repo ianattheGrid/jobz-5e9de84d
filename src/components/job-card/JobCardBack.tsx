@@ -11,6 +11,7 @@ import ApplicationStatus from "./application/ApplicationStatus";
 import ApplicationControls from "./application/ApplicationControls";
 import { useApplication } from "./hooks/useApplication";
 import { useMatchScore } from "./hooks/useMatchScore";
+import { validateEssentialCriteria } from "./utils/applicationValidation";
 
 const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
   const { toast } = useToast();
@@ -38,6 +39,26 @@ const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
 
     const profile = await checkProfile(session.user.id);
     if (!profile) return;
+
+    // Validate essential criteria
+    const { isValid, failedCriteria } = validateEssentialCriteria(job, profile);
+    if (!isValid) {
+      toast({
+        variant: "destructive",
+        title: "Cannot Apply",
+        description: (
+          <div className="space-y-2">
+            <p>You don't meet the following essential criteria:</p>
+            <ul className="list-disc pl-4">
+              {failedCriteria.map((criteria, index) => (
+                <li key={index}>{criteria}</li>
+              ))}
+            </ul>
+          </div>
+        )
+      });
+      return;
+    }
 
     const score = await calculateMatchScore();
     setMatchScore(score);
