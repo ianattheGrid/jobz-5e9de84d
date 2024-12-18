@@ -19,23 +19,52 @@ export const useMatchScore = (job: Job) => {
 
       if (!candidateProfile) return null;
 
-      const { data, error } = await supabase.rpc('calculate_match_score', {
-        job_title_a: job.title,
-        job_title_b: candidateProfile.job_title,
-        years_exp_a: 0,
-        years_exp_b: candidateProfile.years_experience,
-        location_a: job.location,
-        location_b: candidateProfile.location,
-        salary_min_a: job.salary_min,
-        salary_max_a: job.salary_max,
-        salary_min_b: candidateProfile.min_salary,
-        salary_max_b: candidateProfile.max_salary,
-        skills_a: job.required_skills || [],
-        skills_b: candidateProfile.required_skills || []
-      });
+      // Simplified scoring system
+      let score = 0;
+      let totalCriteria = 0;
 
-      if (error) throw error;
-      return data;
+      // Title match
+      if (job.title.toLowerCase() === candidateProfile.job_title.toLowerCase()) {
+        score += 1;
+      }
+      totalCriteria += 1;
+
+      // Experience match
+      if (candidateProfile.years_experience >= (job.min_years_experience || 0)) {
+        score += 1;
+      }
+      totalCriteria += 1;
+
+      // Location match
+      if (job.location.toLowerCase() === candidateProfile.location.toLowerCase()) {
+        score += 1;
+      }
+      totalCriteria += 1;
+
+      // Salary match
+      if (
+        candidateProfile.min_salary <= job.salary_max &&
+        candidateProfile.max_salary >= job.salary_min
+      ) {
+        score += 1;
+      }
+      totalCriteria += 1;
+
+      // Skills match (if available)
+      if (job.required_skills && candidateProfile.required_skills) {
+        const jobSkills = new Set(job.required_skills);
+        const candidateSkills = new Set(candidateProfile.required_skills);
+        const matchingSkills = [...jobSkills].filter(skill => 
+          candidateSkills.has(skill)
+        );
+        if (matchingSkills.length > 0) {
+          score += 1;
+        }
+      }
+      totalCriteria += 1;
+
+      const finalScore = Math.round((score / totalCriteria) * 100);
+      return finalScore;
     } catch (error) {
       console.error('Error calculating match score:', error);
       return null;
