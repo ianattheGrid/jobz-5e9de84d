@@ -25,6 +25,14 @@ export default function CreateVacancy() {
       offerCandidateCommission: false,
       offerReferralCommission: false,
       matchThreshold: 60,
+      titleEssential: false,
+      yearsExperienceEssential: false,
+      minYearsExperience: 0,
+      salaryEssential: false,
+      skillsEssential: false,
+      qualificationEssential: false,
+      citizenshipEssential: false,
+      requiredCitizenship: "UK citizens only",
     },
   });
 
@@ -86,7 +94,16 @@ export default function CreateVacancy() {
         employer_id: session.user.id,
         match_threshold: values.matchThreshold,
         candidate_commission: values.offerCandidateCommission ? 
-          parseInt(values.candidateCommission?.replace(/[^0-9.-]+/g, "") || "0") : null
+          parseInt(values.candidateCommission?.replace(/[^0-9.-]+/g, "") || "0") : null,
+        // Add new essential criteria fields
+        title_essential: values.titleEssential,
+        years_experience_essential: values.yearsExperienceEssential,
+        min_years_experience: values.minYearsExperience,
+        salary_essential: values.salaryEssential,
+        skills_essential: values.skillsEssential,
+        qualification_essential: values.qualificationEssential,
+        citizenship_essential: values.citizenshipEssential,
+        required_citizenship: values.requiredCitizenship,
       });
 
       if (error) throw error;

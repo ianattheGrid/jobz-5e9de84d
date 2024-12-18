@@ -360,6 +360,7 @@ export type Database = {
       jobs: {
         Row: {
           candidate_commission: number | null
+          citizenship_essential: boolean | null
           company: string
           company_benefits: string | null
           created_at: string
@@ -369,14 +370,22 @@ export type Database = {
           id: number
           location: string
           match_threshold: number
+          min_years_experience: number | null
+          qualification_essential: boolean | null
+          required_citizenship: string | null
           required_qualifications: string[] | null
+          salary_essential: boolean | null
           salary_max: number
           salary_min: number
+          skills_essential: boolean | null
           title: string
+          title_essential: boolean | null
           type: string
+          years_experience_essential: boolean | null
         }
         Insert: {
           candidate_commission?: number | null
+          citizenship_essential?: boolean | null
           company: string
           company_benefits?: string | null
           created_at?: string
@@ -386,14 +395,22 @@ export type Database = {
           id?: number
           location: string
           match_threshold?: number
+          min_years_experience?: number | null
+          qualification_essential?: boolean | null
+          required_citizenship?: string | null
           required_qualifications?: string[] | null
+          salary_essential?: boolean | null
           salary_max: number
           salary_min: number
+          skills_essential?: boolean | null
           title: string
+          title_essential?: boolean | null
           type: string
+          years_experience_essential?: boolean | null
         }
         Update: {
           candidate_commission?: number | null
+          citizenship_essential?: boolean | null
           company?: string
           company_benefits?: string | null
           created_at?: string
@@ -403,11 +420,18 @@ export type Database = {
           id?: number
           location?: string
           match_threshold?: number
+          min_years_experience?: number | null
+          qualification_essential?: boolean | null
+          required_citizenship?: string | null
           required_qualifications?: string[] | null
+          salary_essential?: boolean | null
           salary_max?: number
           salary_min?: number
+          skills_essential?: boolean | null
           title?: string
+          title_essential?: boolean | null
           type?: string
+          years_experience_essential?: boolean | null
         }
         Relationships: []
       }

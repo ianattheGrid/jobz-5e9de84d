@@ -41,6 +41,15 @@ export const vacancyFormSchema = z.object({
   candidateCommission: z.string().optional(),
   referralCommission: z.string().optional(),
   matchThreshold: z.number().min(0).max(100).default(60),
+  // New essential criteria fields
+  titleEssential: z.boolean().default(false),
+  yearsExperienceEssential: z.boolean().default(false),
+  minYearsExperience: z.number().min(0).default(0),
+  salaryEssential: z.boolean().default(false),
+  skillsEssential: z.boolean().default(false),
+  qualificationEssential: z.boolean().default(false),
+  citizenshipEssential: z.boolean().default(false),
+  requiredCitizenship: z.string().default("UK citizens only"),
 });
 
 export type VacancyFormValues = z.infer<typeof vacancyFormSchema>;
