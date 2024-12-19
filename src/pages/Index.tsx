@@ -18,7 +18,7 @@ export default function Index() {
               </div>
               <CardTitle>Candidate</CardTitle>
               <CardDescription>
-                Find your dream job and connect with employers
+                Never be rejected due to cost. Earn "You're Hired" bonuses while finding your perfect role
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
@@ -45,7 +45,7 @@ export default function Index() {
               </div>
               <CardTitle>Employer</CardTitle>
               <CardDescription>
-                Post jobs and find the perfect candidates
+                Save thousands on recruitment costs with our revolutionary sourcing platform
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
@@ -72,7 +72,7 @@ export default function Index() {
               </div>
               <CardTitle>Virtual Recruiter</CardTitle>
               <CardDescription>
-                Help connect talent with opportunities
+                Create a flexible income stream from anywhere - perfect as your main or second income
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
