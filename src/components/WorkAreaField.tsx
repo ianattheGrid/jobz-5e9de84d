@@ -3,6 +3,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Control } from "react-hook-form";
 import { 
   workAreas, 
+  itSpecializations,
+  customerServiceSpecializations,
   softwareDevTitles,
   itSupportTitles,
   networkingTitles,
@@ -12,9 +14,16 @@ import {
   aiTitles,
   testingTitles,
   itManagementTitles,
-  specializedITTitles
+  specializedITTitles,
+  customerSupportTitles,
+  customerExperienceTitles,
+  customerServiceManagementTitles,
+  salesRetentionTitles,
+  specializedCustomerServiceTitles,
+  technicalSupportTitles
 } from "./work-area/constants";
 import ITSpecializationSelect from "./work-area/ITSpecializationSelect";
+import CustomerServiceSpecializationSelect from "./work-area/CustomerServiceSpecializationSelect";
 import JobTitleSelect from "./work-area/JobTitleSelect";
 import OtherWorkAreaInput from "./work-area/OtherWorkAreaInput";
 import ExperienceSelect from "./work-area/ExperienceSelect";
@@ -31,6 +40,8 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
     setShowOtherInput,
     showITSpecialization,
     setShowITSpecialization,
+    showCustomerServiceSpecialization,
+    setShowCustomerServiceSpecialization,
     showSoftwareDevTitles,
     showITSupportTitles,
     showNetworkingTitles,
@@ -41,8 +52,16 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
     showTestingTitles,
     showITManagementTitles,
     showSpecializedITTitles,
+    showCustomerSupportTitles,
+    showCustomerExperienceTitles,
+    showCustomerServiceManagementTitles,
+    showSalesRetentionTitles,
+    showSpecializedCustomerServiceTitles,
+    showTechnicalSupportTitles,
     handleSpecializationChange,
+    handleCustomerServiceSpecializationChange,
     resetITTitles,
+    resetCustomerServiceTitles,
     showCareerChange,
     setShowCareerChange,
     wantsCareerChange,
@@ -66,8 +85,12 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
                   field.onChange(value);
                   setShowOtherInput(value === "Other");
                   setShowITSpecialization(value === "IT");
+                  setShowCustomerServiceSpecialization(value === "Customer Service");
                   if (value !== "IT") {
                     resetITTitles();
+                  }
+                  if (value !== "Customer Service") {
+                    resetCustomerServiceTitles();
                   }
                 }} 
                 defaultValue={field.value}
@@ -93,6 +116,13 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
         <ITSpecializationSelect 
           control={control}
           onSpecializationChange={handleSpecializationChange}
+        />
+      )}
+
+      {showCustomerServiceSpecialization && (
+        <CustomerServiceSpecializationSelect 
+          control={control}
+          onSpecializationChange={handleCustomerServiceSpecializationChange}
         />
       )}
 
@@ -134,6 +164,30 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
 
       {showSpecializedITTitles && (
         <JobTitleSelect control={control} titles={specializedITTitles} />
+      )}
+
+      {showCustomerSupportTitles && (
+        <JobTitleSelect control={control} titles={customerSupportTitles} />
+      )}
+
+      {showCustomerExperienceTitles && (
+        <JobTitleSelect control={control} titles={customerExperienceTitles} />
+      )}
+
+      {showCustomerServiceManagementTitles && (
+        <JobTitleSelect control={control} titles={customerServiceManagementTitles} />
+      )}
+
+      {showSalesRetentionTitles && (
+        <JobTitleSelect control={control} titles={salesRetentionTitles} />
+      )}
+
+      {showSpecializedCustomerServiceTitles && (
+        <JobTitleSelect control={control} titles={specializedCustomerServiceTitles} />
+      )}
+
+      {showTechnicalSupportTitles && (
+        <JobTitleSelect control={control} titles={technicalSupportTitles} />
       )}
 
       {showOtherInput && (

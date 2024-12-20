@@ -30,6 +30,15 @@ export const itSpecializations = [
   "Specialised IT Roles"
 ];
 
+export const customerServiceSpecializations = [
+  "Customer Support Roles",
+  "Customer Experience Roles",
+  "Management Roles",
+  "Sales and Retention Roles",
+  "Specialised Customer Service Roles",
+  "Technical and Advanced Support Roles"
+];
+
 export const softwareDevTitles = [
   "Software Developer / Engineer",
   "Front-End Developer",
@@ -128,3 +137,53 @@ export const specializedITTitles = [
   "Site Reliability Engineer (SRE)",
   "Technical Writer"
 ];
+
+export const customerSupportTitles = [
+  "Customer Service Representative",
+  "Customer Support Agent",
+  "Customer Service Advisor",
+  "Help Desk Representative",
+  "Customer Care Specialist"
+];
+
+export const customerExperienceTitles = [
+  "Customer Experience Manager",
+  "Customer Success Manager",
+  "Customer Experience Specialist",
+  "Customer Journey Manager",
+  "Voice of Customer Analyst"
+];
+
+export const customerServiceManagementTitles = [
+  "Customer Service Manager",
+  "Team Leader",
+  "Customer Operations Manager",
+  "Contact Center Manager",
+  "Customer Service Supervisor"
+];
+
+export const salesRetentionTitles = [
+  "Customer Retention Specialist",
+  "Account Manager",
+  "Customer Loyalty Representative",
+  "Sales Support Specialist",
+  "Customer Relations Officer"
+];
+
+export const specializedCustomerServiceTitles = [
+  "Multilingual Customer Service Representative",
+  "Social Media Customer Care Specialist",
+  "Quality Assurance Specialist",
+  "Customer Feedback Analyst",
+  "Customer Service Trainer"
+];
+
+export const technicalSupportTitles = [
+  "Technical Support Specialist",
+  "Product Support Specialist",
+  "Advanced Technical Support",
+  "Technical Customer Service Representative",
+  "IT Support Specialist"
+];
+
+// ... keep existing code (other existing constants)
