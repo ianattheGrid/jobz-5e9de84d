@@ -15,7 +15,7 @@ const ITSpecializationSelect = ({ control, onSpecializationChange }: ITSpecializ
       name="itSpecialization"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>IT Specialization</FormLabel>
+          <FormLabel>IT Specialisation</FormLabel>
           <FormControl>
             <Select 
               onValueChange={(value) => {
@@ -25,7 +25,7 @@ const ITSpecializationSelect = ({ control, onSpecializationChange }: ITSpecializ
               defaultValue={field.value}
             >
               <SelectTrigger className="w-full bg-white border border-gray-300">
-                <SelectValue placeholder="Select your IT specialization" />
+                <SelectValue placeholder="Select your IT specialisation" />
               </SelectTrigger>
               <SelectContent className="bg-white">
                 {itSpecializations.map((specialization) => (
