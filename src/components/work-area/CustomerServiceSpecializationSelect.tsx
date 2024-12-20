@@ -8,7 +8,10 @@ interface CustomerServiceSpecializationSelectProps {
   onSpecializationChange: (value: string) => void;
 }
 
-const CustomerServiceSpecializationSelect = ({ control, onSpecializationChange }: CustomerServiceSpecializationSelectProps) => {
+const CustomerServiceSpecializationSelect = ({ 
+  control, 
+  onSpecializationChange 
+}: CustomerServiceSpecializationSelectProps) => {
   return (
     <FormField
       control={control}

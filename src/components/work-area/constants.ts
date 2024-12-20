@@ -139,11 +139,13 @@ export const specializedITTitles = [
 ];
 
 export const customerSupportTitles = [
-  "Customer Service Representative",
-  "Customer Support Agent",
+  "Call Center Agent",
+  "Client Support Representative",
   "Customer Service Advisor",
-  "Help Desk Representative",
-  "Customer Care Specialist"
+  "Customer Service Representative",
+  "Help Desk Support Specialist",
+  "Technical Support Specialist",
+  "Tier 1/2/3 Support Agent"
 ];
 
 export const customerExperienceTitles = [
@@ -185,5 +187,3 @@ export const technicalSupportTitles = [
   "Technical Customer Service Representative",
   "IT Support Specialist"
 ];
-
-// ... keep existing code (other existing constants)

@@ -5,71 +5,27 @@ import {
   workAreas, 
   itSpecializations,
   customerServiceSpecializations,
-  softwareDevTitles,
-  itSupportTitles,
-  networkingTitles,
-  cybersecurityTitles,
-  dataAnalyticsTitles,
-  cloudComputingTitles,
-  aiTitles,
-  testingTitles,
-  itManagementTitles,
-  specializedITTitles,
-  customerSupportTitles,
-  customerExperienceTitles,
-  customerServiceManagementTitles,
-  salesRetentionTitles,
-  specializedCustomerServiceTitles,
-  technicalSupportTitles
+  customerSupportTitles
 } from "./work-area/constants";
 import ITSpecializationSelect from "./work-area/ITSpecializationSelect";
 import CustomerServiceSpecializationSelect from "./work-area/CustomerServiceSpecializationSelect";
 import JobTitleSelect from "./work-area/JobTitleSelect";
 import OtherWorkAreaInput from "./work-area/OtherWorkAreaInput";
-import ExperienceSelect from "./work-area/ExperienceSelect";
-import CareerChangeSection from "./work-area/CareerChangeSection";
-import { useWorkAreaState } from "./work-area/useWorkAreaState";
+import { useState } from "react";
 
 interface WorkAreaFieldProps {
   control: Control<any>;
 }
 
 const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
-  const {
-    showOtherInput,
-    setShowOtherInput,
-    showITSpecialization,
-    setShowITSpecialization,
-    showCustomerServiceSpecialization,
-    setShowCustomerServiceSpecialization,
-    showSoftwareDevTitles,
-    showITSupportTitles,
-    showNetworkingTitles,
-    showCybersecurityTitles,
-    showDataAnalyticsTitles,
-    showCloudComputingTitles,
-    showAITitles,
-    showTestingTitles,
-    showITManagementTitles,
-    showSpecializedITTitles,
-    showCustomerSupportTitles,
-    showCustomerExperienceTitles,
-    showCustomerServiceManagementTitles,
-    showSalesRetentionTitles,
-    showSpecializedCustomerServiceTitles,
-    showTechnicalSupportTitles,
-    handleSpecializationChange,
-    handleCustomerServiceSpecializationChange,
-    resetITTitles,
-    resetCustomerServiceTitles,
-    showCareerChange,
-    setShowCareerChange,
-    wantsCareerChange,
-    setWantsCareerChange
-  } = useWorkAreaState();
+  const [showOtherInput, setShowOtherInput] = useState(false);
+  const [showITSpecialization, setShowITSpecialization] = useState(false);
+  const [showCustomerServiceSpecialization, setShowCustomerServiceSpecialization] = useState(false);
+  const [showCustomerSupportTitles, setShowCustomerSupportTitles] = useState(false);
 
-  const jobTitle = control._formValues.title;
-  const yearsExperience = control._formValues.yearsExperience;
+  const handleCustomerServiceSpecializationChange = (value: string) => {
+    setShowCustomerSupportTitles(value === "Customer Support Roles");
+  };
 
   return (
     <div className="space-y-4">
@@ -86,12 +42,6 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
                   setShowOtherInput(value === "Other");
                   setShowITSpecialization(value === "IT");
                   setShowCustomerServiceSpecialization(value === "Customer Service");
-                  if (value !== "IT") {
-                    resetITTitles();
-                  }
-                  if (value !== "Customer Service") {
-                    resetCustomerServiceTitles();
-                  }
                 }} 
                 defaultValue={field.value}
               >
@@ -115,7 +65,7 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
       {showITSpecialization && (
         <ITSpecializationSelect 
           control={control}
-          onSpecializationChange={handleSpecializationChange}
+          onSpecializationChange={() => {}}
         />
       )}
 
@@ -126,87 +76,13 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
         />
       )}
 
-      {showSoftwareDevTitles && (
-        <JobTitleSelect control={control} titles={softwareDevTitles} />
-      )}
-
-      {showITSupportTitles && (
-        <JobTitleSelect control={control} titles={itSupportTitles} />
-      )}
-
-      {showNetworkingTitles && (
-        <JobTitleSelect control={control} titles={networkingTitles} />
-      )}
-
-      {showCybersecurityTitles && (
-        <JobTitleSelect control={control} titles={cybersecurityTitles} />
-      )}
-
-      {showDataAnalyticsTitles && (
-        <JobTitleSelect control={control} titles={dataAnalyticsTitles} />
-      )}
-
-      {showCloudComputingTitles && (
-        <JobTitleSelect control={control} titles={cloudComputingTitles} />
-      )}
-
-      {showAITitles && (
-        <JobTitleSelect control={control} titles={aiTitles} />
-      )}
-
-      {showTestingTitles && (
-        <JobTitleSelect control={control} titles={testingTitles} />
-      )}
-
-      {showITManagementTitles && (
-        <JobTitleSelect control={control} titles={itManagementTitles} />
-      )}
-
-      {showSpecializedITTitles && (
-        <JobTitleSelect control={control} titles={specializedITTitles} />
-      )}
-
       {showCustomerSupportTitles && (
         <JobTitleSelect control={control} titles={customerSupportTitles} />
-      )}
-
-      {showCustomerExperienceTitles && (
-        <JobTitleSelect control={control} titles={customerExperienceTitles} />
-      )}
-
-      {showCustomerServiceManagementTitles && (
-        <JobTitleSelect control={control} titles={customerServiceManagementTitles} />
-      )}
-
-      {showSalesRetentionTitles && (
-        <JobTitleSelect control={control} titles={salesRetentionTitles} />
-      )}
-
-      {showSpecializedCustomerServiceTitles && (
-        <JobTitleSelect control={control} titles={specializedCustomerServiceTitles} />
-      )}
-
-      {showTechnicalSupportTitles && (
-        <JobTitleSelect control={control} titles={technicalSupportTitles} />
       )}
 
       {showOtherInput && (
         <OtherWorkAreaInput control={control} />
       )}
-
-      {jobTitle && !showOtherInput && (
-        <ExperienceSelect control={control} jobTitle={jobTitle} />
-      )}
-
-      <CareerChangeSection
-        control={control}
-        showCareerChange={jobTitle && yearsExperience ? true : false}
-        wantsCareerChange={wantsCareerChange}
-        onCareerChangeResponse={(value) => {
-          setWantsCareerChange(value === "yes");
-          setShowCareerChange(value === "yes");
-        }}
-      />
     </div>
   );
 };
