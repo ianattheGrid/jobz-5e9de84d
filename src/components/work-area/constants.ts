@@ -57,6 +57,14 @@ export const customerExperienceTitles = [
   "User Experience (UX) Support Specialist"
 ];
 
+export const customerServiceManagementTitles = [
+  "Call Center Manager",
+  "Customer Operations Manager",
+  "Customer Service Manager",
+  "Customer Support Supervisor",
+  "Team Leader (Customer Service)"
+];
+
 export const softwareDevTitles = [
   "Software Developer / Engineer",
   "Front-End Developer",
@@ -154,44 +162,4 @@ export const specializedITTitles = [
   "ERP Specialist (SAP Consultant)",
   "Site Reliability Engineer (SRE)",
   "Technical Writer"
-];
-
-export const customerExperienceTitles = [
-  "Client Experience Specialist",
-  "Customer Experience Manager",
-  "Customer Success Manager",
-  "Customer Success Specialist",
-  "User Experience (UX) Support Specialist"
-];
-
-export const customerServiceManagementTitles = [
-  "Customer Service Manager",
-  "Team Leader",
-  "Customer Operations Manager",
-  "Contact Center Manager",
-  "Customer Service Supervisor"
-];
-
-export const salesRetentionTitles = [
-  "Customer Retention Specialist",
-  "Account Manager",
-  "Customer Loyalty Representative",
-  "Sales Support Specialist",
-  "Customer Relations Officer"
-];
-
-export const specializedCustomerServiceTitles = [
-  "Multilingual Customer Service Representative",
-  "Social Media Customer Care Specialist",
-  "Quality Assurance Specialist",
-  "Customer Feedback Analyst",
-  "Customer Service Trainer"
-];
-
-export const technicalSupportTitles = [
-  "Technical Support Specialist",
-  "Product Support Specialist",
-  "Advanced Technical Support",
-  "Technical Customer Service Representative",
-  "IT Support Specialist"
 ];
