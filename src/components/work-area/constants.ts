@@ -39,6 +39,24 @@ export const customerServiceSpecializations = [
   "Technical and Advanced Support Roles"
 ];
 
+export const customerSupportTitles = [
+  "Call Center Agent",
+  "Client Support Representative",
+  "Customer Service Advisor",
+  "Customer Service Representative",
+  "Help Desk Support Specialist",
+  "Technical Support Specialist",
+  "Tier 1/2/3 Support Agent"
+];
+
+export const customerExperienceTitles = [
+  "Client Experience Specialist",
+  "Customer Experience Manager",
+  "Customer Success Manager",
+  "Customer Success Specialist",
+  "User Experience (UX) Support Specialist"
+];
+
 export const softwareDevTitles = [
   "Software Developer / Engineer",
   "Front-End Developer",
@@ -138,22 +156,12 @@ export const specializedITTitles = [
   "Technical Writer"
 ];
 
-export const customerSupportTitles = [
-  "Call Center Agent",
-  "Client Support Representative",
-  "Customer Service Advisor",
-  "Customer Service Representative",
-  "Help Desk Support Specialist",
-  "Technical Support Specialist",
-  "Tier 1/2/3 Support Agent"
-];
-
 export const customerExperienceTitles = [
+  "Client Experience Specialist",
   "Customer Experience Manager",
   "Customer Success Manager",
-  "Customer Experience Specialist",
-  "Customer Journey Manager",
-  "Voice of Customer Analyst"
+  "Customer Success Specialist",
+  "User Experience (UX) Support Specialist"
 ];
 
 export const customerServiceManagementTitles = [

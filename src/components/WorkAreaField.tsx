@@ -5,7 +5,8 @@ import {
   workAreas, 
   itSpecializations,
   customerServiceSpecializations,
-  customerSupportTitles
+  customerSupportTitles,
+  customerExperienceTitles
 } from "./work-area/constants";
 import ITSpecializationSelect from "./work-area/ITSpecializationSelect";
 import CustomerServiceSpecializationSelect from "./work-area/CustomerServiceSpecializationSelect";
@@ -22,9 +23,11 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
   const [showITSpecialization, setShowITSpecialization] = useState(false);
   const [showCustomerServiceSpecialization, setShowCustomerServiceSpecialization] = useState(false);
   const [showCustomerSupportTitles, setShowCustomerSupportTitles] = useState(false);
+  const [showCustomerExperienceTitles, setShowCustomerExperienceTitles] = useState(false);
 
   const handleCustomerServiceSpecializationChange = (value: string) => {
     setShowCustomerSupportTitles(value === "Customer Support Roles");
+    setShowCustomerExperienceTitles(value === "Customer Experience Roles");
   };
 
   return (
@@ -78,6 +81,10 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
 
       {showCustomerSupportTitles && (
         <JobTitleSelect control={control} titles={customerSupportTitles} />
+      )}
+
+      {showCustomerExperienceTitles && (
+        <JobTitleSelect control={control} titles={customerExperienceTitles} />
       )}
 
       {showOtherInput && (
