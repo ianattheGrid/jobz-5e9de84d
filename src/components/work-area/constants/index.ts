@@ -2,9 +2,8 @@ export { workAreas } from './work-areas';
 export { itSpecializations, itRoles } from './it-roles';
 export { customerServiceSpecializations } from './customer-service-roles';
 export { financeRoles } from './finance-roles';
-export {
+export { 
   publicSectorSpecializations,
-  PublicSectorSpecialization,
   centralGovernmentRoles,
   localGovernmentRoles,
   healthcareRoles,
@@ -18,6 +17,7 @@ export {
   administrativeRoles,
   specializedRoles
 } from './public-sector';
+export type { PublicSectorSpecialization } from './public-sector';
 export {
   civilEngineeringTitles,
   mechanicalEngineeringTitles,
