@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import Logo from "./navbar/Logo";
 import NavigationLinks from "./navbar/NavigationLinks";
 import AuthMenu from "./navbar/AuthMenu";
+import MobileNav from "./navbar/MobileNav";
 
 const NavBar = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -37,8 +38,15 @@ const NavBar = () => {
     <nav className="bg-white shadow-sm">
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
-          <Logo />
-          <div className="flex-1">
+          <div className="flex items-center gap-4">
+            <MobileNav 
+              isAuthenticated={isAuthenticated} 
+              userType={userType}
+              handleSignOut={handleSignOut}
+            />
+            <Logo />
+          </div>
+          <div className="hidden md:flex flex-1">
             <NavigationLinks isAuthenticated={isAuthenticated} userType={userType} />
           </div>
           <AuthMenu isAuthenticated={isAuthenticated} handleSignOut={handleSignOut} />
