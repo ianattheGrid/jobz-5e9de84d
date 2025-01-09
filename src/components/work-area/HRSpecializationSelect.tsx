@@ -1,7 +1,7 @@
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Control } from "react-hook-form";
-import { hrSpecializations } from "./constants";
+import { hrSpecializations } from "./constants/hr-roles";
 
 interface HRSpecializationSelectProps {
   control: Control<any>;

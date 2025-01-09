@@ -1,8 +1,8 @@
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Control } from "react-hook-form";
+import { workAreas } from "./work-area/constants";
 import { 
-  workAreas,
   recruitmentRoles,
   employeeRelationsRoles,
   compensationRoles,
@@ -11,7 +11,7 @@ import {
   deiRoles,
   hrLeadershipRoles,
   specializedHrRoles
-} from "./work-area/constants";
+} from "./work-area/constants/hr-roles";
 import ITSpecializationSelect from "./work-area/ITSpecializationSelect";
 import CustomerServiceSpecializationSelect from "./work-area/CustomerServiceSpecializationSelect";
 import FinanceSpecializationSelect from "./work-area/FinanceSpecializationSelect";
