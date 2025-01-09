@@ -1,3 +1,16 @@
+export const itSpecializations = [
+  "Software Development and Programming",
+  "IT Support and Operations",
+  "Networking and Infrastructure",
+  "Cybersecurity",
+  "Data and Analytics",
+  "Cloud Computing",
+  "Artificial Intelligence and Machine Learning",
+  "Testing and Quality Assurance",
+  "IT Management",
+  "Specialised IT Roles"
+];
+
 export const softwareDevTitles = [
   "Software Developer / Engineer",
   "Front-End Developer",
@@ -95,17 +108,4 @@ export const specializedITTitles = [
   "ERP Specialist (SAP Consultant)",
   "Site Reliability Engineer (SRE)",
   "Technical Writer"
-];
-
-export const itSpecializations = [
-  "Software Development and Programming",
-  "IT Support and Operations",
-  "Networking and Infrastructure",
-  "Cybersecurity",
-  "Data and Analytics",
-  "Cloud Computing",
-  "Artificial Intelligence and Machine Learning",
-  "Testing and Quality Assurance",
-  "IT Management",
-  "Specialised IT Roles"
 ];

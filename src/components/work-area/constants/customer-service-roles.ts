@@ -1,3 +1,12 @@
+export const customerServiceSpecializations = [
+  "Customer Support Roles",
+  "Customer Experience Roles",
+  "Management Roles",
+  "Sales and Retention Roles",
+  "Specialised Customer Service Roles",
+  "Technical and Advanced Support Roles"
+];
+
 export const customerSupportTitles = [
   "Call Center Agent",
   "Client Support Representative",
@@ -47,13 +56,4 @@ export const technicalSupportTitles = [
   "Product Support Specialist",
   "Software Support Specialist",
   "Technical Account Manager"
-];
-
-export const customerServiceSpecializations = [
-  "Customer Support Roles",
-  "Customer Experience Roles",
-  "Management Roles",
-  "Sales and Retention Roles",
-  "Specialised Customer Service Roles",
-  "Technical and Advanced Support Roles"
 ];
