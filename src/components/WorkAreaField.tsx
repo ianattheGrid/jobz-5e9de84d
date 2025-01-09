@@ -2,26 +2,20 @@ import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/comp
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Control } from "react-hook-form";
 import { 
-  workAreas, 
-  itSpecializations,
-  customerServiceSpecializations,
-  customerSupportTitles,
-  customerExperienceTitles,
-  customerServiceManagementTitles,
-  salesAndRetentionTitles,
-  specializedCustomerServiceTitles,
-  technicalSupportTitles,
-  accountingRoles,
-  financialAnalysisRoles,
-  auditingRoles,
-  bankingRoles,
-  taxAndTreasuryRoles,
-  financeOperationsRoles,
-  specializedFinanceRoles
+  workAreas,
+  recruitmentRoles,
+  employeeRelationsRoles,
+  compensationRoles,
+  learningDevelopmentRoles,
+  hrOperationsRoles,
+  deiRoles,
+  hrLeadershipRoles,
+  specializedHrRoles
 } from "./work-area/constants";
 import ITSpecializationSelect from "./work-area/ITSpecializationSelect";
 import CustomerServiceSpecializationSelect from "./work-area/CustomerServiceSpecializationSelect";
 import FinanceSpecializationSelect from "./work-area/FinanceSpecializationSelect";
+import HRSpecializationSelect from "./work-area/HRSpecializationSelect";
 import JobTitleSelect from "./work-area/JobTitleSelect";
 import OtherWorkAreaInput from "./work-area/OtherWorkAreaInput";
 import { useState } from "react";
@@ -35,37 +29,25 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
   const [showITSpecialization, setShowITSpecialization] = useState(false);
   const [showCustomerServiceSpecialization, setShowCustomerServiceSpecialization] = useState(false);
   const [showFinanceSpecialization, setShowFinanceSpecialization] = useState(false);
-  const [showCustomerSupportTitles, setShowCustomerSupportTitles] = useState(false);
-  const [showCustomerExperienceTitles, setShowCustomerExperienceTitles] = useState(false);
-  const [showCustomerServiceManagementTitles, setShowCustomerServiceManagementTitles] = useState(false);
-  const [showSalesAndRetentionTitles, setShowSalesAndRetentionTitles] = useState(false);
-  const [showSpecializedCustomerServiceTitles, setShowSpecializedCustomerServiceTitles] = useState(false);
-  const [showTechnicalSupportTitles, setShowTechnicalSupportTitles] = useState(false);
-  const [showAccountingRoles, setShowAccountingRoles] = useState(false);
-  const [showFinancialAnalysisRoles, setShowFinancialAnalysisRoles] = useState(false);
-  const [showAuditingRoles, setShowAuditingRoles] = useState(false);
-  const [showBankingRoles, setShowBankingRoles] = useState(false);
-  const [showTaxAndTreasuryRoles, setShowTaxAndTreasuryRoles] = useState(false);
-  const [showFinanceOperationsRoles, setShowFinanceOperationsRoles] = useState(false);
-  const [showSpecializedFinanceRoles, setShowSpecializedFinanceRoles] = useState(false);
+  const [showHRSpecialization, setShowHRSpecialization] = useState(false);
+  const [showRecruitmentRoles, setShowRecruitmentRoles] = useState(false);
+  const [showEmployeeRelationsRoles, setShowEmployeeRelationsRoles] = useState(false);
+  const [showCompensationRoles, setShowCompensationRoles] = useState(false);
+  const [showLearningDevelopmentRoles, setShowLearningDevelopmentRoles] = useState(false);
+  const [showHROperationsRoles, setShowHROperationsRoles] = useState(false);
+  const [showDEIRoles, setShowDEIRoles] = useState(false);
+  const [showHRLeadershipRoles, setShowHRLeadershipRoles] = useState(false);
+  const [showSpecializedHRRoles, setShowSpecializedHRRoles] = useState(false);
 
-  const handleCustomerServiceSpecializationChange = (value: string) => {
-    setShowCustomerSupportTitles(value === "Customer Support Roles");
-    setShowCustomerExperienceTitles(value === "Customer Experience Roles");
-    setShowCustomerServiceManagementTitles(value === "Management Roles");
-    setShowSalesAndRetentionTitles(value === "Sales and Retention Roles");
-    setShowSpecializedCustomerServiceTitles(value === "Specialised Customer Service Roles");
-    setShowTechnicalSupportTitles(value === "Technical and Advanced Support Roles");
-  };
-
-  const handleFinanceSpecializationChange = (value: string) => {
-    setShowAccountingRoles(value === "Accounting Roles");
-    setShowFinancialAnalysisRoles(value === "Financial Analysis and Planning Roles");
-    setShowAuditingRoles(value === "Auditing and Compliance Roles");
-    setShowBankingRoles(value === "Banking and Investment Roles");
-    setShowTaxAndTreasuryRoles(value === "Tax and Treasury Roles");
-    setShowFinanceOperationsRoles(value === "Finance Operations Roles");
-    setShowSpecializedFinanceRoles(value === "Specialized Accounting and Finance Roles");
+  const handleHRSpecializationChange = (value: string) => {
+    setShowRecruitmentRoles(value === "Recruitment and Talent Acquisition");
+    setShowEmployeeRelationsRoles(value === "Employee Relations and Engagement");
+    setShowCompensationRoles(value === "Compensation and Benefits");
+    setShowLearningDevelopmentRoles(value === "Learning and Development");
+    setShowHROperationsRoles(value === "HR Operations and Administration");
+    setShowDEIRoles(value === "Diversity, Equity, and Inclusion");
+    setShowHRLeadershipRoles(value === "HR Leadership");
+    setShowSpecializedHRRoles(value === "Specialized HR Roles");
   };
 
   return (
@@ -84,6 +66,7 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
                   setShowITSpecialization(value === "IT");
                   setShowCustomerServiceSpecialization(value === "Customer Service");
                   setShowFinanceSpecialization(value === "Accounting & Finance");
+                  setShowHRSpecialization(value === "Human Resources");
                 }} 
                 defaultValue={field.value}
               >
@@ -114,67 +97,54 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
       {showCustomerServiceSpecialization && (
         <CustomerServiceSpecializationSelect 
           control={control}
-          onSpecializationChange={handleCustomerServiceSpecializationChange}
+          onSpecializationChange={() => {}}
         />
       )}
 
       {showFinanceSpecialization && (
         <FinanceSpecializationSelect
           control={control}
-          onSpecializationChange={handleFinanceSpecializationChange}
+          onSpecializationChange={() => {}}
         />
       )}
 
-      {showCustomerSupportTitles && (
-        <JobTitleSelect control={control} titles={customerSupportTitles} />
+      {showHRSpecialization && (
+        <HRSpecializationSelect
+          control={control}
+          onSpecializationChange={handleHRSpecializationChange}
+        />
       )}
 
-      {showCustomerExperienceTitles && (
-        <JobTitleSelect control={control} titles={customerExperienceTitles} />
+      {showRecruitmentRoles && (
+        <JobTitleSelect control={control} titles={recruitmentRoles} />
       )}
 
-      {showCustomerServiceManagementTitles && (
-        <JobTitleSelect control={control} titles={customerServiceManagementTitles} />
+      {showEmployeeRelationsRoles && (
+        <JobTitleSelect control={control} titles={employeeRelationsRoles} />
       )}
 
-      {showSalesAndRetentionTitles && (
-        <JobTitleSelect control={control} titles={salesAndRetentionTitles} />
+      {showCompensationRoles && (
+        <JobTitleSelect control={control} titles={compensationRoles} />
       )}
 
-      {showSpecializedCustomerServiceTitles && (
-        <JobTitleSelect control={control} titles={specializedCustomerServiceTitles} />
+      {showLearningDevelopmentRoles && (
+        <JobTitleSelect control={control} titles={learningDevelopmentRoles} />
       )}
 
-      {showTechnicalSupportTitles && (
-        <JobTitleSelect control={control} titles={technicalSupportTitles} />
+      {showHROperationsRoles && (
+        <JobTitleSelect control={control} titles={hrOperationsRoles} />
       )}
 
-      {showAccountingRoles && (
-        <JobTitleSelect control={control} titles={accountingRoles} />
+      {showDEIRoles && (
+        <JobTitleSelect control={control} titles={deiRoles} />
       )}
 
-      {showFinancialAnalysisRoles && (
-        <JobTitleSelect control={control} titles={financialAnalysisRoles} />
+      {showHRLeadershipRoles && (
+        <JobTitleSelect control={control} titles={hrLeadershipRoles} />
       )}
 
-      {showAuditingRoles && (
-        <JobTitleSelect control={control} titles={auditingRoles} />
-      )}
-
-      {showBankingRoles && (
-        <JobTitleSelect control={control} titles={bankingRoles} />
-      )}
-
-      {showTaxAndTreasuryRoles && (
-        <JobTitleSelect control={control} titles={taxAndTreasuryRoles} />
-      )}
-
-      {showFinanceOperationsRoles && (
-        <JobTitleSelect control={control} titles={financeOperationsRoles} />
-      )}
-
-      {showSpecializedFinanceRoles && (
-        <JobTitleSelect control={control} titles={specializedFinanceRoles} />
+      {showSpecializedHRRoles && (
+        <JobTitleSelect control={control} titles={specializedHrRoles} />
       )}
 
       {showOtherInput && (
