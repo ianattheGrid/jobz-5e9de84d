@@ -13,7 +13,7 @@ export const civilEngineeringTitles = [
 
 export const mechanicalEngineeringTitles = [
   "Automotive Engineer",
-  "HVAC Engineer (Heating, Ventilation, and Air Conditioning)",
+  "HVAC Engineer",
   "Maintenance Engineer",
   "Manufacturing Engineer",
   "Mechanical Design Engineer",
