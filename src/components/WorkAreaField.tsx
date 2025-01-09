@@ -8,20 +8,22 @@ import FinanceSpecializationSelect from "./work-area/FinanceSpecializationSelect
 import HRSpecializationSelect from "./work-area/HRSpecializationSelect";
 import LegalSpecializationSelect from "./work-area/LegalSpecializationSelect";
 import ManufacturingSpecializationSelect from "./work-area/ManufacturingSpecializationSelect";
+import EnergySpecializationSelect from "./work-area/EnergySpecializationSelect";
 import JobTitleSelect from "./work-area/JobTitleSelect";
 import OtherWorkAreaInput from "./work-area/OtherWorkAreaInput";
 import { useState } from "react";
 import {
-  productionRoles,
-  maintenanceRoles,
-  qualityAssuranceRoles,
+  energyGenerationRoles,
+  transmissionRoles,
+  utilitiesManagementRoles,
+  renewableEnergyRoles,
+  engineeringTechnicalRoles,
+  regulatoryRoles,
+  customerServiceRoles,
   researchDevelopmentRoles,
-  supplyChainRoles,
-  hseRoles,
-  automationRoles,
-  managementRoles,
-  specializedManufacturingRoles
-} from "./work-area/constants/manufacturing-roles";
+  financeBusinessRoles,
+  specializedEnergyRoles
+} from "./work-area/constants/energy-roles";
 
 interface WorkAreaFieldProps {
   control: Control<any>;
@@ -35,26 +37,29 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
   const [showHRSpecialization, setShowHRSpecialization] = useState(false);
   const [showLegalSpecialization, setShowLegalSpecialization] = useState(false);
   const [showManufacturingSpecialization, setShowManufacturingSpecialization] = useState(false);
-  const [showProductionRoles, setShowProductionRoles] = useState(false);
-  const [showMaintenanceRoles, setShowMaintenanceRoles] = useState(false);
-  const [showQualityAssuranceRoles, setShowQualityAssuranceRoles] = useState(false);
+  const [showEnergySpecialization, setShowEnergySpecialization] = useState(false);
+  const [showEnergyGenerationRoles, setShowEnergyGenerationRoles] = useState(false);
+  const [showTransmissionRoles, setShowTransmissionRoles] = useState(false);
+  const [showUtilitiesManagementRoles, setShowUtilitiesManagementRoles] = useState(false);
+  const [showRenewableEnergyRoles, setShowRenewableEnergyRoles] = useState(false);
+  const [showEngineeringTechnicalRoles, setShowEngineeringTechnicalRoles] = useState(false);
+  const [showRegulatoryRoles, setShowRegulatoryRoles] = useState(false);
+  const [showCustomerServiceRoles, setShowCustomerServiceRoles] = useState(false);
   const [showResearchDevelopmentRoles, setShowResearchDevelopmentRoles] = useState(false);
-  const [showSupplyChainRoles, setShowSupplyChainRoles] = useState(false);
-  const [showHSERoles, setShowHSERoles] = useState(false);
-  const [showAutomationRoles, setShowAutomationRoles] = useState(false);
-  const [showManagementRoles, setShowManagementRoles] = useState(false);
-  const [showSpecializedManufacturingRoles, setShowSpecializedManufacturingRoles] = useState(false);
+  const [showFinanceBusinessRoles, setShowFinanceBusinessRoles] = useState(false);
+  const [showSpecializedEnergyRoles, setShowSpecializedEnergyRoles] = useState(false);
 
-  const handleManufacturingSpecializationChange = (value: string) => {
-    setShowProductionRoles(value === "Production and Operations");
-    setShowMaintenanceRoles(value === "Maintenance and Technical Support");
-    setShowQualityAssuranceRoles(value === "Quality Assurance and Compliance");
+  const handleEnergySpecializationChange = (value: string) => {
+    setShowEnergyGenerationRoles(value === "Energy Generation and Production");
+    setShowTransmissionRoles(value === "Transmission and Distribution");
+    setShowUtilitiesManagementRoles(value === "Utilities Management and Operations");
+    setShowRenewableEnergyRoles(value === "Renewable Energy and Sustainability");
+    setShowEngineeringTechnicalRoles(value === "Engineering and Technical");
+    setShowRegulatoryRoles(value === "Regulatory and Compliance");
+    setShowCustomerServiceRoles(value === "Customer Service and Support");
     setShowResearchDevelopmentRoles(value === "Research and Development (R&D)");
-    setShowSupplyChainRoles(value === "Supply Chain and Logistics");
-    setShowHSERoles(value === "Health, Safety, and Environmental (HSE)");
-    setShowAutomationRoles(value === "Automation and Advanced Manufacturing");
-    setShowManagementRoles(value === "Management and Leadership");
-    setShowSpecializedManufacturingRoles(value === "Specialized Manufacturing");
+    setShowFinanceBusinessRoles(value === "Finance and Business");
+    setShowSpecializedEnergyRoles(value === "Specialized Energy Roles");
   };
 
   return (
@@ -76,6 +81,7 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
                   setShowHRSpecialization(value === "Human Resources");
                   setShowLegalSpecialization(value === "Legal");
                   setShowManufacturingSpecialization(value === "Manufacturing");
+                  setShowEnergySpecialization(value === "Energy & Utilities");
                 }} 
                 defaultValue={field.value}
               >
@@ -134,44 +140,55 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
       {showManufacturingSpecialization && (
         <ManufacturingSpecializationSelect
           control={control}
-          onSpecializationChange={handleManufacturingSpecializationChange}
+          onSpecializationChange={() => {}}
         />
       )}
 
-      {showProductionRoles && (
-        <JobTitleSelect control={control} titles={productionRoles} />
+      {showEnergySpecialization && (
+        <EnergySpecializationSelect 
+          control={control}
+          onSpecializationChange={handleEnergySpecializationChange}
+        />
       )}
 
-      {showMaintenanceRoles && (
-        <JobTitleSelect control={control} titles={maintenanceRoles} />
+      {showEnergyGenerationRoles && (
+        <JobTitleSelect control={control} titles={energyGenerationRoles} />
       )}
 
-      {showQualityAssuranceRoles && (
-        <JobTitleSelect control={control} titles={qualityAssuranceRoles} />
+      {showTransmissionRoles && (
+        <JobTitleSelect control={control} titles={transmissionRoles} />
+      )}
+
+      {showUtilitiesManagementRoles && (
+        <JobTitleSelect control={control} titles={utilitiesManagementRoles} />
+      )}
+
+      {showRenewableEnergyRoles && (
+        <JobTitleSelect control={control} titles={renewableEnergyRoles} />
+      )}
+
+      {showEngineeringTechnicalRoles && (
+        <JobTitleSelect control={control} titles={engineeringTechnicalRoles} />
+      )}
+
+      {showRegulatoryRoles && (
+        <JobTitleSelect control={control} titles={regulatoryRoles} />
+      )}
+
+      {showCustomerServiceRoles && (
+        <JobTitleSelect control={control} titles={customerServiceRoles} />
       )}
 
       {showResearchDevelopmentRoles && (
         <JobTitleSelect control={control} titles={researchDevelopmentRoles} />
       )}
 
-      {showSupplyChainRoles && (
-        <JobTitleSelect control={control} titles={supplyChainRoles} />
+      {showFinanceBusinessRoles && (
+        <JobTitleSelect control={control} titles={financeBusinessRoles} />
       )}
 
-      {showHSERoles && (
-        <JobTitleSelect control={control} titles={hseRoles} />
-      )}
-
-      {showAutomationRoles && (
-        <JobTitleSelect control={control} titles={automationRoles} />
-      )}
-
-      {showManagementRoles && (
-        <JobTitleSelect control={control} titles={managementRoles} />
-      )}
-
-      {showSpecializedManufacturingRoles && (
-        <JobTitleSelect control={control} titles={specializedManufacturingRoles} />
+      {showSpecializedEnergyRoles && (
+        <JobTitleSelect control={control} titles={specializedEnergyRoles} />
       )}
 
       {showOtherInput && (

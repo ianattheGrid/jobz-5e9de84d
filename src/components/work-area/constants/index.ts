@@ -4,6 +4,7 @@ export * from './customer-service-roles';
 export * from './finance-roles';
 export * from './legal-roles';
 export * from './manufacturing-roles';
+export * from './energy-roles';
 
 export const workAreas = [
   "R&D",
