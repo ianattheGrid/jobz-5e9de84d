@@ -91,7 +91,7 @@ const PublicSectorSpecializationSelect = ({
         )}
       />
 
-      {field.value && (
+      {field?.value && (
         <JobTitleSelect 
           control={control} 
           titles={getTitlesForSpecialization(field.value)}
