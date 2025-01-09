@@ -19,7 +19,7 @@ const MobileNav = ({ isAuthenticated, userType, handleSignOut }: MobileNavProps)
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="ghost" size="icon" className="md:hidden">
+        <Button variant="ghost" size="icon">
           <Menu className="h-6 w-6" />
           <span className="sr-only">Toggle menu</span>
         </Button>
@@ -32,41 +32,33 @@ const MobileNav = ({ isAuthenticated, userType, handleSignOut }: MobileNavProps)
           <Link to="/jobs" className="text-lg hover:text-gray-900">
             Job Board
           </Link>
-          {isAuthenticated && userType === 'employer' && (
+          
+          {isAuthenticated ? (
             <>
-              <Link to="/employer/dashboard" className="text-lg hover:text-gray-900">
-                Dashboard
-              </Link>
-              <Link to="/employer/manage-jobs" className="text-lg hover:text-gray-900">
-                Manage Jobs
-              </Link>
-              <Link to="/employer/profile" className="text-lg hover:text-gray-900">
-                Profile
-              </Link>
+              {userType === 'employer' && (
+                <Link to="/employer/dashboard" className="text-lg hover:text-gray-900">
+                  Employer Dashboard
+                </Link>
+              )}
+              {userType === 'candidate' && (
+                <Link to="/candidate/dashboard" className="text-lg hover:text-gray-900">
+                  Candidate Dashboard
+                </Link>
+              )}
+              {userType === 'vr' && (
+                <Link to="/vr/dashboard" className="text-lg hover:text-gray-900">
+                  Virtual Recruiter Dashboard
+                </Link>
+              )}
+              <button
+                onClick={handleSignOut}
+                className="text-lg text-red-600 hover:text-red-800 text-left"
+              >
+                Sign Out
+              </button>
             </>
-          )}
-          {isAuthenticated && userType === 'candidate' && (
-            <>
-              <Link to="/candidate/dashboard" className="text-lg hover:text-gray-900">
-                Dashboard
-              </Link>
-              <Link to="/candidate/profile" className="text-lg hover:text-gray-900">
-                Profile
-              </Link>
-            </>
-          )}
-          {isAuthenticated && userType === 'vr' && (
-            <>
-              <Link to="/vr/dashboard" className="text-lg hover:text-gray-900">
-                Dashboard
-              </Link>
-              <Link to="/vr/recommendations" className="text-lg hover:text-gray-900">
-                Recommendations
-              </Link>
-            </>
-          )}
-          {!isAuthenticated ? (
-            <div className="flex flex-col gap-2 mt-4">
+          ) : (
+            <div className="flex flex-col gap-2">
               <Link 
                 to="/employer/signin" 
                 className="text-lg text-gray-600 hover:text-gray-900"
@@ -86,13 +78,6 @@ const MobileNav = ({ isAuthenticated, userType, handleSignOut }: MobileNavProps)
                 Virtual Recruiter Sign In
               </Link>
             </div>
-          ) : (
-            <button
-              onClick={handleSignOut}
-              className="text-lg text-red-600 hover:text-red-800 mt-4"
-            >
-              Sign Out
-            </button>
           )}
         </div>
       </SheetContent>

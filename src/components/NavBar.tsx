@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import Logo from "./navbar/Logo";
-import NavigationLinks from "./navbar/NavigationLinks";
-import AuthMenu from "./navbar/AuthMenu";
 import MobileNav from "./navbar/MobileNav";
 
 const NavBar = () => {
@@ -46,10 +44,6 @@ const NavBar = () => {
             />
             <Logo />
           </div>
-          <div className="hidden md:flex flex-1">
-            <NavigationLinks isAuthenticated={isAuthenticated} userType={userType} />
-          </div>
-          <AuthMenu isAuthenticated={isAuthenticated} handleSignOut={handleSignOut} />
         </div>
       </div>
     </nav>
