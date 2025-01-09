@@ -128,7 +128,8 @@ export const specializedRoles = [
   "Researcher (Public Sector)"
 ];
 
-export const publicSectorRoles = {
+export {
+  publicSectorSpecializations,
   centralGovernmentRoles,
   localGovernmentRoles,
   healthcareRoles,
