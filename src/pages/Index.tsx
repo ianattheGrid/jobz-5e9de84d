@@ -1,6 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "react-router-dom";
-import { Building2, User, Users, Calculator, Sparkles, PoundSterling } from "lucide-react";
+import { Building2, User, Users, Calculator, Sparkles, PoundSterling, FileText, Target, Robot, Coins } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function Index() {
   return (
@@ -8,8 +9,8 @@ export default function Index() {
       {/* Hero Section */}
       <section className="relative h-[500px] overflow-hidden">
         <img 
-          src="https://images.unsplash.com/photo-1500673922987-e212871fec22"
-          alt="Abstract lights representing connections"
+          src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop"
+          alt="Abstract digital connections representing AI networking"
           className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-black/40" />
@@ -40,40 +41,152 @@ export default function Index() {
         </div>
       </section>
 
-      {/* Features Section */}
+      {/* Platform Overview Section */}
       <section className="py-20 container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-12">Why Choose jobz?</h2>
-        <div className="grid md:grid-cols-3 gap-8">
-          <Card className="border-none shadow-lg">
-            <CardHeader>
-              <PoundSterling className="h-12 w-12 text-primary mb-4" />
-              <CardTitle>Affordable Hiring</CardTitle>
-              <CardDescription>
-                Just £29/month for unlimited job postings. Save thousands on recruitment costs.
-              </CardDescription>
-            </CardHeader>
-          </Card>
-          
-          <Card className="border-none shadow-lg">
-            <CardHeader>
-              <Sparkles className="h-12 w-12 text-primary mb-4" />
-              <CardTitle>AI-Powered Matching</CardTitle>
-              <CardDescription>
-                Our smart algorithms connect you with the perfect candidates or jobs.
-              </CardDescription>
-            </CardHeader>
-          </Card>
-          
-          <Card className="border-none shadow-lg">
-            <CardHeader>
-              <Calculator className="h-12 w-12 text-primary mb-4" />
-              <CardTitle>"You're Hired" Bonus</CardTitle>
-              <CardDescription>
-                Unique bonus scheme that rewards successful placements.
-              </CardDescription>
-            </CardHeader>
-          </Card>
-        </div>
+        <h2 className="text-3xl font-bold text-center mb-12">How jobz Works</h2>
+        
+        <Tabs defaultValue="hiring" className="w-full max-w-4xl mx-auto">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="hiring">For Employers</TabsTrigger>
+            <TabsTrigger value="candidates">For Candidates</TabsTrigger>
+            <TabsTrigger value="recruiters">Virtual Recruiters</TabsTrigger>
+          </TabsList>
+
+          {/* Hiring Companies Tab */}
+          <TabsContent value="hiring" className="space-y-8">
+            <div className="grid md:grid-cols-2 gap-6">
+              <Card className="border-none shadow-lg">
+                <CardHeader>
+                  <FileText className="h-12 w-12 text-primary mb-4" />
+                  <CardTitle>Unlimited Job Postings</CardTitle>
+                  <CardDescription>
+                    Post as many job vacancies as you need for just £29/month. No hidden fees or per-post charges.
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+              
+              <Card className="border-none shadow-lg">
+                <CardHeader>
+                  <Coins className="h-12 w-12 text-primary mb-4" />
+                  <CardTitle>"You're Hired" Bonus</CardTitle>
+                  <CardDescription>
+                    Attract top talent by offering a bonus to successful candidates and their referrers.
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+
+              <Card className="border-none shadow-lg">
+                <CardHeader>
+                  <Robot className="h-12 w-12 text-primary mb-4" />
+                  <CardTitle>AI-Powered Sourcing</CardTitle>
+                  <CardDescription>
+                    Activate virtual recruiters to anonymously source and match the best candidates for your roles.
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+
+              <Card className="border-none shadow-lg">
+                <CardHeader>
+                  <Calculator className="h-12 w-12 text-primary mb-4" />
+                  <CardTitle>Commission Calculator</CardTitle>
+                  <CardDescription>
+                    Use our transparent calculator to see exact costs and potential savings for each hire.
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+            </div>
+          </TabsContent>
+
+          {/* Candidates Tab */}
+          <TabsContent value="candidates" className="space-y-8">
+            <div className="grid md:grid-cols-2 gap-6">
+              <Card className="border-none shadow-lg">
+                <CardHeader>
+                  <User className="h-12 w-12 text-primary mb-4" />
+                  <CardTitle>Smart Profile Matching</CardTitle>
+                  <CardDescription>
+                    Create your profile once and let our AI match you with relevant opportunities that fit your skills and preferences.
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+
+              <Card className="border-none shadow-lg">
+                <CardHeader>
+                  <Target className="h-12 w-12 text-primary mb-4" />
+                  <CardTitle>Earn Bonuses</CardTitle>
+                  <CardDescription>
+                    Get rewarded with a "You're Hired" bonus when you're successfully placed in a role.
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+
+              <Card className="border-none shadow-lg">
+                <CardHeader>
+                  <Users className="h-12 w-12 text-primary mb-4" />
+                  <CardTitle>Referral Network</CardTitle>
+                  <CardDescription>
+                    Refer friends and colleagues to jobs and share the bonus when they're hired.
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+
+              <Card className="border-none shadow-lg">
+                <CardHeader>
+                  <Sparkles className="h-12 w-12 text-primary mb-4" />
+                  <CardTitle>Transparent Process</CardTitle>
+                  <CardDescription>
+                    See exactly what bonuses are available and track your application status in real-time.
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+            </div>
+          </TabsContent>
+
+          {/* Virtual Recruiters Tab */}
+          <TabsContent value="recruiters" className="space-y-8">
+            <div className="grid md:grid-cols-2 gap-6">
+              <Card className="border-none shadow-lg">
+                <CardHeader>
+                  <Robot className="h-12 w-12 text-primary mb-4" />
+                  <CardTitle>AI-Powered Matching</CardTitle>
+                  <CardDescription>
+                    Our advanced algorithms analyze job requirements and candidate profiles to create perfect matches.
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+
+              <Card className="border-none shadow-lg">
+                <CardHeader>
+                  <Building2 className="h-12 w-12 text-primary mb-4" />
+                  <CardTitle>Automated Sourcing</CardTitle>
+                  <CardDescription>
+                    Virtual recruiters work 24/7 to identify and engage with potential candidates.
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+
+              <Card className="border-none shadow-lg">
+                <CardHeader>
+                  <PoundSterling className="h-12 w-12 text-primary mb-4" />
+                  <CardTitle>Cost-Effective</CardTitle>
+                  <CardDescription>
+                    Save thousands on recruitment costs with our AI-driven approach.
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+
+              <Card className="border-none shadow-lg">
+                <CardHeader>
+                  <Target className="h-12 w-12 text-primary mb-4" />
+                  <CardTitle>Quality Matches</CardTitle>
+                  <CardDescription>
+                    AI ensures consistent, high-quality matches based on skills, experience, and preferences.
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+            </div>
+          </TabsContent>
+        </Tabs>
       </section>
 
       {/* Sign Up Section */}
