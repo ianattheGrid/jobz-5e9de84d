@@ -1,86 +1,129 @@
-export const publicSectorRoles = {
-  centralGovernmentRoles: [
-    "Policy Advisor",
-    "Civil Servant",
-    "Government Officer",
-    "Parliamentary Assistant",
-    "Ministerial Advisor"
-  ],
-  localGovernmentRoles: [
-    "Council Officer",
-    "Planning Officer",
-    "Housing Officer",
-    "Environmental Health Officer",
-    "Community Development Officer"
-  ],
-  healthcareRoles: [
-    "Healthcare Administrator",
-    "Public Health Officer",
-    "Clinical Manager",
-    "Health Policy Advisor",
-    "NHS Manager"
-  ],
-  educationRoles: [
-    "Education Officer",
-    "School Administrator",
-    "Curriculum Developer",
-    "Education Policy Advisor",
-    "Training Coordinator"
-  ],
-  lawEnforcementRoles: [
-    "Police Officer",
-    "Security Advisor",
-    "Intelligence Analyst",
-    "Border Force Officer",
-    "Customs Officer"
-  ],
-  socialCareRoles: [
-    "Social Worker",
-    "Care Manager",
-    "Community Support Officer",
-    "Youth Worker",
-    "Welfare Rights Officer"
-  ],
-  infrastructureRoles: [
-    "Transport Planner",
-    "Infrastructure Manager",
-    "Public Works Officer",
-    "Facilities Manager",
-    "Asset Manager"
-  ],
-  environmentalRoles: [
-    "Environmental Officer",
-    "Conservation Officer",
-    "Waste Management Officer",
-    "Sustainability Officer",
-    "Parks Manager"
-  ],
-  regulatoryRoles: [
-    "Compliance Officer",
-    "Regulatory Affairs Manager",
-    "Standards Officer",
-    "Quality Assurance Manager",
-    "Licensing Officer"
-  ],
-  leadershipRoles: [
-    "Department Head",
-    "Public Sector Manager",
-    "Program Director",
-    "Chief Executive",
-    "Service Manager"
-  ],
-  administrativeRoles: [
-    "Administrative Officer",
-    "Executive Assistant",
-    "Office Manager",
-    "Records Manager",
-    "Project Coordinator"
-  ],
-  specializedRoles: [
-    "Emergency Planning Officer",
-    "Public Relations Officer",
-    "Research Officer",
-    "Digital Services Manager",
-    "Procurement Officer"
-  ]
-};
+export const publicSectorSpecializations = [
+  "Central Government",
+  "Local Government",
+  "Healthcare and Public Health",
+  "Education and Training",
+  "Law Enforcement and Security",
+  "Social Care and Community Support",
+  "Transport and Infrastructure",
+  "Environmental and Sustainability",
+  "Regulatory and Compliance",
+  "Public Sector Leadership",
+  "Administrative Support",
+  "Specialized Public Sector"
+] as const;
+
+export type PublicSectorSpecialization = typeof publicSectorSpecializations[number];
+
+export const centralGovernmentRoles = [
+  "Civil Servant",
+  "Policy Advisor",
+  "Policy Officer",
+  "Government Economist",
+  "Intelligence Analyst",
+  "Parliamentary Assistant",
+  "Project Delivery Manager",
+  "Senior Civil Service (SCS) Roles",
+  "Statistician (Government)"
+];
+
+export const localGovernmentRoles = [
+  "Community Development Officer",
+  "Council Administrator",
+  "Environmental Health Officer",
+  "Housing Officer",
+  "Local Government Officer",
+  "Planning Officer",
+  "Revenues and Benefits Officer",
+  "Town Planner"
+];
+
+export const healthcareRoles = [
+  "Doctor (NHS)",
+  "Nurse (NHS)",
+  "Paramedic",
+  "Public Health Advisor",
+  "Public Health Consultant",
+  "Social Prescribing Link Worker",
+  "Surgeon",
+  "Therapist (e.g., Physiotherapist, Occupational Therapist)"
+];
+
+export const educationRoles = [
+  "Careers Advisor",
+  "Education Welfare Officer",
+  "Headteacher",
+  "Lecturer (Public Universities)",
+  "Primary School Teacher",
+  "Secondary School Teacher",
+  "Teaching Assistant",
+  "Training and Development Officer"
+];
+
+export const lawEnforcementRoles = [
+  "Armed Forces Personnel",
+  "Border Force Officer",
+  "Firefighter",
+  "Intelligence Officer",
+  "Police Community Support Officer (PCSO)",
+  "Police Officer",
+  "Probation Officer",
+  "Security Analyst"
+];
+
+export const socialCareRoles = [
+  "Care Worker",
+  "Child Protection Officer",
+  "Family Support Worker",
+  "Probation Officer",
+  "Social Worker",
+  "Youth Worker"
+];
+
+export const infrastructureRoles = [
+  "Civil Engineer (Public Sector)",
+  "Highways Engineer",
+  "Public Transport Planner",
+  "Transport Manager",
+  "Urban Planner"
+];
+
+export const environmentalRoles = [
+  "Conservation Officer",
+  "Environmental Consultant",
+  "Environmental Manager",
+  "Sustainability Officer",
+  "Waste Management Officer"
+];
+
+export const regulatoryRoles = [
+  "Compliance Officer",
+  "Health and Safety Officer",
+  "Inspector (e.g., Ofsted Inspector, Food Standards Inspector)",
+  "Regulatory Affairs Specialist"
+];
+
+export const leadershipRoles = [
+  "Chief Executive (Local Authority)",
+  "Director of Public Health",
+  "Head of Service (e.g., Housing, Education, Social Care)",
+  "Operations Manager (Public Sector)",
+  "Programme Manager"
+];
+
+export const administrativeRoles = [
+  "Administrative Assistant",
+  "Business Support Officer",
+  "Data Entry Clerk",
+  "HR Officer (Public Sector)",
+  "Personal Assistant (PA)",
+  "Receptionist"
+];
+
+export const specializedRoles = [
+  "Archivist",
+  "Librarian (Public Libraries)",
+  "Museum Curator",
+  "Public Relations Officer",
+  "Researcher (Public Sector)"
+];
