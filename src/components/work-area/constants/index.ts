@@ -1,26 +1,7 @@
-export * from './hr-roles';
-export * from './it-roles';
-export * from './customer-service-roles';
-export * from './finance-roles';
-export * from './legal-roles';
-export * from './manufacturing-roles';
-export * from './energy-roles';
-
-export const workAreas = [
-  "R&D",
-  "Quality Assurance",
-  "Sales",
-  "Marketing",
-  "Customer Service",
-  "IT",
-  "Accounting & Finance",
-  "Human Resources",
-  "Legal",
-  "Manufacturing",
-  "Energy & Utilities",
-  "Pharma",
-  "Public Sector",
-  "Engineering",
-  "Hospitality & Tourism",
-  "Other"
-];
+export { workAreas } from './work-areas';
+export { itSpecializations, itRoles } from './it-roles';
+export { customerServiceSpecializations } from './customer-service-roles';
+export { financeRoles } from './finance-roles';
+export { publicSectorRoles } from './public-sector';
+export { engineeringRoles } from './engineering';
+export { hospitalityRoles, allHospitalityRoles } from './hospitality';
