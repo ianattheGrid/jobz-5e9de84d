@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Control } from "react-hook-form";
@@ -9,22 +10,8 @@ import HRSpecializationSelect from "./work-area/HRSpecializationSelect";
 import LegalSpecializationSelect from "./work-area/LegalSpecializationSelect";
 import ManufacturingSpecializationSelect from "./work-area/ManufacturingSpecializationSelect";
 import EnergySpecializationSelect from "./work-area/EnergySpecializationSelect";
-import PharmaSpecializationSelect from "./work-area/PharmaSpecializationSelect";
-import JobTitleSelect from "./work-area/JobTitleSelect";
-import OtherWorkAreaInput from "./work-area/OtherWorkAreaInput";
-import { useState } from "react";
-import {
-  pharmaRnDRoles,
-  clinicalTrialsRoles,
-  pharmaManufacturingRoles,
-  qualityAssuranceRoles,
-  regulatoryAffairsRoles,
-  pharmaSalesRoles,
-  medicalWritingRoles,
-  pharmaSupplyChainRoles,
-  pharmacovigilanceRoles,
-  specializedPharmaRoles
-} from "./work-area/constants/pharma-roles";
+import PharmaFields from "./work-area/fields/PharmaFields";
+import OtherFields from "./work-area/fields/OtherFields";
 
 interface WorkAreaFieldProps {
   control: Control<any>;
@@ -39,30 +26,7 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
   const [showLegalSpecialization, setShowLegalSpecialization] = useState(false);
   const [showManufacturingSpecialization, setShowManufacturingSpecialization] = useState(false);
   const [showEnergySpecialization, setShowEnergySpecialization] = useState(false);
-  const [showPharmaSpecialization, setShowPharmaSpecialization] = useState(false);
-  const [showPharmaRnDRoles, setShowPharmaRnDRoles] = useState(false);
-  const [showClinicalTrialsRoles, setShowClinicalTrialsRoles] = useState(false);
-  const [showPharmaManufacturingRoles, setShowPharmaManufacturingRoles] = useState(false);
-  const [showQualityAssuranceRoles, setShowQualityAssuranceRoles] = useState(false);
-  const [showRegulatoryAffairsRoles, setShowRegulatoryAffairsRoles] = useState(false);
-  const [showPharmaSalesRoles, setShowPharmaSalesRoles] = useState(false);
-  const [showMedicalWritingRoles, setShowMedicalWritingRoles] = useState(false);
-  const [showPharmaSupplyChainRoles, setShowPharmaSupplyChainRoles] = useState(false);
-  const [showPharmacovigilanceRoles, setShowPharmacovigilanceRoles] = useState(false);
-  const [showSpecializedPharmaRoles, setShowSpecializedPharmaRoles] = useState(false);
-
-  const handlePharmaSpecializationChange = (value: string) => {
-    setShowPharmaRnDRoles(value === "Research and Development (R&D)");
-    setShowClinicalTrialsRoles(value === "Clinical Trials and Medical Affairs");
-    setShowPharmaManufacturingRoles(value === "Manufacturing and Production");
-    setShowQualityAssuranceRoles(value === "Quality Assurance and Quality Control (QA/QC)");
-    setShowRegulatoryAffairsRoles(value === "Regulatory Affairs");
-    setShowPharmaSalesRoles(value === "Sales and Marketing");
-    setShowMedicalWritingRoles(value === "Medical Writing and Communication");
-    setShowPharmaSupplyChainRoles(value === "Supply Chain and Logistics");
-    setShowPharmacovigilanceRoles(value === "Pharmacovigilance and Drug Safety");
-    setShowSpecializedPharmaRoles(value === "Specialized Pharma Roles");
-  };
+  const [showPharmaFields, setShowPharmaFields] = useState(false);
 
   return (
     <div className="space-y-4">
@@ -84,7 +48,7 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
                   setShowLegalSpecialization(value === "Legal");
                   setShowManufacturingSpecialization(value === "Manufacturing");
                   setShowEnergySpecialization(value === "Energy & Utilities");
-                  setShowPharmaSpecialization(value === "Pharma");
+                  setShowPharmaFields(value === "Pharma");
                 }} 
                 defaultValue={field.value}
               >
@@ -154,56 +118,8 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
         />
       )}
 
-      {showPharmaSpecialization && (
-        <PharmaSpecializationSelect 
-          control={control}
-          onSpecializationChange={handlePharmaSpecializationChange}
-        />
-      )}
-
-      {showPharmaRnDRoles && (
-        <JobTitleSelect control={control} titles={pharmaRnDRoles} />
-      )}
-
-      {showClinicalTrialsRoles && (
-        <JobTitleSelect control={control} titles={clinicalTrialsRoles} />
-      )}
-
-      {showPharmaManufacturingRoles && (
-        <JobTitleSelect control={control} titles={pharmaManufacturingRoles} />
-      )}
-
-      {showQualityAssuranceRoles && (
-        <JobTitleSelect control={control} titles={qualityAssuranceRoles} />
-      )}
-
-      {showRegulatoryAffairsRoles && (
-        <JobTitleSelect control={control} titles={regulatoryAffairsRoles} />
-      )}
-
-      {showPharmaSalesRoles && (
-        <JobTitleSelect control={control} titles={pharmaSalesRoles} />
-      )}
-
-      {showMedicalWritingRoles && (
-        <JobTitleSelect control={control} titles={medicalWritingRoles} />
-      )}
-
-      {showPharmaSupplyChainRoles && (
-        <JobTitleSelect control={control} titles={pharmaSupplyChainRoles} />
-      )}
-
-      {showPharmacovigilanceRoles && (
-        <JobTitleSelect control={control} titles={pharmacovigilanceRoles} />
-      )}
-
-      {showSpecializedPharmaRoles && (
-        <JobTitleSelect control={control} titles={specializedPharmaRoles} />
-      )}
-
-      {showOtherInput && (
-        <OtherWorkAreaInput control={control} />
-      )}
+      <PharmaFields control={control} visible={showPharmaFields} />
+      <OtherFields control={control} visible={showOtherInput} />
     </div>
   );
 };
