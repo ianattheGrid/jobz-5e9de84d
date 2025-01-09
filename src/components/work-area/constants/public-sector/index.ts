@@ -16,114 +16,97 @@ export const publicSectorSpecializations = [
 export type PublicSectorSpecialization = typeof publicSectorSpecializations[number];
 
 export const centralGovernmentRoles = [
-  "Civil Servant",
   "Policy Advisor",
-  "Policy Officer",
-  "Government Economist",
-  "Intelligence Analyst",
+  "Civil Servant",
+  "Government Officer",
   "Parliamentary Assistant",
-  "Project Delivery Manager",
-  "Senior Civil Service (SCS) Roles",
-  "Statistician (Government)"
+  "Ministerial Advisor"
 ];
 
 export const localGovernmentRoles = [
-  "Community Development Officer",
-  "Council Administrator",
-  "Environmental Health Officer",
-  "Housing Officer",
-  "Local Government Officer",
+  "Council Officer",
   "Planning Officer",
-  "Revenues and Benefits Officer",
-  "Town Planner"
+  "Housing Officer",
+  "Environmental Health Officer",
+  "Community Development Officer"
 ];
 
 export const healthcareRoles = [
-  "Doctor (NHS)",
-  "Nurse (NHS)",
-  "Paramedic",
-  "Public Health Advisor",
-  "Public Health Consultant",
-  "Social Prescribing Link Worker",
-  "Surgeon",
-  "Therapist (e.g., Physiotherapist, Occupational Therapist)"
+  "Healthcare Administrator",
+  "Public Health Officer",
+  "Clinical Manager",
+  "Health Policy Advisor",
+  "NHS Manager"
 ];
 
 export const educationRoles = [
-  "Careers Advisor",
-  "Education Welfare Officer",
-  "Headteacher",
-  "Lecturer (Public Universities)",
-  "Primary School Teacher",
-  "Secondary School Teacher",
-  "Teaching Assistant",
-  "Training and Development Officer"
+  "Education Officer",
+  "School Administrator",
+  "Curriculum Developer",
+  "Education Policy Advisor",
+  "Training Coordinator"
 ];
 
 export const lawEnforcementRoles = [
-  "Armed Forces Personnel",
-  "Border Force Officer",
-  "Firefighter",
-  "Intelligence Officer",
-  "Police Community Support Officer (PCSO)",
   "Police Officer",
-  "Probation Officer",
-  "Security Analyst"
+  "Security Advisor",
+  "Intelligence Analyst",
+  "Border Force Officer",
+  "Customs Officer"
 ];
 
 export const socialCareRoles = [
-  "Care Worker",
-  "Child Protection Officer",
-  "Family Support Worker",
-  "Probation Officer",
   "Social Worker",
-  "Youth Worker"
+  "Care Manager",
+  "Community Support Officer",
+  "Youth Worker",
+  "Welfare Rights Officer"
 ];
 
 export const infrastructureRoles = [
-  "Civil Engineer (Public Sector)",
-  "Highways Engineer",
-  "Public Transport Planner",
-  "Transport Manager",
-  "Urban Planner"
+  "Transport Planner",
+  "Infrastructure Manager",
+  "Public Works Officer",
+  "Facilities Manager",
+  "Asset Manager"
 ];
 
 export const environmentalRoles = [
+  "Environmental Officer",
   "Conservation Officer",
-  "Environmental Consultant",
-  "Environmental Manager",
+  "Waste Management Officer",
   "Sustainability Officer",
-  "Waste Management Officer"
+  "Parks Manager"
 ];
 
 export const regulatoryRoles = [
   "Compliance Officer",
-  "Health and Safety Officer",
-  "Inspector (e.g., Ofsted Inspector, Food Standards Inspector)",
-  "Regulatory Affairs Specialist"
+  "Regulatory Affairs Manager",
+  "Standards Officer",
+  "Quality Assurance Manager",
+  "Licensing Officer"
 ];
 
 export const leadershipRoles = [
-  "Chief Executive (Local Authority)",
-  "Director of Public Health",
-  "Head of Service (e.g., Housing, Education, Social Care)",
-  "Operations Manager (Public Sector)",
-  "Programme Manager"
+  "Department Head",
+  "Public Sector Manager",
+  "Program Director",
+  "Chief Executive",
+  "Service Manager"
 ];
 
 export const administrativeRoles = [
-  "Administrative Assistant",
-  "Business Support Officer",
-  "Data Entry Clerk",
-  "HR Officer (Public Sector)",
-  "Personal Assistant (PA)",
-  "Receptionist"
+  "Administrative Officer",
+  "Executive Assistant",
+  "Office Manager",
+  "Records Manager",
+  "Project Coordinator"
 ];
 
 export const specializedRoles = [
-  "Archivist",
-  "Librarian (Public Libraries)",
-  "Museum Curator",
+  "Emergency Planning Officer",
   "Public Relations Officer",
-  "Researcher (Public Sector)"
+  "Research Officer",
+  "Digital Services Manager",
+  "Procurement Officer"
 ];
