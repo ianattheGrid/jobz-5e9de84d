@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Menu } from "lucide-react";
+import { Home, Menu } from "lucide-react";
 import {
   Sheet,
   SheetContent,
