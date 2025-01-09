@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Job } from "@/integrations/supabase/types/jobs";
 import { useAuth } from "@/hooks/useAuth";
+import NavBar from "@/components/NavBar";
 import LoadingSpinner from "@/components/jobs/LoadingSpinner";
 import EmptyJobsList from "@/components/jobs/EmptyJobsList";
 import JobList from "@/components/jobs/JobList";
@@ -75,30 +76,25 @@ const Jobs = () => {
     setSearchFilters(filters);
   };
 
-  if (isLoading) {
-    return <LoadingSpinner />;
-  }
-
-  if (error) {
-    return (
-      <div className="container mx-auto py-8">
-        <div className="text-center text-red-500">
-          Failed to load jobs. Please try again later.
-        </div>
-      </div>
-    );
-  }
-
-  if (!jobs || jobs.length === 0) {
-    return <EmptyJobsList userType={userType} />;
-  }
-
   return (
-    <div className="container mx-auto py-8 px-4">
-      <JobsHeader userType={userType} jobCount={jobs.length} />
-      <JobSearch onSearch={handleSearch} />
-      <JobList jobs={jobs} />
-    </div>
+    <>
+      <NavBar />
+      <div className="container mx-auto py-8 px-4">
+        <JobsHeader userType={userType} jobCount={jobs?.length || 0} />
+        <JobSearch onSearch={handleSearch} />
+        {isLoading ? (
+          <LoadingSpinner />
+        ) : error ? (
+          <div className="text-center text-red-500">
+            Failed to load jobs. Please try again later.
+          </div>
+        ) : !jobs || jobs.length === 0 ? (
+          <EmptyJobsList userType={userType} />
+        ) : (
+          <JobList jobs={jobs} />
+        )}
+      </div>
+    </>
   );
 };
 
