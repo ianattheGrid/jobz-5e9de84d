@@ -20,8 +20,7 @@ export default function Index() {
               AI-Powered Hiring, Reimagined
             </h1>
             <p className="text-xl mb-8">
-              Combining AI technology with human connections to revolutionize recruitment. 
-              Post jobs, find talent, and reward successful matches.
+              Let AI change the way you hire-forever
             </p>
             <div className="flex gap-4">
               <Link 
