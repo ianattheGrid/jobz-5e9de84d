@@ -8,7 +8,9 @@ import {
   customerSupportTitles,
   customerExperienceTitles,
   customerServiceManagementTitles,
-  salesAndRetentionTitles
+  salesAndRetentionTitles,
+  specializedCustomerServiceTitles,
+  technicalSupportTitles
 } from "./work-area/constants";
 import ITSpecializationSelect from "./work-area/ITSpecializationSelect";
 import CustomerServiceSpecializationSelect from "./work-area/CustomerServiceSpecializationSelect";
@@ -28,12 +30,16 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
   const [showCustomerExperienceTitles, setShowCustomerExperienceTitles] = useState(false);
   const [showCustomerServiceManagementTitles, setShowCustomerServiceManagementTitles] = useState(false);
   const [showSalesAndRetentionTitles, setShowSalesAndRetentionTitles] = useState(false);
+  const [showSpecializedCustomerServiceTitles, setShowSpecializedCustomerServiceTitles] = useState(false);
+  const [showTechnicalSupportTitles, setShowTechnicalSupportTitles] = useState(false);
 
   const handleCustomerServiceSpecializationChange = (value: string) => {
     setShowCustomerSupportTitles(value === "Customer Support Roles");
     setShowCustomerExperienceTitles(value === "Customer Experience Roles");
     setShowCustomerServiceManagementTitles(value === "Management Roles");
     setShowSalesAndRetentionTitles(value === "Sales and Retention Roles");
+    setShowSpecializedCustomerServiceTitles(value === "Specialised Customer Service Roles");
+    setShowTechnicalSupportTitles(value === "Technical and Advanced Support Roles");
   };
 
   return (
@@ -99,6 +105,14 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
 
       {showSalesAndRetentionTitles && (
         <JobTitleSelect control={control} titles={salesAndRetentionTitles} />
+      )}
+
+      {showSpecializedCustomerServiceTitles && (
+        <JobTitleSelect control={control} titles={specializedCustomerServiceTitles} />
+      )}
+
+      {showTechnicalSupportTitles && (
+        <JobTitleSelect control={control} titles={technicalSupportTitles} />
       )}
 
       {showOtherInput && (
