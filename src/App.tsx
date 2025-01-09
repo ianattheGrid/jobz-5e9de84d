@@ -23,28 +23,30 @@ import "./App.css";
 function App() {
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<Index />} />
-        <Route path="/jobs" element={<Jobs />} />
-        <Route path="/employer/manage-jobs" element={<ManageJobs />} />
-        <Route path="/candidate/profile" element={<CandidateProfile />} />
-        <Route path="/candidate/signup" element={<CandidateSignUp />} />
-        <Route path="/candidate/signin" element={<CandidateSignIn />} />
-        <Route path="/employer/signup" element={<EmployerSignUp />} />
-        <Route path="/employer/signin" element={<EmployerSignIn />} />
-        <Route path="/employer/profile" element={<EmployerProfile />} />
-        <Route path="/employer/dashboard" element={<EmployerDashboard />} />
-        <Route path="/candidate/dashboard" element={<CandidateDashboard />} />
-        <Route path="/employer/create-vacancy" element={<CreateVacancy />} />
-        <Route path="/vr/signup" element={<VirtualRecruiterSignUp />} />
-        <Route path="/vr/signin" element={<VirtualRecruiterSignIn />} />
-        <Route path="/vr/dashboard" element={<VirtualRecruiterDashboard />} />
-        <Route path="/vr/recommendations" element={<VirtualRecruiterRecommendations />} />
-        <Route path="/candidate/:id" element={<ViewCandidateProfile />} />
-        <Route path="/employer/candidates" element={<CandidateSearch />} />
-        <Route path="/employer/interviews" element={<EmployerInterviews />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
+      <div className="min-h-screen bg-gray-50">
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="/jobs" element={<Jobs />} />
+          <Route path="/employer/manage-jobs" element={<ManageJobs />} />
+          <Route path="/candidate/profile" element={<CandidateProfile />} />
+          <Route path="/candidate/signup" element={<CandidateSignUp />} />
+          <Route path="/candidate/signin" element={<CandidateSignIn />} />
+          <Route path="/employer/signup" element={<EmployerSignUp />} />
+          <Route path="/employer/signin" element={<EmployerSignIn />} />
+          <Route path="/employer/profile" element={<EmployerProfile />} />
+          <Route path="/employer/dashboard" element={<EmployerDashboard />} />
+          <Route path="/candidate/dashboard" element={<CandidateDashboard />} />
+          <Route path="/employer/create-vacancy" element={<CreateVacancy />} />
+          <Route path="/vr/signup" element={<VirtualRecruiterSignUp />} />
+          <Route path="/vr/signin" element={<VirtualRecruiterSignIn />} />
+          <Route path="/vr/dashboard" element={<VirtualRecruiterDashboard />} />
+          <Route path="/vr/recommendations" element={<VirtualRecruiterRecommendations />} />
+          <Route path="/candidate/:id" element={<ViewCandidateProfile />} />
+          <Route path="/employer/candidates" element={<CandidateSearch />} />
+          <Route path="/employer/interviews" element={<EmployerInterviews />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </div>
     </Router>
   );
 }

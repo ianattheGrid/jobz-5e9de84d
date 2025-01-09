@@ -7,6 +7,7 @@ import { Building2 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import NavBar from "@/components/NavBar";
 
 const EmployerSignUp = () => {
   const [company, setCompany] = useState("");
@@ -53,64 +54,67 @@ const EmployerSignUp = () => {
   };
 
   return (
-    <div className="container mx-auto flex min-h-screen items-center justify-center">
-      <Card className="w-full max-w-md">
-        <CardHeader className="space-y-1">
-          <div className="flex items-center justify-center gap-2">
-            <Building2 className="h-8 w-8 text-red-800" />
-            <CardTitle className="text-2xl">Employer Sign Up</CardTitle>
-          </div>
-          <CardDescription>
-            Create an employer account to post job vacancies
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <form onSubmit={handleSignUp} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="company">Company Name</Label>
-              <Input 
-                id="company" 
-                value={company}
-                onChange={(e) => setCompany(e.target.value)}
-                placeholder="Enter your company name" 
-                required
-              />
+    <>
+      <NavBar />
+      <div className="container mx-auto flex min-h-screen items-center justify-center pt-16">
+        <Card className="w-full max-w-md">
+          <CardHeader className="space-y-1">
+            <div className="flex items-center justify-center gap-2">
+              <Building2 className="h-8 w-8 text-primary" />
+              <CardTitle className="text-2xl">Employer Sign Up</CardTitle>
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input 
-                id="email" 
-                type="email" 
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email" 
-                required
-              />
+            <CardDescription>
+              Create an employer account to post job vacancies
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <form onSubmit={handleSignUp} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="company">Company Name</Label>
+                <Input 
+                  id="company" 
+                  value={company}
+                  onChange={(e) => setCompany(e.target.value)}
+                  placeholder="Enter your company name" 
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <Input 
+                  id="email" 
+                  type="email" 
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter your email" 
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="password">Password</Label>
+                <Input 
+                  id="password" 
+                  type="password" 
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Create a password" 
+                  required
+                />
+              </div>
+              <Button className="w-full bg-primary hover:bg-primary/90 text-white" type="submit" disabled={loading}>
+                {loading ? "Signing up..." : "Sign Up"}
+              </Button>
+            </form>
+            <div className="text-center text-sm text-muted-foreground">
+              Already have an account?{" "}
+              <Link to="/employer/signin" className="text-primary hover:underline">
+                Sign In
+              </Link>
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <Input 
-                id="password" 
-                type="password" 
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Create a password" 
-                required
-              />
-            </div>
-            <Button className="w-full bg-red-800 hover:bg-red-900 text-white" type="submit" disabled={loading}>
-              {loading ? "Signing up..." : "Sign Up"}
-            </Button>
-          </form>
-          <div className="text-center text-sm text-muted-foreground">
-            Already have an account?{" "}
-            <Link to="/employer/signin" className="text-red-800 hover:underline">
-              Sign In
-            </Link>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
+          </CardContent>
+        </Card>
+      </div>
+    </>
   );
 };
 
