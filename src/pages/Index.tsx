@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "react-router-dom";
-import { Building2, User, Users, Calculator, Sparkles, PoundSterling, FileText, Target, Robot, Coins } from "lucide-react";
+import { Building2, User, Users, Calculator, Sparkles, PoundSterling, FileText, Target, Bot, Coins } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function Index() {
@@ -77,7 +77,7 @@ export default function Index() {
 
               <Card className="border-none shadow-lg">
                 <CardHeader>
-                  <Robot className="h-12 w-12 text-primary mb-4" />
+                  <Bot className="h-12 w-12 text-primary mb-4" />
                   <CardTitle>AI-Powered Sourcing</CardTitle>
                   <CardDescription>
                     Activate virtual recruiters to anonymously source and match the best candidates for your roles.
@@ -147,7 +147,7 @@ export default function Index() {
             <div className="grid md:grid-cols-2 gap-6">
               <Card className="border-none shadow-lg">
                 <CardHeader>
-                  <Robot className="h-12 w-12 text-primary mb-4" />
+                  <Bot className="h-12 w-12 text-primary mb-4" />
                   <CardTitle>AI-Powered Matching</CardTitle>
                   <CardDescription>
                     Our advanced algorithms analyze job requirements and candidate profiles to create perfect matches.
