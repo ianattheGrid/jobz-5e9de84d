@@ -10,10 +10,18 @@ import {
   customerServiceManagementTitles,
   salesAndRetentionTitles,
   specializedCustomerServiceTitles,
-  technicalSupportTitles
+  technicalSupportTitles,
+  accountingRoles,
+  financialAnalysisRoles,
+  auditingRoles,
+  bankingRoles,
+  taxAndTreasuryRoles,
+  financeOperationsRoles,
+  specializedFinanceRoles
 } from "./work-area/constants";
 import ITSpecializationSelect from "./work-area/ITSpecializationSelect";
 import CustomerServiceSpecializationSelect from "./work-area/CustomerServiceSpecializationSelect";
+import FinanceSpecializationSelect from "./work-area/FinanceSpecializationSelect";
 import JobTitleSelect from "./work-area/JobTitleSelect";
 import OtherWorkAreaInput from "./work-area/OtherWorkAreaInput";
 import { useState } from "react";
@@ -26,12 +34,20 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
   const [showOtherInput, setShowOtherInput] = useState(false);
   const [showITSpecialization, setShowITSpecialization] = useState(false);
   const [showCustomerServiceSpecialization, setShowCustomerServiceSpecialization] = useState(false);
+  const [showFinanceSpecialization, setShowFinanceSpecialization] = useState(false);
   const [showCustomerSupportTitles, setShowCustomerSupportTitles] = useState(false);
   const [showCustomerExperienceTitles, setShowCustomerExperienceTitles] = useState(false);
   const [showCustomerServiceManagementTitles, setShowCustomerServiceManagementTitles] = useState(false);
   const [showSalesAndRetentionTitles, setShowSalesAndRetentionTitles] = useState(false);
   const [showSpecializedCustomerServiceTitles, setShowSpecializedCustomerServiceTitles] = useState(false);
   const [showTechnicalSupportTitles, setShowTechnicalSupportTitles] = useState(false);
+  const [showAccountingRoles, setShowAccountingRoles] = useState(false);
+  const [showFinancialAnalysisRoles, setShowFinancialAnalysisRoles] = useState(false);
+  const [showAuditingRoles, setShowAuditingRoles] = useState(false);
+  const [showBankingRoles, setShowBankingRoles] = useState(false);
+  const [showTaxAndTreasuryRoles, setShowTaxAndTreasuryRoles] = useState(false);
+  const [showFinanceOperationsRoles, setShowFinanceOperationsRoles] = useState(false);
+  const [showSpecializedFinanceRoles, setShowSpecializedFinanceRoles] = useState(false);
 
   const handleCustomerServiceSpecializationChange = (value: string) => {
     setShowCustomerSupportTitles(value === "Customer Support Roles");
@@ -40,6 +56,16 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
     setShowSalesAndRetentionTitles(value === "Sales and Retention Roles");
     setShowSpecializedCustomerServiceTitles(value === "Specialised Customer Service Roles");
     setShowTechnicalSupportTitles(value === "Technical and Advanced Support Roles");
+  };
+
+  const handleFinanceSpecializationChange = (value: string) => {
+    setShowAccountingRoles(value === "Accounting Roles");
+    setShowFinancialAnalysisRoles(value === "Financial Analysis and Planning Roles");
+    setShowAuditingRoles(value === "Auditing and Compliance Roles");
+    setShowBankingRoles(value === "Banking and Investment Roles");
+    setShowTaxAndTreasuryRoles(value === "Tax and Treasury Roles");
+    setShowFinanceOperationsRoles(value === "Finance Operations Roles");
+    setShowSpecializedFinanceRoles(value === "Specialized Accounting and Finance Roles");
   };
 
   return (
@@ -57,6 +83,7 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
                   setShowOtherInput(value === "Other");
                   setShowITSpecialization(value === "IT");
                   setShowCustomerServiceSpecialization(value === "Customer Service");
+                  setShowFinanceSpecialization(value === "Accounting & Finance");
                 }} 
                 defaultValue={field.value}
               >
@@ -91,6 +118,13 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
         />
       )}
 
+      {showFinanceSpecialization && (
+        <FinanceSpecializationSelect
+          control={control}
+          onSpecializationChange={handleFinanceSpecializationChange}
+        />
+      )}
+
       {showCustomerSupportTitles && (
         <JobTitleSelect control={control} titles={customerSupportTitles} />
       )}
@@ -113,6 +147,34 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
 
       {showTechnicalSupportTitles && (
         <JobTitleSelect control={control} titles={technicalSupportTitles} />
+      )}
+
+      {showAccountingRoles && (
+        <JobTitleSelect control={control} titles={accountingRoles} />
+      )}
+
+      {showFinancialAnalysisRoles && (
+        <JobTitleSelect control={control} titles={financialAnalysisRoles} />
+      )}
+
+      {showAuditingRoles && (
+        <JobTitleSelect control={control} titles={auditingRoles} />
+      )}
+
+      {showBankingRoles && (
+        <JobTitleSelect control={control} titles={bankingRoles} />
+      )}
+
+      {showTaxAndTreasuryRoles && (
+        <JobTitleSelect control={control} titles={taxAndTreasuryRoles} />
+      )}
+
+      {showFinanceOperationsRoles && (
+        <JobTitleSelect control={control} titles={financeOperationsRoles} />
+      )}
+
+      {showSpecializedFinanceRoles && (
+        <JobTitleSelect control={control} titles={specializedFinanceRoles} />
       )}
 
       {showOtherInput && (
