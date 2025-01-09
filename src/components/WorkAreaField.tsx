@@ -12,10 +12,22 @@ import {
   hrLeadershipRoles,
   specializedHrRoles
 } from "./work-area/constants/hr-roles";
+import {
+  solicitorRoles,
+  barristerRoles,
+  legalSupportRoles,
+  inHouseLegalRoles,
+  legalOperationsRoles,
+  alspRoles,
+  complianceRoles,
+  legalEducationRoles,
+  specializedLegalRoles
+} from "./work-area/constants/legal-roles";
 import ITSpecializationSelect from "./work-area/ITSpecializationSelect";
 import CustomerServiceSpecializationSelect from "./work-area/CustomerServiceSpecializationSelect";
 import FinanceSpecializationSelect from "./work-area/FinanceSpecializationSelect";
 import HRSpecializationSelect from "./work-area/HRSpecializationSelect";
+import LegalSpecializationSelect from "./work-area/LegalSpecializationSelect";
 import JobTitleSelect from "./work-area/JobTitleSelect";
 import OtherWorkAreaInput from "./work-area/OtherWorkAreaInput";
 import { useState } from "react";
@@ -30,6 +42,7 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
   const [showCustomerServiceSpecialization, setShowCustomerServiceSpecialization] = useState(false);
   const [showFinanceSpecialization, setShowFinanceSpecialization] = useState(false);
   const [showHRSpecialization, setShowHRSpecialization] = useState(false);
+  const [showLegalSpecialization, setShowLegalSpecialization] = useState(false);
   const [showRecruitmentRoles, setShowRecruitmentRoles] = useState(false);
   const [showEmployeeRelationsRoles, setShowEmployeeRelationsRoles] = useState(false);
   const [showCompensationRoles, setShowCompensationRoles] = useState(false);
@@ -38,6 +51,15 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
   const [showDEIRoles, setShowDEIRoles] = useState(false);
   const [showHRLeadershipRoles, setShowHRLeadershipRoles] = useState(false);
   const [showSpecializedHRRoles, setShowSpecializedHRRoles] = useState(false);
+  const [showSolicitorRoles, setShowSolicitorRoles] = useState(false);
+  const [showBarristerRoles, setShowBarristerRoles] = useState(false);
+  const [showLegalSupportRoles, setShowLegalSupportRoles] = useState(false);
+  const [showInHouseLegalRoles, setShowInHouseLegalRoles] = useState(false);
+  const [showLegalOperationsRoles, setShowLegalOperationsRoles] = useState(false);
+  const [showALSPRoles, setShowALSPRoles] = useState(false);
+  const [showComplianceRoles, setShowComplianceRoles] = useState(false);
+  const [showLegalEducationRoles, setShowLegalEducationRoles] = useState(false);
+  const [showSpecializedLegalRoles, setShowSpecializedLegalRoles] = useState(false);
 
   const handleHRSpecializationChange = (value: string) => {
     setShowRecruitmentRoles(value === "Recruitment and Talent Acquisition");
@@ -48,6 +70,18 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
     setShowDEIRoles(value === "Diversity, Equity, and Inclusion");
     setShowHRLeadershipRoles(value === "HR Leadership");
     setShowSpecializedHRRoles(value === "Specialized HR Roles");
+  };
+
+  const handleLegalSpecializationChange = (value: string) => {
+    setShowSolicitorRoles(value === "Solicitors and Legal Advisory");
+    setShowBarristerRoles(value === "Barristers and Advocacy");
+    setShowLegalSupportRoles(value === "Legal Support");
+    setShowInHouseLegalRoles(value === "In-House Legal");
+    setShowLegalOperationsRoles(value === "Legal Operations and Management");
+    setShowALSPRoles(value === "Alternative Legal Service Providers (ALSPs) and New Law");
+    setShowComplianceRoles(value === "Compliance, Risk, and Regulatory");
+    setShowLegalEducationRoles(value === "Legal Education and Training");
+    setShowSpecializedLegalRoles(value === "Specialized Legal");
   };
 
   return (
@@ -67,6 +101,7 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
                   setShowCustomerServiceSpecialization(value === "Customer Service");
                   setShowFinanceSpecialization(value === "Accounting & Finance");
                   setShowHRSpecialization(value === "Human Resources");
+                  setShowLegalSpecialization(value === "Legal");
                 }} 
                 defaultValue={field.value}
               >
@@ -115,6 +150,13 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
         />
       )}
 
+      {showLegalSpecialization && (
+        <LegalSpecializationSelect
+          control={control}
+          onSpecializationChange={handleLegalSpecializationChange}
+        />
+      )}
+
       {showRecruitmentRoles && (
         <JobTitleSelect control={control} titles={recruitmentRoles} />
       )}
@@ -145,6 +187,42 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
 
       {showSpecializedHRRoles && (
         <JobTitleSelect control={control} titles={specializedHrRoles} />
+      )}
+
+      {showSolicitorRoles && (
+        <JobTitleSelect control={control} titles={solicitorRoles} />
+      )}
+
+      {showBarristerRoles && (
+        <JobTitleSelect control={control} titles={barristerRoles} />
+      )}
+
+      {showLegalSupportRoles && (
+        <JobTitleSelect control={control} titles={legalSupportRoles} />
+      )}
+
+      {showInHouseLegalRoles && (
+        <JobTitleSelect control={control} titles={inHouseLegalRoles} />
+      )}
+
+      {showLegalOperationsRoles && (
+        <JobTitleSelect control={control} titles={legalOperationsRoles} />
+      )}
+
+      {showALSPRoles && (
+        <JobTitleSelect control={control} titles={alspRoles} />
+      )}
+
+      {showComplianceRoles && (
+        <JobTitleSelect control={control} titles={complianceRoles} />
+      )}
+
+      {showLegalEducationRoles && (
+        <JobTitleSelect control={control} titles={legalEducationRoles} />
+      )}
+
+      {showSpecializedLegalRoles && (
+        <JobTitleSelect control={control} titles={specializedLegalRoles} />
       )}
 
       {showOtherInput && (

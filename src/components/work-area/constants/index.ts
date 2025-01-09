@@ -2,6 +2,7 @@ export * from './hr-roles';
 export * from './it-roles';
 export * from './customer-service-roles';
 export * from './finance-roles';
+export * from './legal-roles';
 
 export const workAreas = [
   "R&D",
