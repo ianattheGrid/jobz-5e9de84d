@@ -29,6 +29,9 @@ const MobileNav = ({ isAuthenticated, userType, handleSignOut }: MobileNavProps)
           <SheetTitle>Menu</SheetTitle>
         </SheetHeader>
         <div className="flex flex-col gap-4 mt-4">
+          <Link to="/" className="text-lg hover:text-gray-900">
+            Home
+          </Link>
           <Link to="/jobs" className="text-lg hover:text-gray-900">
             Job Board
           </Link>
