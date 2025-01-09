@@ -87,16 +87,15 @@ const PublicSectorSpecializationSelect = ({
               </Select>
             </FormControl>
             <FormMessage />
+            {field.value && (
+              <JobTitleSelect 
+                control={control} 
+                titles={getTitlesForSpecialization(field.value)}
+              />
+            )}
           </FormItem>
         )}
       />
-
-      {field?.value && (
-        <JobTitleSelect 
-          control={control} 
-          titles={getTitlesForSpecialization(field.value)}
-        />
-      )}
     </div>
   );
 };
