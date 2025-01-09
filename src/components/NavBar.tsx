@@ -29,11 +29,13 @@ const NavBar = () => {
   }, []);
 
   return (
-    <nav className="bg-white shadow-sm">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-white shadow-sm">
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center gap-4">
-            <MobileNav />
+            <div className="block lg:hidden">
+              <MobileNav />
+            </div>
             <Logo />
           </div>
         </div>

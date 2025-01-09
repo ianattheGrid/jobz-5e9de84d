@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Home, Menu } from "lucide-react";
+import { Menu } from "lucide-react";
 import {
   Sheet,
   SheetContent,
@@ -16,32 +16,32 @@ const MobileNav = () => {
     <Sheet>
       <SheetTrigger asChild>
         <button
-          className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+          className="p-2 hover:bg-primary-light rounded-lg transition-colors"
           aria-label="Open menu"
         >
-          <Menu className="w-6 h-6" />
+          <Menu className="w-6 h-6 text-primary" />
         </button>
       </SheetTrigger>
-      <SheetContent>
+      <SheetContent side="left" className="w-[300px] bg-white">
         <SheetHeader>
-          <SheetTitle>Menu</SheetTitle>
+          <SheetTitle className="text-primary">Menu</SheetTitle>
         </SheetHeader>
         <div className="flex flex-col gap-4 mt-4">
-          <Link to="/" className="text-lg hover:text-gray-900">
+          <Link to="/" className="text-lg text-gray-600 hover:text-primary transition-colors">
             Home
           </Link>
-          <Link to="/jobs" className="text-lg hover:text-gray-900">
+          <Link to="/jobs" className="text-lg text-gray-600 hover:text-primary transition-colors">
             Job Board
           </Link>
           {!user ? (
             <>
-              <Link to="/employer/signin" className="text-lg hover:text-gray-900">
+              <Link to="/employer/signin" className="text-lg text-gray-600 hover:text-primary transition-colors">
                 Employer Sign In
               </Link>
-              <Link to="/candidate/signin" className="text-lg hover:text-gray-900">
+              <Link to="/candidate/signin" className="text-lg text-gray-600 hover:text-primary transition-colors">
                 Candidate Sign In
               </Link>
-              <Link to="/vr/signin" className="text-lg hover:text-gray-900">
+              <Link to="/vr/signin" className="text-lg text-gray-600 hover:text-primary transition-colors">
                 Virtual Recruiter Sign In
               </Link>
             </>
@@ -50,7 +50,7 @@ const MobileNav = () => {
               {userType === "employer" && (
                 <Link
                   to="/employer/dashboard"
-                  className="text-lg hover:text-gray-900"
+                  className="text-lg text-gray-600 hover:text-primary transition-colors"
                 >
                   Employer Dashboard
                 </Link>
@@ -58,13 +58,16 @@ const MobileNav = () => {
               {userType === "candidate" && (
                 <Link
                   to="/candidate/dashboard"
-                  className="text-lg hover:text-gray-900"
+                  className="text-lg text-gray-600 hover:text-primary transition-colors"
                 >
                   Candidate Dashboard
                 </Link>
               )}
               {userType === "recruiter" && (
-                <Link to="/vr/dashboard" className="text-lg hover:text-gray-900">
+                <Link 
+                  to="/vr/dashboard" 
+                  className="text-lg text-gray-600 hover:text-primary transition-colors"
+                >
                   Virtual Recruiter Dashboard
                 </Link>
               )}
