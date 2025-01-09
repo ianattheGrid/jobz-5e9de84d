@@ -28,10 +28,6 @@ const NavBar = () => {
     return () => subscription.unsubscribe();
   }, []);
 
-  const handleSignOut = async () => {
-    await supabase.auth.signOut();
-  };
-
   return (
     <nav className="bg-white shadow-sm">
       <div className="container mx-auto px-4">
