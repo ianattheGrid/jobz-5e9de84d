@@ -19,7 +19,6 @@ export {
   specializedRoles
 } from './public-sector';
 export {
-  engineeringRoles,
   civilEngineeringTitles,
   mechanicalEngineeringTitles,
   electricalEngineeringTitles,
