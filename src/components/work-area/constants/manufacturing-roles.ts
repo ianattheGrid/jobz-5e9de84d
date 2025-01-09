@@ -39,7 +39,7 @@ export const qualityAssuranceRoles = [
   "Supplier Quality Engineer"
 ];
 
-export const researchDevelopmentRoles = [
+export const manufacturingRnDRoles = [
   "Design Engineer",
   "Industrial Designer",
   "Manufacturing R&D Engineer",
