@@ -27,3 +27,18 @@ export const publicSectorSpecializations = [
 ] as const;
 
 export type PublicSectorSpecialization = typeof publicSectorSpecializations[number];
+
+export const publicSectorRoles = {
+  centralGovernmentRoles,
+  localGovernmentRoles,
+  healthcareRoles,
+  educationRoles,
+  lawEnforcementRoles,
+  socialCareRoles,
+  infrastructureRoles,
+  environmentalRoles,
+  regulatoryRoles,
+  leadershipRoles,
+  administrativeRoles,
+  specializedRoles
+};

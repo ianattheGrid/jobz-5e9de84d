@@ -123,3 +123,20 @@ export const specializedEngineeringTitles = [
   "Quantum Engineer",
   "Smart Systems Engineer"
 ];
+
+export const engineeringRoles = {
+  civilEngineeringTitles,
+  mechanicalEngineeringTitles,
+  electricalEngineeringTitles,
+  chemicalEngineeringTitles,
+  aerospaceEngineeringTitles,
+  environmentalEngineeringTitles,
+  softwareEngineeringTitles,
+  energyEngineeringTitles,
+  manufacturingEngineeringTitles,
+  marineEngineeringTitles,
+  biomedicalEngineeringTitles,
+  miningEngineeringTitles,
+  projectManagementTitles,
+  specializedEngineeringTitles
+};
