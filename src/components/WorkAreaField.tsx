@@ -6,6 +6,7 @@ import { workAreas } from "./work-area/constants";
 import ITSpecializationSelect from "./work-area/specializations/ITSpecializationSelect";
 import CustomerServiceSpecializationSelect from "./work-area/specializations/CustomerServiceSpecializationSelect";
 import FinanceSpecializationSelect from "./work-area/specializations/FinanceSpecializationSelect";
+import PublicSectorSpecializationSelect from "./work-area/specializations/PublicSectorSpecializationSelect";
 import PharmaFields from "./work-area/fields/PharmaFields";
 import OtherFields from "./work-area/fields/OtherFields";
 
@@ -18,6 +19,7 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
   const [showITSpecialization, setShowITSpecialization] = useState(false);
   const [showCustomerServiceSpecialization, setShowCustomerServiceSpecialization] = useState(false);
   const [showFinanceSpecialization, setShowFinanceSpecialization] = useState(false);
+  const [showPublicSectorSpecialization, setShowPublicSectorSpecialization] = useState(false);
   const [showPharmaFields, setShowPharmaFields] = useState(false);
 
   return (
@@ -36,6 +38,7 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
                   setShowITSpecialization(value === "IT");
                   setShowCustomerServiceSpecialization(value === "Customer Service");
                   setShowFinanceSpecialization(value === "Accounting & Finance");
+                  setShowPublicSectorSpecialization(value === "Public Sector");
                   setShowPharmaFields(value === "Pharma");
                 }} 
                 defaultValue={field.value}
@@ -73,6 +76,13 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
 
       {showFinanceSpecialization && (
         <FinanceSpecializationSelect
+          control={control}
+          onSpecializationChange={() => {}}
+        />
+      )}
+
+      {showPublicSectorSpecialization && (
+        <PublicSectorSpecializationSelect
           control={control}
           onSpecializationChange={() => {}}
         />
