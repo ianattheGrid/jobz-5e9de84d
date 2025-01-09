@@ -1,3 +1,20 @@
+export const publicSectorSpecializations = [
+  "Central Government",
+  "Local Government",
+  "Healthcare and Public Health",
+  "Education and Training",
+  "Law Enforcement and Security",
+  "Social Care and Community Support",
+  "Transport and Infrastructure",
+  "Environmental and Sustainability",
+  "Regulatory and Compliance",
+  "Public Sector Leadership",
+  "Administrative Support",
+  "Specialized Public Sector"
+] as const;
+
+export type PublicSectorSpecialization = typeof publicSectorSpecializations[number];
+
 export const centralGovernmentRoles = [
   "Civil Servant",
   "Policy Advisor",
@@ -110,23 +127,6 @@ export const specializedRoles = [
   "Public Relations Officer",
   "Researcher (Public Sector)"
 ];
-
-export const publicSectorSpecializations = [
-  "Central Government",
-  "Local Government",
-  "Healthcare and Public Health",
-  "Education and Training",
-  "Law Enforcement and Security",
-  "Social Care and Community Support",
-  "Transport and Infrastructure",
-  "Environmental and Sustainability",
-  "Regulatory and Compliance",
-  "Public Sector Leadership",
-  "Administrative Support",
-  "Specialized Public Sector"
-] as const;
-
-export type PublicSectorSpecialization = typeof publicSectorSpecializations[number];
 
 export const publicSectorRoles = {
   centralGovernmentRoles,
