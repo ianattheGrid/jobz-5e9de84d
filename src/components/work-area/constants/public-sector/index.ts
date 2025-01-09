@@ -127,19 +127,3 @@ export const specializedRoles = [
   "Public Relations Officer",
   "Researcher (Public Sector)"
 ];
-
-export {
-  publicSectorSpecializations,
-  centralGovernmentRoles,
-  localGovernmentRoles,
-  healthcareRoles,
-  educationRoles,
-  lawEnforcementRoles,
-  socialCareRoles,
-  infrastructureRoles,
-  environmentalRoles,
-  regulatoryRoles,
-  leadershipRoles,
-  administrativeRoles,
-  specializedRoles
-};
