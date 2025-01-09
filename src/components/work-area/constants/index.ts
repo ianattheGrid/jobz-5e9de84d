@@ -4,8 +4,8 @@ export { customerServiceSpecializations } from './customer-service-roles';
 export { financeRoles } from './finance-roles';
 export { 
   publicSectorRoles, 
-  publicSectorSpecializations, 
-  type PublicSectorSpecialization,
+  publicSectorSpecializations,
+  PublicSectorSpecialization,
   centralGovernmentRoles,
   localGovernmentRoles,
   healthcareRoles,
