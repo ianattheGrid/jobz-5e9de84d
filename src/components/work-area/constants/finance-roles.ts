@@ -1,95 +1,64 @@
 export const accountingRoles = [
-  "Accounting Assistant",
-  "Accounting Clerk",
-  "Accounting Manager",
-  "Accounts Payable Specialist",
-  "Accounts Receivable Specialist",
-  "Auditor",
+  "Accountant",
+  "Accounts Payable Clerk",
+  "Accounts Receivable Clerk",
   "Bookkeeper",
-  "Chartered Accountant (CA)",
   "Cost Accountant",
-  "Forensic Accountant",
-  "General Ledger Accountant",
+  "Financial Controller",
   "Management Accountant",
-  "Payroll Administrator",
-  "Payroll Manager",
+  "Payroll Specialist",
   "Senior Accountant",
-  "Staff Accountant",
-  "Tax Accountant",
-  "Tax Consultant"
+  "Tax Accountant"
 ];
 
 export const financialAnalysisRoles = [
-  "Budget Analyst",
-  "Business Analyst (Finance)",
-  "Chief Financial Officer (CFO)",
-  "Corporate Financial Analyst",
+  "Business Analyst",
   "Financial Analyst",
-  "Financial Consultant",
-  "Financial Planning and Analysis (FP&A) Manager",
+  "FP&A Manager",
   "Investment Analyst",
-  "Junior Financial Analyst",
+  "Portfolio Manager",
   "Risk Analyst",
   "Senior Financial Analyst",
-  "Treasury Analyst"
+  "Treasury Analyst",
+  "Valuation Analyst"
 ];
 
 export const auditingRoles = [
   "Audit Manager",
-  "Compliance Analyst",
-  "Compliance Manager",
+  "Compliance Officer",
   "External Auditor",
-  "Forensic Auditor",
   "Internal Auditor",
-  "Regulatory Compliance Officer"
+  "Quality Assurance Specialist",
+  "Risk Management Specialist",
+  "Senior Auditor"
 ];
 
 export const bankingRoles = [
-  "Asset Manager",
-  "Banking Relationship Manager",
-  "Branch Manager",
+  "Bank Manager",
+  "Commercial Banker",
   "Credit Analyst",
-  "Financial Advisor",
-  "Fund Manager",
   "Investment Banker",
-  "Investment Manager",
   "Loan Officer",
-  "Mortgage Advisor",
-  "Private Equity Analyst",
+  "Private Banker",
+  "Relationship Manager",
   "Wealth Manager"
 ];
 
-export const taxAndTreasuryRoles = [
-  "Corporate Tax Manager",
-  "Indirect Tax Specialist",
-  "International Tax Manager",
-  "Tax Advisor",
-  "Tax Manager",
-  "Tax Specialist",
-  "Treasury Accountant",
-  "Treasury Manager"
-];
-
-export const financeOperationsRoles = [
-  "Accounts Payable Clerk",
-  "Accounts Receivable Clerk",
-  "Billing Specialist",
-  "Chief Accounting Officer (CAO)",
-  "Financial Controller",
-  "Finance Manager",
-  "Loan Processor",
-  "Procurement Officer",
-  "Revenue Analyst"
-];
-
 export const specializedFinanceRoles = [
-  "Cost Estimator",
-  "Environmental Accountant",
-  "Fund Accountant",
-  "Grants Manager",
-  "Government Accountant",
-  "Healthcare Accountant",
+  "Actuary",
+  "Benefits Specialist",
+  "Business Intelligence Analyst",
+  "Credit Risk Manager",
+  "Data Analyst (Finance)",
+  "Economist",
+  "ESG Analyst",
+  "Financial Advisor",
+  "Financial Software Developer",
+  "Forensic Accountant",
   "Insurance Underwriter",
+  "Investment Consultant",
+  "M&A Analyst",
+  "Market Research Analyst",
   "Project Accountant",
   "Real Estate Analyst",
   "Renewable Energy Financial Analyst"
