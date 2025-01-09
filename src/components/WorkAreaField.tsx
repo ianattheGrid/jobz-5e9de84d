@@ -9,21 +9,22 @@ import HRSpecializationSelect from "./work-area/HRSpecializationSelect";
 import LegalSpecializationSelect from "./work-area/LegalSpecializationSelect";
 import ManufacturingSpecializationSelect from "./work-area/ManufacturingSpecializationSelect";
 import EnergySpecializationSelect from "./work-area/EnergySpecializationSelect";
+import PharmaSpecializationSelect from "./work-area/PharmaSpecializationSelect";
 import JobTitleSelect from "./work-area/JobTitleSelect";
 import OtherWorkAreaInput from "./work-area/OtherWorkAreaInput";
 import { useState } from "react";
 import {
-  energyGenerationRoles,
-  transmissionRoles,
-  utilitiesManagementRoles,
-  renewableEnergyRoles,
-  engineeringTechnicalRoles,
-  regulatoryRoles,
-  customerServiceRoles,
-  researchDevelopmentRoles,
-  financeBusinessRoles,
-  specializedEnergyRoles
-} from "./work-area/constants/energy-roles";
+  pharmaRnDRoles,
+  clinicalTrialsRoles,
+  pharmaManufacturingRoles,
+  qualityAssuranceRoles,
+  regulatoryAffairsRoles,
+  pharmaSalesRoles,
+  medicalWritingRoles,
+  pharmaSupplyChainRoles,
+  pharmacovigilanceRoles,
+  specializedPharmaRoles
+} from "./work-area/constants/pharma-roles";
 
 interface WorkAreaFieldProps {
   control: Control<any>;
@@ -38,28 +39,29 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
   const [showLegalSpecialization, setShowLegalSpecialization] = useState(false);
   const [showManufacturingSpecialization, setShowManufacturingSpecialization] = useState(false);
   const [showEnergySpecialization, setShowEnergySpecialization] = useState(false);
-  const [showEnergyGenerationRoles, setShowEnergyGenerationRoles] = useState(false);
-  const [showTransmissionRoles, setShowTransmissionRoles] = useState(false);
-  const [showUtilitiesManagementRoles, setShowUtilitiesManagementRoles] = useState(false);
-  const [showRenewableEnergyRoles, setShowRenewableEnergyRoles] = useState(false);
-  const [showEngineeringTechnicalRoles, setShowEngineeringTechnicalRoles] = useState(false);
-  const [showRegulatoryRoles, setShowRegulatoryRoles] = useState(false);
-  const [showCustomerServiceRoles, setShowCustomerServiceRoles] = useState(false);
-  const [showResearchDevelopmentRoles, setShowResearchDevelopmentRoles] = useState(false);
-  const [showFinanceBusinessRoles, setShowFinanceBusinessRoles] = useState(false);
-  const [showSpecializedEnergyRoles, setShowSpecializedEnergyRoles] = useState(false);
+  const [showPharmaSpecialization, setShowPharmaSpecialization] = useState(false);
+  const [showPharmaRnDRoles, setShowPharmaRnDRoles] = useState(false);
+  const [showClinicalTrialsRoles, setShowClinicalTrialsRoles] = useState(false);
+  const [showPharmaManufacturingRoles, setShowPharmaManufacturingRoles] = useState(false);
+  const [showQualityAssuranceRoles, setShowQualityAssuranceRoles] = useState(false);
+  const [showRegulatoryAffairsRoles, setShowRegulatoryAffairsRoles] = useState(false);
+  const [showPharmaSalesRoles, setShowPharmaSalesRoles] = useState(false);
+  const [showMedicalWritingRoles, setShowMedicalWritingRoles] = useState(false);
+  const [showPharmaSupplyChainRoles, setShowPharmaSupplyChainRoles] = useState(false);
+  const [showPharmacovigilanceRoles, setShowPharmacovigilanceRoles] = useState(false);
+  const [showSpecializedPharmaRoles, setShowSpecializedPharmaRoles] = useState(false);
 
-  const handleEnergySpecializationChange = (value: string) => {
-    setShowEnergyGenerationRoles(value === "Energy Generation and Production");
-    setShowTransmissionRoles(value === "Transmission and Distribution");
-    setShowUtilitiesManagementRoles(value === "Utilities Management and Operations");
-    setShowRenewableEnergyRoles(value === "Renewable Energy and Sustainability");
-    setShowEngineeringTechnicalRoles(value === "Engineering and Technical");
-    setShowRegulatoryRoles(value === "Regulatory and Compliance");
-    setShowCustomerServiceRoles(value === "Customer Service and Support");
-    setShowResearchDevelopmentRoles(value === "Research and Development (R&D)");
-    setShowFinanceBusinessRoles(value === "Finance and Business");
-    setShowSpecializedEnergyRoles(value === "Specialized Energy Roles");
+  const handlePharmaSpecializationChange = (value: string) => {
+    setShowPharmaRnDRoles(value === "Research and Development (R&D)");
+    setShowClinicalTrialsRoles(value === "Clinical Trials and Medical Affairs");
+    setShowPharmaManufacturingRoles(value === "Manufacturing and Production");
+    setShowQualityAssuranceRoles(value === "Quality Assurance and Quality Control (QA/QC)");
+    setShowRegulatoryAffairsRoles(value === "Regulatory Affairs");
+    setShowPharmaSalesRoles(value === "Sales and Marketing");
+    setShowMedicalWritingRoles(value === "Medical Writing and Communication");
+    setShowPharmaSupplyChainRoles(value === "Supply Chain and Logistics");
+    setShowPharmacovigilanceRoles(value === "Pharmacovigilance and Drug Safety");
+    setShowSpecializedPharmaRoles(value === "Specialized Pharma Roles");
   };
 
   return (
@@ -82,6 +84,7 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
                   setShowLegalSpecialization(value === "Legal");
                   setShowManufacturingSpecialization(value === "Manufacturing");
                   setShowEnergySpecialization(value === "Energy & Utilities");
+                  setShowPharmaSpecialization(value === "Pharma");
                 }} 
                 defaultValue={field.value}
               >
@@ -147,48 +150,55 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
       {showEnergySpecialization && (
         <EnergySpecializationSelect 
           control={control}
-          onSpecializationChange={handleEnergySpecializationChange}
+          onSpecializationChange={() => {}}
         />
       )}
 
-      {showEnergyGenerationRoles && (
-        <JobTitleSelect control={control} titles={energyGenerationRoles} />
+      {showPharmaSpecialization && (
+        <PharmaSpecializationSelect 
+          control={control}
+          onSpecializationChange={handlePharmaSpecializationChange}
+        />
       )}
 
-      {showTransmissionRoles && (
-        <JobTitleSelect control={control} titles={transmissionRoles} />
+      {showPharmaRnDRoles && (
+        <JobTitleSelect control={control} titles={pharmaRnDRoles} />
       )}
 
-      {showUtilitiesManagementRoles && (
-        <JobTitleSelect control={control} titles={utilitiesManagementRoles} />
+      {showClinicalTrialsRoles && (
+        <JobTitleSelect control={control} titles={clinicalTrialsRoles} />
       )}
 
-      {showRenewableEnergyRoles && (
-        <JobTitleSelect control={control} titles={renewableEnergyRoles} />
+      {showPharmaManufacturingRoles && (
+        <JobTitleSelect control={control} titles={pharmaManufacturingRoles} />
       )}
 
-      {showEngineeringTechnicalRoles && (
-        <JobTitleSelect control={control} titles={engineeringTechnicalRoles} />
+      {showQualityAssuranceRoles && (
+        <JobTitleSelect control={control} titles={qualityAssuranceRoles} />
       )}
 
-      {showRegulatoryRoles && (
-        <JobTitleSelect control={control} titles={regulatoryRoles} />
+      {showRegulatoryAffairsRoles && (
+        <JobTitleSelect control={control} titles={regulatoryAffairsRoles} />
       )}
 
-      {showCustomerServiceRoles && (
-        <JobTitleSelect control={control} titles={customerServiceRoles} />
+      {showPharmaSalesRoles && (
+        <JobTitleSelect control={control} titles={pharmaSalesRoles} />
       )}
 
-      {showResearchDevelopmentRoles && (
-        <JobTitleSelect control={control} titles={researchDevelopmentRoles} />
+      {showMedicalWritingRoles && (
+        <JobTitleSelect control={control} titles={medicalWritingRoles} />
       )}
 
-      {showFinanceBusinessRoles && (
-        <JobTitleSelect control={control} titles={financeBusinessRoles} />
+      {showPharmaSupplyChainRoles && (
+        <JobTitleSelect control={control} titles={pharmaSupplyChainRoles} />
       )}
 
-      {showSpecializedEnergyRoles && (
-        <JobTitleSelect control={control} titles={specializedEnergyRoles} />
+      {showPharmacovigilanceRoles && (
+        <JobTitleSelect control={control} titles={pharmacovigilanceRoles} />
+      )}
+
+      {showSpecializedPharmaRoles && (
+        <JobTitleSelect control={control} titles={specializedPharmaRoles} />
       )}
 
       {showOtherInput && (
