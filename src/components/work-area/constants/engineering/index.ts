@@ -30,7 +30,8 @@ export const electricalEngineeringTitles = [
   "Electronics Engineer",
   "Instrumentation Engineer",
   "Power Systems Engineer",
-  "Renewable
+  "Renewable Energy Engineer",
+  "Telecommunications Engineer"
 ];
 
 export const chemicalEngineeringTitles = [
