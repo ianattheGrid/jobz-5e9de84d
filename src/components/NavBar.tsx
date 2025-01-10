@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import Logo from "./navbar/Logo";
 import MobileNav from "./navbar/MobileNav";
@@ -31,17 +30,17 @@ const NavBar = () => {
   }, []);
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 p-4">
-      <div className="container mx-auto">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-black/50 backdrop-blur-sm">
+      <div className="container mx-auto px-4">
+        <div className="flex items-center justify-between h-16">
+          <div className="flex items-center">
             <MobileNav />
             <Logo />
           </div>
           <NavigationLinks />
         </div>
       </div>
-    </div>
+    </nav>
   );
 };
 
