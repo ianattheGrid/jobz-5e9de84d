@@ -14,8 +14,10 @@ const MobileNav = () => {
 
   return (
     <Sheet>
-      <SheetTrigger className="flex items-center justify-center">
-        <Menu className="h-6 w-6 text-white hover:text-gray-200 transition-colors" />
+      <SheetTrigger asChild>
+        <button className="p-2">
+          <Menu className="h-6 w-6 text-white hover:text-gray-200 transition-colors" />
+        </button>
       </SheetTrigger>
       <SheetContent side="left" className="w-[300px] overflow-y-auto">
         <SheetHeader>
@@ -31,6 +33,7 @@ const MobileNav = () => {
           <Link to="/jobs" className="text-lg text-gray-600 hover:text-primary transition-colors">
             Job Board
           </Link>
+          
           {!user && (
             <>
               <div className="h-px bg-gray-200 my-2" />
