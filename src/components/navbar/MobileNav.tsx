@@ -14,14 +14,14 @@ const MobileNav = () => {
 
   return (
     <Sheet>
-      <SheetTrigger>
-        <Menu className="w-6 h-6 text-white hover:text-gray-200 transition-colors" />
+      <SheetTrigger className="flex items-center justify-center">
+        <Menu className="h-6 w-6 text-white hover:text-gray-200 transition-colors" />
       </SheetTrigger>
       <SheetContent side="left" className="w-[300px] overflow-y-auto">
         <SheetHeader>
           <SheetTitle className="text-primary">Menu</SheetTitle>
         </SheetHeader>
-        <div className="flex flex-col gap-4 mt-4">
+        <nav className="mt-4 flex flex-col gap-4">
           <Link to="/" className="text-lg text-gray-600 hover:text-primary transition-colors">
             Home
           </Link>
@@ -54,7 +54,7 @@ const MobileNav = () => {
               </Link>
             </>
           )}
-        </div>
+        </nav>
       </SheetContent>
     </Sheet>
   );
