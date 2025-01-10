@@ -46,7 +46,7 @@ const MobileNav = () => {
               <div className="h-px bg-gray-200 my-4" />
               <button 
                 onClick={scrollToSignUp}
-                className="text-lg text-secondary font-medium hover:text-secondary/90 transition-colors text-left"
+                className="text-lg text-orange-500 font-semibold hover:text-orange-600 transition-colors text-left"
               >
                 Sign in / Sign up
               </button>
