@@ -8,10 +8,25 @@ export const PlatformFeatures = () => {
       <h2 className="text-3xl font-bold text-center mb-12">How jobz Works</h2>
       
       <Tabs defaultValue="hiring" className="w-full max-w-4xl mx-auto">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="hiring">For Employers</TabsTrigger>
-          <TabsTrigger value="candidates">For Candidates</TabsTrigger>
-          <TabsTrigger value="recruiters">Virtual Recruiters</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-3 bg-primary-light">
+          <TabsTrigger 
+            value="hiring" 
+            className="data-[state=active]:bg-primary data-[state=active]:text-white"
+          >
+            For Employers
+          </TabsTrigger>
+          <TabsTrigger 
+            value="candidates"
+            className="data-[state=active]:bg-primary data-[state=active]:text-white"
+          >
+            For Candidates
+          </TabsTrigger>
+          <TabsTrigger 
+            value="recruiters"
+            className="data-[state=active]:bg-primary data-[state=active]:text-white"
+          >
+            Virtual Recruiters
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="hiring" className="space-y-8">
