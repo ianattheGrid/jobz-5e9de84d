@@ -41,17 +41,13 @@ const MobileNav = () => {
             Job Board
           </Link>
           
-          {!user && (
-            <>
-              <div className="h-px bg-gray-200 my-4" />
-              <button 
-                onClick={scrollToSignUp}
-                className="text-lg text-orange-500 font-semibold hover:text-orange-600 transition-colors text-left"
-              >
-                Sign in / Sign up
-              </button>
-            </>
-          )}
+          <div className="h-px bg-gray-200 my-4" />
+          <button 
+            onClick={scrollToSignUp}
+            className="text-lg text-orange-500 font-semibold hover:text-orange-600 transition-colors text-left"
+          >
+            Sign in / Sign up
+          </button>
         </nav>
       </SheetContent>
     </Sheet>
