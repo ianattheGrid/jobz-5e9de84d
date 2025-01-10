@@ -6,22 +6,12 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
+  SheetClose,
 } from "@/components/ui/sheet";
 import { useAuth } from "@/hooks/useAuth";
 
 const MobileNav = () => {
   const { user } = useAuth();
-
-  const scrollToSignUp = (setOpen: (open: boolean) => void) => {
-    setOpen(false); // Close the sheet first
-    setTimeout(() => {
-      // Small delay to ensure smooth transition
-      const element = document.getElementById('signup-section');
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
-    }, 100);
-  };
 
   return (
     <Sheet>
@@ -46,17 +36,21 @@ const MobileNav = () => {
           </Link>
           
           <div className="h-px bg-gray-200 my-4" />
-          <button 
-            onClick={() => {
-              const element = document.getElementById('signup-section');
-              if (element) {
-                element.scrollIntoView({ behavior: 'smooth' });
-              }
-            }}
-            className="text-lg text-orange-500 font-semibold hover:text-orange-600 transition-colors text-left"
-          >
-            Sign in / Sign up
-          </button>
+          <SheetClose asChild>
+            <button 
+              onClick={() => {
+                setTimeout(() => {
+                  const element = document.getElementById('signup-section');
+                  if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }, 100);
+              }}
+              className="text-lg text-orange-500 font-semibold hover:text-orange-600 transition-colors text-left"
+            >
+              Sign in / Sign up
+            </button>
+          </SheetClose>
         </nav>
       </SheetContent>
     </Sheet>
