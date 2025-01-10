@@ -38,7 +38,7 @@ export const BonusCalculator = ({
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-medium">Select bonus percentage (2.5%-14%)</label>
+          <label className="text-sm font-medium">Select fee percentage (2.5% - 14% of candidate's basic yearly salary)</label>
           <Slider
             value={[feePercentage]}
             onValueChange={onFeeChange}
@@ -63,7 +63,7 @@ export const BonusCalculator = ({
             className="w-full"
           />
           <div className="text-sm text-muted-foreground">
-            You: {splitPercentage}% | Referrer: {100 - splitPercentage}%
+            Hired Candidate: {splitPercentage}% | Referrer: {100 - splitPercentage}%
           </div>
         </div>
 
@@ -73,7 +73,7 @@ export const BonusCalculator = ({
               Potential Bonus Breakdown
             </p>
             <div className="text-sm text-green-700 space-y-1">
-              <p>Total Bonus: {formatCurrency(totalCommission)}</p>
+              <p>Fee charged: {formatCurrency(totalCommission)}</p>
               <p>• Your Share: {formatCurrency(candidateCommission)}</p>
               <p>• Referrer's Share: {formatCurrency(referralCommission)}</p>
             </div>
