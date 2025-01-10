@@ -36,7 +36,7 @@ const MobileNav = () => {
           <Link to="/jobs" className="text-lg text-gray-600 hover:text-primary transition-colors">
             Job Board
           </Link>
-          {!user ? (
+          {!user && (
             <>
               <Link to="/employer/signin" className="text-lg text-gray-600 hover:text-primary transition-colors">
                 Employer Sign In
@@ -48,11 +48,7 @@ const MobileNav = () => {
                 Virtual Recruiter Sign In
               </Link>
             </>
-          ) : userType === 'employer' ? (
-            <Link to="/employer/dashboard" className="text-lg text-gray-600 hover:text-primary transition-colors">
-              Dashboard
-            </Link>
-          ) : null}
+          )}
         </div>
       </SheetContent>
     </Sheet>
