@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import Logo from "./navbar/Logo";
 import MobileNav from "./navbar/MobileNav";
-import { Button } from "./ui/button";
+import NavigationLinks from "./navbar/NavigationLinks";
 
 const NavBar = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -38,14 +38,7 @@ const NavBar = () => {
             <MobileNav />
             <Logo />
           </div>
-          
-          {isAuthenticated && userType === 'employer' && (
-            <Link to="/employer/dashboard">
-              <Button variant="default" className="bg-primary hover:bg-primary/90">
-                Dashboard
-              </Button>
-            </Link>
-          )}
+          <NavigationLinks />
         </div>
       </div>
     </div>

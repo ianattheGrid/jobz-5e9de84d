@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -10,15 +10,13 @@ import {
   Search, 
   Calendar, 
   UserCircle,
-  MessageSquare,
-  PoundSterling
+  MessageSquare
 } from "lucide-react";
 import NavBar from "@/components/NavBar";
 
 const EmployerDashboard = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [loading, setLoading] = useState(true);
   const [userId, setUserId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -33,7 +31,6 @@ const EmployerDashboard = () => {
         return;
       }
       setUserId(session.user.id);
-      setLoading(false);
     } catch (error) {
       console.error('Error:', error);
       toast({
@@ -44,18 +41,10 @@ const EmployerDashboard = () => {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-800"></div>
-      </div>
-    );
-  }
-
   return (
-    <>
+    <div className="min-h-screen bg-background">
       <NavBar />
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 pt-20">
         <h1 className="text-3xl font-bold mb-8 text-red-800">Employer Dashboard</h1>
         
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -81,7 +70,7 @@ const EmployerDashboard = () => {
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 };
 
