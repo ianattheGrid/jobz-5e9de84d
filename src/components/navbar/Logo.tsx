@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { Home } from "lucide-react";
 
 const Logo = () => {
   return (
@@ -10,7 +9,6 @@ const Logo = () => {
           e.currentTarget.onerror = null;
         }} />
       </div>
-      <Home className="w-6 h-6 text-white ml-2" />
     </Link>
   );
 };
