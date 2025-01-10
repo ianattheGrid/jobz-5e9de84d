@@ -45,8 +45,8 @@ const NavBar = () => {
         <MobileNav />
       </div>
       
-      {!isAuthenticated && (
-        <div className="flex items-center">
+      <div className="flex items-center">
+        {!isAuthenticated && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="default" className="gap-2">
@@ -54,7 +54,7 @@ const NavBar = () => {
                 Account
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56" align="end">
+            <DropdownMenuContent className="w-56 bg-white" align="end">
               <DropdownMenuLabel>Sign Up</DropdownMenuLabel>
               <DropdownMenuGroup>
                 <DropdownMenuItem asChild>
@@ -96,8 +96,8 @@ const NavBar = () => {
               </DropdownMenuGroup>
             </DropdownMenuContent>
           </DropdownMenu>
-        </div>
-      )}
+        )}
+      </div>
     </nav>
   );
 };
