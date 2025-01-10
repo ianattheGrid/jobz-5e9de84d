@@ -10,17 +10,12 @@ import {
 import { useAuth } from "@/hooks/useAuth";
 
 const MobileNav = () => {
-  const { user, userType } = useAuth();
+  const { user } = useAuth();
 
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <button
-          className="hover:bg-white/10 rounded-lg transition-colors"
-          aria-label="Open menu"
-        >
-          <Menu className="w-6 h-6 text-white" />
-        </button>
+        <Menu className="w-6 h-6 text-white" />
       </SheetTrigger>
       <SheetContent side="left" className="w-[300px] bg-white">
         <SheetHeader>
@@ -38,11 +33,20 @@ const MobileNav = () => {
           </Link>
           {!user && (
             <>
+              <Link to="/employer/signup" className="text-lg text-gray-600 hover:text-primary transition-colors">
+                Employer Sign Up
+              </Link>
               <Link to="/employer/signin" className="text-lg text-gray-600 hover:text-primary transition-colors">
                 Employer Sign In
               </Link>
+              <Link to="/candidate/signup" className="text-lg text-gray-600 hover:text-primary transition-colors">
+                Candidate Sign Up
+              </Link>
               <Link to="/candidate/signin" className="text-lg text-gray-600 hover:text-primary transition-colors">
                 Candidate Sign In
+              </Link>
+              <Link to="/vr/signup" className="text-lg text-gray-600 hover:text-primary transition-colors">
+                Virtual Recruiter Sign Up
               </Link>
               <Link to="/vr/signin" className="text-lg text-gray-600 hover:text-primary transition-colors">
                 Virtual Recruiter Sign In
