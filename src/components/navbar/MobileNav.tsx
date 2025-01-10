@@ -12,6 +12,13 @@ import { useAuth } from "@/hooks/useAuth";
 const MobileNav = () => {
   const { user } = useAuth();
 
+  const scrollToSignUp = () => {
+    const element = document.getElementById('signup-section');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -37,24 +44,12 @@ const MobileNav = () => {
           {!user && (
             <>
               <div className="h-px bg-gray-200 my-4" />
-              <Link to="/employer/signup" className="text-lg text-gray-600 hover:text-primary transition-colors">
-                Employer Sign Up
-              </Link>
-              <Link to="/employer/signin" className="text-lg text-gray-600 hover:text-primary transition-colors">
-                Employer Sign In
-              </Link>
-              <Link to="/candidate/signup" className="text-lg text-gray-600 hover:text-primary transition-colors">
-                Candidate Sign Up
-              </Link>
-              <Link to="/candidate/signin" className="text-lg text-gray-600 hover:text-primary transition-colors">
-                Candidate Sign In
-              </Link>
-              <Link to="/vr/signup" className="text-lg text-gray-600 hover:text-primary transition-colors">
-                Virtual Recruiter Sign Up
-              </Link>
-              <Link to="/vr/signin" className="text-lg text-gray-600 hover:text-primary transition-colors">
-                Virtual Recruiter Sign In
-              </Link>
+              <button 
+                onClick={scrollToSignUp}
+                className="text-lg text-primary hover:text-primary/90 transition-colors text-left"
+              >
+                Sign in / Sign up
+              </button>
             </>
           )}
         </nav>
