@@ -5,10 +5,7 @@ const NavigationLinks = () => {
   const { user, userType } = useAuth();
 
   return (
-    <nav className="flex items-center space-x-4">
-      <Link to="/calculator" className="text-white hover:text-white/80">
-        Calculator
-      </Link>
+    <nav className="hidden md:flex items-center space-x-4">
       {!user ? (
         <>
           <Link to="/employer/signin" className="text-white hover:text-white/80">
@@ -21,10 +18,6 @@ const NavigationLinks = () => {
             Virtual Recruiters
           </Link>
         </>
-      ) : userType === 'employer' ? (
-        <Link to="/employer/dashboard" className="text-white hover:text-white/80">
-          Dashboard
-        </Link>
       ) : null}
     </nav>
   );

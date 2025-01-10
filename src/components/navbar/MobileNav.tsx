@@ -30,8 +30,11 @@ const MobileNav = () => {
           <Link to="/" className="text-lg text-gray-600 hover:text-primary transition-colors">
             Home
           </Link>
-          <Link to="/#calculator" className="text-lg text-gray-600 hover:text-primary transition-colors">
-            Fee Calculator
+          <Link to="/calculator" className="text-lg text-gray-600 hover:text-primary transition-colors">
+            Calculator
+          </Link>
+          <Link to="/jobs" className="text-lg text-gray-600 hover:text-primary transition-colors">
+            Job Board
           </Link>
           {!user ? (
             <>
@@ -45,16 +48,11 @@ const MobileNav = () => {
                 Virtual Recruiter Sign In
               </Link>
             </>
-          ) : (
-            userType === "employer" && (
-              <Link
-                to="/employer/dashboard"
-                className="text-lg text-gray-600 hover:text-primary transition-colors"
-              >
-                Employer Dashboard
-              </Link>
-            )
-          )}
+          ) : userType === 'employer' ? (
+            <Link to="/employer/dashboard" className="text-lg text-gray-600 hover:text-primary transition-colors">
+              Dashboard
+            </Link>
+          ) : null}
         </div>
       </SheetContent>
     </Sheet>
