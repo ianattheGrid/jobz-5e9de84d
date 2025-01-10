@@ -40,7 +40,7 @@ const NavBar = () => {
   }, []);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-4 py-2 bg-white shadow-sm">
+    <nav className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-4 py-2 bg-white shadow-sm h-16">
       <div className="flex items-center">
         <MobileNav />
       </div>
@@ -49,7 +49,7 @@ const NavBar = () => {
         <div className="flex items-center">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="gap-2">
+              <Button variant="outline" size="default" className="gap-2">
                 <UserCircle className="h-5 w-5" />
                 Account
               </Button>
