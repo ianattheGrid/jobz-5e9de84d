@@ -6,6 +6,7 @@ import { useSignUp } from "@/hooks/useSignUp";
 import { useSearchParams } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import NavBar from "@/components/NavBar";
 
 interface ReferralDetails {
   vrName: string;
@@ -60,24 +61,27 @@ const CandidateSignUp = () => {
   }, [referralCode, toast]);
 
   return (
-    <div className="container mx-auto flex min-h-screen items-center justify-center">
-      <Card className="w-full max-w-md">
-        <CardHeader className="space-y-1">
-          <div className="flex items-center justify-center gap-2">
-            <UserRound className="h-8 w-8 text-primary" />
-            <CardTitle className="text-2xl">Candidate Sign Up</CardTitle>
-          </div>
-          <CardDescription>
-            {referralDetails 
-              ? `Create your account - Recommended by ${referralDetails.vrName}`
-              : "Create a candidate account to apply for jobs"}
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <SignUpForm onSubmit={handleSignUp} loading={loading} />
-        </CardContent>
-      </Card>
-    </div>
+    <>
+      <NavBar />
+      <div className="container mx-auto flex min-h-screen items-center justify-center">
+        <Card className="w-full max-w-md">
+          <CardHeader className="space-y-1">
+            <div className="flex items-center justify-center gap-2">
+              <UserRound className="h-8 w-8 text-primary" />
+              <CardTitle className="text-2xl">Candidate Sign Up</CardTitle>
+            </div>
+            <CardDescription>
+              {referralDetails 
+                ? `Create your account - Recommended by ${referralDetails.vrName}`
+                : "Create a candidate account to apply for jobs"}
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <SignUpForm onSubmit={handleSignUp} loading={loading} />
+          </CardContent>
+        </Card>
+      </div>
+    </>
   );
 };
 
