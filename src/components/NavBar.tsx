@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import Logo from "./navbar/Logo";
 import MobileNav from "./navbar/MobileNav";
+import { Button } from "./ui/button";
 
 const NavBar = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -37,6 +39,47 @@ const NavBar = () => {
               <MobileNav />
             </div>
             <Logo />
+            <div className="hidden lg:flex items-center space-x-4">
+              <Link to="/jobs" className="text-gray-600 hover:text-primary transition-colors">
+                Job Board
+              </Link>
+              <Link to="/#calculator" className="text-gray-600 hover:text-primary transition-colors">
+                Fee Calculator
+              </Link>
+            </div>
+          </div>
+          
+          <div className="hidden lg:flex items-center space-x-4">
+            {!isAuthenticated ? (
+              <>
+                <Link to="/employer/signin">
+                  <Button variant="ghost" className="text-gray-600 hover:text-primary">
+                    Employer Sign In
+                  </Button>
+                </Link>
+                <Link to="/candidate/signin">
+                  <Button variant="ghost" className="text-gray-600 hover:text-primary">
+                    Candidate Sign In
+                  </Button>
+                </Link>
+                <Link to="/vr/signin">
+                  <Button variant="ghost" className="text-gray-600 hover:text-primary">
+                    Virtual Recruiter Sign In
+                  </Button>
+                </Link>
+                <Link to="/employer/signup">
+                  <Button variant="default" className="bg-primary hover:bg-primary/90">
+                    Start Hiring
+                  </Button>
+                </Link>
+              </>
+            ) : (
+              <Link to={`/${userType}/dashboard`}>
+                <Button variant="default" className="bg-primary hover:bg-primary/90">
+                  Dashboard
+                </Button>
+              </Link>
+            )}
           </div>
         </div>
       </div>
