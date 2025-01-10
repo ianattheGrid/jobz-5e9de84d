@@ -42,12 +42,12 @@ export const SignUpForm = ({ onSubmit, loading }: SignUpFormProps) => {
           required
         />
       </div>
-      <Button className="w-full bg-red-800 hover:bg-red-900 text-white" type="submit" disabled={loading}>
+      <Button className="w-full bg-primary hover:bg-primary-dark text-white" type="submit" disabled={loading}>
         {loading ? "Signing up..." : "Sign Up"}
       </Button>
       <div className="text-center text-sm text-muted-foreground">
         Already have an account?{" "}
-        <Link to="/candidate/signin" className="text-red-800 hover:underline">
+        <Link to="/candidate/signin" className="text-primary hover:underline">
           Sign In
         </Link>
       </div>
