@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import Logo from "./navbar/Logo";
 import MobileNav from "./navbar/MobileNav";
 import NavigationLinks from "./navbar/NavigationLinks";
 
@@ -35,7 +34,6 @@ const NavBar = () => {
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
             <MobileNav />
-            <Logo />
           </div>
           <NavigationLinks />
         </div>
