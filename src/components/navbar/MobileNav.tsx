@@ -16,10 +16,10 @@ const MobileNav = () => {
     <Sheet>
       <SheetTrigger asChild>
         <button
-          className="p-2 hover:bg-primary-light rounded-lg transition-colors"
+          className="p-2 hover:bg-white/10 rounded-lg transition-colors"
           aria-label="Open menu"
         >
-          <Menu className="w-6 h-6 text-primary" />
+          <Menu className="w-6 h-6 text-white" />
         </button>
       </SheetTrigger>
       <SheetContent side="left" className="w-[300px] bg-white">
@@ -30,8 +30,8 @@ const MobileNav = () => {
           <Link to="/" className="text-lg text-gray-600 hover:text-primary transition-colors">
             Home
           </Link>
-          <Link to="/jobs" className="text-lg text-gray-600 hover:text-primary transition-colors">
-            Job Board
+          <Link to="/#calculator" className="text-lg text-gray-600 hover:text-primary transition-colors">
+            Fee Calculator
           </Link>
           {!user ? (
             <>
@@ -46,32 +46,14 @@ const MobileNav = () => {
               </Link>
             </>
           ) : (
-            <>
-              {userType === "employer" && (
-                <Link
-                  to="/employer/dashboard"
-                  className="text-lg text-gray-600 hover:text-primary transition-colors"
-                >
-                  Employer Dashboard
-                </Link>
-              )}
-              {userType === "candidate" && (
-                <Link
-                  to="/candidate/dashboard"
-                  className="text-lg text-gray-600 hover:text-primary transition-colors"
-                >
-                  Candidate Dashboard
-                </Link>
-              )}
-              {userType === "recruiter" && (
-                <Link 
-                  to="/vr/dashboard" 
-                  className="text-lg text-gray-600 hover:text-primary transition-colors"
-                >
-                  Virtual Recruiter Dashboard
-                </Link>
-              )}
-            </>
+            userType === "employer" && (
+              <Link
+                to="/employer/dashboard"
+                className="text-lg text-gray-600 hover:text-primary transition-colors"
+              >
+                Employer Dashboard
+              </Link>
+            )
           )}
         </div>
       </SheetContent>

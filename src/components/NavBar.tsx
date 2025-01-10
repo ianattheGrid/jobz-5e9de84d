@@ -31,65 +31,24 @@ const NavBar = () => {
   }, []);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm shadow-md">
-      <div className="container mx-auto px-4">
-        <div className="flex h-16 items-center justify-between">
-          <div className="flex items-center gap-6">
-            <div className="block lg:hidden">
-              <MobileNav />
-            </div>
+    <div className="fixed top-0 left-0 right-0 z-50 p-4">
+      <div className="container mx-auto">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <MobileNav />
             <Logo />
-            <div className="hidden lg:flex items-center gap-6">
-              <Link 
-                to="/jobs" 
-                className="text-primary hover:text-primary/80 transition-colors font-semibold"
-              >
-                Job Board
-              </Link>
-              <Link 
-                to="/#calculator" 
-                className="text-primary hover:text-primary/80 transition-colors font-semibold"
-              >
-                Fee Calculator
-              </Link>
-            </div>
           </div>
           
-          <div className="hidden lg:flex items-center gap-4">
-            {!isAuthenticated ? (
-              <>
-                <Link to="/employer/signin">
-                  <Button variant="ghost" className="text-primary hover:text-primary/80 font-semibold">
-                    Employer Sign In
-                  </Button>
-                </Link>
-                <Link to="/candidate/signin">
-                  <Button variant="ghost" className="text-primary hover:text-primary/80 font-semibold">
-                    Candidate Sign In
-                  </Button>
-                </Link>
-                <Link to="/vr/signin">
-                  <Button variant="ghost" className="text-primary hover:text-primary/80 font-semibold">
-                    Virtual Recruiter Sign In
-                  </Button>
-                </Link>
-                <Link to="/employer/signup">
-                  <Button variant="default" className="bg-primary hover:bg-primary/90">
-                    Start Hiring
-                  </Button>
-                </Link>
-              </>
-            ) : (
-              <Link to={`/${userType}/dashboard`}>
-                <Button variant="default" className="bg-primary hover:bg-primary/90">
-                  Dashboard
-                </Button>
-              </Link>
-            )}
-          </div>
+          {isAuthenticated && userType === 'employer' && (
+            <Link to="/employer/dashboard">
+              <Button variant="default" className="bg-primary hover:bg-primary/90">
+                Dashboard
+              </Button>
+            </Link>
+          )}
         </div>
       </div>
-    </nav>
+    </div>
   );
 };
 
