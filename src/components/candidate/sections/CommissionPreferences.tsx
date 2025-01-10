@@ -3,7 +3,7 @@ import { CandidateFormValues } from "../candidateFormSchema";
 import { useState } from "react";
 import CommissionToggle from "./commission/CommissionToggle";
 import SchemeExplanation from "./commission/SchemeExplanation";
-import BonusCalculator from "./commission/BonusCalculator";
+import { BonusCalculator } from "./commission/BonusCalculator";
 import CommissionNegotiation from "./commission/CommissionNegotiation";
 import BonusPreferencesHeader from "./bonus/BonusPreferencesHeader";
 import MinimumBonusSelect from "./bonus/MinimumBonusSelect";
