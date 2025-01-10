@@ -7,6 +7,7 @@ import { Building2 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import NavBar from "@/components/NavBar";
 
 const EmployerSignIn = () => {
   const [email, setEmail] = useState("");
@@ -102,75 +103,82 @@ const EmployerSignIn = () => {
   };
 
   return (
-    <div className="container mx-auto flex min-h-screen items-center justify-center">
-      <Card className="w-full max-w-md">
-        <CardHeader className="space-y-1">
-          <div className="flex items-center justify-center gap-2">
-            <Building2 className="h-8 w-8 text-red-800" />
-            <CardTitle className="text-2xl">Employer Sign In</CardTitle>
-          </div>
-          <CardDescription>
-            {resetMode ? "Reset your password" : "Sign in to manage your job postings"}
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <form onSubmit={resetMode ? handleResetPassword : handleSignIn} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input 
-                id="email" 
-                type="email" 
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email" 
-                required
-              />
+    <>
+      <NavBar />
+      <div className="container mx-auto flex min-h-screen items-center justify-center">
+        <Card className="w-full max-w-md">
+          <CardHeader className="space-y-1">
+            <div className="flex items-center justify-center gap-2">
+              <Building2 className="h-8 w-8 text-[#9b87f5]" />
+              <CardTitle className="text-2xl">Employer Sign In</CardTitle>
             </div>
-            {!resetMode && (
+            <CardDescription>
+              {resetMode ? "Reset your password" : "Sign in to manage your job postings"}
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <form onSubmit={resetMode ? handleResetPassword : handleSignIn} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="email">Email</Label>
                 <Input 
-                  id="password" 
-                  type="password" 
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter your password" 
+                  id="email" 
+                  type="email" 
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter your email" 
                   required
                 />
               </div>
-            )}
-            <Button className="w-full bg-red-800 hover:bg-red-900 text-white" type="submit" disabled={loading}>
-              {loading ? (resetMode ? "Sending..." : "Signing in...") : (resetMode ? "Send Reset Link" : "Sign In")}
-            </Button>
-          </form>
-          <div className="space-y-2 text-center text-sm text-muted-foreground">
-            <div>
-              {resetMode ? (
-                <button 
-                  onClick={() => setResetMode(false)} 
-                  className="text-red-800 hover:underline"
-                >
-                  Back to Sign In
-                </button>
-              ) : (
-                <button 
-                  onClick={() => setResetMode(true)} 
-                  className="text-red-800 hover:underline"
-                >
-                  Forgot Password?
-                </button>
+              {!resetMode && (
+                <div className="space-y-2">
+                  <Label htmlFor="password">Password</Label>
+                  <Input 
+                    id="password" 
+                    type="password" 
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Enter your password" 
+                    required
+                  />
+                </div>
               )}
+              <Button 
+                className="w-full bg-[#9b87f5] hover:bg-[#7E69AB] text-white" 
+                type="submit" 
+                disabled={loading}
+              >
+                {loading ? (resetMode ? "Sending..." : "Signing in...") : (resetMode ? "Send Reset Link" : "Sign In")}
+              </Button>
+            </form>
+            <div className="space-y-2 text-center text-sm text-muted-foreground">
+              <div>
+                {resetMode ? (
+                  <button 
+                    onClick={() => setResetMode(false)} 
+                    className="text-[#9b87f5] hover:underline"
+                  >
+                    Back to Sign In
+                  </button>
+                ) : (
+                  <button 
+                    onClick={() => setResetMode(true)} 
+                    className="text-[#9b87f5] hover:underline"
+                  >
+                    Forgot Password?
+                  </button>
+                )}
+              </div>
+              <div>
+                Don't have an account?{" "}
+                <Link to="/employer/signup" className="text-[#9b87f5] hover:underline">
+                  Sign Up
+                </Link>
+              </div>
             </div>
-            <div>
-              Don't have an account?{" "}
-              <Link to="/employer/signup" className="text-red-800 hover:underline">
-                Sign Up
-              </Link>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
+          </CardContent>
+        </Card>
+      </div>
+    </>
   );
 };
 
