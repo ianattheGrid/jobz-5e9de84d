@@ -11,7 +11,7 @@ interface BonusCalculatorProps {
   onSplitChange: (value: number[]) => void;
 }
 
-const BonusCalculator = ({
+export const BonusCalculator = ({
   sampleSalary,
   feePercentage,
   splitPercentage,
@@ -83,5 +83,3 @@ const BonusCalculator = ({
     </div>
   );
 };
-
-export default BonusCalculator;
