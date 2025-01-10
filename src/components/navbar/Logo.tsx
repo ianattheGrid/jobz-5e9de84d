@@ -6,11 +6,7 @@ const Logo = () => {
       <img 
         src="/logo.png" 
         alt="Talent Flare" 
-        className="h-8 w-auto object-contain"
-        onError={(e) => {
-          e.currentTarget.src = '/placeholder.svg';
-          e.currentTarget.onerror = null;
-        }} 
+        className="h-8 w-auto"
       />
     </Link>
   );

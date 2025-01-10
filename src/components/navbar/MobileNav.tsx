@@ -14,12 +14,10 @@ const MobileNav = () => {
 
   return (
     <Sheet>
-      <SheetTrigger asChild>
-        <button className="p-2 hover:bg-white/10 rounded-lg transition-colors">
-          <Menu className="w-6 h-6 text-white" />
-        </button>
+      <SheetTrigger>
+        <Menu className="w-6 h-6 text-white hover:text-gray-200 transition-colors" />
       </SheetTrigger>
-      <SheetContent side="left" className="w-[300px] overflow-y-auto bg-white">
+      <SheetContent side="left" className="w-[300px] overflow-y-auto">
         <SheetHeader>
           <SheetTitle className="text-primary">Menu</SheetTitle>
         </SheetHeader>
@@ -35,6 +33,7 @@ const MobileNav = () => {
           </Link>
           {!user && (
             <>
+              <div className="h-px bg-gray-200 my-2" />
               <Link to="/employer/signup" className="text-lg text-gray-600 hover:text-primary transition-colors">
                 Employer Sign Up
               </Link>
