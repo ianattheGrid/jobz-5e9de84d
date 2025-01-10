@@ -15,9 +15,11 @@ const MobileNav = () => {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Menu className="w-6 h-6 text-white" />
+        <button className="p-2 hover:bg-white/10 rounded-lg transition-colors">
+          <Menu className="w-6 h-6 text-white" />
+        </button>
       </SheetTrigger>
-      <SheetContent side="left" className="w-[300px] bg-white">
+      <SheetContent side="left" className="w-[300px] overflow-y-auto bg-white">
         <SheetHeader>
           <SheetTitle className="text-primary">Menu</SheetTitle>
         </SheetHeader>
