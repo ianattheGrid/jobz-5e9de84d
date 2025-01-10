@@ -42,13 +42,13 @@ const NavBar = () => {
             <div className="hidden lg:flex items-center gap-6">
               <Link 
                 to="/jobs" 
-                className="text-gray-600 hover:text-primary transition-colors font-medium"
+                className="text-primary hover:text-primary/80 transition-colors font-semibold"
               >
                 Job Board
               </Link>
               <Link 
                 to="/#calculator" 
-                className="text-gray-600 hover:text-primary transition-colors font-medium"
+                className="text-primary hover:text-primary/80 transition-colors font-semibold"
               >
                 Fee Calculator
               </Link>
@@ -59,17 +59,17 @@ const NavBar = () => {
             {!isAuthenticated ? (
               <>
                 <Link to="/employer/signin">
-                  <Button variant="ghost" className="text-gray-600 hover:text-primary">
+                  <Button variant="ghost" className="text-primary hover:text-primary/80 font-semibold">
                     Employer Sign In
                   </Button>
                 </Link>
                 <Link to="/candidate/signin">
-                  <Button variant="ghost" className="text-gray-600 hover:text-primary">
+                  <Button variant="ghost" className="text-primary hover:text-primary/80 font-semibold">
                     Candidate Sign In
                   </Button>
                 </Link>
                 <Link to="/vr/signin">
-                  <Button variant="ghost" className="text-gray-600 hover:text-primary">
+                  <Button variant="ghost" className="text-primary hover:text-primary/80 font-semibold">
                     Virtual Recruiter Sign In
                   </Button>
                 </Link>
