@@ -1,15 +1,32 @@
 import { Link } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
 
-interface NavigationLinksProps {
-  isAuthenticated: boolean;
-  userType: string | null;
-}
+const NavigationLinks = () => {
+  const { user, userType } = useAuth();
 
-const NavigationLinks = ({ isAuthenticated, userType }: NavigationLinksProps) => {
   return (
-    <div className="hidden">
-      {/* Hide the navigation links since we're using hamburger menu for all devices */}
-    </div>
+    <nav className="flex items-center space-x-4">
+      <Link to="/calculator" className="text-white hover:text-white/80">
+        Calculator
+      </Link>
+      {!user ? (
+        <>
+          <Link to="/employer/signin" className="text-white hover:text-white/80">
+            Employers
+          </Link>
+          <Link to="/candidate/signin" className="text-white hover:text-white/80">
+            Candidates
+          </Link>
+          <Link to="/vr/signin" className="text-white hover:text-white/80">
+            Virtual Recruiters
+          </Link>
+        </>
+      ) : userType === 'employer' ? (
+        <Link to="/employer/dashboard" className="text-white hover:text-white/80">
+          Dashboard
+        </Link>
+      ) : null}
+    </nav>
   );
 };
 
