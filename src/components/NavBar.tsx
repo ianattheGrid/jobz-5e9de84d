@@ -31,25 +31,31 @@ const NavBar = () => {
   }, []);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white shadow-sm">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200">
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-6">
             <div className="block lg:hidden">
               <MobileNav />
             </div>
             <Logo />
-            <div className="hidden lg:flex items-center space-x-4">
-              <Link to="/jobs" className="text-gray-600 hover:text-primary transition-colors">
+            <div className="hidden lg:flex items-center gap-6">
+              <Link 
+                to="/jobs" 
+                className="text-gray-600 hover:text-primary transition-colors font-medium"
+              >
                 Job Board
               </Link>
-              <Link to="/#calculator" className="text-gray-600 hover:text-primary transition-colors">
+              <Link 
+                to="/#calculator" 
+                className="text-gray-600 hover:text-primary transition-colors font-medium"
+              >
                 Fee Calculator
               </Link>
             </div>
           </div>
           
-          <div className="hidden lg:flex items-center space-x-4">
+          <div className="hidden lg:flex items-center gap-4">
             {!isAuthenticated ? (
               <>
                 <Link to="/employer/signin">
