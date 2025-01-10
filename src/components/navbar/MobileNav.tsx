@@ -16,7 +16,7 @@ const MobileNav = () => {
     <Sheet>
       <SheetTrigger asChild>
         <button
-          className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+          className="hover:bg-white/10 rounded-lg transition-colors"
           aria-label="Open menu"
         >
           <Menu className="w-6 h-6 text-white" />
