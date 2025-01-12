@@ -59,11 +59,25 @@ const VirtualRecruiterDashboard = () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) return;
 
-      const { data: profile } = await supabase
+      const { data: profile, error } = await supabase
         .from('virtual_recruiter_profiles')
         .select('recommendations_count, successful_placements, is_active')
         .eq('id', session.user.id)
-        .single();
+        .maybeSingle();
+
+      if (error) {
+        throw error;
+      }
+
+      if (!profile) {
+        toast({
+          variant: "destructive",
+          title: "Profile Not Found",
+          description: "Your VR profile could not be found. Please contact support.",
+        });
+        navigate('/vr/signin');
+        return;
+      }
 
       const { count: pendingRecommendations } = await supabase
         .from('candidate_recommendations')
@@ -71,14 +85,12 @@ const VirtualRecruiterDashboard = () => {
         .eq('vr_id', session.user.id)
         .eq('status', 'pending');
 
-      if (profile) {
-        setStats({
-          totalReferrals: profile.recommendations_count || 0,
-          successfulPlacements: profile.successful_placements || 0,
-          pendingRecommendations: pendingRecommendations || 0,
-          isActive: profile.is_active
-        });
-      }
+      setStats({
+        totalReferrals: profile.recommendations_count || 0,
+        successfulPlacements: profile.successful_placements || 0,
+        pendingRecommendations: pendingRecommendations || 0,
+        isActive: profile.is_active ?? true
+      });
     } catch (error) {
       console.error('Error loading stats:', error);
       toast({
