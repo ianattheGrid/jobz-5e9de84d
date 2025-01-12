@@ -47,7 +47,13 @@ export const useSignIn = () => {
           navigate('/vr/dashboard');
           break;
         default:
-          throw new Error('Invalid user type');
+          console.error('Invalid user type:', userType);
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: "Invalid user type. Please contact support.",
+          });
+          return;
       }
 
       toast({
