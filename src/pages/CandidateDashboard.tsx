@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
+import NavBar from "@/components/NavBar";
 import { 
   UserCircle,
   Briefcase,
@@ -16,6 +17,7 @@ const CandidateDashboard = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [loading, setLoading] = useState(true);
+  const [fullName, setFullName] = useState<string | null>(null);
 
   useEffect(() => {
     checkUser();
@@ -27,6 +29,17 @@ const CandidateDashboard = () => {
       if (!session || session.user.user_metadata.user_type !== 'candidate') {
         navigate('/candidate/signin');
         return;
+      }
+
+      // Fetch candidate profile
+      const { data: profile } = await supabase
+        .from('candidate_profiles')
+        .select('full_name')
+        .eq('id', session.user.id)
+        .single();
+
+      if (profile) {
+        setFullName(profile.full_name);
       }
 
       setLoading(false);
@@ -88,24 +101,30 @@ const CandidateDashboard = () => {
   ];
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8 text-red-800">Candidate Dashboard</h1>
-      
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {menuItems.map((item, index) => (
-          <Button
-            key={index}
-            variant="outline"
-            className="h-auto p-6 flex flex-col items-center gap-4 bg-white hover:bg-red-50 transition-all duration-200 border border-gray-200 rounded-lg shadow-sm hover:shadow-md"
-            onClick={() => navigate(item.path)}
-          >
-            <div className="text-red-800">{item.icon}</div>
-            <div className="text-center">
-              <h3 className="font-semibold text-lg mb-2 text-red-800">{item.title}</h3>
-              <p className="text-sm text-gray-600">{item.description}</p>
-            </div>
-          </Button>
-        ))}
+    <div className="min-h-screen bg-gray-50">
+      <NavBar />
+      <div className="container mx-auto px-4 py-8 pt-20">
+        <h1 className="text-3xl font-bold mb-2 text-red-800">
+          Welcome{fullName ? `, ${fullName}` : ''}
+        </h1>
+        <p className="text-gray-600 mb-8">Manage your job search and applications</p>
+        
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {menuItems.map((item, index) => (
+            <Button
+              key={index}
+              variant="outline"
+              className="h-auto p-6 flex flex-col items-center gap-4 bg-white hover:bg-red-50 transition-all duration-200 border border-gray-200 rounded-lg shadow-sm hover:shadow-md"
+              onClick={() => navigate(item.path)}
+            >
+              <div className="text-red-800">{item.icon}</div>
+              <div className="text-center">
+                <h3 className="font-semibold text-lg mb-2 text-red-800">{item.title}</h3>
+                <p className="text-sm text-gray-600">{item.description}</p>
+              </div>
+            </Button>
+          ))}
+        </div>
       </div>
     </div>
   );

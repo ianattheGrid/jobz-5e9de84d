@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import NavBar from "@/components/NavBar";
 import BonusNegotiations from "@/components/employer/BonusNegotiations";
 import { 
   Briefcase, 
@@ -12,12 +13,12 @@ import {
   UserCircle,
   MessageSquare
 } from "lucide-react";
-import NavBar from "@/components/NavBar";
 
 const EmployerDashboard = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [userId, setUserId] = useState<string | null>(null);
+  const [companyName, setCompanyName] = useState<string | null>(null);
 
   useEffect(() => {
     checkUser();
@@ -31,6 +32,17 @@ const EmployerDashboard = () => {
         return;
       }
       setUserId(session.user.id);
+
+      // Fetch employer profile
+      const { data: profile } = await supabase
+        .from('employer_profiles')
+        .select('company_name')
+        .eq('id', session.user.id)
+        .single();
+
+      if (profile) {
+        setCompanyName(profile.company_name);
+      }
     } catch (error) {
       console.error('Error:', error);
       toast({
@@ -41,11 +53,53 @@ const EmployerDashboard = () => {
     }
   };
 
+  const menuItems = [
+    {
+      title: "Post New Job",
+      icon: <Briefcase className="h-6 w-6" />,
+      path: "/employer/create-vacancy",
+      description: "Create a new job posting"
+    },
+    {
+      title: "Manage Jobs",
+      icon: <Building2 className="h-6 w-6" />,
+      path: "/employer/manage-jobs",
+      description: "View and edit your job listings"
+    },
+    {
+      title: "Search Candidates",
+      icon: <Search className="h-6 w-6" />,
+      path: "/employer/candidate-search",
+      description: "Find potential candidates"
+    },
+    {
+      title: "View Interviews",
+      icon: <Calendar className="h-6 w-6" />,
+      path: "/employer/interviews",
+      description: "Manage scheduled interviews"
+    },
+    {
+      title: "Profile Settings",
+      icon: <UserCircle className="h-6 w-6" />,
+      path: "/employer/profile",
+      description: "Update your company profile"
+    },
+    {
+      title: "Contact Us",
+      icon: <MessageSquare className="h-6 w-6" />,
+      path: "#",
+      description: "Get in touch with our support team"
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-background">
       <NavBar />
       <div className="container mx-auto px-4 pt-20">
-        <h1 className="text-3xl font-bold mb-8 text-red-800">Employer Dashboard</h1>
+        <h1 className="text-3xl font-bold mb-2 text-red-800">
+          Welcome{companyName ? `, ${companyName}` : ''}
+        </h1>
+        <p className="text-gray-600 mb-8">Manage your job postings and candidates</p>
         
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {menuItems.map((item, index) => (
@@ -73,44 +127,5 @@ const EmployerDashboard = () => {
     </div>
   );
 };
-
-const menuItems = [
-  {
-    title: "Post New Job",
-    icon: <Briefcase className="h-6 w-6" />,
-    path: "/employer/create-vacancy",
-    description: "Create a new job posting"
-  },
-  {
-    title: "Manage Jobs",
-    icon: <Building2 className="h-6 w-6" />,
-    path: "/employer/manage-jobs",
-    description: "View and edit your job listings"
-  },
-  {
-    title: "Search Candidates",
-    icon: <Search className="h-6 w-6" />,
-    path: "/employer/candidate-search",
-    description: "Find potential candidates"
-  },
-  {
-    title: "View Interviews",
-    icon: <Calendar className="h-6 w-6" />,
-    path: "/employer/interviews",
-    description: "Manage scheduled interviews"
-  },
-  {
-    title: "Profile Settings",
-    icon: <UserCircle className="h-6 w-6" />,
-    path: "/employer/profile",
-    description: "Update your company profile"
-  },
-  {
-    title: "Contact Us",
-    icon: <MessageSquare className="h-6 w-6" />,
-    path: "#",
-    description: "Get in touch with our support team"
-  }
-];
 
 export default EmployerDashboard;
