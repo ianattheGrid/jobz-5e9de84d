@@ -11,7 +11,7 @@ export const useSignIn = () => {
 
   const handleSignIn = async (email: string, password: string) => {
     setLoading(true);
-    console.log('Starting sign in process...'); // Debug log
+    console.log('Starting sign in process...'); 
 
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
@@ -19,7 +19,7 @@ export const useSignIn = () => {
         password,
       });
 
-      console.log('Sign in response:', { data, error }); // Debug log
+      console.log('Sign in response:', { data, error }); 
 
       if (error) {
         if (error.message.includes('Email not confirmed')) {
@@ -37,12 +37,11 @@ export const useSignIn = () => {
         throw new Error('No user returned after successful sign in');
       }
 
-      // Get the user type from metadata
       const userMetadata = data.user.user_metadata;
-      console.log('User metadata:', userMetadata); // Debug log
+      console.log('User metadata:', userMetadata); 
 
       const userType = userMetadata?.user_type?.toLowerCase();
-      console.log('Detected user type:', userType); // Debug log
+      console.log('Detected user type:', userType); 
 
       if (!userType) {
         console.error('No user type found in metadata');
@@ -54,20 +53,24 @@ export const useSignIn = () => {
         return;
       }
 
-      // Redirect based on user type
+      // Updated redirection logic with strict type checking
       let redirectPath = '';
-      switch(userType.toLowerCase()) {
+      switch(userType) {
         case 'candidate':
-          console.log('User is a candidate, redirecting to candidate dashboard'); // Debug log
+          console.log('Redirecting to candidate dashboard');
           redirectPath = '/candidate/dashboard';
           break;
         case 'employer':
-          console.log('User is an employer, redirecting to employer dashboard'); // Debug log
+          console.log('Redirecting to employer dashboard');
           redirectPath = '/employer/dashboard';
           break;
         case 'vr':
-          console.log('User is a VR, redirecting to VR dashboard'); // Debug log
+          console.log('Redirecting to VR dashboard');
           redirectPath = '/vr/dashboard';
+          break;
+        case 'recruiter':
+          console.log('Redirecting to recruiter dashboard');
+          redirectPath = '/recruiter/dashboard';
           break;
         default:
           console.error('Invalid user type:', userType);
@@ -79,7 +82,7 @@ export const useSignIn = () => {
           return;
       }
 
-      console.log('Navigating to:', redirectPath); // Debug log
+      console.log('Navigating to:', redirectPath); 
       navigate(redirectPath);
 
       toast({
@@ -88,7 +91,7 @@ export const useSignIn = () => {
       });
       
     } catch (error: any) {
-      console.error('Sign in error:', error); // Debug log
+      console.error('Sign in error:', error); 
       let errorMessage = "An error occurred during sign in.";
       
       if (error.message?.includes('Invalid login credentials')) {

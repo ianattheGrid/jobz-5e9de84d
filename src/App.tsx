@@ -18,6 +18,7 @@ import VirtualRecruiterRecommendations from "./pages/VirtualRecruiterRecommendat
 import ViewCandidateProfile from "./pages/ViewCandidateProfile";
 import CandidateSearch from "./pages/CandidateSearch";
 import EmployerInterviews from "./pages/EmployerInterviews";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
 import "./App.css";
 
 function App() {
@@ -27,23 +28,100 @@ function App() {
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/jobs" element={<Jobs />} />
-          <Route path="/employer/manage-jobs" element={<ManageJobs />} />
-          <Route path="/candidate/profile" element={<CandidateProfile />} />
+          <Route 
+            path="/employer/manage-jobs" 
+            element={
+              <ProtectedRoute allowedUserTypes={['employer']}>
+                <ManageJobs />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/candidate/profile" 
+            element={
+              <ProtectedRoute allowedUserTypes={['candidate']}>
+                <CandidateProfile />
+              </ProtectedRoute>
+            } 
+          />
           <Route path="/candidate/signup" element={<CandidateSignUp />} />
           <Route path="/candidate/signin" element={<CandidateSignIn />} />
           <Route path="/employer/signup" element={<EmployerSignUp />} />
           <Route path="/employer/signin" element={<EmployerSignIn />} />
-          <Route path="/employer/profile" element={<EmployerProfile />} />
-          <Route path="/employer/dashboard" element={<EmployerDashboard />} />
-          <Route path="/candidate/dashboard" element={<CandidateDashboard />} />
-          <Route path="/employer/create-vacancy" element={<CreateVacancy />} />
+          <Route 
+            path="/employer/profile" 
+            element={
+              <ProtectedRoute allowedUserTypes={['employer']}>
+                <EmployerProfile />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/employer/dashboard" 
+            element={
+              <ProtectedRoute allowedUserTypes={['employer']}>
+                <EmployerDashboard />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/candidate/dashboard" 
+            element={
+              <ProtectedRoute allowedUserTypes={['candidate']}>
+                <CandidateDashboard />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/employer/create-vacancy" 
+            element={
+              <ProtectedRoute allowedUserTypes={['employer']}>
+                <CreateVacancy />
+              </ProtectedRoute>
+            } 
+          />
           <Route path="/vr/signup" element={<VirtualRecruiterSignUp />} />
           <Route path="/vr/signin" element={<VirtualRecruiterSignIn />} />
-          <Route path="/vr/dashboard" element={<VirtualRecruiterDashboard />} />
-          <Route path="/vr/recommendations" element={<VirtualRecruiterRecommendations />} />
-          <Route path="/candidate/:id" element={<ViewCandidateProfile />} />
-          <Route path="/employer/candidates" element={<CandidateSearch />} />
-          <Route path="/employer/interviews" element={<EmployerInterviews />} />
+          <Route 
+            path="/vr/dashboard" 
+            element={
+              <ProtectedRoute allowedUserTypes={['vr']}>
+                <VirtualRecruiterDashboard />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/vr/recommendations" 
+            element={
+              <ProtectedRoute allowedUserTypes={['vr']}>
+                <VirtualRecruiterRecommendations />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/candidate/:id" 
+            element={
+              <ProtectedRoute allowedUserTypes={['employer', 'vr']}>
+                <ViewCandidateProfile />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/employer/candidates" 
+            element={
+              <ProtectedRoute allowedUserTypes={['employer']}>
+                <CandidateSearch />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/employer/interviews" 
+            element={
+              <ProtectedRoute allowedUserTypes={['employer']}>
+                <EmployerInterviews />
+              </ProtectedRoute>
+            } 
+          />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </div>
