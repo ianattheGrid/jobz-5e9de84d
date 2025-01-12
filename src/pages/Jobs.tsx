@@ -83,7 +83,7 @@ const Jobs = () => {
   return (
     <>
       <NavBar />
-      <div className="container mx-auto py-8 px-4">
+      <div className="container mx-auto py-8 px-4 bg-background min-h-screen">
         <JobsHeader userType={userType} jobCount={jobs?.length || 0} />
         <JobSearch onSearch={handleSearch} />
         {isLoading ? (

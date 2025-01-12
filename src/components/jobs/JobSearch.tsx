@@ -102,13 +102,13 @@ const JobSearch = ({ onSearch }: JobSearchProps) => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border p-4 mb-6 text-left">
+    <div className="bg-card rounded-lg shadow-sm border border-border p-4 mb-6 text-left">
       <div 
         className="flex items-center cursor-pointer mb-4"
         onClick={() => setIsExpanded(!isExpanded)}
       >
-        <Search className="h-5 w-5 text-red-800 mr-2" />
-        <h2 className="text-lg font-semibold text-red-800">
+        <Search className="h-5 w-5 text-primary mr-2" />
+        <h2 className="text-lg font-semibold text-primary">
           Find Your Perfect Job Match
         </h2>
       </div>
@@ -133,7 +133,7 @@ const JobSearch = ({ onSearch }: JobSearchProps) => {
             <div className="flex justify-start">
               <Button 
                 type="submit"
-                className="bg-red-800 hover:bg-red-900 text-white"
+                className="btn-white"
               >
                 Search
               </Button>
