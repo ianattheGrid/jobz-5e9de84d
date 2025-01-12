@@ -12,6 +12,37 @@ export const useSignUp = (userType: 'candidate' | 'employer' | 'vr') => {
     setLoading(true);
 
     try {
+      // First, try to get the session to check if user is already logged in
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (session?.user) {
+        // User is logged in, try to add new role
+        const { error: updateError } = await supabase.auth.updateUser({
+          data: { user_type: userType }
+        });
+
+        if (updateError) {
+          if (updateError.message.includes(`User already has the role ${userType}`)) {
+            toast({
+              variant: "destructive",
+              title: "Role Already Exists",
+              description: `You already have a ${userType} account. Please sign in instead.`,
+            });
+            navigate(`/${userType}/signin`);
+            return;
+          }
+          throw updateError;
+        }
+
+        toast({
+          title: "Success!",
+          description: `${userType} role added to your account. Please sign in.`,
+        });
+        navigate(`/${userType}/signin`);
+        return;
+      }
+
+      // User is not logged in, proceed with normal signup
       const { error } = await supabase.auth.signUp({
         email,
         password,
@@ -24,15 +55,45 @@ export const useSignUp = (userType: 'candidate' | 'employer' | 'vr') => {
       });
 
       if (error) {
-        if (
-          error.message.includes('already registered') || 
-          error.message.includes('User already registered') ||
-          error.message.includes(`User already has the role ${userType}`)
-        ) {
+        if (error.message.includes('already registered') || 
+            error.message.includes('User already registered')) {
+          // User exists but not logged in, try to sign in and add role
+          const { error: signInError } = await supabase.auth.signInWithPassword({
+            email,
+            password
+          });
+
+          if (signInError) {
+            toast({
+              variant: "destructive",
+              title: "Error",
+              description: "Please sign in with your existing account first.",
+            });
+            navigate(`/${userType}/signin`);
+            return;
+          }
+
+          // Now try to add the new role
+          const { error: updateError } = await supabase.auth.updateUser({
+            data: { user_type: userType }
+          });
+
+          if (updateError) {
+            if (updateError.message.includes(`User already has the role ${userType}`)) {
+              toast({
+                variant: "destructive",
+                title: "Role Already Exists",
+                description: `You already have a ${userType} account. Please sign in instead.`,
+              });
+              navigate(`/${userType}/signin`);
+              return;
+            }
+            throw updateError;
+          }
+
           toast({
-            variant: "destructive",
-            title: "Account Already Exists",
-            description: "This email is already registered for this role. Please sign in instead.",
+            title: "Success!",
+            description: `${userType} role added to your account. Please sign in.`,
           });
           navigate(`/${userType}/signin`);
           return;
@@ -52,7 +113,7 @@ export const useSignUp = (userType: 'candidate' | 'employer' | 'vr') => {
         title: "Error",
         description: error.message,
       });
-      throw error; // Re-throw the error so the form component can handle it
+      throw error;
     } finally {
       setLoading(false);
     }
