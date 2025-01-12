@@ -4,81 +4,26 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { UserRound } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { SignInFormValues, signInFormSchema } from "./signInFormSchema";
+import { useSignIn } from "@/hooks/useSignIn";
 import NavBar from "@/components/NavBar";
 
 const CandidateSignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
   const [resetMode, setResetMode] = useState(false);
-  const navigate = useNavigate();
+  const { handleSignIn, loading } = useSignIn();
   const { toast } = useToast();
 
-  const handleSignIn = async (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-
-    try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      if (error) {
-        if (error.message.includes('Email not confirmed')) {
-          toast({
-            variant: "destructive",
-            title: "Email Not Verified",
-            description: "Please check your email and verify your account before signing in.",
-          });
-          return;
-        }
-        throw error;
-      }
-
-      if (!data?.user) {
-        throw new Error('No user returned after successful sign in');
-      }
-
-      const userType = data.user.user_metadata?.user_type;
-      
-      if (userType !== 'candidate') {
-        await supabase.auth.signOut();
-        throw new Error('This login is only for candidates. Please use the appropriate sign in page.');
-      }
-
-      toast({
-        title: "Welcome back!",
-        description: "Successfully signed in.",
-      });
-      
-      navigate('/candidate/dashboard');
-    } catch (error: any) {
-      let errorMessage = "An error occurred during sign in.";
-      
-      if (error.message?.includes('Invalid login credentials')) {
-        errorMessage = "Invalid email or password. Please check your credentials and try again.";
-      } else if (error.message?.includes('only for candidates')) {
-        errorMessage = error.message;
-      }
-
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: errorMessage,
-      });
-    } finally {
-      setLoading(false);
-    }
+    await handleSignIn(email, password);
   };
 
   const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
 
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
@@ -98,8 +43,6 @@ const CandidateSignIn = () => {
         title: "Error",
         description: error.message,
       });
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -118,7 +61,7 @@ const CandidateSignIn = () => {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <form onSubmit={resetMode ? handleResetPassword : handleSignIn} className="space-y-4">
+            <form onSubmit={resetMode ? handleResetPassword : onSubmit} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
                 <Input 
