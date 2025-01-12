@@ -22,23 +22,23 @@ export default {
         border: "#333333",
         input: "#333333",
         ring: "#666666",
-        background: "#121212", // Main background color (darker grey)
+        background: "#000000",
         foreground: "#FFFFFF",
         primary: {
-          DEFAULT: "#FFFFFF", // Changed from red to white
-          light: "#F3F3F3",
-          dark: "#E5E5E5",
+          DEFAULT: "#ea384c",
+          light: "#ff6b7d",
+          dark: "#d41f33",
         },
         secondary: {
           DEFAULT: "#FFFFFF",
           light: "#F3F3F3",
         },
         card: {
-          DEFAULT: "#1E1E1E", // Slightly lighter than background
+          DEFAULT: "#111111",
           foreground: "#FFFFFF",
         },
         muted: {
-          DEFAULT: "#282828", // Even lighter for contrast
+          DEFAULT: "#1A1A1A",
           foreground: "#999999",
         },
         accent: {
