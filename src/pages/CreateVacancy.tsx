@@ -33,6 +33,8 @@ export default function CreateVacancy() {
       qualificationEssential: false,
       citizenshipEssential: false,
       requiredCitizenship: "UK citizens only",
+      workArea: "",
+      specialization: "",
     },
   });
 
@@ -92,10 +94,8 @@ export default function CreateVacancy() {
         holiday_entitlement: holidayDays,
         company_benefits: values.companyBenefits,
         employer_id: session.user.id,
-        match_threshold: values.matchThreshold,
         candidate_commission: values.offerCandidateCommission ? 
           parseInt(values.candidateCommission?.replace(/[^0-9.-]+/g, "") || "0") : null,
-        // Add new essential criteria fields
         title_essential: values.titleEssential,
         years_experience_essential: values.yearsExperienceEssential,
         min_years_experience: values.minYearsExperience,
@@ -104,6 +104,11 @@ export default function CreateVacancy() {
         qualification_essential: values.qualificationEssential,
         citizenship_essential: values.citizenshipEssential,
         required_citizenship: values.requiredCitizenship,
+        work_area: values.workArea || "Other",
+        specialization: values.specialization || "Other",
+        match_threshold: values.matchThreshold,
+        required_skills: [],
+        required_qualifications: []
       });
 
       if (error) throw error;
