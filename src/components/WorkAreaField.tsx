@@ -3,6 +3,16 @@ import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/comp
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Control } from "react-hook-form";
 import { workAreas } from "./work-area/constants";
+import { itRoles } from "./work-area/constants/it-roles";
+import { 
+  customerSupportTitles,
+  customerExperienceTitles,
+  customerServiceManagementTitles,
+  salesAndRetentionTitles,
+  specializedCustomerServiceTitles,
+  technicalSupportTitles
+} from "./work-area/constants/customer-service-roles";
+import { financeRoles } from "./work-area/constants/finance-roles";
 import ITSpecializationSelect from "./work-area/specializations/ITSpecializationSelect";
 import CustomerServiceSpecializationSelect from "./work-area/specializations/CustomerServiceSpecializationSelect";
 import FinanceSpecializationSelect from "./work-area/specializations/FinanceSpecializationSelect";
@@ -158,6 +168,19 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
 
 // Helper functions to get titles based on specialization
 const getTitlesForITSpecialization = (specialization: string): string[] => {
+  const {
+    softwareDevTitles,
+    itSupportTitles,
+    networkingTitles,
+    cybersecurityTitles,
+    dataAnalyticsTitles,
+    cloudComputingTitles,
+    aiTitles,
+    testingTitles,
+    itManagementTitles,
+    specializedITTitles
+  } = itRoles;
+
   switch (specialization) {
     case "Software Development and Programming":
       return softwareDevTitles;
@@ -204,6 +227,16 @@ const getTitlesForCustomerServiceSpecialization = (specialization: string): stri
 };
 
 const getTitlesForFinanceSpecialization = (specialization: string): string[] => {
+  const {
+    accountingRoles,
+    financialAnalysisRoles,
+    auditingRoles,
+    bankingRoles,
+    taxAndTreasuryRoles,
+    financeOperationsRoles,
+    specializedFinanceRoles
+  } = financeRoles;
+
   switch (specialization) {
     case "Accounting Roles":
       return accountingRoles;
