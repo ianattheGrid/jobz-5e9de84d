@@ -27,8 +27,19 @@ const MobileNav = ({ isAuthenticated, userType }: MobileNavProps) => {
           <SheetTitle>Menu</SheetTitle>
         </SheetHeader>
         <nav className="mt-6 flex flex-col space-y-4">
-          {isAuthenticated && userType === 'employer' ? (
+          <Link to="/" className="text-lg text-gray-600 hover:text-primary transition-colors">
+            Home
+          </Link>
+          <Link to="/jobs" className="text-lg text-gray-600 hover:text-primary transition-colors">
+            Job Board
+          </Link>
+          <Link to="/calculator" className="text-lg text-gray-600 hover:text-primary transition-colors">
+            Calculator
+          </Link>
+
+          {isAuthenticated && userType === 'employer' && (
             <>
+              <div className="h-px bg-gray-200 my-2" />
               <Link to="/employer/dashboard" className="text-lg text-gray-600 hover:text-primary transition-colors">
                 Dashboard
               </Link>
@@ -39,8 +50,11 @@ const MobileNav = ({ isAuthenticated, userType }: MobileNavProps) => {
                 Manage Jobs
               </Link>
             </>
-          ) : isAuthenticated && userType === 'candidate' ? (
+          )}
+
+          {isAuthenticated && userType === 'candidate' && (
             <>
+              <div className="h-px bg-gray-200 my-2" />
               <Link to="/candidate/dashboard" className="text-lg text-gray-600 hover:text-primary transition-colors">
                 Dashboard
               </Link>
@@ -52,12 +66,6 @@ const MobileNav = ({ isAuthenticated, userType }: MobileNavProps) => {
               </Link>
               <Link to="/candidate/applications" className="text-lg text-gray-600 hover:text-primary transition-colors">
                 My Applications
-              </Link>
-            </>
-          ) : (
-            <>
-              <Link to="/jobs" className="text-lg text-gray-600 hover:text-primary transition-colors">
-                Job Board
               </Link>
             </>
           )}
