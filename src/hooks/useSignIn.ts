@@ -33,17 +33,32 @@ export const useSignIn = () => {
         throw new Error('No user returned after successful sign in');
       }
 
+      // Get the user type from metadata
       const userType = data.user.user_metadata?.user_type;
-      
+      console.log('User type:', userType); // Debug log
+
+      if (!userType) {
+        console.error('No user type found in metadata');
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "User type not found. Please contact support.",
+        });
+        return;
+      }
+
       // Redirect based on user type
       switch(userType) {
         case 'candidate':
+          console.log('Redirecting to candidate dashboard'); // Debug log
           navigate('/candidate/dashboard');
           break;
         case 'employer':
+          console.log('Redirecting to employer dashboard'); // Debug log
           navigate('/employer/dashboard');
           break;
         case 'vr':
+          console.log('Redirecting to VR dashboard'); // Debug log
           navigate('/vr/dashboard');
           break;
         default:
