@@ -9,11 +9,11 @@ import JobList from "@/components/jobs/JobList";
 import JobsHeader from "@/components/jobs/JobsHeader";
 import JobSearch from "@/components/jobs/JobSearch";
 import { useState } from "react";
-import { JobSearchValues } from "@/components/jobs/JobSearchSchema";
+import { JobSearchSchema } from "@/components/jobs/JobSearchSchema";
 
 const Jobs = () => {
   const { user, userType } = useAuth();
-  const [searchFilters, setSearchFilters] = useState<JobSearchValues | null>(null);
+  const [searchFilters, setSearchFilters] = useState<JobSearchSchema | null>(null);
 
   const { data: jobs, isLoading, error } = useQuery({
     queryKey: ['jobs', searchFilters],
@@ -31,35 +31,16 @@ const Jobs = () => {
 
       // Apply search filters
       if (searchFilters) {
-        if (searchFilters.workArea) {
-          query = query.eq('work_area', searchFilters.workArea);
-        }
-
-        if (searchFilters.specialization) {
-          query = query.eq('specialization', searchFilters.specialization);
+        if (searchFilters.keyword) {
+          query = query.ilike('title', `%${searchFilters.keyword}%`);
         }
 
         if (searchFilters.location) {
           query = query.ilike('location', `%${searchFilters.location}%`);
         }
 
-        if (searchFilters.salary) {
-          const [minSalary, maxSalary] = searchFilters.salary
-            .replace(/[£,]/g, '')
-            .split(' - ')
-            .map(Number);
-
-          query = query
-            .gte('salary_min', minSalary)
-            .lte('salary_max', maxSalary);
-        }
-
-        if (searchFilters.includeCommission) {
+        if (searchFilters.hasCommission) {
           query = query.not('candidate_commission', 'is', null);
-        }
-
-        if (searchFilters.title) {
-          query = query.ilike('title', `%${searchFilters.title}%`);
         }
       }
 
@@ -75,7 +56,7 @@ const Jobs = () => {
     }
   });
 
-  const handleSearch = (filters: JobSearchValues) => {
+  const handleSearch = (filters: JobSearchSchema) => {
     console.log('Applying search filters:', filters);
     setSearchFilters(filters);
   };
