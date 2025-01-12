@@ -27,9 +27,13 @@ export const SignUpForm = ({ onSubmit, loading, userType }: SignUpFormProps) => 
       if (
         errorMessage.includes('already registered') || 
         errorMessage.includes('already exists') ||
-        (err.error?.message && err.error.message.includes('already registered'))
+        errorMessage.includes(`User already has the role ${userType}`) ||
+        (err.error?.message && (
+          err.error.message.includes('already registered') ||
+          err.error.message.includes(`User already has the role ${userType}`)
+        ))
       ) {
-        setError("This email is already registered. Please sign in instead.");
+        setError("This email is already registered for this role. Please sign in instead.");
         // Automatically redirect to sign in page after 2 seconds
         setTimeout(() => {
           navigate(`/${userType}/signin`);

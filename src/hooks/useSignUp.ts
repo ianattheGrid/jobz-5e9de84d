@@ -24,11 +24,15 @@ export const useSignUp = (userType: 'candidate' | 'employer' | 'vr') => {
       });
 
       if (error) {
-        if (error.message.includes('already registered') || error.message.includes('User already registered')) {
+        if (
+          error.message.includes('already registered') || 
+          error.message.includes('User already registered') ||
+          error.message.includes(`User already has the role ${userType}`)
+        ) {
           toast({
             variant: "destructive",
             title: "Account Already Exists",
-            description: "This email is already registered. Please sign in instead.",
+            description: "This email is already registered for this role. Please sign in instead.",
           });
           navigate(`/${userType}/signin`);
           return;
