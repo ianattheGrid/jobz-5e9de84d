@@ -6,7 +6,7 @@ import { CalculatorSection } from "@/components/home/CalculatorSection";
 
 export default function Index() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
+    <div className="min-h-screen bg-background">
       <NavBar />
       <HeroSection />
       <PlatformFeatures />

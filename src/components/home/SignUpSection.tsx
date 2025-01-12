@@ -4,7 +4,7 @@ import { User, Building2, Users } from "lucide-react";
 
 export const SignUpSection = () => {
   return (
-    <section id="signup-section" className="py-16 bg-gray-50">
+    <section id="signup-section" className="py-16 bg-background">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl font-bold text-center mb-12">Get Started Today</h2>
         <div className="grid gap-6 md:grid-cols-3">
