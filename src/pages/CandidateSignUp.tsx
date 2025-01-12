@@ -24,7 +24,7 @@ const CandidateSignUp = () => {
   const { toast } = useToast();
   const referralCode = searchParams.get("ref");
   const [referralDetails, setReferralDetails] = useState<ReferralDetails | null>(null);
-  const { handleSignUp, loading } = useSignUp();
+  const { handleSignUp, loading } = useSignUp('candidate');
 
   useEffect(() => {
     const validateReferralCode = async () => {
@@ -77,7 +77,11 @@ const CandidateSignUp = () => {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <SignUpForm onSubmit={handleSignUp} loading={loading} />
+            <SignUpForm 
+              onSubmit={handleSignUp} 
+              loading={loading} 
+              userType="candidate"
+            />
           </CardContent>
         </Card>
       </div>
