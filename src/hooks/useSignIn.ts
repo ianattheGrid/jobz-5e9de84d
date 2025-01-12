@@ -38,8 +38,10 @@ export const useSignIn = () => {
       }
 
       // Get the user type from metadata
-      const userType = data.user.user_metadata?.user_type;
-      console.log('User metadata:', data.user.user_metadata); // Debug log
+      const userMetadata = data.user.user_metadata;
+      console.log('User metadata:', userMetadata); // Debug log
+
+      const userType = userMetadata?.user_type?.toLowerCase();
       console.log('Detected user type:', userType); // Debug log
 
       if (!userType) {
@@ -54,7 +56,7 @@ export const useSignIn = () => {
 
       // Redirect based on user type
       let redirectPath = '';
-      switch(userType) {
+      switch(userType.toLowerCase()) {
         case 'candidate':
           console.log('User is a candidate, redirecting to candidate dashboard'); // Debug log
           redirectPath = '/candidate/dashboard';
