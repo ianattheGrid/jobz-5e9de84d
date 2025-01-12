@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface SignUpFormProps {
@@ -15,6 +15,7 @@ export const SignUpForm = ({ onSubmit, loading, userType }: SignUpFormProps) => 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,10 +23,19 @@ export const SignUpForm = ({ onSubmit, loading, userType }: SignUpFormProps) => 
     try {
       await onSubmit(email, password);
     } catch (err: any) {
-      if (err.message.includes('already registered')) {
+      const errorMessage = err.message || "";
+      if (
+        errorMessage.includes('already registered') || 
+        errorMessage.includes('already exists') ||
+        (err.error?.message && err.error.message.includes('already registered'))
+      ) {
         setError("This email is already registered. Please sign in instead.");
+        // Automatically redirect to sign in page after 2 seconds
+        setTimeout(() => {
+          navigate(`/${userType}/signin`);
+        }, 2000);
       } else {
-        setError(err.message || "An error occurred during sign up");
+        setError(errorMessage || "An error occurred during sign up");
       }
     }
   };
