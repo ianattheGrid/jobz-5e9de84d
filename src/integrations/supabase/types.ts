@@ -335,9 +335,11 @@ export type Database = {
           salary_max: number
           salary_min: number
           skills_essential: boolean | null
+          specialization: string
           title: string
           title_essential: boolean | null
           type: string
+          work_area: string
           years_experience_essential: boolean | null
         }
         Insert: {
@@ -359,9 +361,11 @@ export type Database = {
           salary_max: number
           salary_min: number
           skills_essential?: boolean | null
+          specialization: string
           title: string
           title_essential?: boolean | null
           type: string
+          work_area: string
           years_experience_essential?: boolean | null
         }
         Update: {
@@ -383,9 +387,11 @@ export type Database = {
           salary_max?: number
           salary_min?: number
           skills_essential?: boolean | null
+          specialization?: string
           title?: string
           title_essential?: boolean | null
           type?: string
+          work_area?: string
           years_experience_essential?: boolean | null
         }
         Relationships: []
