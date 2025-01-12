@@ -1,104 +1,31 @@
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import { Search } from "lucide-react";
-import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import WorkAreaSelect from "@/components/work-area/selectors/WorkAreaSelect";
-import SalaryRangeField from "@/components/SalaryRangeField";
+import { Input } from "@/components/ui/input";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
+import { JobSearchSchema, jobSearchSchema } from "./JobSearchSchema";
 import CommissionFilterField from "./CommissionFilterField";
-import { jobSearchSchema, type JobSearchValues } from "./JobSearchSchema";
-import { 
-  ITSpecializationSelect,
-  CustomerServiceSpecializationSelect,
-  FinanceSpecializationSelect,
-  PublicSectorSpecializationSelect,
-  EngineeringSpecializationSelect,
-  HospitalitySpecializationSelect
-} from "@/components/work-area/specializations";
 
 interface JobSearchProps {
-  onSearch: (values: JobSearchValues) => void;
+  onSearch: (data: JobSearchSchema) => void;
 }
 
 const JobSearch = ({ onSearch }: JobSearchProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [selectedWorkArea, setSelectedWorkArea] = useState<string>("");
 
-  const form = useForm<JobSearchValues>({
+  const form = useForm<JobSearchSchema>({
     resolver: zodResolver(jobSearchSchema),
     defaultValues: {
-      workArea: "",
-      specialization: "",
-      salary: "",
-      title: "",
-      includeCommission: false,
+      keyword: "",
+      location: "",
+      hasCommission: false,
     },
   });
 
-  const handleSubmit = (values: JobSearchValues) => {
-    onSearch(values);
-  };
-
-  const renderSpecializationSelect = () => {
-    switch (selectedWorkArea) {
-      case "IT":
-        return (
-          <ITSpecializationSelect
-            control={form.control}
-            onSpecializationChange={(value) => {
-              form.setValue("specialization", value);
-            }}
-          />
-        );
-      case "Customer Service":
-        return (
-          <CustomerServiceSpecializationSelect
-            control={form.control}
-            onSpecializationChange={(value) => {
-              form.setValue("specialization", value);
-            }}
-          />
-        );
-      case "Accounting & Finance":
-        return (
-          <FinanceSpecializationSelect
-            control={form.control}
-            onSpecializationChange={(value) => {
-              form.setValue("specialization", value);
-            }}
-          />
-        );
-      case "Public Sector":
-        return (
-          <PublicSectorSpecializationSelect
-            control={form.control}
-            onSpecializationChange={(value) => {
-              form.setValue("specialization", value);
-            }}
-          />
-        );
-      case "Engineering":
-        return (
-          <EngineeringSpecializationSelect
-            control={form.control}
-            onSpecializationChange={(value) => {
-              form.setValue("specialization", value);
-            }}
-          />
-        );
-      case "Hospitality & Tourism":
-        return (
-          <HospitalitySpecializationSelect
-            control={form.control}
-            onSpecializationChange={(value) => {
-              form.setValue("specialization", value);
-            }}
-          />
-        );
-      default:
-        return null;
-    }
+  const onSubmit = (data: JobSearchSchema) => {
+    onSearch(data);
   };
 
   return (
@@ -107,29 +34,49 @@ const JobSearch = ({ onSearch }: JobSearchProps) => {
         className="flex items-center cursor-pointer mb-4"
         onClick={() => setIsExpanded(!isExpanded)}
       >
-        <Search className="h-5 w-5 text-primary mr-2" />
-        <h2 className="text-lg font-semibold text-primary">
+        <Search className="h-5 w-5 text-white mr-2" />
+        <h2 className="text-lg font-semibold text-white">
           Find Your Perfect Job Match
         </h2>
       </div>
 
       {isExpanded && (
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
-            <WorkAreaSelect 
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <FormField
               control={form.control}
-              onWorkAreaChange={(value) => {
-                setSelectedWorkArea(value);
-                form.setValue("workArea", value);
-                form.setValue("specialization", "");
-              }}
+              name="keyword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      placeholder="Job title, keywords, or company"
+                      className="bg-muted text-white"
+                      {...field}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
             />
-            
-            {selectedWorkArea && renderSpecializationSelect()}
-            
-            <SalaryRangeField control={form.control} />
+
+            <FormField
+              control={form.control}
+              name="location"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      placeholder="Location"
+                      className="bg-muted text-white"
+                      {...field}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
             <CommissionFilterField control={form.control} />
-            
+
             <div className="flex justify-start">
               <Button 
                 type="submit"
