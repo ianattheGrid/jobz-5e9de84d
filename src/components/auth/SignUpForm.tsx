@@ -7,15 +7,29 @@ import { Link } from "react-router-dom";
 interface SignUpFormProps {
   onSubmit: (email: string, password: string) => Promise<void>;
   loading: boolean;
+  userType: 'candidate' | 'employer' | 'vr';
 }
 
-export const SignUpForm = ({ onSubmit, loading }: SignUpFormProps) => {
+export const SignUpForm = ({ onSubmit, loading, userType }: SignUpFormProps) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     await onSubmit(email, password);
+  };
+
+  const getSignInLink = () => {
+    switch(userType) {
+      case 'candidate':
+        return '/candidate/signin';
+      case 'employer':
+        return '/employer/signin';
+      case 'vr':
+        return '/vr/signin';
+      default:
+        return '/';
+    }
   };
 
   return (
@@ -47,7 +61,7 @@ export const SignUpForm = ({ onSubmit, loading }: SignUpFormProps) => {
       </Button>
       <div className="text-center text-sm text-muted-foreground">
         Already have an account?{" "}
-        <Link to="/candidate/signin" className="text-primary hover:underline">
+        <Link to={getSignInLink()} className="text-primary hover:underline">
           Sign In
         </Link>
       </div>

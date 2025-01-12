@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
-export const useSignUp = () => {
+export const useSignUp = (userType: 'candidate' | 'employer' | 'vr') => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -17,9 +17,9 @@ export const useSignUp = () => {
         password,
         options: {
           data: {
-            user_type: 'candidate'
+            user_type: userType
           },
-          emailRedirectTo: `${window.location.origin}/candidate/signin`
+          emailRedirectTo: `${window.location.origin}/${userType}/signin`
         }
       });
 
@@ -30,7 +30,7 @@ export const useSignUp = () => {
             title: "Account Already Exists",
             description: "This email is already registered. Please sign in instead.",
           });
-          navigate('/candidate/signin');
+          navigate(`/${userType}/signin`);
           return;
         }
         throw error;
@@ -41,7 +41,7 @@ export const useSignUp = () => {
         description: "Please check your email to verify your account before signing in.",
       });
       
-      navigate('/candidate/signin');
+      navigate(`/${userType}/signin`);
     } catch (error: any) {
       toast({
         variant: "destructive",
