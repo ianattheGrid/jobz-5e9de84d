@@ -24,7 +24,7 @@ export const useSignUp = (userType: 'candidate' | 'employer' | 'vr') => {
       });
 
       if (error) {
-        if (error.message.includes('User already registered')) {
+        if (error.message.includes('already registered') || error.message.includes('User already registered')) {
           toast({
             variant: "destructive",
             title: "Account Already Exists",
