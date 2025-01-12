@@ -31,7 +31,7 @@ const NavBar = () => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-4 py-2 bg-white shadow-sm h-16">
       <div className="flex items-center gap-4">
-        <MobileNav />
+        <MobileNav isAuthenticated={isAuthenticated} userType={userType} />
         <NavigationLinks />
       </div>
     </nav>
