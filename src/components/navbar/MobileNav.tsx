@@ -33,9 +33,22 @@ const MobileNav = ({ isAuthenticated, userType }: MobileNavProps) => {
           <Link to="/jobs" className="text-lg text-gray-600 hover:text-primary transition-colors">
             Job Board
           </Link>
-          <Link to="/calculator" className="text-lg text-gray-600 hover:text-primary transition-colors">
-            Calculator
-          </Link>
+          <SheetClose asChild>
+            <button 
+              onClick={() => {
+                setTimeout(() => {
+                  window.location.href = '/#calculator-section';
+                  const element = document.getElementById('calculator-section');
+                  if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }, 100);
+              }}
+              className="text-lg text-gray-600 hover:text-primary transition-colors text-left"
+            >
+              Calculator
+            </button>
+          </SheetClose>
 
           {isAuthenticated && userType === 'employer' && (
             <>
