@@ -5,6 +5,7 @@ export const vacancyFormSchema = z.object({
     required_error: "Please select the area of work for this vacancy.",
   }),
   itSpecialization: z.string().optional(),
+  specialization: z.string().optional(),
   title: z.string().optional(),
   otherWorkArea: z.string().optional(),
   location: z.string().min(2, {
@@ -41,7 +42,6 @@ export const vacancyFormSchema = z.object({
   candidateCommission: z.string().optional(),
   referralCommission: z.string().optional(),
   matchThreshold: z.number().min(0).max(100).default(60),
-  // New essential criteria fields
   titleEssential: z.boolean().default(false),
   yearsExperienceEssential: z.boolean().default(false),
   minYearsExperience: z.number().min(0).default(0),

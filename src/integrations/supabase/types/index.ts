@@ -1,5 +1,5 @@
 import { Json } from "./common";
-import { Job, JobMatch } from "./jobs";
+import { Job } from "./jobs";
 import { CandidateProfile, EmployerProfile, RecruiterProfile, VirtualRecruiterProfile } from "./profiles";
 import { Application, Interview } from "./applications";
 import { RecruiterMessage, RecruiterNotification, VRCandidateMessage } from "./messages";
@@ -26,11 +26,6 @@ export interface Database {
         Row: Interview;
         Insert: Partial<Interview>;
         Update: Partial<Interview>;
-      };
-      job_matches: {
-        Row: JobMatch;
-        Insert: Partial<JobMatch>;
-        Update: Partial<JobMatch>;
       };
       jobs: {
         Row: Job;
@@ -103,7 +98,7 @@ export interface Database {
 }
 
 export type { Json } from "./common";
-export type { Job, JobMatch } from "./jobs";
+export type { Job } from "./jobs";
 export type { CandidateProfile, EmployerProfile, RecruiterProfile, VirtualRecruiterProfile } from "./profiles";
 export type { Application, Interview } from "./applications";
 export type { RecruiterMessage, RecruiterNotification, VRCandidateMessage } from "./messages";
