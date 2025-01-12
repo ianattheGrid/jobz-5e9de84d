@@ -120,7 +120,7 @@ const FeatureCard = ({
   return (
     <Card className="border-none shadow-lg">
       <CardHeader>
-        <Icon className="h-12 w-12 text-primary mb-4" />
+        <Icon className="h-12 w-12 text-white mb-4" />
         <CardTitle>{title}</CardTitle>
         <CardDescription>{description}</CardDescription>
       </CardHeader>

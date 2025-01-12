@@ -18,8 +18,8 @@ const MobileNav = ({ isAuthenticated, userType }: MobileNavProps) => {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <button className="p-2 hover:bg-gray-100 rounded-md">
-          <Menu className="h-6 w-6 text-primary" />
+        <button className="p-2 hover:bg-gray-800/50 rounded-md">
+          <Menu className="h-6 w-6 text-white" />
         </button>
       </SheetTrigger>
       <SheetContent side="left" className="w-[300px] sm:max-w-sm">
