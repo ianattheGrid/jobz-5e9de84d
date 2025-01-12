@@ -1,77 +1,11 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { UserPlus } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { SignUpForm } from "@/components/auth/SignUpForm";
+import { useSignUp } from "@/hooks/useSignUp";
 import NavBar from "@/components/NavBar";
 
 const VirtualRecruiterSignUp = () => {
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [location, setLocation] = useState("");
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
-  const { toast } = useToast();
-
-  const handleSignUp = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-
-    try {
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            user_type: 'vr'
-          },
-          emailRedirectTo: `${window.location.origin}/vr/signin`
-        }
-      });
-
-      if (error) throw error;
-
-      if (data.user) {
-        const { error: profileError } = await supabase
-          .from('virtual_recruiter_profiles')
-          .insert({
-            id: data.user.id,
-            full_name: fullName,
-            email,
-            location,
-            is_active: true,
-            recommendations_count: 0,
-            successful_placements: 0,
-            bank_account_verified: false,
-            bank_account_details: null,
-            national_insurance_number: null,
-            vr_number: null
-          });
-
-        if (profileError) throw profileError;
-      }
-
-      toast({
-        title: "Verification email sent!",
-        description: "Please check your email to verify your account before signing in.",
-      });
-      
-      navigate('/vr/signin');
-    } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: error.message,
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { handleSignUp, loading } = useSignUp('vr');
 
   return (
     <>
@@ -88,59 +22,11 @@ const VirtualRecruiterSignUp = () => {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <form onSubmit={handleSignUp} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="fullName">Full Name</Label>
-                <Input 
-                  id="fullName"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  placeholder="Enter your full name"
-                  required
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <Input 
-                  id="email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email"
-                  required
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
-                <Input 
-                  id="password"
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Create a password"
-                  required
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="location">Location</Label>
-                <Input 
-                  id="location"
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
-                  placeholder="Enter your location"
-                  required
-                />
-              </div>
-              <Button className="w-full bg-primary hover:bg-primary-dark text-white" type="submit" disabled={loading}>
-                {loading ? "Signing up..." : "Sign Up"}
-              </Button>
-            </form>
-            <div className="text-center text-sm text-muted-foreground">
-              Already have an account?{" "}
-              <Link to="/vr/signin" className="text-primary hover:underline">
-                Sign In
-              </Link>
-            </div>
+            <SignUpForm 
+              onSubmit={handleSignUp} 
+              loading={loading}
+              userType="vr"
+            />
           </CardContent>
         </Card>
       </div>
