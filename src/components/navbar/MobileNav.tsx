@@ -43,12 +43,6 @@ const MobileNav = ({ isAuthenticated, userType }: MobileNavProps) => {
               <Link to="/employer/dashboard" className="text-lg text-gray-600 hover:text-primary transition-colors">
                 Dashboard
               </Link>
-              <Link to="/employer/create-vacancy" className="text-lg text-gray-600 hover:text-primary transition-colors">
-                Create Vacancy
-              </Link>
-              <Link to="/employer/manage-jobs" className="text-lg text-gray-600 hover:text-primary transition-colors">
-                Manage Jobs
-              </Link>
             </>
           )}
 
@@ -58,38 +52,25 @@ const MobileNav = ({ isAuthenticated, userType }: MobileNavProps) => {
               <Link to="/candidate/dashboard" className="text-lg text-gray-600 hover:text-primary transition-colors">
                 Dashboard
               </Link>
-              <Link to="/candidate/profile" className="text-lg text-gray-600 hover:text-primary transition-colors">
-                Update Profile
-              </Link>
-              <Link to="/jobs" className="text-lg text-gray-600 hover:text-primary transition-colors">
-                View Jobs
-              </Link>
-              <Link to="/candidate/applications" className="text-lg text-gray-600 hover:text-primary transition-colors">
-                My Applications
-              </Link>
             </>
           )}
           
-          {!isAuthenticated && (
-            <>
-              <div className="h-px bg-gray-200 my-4" />
-              <SheetClose asChild>
-                <button 
-                  onClick={() => {
-                    setTimeout(() => {
-                      const element = document.getElementById('signup-section');
-                      if (element) {
-                        element.scrollIntoView({ behavior: 'smooth' });
-                      }
-                    }, 100);
-                  }}
-                  className="text-lg text-orange-500 font-semibold hover:text-orange-600 transition-colors text-left"
-                >
-                  Sign in / Sign up
-                </button>
-              </SheetClose>
-            </>
-          )}
+          <div className="h-px bg-gray-200 my-4" />
+          <SheetClose asChild>
+            <button 
+              onClick={() => {
+                setTimeout(() => {
+                  const element = document.getElementById('signup-section');
+                  if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }, 100);
+              }}
+              className="text-lg text-orange-500 font-semibold hover:text-orange-600 transition-colors text-left"
+            >
+              Sign in / Sign up
+            </button>
+          </SheetClose>
         </nav>
       </SheetContent>
     </Sheet>
