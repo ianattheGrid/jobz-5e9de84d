@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Link } from "react-router-dom";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface SignUpFormProps {
   onSubmit: (email: string, password: string) => Promise<void>;
@@ -13,10 +14,20 @@ interface SignUpFormProps {
 export const SignUpForm = ({ onSubmit, loading, userType }: SignUpFormProps) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await onSubmit(email, password);
+    setError(null);
+    try {
+      await onSubmit(email, password);
+    } catch (err: any) {
+      if (err.message.includes('already registered')) {
+        setError("This email is already registered. Please sign in instead.");
+      } else {
+        setError(err.message || "An error occurred during sign up");
+      }
+    }
   };
 
   const getSignInLink = () => {
@@ -34,6 +45,11 @@ export const SignUpForm = ({ onSubmit, loading, userType }: SignUpFormProps) => 
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      {error && (
+        <Alert variant="destructive">
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      )}
       <div className="space-y-2">
         <Label htmlFor="email">Email</Label>
         <Input 
