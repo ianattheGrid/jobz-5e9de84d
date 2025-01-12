@@ -56,9 +56,6 @@ const MobileNav = ({ isAuthenticated, userType }: MobileNavProps) => {
             </>
           ) : (
             <>
-              <Link to="/" className="text-lg text-gray-600 hover:text-primary transition-colors">
-                Home
-              </Link>
               <Link to="/jobs" className="text-lg text-gray-600 hover:text-primary transition-colors">
                 Job Board
               </Link>
