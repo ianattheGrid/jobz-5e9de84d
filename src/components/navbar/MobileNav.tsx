@@ -39,6 +39,21 @@ const MobileNav = ({ isAuthenticated, userType }: MobileNavProps) => {
                 Manage Jobs
               </Link>
             </>
+          ) : isAuthenticated && userType === 'candidate' ? (
+            <>
+              <Link to="/candidate/dashboard" className="text-lg text-gray-600 hover:text-primary transition-colors">
+                Dashboard
+              </Link>
+              <Link to="/candidate/profile" className="text-lg text-gray-600 hover:text-primary transition-colors">
+                Update Profile
+              </Link>
+              <Link to="/jobs" className="text-lg text-gray-600 hover:text-primary transition-colors">
+                View Jobs
+              </Link>
+              <Link to="/candidate/applications" className="text-lg text-gray-600 hover:text-primary transition-colors">
+                My Applications
+              </Link>
+            </>
           ) : (
             <>
               <Link to="/" className="text-lg text-gray-600 hover:text-primary transition-colors">
