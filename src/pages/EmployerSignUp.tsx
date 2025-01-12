@@ -1,36 +1,20 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Building2 } from "lucide-react";
 import { SignUpForm } from "@/components/auth/SignUpForm";
 import { useSignUp } from "@/hooks/useSignUp";
-import NavBar from "@/components/NavBar";
 
 const EmployerSignUp = () => {
-  const { handleSignUp, loading } = useSignUp('employer');
+  const { signUp, loading } = useSignUp();
+
+  const handleSubmit = async (email: string, password: string, fullName: string, companyName: string) => {
+    await signUp(email, password, 'employer', fullName, companyName);
+  };
 
   return (
-    <>
-      <NavBar />
-      <div className="container mx-auto flex min-h-screen items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader className="space-y-1">
-            <div className="flex items-center justify-center gap-2">
-              <Building2 className="h-8 w-8 text-[#9b87f5]" />
-              <CardTitle className="text-2xl">Employer Sign Up</CardTitle>
-            </div>
-            <CardDescription>
-              Create an employer account to post job vacancies
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <SignUpForm 
-              onSubmit={handleSignUp} 
-              loading={loading}
-              userType="employer"
-            />
-          </CardContent>
-        </Card>
+    <div className="container mx-auto px-4 py-8">
+      <div className="max-w-md mx-auto">
+        <h1 className="text-2xl font-bold text-center mb-8">Sign Up as Employer</h1>
+        <SignUpForm onSubmit={handleSubmit} loading={loading} showCompanyField={true} />
       </div>
-    </>
+    </div>
   );
 };
 

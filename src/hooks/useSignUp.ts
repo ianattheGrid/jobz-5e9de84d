@@ -36,6 +36,15 @@ export const useSignUp = () => {
 
         // If this is a VR signup, create the VR profile
         if (userType === 'vr') {
+          // Generate VR number using the database function
+          const { data: vrNumberData, error: vrNumberError } = await supabase
+            .rpc('generate_vr_number');
+
+          if (vrNumberError) {
+            console.error('Error generating VR number:', vrNumberError);
+            throw vrNumberError;
+          }
+
           const { error: profileError } = await supabase
             .from('virtual_recruiter_profiles')
             .insert({
@@ -43,6 +52,7 @@ export const useSignUp = () => {
               full_name: fullName,
               email: email,
               location: 'UK', // Default value
+              vr_number: vrNumberData,
             });
 
           if (profileError) {
@@ -112,6 +122,15 @@ export const useSignUp = () => {
 
           // If this is a VR signup, create the VR profile
           if (userType === 'vr' && signInData.user) {
+            // Generate VR number using the database function
+            const { data: vrNumberData, error: vrNumberError } = await supabase
+              .rpc('generate_vr_number');
+
+            if (vrNumberError) {
+              console.error('Error generating VR number:', vrNumberError);
+              throw vrNumberError;
+            }
+
             const { error: profileError } = await supabase
               .from('virtual_recruiter_profiles')
               .insert({
@@ -119,6 +138,7 @@ export const useSignUp = () => {
                 full_name: fullName,
                 email: email,
                 location: 'UK', // Default value
+                vr_number: vrNumberData,
               });
 
             if (profileError) {
@@ -140,6 +160,15 @@ export const useSignUp = () => {
 
       // If this is a new VR signup, create the VR profile
       if (userType === 'vr' && data.user) {
+        // Generate VR number using the database function
+        const { data: vrNumberData, error: vrNumberError } = await supabase
+          .rpc('generate_vr_number');
+
+        if (vrNumberError) {
+          console.error('Error generating VR number:', vrNumberError);
+          throw vrNumberError;
+        }
+
         const { error: profileError } = await supabase
           .from('virtual_recruiter_profiles')
           .insert({
@@ -147,6 +176,7 @@ export const useSignUp = () => {
             full_name: fullName,
             email: email,
             location: 'UK', // Default value
+            vr_number: vrNumberData,
           });
 
         if (profileError) {
