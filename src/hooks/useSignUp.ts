@@ -48,6 +48,7 @@ export const useSignUp = (userType: 'candidate' | 'employer' | 'vr') => {
         title: "Error",
         description: error.message,
       });
+      throw error; // Re-throw the error so the form component can handle it
     } finally {
       setLoading(false);
     }
