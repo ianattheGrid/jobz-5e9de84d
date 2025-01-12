@@ -32,7 +32,11 @@ const Jobs = () => {
       // Apply search filters
       if (searchFilters) {
         if (searchFilters.workArea) {
-          query = query.eq('workArea', searchFilters.workArea);
+          query = query.eq('work_area', searchFilters.workArea);
+        }
+
+        if (searchFilters.specialization) {
+          query = query.eq('specialization', searchFilters.specialization);
         }
 
         if (searchFilters.location) {
