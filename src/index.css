@@ -4,17 +4,17 @@
  
 @layer base {
   :root {
-    --background: 0 0% 0%;
+    --background: 0 0% 7%; /* Dark grey background */
     --foreground: 0 0% 100%;
-    --card: 0 0% 7%;
+    --card: 0 0% 12%; /* Slightly lighter than background */
     --card-foreground: 0 0% 100%;
-    --popover: 0 0% 7%;
+    --popover: 0 0% 12%;
     --popover-foreground: 0 0% 100%;
-    --primary: 352 84% 57%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 0 0% 100%; /* White instead of red */
+    --primary-foreground: 0 0% 0%;
     --secondary: 0 0% 100%;
     --secondary-foreground: 0 0% 0%;
-    --muted: 0 0% 10%;
+    --muted: 0 0% 16%; /* Even lighter for contrast */
     --muted-foreground: 0 0% 60%;
     --accent: 0 0% 20%;
     --accent-foreground: 0 0% 100%;
@@ -32,7 +32,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground min-h-screen;
   }
 }
 
@@ -64,12 +64,12 @@
 
 /* Hover effects */
 .hover-glow:hover {
-  box-shadow: 0 0 15px rgba(234, 56, 76, 0.3);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.3); /* Updated to white glow */
 }
 
-/* Red accent line */
+/* White accent line */
 .red-accent-line {
-  border-color: #ea384c;
+  border-color: #FFFFFF; /* Changed from red to white */
 }
 
 /* Button styles */
