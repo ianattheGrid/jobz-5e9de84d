@@ -22,7 +22,7 @@ export default {
         border: "#333333",
         input: "#333333",
         ring: "#666666",
-        background: "#000000",
+        background: "#121212",
         foreground: "#FFFFFF",
         primary: {
           DEFAULT: "#ea384c",
@@ -34,7 +34,7 @@ export default {
           light: "#F3F3F3",
         },
         card: {
-          DEFAULT: "#111111",
+          DEFAULT: "#1E1E1E",
           foreground: "#FFFFFF",
         },
         muted: {

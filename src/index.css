@@ -4,11 +4,11 @@
  
 @layer base {
   :root {
-    --background: 0 0% 0%;
+    --background: 0 0% 7%;
     --foreground: 0 0% 100%;
-    --card: 0 0% 7%;
+    --card: 0 0% 12%;
     --card-foreground: 0 0% 100%;
-    --popover: 0 0% 7%;
+    --popover: 0 0% 12%;
     --popover-foreground: 0 0% 100%;
     --primary: 352 84% 57%;
     --primary-foreground: 0 0% 100%;
@@ -57,7 +57,7 @@
 
 /* Glass effect for cards */
 .glass-effect {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(30, 30, 30, 0.8);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
