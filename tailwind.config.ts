@@ -19,19 +19,35 @@ export default {
     },
     extend: {
       colors: {
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
+        border: "#333333",
+        input: "#333333",
+        ring: "#666666",
+        background: "#000000",
+        foreground: "#FFFFFF",
         primary: {
           DEFAULT: "#ea384c",
           light: "#ff6b7d",
           dark: "#d41f33",
         },
         secondary: {
-          DEFAULT: "#F97316",
-          light: "#FFEDD5",
+          DEFAULT: "#FFFFFF",
+          light: "#F3F3F3",
+        },
+        card: {
+          DEFAULT: "#111111",
+          foreground: "#FFFFFF",
+        },
+        muted: {
+          DEFAULT: "#1A1A1A",
+          foreground: "#999999",
+        },
+        accent: {
+          DEFAULT: "#333333",
+          foreground: "#FFFFFF",
+        },
+        destructive: {
+          DEFAULT: "#FF0000",
+          foreground: "#FFFFFF",
         },
       },
       keyframes: {

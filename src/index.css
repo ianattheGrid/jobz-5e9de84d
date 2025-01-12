@@ -6,29 +6,23 @@
   :root {
     --background: 0 0% 0%;
     --foreground: 0 0% 100%;
-
     --card: 0 0% 7%;
     --card-foreground: 0 0% 100%;
- 
+    --popover: 0 0% 7%;
+    --popover-foreground: 0 0% 100%;
     --primary: 352 84% 57%;
     --primary-foreground: 0 0% 100%;
- 
-    --secondary: 240 4% 16%;
-    --secondary-foreground: 0 0% 100%;
- 
-    --muted: 240 4% 16%;
-    --muted-foreground: 240 5% 65%;
- 
-    --accent: 240 4% 16%;
+    --secondary: 0 0% 100%;
+    --secondary-foreground: 0 0% 0%;
+    --muted: 0 0% 10%;
+    --muted-foreground: 0 0% 60%;
+    --accent: 0 0% 20%;
     --accent-foreground: 0 0% 100%;
- 
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 0 100% 50%;
     --destructive-foreground: 0 0% 100%;
-
-    --border: 240 4% 16%;
-    --input: 240 4% 16%;
-    --ring: 240 5% 65%;
- 
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 0 0% 40%;
     --radius: 0.5rem;
   }
 }
@@ -76,4 +70,14 @@
 /* Red accent line */
 .red-accent-line {
   border-color: #ea384c;
+}
+
+/* Button styles */
+.btn-white {
+  @apply bg-white text-black hover:bg-gray-100 transition-colors;
+}
+
+/* Card styles */
+.card-dark {
+  @apply bg-card text-card-foreground border border-border/20;
 }

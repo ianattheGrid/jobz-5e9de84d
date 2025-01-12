@@ -4,11 +4,11 @@ import { JobCardFrontProps } from "./types";
 
 const JobCardFront = ({ job, showEmployerDetails = false, onApply }: JobCardFrontProps) => {
   return (
-    <div className="h-full p-6 flex flex-col">
+    <div className="h-full p-6 flex flex-col bg-card text-white">
       <div className="mb-4">
         <div className="flex justify-between items-start gap-4">
-          <h3 className="text-lg font-semibold text-[#ea384c] line-clamp-2">{job.title}</h3>
-          <span className="px-2 py-1 text-xs font-medium bg-primary-light text-primary rounded-full whitespace-nowrap flex-shrink-0">
+          <h3 className="text-lg font-semibold text-primary line-clamp-2">{job.title}</h3>
+          <span className="px-2 py-1 text-xs font-medium bg-white text-black rounded-full whitespace-nowrap flex-shrink-0">
             {job.type}
           </span>
         </div>
@@ -27,7 +27,7 @@ const JobCardFront = ({ job, showEmployerDetails = false, onApply }: JobCardFron
         </div>
 
         <div className="text-sm">
-          <span className="font-medium">Salary Range: </span>
+          <span className="font-medium text-white">Salary Range: </span>
           <span className="text-muted-foreground">
             {formatSalary(job.salary_min)} - {formatSalary(job.salary_max)}
           </span>
@@ -41,7 +41,7 @@ const JobCardFront = ({ job, showEmployerDetails = false, onApply }: JobCardFron
         )}
 
         <div>
-          <h4 className="font-medium mb-2 text-sm">Job Description</h4>
+          <h4 className="font-medium mb-2 text-sm text-white">Job Description</h4>
           <p className="text-sm text-muted-foreground line-clamp-3">
             {job.description}
           </p>
@@ -50,7 +50,7 @@ const JobCardFront = ({ job, showEmployerDetails = false, onApply }: JobCardFron
 
       <button 
         onClick={onApply}
-        className="w-full mt-6 text-sm bg-primary-light text-primary hover:bg-primary hover:text-white transition-colors py-2 rounded-md flex items-center justify-center group"
+        className="w-full mt-6 text-sm bg-white text-black hover:bg-gray-100 transition-colors py-2 rounded-md flex items-center justify-center group"
       >
         Apply Now
         <svg 
