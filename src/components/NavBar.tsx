@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import MobileNav from "./navbar/MobileNav";
+import NavigationLinks from "./navbar/NavigationLinks";
 
 const NavBar = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -29,8 +30,9 @@ const NavBar = () => {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-4 py-2 bg-white shadow-sm h-16">
-      <div className="flex items-center">
+      <div className="flex items-center gap-4">
         <MobileNav />
+        <NavigationLinks />
       </div>
     </nav>
   );
