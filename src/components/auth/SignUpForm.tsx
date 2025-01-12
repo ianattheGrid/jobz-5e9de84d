@@ -6,14 +6,17 @@ import { Link, useNavigate } from "react-router-dom";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface SignUpFormProps {
-  onSubmit: (email: string, password: string) => Promise<void>;
+  onSubmit: (email: string, password: string, fullName: string, companyName?: string) => Promise<void>;
   loading: boolean;
   userType: 'candidate' | 'employer' | 'vr';
+  showCompanyField?: boolean;
 }
 
-export const SignUpForm = ({ onSubmit, loading, userType }: SignUpFormProps) => {
+export const SignUpForm = ({ onSubmit, loading, userType, showCompanyField = false }: SignUpFormProps) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [companyName, setCompanyName] = useState("");
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
@@ -21,7 +24,7 @@ export const SignUpForm = ({ onSubmit, loading, userType }: SignUpFormProps) => 
     e.preventDefault();
     setError(null);
     try {
-      await onSubmit(email, password);
+      await onSubmit(email, password, fullName, companyName);
     } catch (err: any) {
       const errorMessage = err.message || "";
       if (
@@ -65,6 +68,17 @@ export const SignUpForm = ({ onSubmit, loading, userType }: SignUpFormProps) => 
         </Alert>
       )}
       <div className="space-y-2">
+        <Label htmlFor="fullName">Full Name</Label>
+        <Input 
+          id="fullName" 
+          type="text" 
+          value={fullName}
+          onChange={(e) => setFullName(e.target.value)}
+          placeholder="Enter your full name" 
+          required
+        />
+      </div>
+      <div className="space-y-2">
         <Label htmlFor="email">Email</Label>
         <Input 
           id="email" 
@@ -75,6 +89,19 @@ export const SignUpForm = ({ onSubmit, loading, userType }: SignUpFormProps) => 
           required
         />
       </div>
+      {showCompanyField && (
+        <div className="space-y-2">
+          <Label htmlFor="companyName">Company Name</Label>
+          <Input 
+            id="companyName" 
+            type="text" 
+            value={companyName}
+            onChange={(e) => setCompanyName(e.target.value)}
+            placeholder="Enter your company name" 
+            required
+          />
+        </div>
+      )}
       <div className="space-y-2">
         <Label htmlFor="password">Password</Label>
         <Input 
