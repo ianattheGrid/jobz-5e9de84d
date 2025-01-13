@@ -14,12 +14,12 @@ const queryClient = new QueryClient({
 });
 
 function App() {
-  // Get the base URL from the environment or default to '/'
-  const baseUrl = import.meta.env.BASE_URL || '/';
+  // Get the project URL from window.location
+  const projectUrl = window.location.pathname.split('/projects/')[0] || '/';
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Router basename={baseUrl}>
+      <Router basename={projectUrl}>
         <AppLayout>
           <Routes>
             {routes.map((route) => {
