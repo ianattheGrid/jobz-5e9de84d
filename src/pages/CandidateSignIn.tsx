@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { UserPlus } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useSignIn } from "@/hooks/useSignIn";
@@ -16,21 +16,6 @@ const CandidateSignIn = () => {
   const [resetMode, setResetMode] = useState(false);
   const { handleSignIn, loading } = useSignIn();
   const { toast } = useToast();
-  const navigate = useNavigate();
-
-  // Add auth state change listener
-  useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === 'SIGNED_IN' && session?.user) {
-        const userType = session.user.user_metadata?.user_type?.toLowerCase();
-        if (userType === 'candidate') {
-          navigate('/candidate/dashboard');
-        }
-      }
-    });
-
-    return () => subscription.unsubscribe();
-  }, [navigate]);
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

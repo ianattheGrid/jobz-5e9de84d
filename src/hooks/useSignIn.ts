@@ -64,24 +64,23 @@ export const useSignIn = () => {
         return;
       }
 
-      // Updated redirection logic with strict type checking
-      let redirectPath = '';
+      // Immediately redirect based on user type
       switch(userType) {
         case 'candidate':
           console.log('Redirecting to candidate dashboard');
-          redirectPath = '/candidate/dashboard';
+          navigate('/candidate/dashboard', { replace: true });
           break;
         case 'employer':
           console.log('Redirecting to employer dashboard');
-          redirectPath = '/employer/dashboard';
+          navigate('/employer/dashboard', { replace: true });
           break;
         case 'vr':
           console.log('Redirecting to VR dashboard');
-          redirectPath = '/vr/dashboard';
+          navigate('/vr/dashboard', { replace: true });
           break;
         case 'recruiter':
           console.log('Redirecting to recruiter dashboard');
-          redirectPath = '/recruiter/dashboard';
+          navigate('/recruiter/dashboard', { replace: true });
           break;
         default:
           console.error('Invalid user type:', userType);
@@ -92,9 +91,6 @@ export const useSignIn = () => {
           });
           return;
       }
-
-      console.log('Navigating to:', redirectPath); 
-      navigate(redirectPath);
 
       toast({
         title: "Welcome back!",
