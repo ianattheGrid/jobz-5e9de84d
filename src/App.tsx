@@ -14,9 +14,12 @@ const queryClient = new QueryClient({
 });
 
 function App() {
+  // Get the base URL from the environment or default to '/'
+  const baseUrl = import.meta.env.BASE_URL || '/';
+
   return (
     <QueryClientProvider client={queryClient}>
-      <Router>
+      <Router basename={baseUrl}>
         <AppLayout>
           <Routes>
             {routes.map((route) => {
