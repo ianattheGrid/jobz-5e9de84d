@@ -25,17 +25,14 @@ export const useProfileData = (reset: UseFormReset<CandidateFormValues>) => {
           .from('candidate_profiles')
           .select('*')
           .eq('id', session.user.id)
-          .single();
+          .maybeSingle();
 
         if (error) {
-          if (error.code === 'PGRST116') {
-            console.log('No profile found for user');
-            return;
-          }
           throw error;
         }
 
         if (profile) {
+          console.log('Loading existing profile:', profile);
           reset({
             full_name: profile.full_name || '',
             email: profile.email || '',
@@ -54,7 +51,11 @@ export const useProfileData = (reset: UseFormReset<CandidateFormValues>) => {
             additional_skills: profile.additional_skills || "",
             availability: profile.availability || "Immediate",
             work_preferences: profile.work_preferences || "",
+            current_employer: profile.current_employer || "",
           });
+        } else {
+          console.log('No existing profile found, using default values');
+          // The form will use its default values
         }
       } catch (error: any) {
         console.error('Error loading profile:', error);

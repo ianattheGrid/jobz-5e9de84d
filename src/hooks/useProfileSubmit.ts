@@ -17,6 +17,8 @@ export const useProfileSubmit = (toast: ToastFunction) => {
         return;
       }
 
+      console.log('Submitting profile values:', values);
+
       const { error } = await supabase
         .from('candidate_profiles')
         .upsert({
@@ -38,6 +40,8 @@ export const useProfileSubmit = (toast: ToastFunction) => {
           availability: values.availability,
           work_preferences: values.work_preferences,
           current_employer: values.current_employer
+        }, {
+          onConflict: 'id'
         });
 
       if (error) {
