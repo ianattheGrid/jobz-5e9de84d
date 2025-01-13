@@ -16,12 +16,15 @@ const queryClient = new QueryClient({
 function App() {
   // Get the project URL from window.location
   const pathname = window.location.pathname;
-  const projectsMatch = pathname.match(/\/projects\/([^/]+)/);
+  const projectsMatch = pathname.match(/^\/projects\/([^/]+)/);
   const basename = projectsMatch ? `/projects/${projectsMatch[1]}` : '';
 
-  console.log('Current pathname:', pathname);
-  console.log('Current basename:', basename);
-  console.log('Projects match:', projectsMatch);
+  console.log('Route Debug:', {
+    currentPathname: pathname,
+    basename,
+    projectsMatch,
+    fullPath: `${basename}${pathname}`
+  });
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -31,10 +34,11 @@ function App() {
             {routes.map((route) => {
               const requiresAuth = /^\/(dashboard|profile|interviews|create-vacancy|manage-jobs|recommendations)/.test(route.path);
               
-              console.log('Processing route:', {
+              console.log('Route Processing:', {
                 path: route.path,
                 fullPath: `${basename}${route.path}`,
                 requiresAuth,
+                matches: pathname === route.path,
                 element: route.element ? 'Present' : 'Missing'
               });
               

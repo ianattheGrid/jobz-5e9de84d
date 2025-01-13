@@ -50,6 +50,10 @@ export const routes = [
     element: <CandidateDashboard />
   },
   {
+    path: "/candidate/search",
+    element: <CandidateSearch />
+  },
+  {
     path: "/candidate/:id",
     element: <ViewCandidateProfile />
   },
@@ -96,10 +100,6 @@ export const routes = [
   {
     path: "/vr/recommendations",
     element: <VirtualRecruiterRecommendations />
-  },
-  {
-    path: "/candidate/search",
-    element: <CandidateSearch />
   },
   {
     path: "*",
