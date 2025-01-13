@@ -14,17 +14,16 @@ const queryClient = new QueryClient({
 });
 
 function App() {
+  // Simplified basename logic - only handle /projects/ prefix
   const pathname = window.location.pathname;
   const projectsMatch = pathname.match(/^\/projects\/([^/]+)/);
   const basename = projectsMatch ? `/projects/${projectsMatch[1]}` : '';
-  const currentPath = pathname.replace(basename, '');
 
   console.log('Route Debug:', {
-    currentPathname: pathname,
+    pathname,
     basename,
     projectsMatch,
-    currentPath,
-    routePaths: routes.map(r => r.path)
+    availableRoutes: routes.map(r => r.path)
   });
 
   return (
@@ -35,11 +34,9 @@ function App() {
             {routes.map((route) => {
               const requiresAuth = /^\/(dashboard|profile|interviews|create-vacancy|manage-jobs|recommendations)/.test(route.path);
               
-              console.log('Route Processing:', {
+              console.log('Processing route:', {
                 path: route.path,
-                currentPath,
                 requiresAuth,
-                matches: currentPath === route.path,
                 element: route.element ? 'Present' : 'Missing'
               });
               
