@@ -49,6 +49,10 @@ export default {
           DEFAULT: "#FF0000",
           foreground: "#FFFFFF",
         },
+        popover: {
+          DEFAULT: "#1E1E1E",
+          foreground: "#FFFFFF",
+        },
       },
       keyframes: {
         "card-swipe": {

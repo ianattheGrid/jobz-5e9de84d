@@ -84,3 +84,12 @@
 .card-dark {
   @apply bg-card text-card-foreground border border-border/20;
 }
+
+/* Dropdown styles */
+.select-content {
+  @apply bg-card border border-border text-card-foreground;
+}
+
+.select-item {
+  @apply hover:bg-muted cursor-pointer;
+}
