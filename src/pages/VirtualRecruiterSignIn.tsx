@@ -19,7 +19,7 @@ const VirtualRecruiterSignIn = () => {
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await handleSignIn(email, password);
+    await handleSignIn(email, password, 'vr');
   };
 
   const handleResetPassword = async (e: React.FormEvent) => {

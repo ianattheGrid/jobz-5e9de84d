@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { UserRound } from "lucide-react";
+import { UserPlus } from "lucide-react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -19,7 +19,7 @@ const CandidateSignIn = () => {
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await handleSignIn(email, password);
+    await handleSignIn(email, password, 'candidate');
   };
 
   const handleResetPassword = async (e: React.FormEvent) => {
@@ -53,11 +53,11 @@ const CandidateSignIn = () => {
         <Card className="w-full max-w-md">
           <CardHeader className="space-y-1">
             <div className="flex items-center justify-center gap-2">
-              <UserRound className="h-8 w-8 text-primary" />
+              <UserPlus className="h-8 w-8 text-primary" />
               <CardTitle className="text-2xl">Candidate Sign In</CardTitle>
             </div>
             <CardDescription>
-              {resetMode ? "Reset your password" : "Sign in to find your dream job"}
+              {resetMode ? "Reset your password" : "Sign in to access your profile"}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">

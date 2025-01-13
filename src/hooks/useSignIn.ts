@@ -9,7 +9,7 @@ export const useSignIn = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const handleSignIn = async (email: string, password: string) => {
+  const handleSignIn = async (email: string, password: string, intendedUserType?: string) => {
     setLoading(true);
     console.log('Starting sign in process...'); 
 
@@ -42,6 +42,17 @@ export const useSignIn = () => {
 
       const userType = userMetadata?.user_type?.toLowerCase();
       console.log('Detected user type:', userType); 
+
+      // Check if user is trying to sign in with the correct user type
+      if (intendedUserType && userType !== intendedUserType) {
+        toast({
+          variant: "destructive",
+          title: "Access Denied",
+          description: `This login is for ${intendedUserType} accounts only. Please use the correct login page.`,
+        });
+        setLoading(false);
+        return;
+      }
 
       if (!userType) {
         console.error('No user type found in metadata');
