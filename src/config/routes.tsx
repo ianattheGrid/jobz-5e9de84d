@@ -29,7 +29,6 @@ export const routes = [
     path: "/jobs",
     element: <Jobs />
   },
-  // Candidate routes - specific routes first
   {
     path: "/candidate/dummy-profile",
     element: <DummyCandidateProfile />
@@ -54,7 +53,6 @@ export const routes = [
     path: "/candidate/search",
     element: <CandidateSearch />
   },
-  // Dynamic route last
   {
     path: "/candidate/:id",
     element: <ViewCandidateProfile />

@@ -22,7 +22,8 @@ function App() {
     pathname,
     basename,
     projectsMatch,
-    availableRoutes: routes.map(r => r.path)
+    availableRoutes: routes.map(r => r.path),
+    fullPath: window.location.href
   });
 
   return (
@@ -31,12 +32,18 @@ function App() {
         <AppLayout>
           <Routes>
             {routes.map((route) => {
-              const requiresAuth = /^\/(dashboard|profile|interviews|create-vacancy|manage-jobs|recommendations)/.test(route.path);
+              const requiresAuth = route.path.startsWith('/dashboard') || 
+                                 route.path.startsWith('/profile') || 
+                                 route.path.startsWith('/interviews') || 
+                                 route.path.startsWith('/create-vacancy') || 
+                                 route.path.startsWith('/manage-jobs') || 
+                                 route.path.startsWith('/recommendations');
               
               console.log('Processing route:', {
                 path: route.path,
                 requiresAuth,
-                element: route.element ? 'Present' : 'Missing'
+                element: route.element ? 'Present' : 'Missing',
+                fullPath: basename ? `${basename}${route.path}` : route.path
               });
               
               return (
