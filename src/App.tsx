@@ -15,8 +15,11 @@ const queryClient = new QueryClient({
 
 function App() {
   // Get the project URL from window.location
-  const projectUrl = window.location.pathname.split('/projects/')[1]?.split('/')[0];
-  const basename = projectUrl ? `/projects/${projectUrl}` : '/';
+  const pathname = window.location.pathname;
+  const projectsMatch = pathname.match(/\/projects\/([^/]+)/);
+  const basename = projectsMatch ? `/projects/${projectsMatch[1]}` : '/';
+
+  console.log('Current basename:', basename); // Debug log
 
   return (
     <QueryClientProvider client={queryClient}>
