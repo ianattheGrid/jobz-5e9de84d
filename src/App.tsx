@@ -14,7 +14,6 @@ const queryClient = new QueryClient({
 });
 
 function App() {
-  // Get the project URL from window.location
   const pathname = window.location.pathname;
   const projectsMatch = pathname.match(/^\/projects\/([^/]+)/);
   const basename = projectsMatch ? `/projects/${projectsMatch[1]}` : '';
@@ -23,7 +22,8 @@ function App() {
     currentPathname: pathname,
     basename,
     projectsMatch,
-    fullPath: `${basename}${pathname}`
+    fullPath: `${basename}${pathname}`,
+    routePaths: routes.map(r => r.path)
   });
 
   return (
@@ -33,12 +33,14 @@ function App() {
           <Routes>
             {routes.map((route) => {
               const requiresAuth = /^\/(dashboard|profile|interviews|create-vacancy|manage-jobs|recommendations)/.test(route.path);
+              const currentPath = pathname.replace(basename, '');
               
               console.log('Route Processing:', {
                 path: route.path,
+                currentPath,
                 fullPath: `${basename}${route.path}`,
                 requiresAuth,
-                matches: pathname === route.path,
+                matches: currentPath === route.path,
                 element: route.element ? 'Present' : 'Missing'
               });
               
