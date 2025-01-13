@@ -69,6 +69,9 @@ export type Database = {
         Row: {
           additional_skills: string | null
           address: string | null
+          ai_synopsis: string | null
+          ai_synopsis_last_updated: string | null
+          ai_synopsis_status: string | null
           availability: string | null
           commission_percentage: number | null
           created_at: string
@@ -97,6 +100,9 @@ export type Database = {
         Insert: {
           additional_skills?: string | null
           address?: string | null
+          ai_synopsis?: string | null
+          ai_synopsis_last_updated?: string | null
+          ai_synopsis_status?: string | null
           availability?: string | null
           commission_percentage?: number | null
           created_at?: string
@@ -125,6 +131,9 @@ export type Database = {
         Update: {
           additional_skills?: string | null
           address?: string | null
+          ai_synopsis?: string | null
+          ai_synopsis_last_updated?: string | null
+          ai_synopsis_status?: string | null
           availability?: string | null
           commission_percentage?: number | null
           created_at?: string
