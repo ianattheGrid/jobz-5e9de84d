@@ -10,18 +10,21 @@ export const useSignUp = () => {
 
   const signUp = async (email: string, password: string, userType: string, fullName: string, companyName: string) => {
     setLoading(true);
+    console.log('Starting signup process for:', email, userType);
 
     try {
       // First, try to get the session to check if user is already logged in
       const { data: { session } } = await supabase.auth.getSession();
       
       if (session?.user) {
+        console.log('User is already logged in, attempting to add new role');
         // User is logged in, try to add new role
         const { error: updateError } = await supabase.auth.updateUser({
           data: { user_type: userType }
         });
 
         if (updateError) {
+          console.error('Error updating user role:', updateError);
           if (updateError.message.includes(`User already has the role ${userType}`)) {
             toast({
               variant: "destructive",
@@ -36,6 +39,7 @@ export const useSignUp = () => {
 
         // If this is a VR signup, create the VR profile
         if (userType === 'vr') {
+          console.log('Creating VR profile');
           // Generate VR number using the database function
           const { data: vrNumberData, error: vrNumberError } = await supabase
             .rpc('generate_vr_number');
@@ -69,6 +73,7 @@ export const useSignUp = () => {
         return;
       }
 
+      console.log('User is not logged in, proceeding with signup');
       // User is not logged in, proceed with normal signup
       const { data, error } = await supabase.auth.signUp({
         email,
@@ -84,8 +89,10 @@ export const useSignUp = () => {
       });
 
       if (error) {
+        console.error('Signup error:', error);
         if (error.message.includes('already registered') || 
             error.message.includes('User already registered')) {
+          console.log('User exists but not logged in, attempting to sign in');
           // User exists but not logged in, try to sign in and add role
           const { error: signInError, data: signInData } = await supabase.auth.signInWithPassword({
             email,
@@ -93,6 +100,7 @@ export const useSignUp = () => {
           });
 
           if (signInError) {
+            console.error('Sign in error:', signInError);
             toast({
               variant: "destructive",
               title: "Error",
@@ -102,12 +110,14 @@ export const useSignUp = () => {
             return;
           }
 
+          console.log('Successfully signed in, attempting to add role');
           // Now try to add the new role
           const { error: updateError } = await supabase.auth.updateUser({
             data: { user_type: userType }
           });
 
           if (updateError) {
+            console.error('Error updating user role:', updateError);
             if (updateError.message.includes(`User already has the role ${userType}`)) {
               toast({
                 variant: "destructive",
@@ -122,6 +132,7 @@ export const useSignUp = () => {
 
           // If this is a VR signup, create the VR profile
           if (userType === 'vr' && signInData.user) {
+            console.log('Creating VR profile for existing user');
             // Generate VR number using the database function
             const { data: vrNumberData, error: vrNumberError } = await supabase
               .rpc('generate_vr_number');
@@ -160,6 +171,7 @@ export const useSignUp = () => {
 
       // If this is a new VR signup, create the VR profile
       if (userType === 'vr' && data.user) {
+        console.log('Creating VR profile for new user');
         // Generate VR number using the database function
         const { data: vrNumberData, error: vrNumberError } = await supabase
           .rpc('generate_vr_number');
@@ -185,6 +197,7 @@ export const useSignUp = () => {
         }
       }
 
+      console.log('Signup successful');
       toast({
         title: "Success!",
         description: "Please check your email to confirm your account.",
