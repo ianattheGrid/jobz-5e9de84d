@@ -5,10 +5,10 @@ import { useToast } from '@/hooks/use-toast';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
-  allowedUserTypes: string[];
+  allowedUserTypes?: string[];
 }
 
-const ProtectedRoute = ({ children, allowedUserTypes }: ProtectedRouteProps) => {
+export const ProtectedRoute = ({ children, allowedUserTypes = ['employer', 'candidate', 'vr'] }: ProtectedRouteProps) => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -43,5 +43,3 @@ const ProtectedRoute = ({ children, allowedUserTypes }: ProtectedRouteProps) => 
 
   return <>{children}</>;
 };
-
-export default ProtectedRoute;
