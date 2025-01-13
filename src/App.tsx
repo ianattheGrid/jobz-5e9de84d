@@ -29,11 +29,10 @@ function App() {
         <AppLayout>
           <Routes>
             {routes.map((route) => {
-              const requiresAuth = /\/(dashboard|profile|interviews|create-vacancy|manage-jobs|recommendations)/.test(route.path);
+              const requiresAuth = /^\/(dashboard|profile|interviews|create-vacancy|manage-jobs|recommendations)/.test(route.path);
               
               console.log('Processing route:', {
                 path: route.path,
-                basename,
                 fullPath: `${basename}${route.path}`,
                 requiresAuth,
                 element: route.element ? 'Present' : 'Missing'
