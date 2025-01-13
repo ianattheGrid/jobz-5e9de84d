@@ -17,12 +17,13 @@ function App() {
   const pathname = window.location.pathname;
   const projectsMatch = pathname.match(/^\/projects\/([^/]+)/);
   const basename = projectsMatch ? `/projects/${projectsMatch[1]}` : '';
+  const currentPath = pathname.replace(basename, '');
 
   console.log('Route Debug:', {
     currentPathname: pathname,
     basename,
     projectsMatch,
-    fullPath: `${basename}${pathname}`,
+    currentPath,
     routePaths: routes.map(r => r.path)
   });
 
@@ -33,12 +34,10 @@ function App() {
           <Routes>
             {routes.map((route) => {
               const requiresAuth = /^\/(dashboard|profile|interviews|create-vacancy|manage-jobs|recommendations)/.test(route.path);
-              const currentPath = pathname.replace(basename, '');
               
               console.log('Route Processing:', {
                 path: route.path,
                 currentPath,
-                fullPath: `${basename}${route.path}`,
                 requiresAuth,
                 matches: currentPath === route.path,
                 element: route.element ? 'Present' : 'Missing'
