@@ -87,9 +87,18 @@
 
 /* Dropdown styles */
 .select-content {
-  @apply bg-card border border-border text-card-foreground;
+  @apply bg-background border border-border text-foreground z-50;
 }
 
 .select-item {
   @apply hover:bg-muted cursor-pointer;
+}
+
+/* Override any white backgrounds in dropdowns */
+[role="listbox"] {
+  @apply bg-background text-foreground;
+}
+
+[role="option"] {
+  @apply hover:bg-muted;
 }
