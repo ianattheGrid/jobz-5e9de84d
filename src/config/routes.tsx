@@ -29,6 +29,7 @@ export const routes = [
     path: "/jobs",
     element: <Jobs />
   },
+  // Place the dummy profile route before any dynamic routes
   {
     path: "/candidate/dummy-profile",
     element: <DummyCandidateProfile />

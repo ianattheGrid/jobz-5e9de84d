@@ -15,9 +15,8 @@ const queryClient = new QueryClient({
 
 function App() {
   console.log('Route Debug:', {
-    pathname: window.location.pathname,
-    availableRoutes: routes.map(r => r.path),
-    fullPath: window.location.href
+    currentPath: window.location.pathname,
+    availableRoutes: routes.map(r => r.path)
   });
 
   return (
@@ -32,12 +31,6 @@ function App() {
                                  route.path.startsWith('/create-vacancy') || 
                                  route.path.startsWith('/manage-jobs') || 
                                  route.path.startsWith('/recommendations');
-              
-              console.log('Processing route:', {
-                path: route.path,
-                requiresAuth,
-                element: route.element ? 'Present' : 'Missing'
-              });
               
               return (
                 <Route
