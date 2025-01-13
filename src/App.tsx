@@ -14,10 +14,9 @@ const queryClient = new QueryClient({
 });
 
 function App() {
-  // Simplified basename logic - only handle /projects/ prefix
   const pathname = window.location.pathname;
   const projectsMatch = pathname.match(/^\/projects\/([^/]+)/);
-  const basename = projectsMatch ? `/projects/${projectsMatch[1]}` : '';
+  const basename = projectsMatch ? `/projects/${projectsMatch[1]}` : undefined;
 
   console.log('Route Debug:', {
     pathname,
