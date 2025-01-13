@@ -30,11 +30,12 @@ function App() {
           <Routes>
             {routes.map((route) => {
               const requiresAuth = /\/(dashboard|profile|interviews|create-vacancy|manage-jobs|recommendations)/.test(route.path);
+              const path = route.path.startsWith('/') ? route.path.slice(1) : route.path;
               
               return (
                 <Route
                   key={route.path}
-                  path={route.path}
+                  path={path}
                   element={
                     requiresAuth ? (
                       <ProtectedRoute>{route.element}</ProtectedRoute>
