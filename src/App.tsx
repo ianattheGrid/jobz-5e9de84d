@@ -19,9 +19,9 @@ function App() {
   const projectsMatch = pathname.match(/\/projects\/([^/]+)/);
   const basename = projectsMatch ? `/projects/${projectsMatch[1]}` : '';
 
-  console.log('Current pathname:', pathname); // Debug log
-  console.log('Current basename:', basename); // Debug log
-  console.log('Projects match:', projectsMatch); // Debug log
+  console.log('Current pathname:', pathname);
+  console.log('Current basename:', basename);
+  console.log('Projects match:', projectsMatch);
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -30,7 +30,14 @@ function App() {
           <Routes>
             {routes.map((route) => {
               const requiresAuth = /\/(dashboard|profile|interviews|create-vacancy|manage-jobs|recommendations)/.test(route.path);
-              const path = route.path.startsWith('/') ? route.path.slice(1) : route.path;
+              // Remove leading slash and handle nested routes
+              const path = route.path.replace(/^\/+/, '');
+              
+              console.log('Processing route:', {
+                originalPath: route.path,
+                processedPath: path,
+                requiresAuth
+              });
               
               return (
                 <Route
