@@ -123,6 +123,7 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
         <JobTitleSelect
           control={control}
           titles={availableTitles}
+          name="title"
         />
       )}
 

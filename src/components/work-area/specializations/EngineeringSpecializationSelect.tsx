@@ -24,10 +24,7 @@ interface EngineeringSpecializationSelectProps {
   onSpecializationChange?: (value: string) => void;
 }
 
-const EngineeringSpecializationSelect = ({ 
-  control, 
-  onSpecializationChange 
-}: EngineeringSpecializationSelectProps) => {
+const EngineeringSpecializationSelect = ({ control, onSpecializationChange }: EngineeringSpecializationSelectProps) => {
   const specializations = [
     "Civil Engineering",
     "Mechanical Engineering",
@@ -115,6 +112,7 @@ const EngineeringSpecializationSelect = ({
               <JobTitleSelect 
                 control={control} 
                 titles={getTitlesForSpecialization(field.value)}
+                name="title"
               />
             )}
           </FormItem>

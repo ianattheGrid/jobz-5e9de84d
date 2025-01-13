@@ -87,6 +87,7 @@ const HospitalitySpecializationSelect = ({ control, onSpecializationChange }: Ho
         <JobTitleSelect
           control={control}
           titles={getTitlesForSpecialization(control._formValues.hospitality_specialization)}
+          name="title"
         />
       )}
     </div>

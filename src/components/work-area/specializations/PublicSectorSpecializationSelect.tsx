@@ -23,10 +23,7 @@ interface PublicSectorSpecializationSelectProps {
   onSpecializationChange: (value: string) => void;
 }
 
-const PublicSectorSpecializationSelect = ({ 
-  control, 
-  onSpecializationChange 
-}: PublicSectorSpecializationSelectProps) => {
+const PublicSectorSpecializationSelect = ({ control, onSpecializationChange }: PublicSectorSpecializationSelectProps) => {
   const getTitlesForSpecialization = (specialization: string) => {
     switch (specialization) {
       case "Central Government":
@@ -91,6 +88,7 @@ const PublicSectorSpecializationSelect = ({
               <JobTitleSelect 
                 control={control} 
                 titles={getTitlesForSpecialization(field.value)}
+                name="title"
               />
             )}
           </FormItem>

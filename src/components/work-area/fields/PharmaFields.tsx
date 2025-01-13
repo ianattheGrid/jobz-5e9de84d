@@ -83,43 +83,43 @@ const PharmaFields = ({ control, visible }: PharmaFieldsProps) => {
       />
 
       {showPharmaRnDRoles && (
-        <JobTitleSelect control={control} titles={pharmaRnDRoles} />
+        <JobTitleSelect control={control} titles={pharmaRnDRoles} name="title" />
       )}
 
       {showClinicalTrialsRoles && (
-        <JobTitleSelect control={control} titles={clinicalTrialsRoles} />
+        <JobTitleSelect control={control} titles={clinicalTrialsRoles} name="title" />
       )}
 
       {showPharmaManufacturingRoles && (
-        <JobTitleSelect control={control} titles={pharmaManufacturingRoles} />
+        <JobTitleSelect control={control} titles={pharmaManufacturingRoles} name="title" />
       )}
 
       {showQualityAssuranceRoles && (
-        <JobTitleSelect control={control} titles={qualityAssuranceRoles} />
+        <JobTitleSelect control={control} titles={qualityAssuranceRoles} name="title" />
       )}
 
       {showRegulatoryAffairsRoles && (
-        <JobTitleSelect control={control} titles={regulatoryAffairsRoles} />
+        <JobTitleSelect control={control} titles={regulatoryAffairsRoles} name="title" />
       )}
 
       {showPharmaSalesRoles && (
-        <JobTitleSelect control={control} titles={pharmaSalesRoles} />
+        <JobTitleSelect control={control} titles={pharmaSalesRoles} name="title" />
       )}
 
       {showMedicalWritingRoles && (
-        <JobTitleSelect control={control} titles={medicalWritingRoles} />
+        <JobTitleSelect control={control} titles={medicalWritingRoles} name="title" />
       )}
 
       {showPharmaSupplyChainRoles && (
-        <JobTitleSelect control={control} titles={pharmaSupplyChainRoles} />
+        <JobTitleSelect control={control} titles={pharmaSupplyChainRoles} name="title" />
       )}
 
       {showPharmacovigilanceRoles && (
-        <JobTitleSelect control={control} titles={pharmacovigilanceRoles} />
+        <JobTitleSelect control={control} titles={pharmacovigilanceRoles} name="title" />
       )}
 
       {showSpecializedPharmaRoles && (
-        <JobTitleSelect control={control} titles={specializedPharmaRoles} />
+        <JobTitleSelect control={control} titles={specializedPharmaRoles} name="title" />
       )}
     </div>
   );
