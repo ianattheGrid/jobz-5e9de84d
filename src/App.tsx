@@ -16,7 +16,8 @@ const queryClient = new QueryClient({
 function App() {
   console.log('Route Debug:', {
     currentPath: window.location.pathname,
-    availableRoutes: routes.map(r => r.path)
+    availableRoutes: routes.map(r => r.path),
+    dummyProfileRoute: routes.find(r => r.path === '/candidate/dummy-profile')
   });
 
   return (

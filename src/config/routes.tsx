@@ -1,11 +1,11 @@
 import { Navigate } from "react-router-dom";
 import Index from "@/pages/Index";
 import Jobs from "@/pages/Jobs";
+import DummyCandidateProfile from "@/pages/DummyCandidateProfile";
 import CandidateSignUp from "@/pages/CandidateSignUp";
 import CandidateSignIn from "@/pages/CandidateSignIn";
 import CandidateProfile from "@/pages/CandidateProfile";
 import CandidateDashboard from "@/pages/CandidateDashboard";
-import DummyCandidateProfile from "@/pages/DummyCandidateProfile";
 import EmployerSignUp from "@/pages/EmployerSignUp";
 import EmployerSignIn from "@/pages/EmployerSignIn";
 import EmployerProfile from "@/pages/EmployerProfile";
@@ -29,7 +29,6 @@ export const routes = [
     path: "/jobs",
     element: <Jobs />
   },
-  // Place the dummy profile route before any dynamic routes
   {
     path: "/candidate/dummy-profile",
     element: <DummyCandidateProfile />
