@@ -39,7 +39,7 @@ export const ProtectedRoute = ({ children, allowedUserTypes = ['employer', 'cand
     };
 
     checkAuth();
-  }, [navigate, allowedUserTypes]);
+  }, [navigate, allowedUserTypes, toast]);
 
   return <>{children}</>;
 };

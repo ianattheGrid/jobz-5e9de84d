@@ -20,8 +20,6 @@ function App() {
         <AppLayout>
           <Routes>
             {routes.map((route) => {
-              // If the route path includes 'dashboard', 'profile', 'interviews', 'create-vacancy', 'manage-jobs', or 'recommendations'
-              // wrap it in a ProtectedRoute component
               const requiresAuth = /\/(dashboard|profile|interviews|create-vacancy|manage-jobs|recommendations)/.test(route.path);
               
               return (
