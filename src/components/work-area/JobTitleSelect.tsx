@@ -5,26 +5,22 @@ import { Control } from "react-hook-form";
 interface JobTitleSelectProps {
   control: Control<any>;
   titles: string[];
-  name?: string;  // Make name optional with a default in the component
 }
 
-const JobTitleSelect = ({ control, titles, name = "title" }: JobTitleSelectProps) => {
+const JobTitleSelect = ({ control, titles }: JobTitleSelectProps) => {
   return (
     <FormField
       control={control}
-      name={name}
+      name="title"
       render={({ field }) => (
         <FormItem>
           <FormLabel>Job Title</FormLabel>
           <FormControl>
-            <Select 
-              onValueChange={field.onChange}
-              defaultValue={field.value}
-            >
-              <SelectTrigger className="w-full bg-white border border-gray-300">
-                <SelectValue placeholder="Select the job title" />
+            <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select job title" />
               </SelectTrigger>
-              <SelectContent className="bg-white">
+              <SelectContent>
                 {titles.map((title) => (
                   <SelectItem key={title} value={title}>
                     {title}
