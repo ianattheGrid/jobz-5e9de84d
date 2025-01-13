@@ -50,12 +50,20 @@ export function ProfileForm({ profile, setProfile, email }: ProfileFormProps) {
     try {
       const { error } = await supabase
         .from('employer_profiles')
-        .update(values)
+        .update({
+          company_name: values.company_name,
+          full_name: values.full_name,
+          job_title: values.job_title,
+        })
         .eq('id', (await supabase.auth.getSession()).data.session?.user.id);
 
       if (error) throw error;
 
-      setProfile(values);
+      setProfile({
+        company_name: values.company_name,
+        full_name: values.full_name,
+        job_title: values.job_title,
+      });
       
       toast({
         title: "Profile updated",
