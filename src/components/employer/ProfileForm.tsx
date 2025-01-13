@@ -29,11 +29,13 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
-export function ProfileForm({ profile, setProfile, email }: { 
-  profile: { company_name: string; full_name: string; job_title: string; }; 
+type ProfileFormProps = {
+  profile: { company_name: string; full_name: string; job_title: string; };
   setProfile: (profile: { company_name: string; full_name: string; job_title: string; }) => void;
   email: string;
-}) {
+};
+
+export function ProfileForm({ profile, setProfile, email }: ProfileFormProps) {
   const { toast } = useToast();
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
