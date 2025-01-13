@@ -1,39 +1,57 @@
-import { Input } from "@/components/ui/input";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2 } from "lucide-react";
-import { useState } from "react";
-import type { EmployerProfile } from "@/types/employer";
+import { ProfileCard } from "@/components/shared/ProfileCard";
 
-interface ProfileFormProps {
-  profile: EmployerProfile;
-  setProfile: (profile: EmployerProfile) => void;
+const formSchema = z.object({
+  company_name: z.string().min(2, {
+    message: "Company name must be at least 2 characters.",
+  }),
+  full_name: z.string().min(2, {
+    message: "Name must be at least 2 characters.",
+  }),
+  job_title: z.string().min(2, {
+    message: "Job title must be at least 2 characters.",
+  }),
+});
+
+export function ProfileForm({ profile, setProfile, email }: { 
+  profile: { company_name: string; full_name: string; job_title: string; }; 
+  setProfile: (profile: { company_name: string; full_name: string; job_title: string; }) => void;
   email: string;
-}
-
-export const ProfileForm = ({ profile, setProfile, email }: ProfileFormProps) => {
+}) {
   const { toast } = useToast();
-  const [saving, setSaving] = useState(false);
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: profile,
+  });
 
-  const handleSave = async () => {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      setSaving(true);
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) throw new Error("Not authenticated");
-
       const { error } = await supabase
         .from('employer_profiles')
-        .upsert({
-          id: session.user.id,
-          ...profile
-        });
+        .update(values)
+        .eq('id', (await supabase.auth.getSession()).data.session?.user.id);
 
       if (error) throw error;
 
+      setProfile(values);
+      
       toast({
-        title: "Success",
-        description: "Profile updated successfully",
+        title: "Profile updated",
+        description: "Your profile has been updated successfully.",
       });
     } catch (error: any) {
       toast({
@@ -41,75 +59,67 @@ export const ProfileForm = ({ profile, setProfile, email }: ProfileFormProps) =>
         title: "Error",
         description: error.message || "Failed to update profile",
       });
-    } finally {
-      setSaving(false);
     }
-  };
+  }
 
   return (
-    <div className="container mx-auto py-8 px-4">
-      <div className="max-w-full">
-        <div className="space-y-6">
-          <div className="space-y-4">
-            <div className="grid grid-cols-[200px_1fr] gap-4 items-center">
-              <label className="text-sm font-medium" htmlFor="company-name">
-                Company Name
-              </label>
-              <Input
-                id="company-name"
-                value={profile.company_name}
-                onChange={(e) =>
-                  setProfile({ ...profile, company_name: e.target.value })
-                }
-              />
-            </div>
+    <div className="space-y-8">
+      <ProfileCard
+        fullName={profile.full_name}
+        title={profile.job_title}
+        additionalInfo={[
+          { label: "Company", value: profile.company_name },
+          { label: "Email", value: email }
+        ]}
+      />
 
-            <div className="grid grid-cols-[200px_1fr] gap-4 items-center">
-              <label className="text-sm font-medium" htmlFor="full-name">
-                Full Name
-              </label>
-              <Input
-                id="full-name"
-                value={profile.full_name}
-                onChange={(e) =>
-                  setProfile({ ...profile, full_name: e.target.value })
-                }
-              />
-            </div>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <FormField
+            control={form.control}
+            name="company_name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Company Name</FormLabel>
+                <FormControl>
+                  <Input placeholder="Enter company name" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-            <div className="grid grid-cols-[200px_1fr] gap-4 items-center">
-              <label className="text-sm font-medium" htmlFor="job-title">
-                Job Title
-              </label>
-              <Input
-                id="job-title"
-                value={profile.job_title}
-                onChange={(e) =>
-                  setProfile({ ...profile, job_title: e.target.value })
-                }
-              />
-            </div>
+          <FormField
+            control={form.control}
+            name="full_name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Full Name</FormLabel>
+                <FormControl>
+                  <Input placeholder="Enter your full name" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-            <div className="grid grid-cols-[200px_1fr] gap-4 items-center">
-              <label className="text-sm font-medium" htmlFor="email">
-                Email Address
-              </label>
-              <Input id="email" value={email} disabled />
-            </div>
+          <FormField
+            control={form.control}
+            name="job_title"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Job Title</FormLabel>
+                <FormControl>
+                  <Input placeholder="Enter your job title" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-            <div className="flex justify-end mt-6">
-              <Button
-                onClick={handleSave}
-                disabled={saving}
-                className="bg-red-800 hover:bg-red-900 text-white"
-              >
-                {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Save Changes
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
+          <Button type="submit">Update Profile</Button>
+        </form>
+      </Form>
     </div>
   );
-};
+}
