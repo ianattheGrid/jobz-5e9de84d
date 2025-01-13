@@ -53,7 +53,7 @@ const EmployerSignIn = () => {
         <Card className="w-full max-w-md">
           <CardHeader className="space-y-1">
             <div className="flex items-center justify-center gap-2">
-              <Building2 className="h-8 w-8 text-[#9b87f5]" />
+              <Building2 className="h-8 w-8 text-[#FFB6C1]" />
               <CardTitle className="text-2xl">Employer Sign In</CardTitle>
             </div>
             <CardDescription>
@@ -87,7 +87,7 @@ const EmployerSignIn = () => {
                 </div>
               )}
               <Button 
-                className="w-full bg-[#9b87f5] hover:bg-[#7E69AB] text-white" 
+                className="w-full bg-primary hover:bg-primary-dark text-white" 
                 type="submit" 
                 disabled={loading}
               >
@@ -99,14 +99,14 @@ const EmployerSignIn = () => {
                 {resetMode ? (
                   <button 
                     onClick={() => setResetMode(false)} 
-                    className="text-[#9b87f5] hover:underline"
+                    className="text-primary hover:underline"
                   >
                     Back to Sign In
                   </button>
                 ) : (
                   <button 
                     onClick={() => setResetMode(true)} 
-                    className="text-[#9b87f5] hover:underline"
+                    className="text-primary hover:underline"
                   >
                     Forgot Password?
                   </button>
@@ -114,7 +114,7 @@ const EmployerSignIn = () => {
               </div>
               <div>
                 Don't have an account?{" "}
-                <Link to="/employer/signup" className="text-[#9b87f5] hover:underline">
+                <Link to="/employer/signup" className="text-primary hover:underline">
                   Sign Up
                 </Link>
               </div>
