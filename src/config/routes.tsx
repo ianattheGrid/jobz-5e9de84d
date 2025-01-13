@@ -18,6 +18,7 @@ import VirtualRecruiterDashboard from "@/pages/VirtualRecruiterDashboard";
 import VirtualRecruiterRecommendations from "@/pages/VirtualRecruiterRecommendations";
 import CandidateSearch from "@/pages/CandidateSearch";
 import ViewCandidateProfile from "@/pages/ViewCandidateProfile";
+import DummyCandidateProfile from "@/pages/DummyCandidateProfile";
 
 export const routes = [
   {
@@ -95,6 +96,10 @@ export const routes = [
   {
     path: "/candidate/:id",
     element: <ViewCandidateProfile />
+  },
+  {
+    path: "/candidate/dummy-profile",
+    element: <DummyCandidateProfile />
   },
   {
     path: "*",
