@@ -30,19 +30,17 @@ function App() {
           <Routes>
             {routes.map((route) => {
               const requiresAuth = /\/(dashboard|profile|interviews|create-vacancy|manage-jobs|recommendations)/.test(route.path);
-              // Remove leading slash and handle nested routes
-              const path = route.path.replace(/^\/+/, '');
               
               console.log('Processing route:', {
-                originalPath: route.path,
-                processedPath: path,
-                requiresAuth
+                path: route.path,
+                requiresAuth,
+                element: route.element ? 'Present' : 'Missing'
               });
               
               return (
                 <Route
                   key={route.path}
-                  path={path}
+                  path={route.path}
                   element={
                     requiresAuth ? (
                       <ProtectedRoute>{route.element}</ProtectedRoute>
