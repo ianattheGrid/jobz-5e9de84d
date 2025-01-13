@@ -29,7 +29,7 @@ const NavBar = () => {
   }, []);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-4 py-2 bg-black border-b border-border h-16">
+    <nav className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-4 py-2 bg-background border-b border-border h-16">
       <div className="flex items-center gap-4">
         <MobileNav isAuthenticated={isAuthenticated} userType={userType} />
         <NavigationLinks />

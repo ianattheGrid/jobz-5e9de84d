@@ -18,19 +18,19 @@ const MobileNav = ({ isAuthenticated, userType }: MobileNavProps) => {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <button className="p-2 hover:bg-gray-800/50 rounded-md">
-          <Menu className="h-6 w-6 text-white" />
+        <button className="p-2 hover:bg-accent rounded-md lg:hidden">
+          <Menu className="h-6 w-6 text-foreground" />
         </button>
       </SheetTrigger>
-      <SheetContent side="left" className="w-[300px] sm:max-w-sm">
+      <SheetContent side="left" className="w-[300px] sm:max-w-sm bg-background border-r border-border">
         <SheetHeader>
-          <SheetTitle>Menu</SheetTitle>
+          <SheetTitle className="text-foreground">Menu</SheetTitle>
         </SheetHeader>
         <nav className="mt-6 flex flex-col space-y-4">
-          <Link to="/" className="text-lg text-gray-600 hover:text-primary transition-colors">
+          <Link to="/" className="text-lg text-muted-foreground hover:text-primary transition-colors">
             Home
           </Link>
-          <Link to="/jobs" className="text-lg text-gray-600 hover:text-primary transition-colors">
+          <Link to="/jobs" className="text-lg text-muted-foreground hover:text-primary transition-colors">
             Job Board
           </Link>
           <SheetClose asChild>
@@ -44,7 +44,7 @@ const MobileNav = ({ isAuthenticated, userType }: MobileNavProps) => {
                   }
                 }, 100);
               }}
-              className="text-lg text-gray-600 hover:text-primary transition-colors text-left"
+              className="text-lg text-muted-foreground hover:text-primary transition-colors text-left"
             >
               Calculator
             </button>
@@ -52,8 +52,8 @@ const MobileNav = ({ isAuthenticated, userType }: MobileNavProps) => {
 
           {isAuthenticated && userType === 'employer' && (
             <>
-              <div className="h-px bg-gray-200 my-2" />
-              <Link to="/employer/dashboard" className="text-lg text-gray-600 hover:text-primary transition-colors">
+              <div className="h-px bg-border my-2" />
+              <Link to="/employer/dashboard" className="text-lg text-muted-foreground hover:text-primary transition-colors">
                 Dashboard
               </Link>
             </>
@@ -61,14 +61,14 @@ const MobileNav = ({ isAuthenticated, userType }: MobileNavProps) => {
 
           {isAuthenticated && userType === 'candidate' && (
             <>
-              <div className="h-px bg-gray-200 my-2" />
-              <Link to="/candidate/dashboard" className="text-lg text-gray-600 hover:text-primary transition-colors">
+              <div className="h-px bg-border my-2" />
+              <Link to="/candidate/dashboard" className="text-lg text-muted-foreground hover:text-primary transition-colors">
                 Dashboard
               </Link>
             </>
           )}
           
-          <div className="h-px bg-gray-200 my-4" />
+          <div className="h-px bg-border my-4" />
           <SheetClose asChild>
             <button 
               onClick={() => {
@@ -79,7 +79,7 @@ const MobileNav = ({ isAuthenticated, userType }: MobileNavProps) => {
                   }
                 }, 100);
               }}
-              className="text-lg text-orange-500 font-semibold hover:text-orange-600 transition-colors text-left"
+              className="text-lg text-primary font-semibold hover:text-primary-dark transition-colors text-left"
             >
               Sign in / Sign up
             </button>
