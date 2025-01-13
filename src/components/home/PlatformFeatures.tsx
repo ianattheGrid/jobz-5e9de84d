@@ -11,19 +11,19 @@ export const PlatformFeatures = () => {
         <TabsList className="grid w-full grid-cols-3 bg-primary-light">
           <TabsTrigger 
             value="hiring" 
-            className="data-[state=active]:bg-primary data-[state=active]:text-white"
+            className="text-white data-[state=active]:bg-primary data-[state=active]:text-white"
           >
             For Employers
           </TabsTrigger>
           <TabsTrigger 
             value="candidates"
-            className="data-[state=active]:bg-primary data-[state=active]:text-white"
+            className="text-white data-[state=active]:bg-primary data-[state=active]:text-white"
           >
             For Candidates
           </TabsTrigger>
           <TabsTrigger 
             value="recruiters"
-            className="data-[state=active]:bg-primary data-[state=active]:text-white"
+            className="text-white data-[state=active]:bg-primary data-[state=active]:text-white"
           >
             Virtual Recruiters
           </TabsTrigger>
