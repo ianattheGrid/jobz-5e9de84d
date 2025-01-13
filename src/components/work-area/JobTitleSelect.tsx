@@ -5,13 +5,14 @@ import { Control } from "react-hook-form";
 interface JobTitleSelectProps {
   control: Control<any>;
   titles: string[];
+  name: string;  // Added name prop to the interface
 }
 
-const JobTitleSelect = ({ control, titles }: JobTitleSelectProps) => {
+const JobTitleSelect = ({ control, titles, name }: JobTitleSelectProps) => {
   return (
     <FormField
       control={control}
-      name="title"
+      name={name}
       render={({ field }) => (
         <FormItem>
           <FormLabel>Job Title</FormLabel>
