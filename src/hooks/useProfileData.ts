@@ -28,7 +28,13 @@ export const useProfileData = (reset: UseFormReset<CandidateFormValues>) => {
           .maybeSingle();
 
         if (error) {
-          throw error;
+          console.error('Error loading profile:', error);
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: "Failed to load your profile. Please try again later.",
+          });
+          return;
         }
 
         if (profile) {
