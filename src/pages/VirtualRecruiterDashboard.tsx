@@ -1,18 +1,15 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { ReferralsList } from "@/components/vr/ReferralsList";
-import { ReferralInvite } from "@/components/vr/ReferralInvite";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
-import {
-  Users,
-  Mail,
-  ChartBar,
-  Settings,
-  UserCheck
-} from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Mail, Settings } from "lucide-react";
+import { DashboardStats } from "@/components/vr/dashboard/DashboardStats";
+import { DashboardMenu } from "@/components/vr/dashboard/DashboardMenu";
+import { InactiveAccountWarning } from "@/components/vr/dashboard/InactiveAccountWarning";
+import { ReferralsList } from "@/components/vr/ReferralsList";
+import { ReferralInvite } from "@/components/vr/ReferralInvite";
 
 interface DashboardStats {
   totalReferrals: number;
@@ -65,9 +62,7 @@ const VirtualRecruiterDashboard = () => {
         .eq('id', session.user.id)
         .maybeSingle();
 
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
 
       if (!profile) {
         toast({
@@ -106,28 +101,10 @@ const VirtualRecruiterDashboard = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-800"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
       </div>
     );
   }
-
-  const statsCards = [
-    {
-      title: "Total Referrals",
-      value: stats.totalReferrals,
-      icon: <Users className="h-6 w-6 text-red-800" />,
-    },
-    {
-      title: "Successful Placements",
-      value: stats.successfulPlacements,
-      icon: <UserCheck className="h-6 w-6 text-green-600" />,
-    },
-    {
-      title: "Pending Recommendations",
-      value: stats.pendingRecommendations,
-      icon: <ChartBar className="h-6 w-6 text-blue-600" />,
-    }
-  ];
 
   return (
     <div className="container mx-auto py-8 px-4">
@@ -136,7 +113,7 @@ const VirtualRecruiterDashboard = () => {
         <div className="flex gap-4">
           <Button
             onClick={() => navigate('/vr/recommendations')}
-            className="bg-red-800 hover:bg-red-900 text-white"
+            className="bg-primary hover:bg-primary-dark text-white"
           >
             <Mail className="mr-2 h-4 w-4" />
             View Recommendations
@@ -151,54 +128,30 @@ const VirtualRecruiterDashboard = () => {
         </div>
       </div>
 
-      {!stats.isActive && (
-        <Card className="mb-8 border-yellow-500 bg-yellow-50">
-          <CardContent className="p-4">
-            <p className="text-yellow-800">
-              Your account is currently inactive. Please complete your profile setup or contact support.
-            </p>
+      {!stats.isActive && <InactiveAccountWarning />}
+      
+      <DashboardStats {...stats} />
+      
+      <DashboardMenu />
+
+      <div className="grid gap-8 md:grid-cols-2 mt-8">
+        <Card>
+          <CardHeader>
+            <CardTitle>Invite Candidates</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ReferralInvite />
           </CardContent>
         </Card>
-      )}
-
-      <div className="grid gap-6 md:grid-cols-3 mb-8">
-        {statsCards.map((card, index) => (
-          <Card key={index}>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
-                {card.title}
-              </CardTitle>
-              {card.icon}
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{card.value}</div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-
-      <div className="grid gap-8 md:grid-cols-2">
-        <div className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Invite Candidates</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ReferralInvite />
-            </CardContent>
-          </Card>
-        </div>
         
-        <div className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Recent Referrals</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ReferralsList />
-            </CardContent>
-          </Card>
-        </div>
+        <Card>
+          <CardHeader>
+            <CardTitle>Recent Referrals</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ReferralsList />
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
