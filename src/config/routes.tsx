@@ -30,6 +30,10 @@ export const routes = [
     element: <Jobs />
   },
   {
+    path: "/candidate/dummy-profile",
+    element: <DummyCandidateProfile />
+  },
+  {
     path: "/candidate/signup",
     element: <CandidateSignUp />
   },
@@ -44,10 +48,6 @@ export const routes = [
   {
     path: "/candidate/dashboard",
     element: <CandidateDashboard />
-  },
-  {
-    path: "/candidate/dummy-profile",
-    element: <DummyCandidateProfile />
   },
   {
     path: "/employer/signup",
