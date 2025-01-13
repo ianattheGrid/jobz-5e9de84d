@@ -7,8 +7,12 @@ import FinanceSpecializationSelect from "./work-area/specializations/FinanceSpec
 import PublicSectorSpecializationSelect from "./work-area/specializations/PublicSectorSpecializationSelect";
 import EngineeringSpecializationSelect from "./work-area/specializations/EngineeringSpecializationSelect";
 import HospitalitySpecializationSelect from "./work-area/specializations/HospitalitySpecializationSelect";
+import HRSpecializationSelect from "./work-area/specializations/HRSpecializationSelect";
+import LegalSpecializationSelect from "./work-area/specializations/LegalSpecializationSelect";
+import ManufacturingSpecializationSelect from "./work-area/specializations/ManufacturingSpecializationSelect";
+import EnergySpecializationSelect from "./work-area/specializations/EnergySpecializationSelect";
+import PharmaSpecializationSelect from "./work-area/specializations/PharmaSpecializationSelect";
 import JobTitleSelect from "./work-area/JobTitleSelect";
-import PharmaFields from "./work-area/fields/PharmaFields";
 import OtherFields from "./work-area/fields/OtherFields";
 import {
   getTitlesForITSpecialization,
@@ -31,19 +35,69 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
   const [showPublicSectorSpecialization, setShowPublicSectorSpecialization] = useState(false);
   const [showEngineeringSpecialization, setShowEngineeringSpecialization] = useState(false);
   const [showHospitalitySpecialization, setShowHospitalitySpecialization] = useState(false);
-  const [showPharmaFields, setShowPharmaFields] = useState(false);
+  const [showHRSpecialization, setShowHRSpecialization] = useState(false);
+  const [showLegalSpecialization, setShowLegalSpecialization] = useState(false);
+  const [showManufacturingSpecialization, setShowManufacturingSpecialization] = useState(false);
+  const [showEnergySpecialization, setShowEnergySpecialization] = useState(false);
+  const [showPharmaSpecialization, setShowPharmaSpecialization] = useState(false);
   const [selectedSpecialization, setSelectedSpecialization] = useState<string>("");
   const [availableTitles, setAvailableTitles] = useState<string[]>([]);
 
   const handleWorkAreaChange = (value: string) => {
-    setShowOtherInput(value === "Other");
-    setShowITSpecialization(value === "IT");
-    setShowCustomerServiceSpecialization(value === "Customer Service");
-    setShowFinanceSpecialization(value === "Accounting & Finance");
-    setShowPublicSectorSpecialization(value === "Public Sector");
-    setShowEngineeringSpecialization(value === "Engineering");
-    setShowHospitalitySpecialization(value === "Hospitality & Tourism");
-    setShowPharmaFields(value === "Pharma");
+    // Reset all specialization states
+    setShowOtherInput(false);
+    setShowITSpecialization(false);
+    setShowCustomerServiceSpecialization(false);
+    setShowFinanceSpecialization(false);
+    setShowPublicSectorSpecialization(false);
+    setShowEngineeringSpecialization(false);
+    setShowHospitalitySpecialization(false);
+    setShowHRSpecialization(false);
+    setShowLegalSpecialization(false);
+    setShowManufacturingSpecialization(false);
+    setShowEnergySpecialization(false);
+    setShowPharmaSpecialization(false);
+
+    // Set the appropriate specialization based on work area
+    switch (value) {
+      case "IT":
+        setShowITSpecialization(true);
+        break;
+      case "Customer Service":
+        setShowCustomerServiceSpecialization(true);
+        break;
+      case "Accounting & Finance":
+        setShowFinanceSpecialization(true);
+        break;
+      case "Public Sector":
+        setShowPublicSectorSpecialization(true);
+        break;
+      case "Engineering":
+        setShowEngineeringSpecialization(true);
+        break;
+      case "Hospitality & Tourism":
+        setShowHospitalitySpecialization(true);
+        break;
+      case "Human Resources":
+        setShowHRSpecialization(true);
+        break;
+      case "Legal":
+        setShowLegalSpecialization(true);
+        break;
+      case "Manufacturing":
+        setShowManufacturingSpecialization(true);
+        break;
+      case "Energy & Utilities":
+        setShowEnergySpecialization(true);
+        break;
+      case "Pharma":
+        setShowPharmaSpecialization(true);
+        break;
+      case "Other":
+        setShowOtherInput(true);
+        break;
+    }
+
     setSelectedSpecialization("");
     setAvailableTitles([]);
     control._formValues.title = "";
@@ -119,6 +173,41 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
         />
       )}
 
+      {showHRSpecialization && (
+        <HRSpecializationSelect
+          control={control}
+          onSpecializationChange={handleSpecializationChange}
+        />
+      )}
+
+      {showLegalSpecialization && (
+        <LegalSpecializationSelect
+          control={control}
+          onSpecializationChange={handleSpecializationChange}
+        />
+      )}
+
+      {showManufacturingSpecialization && (
+        <ManufacturingSpecializationSelect
+          control={control}
+          onSpecializationChange={handleSpecializationChange}
+        />
+      )}
+
+      {showEnergySpecialization && (
+        <EnergySpecializationSelect
+          control={control}
+          onSpecializationChange={handleSpecializationChange}
+        />
+      )}
+
+      {showPharmaSpecialization && (
+        <PharmaSpecializationSelect
+          control={control}
+          onSpecializationChange={handleSpecializationChange}
+        />
+      )}
+
       {selectedSpecialization && availableTitles.length > 0 && (
         <JobTitleSelect
           control={control}
@@ -127,7 +216,6 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
         />
       )}
 
-      <PharmaFields control={control} visible={showPharmaFields} />
       <OtherFields control={control} visible={showOtherInput} />
     </div>
   );
