@@ -27,18 +27,24 @@ const formSchema = z.object({
   }),
 });
 
+type FormValues = z.infer<typeof formSchema>;
+
 export function ProfileForm({ profile, setProfile, email }: { 
   profile: { company_name: string; full_name: string; job_title: string; }; 
   setProfile: (profile: { company_name: string; full_name: string; job_title: string; }) => void;
   email: string;
 }) {
   const { toast } = useToast();
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: profile,
+    defaultValues: {
+      company_name: profile.company_name || "",
+      full_name: profile.full_name || "",
+      job_title: profile.job_title || "",
+    },
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: FormValues) {
     try {
       const { error } = await supabase
         .from('employer_profiles')
