@@ -33,6 +33,8 @@ function App() {
               
               console.log('Processing route:', {
                 path: route.path,
+                basename,
+                fullPath: `${basename}${route.path}`,
                 requiresAuth,
                 element: route.element ? 'Present' : 'Missing'
               });

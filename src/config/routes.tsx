@@ -5,6 +5,7 @@ import CandidateSignUp from "@/pages/CandidateSignUp";
 import CandidateSignIn from "@/pages/CandidateSignIn";
 import CandidateProfile from "@/pages/CandidateProfile";
 import CandidateDashboard from "@/pages/CandidateDashboard";
+import DummyCandidateProfile from "@/pages/DummyCandidateProfile";
 import EmployerSignUp from "@/pages/EmployerSignUp";
 import EmployerSignIn from "@/pages/EmployerSignIn";
 import EmployerProfile from "@/pages/EmployerProfile";
@@ -18,7 +19,6 @@ import VirtualRecruiterDashboard from "@/pages/VirtualRecruiterDashboard";
 import VirtualRecruiterRecommendations from "@/pages/VirtualRecruiterRecommendations";
 import CandidateSearch from "@/pages/CandidateSearch";
 import ViewCandidateProfile from "@/pages/ViewCandidateProfile";
-import DummyCandidateProfile from "@/pages/DummyCandidateProfile";
 
 export const routes = [
   {
