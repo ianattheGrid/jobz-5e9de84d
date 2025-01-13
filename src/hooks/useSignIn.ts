@@ -72,10 +72,6 @@ export const useSignIn = () => {
           console.log('Redirecting to VR dashboard');
           navigate('/vr/dashboard', { replace: true });
           break;
-        case 'recruiter':
-          console.log('Redirecting to recruiter dashboard');
-          navigate('/recruiter/dashboard', { replace: true });
-          break;
         default:
           console.error('Invalid user type:', userType);
           toast({
