@@ -13,6 +13,7 @@ import { candidateFormSchema, type CandidateFormValues } from "./candidateFormSc
 import CommissionPreferences from "./sections/CommissionPreferences";
 import SkillsSection from "./sections/SkillsSection";
 import ContactInformation from "./sections/ContactInformation";
+import JobSeekingMotivation from "./sections/JobSeekingMotivation";
 import { useProfileData } from "@/hooks/useProfileData";
 import { useProfileSubmit } from "@/hooks/useProfileSubmit";
 
@@ -39,6 +40,8 @@ export function CandidateForm() {
       max_salary: undefined,
       commission_percentage: null,
       additional_skills: "",
+      job_seeking_reasons: [],
+      other_job_seeking_reason: "",
     },
   });
 
@@ -67,6 +70,9 @@ export function CandidateForm() {
           </div>
           <div className="text-left">
             <WorkPreferencesField control={form.control} />
+          </div>
+          <div className="text-left">
+            <JobSeekingMotivation control={form.control} />
           </div>
           <div className="text-left">
             <SkillsSection control={form.control} />
