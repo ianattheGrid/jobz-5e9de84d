@@ -51,20 +51,22 @@ export default function CandidateProfile() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
+      <div className="flex justify-center items-center min-h-screen bg-background">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-800"></div>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto px-4 py-10">
-      <h1 className="text-2xl font-bold mb-4 text-black text-left">Update Your Profile</h1>
-      <p className="text-[#ea384c] mb-8 text-sm text-left">
-        Keep your profile up to date to find the best job matches.
-      </p>
-      <div className="flex justify-center">
-        <CandidateForm />
+    <div className="min-h-screen bg-background">
+      <div className="container mx-auto px-4 py-10">
+        <h1 className="text-2xl font-bold mb-4 text-foreground text-left">Update Your Profile</h1>
+        <p className="text-[#ea384c] mb-8 text-sm text-left">
+          Keep your profile up to date to find the best job matches.
+        </p>
+        <div className="flex justify-center">
+          <CandidateForm />
+        </div>
       </div>
     </div>
   );
