@@ -17,9 +17,11 @@ function App() {
   // Get the project URL from window.location
   const pathname = window.location.pathname;
   const projectsMatch = pathname.match(/\/projects\/([^/]+)/);
-  const basename = projectsMatch ? `/projects/${projectsMatch[1]}` : '/';
+  const basename = projectsMatch ? `/projects/${projectsMatch[1]}` : '';
 
+  console.log('Current pathname:', pathname); // Debug log
   console.log('Current basename:', basename); // Debug log
+  console.log('Projects match:', projectsMatch); // Debug log
 
   return (
     <QueryClientProvider client={queryClient}>
