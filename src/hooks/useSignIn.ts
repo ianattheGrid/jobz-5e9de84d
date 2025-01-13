@@ -10,16 +10,14 @@ export const useSignIn = () => {
   const { toast } = useToast();
 
   const handleSignIn = async (email: string, password: string, intendedUserType?: string) => {
-    setLoading(true);
-    console.log('Starting sign in process...'); 
-
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
+      setLoading(true);
+      console.log('Starting sign in process...'); 
+
+      const { data: { user }, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
-
-      console.log('Sign in response:', { data, error }); 
 
       if (error) {
         if (error.message.includes('Email not confirmed')) {
@@ -33,14 +31,11 @@ export const useSignIn = () => {
         throw error;
       }
 
-      if (!data?.user) {
+      if (!user) {
         throw new Error('No user returned after successful sign in');
       }
 
-      const userMetadata = data.user.user_metadata;
-      console.log('User metadata:', userMetadata); 
-
-      const userType = userMetadata?.user_type?.toLowerCase();
+      const userType = user.user_metadata?.user_type?.toLowerCase();
       console.log('Detected user type:', userType); 
 
       // Check if user is trying to sign in with the correct user type
@@ -50,7 +45,6 @@ export const useSignIn = () => {
           title: "Access Denied",
           description: `This login is for ${intendedUserType} accounts only. Please use the correct login page.`,
         });
-        setLoading(false);
         return;
       }
 
