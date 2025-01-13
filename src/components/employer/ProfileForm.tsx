@@ -2,18 +2,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Form } from "@/components/ui/form";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { ProfileCard } from "@/components/shared/ProfileCard";
+import { ProfileFormFields } from "./ProfileFormFields";
 
 const formSchema = z.object({
   company_name: z.string().min(2, {
@@ -27,13 +20,19 @@ const formSchema = z.object({
   }),
 });
 
-type FormValues = z.infer<typeof formSchema>;
+export type FormValues = z.infer<typeof formSchema>;
 
-type ProfileFormProps = {
-  profile: { company_name: string; full_name: string; job_title: string; };
-  setProfile: (profile: { company_name: string; full_name: string; job_title: string; }) => void;
+interface EmployerProfile {
+  company_name: string;
+  full_name: string;
+  job_title: string;
+}
+
+interface ProfileFormProps {
+  profile: EmployerProfile;
+  setProfile: (profile: EmployerProfile) => void;
   email: string;
-};
+}
 
 export function ProfileForm({ profile, setProfile, email }: ProfileFormProps) {
   const { toast } = useToast();
@@ -91,48 +90,7 @@ export function ProfileForm({ profile, setProfile, email }: ProfileFormProps) {
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <FormField
-            control={form.control}
-            name="company_name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Company Name</FormLabel>
-                <FormControl>
-                  <Input placeholder="Enter company name" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="full_name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Full Name</FormLabel>
-                <FormControl>
-                  <Input placeholder="Enter your full name" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="job_title"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Job Title</FormLabel>
-                <FormControl>
-                  <Input placeholder="Enter your job title" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
+          <ProfileFormFields control={form.control} />
           <Button type="submit">Update Profile</Button>
         </form>
       </Form>
