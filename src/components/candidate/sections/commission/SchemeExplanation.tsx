@@ -1,10 +1,10 @@
 const SchemeExplanation = () => {
   return (
-    <div className="space-y-3 text-sm text-gray-600">
-      <p>
+    <div className="space-y-3 text-sm">
+      <p className="text-primary">
         Our unique "You're Hired" bonus scheme allows you to earn a bonus when you're successfully placed in a role. Here's how it works:
       </p>
-      <ul className="list-disc pl-5 space-y-2">
+      <ul className="list-disc pl-5 space-y-2 text-foreground">
         <li>
           Some employers offer a bonus of between 2.5% and 14% of your basic salary
         </li>

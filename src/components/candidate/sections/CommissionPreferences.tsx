@@ -18,13 +18,17 @@ const CommissionPreferences = ({ control }: CommissionPreferencesProps) => {
   const [feePercentage, setFeePercentage] = useState(7);
   const [splitPercentage, setSplitPercentage] = useState(50);
 
+  const handleSchemeToggle = (checked: boolean) => {
+    setShowSchemeDetails(checked);
+  };
+
   return (
     <div className="space-y-4">
       <CommissionToggle
         control={control}
         name="view_scheme"
         label="Would you like to view the &quot;You're Hired&quot; bonus scheme?"
-        onChange={setShowSchemeDetails}
+        onChange={handleSchemeToggle}
       />
 
       {showSchemeDetails && (

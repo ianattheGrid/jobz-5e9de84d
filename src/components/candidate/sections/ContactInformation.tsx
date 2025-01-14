@@ -86,21 +86,7 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
             <FormItem>
               <FormLabel className="text-foreground">Full Name</FormLabel>
               <FormControl>
-                <Input placeholder="Enter your full name" {...field} className="bg-card text-foreground" />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-foreground">Email</FormLabel>
-              <FormControl>
-                <Input type="email" placeholder="Enter your email" {...field} className="bg-card text-foreground" />
+                <Input {...field} placeholder="Enter your full name" className="form-field" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -114,7 +100,7 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
             <FormItem>
               <FormLabel className="text-foreground">Phone Number</FormLabel>
               <FormControl>
-                <Input type="tel" placeholder="Enter your phone number" {...field} className="bg-card text-foreground" />
+                <Input {...field} type="tel" placeholder="Enter your phone number" className="form-field" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -129,9 +115,9 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
               <FormLabel className="text-foreground">Current Employer</FormLabel>
               <FormControl>
                 <Input 
+                  {...field}
                   placeholder="Enter your current employer's name" 
-                  {...field} 
-                  className="bg-card text-foreground"
+                  className="form-field"
                 />
               </FormControl>
               <p className="text-sm text-muted-foreground mt-1">
