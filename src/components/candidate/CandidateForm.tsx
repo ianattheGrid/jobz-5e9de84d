@@ -22,6 +22,7 @@ export function CandidateForm() {
 
   const form = useForm<CandidateFormValues>({
     resolver: zodResolver(candidateFormSchema),
+    mode: "onChange",
     defaultValues: {
       full_name: "",
       email: "",
@@ -42,12 +43,38 @@ export function CandidateForm() {
       additional_skills: "",
       job_seeking_reasons: [],
       other_job_seeking_reason: "",
+      travel_radius: 10,
+      current_employer: "",
     },
   });
 
   useProfileData((data) => {
     if (!data) return;
-    form.reset(data);
+    console.log("Setting form data:", data);
+    form.reset({
+      ...data,
+      full_name: data.full_name || "",
+      phone_number: data.phone_number || "",
+      current_employer: data.current_employer || "",
+      email: data.email || "",
+      address: data.address || "",
+      location: data.location || "Bristol",
+      required_skills: data.required_skills || [],
+      security_clearance: data.security_clearance,
+      work_eligibility: data.work_eligibility,
+      open_to_commission: data.commission_percentage !== null,
+      availability: data.availability || "Immediate",
+      work_preferences: data.work_preferences || "",
+      workArea: data.job_title || "",
+      years_experience: data.years_experience?.toString() || "",
+      min_salary: data.min_salary,
+      max_salary: data.max_salary,
+      commission_percentage: data.commission_percentage,
+      additional_skills: data.additional_skills || "",
+      job_seeking_reasons: [],
+      other_job_seeking_reason: "",
+      travel_radius: data.travel_radius || 10,
+    });
   });
   
   const { onSubmit } = useProfileSubmit(toast);
