@@ -28,7 +28,7 @@ export function CandidateForm() {
   useProfileData((data) => {
     if (!data) return;
     console.log("Setting form data:", data);
-    form.reset(data);
+    form.reset(data, { keepDefaultValues: true });
   });
   
   const { onSubmit } = useProfileSubmit(toast);
