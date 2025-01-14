@@ -40,12 +40,16 @@ const SalaryRangeField = ({ control }: SalaryRangeFieldProps) => {
                 value={field.value?.toString()}
                 onValueChange={(value) => field.onChange(parseInt(value))}
               >
-                <SelectTrigger className="w-full bg-card text-foreground border-border">
+                <SelectTrigger className="form-select-trigger">
                   <SelectValue placeholder="Select minimum salary" />
                 </SelectTrigger>
-                <SelectContent className="bg-background border-border">
+                <SelectContent className="form-select-content select-dropdown">
                   {salaryOptions.map((option) => (
-                    <SelectItem key={option.value} value={option.value}>
+                    <SelectItem 
+                      key={option.value} 
+                      value={option.value}
+                      className="text-foreground hover:bg-muted"
+                    >
                       {option.label}
                     </SelectItem>
                   ))}
@@ -68,12 +72,16 @@ const SalaryRangeField = ({ control }: SalaryRangeFieldProps) => {
                 value={field.value?.toString()}
                 onValueChange={(value) => field.onChange(parseInt(value))}
               >
-                <SelectTrigger className="w-full bg-card text-foreground border-border">
+                <SelectTrigger className="form-select-trigger">
                   <SelectValue placeholder="Select maximum salary" />
                 </SelectTrigger>
-                <SelectContent className="bg-background border-border">
+                <SelectContent className="form-select-content select-dropdown">
                   {salaryOptions.map((option) => (
-                    <SelectItem key={option.value} value={option.value}>
+                    <SelectItem 
+                      key={option.value} 
+                      value={option.value}
+                      className="text-foreground hover:bg-muted"
+                    >
                       {option.label}
                     </SelectItem>
                   ))}

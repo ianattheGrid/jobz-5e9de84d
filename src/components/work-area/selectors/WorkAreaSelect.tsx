@@ -25,12 +25,16 @@ const WorkAreaSelect = ({ control, onWorkAreaChange, defaultValue }: WorkAreaSel
               }}
               defaultValue={defaultValue || field.value}
             >
-              <SelectTrigger className="w-full bg-white border border-gray-300">
+              <SelectTrigger className="form-select-trigger">
                 <SelectValue placeholder="Select your current area of work" />
               </SelectTrigger>
-              <SelectContent className="bg-white">
+              <SelectContent className="form-select-content select-dropdown">
                 {workAreas.map((area) => (
-                  <SelectItem key={area} value={area}>
+                  <SelectItem 
+                    key={area} 
+                    value={area}
+                    className="text-foreground hover:bg-muted"
+                  >
                     {area}
                   </SelectItem>
                 ))}

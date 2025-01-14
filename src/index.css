@@ -58,8 +58,9 @@
 }
 
 /* Override any white backgrounds in dropdowns */
-[role="listbox"] {
-  @apply bg-background text-foreground;
+[role="listbox"],
+[role="combobox"] {
+  @apply bg-background text-foreground !important;
 }
 
 [role="option"] {
@@ -67,7 +68,9 @@
 }
 
 /* Input field styles */
-input, select, textarea {
+input, 
+select, 
+textarea {
   @apply bg-card text-foreground border-border;
 }
 
@@ -89,4 +92,34 @@ input, select, textarea {
 /* Glass effect */
 .glass-effect {
   @apply bg-card/80 backdrop-blur-md border border-white/10;
+}
+
+/* Dropdown menu styles */
+[data-radix-popper-content-wrapper] {
+  @apply bg-background text-foreground;
+}
+
+.select-dropdown {
+  @apply bg-card text-foreground border-border max-h-60 overflow-auto;
+}
+
+/* Form specific overrides */
+.form-select-trigger {
+  @apply bg-card text-foreground border-border w-full;
+}
+
+.form-select-content {
+  @apply bg-card border border-border rounded-md shadow-lg;
+}
+
+/* Ensure dropdowns are visible */
+[data-state="open"] > [role="listbox"] {
+  @apply bg-card border border-border shadow-lg;
+}
+
+/* Override for specific components */
+.work-area-select,
+.specialization-select,
+.job-title-select {
+  @apply bg-card text-foreground border-border;
 }
