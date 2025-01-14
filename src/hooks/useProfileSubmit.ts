@@ -18,6 +18,8 @@ export const useProfileSubmit = (toast: ToastFunction) => {
         return;
       }
 
+      console.log("Submitting profile data:", values);
+
       const profileData = {
         id: session.user.id,
         full_name: values.full_name,
