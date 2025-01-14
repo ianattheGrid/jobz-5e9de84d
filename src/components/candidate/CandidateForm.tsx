@@ -51,12 +51,35 @@ export function CandidateForm() {
   useProfileData((data) => {
     if (!data) return;
     console.log("Setting form data:", data);
-    form.reset({
+    
+    // Map the database fields to form fields
+    const formData = {
       ...data,
-      workArea: data.job_title || "",
+      workArea: data.job_title || "",  // Map job_title to workArea
       years_experience: data.years_experience?.toString() || "0",
       open_to_commission: data.commission_percentage !== null,
-    });
+      // Ensure all required form fields are present
+      full_name: data.full_name || "",
+      email: data.email || "",
+      phone_number: data.phone_number || "",
+      address: data.address || "",
+      location: data.location || "",
+      min_salary: data.min_salary || 0,
+      max_salary: data.max_salary || 0,
+      required_skills: data.required_skills || [],
+      security_clearance: data.security_clearance,
+      work_eligibility: data.work_eligibility || "UK citizens only",
+      commission_percentage: data.commission_percentage,
+      additional_skills: data.additional_skills || "",
+      availability: data.availability || "Immediate",
+      work_preferences: data.work_preferences || "",
+      current_employer: data.current_employer || "",
+      travel_radius: data.travel_radius || 10,
+      job_seeking_reasons: [],
+      other_job_seeking_reason: "",
+    };
+
+    form.reset(formData);
   });
   
   const { onSubmit } = useProfileSubmit(toast);
