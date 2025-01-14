@@ -28,7 +28,11 @@ export function CandidateForm() {
   useProfileData((data) => {
     if (!data) return;
     console.log("Setting form data:", data);
-    form.reset(data, { keepDefaultValues: true });
+    // Reset form with existing data, but don't override with empty values
+    form.reset(data, { 
+      keepDefaultValues: true,
+      keepValues: true 
+    });
   });
   
   const { onSubmit } = useProfileSubmit(toast);
