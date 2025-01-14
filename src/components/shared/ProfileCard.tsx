@@ -27,18 +27,21 @@ export const ProfileCard = ({
   additionalInfo,
   children
 }: ProfileCardProps) => {
+  const displayName = fullName || "Your Name";
+  const displayTitle = title !== "Not specified" ? title : "Your Title";
+  
   return (
     <Card className="w-full max-w-3xl mx-auto">
       <CardHeader className="relative pb-0">
         <div className="flex items-start gap-4">
           <Avatar className="h-24 w-24">
             <AvatarImage src={profilePicture || undefined} />
-            <AvatarFallback>{fullName.charAt(0)}</AvatarFallback>
+            <AvatarFallback>{displayName.charAt(0)}</AvatarFallback>
           </Avatar>
           <div className="flex-1">
-            <h2 className="text-2xl font-semibold">{fullName}</h2>
-            <p className="text-lg text-muted-foreground">{title}</p>
-            {location && (
+            <h2 className="text-2xl font-semibold">{displayName}</h2>
+            <p className="text-lg text-muted-foreground">{displayTitle}</p>
+            {location && location !== "Not specified" && (
               <p className="text-sm text-muted-foreground mt-1">
                 {location}
               </p>

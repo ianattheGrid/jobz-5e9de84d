@@ -46,7 +46,9 @@ export const useProfileSubmit = (toast: ToastFunction) => {
 
       const { error } = await supabase
         .from('candidate_profiles')
-        .upsert(dbValues);
+        .upsert(dbValues, {
+          onConflict: 'id'
+        });
 
       if (error) {
         console.error('Error updating profile:', error);
@@ -63,6 +65,10 @@ export const useProfileSubmit = (toast: ToastFunction) => {
         title: "Success",
         description: "Profile updated successfully"
       });
+
+      // Force a page reload to update the profile card
+      window.location.reload();
+      
     } catch (error: any) {
       console.error('Error:', error);
       toast({
