@@ -31,7 +31,6 @@ const CandidateDashboard = () => {
         return;
       }
 
-      // Fetch candidate profile
       const { data: profile } = await supabase
         .from('candidate_profiles')
         .select('full_name')
@@ -55,7 +54,7 @@ const CandidateDashboard = () => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
+      <div className="flex justify-center items-center min-h-screen bg-white">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-800"></div>
       </div>
     );
@@ -101,10 +100,10 @@ const CandidateDashboard = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       <NavBar />
       <div className="container mx-auto px-4 py-8 pt-20">
-        <h1 className="text-3xl font-bold mb-2 text-red-800">
+        <h1 className="text-3xl font-bold mb-2 text-gray-800">
           Welcome{fullName ? `, ${fullName}` : ''}
         </h1>
         <p className="text-gray-600 mb-8">Manage your job search and applications</p>
@@ -114,12 +113,12 @@ const CandidateDashboard = () => {
             <Button
               key={index}
               variant="outline"
-              className="h-auto p-6 flex flex-col items-center gap-4 bg-white hover:bg-red-50 transition-all duration-200 border border-gray-200 rounded-lg shadow-sm hover:shadow-md"
+              className="h-auto p-6 flex flex-col items-center gap-4 bg-white hover:bg-gray-50 transition-all duration-200 border border-gray-200 rounded-lg shadow-sm hover:shadow-md"
               onClick={() => navigate(item.path)}
             >
-              <div className="text-red-800">{item.icon}</div>
+              <div className="text-gray-700">{item.icon}</div>
               <div className="text-center">
-                <h3 className="font-semibold text-lg mb-2 text-red-800">{item.title}</h3>
+                <h3 className="font-semibold text-lg mb-2 text-gray-800">{item.title}</h3>
                 <p className="text-sm text-gray-600">{item.description}</p>
               </div>
             </Button>
