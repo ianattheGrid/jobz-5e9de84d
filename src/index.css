@@ -91,7 +91,7 @@
 }
 
 .select-item {
-  @apply hover:bg-muted cursor-pointer;
+  @apply hover:bg-muted cursor-pointer text-foreground;
 }
 
 /* Override any white backgrounds in dropdowns */
@@ -100,5 +100,15 @@
 }
 
 [role="option"] {
-  @apply hover:bg-muted;
+  @apply hover:bg-muted text-foreground;
+}
+
+/* Form field styles */
+.form-field {
+  @apply bg-card text-foreground;
+}
+
+/* Select styles */
+.select-trigger {
+  @apply bg-card text-foreground border-border;
 }

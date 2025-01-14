@@ -56,6 +56,12 @@ export function CandidateForm() {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full max-w-2xl">
         <div className="space-y-8">
+          <div>
+            <h1 className="text-2xl font-bold mb-4 text-foreground">Update Your Profile</h1>
+            <p className="text-primary mb-8">
+              Keep your profile up to date to find the best job matches.
+            </p>
+          </div>
           <div className="text-left">
             <ContactInformation control={form.control} />
           </div>
@@ -89,7 +95,7 @@ export function CandidateForm() {
         </div>
         
         <div className="flex justify-start">
-          <Button type="submit" className="bg-red-800 hover:bg-red-900 text-white">
+          <Button type="submit" className="bg-primary hover:bg-primary-dark text-white">
             Update Profile
           </Button>
         </div>
