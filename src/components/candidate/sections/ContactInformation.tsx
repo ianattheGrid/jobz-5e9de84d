@@ -8,9 +8,6 @@ import TravelRadiusSelect from "./TravelRadiusSelect";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { ProfileCard } from "@/components/shared/ProfileCard";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { bristolPostcodes } from "@/data/bristolPostcodes";
-import { Checkbox } from "@/components/ui/checkbox";
 
 interface ContactInformationProps {
   control: Control<CandidateFormValues>;
@@ -27,8 +24,6 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
     years_experience: number | null;
     required_skills: string[] | null;
   } | null>(null);
-  const [selectedPostcodes, setSelectedPostcodes] = useState<string[]>([]);
-  const [selectAll, setSelectAll] = useState(false);
 
   useEffect(() => {
     const getSession = async () => {
@@ -48,20 +43,6 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
     
     getSession();
   }, []);
-
-  const handlePostcodeChange = (postcode: string) => {
-    if (postcode === "all") {
-      setSelectAll(!selectAll);
-      setSelectedPostcodes(selectAll ? [] : bristolPostcodes);
-      return;
-    }
-
-    const updatedPostcodes = selectedPostcodes.includes(postcode)
-      ? selectedPostcodes.filter(p => p !== postcode)
-      : [...selectedPostcodes, postcode];
-    
-    setSelectedPostcodes(updatedPostcodes);
-  };
 
   return (
     <div className="space-y-8">
@@ -86,7 +67,12 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
             <FormItem>
               <FormLabel className="text-foreground">Full Name</FormLabel>
               <FormControl>
-                <Input {...field} placeholder="Enter your full name" className="form-field" />
+                <Input 
+                  {...field} 
+                  placeholder="Enter your full name" 
+                  className="form-field"
+                  value={field.value || ''}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -100,7 +86,13 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
             <FormItem>
               <FormLabel className="text-foreground">Phone Number</FormLabel>
               <FormControl>
-                <Input {...field} type="tel" placeholder="Enter your phone number" className="form-field" />
+                <Input 
+                  {...field} 
+                  type="tel" 
+                  placeholder="Enter your phone number" 
+                  className="form-field"
+                  value={field.value || ''}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -118,6 +110,7 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
                   {...field}
                   placeholder="Enter your current employer's name" 
                   className="form-field"
+                  value={field.value || ''}
                 />
               </FormControl>
               <p className="text-sm text-muted-foreground mt-1">
