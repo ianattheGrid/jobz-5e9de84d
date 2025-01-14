@@ -40,10 +40,10 @@ const SalaryRangeField = ({ control }: SalaryRangeFieldProps) => {
                 value={field.value?.toString()}
                 onValueChange={(value) => field.onChange(parseInt(value))}
               >
-                <SelectTrigger className="w-full bg-white">
+                <SelectTrigger className="w-full bg-card text-foreground border-border">
                   <SelectValue placeholder="Select minimum salary" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-background border-border">
                   {salaryOptions.map((option) => (
                     <SelectItem key={option.value} value={option.value}>
                       {option.label}
@@ -68,10 +68,10 @@ const SalaryRangeField = ({ control }: SalaryRangeFieldProps) => {
                 value={field.value?.toString()}
                 onValueChange={(value) => field.onChange(parseInt(value))}
               >
-                <SelectTrigger className="w-full bg-white">
+                <SelectTrigger className="w-full bg-card text-foreground border-border">
                   <SelectValue placeholder="Select maximum salary" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-background border-border">
                   {salaryOptions.map((option) => (
                     <SelectItem key={option.value} value={option.value}>
                       {option.label}

@@ -28,10 +28,10 @@ const AvailabilityField = ({ control }: AvailabilityFieldProps) => {
           <FormLabel>Availability</FormLabel>
           <FormControl>
             <Select onValueChange={field.onChange} defaultValue={field.value}>
-              <SelectTrigger className="w-full bg-white border border-gray-300">
+              <SelectTrigger className="w-full bg-card text-foreground border-border">
                 <SelectValue placeholder="Select your availability" />
               </SelectTrigger>
-              <SelectContent className="bg-white">
+              <SelectContent className="bg-background border-border">
                 {availabilityOptions.map((option) => (
                   <SelectItem key={option} value={option}>
                     {option}

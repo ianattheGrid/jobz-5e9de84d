@@ -23,10 +23,10 @@ const WorkPreferencesField = ({ control }: WorkPreferencesFieldProps) => {
           <FormLabel>Your work preferences</FormLabel>
           <FormControl>
             <Select onValueChange={field.onChange} defaultValue={field.value}>
-              <SelectTrigger className="w-full bg-white border border-gray-300">
+              <SelectTrigger className="w-full bg-card text-foreground border-border">
                 <SelectValue placeholder="Select your work preferences" />
               </SelectTrigger>
-              <SelectContent className="bg-white">
+              <SelectContent className="bg-background border-border">
                 {workPreferencesOptions.map((option) => (
                   <SelectItem key={option} value={option}>
                     {option}
