@@ -21,14 +21,13 @@ export const useProfileSubmit = (toast: ToastFunction) => {
 
       const { error } = await supabase
         .from('candidate_profiles')
-        .upsert({
-          id: session.user.id,
+        .update({
           full_name: values.full_name,
           email: values.email,
           phone_number: values.phone_number,
           address: values.address,
           job_title: values.workArea,
-          years_experience: values.years_experience ? parseInt(values.years_experience) : 0,
+          years_experience: parseInt(values.years_experience) || 0,
           location: values.location,
           min_salary: values.min_salary,
           max_salary: values.max_salary,
@@ -40,15 +39,17 @@ export const useProfileSubmit = (toast: ToastFunction) => {
           availability: values.availability,
           work_preferences: values.work_preferences,
           current_employer: values.current_employer,
-          travel_radius: values.travel_radius
-        });
+          travel_radius: values.travel_radius,
+          desired_job_title: values.desired_job_title
+        })
+        .eq('id', session.user.id);
 
       if (error) {
         console.error('Error updating profile:', error);
         toast({
           variant: "destructive",
           title: "Error",
-          description: "Failed to update profile. Please try again."
+          description: error.message || "Failed to update profile. Please try again."
         });
         return;
       }
