@@ -21,7 +21,8 @@ export const useProfileSubmit = (toast: ToastFunction) => {
 
       const { error } = await supabase
         .from('candidate_profiles')
-        .update({
+        .upsert({
+          id: session.user.id,
           full_name: values.full_name,
           email: values.email,
           phone_number: values.phone_number,
@@ -41,8 +42,9 @@ export const useProfileSubmit = (toast: ToastFunction) => {
           current_employer: values.current_employer,
           travel_radius: values.travel_radius,
           desired_job_title: values.desired_job_title
-        })
-        .eq('id', session.user.id);
+        }, {
+          onConflict: 'id'
+        });
 
       if (error) {
         console.error('Error updating profile:', error);
