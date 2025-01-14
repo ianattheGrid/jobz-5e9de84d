@@ -65,7 +65,7 @@ export function CandidateForm() {
       phone_number: data.phone_number || "",
       address: data.address || "",
       location: data.location || "Bristol",
-      workArea: data.job_title || "",
+      workArea: data.workArea || "",
       min_salary: data.min_salary || 0,
       max_salary: data.max_salary || 0,
       required_skills: data.required_skills || [],
