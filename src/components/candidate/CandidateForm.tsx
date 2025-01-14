@@ -16,6 +16,7 @@ import ContactInformation from "./sections/ContactInformation";
 import JobSeekingMotivation from "./sections/JobSeekingMotivation";
 import { useProfileData } from "@/hooks/useProfileData";
 import { useProfileSubmit } from "@/hooks/useProfileSubmit";
+import type { CandidateProfile } from "@/integrations/supabase/types";
 
 export function CandidateForm() {
   const { toast } = useToast();
@@ -48,12 +49,12 @@ export function CandidateForm() {
     }
   });
 
-  useProfileData((data) => {
+  useProfileData((data: CandidateProfile | null) => {
     if (!data) return;
     console.log("Setting form data:", data);
     
     // Map the database fields to form fields
-    const formData = {
+    const formData: CandidateFormValues = {
       ...data,
       workArea: data.job_title || "",  // Map job_title to workArea
       years_experience: data.years_experience?.toString() || "0",
@@ -77,6 +78,13 @@ export function CandidateForm() {
       travel_radius: data.travel_radius || 10,
       job_seeking_reasons: [],
       other_job_seeking_reason: "",
+      title: "",
+      desired_job_title: data.desired_job_title || "",
+      desired_years_experience: "",
+      wantsCareerChange: "",
+      otherWorkArea: "",
+      itSpecialization: "",
+      view_scheme: false
     };
 
     form.reset(formData);
