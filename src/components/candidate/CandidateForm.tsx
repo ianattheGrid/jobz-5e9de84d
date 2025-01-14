@@ -59,9 +59,7 @@ export function CandidateForm() {
     if (!data) return;
     console.log("Setting form data:", data);
     
-    // Create a new object with all the form fields, using existing data or defaults
     const formValues: CandidateFormValues = {
-      ...form.getValues(),
       full_name: data.full_name || "",
       email: data.email || "",
       phone_number: data.phone_number || "",
@@ -92,7 +90,6 @@ export function CandidateForm() {
       view_scheme: false
     };
 
-    // Reset the form with the merged values
     form.reset(formValues);
   });
   
