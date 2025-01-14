@@ -12,11 +12,6 @@ export const useProfileData = (callback: (data: CandidateFormValues | null) => v
         const { data: { session } } = await supabase.auth.getSession();
         if (!session?.user?.id) {
           console.log('No active session found');
-          toast({
-            variant: "destructive",
-            title: "Authentication Error",
-            description: "Please sign in to access your profile.",
-          });
           return;
         }
 
@@ -61,7 +56,7 @@ export const useProfileData = (callback: (data: CandidateFormValues | null) => v
             job_seeking_reasons: [],
             other_job_seeking_reason: '',
             title: '',
-            desired_job_title: '',
+            desired_job_title: profile.desired_job_title || '',
             desired_years_experience: '',
             wantsCareerChange: '',
             otherWorkArea: '',

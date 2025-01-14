@@ -8,6 +8,7 @@ export const useProfileSubmit = (toast: ToastFunction) => {
   const onSubmit = async (values: CandidateFormValues) => {
     try {
       const { data: { session } } = await supabase.auth.getSession();
+      
       if (!session) {
         toast({
           variant: "destructive",
@@ -17,53 +18,34 @@ export const useProfileSubmit = (toast: ToastFunction) => {
         return;
       }
 
-      console.log('Submitting profile values:', values);
-
-      // First, let's check if the profile exists
-      const { data: existingProfile } = await supabase
-        .from('candidate_profiles')
-        .select('*')
-        .eq('id', session.user.id)
-        .single();
-
       const profileData = {
         id: session.user.id,
-        full_name: values.full_name || null,
+        full_name: values.full_name,
         email: values.email,
-        phone_number: values.phone_number || null,
-        address: values.address || null,
-        job_title: values.workArea || 'Not specified',
-        years_experience: parseInt(values.years_experience) || 0,
-        location: values.location || 'Not specified',
-        min_salary: values.min_salary || 0,
-        max_salary: values.max_salary || 0,
-        required_skills: values.required_skills || [],
-        security_clearance: values.security_clearance || null,
-        work_eligibility: values.work_eligibility || 'UK citizens only',
+        phone_number: values.phone_number,
+        address: values.address,
+        job_title: values.workArea,
+        years_experience: values.years_experience ? parseInt(values.years_experience) : 0,
+        location: values.location,
+        min_salary: values.min_salary,
+        max_salary: values.max_salary,
+        required_skills: values.required_skills,
+        security_clearance: values.security_clearance,
+        work_eligibility: values.work_eligibility,
         commission_percentage: values.open_to_commission ? values.commission_percentage : null,
-        additional_skills: values.additional_skills || null,
-        availability: values.availability || 'Immediate',
-        work_preferences: values.work_preferences || null,
-        current_employer: values.current_employer || null,
-        travel_radius: values.travel_radius || 10,
-        desired_job_title: values.desired_job_title || null
+        additional_skills: values.additional_skills,
+        availability: values.availability,
+        work_preferences: values.work_preferences,
+        current_employer: values.current_employer,
+        travel_radius: values.travel_radius,
+        desired_job_title: values.desired_job_title
       };
 
-      let error;
-      if (!existingProfile) {
-        // If profile doesn't exist, insert it
-        const { error: insertError } = await supabase
-          .from('candidate_profiles')
-          .insert([profileData]);
-        error = insertError;
-      } else {
-        // If profile exists, update it
-        const { error: updateError } = await supabase
-          .from('candidate_profiles')
-          .update(profileData)
-          .eq('id', session.user.id);
-        error = updateError;
-      }
+      const { error } = await supabase
+        .from('candidate_profiles')
+        .upsert(profileData, {
+          onConflict: 'id'
+        });
 
       if (error) {
         console.error('Error updating profile:', error);
@@ -79,12 +61,12 @@ export const useProfileSubmit = (toast: ToastFunction) => {
         title: "Success",
         description: "Profile updated successfully"
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error:', error);
       toast({
         variant: "destructive",
         title: "Error",
-        description: "An unexpected error occurred"
+        description: "An unexpected error occurred while updating your profile"
       });
     }
   };
