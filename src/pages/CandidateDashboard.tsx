@@ -31,13 +31,43 @@ const CandidateDashboard = () => {
         return;
       }
 
-      const { data: profile } = await supabase
+      // Try to get the profile
+      const { data: profile, error } = await supabase
         .from('candidate_profiles')
         .select('full_name')
         .eq('id', session.user.id)
-        .single();
+        .maybeSingle();
 
-      if (profile) {
+      if (error) {
+        console.error('Error fetching profile:', error);
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Failed to load profile information",
+        });
+      } else if (!profile) {
+        // If no profile exists, create one
+        const { error: createError } = await supabase
+          .from('candidate_profiles')
+          .insert({
+            id: session.user.id,
+            email: session.user.email,
+            job_title: 'Not specified',
+            location: 'Not specified',
+            min_salary: 0,
+            max_salary: 0,
+            years_experience: 0
+          });
+
+        if (createError) {
+          console.error('Error creating profile:', createError);
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: "Failed to create profile",
+          });
+        }
+      } else {
         setFullName(profile.full_name);
       }
 
