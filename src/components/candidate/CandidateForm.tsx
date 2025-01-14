@@ -51,30 +51,30 @@ export function CandidateForm() {
     }
   });
 
-  useProfileData((data: CandidateProfile | null) => {
-    if (!data) return;
-    console.log("Setting form data:", data);
+  useProfileData((profile: CandidateProfile | null) => {
+    if (!profile) return;
+    console.log("Setting form data:", profile);
     
     const formData: CandidateFormValues = {
-      full_name: data.full_name || "",
-      email: data.email || "",
-      phone_number: data.phone_number || "",
-      address: data.address || "",
-      location: data.location || "",
-      workArea: data.job_title || "",
-      min_salary: data.min_salary || 0,
-      max_salary: data.max_salary || 0,
-      required_skills: data.required_skills || [],
-      security_clearance: data.security_clearance || undefined,
-      work_eligibility: data.work_eligibility || "UK citizens only",
-      years_experience: data.years_experience?.toString() || "0",
-      commission_percentage: data.commission_percentage || null,
-      open_to_commission: data.commission_percentage !== null,
-      additional_skills: data.additional_skills || "",
-      availability: data.availability || "Immediate",
-      work_preferences: data.work_preferences || "",
-      current_employer: data.current_employer || "",
-      travel_radius: data.travel_radius || 10,
+      full_name: profile.full_name || "",
+      email: profile.email || "",
+      phone_number: profile.phone_number || "",
+      address: profile.address || "",
+      location: profile.location || "",
+      workArea: profile.job_title || "",
+      min_salary: profile.min_salary || 0,
+      max_salary: profile.max_salary || 0,
+      required_skills: profile.required_skills || [],
+      security_clearance: profile.security_clearance || undefined,
+      work_eligibility: profile.work_eligibility || "UK citizens only",
+      years_experience: profile.years_experience?.toString() || "0",
+      commission_percentage: profile.commission_percentage || null,
+      open_to_commission: profile.commission_percentage !== null,
+      additional_skills: profile.additional_skills || "",
+      availability: profile.availability || "Immediate",
+      work_preferences: profile.work_preferences || "",
+      current_employer: profile.current_employer || "",
+      travel_radius: profile.travel_radius || 10,
       job_seeking_reasons: [],
       other_job_seeking_reason: "",
     };

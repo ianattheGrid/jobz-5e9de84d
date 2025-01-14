@@ -1,9 +1,11 @@
 import { useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { CandidateFormValues } from '@/components/candidate/candidateFormSchema';
+import type { Database } from '@/integrations/supabase/types';
 import { useToast } from '@/components/ui/use-toast';
 
-export const useProfileData = (callback: (data: CandidateFormValues | null) => void) => {
+type CandidateProfile = Database['public']['Tables']['candidate_profiles']['Row'];
+
+export const useProfileData = (callback: (data: CandidateProfile | null) => void) => {
   const { toast } = useToast();
 
   useEffect(() => {
@@ -31,43 +33,9 @@ export const useProfileData = (callback: (data: CandidateFormValues | null) => v
           return;
         }
 
-        if (profile) {
-          console.log('Loading existing profile:', profile);
-          const formData: CandidateFormValues = {
-            full_name: profile.full_name || '',
-            email: profile.email || '',
-            phone_number: profile.phone_number || '',
-            address: profile.address || '',
-            location: profile.location || '',
-            workArea: profile.job_title || '',
-            min_salary: profile.min_salary || 0,
-            max_salary: profile.max_salary || 0,
-            required_skills: profile.required_skills || [],
-            security_clearance: profile.security_clearance || undefined,
-            work_eligibility: profile.work_eligibility || 'UK citizens only',
-            years_experience: profile.years_experience?.toString() || '',
-            commission_percentage: profile.commission_percentage || null,
-            open_to_commission: profile.commission_percentage !== null,
-            additional_skills: profile.additional_skills || '',
-            availability: profile.availability || 'Immediate',
-            work_preferences: profile.work_preferences || '',
-            current_employer: profile.current_employer || '',
-            travel_radius: profile.travel_radius || 10,
-            job_seeking_reasons: [],
-            other_job_seeking_reason: '',
-            title: '',
-            desired_job_title: profile.desired_job_title || '',
-            desired_years_experience: '',
-            wantsCareerChange: '',
-            otherWorkArea: '',
-            itSpecialization: '',
-            view_scheme: false
-          };
-          callback(formData);
-        } else {
-          console.log('No existing profile found');
-          callback(null);
-        }
+        console.log('Loading existing profile:', profile);
+        callback(profile);
+        
       } catch (error: any) {
         console.error('Error loading profile:', error);
         toast({
