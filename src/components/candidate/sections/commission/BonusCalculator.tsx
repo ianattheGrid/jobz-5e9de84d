@@ -23,11 +23,11 @@ export const BonusCalculator = ({
   const { candidateCommission, referralCommission } = calculateSplitCommissions(totalCommission, splitPercentage);
 
   return (
-    <div className="mt-6 p-4 bg-gray-50 rounded-lg space-y-4">
-      <h4 className="font-medium text-gray-900">Try the Bonus Calculator</h4>
+    <div className="mt-6 p-4 bg-card rounded-lg space-y-4">
+      <h4 className="font-medium text-muted-foreground">Try the Bonus Calculator</h4>
       <div className="space-y-4">
         <div>
-          <label className="text-sm font-medium">Enter a sample yearly salary</label>
+          <label className="text-sm font-medium text-muted-foreground">Enter a sample yearly salary</label>
           <Input
             type="text"
             placeholder="e.g. 50000"
@@ -38,7 +38,7 @@ export const BonusCalculator = ({
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-medium">Select fee percentage (2.5% - 14% of candidate's basic yearly salary)</label>
+          <label className="text-sm font-medium text-muted-foreground">Select fee percentage (2.5% - 14% of candidate's basic yearly salary)</label>
           <Slider
             value={[feePercentage]}
             onValueChange={onFeeChange}
@@ -53,7 +53,7 @@ export const BonusCalculator = ({
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-medium">Adjust bonus split</label>
+          <label className="text-sm font-medium text-muted-foreground">Adjust bonus split</label>
           <Slider
             value={[splitPercentage]}
             onValueChange={onSplitChange}
@@ -68,11 +68,11 @@ export const BonusCalculator = ({
         </div>
 
         {sampleSalary && (
-          <div className="mt-4 p-3 bg-green-50 rounded-md">
-            <p className="text-sm font-medium text-green-800 mb-2">
+          <div className="mt-4 p-3 bg-muted rounded-md">
+            <p className="text-sm font-medium text-muted-foreground mb-2">
               Potential Bonus Breakdown
             </p>
-            <div className="text-sm text-green-700 space-y-1">
+            <div className="text-sm text-muted-foreground space-y-1">
               <p>Fee charged: {formatCurrency(totalCommission)}</p>
               <p>• Your Share: {formatCurrency(candidateCommission)}</p>
               <p>• Referrer's Share: {formatCurrency(referralCommission)}</p>

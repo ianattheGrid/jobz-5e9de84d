@@ -51,6 +51,7 @@ const CommissionPreferences = ({ control }: CommissionPreferencesProps) => {
           control={control}
           name="open_to_commission"
           label="Would you like to participate in the bonus scheme?"
+          defaultValue={false}
         />
       </div>
 
