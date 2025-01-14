@@ -20,7 +20,7 @@ export const useProfileSubmit = (toast: ToastFunction) => {
 
       console.log("Submitting profile data:", values);
 
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('candidate_profiles')
         .upsert({
           id: session.user.id,
@@ -33,7 +33,7 @@ export const useProfileSubmit = (toast: ToastFunction) => {
           location: values.location,
           min_salary: values.min_salary,
           max_salary: values.max_salary,
-          required_skills: values.required_skills,
+          required_skills: values.required_skills || [],
           security_clearance: values.security_clearance,
           work_eligibility: values.work_eligibility,
           commission_percentage: values.open_to_commission ? values.commission_percentage : null,
@@ -57,7 +57,7 @@ export const useProfileSubmit = (toast: ToastFunction) => {
         return;
       }
 
-      console.log('Profile updated successfully:', data);
+      console.log('Profile updated successfully');
       toast({
         title: "Success",
         description: "Profile updated successfully"
