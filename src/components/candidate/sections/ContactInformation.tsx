@@ -135,39 +135,6 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
 
         <TravelRadiusSelect control={control} />
 
-        <FormField
-          control={control}
-          name="location"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-foreground">Locations you are looking to work in</FormLabel>
-              <div className="space-y-2">
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    checked={selectAll}
-                    onCheckedChange={() => handlePostcodeChange("all")}
-                    className="bg-card border-primary"
-                  />
-                  <label className="text-foreground">Select All Bristol Postcodes</label>
-                </div>
-                <div className="grid grid-cols-4 gap-2">
-                  {bristolPostcodes.map((postcode) => (
-                    <div key={postcode} className="flex items-center space-x-2">
-                      <Checkbox
-                        checked={selectedPostcodes.includes(postcode)}
-                        onCheckedChange={() => handlePostcodeChange(postcode)}
-                        className="bg-card border-primary"
-                      />
-                      <label className="text-foreground">{postcode}</label>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
         {userId && (
           <FileUploadSection
             userId={userId}

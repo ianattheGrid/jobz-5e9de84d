@@ -7,15 +7,13 @@ interface CommissionToggleProps {
   name: string;
   label: string;
   onChange?: (checked: boolean) => void;
-  defaultValue?: boolean;
 }
 
-const CommissionToggle = ({ control, name, label, onChange, defaultValue = false }: CommissionToggleProps) => {
+const CommissionToggle = ({ control, name, label, onChange }: CommissionToggleProps) => {
   return (
     <FormField
       control={control}
       name={name}
-      defaultValue={defaultValue}
       render={({ field }) => (
         <FormItem>
           <div className="flex flex-row items-center justify-between rounded-lg border p-3 bg-card">

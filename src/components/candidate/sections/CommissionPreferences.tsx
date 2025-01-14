@@ -33,7 +33,6 @@ const CommissionPreferences = ({ control }: CommissionPreferencesProps) => {
 
       {showSchemeDetails && (
         <div className="mb-6 space-y-4">
-          <BonusPreferencesHeader />
           <SchemeExplanation />
           <BonusCalculator
             sampleSalary={sampleSalary}
@@ -51,7 +50,6 @@ const CommissionPreferences = ({ control }: CommissionPreferencesProps) => {
           control={control}
           name="open_to_commission"
           label="Would you like to participate in the bonus scheme?"
-          defaultValue={false}
         />
       </div>
 
