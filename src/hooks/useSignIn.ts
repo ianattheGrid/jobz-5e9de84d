@@ -20,7 +20,10 @@ export const useSignIn = () => {
       });
 
       if (error) {
-        if (error.message.includes('Email not confirmed')) {
+        console.error('Sign in error:', error);
+        let errorMessage = "An error occurred during sign in.";
+        
+        if (error.message?.includes('Email not confirmed')) {
           toast({
             variant: "destructive",
             title: "Email Not Verified",
@@ -28,7 +31,34 @@ export const useSignIn = () => {
           });
           return;
         }
-        throw error;
+
+        // Handle database schema error specifically
+        if (error.message?.includes('Database error querying schema')) {
+          toast({
+            variant: "destructive",
+            title: "System Error",
+            description: "There was a problem connecting to the database. Please try again in a few minutes or contact support if the problem persists.",
+          });
+          return;
+        }
+
+        // Handle invalid credentials
+        if (error.message?.includes('Invalid login credentials')) {
+          toast({
+            variant: "destructive",
+            title: "Invalid Credentials",
+            description: "The email or password you entered is incorrect. Please check your credentials and try again.",
+          });
+          return;
+        }
+
+        // Generic error handler
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: errorMessage,
+        });
+        return;
       }
 
       if (!user) {
@@ -89,12 +119,8 @@ export const useSignIn = () => {
       
     } catch (error: any) {
       console.error('Sign in error:', error); 
-      let errorMessage = "An error occurred during sign in.";
+      let errorMessage = "An unexpected error occurred. Please try again later.";
       
-      if (error.message?.includes('Invalid login credentials')) {
-        errorMessage = "Invalid email or password. Please check your credentials and try again.";
-      }
-
       toast({
         variant: "destructive",
         title: "Error",
