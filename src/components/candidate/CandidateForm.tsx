@@ -16,9 +16,9 @@ import ContactInformation from "./sections/ContactInformation";
 import JobSeekingMotivation from "./sections/JobSeekingMotivation";
 import { useProfileData } from "@/hooks/useProfileData";
 import { useProfileSubmit } from "@/hooks/useProfileSubmit";
-import type { Tables } from "@/integrations/supabase/types";
+import type { Database } from "@/integrations/supabase/types";
 
-type CandidateProfile = Tables["candidate_profiles"]["Row"];
+type CandidateProfile = Database['public']['Tables']['candidate_profiles']['Row'];
 
 export function CandidateForm() {
   const { toast } = useToast();
