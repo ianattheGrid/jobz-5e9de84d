@@ -58,9 +58,10 @@ export function CandidateForm() {
   useProfileData((data) => {
     if (!data) return;
     console.log("Setting form data:", data);
-    const formValues = {
+    
+    // Create a new object with all the form fields, using existing data or defaults
+    const formValues: CandidateFormValues = {
       ...form.getValues(),
-      ...data,
       full_name: data.full_name || "",
       email: data.email || "",
       phone_number: data.phone_number || "",
@@ -72,15 +73,26 @@ export function CandidateForm() {
       required_skills: data.required_skills || [],
       security_clearance: data.security_clearance,
       work_eligibility: data.work_eligibility || "UK citizens only",
-      years_experience: data.years_experience || "",
+      years_experience: data.years_experience?.toString() || "",
       commission_percentage: data.commission_percentage,
       open_to_commission: data.commission_percentage !== null,
       additional_skills: data.additional_skills || "",
       availability: data.availability || "Immediate",
       work_preferences: data.work_preferences || "",
       current_employer: data.current_employer || "",
-      travel_radius: data.travel_radius || 10
+      travel_radius: data.travel_radius || 10,
+      job_seeking_reasons: [],
+      other_job_seeking_reason: "",
+      title: "",
+      desired_job_title: "",
+      desired_years_experience: "",
+      wantsCareerChange: "",
+      otherWorkArea: "",
+      itSpecialization: "",
+      view_scheme: false
     };
+
+    // Reset the form with the merged values
     form.reset(formValues);
   });
   
