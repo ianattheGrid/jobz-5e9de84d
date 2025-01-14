@@ -59,7 +59,7 @@ export function CandidateForm() {
     if (!data) return;
     console.log("Setting form data:", data);
     
-    const formValues: CandidateFormValues = {
+    form.reset({
       full_name: data.full_name || "",
       email: data.email || "",
       phone_number: data.phone_number || "",
@@ -88,9 +88,7 @@ export function CandidateForm() {
       otherWorkArea: "",
       itSpecialization: "",
       view_scheme: false
-    };
-
-    form.reset(formValues);
+    });
   });
   
   const { onSubmit } = useProfileSubmit(toast);
