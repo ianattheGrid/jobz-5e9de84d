@@ -43,8 +43,6 @@ export const useProfileSubmit = (toast: ToastFunction) => {
           current_employer: values.current_employer,
           travel_radius: values.travel_radius,
           desired_job_title: values.desired_job_title
-        }, {
-          onConflict: 'id'
         });
 
       if (error) {
