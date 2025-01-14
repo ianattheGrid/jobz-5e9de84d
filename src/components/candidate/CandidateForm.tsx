@@ -23,12 +23,40 @@ export function CandidateForm() {
   const form = useForm<CandidateFormValues>({
     resolver: zodResolver(candidateFormSchema),
     mode: "onChange",
+    defaultValues: {
+      full_name: "",
+      email: "",
+      phone_number: "",
+      address: "",
+      location: "",
+      workArea: "",
+      min_salary: 0,
+      max_salary: 0,
+      required_skills: [],
+      security_clearance: undefined,
+      work_eligibility: "UK citizens only",
+      years_experience: "",
+      commission_percentage: null,
+      open_to_commission: false,
+      additional_skills: "",
+      availability: "Immediate",
+      work_preferences: "",
+      current_employer: "",
+      travel_radius: 10,
+      job_seeking_reasons: [],
+      other_job_seeking_reason: "",
+    }
   });
 
   useProfileData((data) => {
     if (!data) return;
     console.log("Setting form data:", data);
-    form.reset(data);
+    form.reset({
+      ...data,
+      workArea: data.job_title || "",
+      years_experience: data.years_experience?.toString() || "0",
+      open_to_commission: data.commission_percentage !== null,
+    });
   });
   
   const { onSubmit } = useProfileSubmit(toast);

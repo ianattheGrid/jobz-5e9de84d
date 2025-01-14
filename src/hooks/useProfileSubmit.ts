@@ -23,15 +23,15 @@ export const useProfileSubmit = (toast: ToastFunction) => {
       // Map form values to database columns
       const dbValues = {
         id: session.user.id,
-        full_name: values.full_name,
+        full_name: values.full_name || null,
         email: values.email,
         phone_number: values.phone_number || null,
         address: values.address || null,
-        job_title: values.workArea,
+        job_title: values.workArea || 'Not specified',
         years_experience: values.years_experience ? parseInt(values.years_experience) : 0,
-        location: values.location,
-        min_salary: values.min_salary,
-        max_salary: values.max_salary,
+        location: values.location || 'Not specified',
+        min_salary: values.min_salary || 0,
+        max_salary: values.max_salary || 0,
         required_skills: values.required_skills || [],
         security_clearance: values.security_clearance || null,
         work_eligibility: values.work_eligibility || 'UK citizens only',
@@ -46,7 +46,9 @@ export const useProfileSubmit = (toast: ToastFunction) => {
 
       const { error } = await supabase
         .from('candidate_profiles')
-        .upsert(dbValues);
+        .upsert(dbValues, {
+          onConflict: 'id'
+        });
 
       if (error) {
         console.error('Error updating profile:', error);
