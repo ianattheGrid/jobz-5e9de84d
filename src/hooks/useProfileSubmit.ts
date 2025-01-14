@@ -23,25 +23,24 @@ export const useProfileSubmit = (toast: ToastFunction) => {
       // Map form values to database columns
       const dbValues = {
         id: session.user.id,
-        full_name: values.full_name || null,
+        full_name: values.full_name,
         email: values.email,
-        phone_number: values.phone_number || null,
-        address: values.address || null,
-        job_title: values.workArea || 'Not specified',
+        phone_number: values.phone_number,
+        address: values.address,
+        job_title: values.workArea,
         years_experience: values.years_experience ? parseInt(values.years_experience) : 0,
-        location: values.location || 'Not specified',
-        min_salary: values.min_salary || 0,
-        max_salary: values.max_salary || 0,
-        required_skills: values.required_skills || [],
-        security_clearance: values.security_clearance || null,
-        work_eligibility: values.work_eligibility || 'UK citizens only',
+        location: values.location,
+        min_salary: values.min_salary,
+        max_salary: values.max_salary,
+        required_skills: values.required_skills,
+        security_clearance: values.security_clearance,
+        work_eligibility: values.work_eligibility,
         commission_percentage: values.open_to_commission ? values.commission_percentage : null,
-        additional_skills: values.additional_skills || null,
-        availability: values.availability || 'Immediate',
-        work_preferences: values.work_preferences || null,
-        current_employer: values.current_employer || null,
-        travel_radius: values.travel_radius || 10,
-        desired_job_title: values.desired_job_title || null
+        additional_skills: values.additional_skills,
+        availability: values.availability,
+        work_preferences: values.work_preferences,
+        current_employer: values.current_employer,
+        travel_radius: values.travel_radius,
       };
 
       const { error } = await supabase
@@ -65,9 +64,6 @@ export const useProfileSubmit = (toast: ToastFunction) => {
         title: "Success",
         description: "Profile updated successfully"
       });
-
-      // Force a page reload to update the profile card
-      window.location.reload();
       
     } catch (error: any) {
       console.error('Error:', error);

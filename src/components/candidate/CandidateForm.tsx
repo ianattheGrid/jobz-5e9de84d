@@ -16,7 +16,9 @@ import ContactInformation from "./sections/ContactInformation";
 import JobSeekingMotivation from "./sections/JobSeekingMotivation";
 import { useProfileData } from "@/hooks/useProfileData";
 import { useProfileSubmit } from "@/hooks/useProfileSubmit";
-import type { CandidateProfile } from "@/integrations/supabase/types";
+import type { Tables } from "@/integrations/supabase/types";
+
+type CandidateProfile = Tables["candidate_profiles"]["Row"];
 
 export function CandidateForm() {
   const { toast } = useToast();
@@ -53,24 +55,21 @@ export function CandidateForm() {
     if (!data) return;
     console.log("Setting form data:", data);
     
-    // Map the database fields to form fields
     const formData: CandidateFormValues = {
-      ...data,
-      workArea: data.job_title || "",  // Map job_title to workArea
-      years_experience: data.years_experience?.toString() || "0",
-      open_to_commission: data.commission_percentage !== null,
-      // Ensure all required form fields are present
       full_name: data.full_name || "",
       email: data.email || "",
       phone_number: data.phone_number || "",
       address: data.address || "",
       location: data.location || "",
+      workArea: data.job_title || "",
       min_salary: data.min_salary || 0,
       max_salary: data.max_salary || 0,
       required_skills: data.required_skills || [],
-      security_clearance: data.security_clearance,
+      security_clearance: data.security_clearance || undefined,
       work_eligibility: data.work_eligibility || "UK citizens only",
-      commission_percentage: data.commission_percentage,
+      years_experience: data.years_experience?.toString() || "0",
+      commission_percentage: data.commission_percentage || null,
+      open_to_commission: data.commission_percentage !== null,
       additional_skills: data.additional_skills || "",
       availability: data.availability || "Immediate",
       work_preferences: data.work_preferences || "",
@@ -78,13 +77,6 @@ export function CandidateForm() {
       travel_radius: data.travel_radius || 10,
       job_seeking_reasons: [],
       other_job_seeking_reason: "",
-      title: "",
-      desired_job_title: data.desired_job_title || "",
-      desired_years_experience: "",
-      wantsCareerChange: "",
-      otherWorkArea: "",
-      itSpecialization: "",
-      view_scheme: false
     };
 
     form.reset(formData);
