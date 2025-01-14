@@ -47,16 +47,37 @@ export function ProfileForm({ profile, setProfile, email }: ProfileFormProps) {
 
   async function onSubmit(values: FormValues) {
     try {
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (!session) {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "You must be logged in to update your profile"
+        });
+        return;
+      }
+
+      const dbValues = {
+        id: session.user.id,
+        company_name: values.company_name,
+        full_name: values.full_name,
+        job_title: values.job_title,
+      };
+
       const { error } = await supabase
         .from('employer_profiles')
-        .update({
-          company_name: values.company_name,
-          full_name: values.full_name,
-          job_title: values.job_title,
-        })
-        .eq('id', (await supabase.auth.getSession()).data.session?.user.id);
+        .upsert(dbValues);
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error updating profile:', error);
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: error.message || "Failed to update profile",
+        });
+        return;
+      }
 
       setProfile({
         company_name: values.company_name,

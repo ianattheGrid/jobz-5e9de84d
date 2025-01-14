@@ -26,7 +26,11 @@ export const useEmployerProfile = () => {
       if (error) throw error;
 
       if (data) {
-        setProfile(data);
+        setProfile({
+          company_name: data.company_name || "",
+          full_name: data.full_name || "",
+          job_title: data.job_title || "",
+        });
       } else {
         // Create a new profile if none exists
         const { error: createError } = await supabase
@@ -50,7 +54,13 @@ export const useEmployerProfile = () => {
           .single();
 
         if (fetchError) throw fetchError;
-        if (newProfile) setProfile(newProfile);
+        if (newProfile) {
+          setProfile({
+            company_name: newProfile.company_name || "",
+            full_name: newProfile.full_name || "",
+            job_title: newProfile.job_title || "",
+          });
+        }
       }
     } catch (error: any) {
       toast({
