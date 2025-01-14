@@ -38,7 +38,7 @@ export const useProfileData = (callback: (data: CandidateFormValues | null) => v
             email: profile.email || '',
             phone_number: profile.phone_number || '',
             address: profile.address || '',
-            location: profile.location || 'Bristol',
+            location: profile.location || '',
             workArea: profile.job_title || '',
             min_salary: profile.min_salary || 0,
             max_salary: profile.max_salary || 0,
@@ -65,7 +65,7 @@ export const useProfileData = (callback: (data: CandidateFormValues | null) => v
           };
           callback(formData);
         } else {
-          console.log('No existing profile found, using default values');
+          console.log('No existing profile found');
           callback(null);
         }
       } catch (error: any) {

@@ -22,73 +22,13 @@ export function CandidateForm() {
 
   const form = useForm<CandidateFormValues>({
     resolver: zodResolver(candidateFormSchema),
-    mode: "onChange",
-    defaultValues: {
-      full_name: "",
-      email: "",
-      phone_number: "",
-      address: "",
-      location: "Bristol",
-      workArea: "",
-      min_salary: 0,
-      max_salary: 0,
-      required_skills: [],
-      security_clearance: undefined,
-      work_eligibility: "UK citizens only",
-      years_experience: "",
-      commission_percentage: null,
-      open_to_commission: false,
-      additional_skills: "",
-      availability: "Immediate",
-      work_preferences: "",
-      current_employer: "",
-      travel_radius: 10,
-      job_seeking_reasons: [],
-      other_job_seeking_reason: "",
-      title: "",
-      desired_job_title: "",
-      desired_years_experience: "",
-      wantsCareerChange: "",
-      otherWorkArea: "",
-      itSpecialization: "",
-      view_scheme: false
-    }
+    mode: "onChange"
   });
 
   useProfileData((data) => {
     if (!data) return;
     console.log("Setting form data:", data);
-    
-    form.reset({
-      full_name: data.full_name || "",
-      email: data.email || "",
-      phone_number: data.phone_number || "",
-      address: data.address || "",
-      location: data.location || "Bristol",
-      workArea: data.workArea || "",
-      min_salary: data.min_salary || 0,
-      max_salary: data.max_salary || 0,
-      required_skills: data.required_skills || [],
-      security_clearance: data.security_clearance,
-      work_eligibility: data.work_eligibility || "UK citizens only",
-      years_experience: data.years_experience?.toString() || "",
-      commission_percentage: data.commission_percentage,
-      open_to_commission: data.commission_percentage !== null,
-      additional_skills: data.additional_skills || "",
-      availability: data.availability || "Immediate",
-      work_preferences: data.work_preferences || "",
-      current_employer: data.current_employer || "",
-      travel_radius: data.travel_radius || 10,
-      job_seeking_reasons: [],
-      other_job_seeking_reason: "",
-      title: "",
-      desired_job_title: data.desired_job_title || "",
-      desired_years_experience: "",
-      wantsCareerChange: "",
-      otherWorkArea: "",
-      itSpecialization: "",
-      view_scheme: false
-    });
+    form.reset(data);
   });
   
   const { onSubmit } = useProfileSubmit(toast);

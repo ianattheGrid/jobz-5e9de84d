@@ -20,32 +20,30 @@ export const useProfileSubmit = (toast: ToastFunction) => {
 
       console.log("Submitting profile data:", values);
 
-      const profileData = {
-        id: session.user.id,
-        full_name: values.full_name,
-        email: values.email,
-        phone_number: values.phone_number,
-        address: values.address,
-        job_title: values.workArea,
-        years_experience: values.years_experience ? parseInt(values.years_experience) : 0,
-        location: values.location,
-        min_salary: values.min_salary,
-        max_salary: values.max_salary,
-        required_skills: values.required_skills,
-        security_clearance: values.security_clearance,
-        work_eligibility: values.work_eligibility,
-        commission_percentage: values.open_to_commission ? values.commission_percentage : null,
-        additional_skills: values.additional_skills,
-        availability: values.availability,
-        work_preferences: values.work_preferences,
-        current_employer: values.current_employer,
-        travel_radius: values.travel_radius,
-        desired_job_title: values.desired_job_title
-      };
-
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('candidate_profiles')
-        .upsert(profileData, {
+        .upsert({
+          id: session.user.id,
+          full_name: values.full_name,
+          email: values.email,
+          phone_number: values.phone_number,
+          address: values.address,
+          job_title: values.workArea,
+          years_experience: values.years_experience ? parseInt(values.years_experience) : 0,
+          location: values.location,
+          min_salary: values.min_salary,
+          max_salary: values.max_salary,
+          required_skills: values.required_skills,
+          security_clearance: values.security_clearance,
+          work_eligibility: values.work_eligibility,
+          commission_percentage: values.open_to_commission ? values.commission_percentage : null,
+          additional_skills: values.additional_skills,
+          availability: values.availability,
+          work_preferences: values.work_preferences,
+          current_employer: values.current_employer,
+          travel_radius: values.travel_radius,
+          desired_job_title: values.desired_job_title
+        }, {
           onConflict: 'id'
         });
 
@@ -59,6 +57,7 @@ export const useProfileSubmit = (toast: ToastFunction) => {
         return;
       }
 
+      console.log('Profile updated successfully:', data);
       toast({
         title: "Success",
         description: "Profile updated successfully"
