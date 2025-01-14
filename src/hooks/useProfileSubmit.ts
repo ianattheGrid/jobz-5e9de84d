@@ -28,20 +28,19 @@ export const useProfileSubmit = (toast: ToastFunction) => {
           phone_number: values.phone_number,
           address: values.address,
           job_title: values.workArea,
-          years_experience: parseInt(values.years_experience),
+          years_experience: values.years_experience ? parseInt(values.years_experience) : 0,
           location: values.location,
           min_salary: values.min_salary,
           max_salary: values.max_salary,
           required_skills: values.required_skills || [],
           security_clearance: values.security_clearance,
           work_eligibility: values.work_eligibility,
-          commission_percentage: values.commission_percentage,
+          commission_percentage: values.open_to_commission ? values.commission_percentage : null,
           additional_skills: values.additional_skills,
           availability: values.availability,
           work_preferences: values.work_preferences,
-          current_employer: values.current_employer
-        }, {
-          onConflict: 'id'
+          current_employer: values.current_employer,
+          travel_radius: values.travel_radius
         });
 
       if (error) {
