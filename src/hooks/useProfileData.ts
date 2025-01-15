@@ -9,13 +9,13 @@ export const useProfileData = (callback: (data: CandidateProfile | null) => void
   const { toast } = useToast();
 
   const loadProfile = useCallback(async () => {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session?.user?.id) {
-      console.log('No active session found');
-      return;
-    }
-
     try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user?.id) {
+        console.log('No active session found');
+        return;
+      }
+
       const { data: profile, error } = await supabase
         .from('candidate_profiles')
         .select('*')
