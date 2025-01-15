@@ -51,6 +51,8 @@ export function CandidateForm() {
     }
   });
 
+  const { onSubmit } = useProfileSubmit(toast);
+
   useProfileData((profile: CandidateProfile | null) => {
     if (!profile) return;
     
@@ -78,14 +80,11 @@ export function CandidateForm() {
       other_job_seeking_reason: "",
     };
 
-    // Only reset if values are different
     const currentValues = form.getValues();
     if (JSON.stringify(currentValues) !== JSON.stringify(formData)) {
       form.reset(formData);
     }
   });
-  
-  const { onSubmit } = useProfileSubmit(toast);
 
   return (
     <Form {...form}>
