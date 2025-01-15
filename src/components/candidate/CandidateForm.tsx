@@ -83,13 +83,20 @@ export function CandidateForm() {
     // Get current form values
     const currentValues = form.getValues();
     
-    // Only update fields that are empty or different
+    // Only update fields that are empty or different, preserving user input
     Object.keys(formData).forEach((key) => {
       const currentValue = currentValues[key as keyof CandidateFormValues];
       const newValue = formData[key as keyof CandidateFormValues];
       
-      // Only update if the field is empty or different
-      if (!currentValue || currentValue !== newValue) {
+      // Skip travel_radius if it has been modified by the user
+      if (key === 'travel_radius' && currentValue !== 10) {
+        return;
+      }
+      
+      // Only update if the field is empty or different from the profile data
+      if (currentValue === "" || currentValue === undefined || currentValue === null || 
+          (Array.isArray(currentValue) && currentValue.length === 0) ||
+          (typeof currentValue === 'number' && currentValue === 0)) {
         form.setValue(key as keyof CandidateFormValues, newValue, {
           shouldDirty: false,
           shouldTouch: false,
