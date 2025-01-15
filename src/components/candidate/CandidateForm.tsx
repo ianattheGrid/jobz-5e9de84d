@@ -80,21 +80,23 @@ export function CandidateForm() {
       other_job_seeking_reason: "",
     };
 
-    // Only reset form if the values are actually different
+    // Get current form values
     const currentValues = form.getValues();
-    const currentStr = JSON.stringify(currentValues);
-    const newStr = JSON.stringify(formData);
     
-    if (currentStr !== newStr) {
-      console.log('Updating form values:', formData);
-      Object.keys(formData).forEach((key) => {
-        form.setValue(key as keyof CandidateFormValues, formData[key as keyof CandidateFormValues], {
+    // Only update fields that are empty or different
+    Object.keys(formData).forEach((key) => {
+      const currentValue = currentValues[key as keyof CandidateFormValues];
+      const newValue = formData[key as keyof CandidateFormValues];
+      
+      // Only update if the field is empty or different
+      if (!currentValue || currentValue !== newValue) {
+        form.setValue(key as keyof CandidateFormValues, newValue, {
           shouldDirty: false,
           shouldTouch: false,
           shouldValidate: false
         });
-      });
-    }
+      }
+    });
   });
 
   return (
