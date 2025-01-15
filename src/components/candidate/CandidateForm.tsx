@@ -53,7 +53,6 @@ export function CandidateForm() {
 
   useProfileData((profile: CandidateProfile | null) => {
     if (!profile) return;
-    console.log("Setting form data:", profile);
     
     const formData: CandidateFormValues = {
       full_name: profile.full_name || "",
@@ -67,7 +66,7 @@ export function CandidateForm() {
       required_skills: profile.required_skills || [],
       security_clearance: profile.security_clearance || undefined,
       work_eligibility: profile.work_eligibility || "UK citizens only",
-      years_experience: profile.years_experience?.toString() || "0",
+      years_experience: profile.years_experience?.toString() || "",
       commission_percentage: profile.commission_percentage || null,
       open_to_commission: profile.commission_percentage !== null,
       additional_skills: profile.additional_skills || "",
