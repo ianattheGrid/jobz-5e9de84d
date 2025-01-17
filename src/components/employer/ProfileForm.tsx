@@ -18,6 +18,7 @@ const formSchema = z.object({
   job_title: z.string().min(2, {
     message: "Job title must be at least 2 characters.",
   }),
+  linkedin_url: z.string().url().optional().or(z.literal('')),
 });
 
 export type FormValues = z.infer<typeof formSchema>;
@@ -26,6 +27,7 @@ interface EmployerProfile {
   company_name: string;
   full_name: string;
   job_title: string;
+  linkedin_url?: string;
 }
 
 interface ProfileFormProps {
@@ -42,6 +44,7 @@ export function ProfileForm({ profile, setProfile, email }: ProfileFormProps) {
       company_name: profile.company_name || "",
       full_name: profile.full_name || "",
       job_title: profile.job_title || "",
+      linkedin_url: profile.linkedin_url || "",
     },
   });
 
@@ -63,6 +66,7 @@ export function ProfileForm({ profile, setProfile, email }: ProfileFormProps) {
         company_name: values.company_name,
         full_name: values.full_name,
         job_title: values.job_title,
+        linkedin_url: values.linkedin_url,
       };
 
       const { error } = await supabase
@@ -83,6 +87,7 @@ export function ProfileForm({ profile, setProfile, email }: ProfileFormProps) {
         company_name: values.company_name,
         full_name: values.full_name,
         job_title: values.job_title,
+        linkedin_url: values.linkedin_url,
       });
       
       toast({
@@ -105,7 +110,8 @@ export function ProfileForm({ profile, setProfile, email }: ProfileFormProps) {
         title={profile.job_title}
         additionalInfo={[
           { label: "Company", value: profile.company_name },
-          { label: "Email", value: email }
+          { label: "Email", value: email },
+          ...(profile.linkedin_url ? [{ label: "LinkedIn", value: profile.linkedin_url }] : [])
         ]}
       />
 

@@ -263,6 +263,7 @@ export type Database = {
           full_name: string
           id: string
           job_title: string
+          linkedin_url: string | null
           updated_at: string
         }
         Insert: {
@@ -271,6 +272,7 @@ export type Database = {
           full_name: string
           id: string
           job_title: string
+          linkedin_url?: string | null
           updated_at?: string
         }
         Update: {
@@ -279,6 +281,7 @@ export type Database = {
           full_name?: string
           id?: string
           job_title?: string
+          linkedin_url?: string | null
           updated_at?: string
         }
         Relationships: []
