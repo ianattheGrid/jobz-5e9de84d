@@ -8,6 +8,7 @@ import TravelRadiusSelect from "./TravelRadiusSelect";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { ProfileCard } from "@/components/shared/ProfileCard";
+import { Link } from "lucide-react";
 
 interface ContactInformationProps {
   control: Control<CandidateFormValues>;
@@ -93,6 +94,29 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
                   className="form-field"
                   value={field.value || ''}
                 />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={control}
+          name="linkedin_url"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-foreground">LinkedIn Profile URL</FormLabel>
+              <FormControl>
+                <div className="relative">
+                  <Input 
+                    {...field} 
+                    type="url" 
+                    placeholder="https://www.linkedin.com/in/your-profile" 
+                    className="form-field pl-10"
+                    value={field.value || ''}
+                  />
+                  <Link className="absolute left-3 top-2.5 h-5 w-5 text-muted-foreground" />
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>

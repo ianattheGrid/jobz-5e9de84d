@@ -82,6 +82,7 @@ export type Database = {
           full_name: string | null
           id: string
           job_title: string
+          linkedin_url: string | null
           location: string
           max_salary: number
           min_salary: number
@@ -113,6 +114,7 @@ export type Database = {
           full_name?: string | null
           id: string
           job_title: string
+          linkedin_url?: string | null
           location: string
           max_salary: number
           min_salary: number
@@ -144,6 +146,7 @@ export type Database = {
           full_name?: string | null
           id?: string
           job_title?: string
+          linkedin_url?: string | null
           location?: string
           max_salary?: number
           min_salary?: number

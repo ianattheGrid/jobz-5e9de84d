@@ -42,6 +42,7 @@ export const useProfileSubmit = (toast: ToastFunction) => {
           work_preferences: values.work_preferences,
           current_employer: values.current_employer,
           travel_radius: values.travel_radius,
+          linkedin_url: values.linkedin_url,
         }, {
           onConflict: 'id'
         });
