@@ -12,10 +12,10 @@ export const HeroSection = () => {
       <div className="relative container mx-auto px-4 h-full flex items-center">
         <div className="max-w-2xl text-white">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            AI Makes Hiring Fast, Affordable, and Effortless.
+            Revolutionising Hiring with AI, Automation, and Human Ingenuity.
           </h1>
           <p className="text-xl mb-8">
-            Save thousands of pounds and hours with your virtual hiring team—no middlemen, just smarter hiring
+            Save thousands per hire, empower anyone to earn, and attract top talent with our 'You're Hired Bonus.' No agencies. No wasted time. Just smarter hiring.
           </p>
           <div className="flex gap-4">
             <Link 
