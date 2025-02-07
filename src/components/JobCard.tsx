@@ -41,6 +41,23 @@ const JobCard = ({ job }: JobCardProps) => {
       return;
     }
 
+    // Check if already applied
+    const { data: existingApplication } = await supabase
+      .from('applications')
+      .select('id, status')
+      .eq('job_id', job.id)
+      .eq('applicant_id', session.user.id)
+      .maybeSingle();
+
+    if (existingApplication) {
+      toast({
+        variant: "destructive",
+        title: "Already applied",
+        description: `You have already applied to this position (Status: ${existingApplication.status})`,
+      });
+      return;
+    }
+
     setIsFlipped(true);
   };
 
