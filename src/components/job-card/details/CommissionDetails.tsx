@@ -1,3 +1,6 @@
+
+import { Award } from "lucide-react";
+
 interface CommissionDetailsProps {
   candidateCommission: number | null;
 }
@@ -15,13 +18,18 @@ const CommissionDetails = ({ candidateCommission }: CommissionDetailsProps) => {
   if (!candidateCommission) return null;
 
   return (
-    <div className="mb-4 p-3 bg-red-50 rounded-md">
-      <p className="text-sm font-medium text-red-700 mb-2">
-        "You're Hired" Bonus Details
-      </p>
-      <div className="text-sm text-red-600 space-y-1">
-        <p>Total Bonus: {formatSalary(candidateCommission)}</p>
-        <div className="text-xs space-y-0.5">
+    <div className="mb-4 p-4 bg-primary/5 rounded-lg border border-primary/20">
+      <div className="flex items-center gap-2 mb-3">
+        <Award className="h-5 w-5 text-primary" />
+        <h3 className="text-base font-semibold text-primary">
+          "You're Hired" Bonus Details
+        </h3>
+      </div>
+      <div className="space-y-2 text-sm">
+        <p className="text-foreground font-medium">
+          Total Bonus: {formatSalary(candidateCommission)}
+        </p>
+        <div className="pl-4 space-y-1 text-muted-foreground">
           <p>• Candidate: {formatSalary(candidateCommission - calculateReferralCommission(candidateCommission))}</p>
           <p>• Referral: {formatSalary(calculateReferralCommission(candidateCommission))}</p>
         </div>

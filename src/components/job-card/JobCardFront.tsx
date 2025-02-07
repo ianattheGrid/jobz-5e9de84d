@@ -1,3 +1,4 @@
+
 import { PoundSterling } from "lucide-react";
 import { formatSalary } from "./utils";
 import { JobCardFrontProps } from "./types";
@@ -7,8 +8,10 @@ const JobCardFront = ({ job, showEmployerDetails = false, onApply }: JobCardFron
     <div className="h-full p-6 flex flex-col bg-card text-white">
       <div className="mb-4">
         <div className="flex justify-between items-start gap-4">
-          <h3 className="text-lg font-semibold text-primary line-clamp-2">{job.title}</h3>
-          <span className="px-2 py-1 text-xs font-medium bg-white text-black rounded-full whitespace-nowrap flex-shrink-0">
+          <h3 className="text-lg font-semibold text-white line-clamp-2 hover:text-primary transition-colors">
+            {job.title}
+          </h3>
+          <span className="px-2 py-1 text-xs font-medium bg-accent text-white rounded-full whitespace-nowrap flex-shrink-0">
             {job.type}
           </span>
         </div>
@@ -34,9 +37,9 @@ const JobCardFront = ({ job, showEmployerDetails = false, onApply }: JobCardFron
         </div>
 
         {job.candidate_commission && (
-          <div className="flex items-center space-x-2 text-sm text-primary">
-            <PoundSterling className="h-4 w-4 flex-shrink-0" />
-            <span>Bonus available - Click to view details</span>
+          <div className="flex items-center space-x-2 text-sm bg-primary/10 p-3 rounded-md border border-primary/20">
+            <PoundSterling className="h-4 w-4 flex-shrink-0 text-primary" />
+            <span className="text-primary font-medium">Bonus available - Click to view details</span>
           </div>
         )}
 
@@ -50,7 +53,7 @@ const JobCardFront = ({ job, showEmployerDetails = false, onApply }: JobCardFron
 
       <button 
         onClick={onApply}
-        className="w-full mt-6 text-sm bg-white text-black hover:bg-gray-100 transition-colors py-2 rounded-md flex items-center justify-center group"
+        className="w-full mt-6 text-sm bg-primary text-white hover:bg-primary/90 transition-colors py-2 rounded-md flex items-center justify-center group"
       >
         Apply Now
         <svg 
