@@ -29,6 +29,7 @@ const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
     const session = await checkAuthentication();
     if (!session) return;
 
+    // Only check profile if user is authenticated
     const profile = await checkProfile(session.user.id);
     if (!profile) return;
 
@@ -118,6 +119,7 @@ const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
   return (
     <div 
       className="h-full p-6 bg-[#2A2A2A] text-foreground overflow-y-auto rounded-lg"
+      onClick={(e) => e.stopPropagation()}
     >
       <button
         onClick={(e) => {
@@ -150,6 +152,7 @@ const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
           setCoverLetter={setCoverLetter}
           coverLetter={coverLetter}
           onStartApply={handleStartApply}
+          isApplying={isApplying}
         />
       )}
     </div>
