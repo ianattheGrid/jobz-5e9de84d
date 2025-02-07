@@ -18,7 +18,7 @@ const CommissionDetails = ({ candidateCommission }: CommissionDetailsProps) => {
   if (!candidateCommission) return null;
 
   return (
-    <div className="mb-4 p-4 bg-primary/5 rounded-lg border border-primary/20">
+    <div className="mb-6 p-4 bg-primary/5 rounded-lg border border-primary/20">
       <div className="flex items-center gap-2 mb-3">
         <Award className="h-5 w-5 text-primary" />
         <h3 className="text-base font-semibold text-primary">

@@ -3,15 +3,17 @@ import { PoundSterling } from "lucide-react";
 import { formatSalary } from "./utils";
 import { JobCardFrontProps } from "./types";
 
-const JobCardFront = ({ job, showEmployerDetails = false, onApply }: JobCardFrontProps) => {
+const JobCardFront = ({ job, showEmployerDetails = false, onFlip }: JobCardFrontProps) => {
+  const hasBonus = !!job.candidate_commission;
+
   return (
-    <div className="h-full p-6 flex flex-col bg-card text-white">
+    <div className={`h-full p-6 flex flex-col ${hasBonus ? 'bg-[#1A1F2C]' : 'bg-[#222222]'} rounded-lg`}>
       <div className="mb-4">
         <div className="flex justify-between items-start gap-4">
-          <h3 className="text-lg font-semibold text-white line-clamp-2 hover:text-primary transition-colors">
+          <h3 className="text-lg font-semibold text-[#F2F2F2] line-clamp-2 hover:text-primary/90">
             {job.title}
           </h3>
-          <span className="px-2 py-1 text-xs font-medium bg-accent text-white rounded-full whitespace-nowrap flex-shrink-0">
+          <span className="px-2 py-1 text-xs font-medium bg-primary/20 text-primary rounded-full whitespace-nowrap flex-shrink-0">
             {job.type}
           </span>
         </div>
@@ -30,21 +32,27 @@ const JobCardFront = ({ job, showEmployerDetails = false, onApply }: JobCardFron
         </div>
 
         <div className="text-sm">
-          <span className="font-medium text-white">Salary Range: </span>
+          <span className="font-medium text-[#F2F2F2]">Salary Range: </span>
           <span className="text-muted-foreground">
             {formatSalary(job.salary_min)} - {formatSalary(job.salary_max)}
           </span>
         </div>
 
-        {job.candidate_commission && (
-          <div className="flex items-center space-x-2 text-sm bg-primary/10 p-3 rounded-md border border-primary/20">
+        {hasBonus && (
+          <div 
+            onClick={(e) => {
+              e.stopPropagation();
+              onFlip?.();
+            }}
+            className="flex items-center space-x-2 text-sm bg-primary/10 p-3 rounded-md border border-primary/20 cursor-pointer hover:bg-primary/15 transition-colors"
+          >
             <PoundSterling className="h-4 w-4 flex-shrink-0 text-primary" />
-            <span className="text-primary font-medium">Bonus available - Click to view details</span>
+            <span className="text-primary font-medium">Click to view "You're Hired" Bonus details</span>
           </div>
         )}
 
         <div>
-          <h4 className="font-medium mb-2 text-sm text-white">Job Description</h4>
+          <h4 className="font-medium mb-2 text-sm text-[#F2F2F2]">Job Description</h4>
           <p className="text-sm text-muted-foreground line-clamp-3">
             {job.description}
           </p>
@@ -52,10 +60,13 @@ const JobCardFront = ({ job, showEmployerDetails = false, onApply }: JobCardFron
       </div>
 
       <button 
-        onClick={onApply}
-        className="w-full mt-6 text-sm bg-primary text-white hover:bg-primary/90 transition-colors py-2 rounded-md flex items-center justify-center group"
+        onClick={(e) => {
+          e.stopPropagation();
+          onFlip?.();
+        }}
+        className="w-full mt-auto text-sm bg-primary text-white hover:bg-primary/90 transition-colors py-2 rounded-md flex items-center justify-center group"
       >
-        Apply Now
+        Express Interest
         <svg 
           xmlns="http://www.w3.org/2000/svg" 
           className="h-4 w-4 ml-2 transform transition-transform group-hover:translate-x-1" 

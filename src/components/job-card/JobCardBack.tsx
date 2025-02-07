@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -7,9 +8,9 @@ import ApplicationSection from "./application/ApplicationSection";
 import { useAuthenticationCheck, useProfileCheck } from "./utils/authChecks";
 import { JobCardBackProps } from "./types";
 import ApplicationStatus from "./application/ApplicationStatus";
-import ApplicationControls from "./application/ApplicationControls";
 import { useApplication } from "./hooks/useApplication";
 import { validateEssentialCriteria } from "./utils/applicationValidation";
+import { X } from "lucide-react";
 
 const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
   const { toast } = useToast();
@@ -31,7 +32,6 @@ const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
     const profile = await checkProfile(session.user.id);
     if (!profile) return;
 
-    // Validate essential criteria
     const { isValid, failedCriteria } = validateEssentialCriteria(job, profile);
     if (!isValid) {
       toast({
@@ -117,20 +117,24 @@ const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
 
   return (
     <div 
-      className="absolute inset-0 bg-white p-6 transform transition-transform duration-500 ease-in-out overflow-y-auto max-h-[calc(100vh-200px)]"
+      className="h-full p-6 bg-card text-foreground overflow-y-auto"
       onClick={(e) => e.stopPropagation()}
     >
       <button
-        onClick={onClose}
-        className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+        onClick={(e) => {
+          e.stopPropagation();
+          onClose();
+        }}
+        className="absolute top-4 right-4 p-2 rounded-full hover:bg-accent/10 transition-colors"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-        </svg>
+        <X className="h-5 w-5" />
       </button>
 
       <JobDetails job={job} />
-      <CommissionDetails candidateCommission={job.candidate_commission} />
+      
+      {job.candidate_commission && (
+        <CommissionDetails candidateCommission={job.candidate_commission} />
+      )}
       
       {application ? (
         <ApplicationStatus 
@@ -150,10 +154,12 @@ const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
             onStartApply={handleStartApply}
           />
         ) : (
-          <ApplicationControls 
-            isApplying={isApplying}
-            onStartApply={handleStartApply}
-          />
+          <button 
+            onClick={handleStartApply}
+            className="w-1/2 mx-auto block mt-6 bg-primary hover:bg-primary/90 text-white py-2 px-4 rounded-md transition-colors"
+          >
+            Express Interest
+          </button>
         )
       )}
     </div>

@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
@@ -61,22 +62,24 @@ const JobCard = ({ job }: JobCardProps) => {
     setIsFlipped(true);
   };
 
-  const handleCardClick = () => {
-    setIsFlipped(!isFlipped);
-  };
-
   return (
-    <div className="relative h-[600px] w-full cursor-pointer" onClick={handleCardClick}>
+    <div className="relative h-[600px] w-full perspective-1000">
       <Card 
-        className={`absolute inset-0 w-full h-full transition-transform duration-500 preserve-3d ${
+        className={`absolute inset-0 w-full h-full transition-transform duration-500 preserve-3d cursor-pointer ${
           isFlipped ? "rotate-y-180" : ""
         }`}
       >
         <div className="absolute inset-0 w-full h-full backface-hidden">
-          <JobCardFront job={job} onApply={handleStartApplication} />
+          <JobCardFront 
+            job={job} 
+            onFlip={() => setIsFlipped(true)} 
+          />
         </div>
         <div className="absolute inset-0 w-full h-full backface-hidden rotate-y-180">
-          <JobCardBack job={job} onClose={() => setIsFlipped(false)} />
+          <JobCardBack 
+            job={job} 
+            onClose={() => setIsFlipped(false)} 
+          />
         </div>
       </Card>
     </div>
