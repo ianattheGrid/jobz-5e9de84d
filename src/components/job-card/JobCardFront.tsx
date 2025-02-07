@@ -7,7 +7,13 @@ const JobCardFront = ({ job, showEmployerDetails = false, onFlip }: JobCardFront
   const hasBonus = !!job.candidate_commission;
 
   return (
-    <div className={`h-full p-6 flex flex-col ${hasBonus ? 'bg-[#1A1F2C]' : 'bg-[#222222]'} rounded-lg`}>
+    <div 
+      className={`h-full p-6 flex flex-col ${hasBonus ? 'bg-[#1A1F2C]' : 'bg-[#222222]'} rounded-lg`}
+      onClick={(e) => {
+        e.stopPropagation();
+        onFlip?.();
+      }}
+    >
       <div className="mb-6">
         <div className="flex justify-between items-start gap-4">
           <h3 className="text-xl font-semibold text-white hover:text-primary/90">
@@ -42,13 +48,20 @@ const JobCardFront = ({ job, showEmployerDetails = false, onFlip }: JobCardFront
           <div className="text-sm bg-primary/10 p-3 rounded-md border border-primary/20">
             <span className="text-primary font-medium flex items-center gap-2">
               <PoundSterling className="h-4 w-4" />
-              "You're Hired" Bonus Available
+              Exclusive "You're Hired" Bonus
             </span>
             <p className="text-muted-foreground text-xs mt-1">
-              Click "Express Interest" to view bonus details
+              This position comes with our unique "You're Hired" bonus scheme. View details for more information.
             </p>
           </div>
         )}
+
+        <div>
+          <h4 className="font-medium text-sm text-white mb-2">Job Summary</h4>
+          <p className="text-sm text-muted-foreground line-clamp-3">
+            {job.description}
+          </p>
+        </div>
       </div>
 
       <button 
@@ -58,7 +71,7 @@ const JobCardFront = ({ job, showEmployerDetails = false, onFlip }: JobCardFront
         }}
         className="w-full mt-6 text-sm bg-primary text-white hover:bg-primary/90 transition-colors py-2 rounded-md flex items-center justify-center group"
       >
-        Express Interest
+        View Details
         <svg 
           xmlns="http://www.w3.org/2000/svg" 
           className="h-4 w-4 ml-2 transform transition-transform group-hover:translate-x-1" 

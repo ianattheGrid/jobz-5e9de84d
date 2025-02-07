@@ -118,11 +118,11 @@ const ApplicationSection = ({
     <div className="mt-6">
       {!isApplying ? (
         <Button 
-          className="w-1/2 mx-auto block bg-red-800 hover:bg-red-900 text-white"
+          className="w-1/2 mx-auto block bg-primary hover:bg-primary/90 text-white"
           onClick={onStartApply}
           size="sm"
         >
-          Express Interest
+          Apply
         </Button>
       ) : (
         <ApplicationForm
