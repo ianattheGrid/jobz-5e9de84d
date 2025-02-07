@@ -11,6 +11,7 @@ interface ApplicationSectionProps {
   setCoverLetter: (value: string) => void;
   setResumeFile: (file: File | null) => void;
   isApplying: boolean;
+  setIsApplying: (value: boolean) => void;
 }
 
 const ApplicationSection = ({
@@ -22,6 +23,7 @@ const ApplicationSection = ({
   setCoverLetter,
   setResumeFile,
   isApplying,
+  setIsApplying,
 }: ApplicationSectionProps) => {
   return (
     <div className="mt-6">

@@ -153,6 +153,7 @@ const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
           coverLetter={coverLetter}
           onStartApply={handleStartApply}
           isApplying={isApplying}
+          setIsApplying={setIsApplying}
         />
       )}
     </div>
@@ -160,4 +161,3 @@ const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
 };
 
 export default JobCardBack;
-
