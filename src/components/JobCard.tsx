@@ -63,19 +63,30 @@ const JobCard = ({ job }: JobCardProps) => {
   };
 
   return (
-    <div className="relative h-[600px] w-full [perspective:1000px]">
+    <div className="relative h-[600px] w-full" style={{ perspective: "1000px" }}>
       <Card 
-        className={`absolute inset-0 w-full h-full transition-transform duration-500 [transform-style:preserve-3d] cursor-pointer ${
-          isFlipped ? "[transform:rotateY(180deg)]" : ""
-        }`}
+        className={`absolute inset-0 w-full h-full transition-all duration-500 cursor-pointer`}
+        style={{ 
+          transformStyle: "preserve-3d",
+          transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)"
+        }}
       >
-        <div className="absolute inset-0 w-full h-full [backface-visibility:hidden]">
+        <div 
+          className="absolute inset-0 w-full h-full"
+          style={{ backfaceVisibility: "hidden" }}
+        >
           <JobCardFront 
             job={job} 
             onFlip={() => setIsFlipped(true)} 
           />
         </div>
-        <div className="absolute inset-0 w-full h-full [backface-visibility:hidden] [transform:rotateY(180deg)]">
+        <div 
+          className="absolute inset-0 w-full h-full"
+          style={{ 
+            backfaceVisibility: "hidden",
+            transform: "rotateY(180deg)"
+          }}
+        >
           <JobCardBack 
             job={job} 
             onClose={() => setIsFlipped(false)} 

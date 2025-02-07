@@ -8,20 +8,20 @@ const JobCardFront = ({ job, showEmployerDetails = false, onFlip }: JobCardFront
 
   return (
     <div className={`h-full p-6 flex flex-col ${hasBonus ? 'bg-[#1A1F2C]' : 'bg-[#222222]'} rounded-lg`}>
-      <div className="mb-4">
+      <div className="mb-6">
         <div className="flex justify-between items-start gap-4">
-          <h3 className="text-lg font-semibold text-[#F2F2F2] line-clamp-2 hover:text-primary/90">
+          <h3 className="text-xl font-semibold text-white hover:text-primary/90">
             {job.title}
           </h3>
           <span className="px-2 py-1 text-xs font-medium bg-primary/20 text-primary rounded-full whitespace-nowrap flex-shrink-0">
             {job.type}
           </span>
         </div>
-        <p className="text-sm text-muted-foreground mt-1">
+        <p className="text-sm text-muted-foreground mt-2">
           {showEmployerDetails ? job.company : "Company details hidden until match"}
         </p>
       </div>
-      
+
       <div className="space-y-4 flex-grow">
         <div className="flex items-center text-sm text-muted-foreground">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -32,31 +32,23 @@ const JobCardFront = ({ job, showEmployerDetails = false, onFlip }: JobCardFront
         </div>
 
         <div className="text-sm">
-          <span className="font-medium text-[#F2F2F2]">Salary Range: </span>
+          <span className="font-medium text-white">Salary Range: </span>
           <span className="text-muted-foreground">
             {formatSalary(job.salary_min)} - {formatSalary(job.salary_max)}
           </span>
         </div>
 
         {hasBonus && (
-          <div 
-            onClick={(e) => {
-              e.stopPropagation();
-              onFlip?.();
-            }}
-            className="flex items-center space-x-2 text-sm bg-primary/10 p-3 rounded-md border border-primary/20 cursor-pointer hover:bg-primary/15 transition-colors"
-          >
-            <PoundSterling className="h-4 w-4 flex-shrink-0 text-primary" />
-            <span className="text-primary font-medium">Click to view "You're Hired" Bonus details</span>
+          <div className="text-sm bg-primary/10 p-3 rounded-md border border-primary/20">
+            <span className="text-primary font-medium flex items-center gap-2">
+              <PoundSterling className="h-4 w-4" />
+              "You're Hired" Bonus Available
+            </span>
+            <p className="text-muted-foreground text-xs mt-1">
+              Click "Express Interest" to view bonus details
+            </p>
           </div>
         )}
-
-        <div>
-          <h4 className="font-medium mb-2 text-sm text-[#F2F2F2]">Summary</h4>
-          <p className="text-sm text-muted-foreground line-clamp-3">
-            {job.description}
-          </p>
-        </div>
       </div>
 
       <button 
