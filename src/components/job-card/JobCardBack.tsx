@@ -118,7 +118,6 @@ const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
   return (
     <div 
       className="h-full p-6 bg-[#2A2A2A] text-foreground overflow-y-auto rounded-lg"
-      onClick={(e) => e.stopPropagation()}
     >
       <button
         onClick={(e) => {
@@ -158,3 +157,4 @@ const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
 };
 
 export default JobCardBack;
+
