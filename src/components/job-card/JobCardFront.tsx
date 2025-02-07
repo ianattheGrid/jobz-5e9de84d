@@ -52,7 +52,7 @@ const JobCardFront = ({ job, showEmployerDetails = false, onFlip }: JobCardFront
         )}
 
         <div>
-          <h4 className="font-medium mb-2 text-sm text-[#F2F2F2]">Job Description</h4>
+          <h4 className="font-medium mb-2 text-sm text-[#F2F2F2]">Summary</h4>
           <p className="text-sm text-muted-foreground line-clamp-3">
             {job.description}
           </p>
