@@ -143,24 +143,15 @@ const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
           onChat={() => window.location.href = `/messages/${application.id}`}
         />
       ) : (
-        isApplying ? (
-          <ApplicationSection
-            jobId={job.id}
-            employerId={job.employer_id || ''}
-            onSubmit={handleSubmitApplication}
-            setResumeFile={setResumeFile}
-            setCoverLetter={setCoverLetter}
-            coverLetter={coverLetter}
-            onStartApply={handleStartApply}
-          />
-        ) : (
-          <button 
-            onClick={handleStartApply}
-            className="w-1/2 mx-auto block mt-6 bg-primary hover:bg-primary/90 text-white py-2 px-4 rounded-md transition-colors"
-          >
-            Express Interest
-          </button>
-        )
+        <ApplicationSection
+          jobId={job.id}
+          employerId={job.employer_id || ''}
+          onSubmit={handleSubmitApplication}
+          setResumeFile={setResumeFile}
+          setCoverLetter={setCoverLetter}
+          coverLetter={coverLetter}
+          onStartApply={handleStartApply}
+        />
       )}
     </div>
   );

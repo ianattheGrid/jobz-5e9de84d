@@ -62,10 +62,6 @@ const JobCard = ({ job }: JobCardProps) => {
     setIsFlipped(true);
   };
 
-  const handleCardClick = () => {
-    setIsFlipped(!isFlipped);
-  };
-
   return (
     <div className="relative h-[600px] w-full" style={{ perspective: "1000px" }}>
       <Card 
@@ -74,7 +70,7 @@ const JobCard = ({ job }: JobCardProps) => {
           transformStyle: "preserve-3d",
           transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)"
         }}
-        onClick={handleCardClick}
+        onClick={() => setIsFlipped(!isFlipped)}
       >
         <div 
           className="absolute inset-0 w-full h-full"
