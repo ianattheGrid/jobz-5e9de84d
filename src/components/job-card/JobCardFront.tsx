@@ -64,7 +64,7 @@ const JobCardFront = ({ job, showEmployerDetails = false, onFlip }: JobCardFront
           e.stopPropagation();
           onFlip?.();
         }}
-        className="w-full mt-auto text-sm bg-primary text-white hover:bg-primary/90 transition-colors py-2 rounded-md flex items-center justify-center group"
+        className="w-full mt-6 text-sm bg-primary text-white hover:bg-primary/90 transition-colors py-2 rounded-md flex items-center justify-center group"
       >
         Express Interest
         <svg 

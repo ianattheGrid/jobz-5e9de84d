@@ -1,9 +1,10 @@
+
 import { Job } from "@/integrations/supabase/types/jobs";
 
 export interface JobCardFrontProps {
   job: Job;
   showEmployerDetails?: boolean;
-  onApply: () => Promise<void>;
+  onFlip?: () => void;
 }
 
 export interface JobCardBackProps {
