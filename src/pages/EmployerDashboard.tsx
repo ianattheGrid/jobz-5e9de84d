@@ -41,10 +41,27 @@ const EmployerDashboard = () => {
         .from('employer_profiles')
         .select('company_name')
         .eq('id', session.user.id)
-        .single();
+        .maybeSingle();
 
       if (profile) {
         setCompanyName(profile.company_name);
+      } else {
+        // Create a new profile if none exists
+        const { error: createError } = await supabase
+          .from('employer_profiles')
+          .insert([
+            {
+              id: session.user.id,
+              company_name: "",
+              full_name: session.user.user_metadata.full_name || "",
+              job_title: ""
+            }
+          ]);
+
+        if (createError) {
+          console.error('Error creating profile:', createError);
+          return;
+        }
       }
     } catch (error) {
       console.error('Error:', error);
