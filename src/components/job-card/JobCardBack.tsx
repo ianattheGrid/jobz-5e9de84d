@@ -29,7 +29,6 @@ const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
     const session = await checkAuthentication();
     if (!session) return;
 
-    // Only check profile if user is authenticated
     const profile = await checkProfile(session.user.id);
     if (!profile) return;
 
@@ -118,44 +117,46 @@ const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
 
   return (
     <div 
-      className="h-full p-6 bg-[#2A2A2A] text-foreground overflow-y-auto rounded-lg"
-      onClick={(e) => e.stopPropagation()}
+      className="h-full p-6 bg-[#2A2A2A] text-foreground overflow-y-auto rounded-lg cursor-pointer"
+      onClick={onClose}
     >
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          onClose();
-        }}
-        className="absolute top-4 right-4 p-2 rounded-full hover:bg-accent/10 transition-colors"
-      >
-        <X className="h-5 w-5" />
-      </button>
+      <div onClick={(e) => e.stopPropagation()}>
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onClose();
+          }}
+          className="absolute top-4 right-4 p-2 rounded-full hover:bg-accent/10 transition-colors"
+        >
+          <X className="h-5 w-5" />
+        </button>
 
-      {job.candidate_commission && (
-        <CommissionDetails candidateCommission={job.candidate_commission} />
-      )}
+        {job.candidate_commission && (
+          <CommissionDetails candidateCommission={job.candidate_commission} />
+        )}
 
-      <JobDetails job={job} />
-      
-      {application ? (
-        <ApplicationStatus 
-          status={application}
-          onAccept={handleAccept}
-          onChat={() => window.location.href = `/messages/${application.id}`}
-        />
-      ) : (
-        <ApplicationSection
-          jobId={job.id}
-          employerId={job.employer_id || ''}
-          onSubmit={handleSubmitApplication}
-          setResumeFile={setResumeFile}
-          setCoverLetter={setCoverLetter}
-          coverLetter={coverLetter}
-          onStartApply={handleStartApply}
-          isApplying={isApplying}
-          setIsApplying={setIsApplying}
-        />
-      )}
+        <JobDetails job={job} />
+        
+        {application ? (
+          <ApplicationStatus 
+            status={application}
+            onAccept={handleAccept}
+            onChat={() => window.location.href = `/messages/${application.id}`}
+          />
+        ) : (
+          <ApplicationSection
+            jobId={job.id}
+            employerId={job.employer_id || ''}
+            onSubmit={handleSubmitApplication}
+            setResumeFile={setResumeFile}
+            setCoverLetter={setCoverLetter}
+            coverLetter={coverLetter}
+            onStartApply={handleStartApply}
+            isApplying={isApplying}
+            setIsApplying={setIsApplying}
+          />
+        )}
+      </div>
     </div>
   );
 };
