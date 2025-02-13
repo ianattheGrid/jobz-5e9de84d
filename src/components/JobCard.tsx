@@ -82,11 +82,12 @@ const JobCard = ({ job }: JobCardProps) => {
           />
         </div>
         <div 
-          className="absolute inset-0 w-full h-full"
+          className="absolute inset-0 w-full h-full cursor-pointer"
           style={{ 
             backfaceVisibility: "hidden",
             transform: "rotateY(180deg)"
           }}
+          onClick={() => setIsFlipped(false)}
         >
           <JobCardBack 
             job={job} 

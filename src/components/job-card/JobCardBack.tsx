@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -116,10 +115,7 @@ const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
   };
 
   return (
-    <div 
-      className="h-full p-6 bg-[#2A2A2A] text-foreground overflow-y-auto rounded-lg cursor-pointer"
-      onClick={onClose}
-    >
+    <div className="h-full p-6 bg-[#2A2A2A] text-foreground overflow-y-auto rounded-lg">
       <div onClick={(e) => e.stopPropagation()}>
         <button
           onClick={(e) => {
