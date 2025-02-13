@@ -34,40 +34,46 @@ const NavigationLinks = () => {
         <>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="text-white hover:text-white/80 flex items-center gap-2">
+              <Button 
+                variant="ghost" 
+                className="text-white hover:text-white/80 flex items-center gap-2 px-4 py-2"
+              >
                 <UserPlus className="h-4 w-4" />
                 <span>Sign Up</span>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent>
+            <DropdownMenuContent className="w-48 bg-white z-50">
               <DropdownMenuItem>
-                <Link to="/employer/signup" className="w-full">Employer</Link>
+                <Link to="/employer/signup" className="w-full text-gray-900">Employer</Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <Link to="/candidate/signup" className="w-full">Candidate</Link>
+                <Link to="/candidate/signup" className="w-full text-gray-900">Candidate</Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <Link to="/vr/signup" className="w-full">Virtual Recruiter</Link>
+                <Link to="/vr/signup" className="w-full text-gray-900">Virtual Recruiter</Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="text-white hover:text-white/80 flex items-center gap-2">
+              <Button 
+                variant="ghost" 
+                className="text-white hover:text-white/80 flex items-center gap-2 px-4 py-2"
+              >
                 <LogIn className="h-4 w-4" />
                 <span>Sign In</span>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent>
+            <DropdownMenuContent className="w-48 bg-white z-50">
               <DropdownMenuItem>
-                <Link to="/employer/signin" className="w-full">Employer</Link>
+                <Link to="/employer/signin" className="w-full text-gray-900">Employer</Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <Link to="/candidate/signin" className="w-full">Candidate</Link>
+                <Link to="/candidate/signin" className="w-full text-gray-900">Candidate</Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <Link to="/vr/signin" className="w-full">Virtual Recruiter</Link>
+                <Link to="/vr/signin" className="w-full text-gray-900">Virtual Recruiter</Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
