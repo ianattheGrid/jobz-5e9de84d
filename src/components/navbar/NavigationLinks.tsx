@@ -1,7 +1,14 @@
 
 import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import { Briefcase, Home } from "lucide-react";
+import { Briefcase, Home, UserPlus, LogIn } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
 
 const NavigationLinks = () => {
   const { user, userType } = useAuth();
@@ -25,42 +32,45 @@ const NavigationLinks = () => {
       
       {!user && (
         <>
-          <Link 
-            to="/employer/signup" 
-            className="text-white hover:text-white/80"
-          >
-            Employer Sign Up
-          </Link>
-          <Link 
-            to="/employer/signin" 
-            className="text-white hover:text-white/80"
-          >
-            Employer Sign In
-          </Link>
-          <Link 
-            to="/candidate/signup" 
-            className="text-white hover:text-white/80"
-          >
-            Candidate Sign Up
-          </Link>
-          <Link 
-            to="/candidate/signin" 
-            className="text-white hover:text-white/80"
-          >
-            Candidate Sign In
-          </Link>
-          <Link 
-            to="/vr/signup" 
-            className="text-white hover:text-white/80"
-          >
-            Virtual Recruiter Sign Up
-          </Link>
-          <Link 
-            to="/vr/signin" 
-            className="text-white hover:text-white/80"
-          >
-            Virtual Recruiter Sign In
-          </Link>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="text-white hover:text-white/80 flex items-center gap-2">
+                <UserPlus className="h-4 w-4" />
+                <span>Sign Up</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem>
+                <Link to="/employer/signup" className="w-full">Employer</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link to="/candidate/signup" className="w-full">Candidate</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link to="/vr/signup" className="w-full">Virtual Recruiter</Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="text-white hover:text-white/80 flex items-center gap-2">
+                <LogIn className="h-4 w-4" />
+                <span>Sign In</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem>
+                <Link to="/employer/signin" className="w-full">Employer</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link to="/candidate/signin" className="w-full">Candidate</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link to="/vr/signin" className="w-full">Virtual Recruiter</Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </>
       )}
     </nav>
