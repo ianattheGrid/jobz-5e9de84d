@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -115,7 +116,15 @@ const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
   };
 
   return (
-    <div className="h-full p-6 bg-[#2A2A2A] text-foreground overflow-y-auto rounded-lg">
+    <div 
+      className="h-full p-6 bg-[#2A2A2A] text-foreground overflow-y-auto rounded-lg"
+      onClick={(e) => {
+        // Only close if clicking on the background, not on any interactive elements
+        if (e.target === e.currentTarget) {
+          onClose();
+        }
+      }}
+    >
       <div onClick={(e) => e.stopPropagation()}>
         <button
           onClick={(e) => {
