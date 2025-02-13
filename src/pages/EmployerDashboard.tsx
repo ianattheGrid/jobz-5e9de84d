@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -19,9 +20,11 @@ const EmployerDashboard = () => {
   const { toast } = useToast();
   const [userId, setUserId] = useState<string | null>(null);
   const [companyName, setCompanyName] = useState<string | null>(null);
+  const [showBonus, setShowBonus] = useState(false);
 
   useEffect(() => {
     checkUser();
+    checkBonusEligibility();
   }, []);
 
   const checkUser = async () => {
@@ -50,6 +53,24 @@ const EmployerDashboard = () => {
         title: "Error",
         description: "An error occurred while checking authentication",
       });
+    }
+  };
+
+  const checkBonusEligibility = async () => {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) return;
+
+      // Check if employer has created at least one job posting
+      const { data: jobPostings } = await supabase
+        .from('jobs')
+        .select('id')
+        .eq('employer_id', session.user.id);
+
+      // Only show bonus section if employer has posted jobs
+      setShowBonus(jobPostings && jobPostings.length > 0);
+    } catch (error) {
+      console.error('Error checking bonus eligibility:', error);
     }
   };
 
@@ -96,10 +117,10 @@ const EmployerDashboard = () => {
     <div className="min-h-screen bg-background">
       <NavBar />
       <div className="container mx-auto px-4 pt-20">
-        <h1 className="text-3xl font-bold mb-2 text-red-800">
+        <h1 className="text-3xl font-bold mb-2 text-primary">
           Welcome{companyName ? `, ${companyName}` : ''}
         </h1>
-        <p className="text-gray-600 mb-8">Manage your job postings and candidates</p>
+        <p className="text-white mb-8">Manage your job postings and candidates</p>
         
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {menuItems.map((item, index) => (
@@ -109,16 +130,16 @@ const EmployerDashboard = () => {
               className="h-auto p-6 flex flex-col items-center gap-4 bg-white hover:bg-red-50 transition-all duration-200 border border-gray-200 rounded-lg shadow-sm hover:shadow-md"
               onClick={() => navigate(item.path)}
             >
-              <div className="text-red-800">{item.icon}</div>
+              <div className="text-primary">{item.icon}</div>
               <div className="text-center">
-                <h3 className="font-semibold text-lg mb-2 text-red-800">{item.title}</h3>
+                <h3 className="font-semibold text-lg mb-2 text-primary">{item.title}</h3>
                 <p className="text-sm text-gray-600">{item.description}</p>
               </div>
             </Button>
           ))}
         </div>
 
-        {userId && (
+        {showBonus && userId && (
           <div className="mt-8">
             <BonusNegotiations employerId={userId} />
           </div>
