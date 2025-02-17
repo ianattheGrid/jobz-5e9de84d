@@ -12,7 +12,7 @@ export const SignUpSection = () => {
           <UserTypeCard
             icon={User}
             title="Candidate"
-            description="Never be rejected due to cost. Earn 'You're Hired' bonuses while finding your perfect role"
+            description="Find your perfect role and earn 'You're Hired' bonuses"
             signInPath="/candidate/signin"
             signUpPath="/candidate/signup"
           />
