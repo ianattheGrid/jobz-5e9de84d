@@ -45,30 +45,26 @@ const NavigationLinks = () => {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-48 bg-white">
-            <DropdownMenuItem asChild>
+            <div className="py-1">
               <Link 
                 to="/candidate/signin"
-                className="w-full px-2 py-1.5 cursor-pointer"
+                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
               >
                 Candidate Sign In
               </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
               <Link 
                 to="/employer/signin"
-                className="w-full px-2 py-1.5 cursor-pointer"
+                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
               >
                 Employer Sign In
               </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
               <Link 
                 to="/vr/signin"
-                className="w-full px-2 py-1.5 cursor-pointer"
+                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
               >
                 Virtual Recruiter Sign In
               </Link>
-            </DropdownMenuItem>
+            </div>
           </DropdownMenuContent>
         </DropdownMenu>
 
@@ -83,30 +79,26 @@ const NavigationLinks = () => {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-48 bg-white">
-            <DropdownMenuItem asChild>
+            <div className="py-1">
               <Link 
                 to="/employer/signup"
-                className="w-full px-2 py-1.5 cursor-pointer"
+                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
               >
                 Employer
               </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
               <Link 
                 to="/candidate/signup"
-                className="w-full px-2 py-1.5 cursor-pointer"
+                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
               >
                 Candidate
               </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
               <Link 
                 to="/vr/signup"
-                className="w-full px-2 py-1.5 cursor-pointer"
+                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
               >
                 Virtual Recruiter
               </Link>
-            </DropdownMenuItem>
+            </div>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
