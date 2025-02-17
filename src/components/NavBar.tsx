@@ -30,10 +30,19 @@ const NavBar = () => {
   }, []);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-4 py-2 bg-background border-b border-border h-16">
-      <MobileNav isAuthenticated={isAuthenticated} userType={userType} />
-      <NavigationLinks />
-    </nav>
+    <header className="fixed top-0 left-0 right-0 z-50 bg-background border-b border-border h-16">
+      <div className="container mx-auto px-4 h-full">
+        <div className="flex justify-between items-center h-full">
+          <div className="flex items-center gap-8">
+            <MobileNav isAuthenticated={isAuthenticated} userType={userType} />
+            <Link to="/" className="text-xl font-bold text-white">
+              jobz
+            </Link>
+          </div>
+          <NavigationLinks />
+        </div>
+      </div>
+    </header>
   );
 };
 
