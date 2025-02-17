@@ -15,8 +15,10 @@ const NavigationLinks = () => {
   const navigate = useNavigate();
   console.log('Current user state:', user);
 
-  const handleNavigation = (path: string) => {
-    console.log('Navigating to:', path); // Debug log
+  const handleNavigation = (e: React.MouseEvent, path: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log('Attempting navigation to:', path);
     navigate(path);
   };
 
@@ -50,15 +52,30 @@ const NavigationLinks = () => {
               Sign In
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-48">
-            <DropdownMenuItem onClick={() => handleNavigation("/candidate/signin")}>
-              Candidate Sign In
+          <DropdownMenuContent align="end" className="w-48 bg-white">
+            <DropdownMenuItem asChild>
+              <button 
+                className="w-full text-left cursor-pointer" 
+                onClick={(e) => handleNavigation(e, "/candidate/signin")}
+              >
+                Candidate Sign In
+              </button>
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => handleNavigation("/employer/signin")}>
-              Employer Sign In
+            <DropdownMenuItem asChild>
+              <button 
+                className="w-full text-left cursor-pointer" 
+                onClick={(e) => handleNavigation(e, "/employer/signin")}
+              >
+                Employer Sign In
+              </button>
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => handleNavigation("/vr/signin")}>
-              Virtual Recruiter Sign In
+            <DropdownMenuItem asChild>
+              <button 
+                className="w-full text-left cursor-pointer" 
+                onClick={(e) => handleNavigation(e, "/vr/signin")}
+              >
+                Virtual Recruiter Sign In
+              </button>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -73,15 +90,30 @@ const NavigationLinks = () => {
               Sign Up
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-48">
-            <DropdownMenuItem onClick={() => handleNavigation("/employer/signup")}>
-              Employer
+          <DropdownMenuContent align="end" className="w-48 bg-white">
+            <DropdownMenuItem asChild>
+              <button 
+                className="w-full text-left cursor-pointer" 
+                onClick={(e) => handleNavigation(e, "/employer/signup")}
+              >
+                Employer
+              </button>
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => handleNavigation("/candidate/signup")}>
-              Candidate
+            <DropdownMenuItem asChild>
+              <button 
+                className="w-full text-left cursor-pointer" 
+                onClick={(e) => handleNavigation(e, "/candidate/signup")}
+              >
+                Candidate
+              </button>
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => handleNavigation("/vr/signup")}>
-              Virtual Recruiter
+            <DropdownMenuItem asChild>
+              <button 
+                className="w-full text-left cursor-pointer" 
+                onClick={(e) => handleNavigation(e, "/vr/signup")}
+              >
+                Virtual Recruiter
+              </button>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
