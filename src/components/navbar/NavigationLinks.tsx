@@ -14,7 +14,7 @@ const NavigationLinks = () => {
   const { user, userType } = useAuth();
 
   return (
-    <nav className="hidden md:flex items-center space-x-6">
+    <nav className="flex items-center space-x-6">
       <Link 
         to="/" 
         className="text-white hover:text-white/80 flex items-center gap-2"
@@ -31,26 +31,26 @@ const NavigationLinks = () => {
       </Link>
       
       {!user && (
-        <>
+        <div className="flex items-center gap-2">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button 
-                variant="ghost" 
-                className="text-white hover:text-white/80 flex items-center gap-2 px-4 py-2"
+                variant="outline" 
+                className="border-primary text-primary hover:bg-primary hover:text-white"
               >
-                <UserPlus className="h-4 w-4" />
-                <span>Sign Up</span>
+                <UserPlus className="h-4 w-4 mr-2" />
+                Sign Up
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-48 bg-white z-50">
+            <DropdownMenuContent className="w-48">
               <DropdownMenuItem>
-                <Link to="/employer/signup" className="w-full text-gray-900">Employer</Link>
+                <Link to="/employer/signup" className="w-full">Employer</Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <Link to="/candidate/signup" className="w-full text-gray-900">Candidate</Link>
+                <Link to="/candidate/signup" className="w-full">Candidate</Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <Link to="/vr/signup" className="w-full text-gray-900">Virtual Recruiter</Link>
+                <Link to="/vr/signup" className="w-full">Virtual Recruiter</Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -58,26 +58,26 @@ const NavigationLinks = () => {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button 
-                variant="ghost" 
-                className="text-white hover:text-white/80 flex items-center gap-2 px-4 py-2"
+                variant="default"
+                className="bg-primary text-white hover:bg-primary/90"
               >
-                <LogIn className="h-4 w-4" />
-                <span>Sign In</span>
+                <LogIn className="h-4 w-4 mr-2" />
+                Sign In
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-48 bg-white z-50">
+            <DropdownMenuContent className="w-48">
               <DropdownMenuItem>
-                <Link to="/employer/signin" className="w-full text-gray-900">Employer</Link>
+                <Link to="/employer/signin" className="w-full">Employer</Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <Link to="/candidate/signin" className="w-full text-gray-900">Candidate</Link>
+                <Link to="/candidate/signin" className="w-full">Candidate</Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <Link to="/vr/signin" className="w-full text-gray-900">Virtual Recruiter</Link>
+                <Link to="/vr/signin" className="w-full">Virtual Recruiter</Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-        </>
+        </div>
       )}
     </nav>
   );
