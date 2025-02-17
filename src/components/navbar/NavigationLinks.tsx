@@ -1,5 +1,5 @@
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { Briefcase, Home, UserPlus, LogIn } from "lucide-react";
 import {
@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 
 const NavigationLinks = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   console.log('Current user state:', user);
 
   return (
@@ -45,14 +46,14 @@ const NavigationLinks = () => {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-48">
-            <DropdownMenuItem>
-              <Link to="/candidate/signin" className="w-full">Candidate Sign In</Link>
+            <DropdownMenuItem onSelect={() => navigate("/candidate/signin")}>
+              Candidate Sign In
             </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Link to="/employer/signin" className="w-full">Employer Sign In</Link>
+            <DropdownMenuItem onSelect={() => navigate("/employer/signin")}>
+              Employer Sign In
             </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Link to="/vr/signin" className="w-full">Virtual Recruiter Sign In</Link>
+            <DropdownMenuItem onSelect={() => navigate("/vr/signin")}>
+              Virtual Recruiter Sign In
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -68,14 +69,14 @@ const NavigationLinks = () => {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-48">
-            <DropdownMenuItem>
-              <Link to="/employer/signup" className="w-full">Employer</Link>
+            <DropdownMenuItem onSelect={() => navigate("/employer/signup")}>
+              Employer
             </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Link to="/candidate/signup" className="w-full">Candidate</Link>
+            <DropdownMenuItem onSelect={() => navigate("/candidate/signup")}>
+              Candidate
             </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Link to="/vr/signup" className="w-full">Virtual Recruiter</Link>
+            <DropdownMenuItem onSelect={() => navigate("/vr/signup")}>
+              Virtual Recruiter
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
