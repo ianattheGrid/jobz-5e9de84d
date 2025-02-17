@@ -11,7 +11,8 @@ import {
 import { Button } from "@/components/ui/button";
 
 const NavigationLinks = () => {
-  const { user, userType } = useAuth();
+  const { user } = useAuth();
+  console.log('Current user state:', user); // Add logging to debug
 
   return (
     <div className="flex items-center gap-4">
@@ -32,60 +33,59 @@ const NavigationLinks = () => {
         </Link>
       </nav>
       
-      {!user && (
-        <div className="flex items-center gap-4">
-          <Link 
-            to="/candidate/signin" 
-            className="text-white hover:text-white/80 flex items-center gap-2"
-          >
-            <LogIn className="h-4 w-4" />
-            <span>Sign In</span>
-          </Link>
+      {/* Removed conditional rendering temporarily for testing */}
+      <div className="flex items-center gap-4">
+        <Link 
+          to="/candidate/signin" 
+          className="text-white hover:text-white/80 flex items-center gap-2"
+        >
+          <LogIn className="h-4 w-4" />
+          <span>Sign In</span>
+        </Link>
 
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button 
-                variant="outline" 
-                className="border-primary text-primary hover:bg-primary hover:text-white"
-              >
-                <UserPlus className="h-4 w-4 mr-2" />
-                Sign Up
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-48">
-              <DropdownMenuItem>
-                <Link to="/employer/signup" className="w-full">Employer</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link to="/candidate/signup" className="w-full">Candidate</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link to="/vr/signup" className="w-full">Virtual Recruiter</Link>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button 
+              variant="outline" 
+              className="border-primary text-primary hover:bg-primary hover:text-white"
+            >
+              <UserPlus className="h-4 w-4 mr-2" />
+              Sign Up
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-48">
+            <DropdownMenuItem>
+              <Link to="/employer/signup" className="w-full">Employer</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link to="/candidate/signup" className="w-full">Candidate</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link to="/vr/signup" className="w-full">Virtual Recruiter</Link>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
 
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button 
-                variant="default"
-                className="bg-primary text-white hover:bg-primary/90"
-              >
-                <LogIn className="h-4 w-4 mr-2" />
-                More Options
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-48">
-              <DropdownMenuItem>
-                <Link to="/employer/signin" className="w-full">Employer Sign In</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link to="/vr/signin" className="w-full">Virtual Recruiter Sign In</Link>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      )}
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button 
+              variant="default"
+              className="bg-primary text-white hover:bg-primary/90"
+            >
+              <LogIn className="h-4 w-4 mr-2" />
+              More Options
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-48">
+            <DropdownMenuItem>
+              <Link to="/employer/signin" className="w-full">Employer Sign In</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link to="/vr/signin" className="w-full">Virtual Recruiter Sign In</Link>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
     </div>
   );
 };
