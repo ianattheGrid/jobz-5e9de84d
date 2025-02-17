@@ -1,3 +1,4 @@
+
 import { Link } from "react-router-dom";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { User, Building2, Users } from "lucide-react";
@@ -11,7 +12,7 @@ export const SignUpSection = () => {
           <UserTypeCard
             icon={User}
             title="Candidate"
-            description="Find your perfect role and earn 'You're Hired' bonuses"
+            description="Never be rejected due to cost. Earn 'You're Hired' bonuses while finding your perfect role"
             signInPath="/candidate/signin"
             signUpPath="/candidate/signup"
           />
