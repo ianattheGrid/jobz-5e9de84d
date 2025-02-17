@@ -1,5 +1,7 @@
+
 import { SignUpForm } from "@/components/auth/SignUpForm";
 import { useSignUp } from "@/hooks/useSignUp";
+import NavBar from "@/components/NavBar";
 
 const VirtualRecruiterSignUp = () => {
   const { signUp, loading } = useSignUp();
@@ -9,15 +11,20 @@ const VirtualRecruiterSignUp = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="max-w-md mx-auto">
-        <h1 className="text-2xl font-bold text-center mb-8">Sign Up as Virtual Recruiter</h1>
-        <SignUpForm 
-          onSubmit={handleSubmit} 
-          loading={loading} 
-          userType="vr"
-          showCompanyField={false} 
-        />
+    <div className="min-h-screen bg-background">
+      <NavBar />
+      <div className="container mx-auto px-4 py-8 pt-24">
+        <div className="max-w-md mx-auto">
+          <h1 className="text-2xl font-bold text-center mb-8 text-foreground">Sign Up as Virtual Recruiter</h1>
+          <div className="bg-card rounded-lg shadow-lg p-6">
+            <SignUpForm 
+              onSubmit={handleSubmit} 
+              loading={loading} 
+              userType="vr"
+              showCompanyField={false} 
+            />
+          </div>
+        </div>
       </div>
     </div>
   );
