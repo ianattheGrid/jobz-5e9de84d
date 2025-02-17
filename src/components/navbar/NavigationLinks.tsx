@@ -1,5 +1,5 @@
 
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { Briefcase, Home, UserPlus, LogIn } from "lucide-react";
 import {
@@ -12,15 +12,7 @@ import { Button } from "@/components/ui/button";
 
 const NavigationLinks = () => {
   const { user } = useAuth();
-  const navigate = useNavigate();
   console.log('Current user state:', user);
-
-  const handleNavigation = (e: React.MouseEvent, path: string) => {
-    e.preventDefault();
-    e.stopPropagation();
-    console.log('Attempting navigation to:', path);
-    navigate(path);
-  };
 
   return (
     <div className="flex items-center gap-4">
@@ -54,28 +46,28 @@ const NavigationLinks = () => {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-48 bg-white">
             <DropdownMenuItem asChild>
-              <button 
-                className="w-full text-left cursor-pointer" 
-                onClick={(e) => handleNavigation(e, "/candidate/signin")}
+              <Link 
+                to="/candidate/signin"
+                className="w-full px-2 py-1.5 cursor-pointer"
               >
                 Candidate Sign In
-              </button>
+              </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <button 
-                className="w-full text-left cursor-pointer" 
-                onClick={(e) => handleNavigation(e, "/employer/signin")}
+              <Link 
+                to="/employer/signin"
+                className="w-full px-2 py-1.5 cursor-pointer"
               >
                 Employer Sign In
-              </button>
+              </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <button 
-                className="w-full text-left cursor-pointer" 
-                onClick={(e) => handleNavigation(e, "/vr/signin")}
+              <Link 
+                to="/vr/signin"
+                className="w-full px-2 py-1.5 cursor-pointer"
               >
                 Virtual Recruiter Sign In
-              </button>
+              </Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -92,28 +84,28 @@ const NavigationLinks = () => {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-48 bg-white">
             <DropdownMenuItem asChild>
-              <button 
-                className="w-full text-left cursor-pointer" 
-                onClick={(e) => handleNavigation(e, "/employer/signup")}
+              <Link 
+                to="/employer/signup"
+                className="w-full px-2 py-1.5 cursor-pointer"
               >
                 Employer
-              </button>
+              </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <button 
-                className="w-full text-left cursor-pointer" 
-                onClick={(e) => handleNavigation(e, "/candidate/signup")}
+              <Link 
+                to="/candidate/signup"
+                className="w-full px-2 py-1.5 cursor-pointer"
               >
                 Candidate
-              </button>
+              </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <button 
-                className="w-full text-left cursor-pointer" 
-                onClick={(e) => handleNavigation(e, "/vr/signup")}
+              <Link 
+                to="/vr/signup"
+                className="w-full px-2 py-1.5 cursor-pointer"
               >
                 Virtual Recruiter
-              </button>
+              </Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
