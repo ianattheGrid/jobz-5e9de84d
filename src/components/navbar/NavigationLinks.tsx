@@ -15,6 +15,11 @@ const NavigationLinks = () => {
   const navigate = useNavigate();
   console.log('Current user state:', user);
 
+  const handleNavigation = (path: string) => {
+    console.log('Navigating to:', path); // Debug log
+    navigate(path);
+  };
+
   return (
     <div className="flex items-center gap-4">
       <nav className="flex items-center space-x-6">
@@ -45,14 +50,14 @@ const NavigationLinks = () => {
               Sign In
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-48">
-            <DropdownMenuItem onSelect={() => navigate("/candidate/signin")}>
+          <DropdownMenuContent align="end" className="w-48">
+            <DropdownMenuItem onClick={() => handleNavigation("/candidate/signin")}>
               Candidate Sign In
             </DropdownMenuItem>
-            <DropdownMenuItem onSelect={() => navigate("/employer/signin")}>
+            <DropdownMenuItem onClick={() => handleNavigation("/employer/signin")}>
               Employer Sign In
             </DropdownMenuItem>
-            <DropdownMenuItem onSelect={() => navigate("/vr/signin")}>
+            <DropdownMenuItem onClick={() => handleNavigation("/vr/signin")}>
               Virtual Recruiter Sign In
             </DropdownMenuItem>
           </DropdownMenuContent>
@@ -68,14 +73,14 @@ const NavigationLinks = () => {
               Sign Up
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-48">
-            <DropdownMenuItem onSelect={() => navigate("/employer/signup")}>
+          <DropdownMenuContent align="end" className="w-48">
+            <DropdownMenuItem onClick={() => handleNavigation("/employer/signup")}>
               Employer
             </DropdownMenuItem>
-            <DropdownMenuItem onSelect={() => navigate("/candidate/signup")}>
+            <DropdownMenuItem onClick={() => handleNavigation("/candidate/signup")}>
               Candidate
             </DropdownMenuItem>
-            <DropdownMenuItem onSelect={() => navigate("/vr/signup")}>
+            <DropdownMenuItem onClick={() => handleNavigation("/vr/signup")}>
               Virtual Recruiter
             </DropdownMenuItem>
           </DropdownMenuContent>
