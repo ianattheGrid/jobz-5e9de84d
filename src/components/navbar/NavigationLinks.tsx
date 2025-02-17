@@ -14,7 +14,7 @@ const NavigationLinks = () => {
   const { user, userType } = useAuth();
 
   return (
-    <nav className="flex items-center space-x-6">
+    <nav className="hidden md:flex items-center space-x-6">
       <Link 
         to="/" 
         className="text-white hover:text-white/80 flex items-center gap-2"

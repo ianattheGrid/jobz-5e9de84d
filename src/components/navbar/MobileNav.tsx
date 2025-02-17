@@ -1,3 +1,4 @@
+
 import { Link } from "react-router-dom";
 import { Menu } from "lucide-react";
 import {
@@ -18,7 +19,7 @@ const MobileNav = ({ isAuthenticated, userType }: MobileNavProps) => {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <button className="p-2 hover:bg-accent rounded-md lg:hidden">
+        <button className="p-2 hover:bg-accent rounded-md md:hidden">
           <Menu className="h-6 w-6 text-foreground" />
         </button>
       </SheetTrigger>
@@ -33,22 +34,31 @@ const MobileNav = ({ isAuthenticated, userType }: MobileNavProps) => {
           <Link to="/jobs" className="text-lg text-muted-foreground hover:text-primary transition-colors">
             Job Board
           </Link>
-          <SheetClose asChild>
-            <button 
-              onClick={() => {
-                setTimeout(() => {
-                  window.location.href = '/#calculator-section';
-                  const element = document.getElementById('calculator-section');
-                  if (element) {
-                    element.scrollIntoView({ behavior: 'smooth' });
-                  }
-                }, 100);
-              }}
-              className="text-lg text-muted-foreground hover:text-primary transition-colors text-left"
-            >
-              Calculator
-            </button>
-          </SheetClose>
+
+          {!isAuthenticated && (
+            <>
+              <div className="h-px bg-border my-2" />
+              <Link to="/employer/signin" className="text-lg text-muted-foreground hover:text-primary transition-colors">
+                Employer Sign In
+              </Link>
+              <Link to="/candidate/signin" className="text-lg text-muted-foreground hover:text-primary transition-colors">
+                Candidate Sign In
+              </Link>
+              <Link to="/vr/signin" className="text-lg text-muted-foreground hover:text-primary transition-colors">
+                Virtual Recruiter Sign In
+              </Link>
+              <div className="h-px bg-border my-2" />
+              <Link to="/employer/signup" className="text-lg text-muted-foreground hover:text-primary transition-colors">
+                Employer Sign Up
+              </Link>
+              <Link to="/candidate/signup" className="text-lg text-muted-foreground hover:text-primary transition-colors">
+                Candidate Sign Up
+              </Link>
+              <Link to="/vr/signup" className="text-lg text-muted-foreground hover:text-primary transition-colors">
+                Virtual Recruiter Sign Up
+              </Link>
+            </>
+          )}
 
           {isAuthenticated && userType === 'employer' && (
             <>
@@ -67,23 +77,6 @@ const MobileNav = ({ isAuthenticated, userType }: MobileNavProps) => {
               </Link>
             </>
           )}
-          
-          <div className="h-px bg-border my-4" />
-          <SheetClose asChild>
-            <button 
-              onClick={() => {
-                setTimeout(() => {
-                  const element = document.getElementById('signup-section');
-                  if (element) {
-                    element.scrollIntoView({ behavior: 'smooth' });
-                  }
-                }, 100);
-              }}
-              className="text-lg text-primary font-semibold hover:text-primary-dark transition-colors text-left"
-            >
-              Sign in / Sign up
-            </button>
-          </SheetClose>
         </nav>
       </SheetContent>
     </Sheet>
