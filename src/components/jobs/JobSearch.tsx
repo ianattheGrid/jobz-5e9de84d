@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -31,13 +32,18 @@ const JobSearch = ({ onSearch }: JobSearchProps) => {
   return (
     <div className="bg-card rounded-lg shadow-sm border border-border p-4 mb-6 text-left">
       <div 
-        className="flex items-center cursor-pointer mb-4"
+        className="flex flex-col cursor-pointer mb-4"
         onClick={() => setIsExpanded(!isExpanded)}
       >
-        <Search className="h-5 w-5 text-white mr-2" />
-        <h2 className="text-lg font-semibold text-white">
-          Find Your Perfect Job Match
-        </h2>
+        <div className="flex items-center mb-2">
+          <Search className="h-5 w-5 text-white mr-2" />
+          <h2 className="text-lg font-semibold text-white">
+            Find Your Perfect Job Match
+          </h2>
+        </div>
+        <p className="text-sm text-muted-foreground ml-7">
+          Search by job title, skills, company name, or filter by location and jobs with "You're Hired" bonuses
+        </p>
       </div>
 
       {isExpanded && (
@@ -50,7 +56,7 @@ const JobSearch = ({ onSearch }: JobSearchProps) => {
                 <FormItem>
                   <FormControl>
                     <Input
-                      placeholder="Job title, keywords, or company"
+                      placeholder="Enter job title, skills, or company name"
                       className="bg-muted text-white"
                       {...field}
                     />
@@ -66,7 +72,7 @@ const JobSearch = ({ onSearch }: JobSearchProps) => {
                 <FormItem>
                   <FormControl>
                     <Input
-                      placeholder="Location"
+                      placeholder="Search by city or region (e.g. London, Manchester)"
                       className="bg-muted text-white"
                       {...field}
                     />
