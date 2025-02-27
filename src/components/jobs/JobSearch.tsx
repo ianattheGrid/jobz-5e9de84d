@@ -38,7 +38,7 @@ const JobSearch = ({ onSearch }: JobSearchProps) => {
         <div className="flex items-center mb-2">
           <Search className="h-5 w-5 text-white mr-2" />
           <h2 className="text-lg font-semibold text-white">
-            Find Your Perfect Job Match
+            Find Your Perfect Job Match (Click here)
           </h2>
         </div>
         <p className="text-sm text-muted-foreground ml-7">
