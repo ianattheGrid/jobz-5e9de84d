@@ -99,13 +99,13 @@ export default function ManageJobs() {
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <Link to="/employer/dashboard" className="text-black hover:text-gray-800">
+            <Link to="/employer/dashboard" className="text-primary hover:text-primary/90">
               Employer Dashboard
             </Link>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbLink className="text-black">Manage Jobs</BreadcrumbLink>
+            <BreadcrumbLink className="text-white">Manage Jobs</BreadcrumbLink>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
