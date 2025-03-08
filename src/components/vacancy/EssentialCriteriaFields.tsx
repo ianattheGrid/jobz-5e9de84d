@@ -1,3 +1,4 @@
+
 import { FormField, FormItem, FormLabel, FormControl, FormDescription } from "@/components/ui/form";
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
@@ -11,8 +12,8 @@ interface EssentialCriteriaFieldsProps {
 const EssentialCriteriaFields = ({ control }: EssentialCriteriaFieldsProps) => {
   return (
     <div className="space-y-6">
-      <h3 className="text-lg font-semibold">Essential Criteria</h3>
-      <p className="text-sm text-muted-foreground mb-4">
+      <h3 className="text-lg font-semibold text-gray-900">Essential Criteria</h3>
+      <p className="text-sm text-gray-600 mb-4">
         Select which criteria are essential for candidates to meet
       </p>
 
@@ -20,10 +21,10 @@ const EssentialCriteriaFields = ({ control }: EssentialCriteriaFieldsProps) => {
         control={control}
         name="titleEssential"
         render={({ field }) => (
-          <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+          <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 bg-white">
             <div className="space-y-0.5">
-              <FormLabel className="text-base">Job Title</FormLabel>
-              <FormDescription>
+              <FormLabel className="text-base text-gray-900">Job Title</FormLabel>
+              <FormDescription className="text-gray-600">
                 Candidate must have exact job title match
               </FormDescription>
             </div>
@@ -42,10 +43,10 @@ const EssentialCriteriaFields = ({ control }: EssentialCriteriaFieldsProps) => {
         control={control}
         name="yearsExperienceEssential"
         render={({ field }) => (
-          <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+          <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 bg-white">
             <div className="space-y-0.5">
-              <FormLabel className="text-base">Years Experience</FormLabel>
-              <FormDescription>
+              <FormLabel className="text-base text-gray-900">Years Experience</FormLabel>
+              <FormDescription className="text-gray-600">
                 Candidate must meet minimum years of experience
               </FormDescription>
             </div>
@@ -84,10 +85,10 @@ const EssentialCriteriaFields = ({ control }: EssentialCriteriaFieldsProps) => {
         control={control}
         name="salaryEssential"
         render={({ field }) => (
-          <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+          <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 bg-white">
             <div className="space-y-0.5">
-              <FormLabel className="text-base">Salary Range</FormLabel>
-              <FormDescription>
+              <FormLabel className="text-base text-gray-900">Salary Range</FormLabel>
+              <FormDescription className="text-gray-600">
                 Candidate's salary expectations must be within range
               </FormDescription>
             </div>
@@ -106,10 +107,10 @@ const EssentialCriteriaFields = ({ control }: EssentialCriteriaFieldsProps) => {
         control={control}
         name="skillsEssential"
         render={({ field }) => (
-          <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+          <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 bg-white">
             <div className="space-y-0.5">
-              <FormLabel className="text-base">Required Skills</FormLabel>
-              <FormDescription>
+              <FormLabel className="text-base text-gray-900">Required Skills</FormLabel>
+              <FormDescription className="text-gray-600">
                 Candidate must have all required skills
               </FormDescription>
             </div>
@@ -128,10 +129,10 @@ const EssentialCriteriaFields = ({ control }: EssentialCriteriaFieldsProps) => {
         control={control}
         name="qualificationEssential"
         render={({ field }) => (
-          <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+          <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 bg-white">
             <div className="space-y-0.5">
-              <FormLabel className="text-base">Qualification</FormLabel>
-              <FormDescription>
+              <FormLabel className="text-base text-gray-900">Qualification</FormLabel>
+              <FormDescription className="text-gray-600">
                 Candidate must have required qualification
               </FormDescription>
             </div>
@@ -150,10 +151,10 @@ const EssentialCriteriaFields = ({ control }: EssentialCriteriaFieldsProps) => {
         control={control}
         name="citizenshipEssential"
         render={({ field }) => (
-          <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+          <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 bg-white">
             <div className="space-y-0.5">
-              <FormLabel className="text-base">Citizenship/Work Eligibility</FormLabel>
-              <FormDescription>
+              <FormLabel className="text-base text-gray-900">Citizenship/Work Eligibility</FormLabel>
+              <FormDescription className="text-gray-600">
                 Candidate must meet citizenship/work eligibility requirements
               </FormDescription>
             </div>
