@@ -31,6 +31,7 @@ const EssentialCriteriaFields = ({ control }: EssentialCriteriaFieldsProps) => {
               <Switch
                 checked={field.value}
                 onCheckedChange={field.onChange}
+                className="data-[state=checked]:bg-primary"
               />
             </FormControl>
           </FormItem>
@@ -52,6 +53,7 @@ const EssentialCriteriaFields = ({ control }: EssentialCriteriaFieldsProps) => {
               <Switch
                 checked={field.value}
                 onCheckedChange={field.onChange}
+                className="data-[state=checked]:bg-primary"
               />
             </FormControl>
           </FormItem>
@@ -93,6 +95,7 @@ const EssentialCriteriaFields = ({ control }: EssentialCriteriaFieldsProps) => {
               <Switch
                 checked={field.value}
                 onCheckedChange={field.onChange}
+                className="data-[state=checked]:bg-primary"
               />
             </FormControl>
           </FormItem>
@@ -114,6 +117,7 @@ const EssentialCriteriaFields = ({ control }: EssentialCriteriaFieldsProps) => {
               <Switch
                 checked={field.value}
                 onCheckedChange={field.onChange}
+                className="data-[state=checked]:bg-primary"
               />
             </FormControl>
           </FormItem>
@@ -135,6 +139,7 @@ const EssentialCriteriaFields = ({ control }: EssentialCriteriaFieldsProps) => {
               <Switch
                 checked={field.value}
                 onCheckedChange={field.onChange}
+                className="data-[state=checked]:bg-primary"
               />
             </FormControl>
           </FormItem>
@@ -156,6 +161,7 @@ const EssentialCriteriaFields = ({ control }: EssentialCriteriaFieldsProps) => {
               <Switch
                 checked={field.value}
                 onCheckedChange={field.onChange}
+                className="data-[state=checked]:bg-primary"
               />
             </FormControl>
           </FormItem>
