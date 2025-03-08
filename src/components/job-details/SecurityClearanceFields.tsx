@@ -1,3 +1,4 @@
+
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -26,7 +27,7 @@ const SecurityClearanceFields = ({ control }: SecurityClearanceFieldsProps) => {
         name="requiresSecurityClearance"
         render={({ field }) => (
           <FormItem className="space-y-3">
-            <FormLabel>Are you security cleared?</FormLabel>
+            <FormLabel>Does this role require security clearance?</FormLabel>
             <FormControl>
               <RadioGroup
                 onValueChange={(value) => {
