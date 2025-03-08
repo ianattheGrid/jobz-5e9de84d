@@ -134,7 +134,7 @@ const EmployerDashboard = () => {
     <div className="min-h-screen bg-background">
       <NavBar />
       <div className="container mx-auto px-4 pt-20">
-        <h1 className="text-3xl font-bold mb-2 text-[#FF69B4]">
+        <h1 className="text-3xl font-bold mb-2" style={{ color: '#FF69B4' }}>
           Welcome{companyName ? `, ${companyName}` : ''}
         </h1>
         <p className="text-white mb-8">Manage your job postings and candidates</p>
