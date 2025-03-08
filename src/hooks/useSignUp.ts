@@ -14,6 +14,21 @@ export const useSignUp = () => {
     console.log('Starting signup process for:', email, userType);
 
     try {
+      // First check if the email exists
+      const { data: { users }, error: existingUserError } = await supabase.auth.admin.listUsers({
+        filters: {
+          email: email
+        }
+      });
+
+      if (existingUserError) {
+        throw existingUserError;
+      }
+
+      if (users && users.length > 0) {
+        throw new Error('This email is already registered');
+      }
+
       // Attempt to sign up
       const { data: { user }, error: signUpError } = await supabase.auth.signUp({
         email,
@@ -39,9 +54,7 @@ export const useSignUp = () => {
 
       console.log('Signup successful, user data:', user);
 
-      // Wait for user creation and role assignment
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
+      // Create employer profile if needed
       if (userType === 'employer') {
         const { error: profileError } = await supabase
           .from('employer_profiles')
@@ -70,7 +83,7 @@ export const useSignUp = () => {
       
       let errorMessage = 'An unexpected error occurred during sign up';
       
-      if (error.message?.includes('User already registered') || 
+      if (error.message?.includes('already registered') || 
           error.message?.includes('already exists') ||
           error.message?.includes('duplicate key value')) {
         errorMessage = 'This email is already registered. Please sign in instead.';
