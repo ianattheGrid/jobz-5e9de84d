@@ -20,13 +20,13 @@ const SalaryFields = ({ control }: SalaryFieldsProps) => {
         render={({ field }) => (
           <FormItem>
             <div className="flex items-center gap-2">
-              <FormLabel>Salary for bonus purposes</FormLabel>
-              <TooltipProvider>
+              <FormLabel className="text-gray-900">Salary for bonus purposes</FormLabel>
+              <TooltipProvider delayDuration={100}>
                 <Tooltip>
-                  <TooltipTrigger>
-                    <HelpCircle className="h-4 w-4 text-gray-500" />
+                  <TooltipTrigger asChild>
+                    <HelpCircle className="h-4 w-4 text-gray-500 cursor-help hover:text-gray-700" />
                   </TooltipTrigger>
-                  <TooltipContent className="max-w-xs">
+                  <TooltipContent side="right" className="bg-white text-gray-900 p-3 max-w-xs border border-gray-200">
                     <p>If you want to attract candidates or anonymously use recruiters, you'll need to provide a salary figure for calculation purposes.</p>
                   </TooltipContent>
                 </Tooltip>
