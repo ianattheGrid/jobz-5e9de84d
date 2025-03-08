@@ -1,24 +1,33 @@
-import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+
 import { Control } from "react-hook-form";
-import { FormValues } from "./ProfileForm";
-import { Linkedin } from "lucide-react";
+import {
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 
 interface ProfileFormFieldsProps {
-  control: Control<FormValues>;
+  control: Control<any>;
 }
 
-export const ProfileFormFields = ({ control }: ProfileFormFieldsProps) => {
+export function ProfileFormFields({ control }: ProfileFormFieldsProps) {
   return (
-    <>
+    <div className="space-y-6">
       <FormField
         control={control}
         name="company_name"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Company Name</FormLabel>
+            <FormLabel className="text-gray-900 font-medium">Company Name</FormLabel>
             <FormControl>
-              <Input placeholder="Enter company name" {...field} />
+              <Input 
+                placeholder="Enter company name" 
+                className="bg-white border-gray-200 text-gray-900" 
+                {...field} 
+              />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -30,9 +39,13 @@ export const ProfileFormFields = ({ control }: ProfileFormFieldsProps) => {
         name="full_name"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Full Name</FormLabel>
+            <FormLabel className="text-gray-900 font-medium">Full Name</FormLabel>
             <FormControl>
-              <Input placeholder="Enter your full name" {...field} />
+              <Input 
+                placeholder="Enter your full name" 
+                className="bg-white border-gray-200 text-gray-900" 
+                {...field} 
+              />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -44,9 +57,13 @@ export const ProfileFormFields = ({ control }: ProfileFormFieldsProps) => {
         name="job_title"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Job Title</FormLabel>
+            <FormLabel className="text-gray-900 font-medium">Job Title</FormLabel>
             <FormControl>
-              <Input placeholder="Enter your job title" {...field} />
+              <Input 
+                placeholder="Enter your job title" 
+                className="bg-white border-gray-200 text-gray-900" 
+                {...field} 
+              />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -58,21 +75,18 @@ export const ProfileFormFields = ({ control }: ProfileFormFieldsProps) => {
         name="linkedin_url"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>LinkedIn Company Profile</FormLabel>
+            <FormLabel className="text-gray-900 font-medium">LinkedIn Profile URL (Optional)</FormLabel>
             <FormControl>
-              <div className="relative">
-                <Input 
-                  placeholder="https://www.linkedin.com/company/..." 
-                  {...field} 
-                  className="pl-10"
-                />
-                <Linkedin className="absolute left-3 top-2.5 h-5 w-5 text-muted-foreground" />
-              </div>
+              <Input 
+                placeholder="Enter your LinkedIn URL" 
+                className="bg-white border-gray-200 text-gray-900" 
+                {...field} 
+              />
             </FormControl>
             <FormMessage />
           </FormItem>
         )}
       />
-    </>
+    </div>
   );
-};
+}

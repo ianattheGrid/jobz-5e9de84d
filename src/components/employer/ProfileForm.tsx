@@ -118,7 +118,12 @@ export function ProfileForm({ profile, setProfile, email }: ProfileFormProps) {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <ProfileFormFields control={form.control} />
-          <Button type="submit">Update Profile</Button>
+          <Button 
+            type="submit"
+            className="bg-primary hover:bg-primary/90 text-white w-full md:w-auto"
+          >
+            Update Profile
+          </Button>
         </form>
       </Form>
     </div>
