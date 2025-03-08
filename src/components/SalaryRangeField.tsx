@@ -20,6 +20,12 @@ const salaryOptions = [
   { value: "90000", label: "£90,000" },
   { value: "95000", label: "£95,000" },
   { value: "100000", label: "£100,000" },
+  { value: "125000", label: "£125,000" },
+  { value: "150000", label: "£150,000" },
+  { value: "175000", label: "£175,000" },
+  { value: "200000", label: "£200,000" },
+  { value: "225000", label: "£225,000" },
+  { value: "250000", label: "£250,000" },
 ];
 
 interface SalaryRangeFieldProps {
