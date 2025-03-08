@@ -14,6 +14,9 @@ export const useSignUp = () => {
     console.log('Starting signup process for:', email, userType);
 
     try {
+      // Sign out any existing session first
+      await supabase.auth.signOut();
+      
       // Attempt to sign up
       const { data: { user }, error: signUpError } = await supabase.auth.signUp({
         email,
@@ -72,6 +75,7 @@ export const useSignUp = () => {
           error.message?.includes('already exists') ||
           error.message?.includes('duplicate key value')) {
         errorMessage = 'This email is already registered. Please sign in instead.';
+        navigate('/employer/signin');
       } else if (error.message?.includes('invalid email')) {
         errorMessage = 'Please enter a valid email address.';
       }
