@@ -12,7 +12,7 @@ export const useSignIn = () => {
   const handleSignIn = async (email: string, password: string, intendedUserType?: string) => {
     try {
       setLoading(true);
-      console.log('Starting sign in process...'); 
+      console.log('Starting sign in process for:', email); 
 
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
@@ -21,7 +21,6 @@ export const useSignIn = () => {
 
       if (error) {
         console.error('Sign in error:', error);
-        
         toast({
           variant: "destructive",
           title: "Invalid Credentials",
@@ -34,7 +33,9 @@ export const useSignIn = () => {
         throw new Error('No user returned after successful sign in');
       }
 
-      // Get the user's role from the user_roles table - this is our source of truth
+      console.log('Successfully signed in, fetching user role');
+
+      // Get the user's role from the user_roles table
       const { data: userRole, error: roleError } = await supabase
         .from('user_roles')
         .select('role')
@@ -52,7 +53,7 @@ export const useSignIn = () => {
       }
 
       if (!userRole) {
-        console.error('No user role found in database');
+        console.error('No user role found for user:', data.user.id);
         toast({
           variant: "destructive",
           title: "Error",
@@ -61,8 +62,11 @@ export const useSignIn = () => {
         return;
       }
 
+      console.log('User role found:', userRole);
+
       // If there's an intended user type, verify it matches
       if (intendedUserType && userRole.role !== intendedUserType) {
+        console.error('Role mismatch:', { intended: intendedUserType, actual: userRole.role });
         toast({
           variant: "destructive",
           title: "Access Denied",
@@ -72,24 +76,10 @@ export const useSignIn = () => {
       }
 
       // Redirect based on the role from the database
-      switch(userRole.role) {
-        case 'candidate':
-          navigate('/candidate/dashboard', { replace: true });
-          break;
-        case 'employer':
-          navigate('/employer/dashboard', { replace: true });
-          break;
-        case 'vr':
-          navigate('/vr/dashboard', { replace: true });
-          break;
-        default:
-          toast({
-            variant: "destructive",
-            title: "Error",
-            description: "Invalid user type. Please contact support.",
-          });
-          return;
-      }
+      const redirectPath = `/${userRole.role}/dashboard`;
+      console.log('Redirecting to:', redirectPath);
+      
+      navigate(redirectPath, { replace: true });
 
       toast({
         title: "Welcome back!",
