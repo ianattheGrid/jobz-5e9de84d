@@ -28,17 +28,21 @@ const EssentialCriteriaFields = ({ control }: EssentialCriteriaFieldsProps) => {
                 Candidate must have exact job title match
               </FormDescription>
             </div>
-            <FormControl>
-              <Switch
-                checked={field.value}
-                onCheckedChange={field.onChange}
-                className="data-[state=checked]:bg-primary"
-              />
-            </FormControl>
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-gray-600">{field.value ? 'Yes' : 'No'}</span>
+              <FormControl>
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                  className="data-[state=checked]:bg-primary"
+                />
+              </FormControl>
+            </div>
           </FormItem>
         )}
       />
 
+      {/* Repeat the same pattern for other switches */}
       <FormField
         control={control}
         name="yearsExperienceEssential"
@@ -50,13 +54,16 @@ const EssentialCriteriaFields = ({ control }: EssentialCriteriaFieldsProps) => {
                 Candidate must meet minimum years of experience
               </FormDescription>
             </div>
-            <FormControl>
-              <Switch
-                checked={field.value}
-                onCheckedChange={field.onChange}
-                className="data-[state=checked]:bg-primary"
-              />
-            </FormControl>
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-gray-600">{field.value ? 'Yes' : 'No'}</span>
+              <FormControl>
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                  className="data-[state=checked]:bg-primary"
+                />
+              </FormControl>
+            </div>
           </FormItem>
         )}
       />
@@ -92,13 +99,16 @@ const EssentialCriteriaFields = ({ control }: EssentialCriteriaFieldsProps) => {
                 Candidate's salary expectations must be within range
               </FormDescription>
             </div>
-            <FormControl>
-              <Switch
-                checked={field.value}
-                onCheckedChange={field.onChange}
-                className="data-[state=checked]:bg-primary"
-              />
-            </FormControl>
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-gray-600">{field.value ? 'Yes' : 'No'}</span>
+              <FormControl>
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                  className="data-[state=checked]:bg-primary"
+                />
+              </FormControl>
+            </div>
           </FormItem>
         )}
       />
@@ -114,13 +124,16 @@ const EssentialCriteriaFields = ({ control }: EssentialCriteriaFieldsProps) => {
                 Candidate must have all required skills
               </FormDescription>
             </div>
-            <FormControl>
-              <Switch
-                checked={field.value}
-                onCheckedChange={field.onChange}
-                className="data-[state=checked]:bg-primary"
-              />
-            </FormControl>
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-gray-600">{field.value ? 'Yes' : 'No'}</span>
+              <FormControl>
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                  className="data-[state=checked]:bg-primary"
+                />
+              </FormControl>
+            </div>
           </FormItem>
         )}
       />
@@ -136,13 +149,16 @@ const EssentialCriteriaFields = ({ control }: EssentialCriteriaFieldsProps) => {
                 Candidate must have required qualification
               </FormDescription>
             </div>
-            <FormControl>
-              <Switch
-                checked={field.value}
-                onCheckedChange={field.onChange}
-                className="data-[state=checked]:bg-primary"
-              />
-            </FormControl>
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-gray-600">{field.value ? 'Yes' : 'No'}</span>
+              <FormControl>
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                  className="data-[state=checked]:bg-primary"
+                />
+              </FormControl>
+            </div>
           </FormItem>
         )}
       />
@@ -158,13 +174,16 @@ const EssentialCriteriaFields = ({ control }: EssentialCriteriaFieldsProps) => {
                 Candidate must meet citizenship/work eligibility requirements
               </FormDescription>
             </div>
-            <FormControl>
-              <Switch
-                checked={field.value}
-                onCheckedChange={field.onChange}
-                className="data-[state=checked]:bg-primary"
-              />
-            </FormControl>
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-gray-600">{field.value ? 'Yes' : 'No'}</span>
+              <FormControl>
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                  className="data-[state=checked]:bg-primary"
+                />
+              </FormControl>
+            </div>
           </FormItem>
         )}
       />

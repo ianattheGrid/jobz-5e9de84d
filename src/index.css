@@ -32,10 +32,10 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground min-h-screen;
+    @apply bg-white text-foreground;
   }
   #root {
-    @apply min-h-screen bg-background;
+    @apply bg-white min-h-screen;
   }
 }
 
