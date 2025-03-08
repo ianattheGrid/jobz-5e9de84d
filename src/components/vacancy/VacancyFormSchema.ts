@@ -22,7 +22,7 @@ export const vacancyFormSchema = z.object({
     message: "Salary is required",
   }),
   actualSalary: z.string().min(1, {
-    message: "Actual salary is required",
+    message: "Salary for bonus purposes is required",
   }),
   workLocation: z.enum(["office", "hybrid", "remote"]).default("office"),
   officePercentage: z.number().min(0).max(100).optional(),

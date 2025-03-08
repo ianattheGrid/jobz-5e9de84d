@@ -4,6 +4,8 @@ import { FormField, FormItem, FormLabel, FormControl } from "@/components/ui/for
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { HelpCircle } from "lucide-react";
 import { calculateTotalCommission, calculateSplitCommissions, formatCurrency } from "@/utils/commissionCalculations";
 
 interface CommissionSectionProps {
@@ -43,7 +45,19 @@ const CommissionSection = ({ salary, form }: CommissionSectionProps) => {
   return (
     <div className="space-y-6">
       <FormItem className="space-y-3">
-        <FormLabel className="text-gray-900">Would you like to attract candidates by offering a "You're Hired" bonus and/or anonymously use recruiters by offering commission?</FormLabel>
+        <div className="flex items-center gap-2">
+          <FormLabel className="text-gray-900">Would you like to attract candidates and/or use recruiters by offering a bonus?</FormLabel>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <HelpCircle className="h-4 w-4 text-gray-500" />
+              </TooltipTrigger>
+              <TooltipContent className="max-w-xs">
+                <p>To offer bonuses or use recruiters, you'll need to provide a salary figure for calculation purposes. This helps determine appropriate bonus amounts.</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
         <RadioGroup
           defaultValue="no"
           onValueChange={handleCommissionChange}
