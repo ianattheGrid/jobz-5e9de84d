@@ -14,21 +14,6 @@ export const useSignUp = () => {
     console.log('Starting signup process for:', email, userType);
 
     try {
-      // First check if the email exists
-      const { data: { users }, error: existingUserError } = await supabase.auth.admin.listUsers({
-        filters: {
-          email: email
-        }
-      });
-
-      if (existingUserError) {
-        throw existingUserError;
-      }
-
-      if (users && users.length > 0) {
-        throw new Error('This email is already registered');
-      }
-
       // Attempt to sign up
       const { data: { user }, error: signUpError } = await supabase.auth.signUp({
         email,
