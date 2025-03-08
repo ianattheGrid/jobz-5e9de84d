@@ -17,22 +17,6 @@ export const useSignUp = () => {
       // Sign out any existing session first
       await supabase.auth.signOut();
       
-      // Try to get user by email first
-      const { data: existingUser } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      if (existingUser?.user) {
-        toast({
-          variant: "destructive",
-          title: "Account exists",
-          description: "This email is already registered. Please sign in instead.",
-        });
-        navigate(`/${userType}/signin`);
-        return;
-      }
-
       // If no existing user, proceed with signup
       const { data: { user }, error: signUpError } = await supabase.auth.signUp({
         email,
@@ -91,7 +75,7 @@ export const useSignUp = () => {
           error.message?.toLowerCase().includes('already exists') ||
           error.message?.toLowerCase().includes('duplicate key value')) {
         errorMessage = 'This email is already registered. Please sign in instead.';
-        navigate('/employer/signin');
+        navigate(`/${userType}/signin`);
       } else if (error.message?.toLowerCase().includes('invalid email')) {
         errorMessage = 'Please enter a valid email address.';
       }
