@@ -6,6 +6,7 @@ import { useToast } from "@/hooks/use-toast";
 import NavBar from "@/components/NavBar";
 import BonusNegotiations from "@/components/employer/BonusNegotiations";
 import { Briefcase, Building2, Search, Calendar, UserCircle, MessageSquare } from "lucide-react";
+
 const EmployerDashboard = () => {
   const navigate = useNavigate();
   const {
@@ -14,10 +15,12 @@ const EmployerDashboard = () => {
   const [userId, setUserId] = useState<string | null>(null);
   const [companyName, setCompanyName] = useState<string | null>(null);
   const [showBonus, setShowBonus] = useState(false);
+
   useEffect(() => {
     checkUser();
     checkBonusEligibility();
   }, []);
+
   const checkUser = async () => {
     try {
       const {
@@ -61,6 +64,7 @@ const EmployerDashboard = () => {
       });
     }
   };
+
   const checkBonusEligibility = async () => {
     try {
       const {
@@ -81,6 +85,7 @@ const EmployerDashboard = () => {
       console.error('Error checking bonus eligibility:', error);
     }
   };
+
   const menuItems = [{
     title: "Post New Job",
     icon: <Briefcase className="h-6 w-6" />,
@@ -112,12 +117,11 @@ const EmployerDashboard = () => {
     path: "#",
     description: "Get in touch with our support team"
   }];
+
   return <div className="min-h-screen bg-background">
       <NavBar />
       <div className="container mx-auto px-4 pt-20">
-        <h1 style={{
-        color: '#FF69B4'
-      }} className="text-3xl font-bold mb-2 text-[#0a0007]">
+        <h1 className="text-3xl font-bold mb-2" style={{ color: 'var(--primary)' }}>
           Welcome{companyName ? `, ${companyName}` : ''}
         </h1>
         <p className="text-white mb-8">Manage your job postings and candidates</p>
@@ -138,4 +142,5 @@ const EmployerDashboard = () => {
       </div>
     </div>;
 };
+
 export default EmployerDashboard;
