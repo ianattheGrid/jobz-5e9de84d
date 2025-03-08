@@ -119,9 +119,40 @@ select,
   @apply text-gray-900 !important;
 }
 
-/* FormLabel component override */
-[data-radix-label],
-.form-label,
-.form-field-label {
-  @apply text-gray-900 font-medium text-sm mb-2 block !important;
+/* Radio buttons and labels */
+[type="radio"] + label,
+[type="checkbox"] + label {
+  @apply text-gray-900 !important;
+}
+
+/* Form text elements */
+[role="textbox"],
+[role="spinbutton"],
+textarea {
+  @apply text-gray-900 !important;
+}
+
+/* All text inputs and selects */
+input[type="text"],
+input[type="number"],
+select,
+textarea {
+  @apply text-gray-900 placeholder-gray-500 !important;
+}
+
+/* Dropdown option text */
+[role="option"],
+option {
+  @apply text-gray-900 bg-white !important;
+}
+
+/* Form section headings */
+h1, h2, h3, h4, h5, h6 {
+  @apply text-gray-900 !important;
+}
+
+/* Form helper text */
+.helper-text,
+.description {
+  @apply text-gray-600 !important;
 }
