@@ -44,48 +44,42 @@
   @apply bg-white text-gray-900 border-gray-200;
 }
 
+/* Form field labels and descriptions */
+.form-field-label {
+  @apply text-gray-900 font-semibold mb-2;
+}
+
+.form-field-description {
+  @apply text-gray-600 text-sm mb-4;
+}
+
 /* Section headers */
 .section-header {
   @apply text-xl font-semibold text-gray-900 mb-4 border-l-4 border-primary pl-4;
 }
 
-.section-description {
-  @apply text-primary/90 mb-6;
-}
-
-/* Select styles */
-.select-trigger {
-  @apply bg-white text-gray-900 border-gray-200 hover:border-primary/50 transition-colors;
-}
-
-.select-content {
-  @apply bg-white border border-gray-200 text-gray-900 shadow-lg;
-}
-
-.select-item {
-  @apply hover:bg-primary/10 cursor-pointer text-gray-900;
-}
-
-/* Form controls */
-[role="listbox"],
+/* Input and Select styles */
+input, 
+textarea, 
+select,
+.select-trigger,
 [role="combobox"] {
-  @apply bg-white text-gray-900 !important;
+  @apply bg-white text-gray-900 border-gray-200 !important;
+}
+
+/* Dropdown content */
+[role="listbox"],
+.select-content {
+  @apply bg-white text-gray-900 border-gray-200 shadow-lg !important;
 }
 
 [role="option"] {
-  @apply hover:bg-primary/10 text-gray-900;
-}
-
-/* Input field styles */
-input, 
-select, 
-textarea {
-  @apply bg-white text-gray-900 border-gray-200 focus:border-primary/50 focus:ring-primary/50;
+  @apply text-gray-900 hover:bg-primary/10 !important;
 }
 
 /* Card styles */
 .card-dark {
-  @apply bg-white text-gray-900 shadow-sm border border-gray-200/20;
+  @apply bg-white text-gray-900 shadow-sm border border-gray-200;
 }
 
 /* Button styles */
@@ -95,14 +89,5 @@ textarea {
 
 /* Glass effect */
 .glass-effect {
-  @apply bg-white/90 backdrop-blur-md border border-gray-200 shadow-lg;
-}
-
-/* Form specific overrides */
-.form-field-label {
-  @apply text-gray-900 font-medium mb-2;
-}
-
-.form-field-description {
-  @apply text-primary/80 text-sm mb-4;
+  @apply bg-white backdrop-blur-md border border-gray-200 shadow-lg;
 }

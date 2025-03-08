@@ -130,25 +130,21 @@ export default function CreateVacancy() {
   };
 
   return (
-    <div className="container max-w-2xl mx-auto py-10">
+    <div className="container max-w-4xl mx-auto py-10">
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <Link to="/employer/dashboard" className="text-black hover:text-gray-800">
+            <Link to="/employer/dashboard" className="text-gray-600 hover:text-gray-800">
               Employer Dashboard
             </Link>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbLink className="text-black">Create New Vacancy</BreadcrumbLink>
+            <BreadcrumbLink className="text-gray-900">Create New Vacancy</BreadcrumbLink>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-
-      <h1 className="text-2xl font-bold mb-4 text-left text-black">Create New Vacancy</h1>
-      <p className="text-[#ea384c] mb-8 text-left text-sm">
-        Post your job vacancy and find the right candidates.
-      </p>
+      
       <VacancyForm form={form} onSubmit={onSubmit} />
     </div>
   );

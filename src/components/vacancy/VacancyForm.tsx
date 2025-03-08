@@ -17,25 +17,23 @@ interface VacancyFormProps {
 export function VacancyForm({ form, onSubmit }: VacancyFormProps) {
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="max-w-4xl mx-auto space-y-8 p-6 bg-white rounded-lg shadow-sm">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="bg-white rounded-lg shadow-sm p-8">
         <div className="space-y-8">
           <div className="border-l-4 border-primary pl-6 mb-8">
             <h1 className="text-3xl font-bold text-gray-900">Create New Vacancy</h1>
-            <p className="text-primary text-lg mt-2">Post your job vacancy and find the right candidates.</p>
+            <p className="text-gray-600 text-lg mt-2">Post your job vacancy and find the right candidates.</p>
           </div>
           
-          <div className="space-y-12">
-            <div className="space-y-8 [&_label]:form-field-label [&_h3]:section-header [&_p]:form-field-description">
-              <WorkAreaField control={form.control} />
-              <JobDetailsFields control={form.control} />
-              <EssentialCriteriaFields control={form.control} />
-              <CommissionSection salary={form.watch("actualSalary")} form={form} />
-              <ApplicationPreferencesField control={form.control} />
-            </div>
+          <div className="space-y-8">
+            <WorkAreaField control={form.control} />
+            <JobDetailsFields control={form.control} />
+            <EssentialCriteriaFields control={form.control} />
+            <CommissionSection salary={form.watch("actualSalary")} form={form} />
+            <ApplicationPreferencesField control={form.control} />
           </div>
         </div>
         
-        <div className="flex justify-start pt-6 border-t border-gray-200">
+        <div className="flex justify-start pt-8 mt-8 border-t border-gray-200">
           <Button 
             type="submit" 
             className="bg-primary hover:bg-primary/90 text-white px-8 py-2.5 text-lg"
