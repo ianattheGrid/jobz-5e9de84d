@@ -8,6 +8,8 @@ import JobDetailsFields from "@/components/JobDetailsFields";
 import CommissionSection from "@/components/CommissionSection";
 import ApplicationPreferencesField from "@/components/ApplicationPreferencesField";
 import EssentialCriteriaFields from "./EssentialCriteriaFields";
+import { LayoutDashboard } from "lucide-react";
+import { Link } from "react-router-dom";
 
 interface VacancyFormProps {
   form: UseFormReturn<VacancyFormValues>;
@@ -18,6 +20,18 @@ export function VacancyForm({ form, onSubmit }: VacancyFormProps) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="bg-white rounded-lg shadow-sm p-8">
+        <div className="flex justify-end mb-4">
+          <Link to="/employer/dashboard">
+            <Button 
+              variant="default"
+              className="bg-primary hover:bg-primary/90 text-white gap-2"
+            >
+              <LayoutDashboard className="h-4 w-4" />
+              Dashboard
+            </Button>
+          </Link>
+        </div>
+
         <div className="space-y-8">
           <div className="border-l-4 border-primary pl-6 mb-8">
             <h1 className="text-3xl font-bold text-gray-900">Create New Vacancy</h1>
