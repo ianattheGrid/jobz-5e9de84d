@@ -91,3 +91,13 @@ select,
 .glass-effect {
   @apply bg-white backdrop-blur-md border border-gray-200 shadow-lg;
 }
+
+/* Form label styles */
+.form-label {
+  @apply text-gray-900 font-medium text-sm mb-2 block !important;
+}
+
+/* FormLabel component override */
+[data-radix-label] {
+  @apply text-gray-900 !important;
+}
