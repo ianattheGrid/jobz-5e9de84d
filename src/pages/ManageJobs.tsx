@@ -110,17 +110,8 @@ export default function ManageJobs() {
         </BreadcrumbList>
       </Breadcrumb>
 
-      <div className="flex justify-between items-center my-6">
-        <Button 
-          onClick={() => navigate('/employer/create-vacancy')}
-          className="bg-primary hover:bg-primary/90 text-white"
-        >
-          Post New Job
-        </Button>
-      </div>
-
       {jobs && jobs.length > 0 ? (
-        <div className="bg-white rounded-lg shadow">
+        <div className="bg-white rounded-lg shadow mt-6">
           <Table>
             <TableHeader>
               <TableRow>
