@@ -61,12 +61,20 @@ export const useSignUp = () => {
         await createEmployerProfile(data.user.id, companyName, fullName);
       }
 
+      // Sign in the user immediately after signup
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
+
+      if (signInError) throw signInError;
+
       toast({
         title: "Success!",
-        description: "Account created successfully. Please sign in.",
+        description: "Account created successfully. Welcome!",
       });
       
-      navigate(`/${userType}/signin`);
+      navigate(`/${userType}/dashboard`);
       
     } catch (error: any) {
       toast({
