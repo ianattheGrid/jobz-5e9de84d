@@ -84,7 +84,7 @@ const CommissionSection = ({ salary, form }: CommissionSectionProps) => {
               min={2.5}
               max={14}
               step={0.5}
-              className="w-full"
+              className="w-full bg-white"
             />
             <div className="text-sm text-gray-600">
               Total Commission: {formatCurrency(totalCommission)} ({feePercentage}%)
@@ -102,7 +102,7 @@ const CommissionSection = ({ salary, form }: CommissionSectionProps) => {
               min={0}
               max={100}
               step={5}
-              className="w-full"
+              className="w-full bg-white"
             />
             <div className="text-sm text-gray-600">
               Candidate: {splitPercentage}% | Referral: {100 - splitPercentage}%
