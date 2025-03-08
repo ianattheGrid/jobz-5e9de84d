@@ -14,17 +14,6 @@ export const useSignUp = () => {
     console.log('Starting signup process for:', email, userType);
 
     try {
-      // Check if user already exists
-      const { data: existingUser } = await supabase
-        .from('user_roles')
-        .select('role')
-        .eq('user_id', email)
-        .maybeSingle();
-
-      if (existingUser) {
-        throw new Error('User already registered');
-      }
-
       // Attempt to sign up
       const { data: { user }, error: signUpError } = await supabase.auth.signUp({
         email,
@@ -50,8 +39,8 @@ export const useSignUp = () => {
 
       console.log('Signup successful, user data:', user);
 
-      // Wait a bit longer to ensure user is fully created in the database
-      await new Promise(resolve => setTimeout(resolve, 3000));
+      // Wait for user creation and role assignment
+      await new Promise(resolve => setTimeout(resolve, 1000));
 
       if (userType === 'employer') {
         const { error: profileError } = await supabase
@@ -65,9 +54,7 @@ export const useSignUp = () => {
 
         if (profileError) {
           console.error('Error creating employer profile:', profileError);
-          if (profileError.message?.includes('duplicate key')) {
-            throw new Error('This email is already registered');
-          }
+          throw profileError;
         }
       }
 
@@ -83,12 +70,10 @@ export const useSignUp = () => {
       
       let errorMessage = 'An unexpected error occurred during sign up';
       
-      if (error.message?.includes('already registered') || 
-          error.message?.includes('duplicate key') ||
-          error.message?.includes('already exists')) {
+      if (error.message?.includes('User already registered') || 
+          error.message?.includes('already exists') ||
+          error.message?.includes('duplicate key value')) {
         errorMessage = 'This email is already registered. Please sign in instead.';
-      } else if (error.message?.includes('role')) {
-        errorMessage = 'Error setting up user role. Please try again in a few moments.';
       } else if (error.message?.includes('invalid email')) {
         errorMessage = 'Please enter a valid email address.';
       }
