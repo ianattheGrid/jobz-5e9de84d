@@ -41,37 +41,37 @@
 
 /* Form field styles */
 .form-field {
-  @apply bg-card text-foreground border-border;
+  @apply bg-white text-gray-900 border-gray-200;
 }
 
 /* Select styles */
 .select-trigger {
-  @apply bg-card text-foreground border-border;
+  @apply bg-white text-gray-900 border-gray-200;
 }
 
 .select-content {
-  @apply bg-background border border-border text-foreground;
+  @apply bg-white border border-gray-200 text-gray-900;
 }
 
 .select-item {
-  @apply hover:bg-muted cursor-pointer text-foreground;
+  @apply hover:bg-gray-100 cursor-pointer text-gray-900;
 }
 
 /* Override any white backgrounds in dropdowns */
 [role="listbox"],
 [role="combobox"] {
-  @apply bg-background text-foreground !important;
+  @apply bg-white text-gray-900 !important;
 }
 
 [role="option"] {
-  @apply hover:bg-muted text-foreground;
+  @apply hover:bg-gray-100 text-gray-900;
 }
 
 /* Input field styles */
 input, 
 select, 
 textarea {
-  @apply bg-card text-foreground border-border;
+  @apply bg-white text-gray-900 border-gray-200;
 }
 
 /* Card styles */

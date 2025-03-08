@@ -1,3 +1,4 @@
+
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { UseFormReturn } from "react-hook-form";
@@ -17,7 +18,7 @@ export function VacancyForm({ form, onSubmit }: VacancyFormProps) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 text-left">
-        <div className="space-y-8 [&_label]:text-black [&_h3]:text-black">
+        <div className="space-y-8 [&_label]:text-gray-700 [&_h3]:text-gray-900">
           <WorkAreaField control={form.control} />
           <JobDetailsFields control={form.control} />
           <EssentialCriteriaFields control={form.control} />
@@ -25,7 +26,9 @@ export function VacancyForm({ form, onSubmit }: VacancyFormProps) {
           <ApplicationPreferencesField control={form.control} />
         </div>
         <div className="flex justify-start">
-          <Button type="submit" className="bg-red-800 hover:bg-red-900 text-white">Post Vacancy</Button>
+          <Button type="submit" className="bg-primary hover:bg-primary-dark text-white">
+            Post Vacancy
+          </Button>
         </div>
       </form>
     </Form>
