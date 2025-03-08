@@ -14,10 +14,6 @@ export const useSignUp = () => {
     console.log('Starting signup process for:', email, userType);
 
     try {
-      // Sign out any existing session first
-      await supabase.auth.signOut();
-      
-      // If no existing user, proceed with signup
       const { data: { user }, error: signUpError } = await supabase.auth.signUp({
         email,
         password,
