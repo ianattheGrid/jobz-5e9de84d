@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { FormField, FormItem, FormLabel, FormControl } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -42,27 +43,27 @@ const CommissionSection = ({ salary, form }: CommissionSectionProps) => {
   return (
     <div className="space-y-6">
       <FormItem className="space-y-3">
-        <FormLabel>Would you like to attract candidates by offering a "You're Hired" bonus and/or anonymously use recruiters by offering commission?</FormLabel>
+        <FormLabel className="text-gray-900">Would you like to attract candidates by offering a "You're Hired" bonus and/or anonymously use recruiters by offering commission?</FormLabel>
         <RadioGroup
           defaultValue="no"
           onValueChange={handleCommissionChange}
           className="flex flex-row space-x-4"
         >
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="yes" id="yes" />
-            <label htmlFor="yes">Yes</label>
+            <RadioGroupItem value="yes" id="yes" className="text-primary" />
+            <label htmlFor="yes" className="text-gray-900">Yes</label>
           </div>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="no" id="no" />
-            <label htmlFor="no">No</label>
+            <RadioGroupItem value="no" id="no" className="text-primary" />
+            <label htmlFor="no" className="text-gray-900">No</label>
           </div>
         </RadioGroup>
       </FormItem>
 
       {showCommissionStructure && (
-        <div className="space-y-4 p-4 bg-muted/50 rounded-lg">
+        <div className="space-y-4 p-4 bg-white rounded-lg border border-gray-200">
           <div className="space-y-2">
-            <FormLabel>Please select the commission you are prepared to pay (2.5%-14% basic salary)</FormLabel>
+            <FormLabel className="text-gray-900">Please select the commission you are prepared to pay (2.5%-14% basic salary)</FormLabel>
             <Slider
               value={[feePercentage]}
               onValueChange={(value) => setFeePercentage(value[0])}
@@ -71,14 +72,14 @@ const CommissionSection = ({ salary, form }: CommissionSectionProps) => {
               step={0.5}
               className="w-full"
             />
-            <div className="text-sm text-muted-foreground">
+            <div className="text-sm text-gray-600">
               Total Commission: {formatCurrency(totalCommission)} ({feePercentage}%)
             </div>
           </div>
 
           <div className="space-y-2">
-            <FormLabel>Commission Split</FormLabel>
-            <div className="text-sm text-muted-foreground mb-2">
+            <FormLabel className="text-gray-900">Commission Split</FormLabel>
+            <div className="text-sm text-gray-600 mb-2">
               Adjust how the commission is split between the successful candidate and the referrer. This flexibility allows you to incentivize either direct applications or referrals based on your recruitment needs.
             </div>
             <Slider
@@ -89,7 +90,7 @@ const CommissionSection = ({ salary, form }: CommissionSectionProps) => {
               step={5}
               className="w-full"
             />
-            <div className="text-sm text-muted-foreground">
+            <div className="text-sm text-gray-600">
               Candidate: {splitPercentage}% | Referral: {100 - splitPercentage}%
             </div>
           </div>
@@ -99,9 +100,9 @@ const CommissionSection = ({ salary, form }: CommissionSectionProps) => {
             name="candidateCommission"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Candidate Commission Amount</FormLabel>
+                <FormLabel className="text-gray-900">Candidate Commission Amount</FormLabel>
                 <FormControl>
-                  <Input {...field} readOnly />
+                  <Input {...field} readOnly className="bg-white text-gray-900" />
                 </FormControl>
               </FormItem>
             )}
@@ -112,9 +113,9 @@ const CommissionSection = ({ salary, form }: CommissionSectionProps) => {
             name="referralCommission"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Referral Commission Amount</FormLabel>
+                <FormLabel className="text-gray-900">Referral Commission Amount</FormLabel>
                 <FormControl>
-                  <Input {...field} readOnly />
+                  <Input {...field} readOnly className="bg-white text-gray-900" />
                 </FormControl>
               </FormItem>
             )}
