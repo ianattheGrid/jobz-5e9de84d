@@ -14,7 +14,7 @@ export const useSignIn = () => {
       setLoading(true);
       console.log('Starting sign in process...'); 
 
-      const { data: { user }, error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
@@ -22,24 +22,15 @@ export const useSignIn = () => {
       if (error) {
         console.error('Sign in error:', error);
         
-        if (error.message?.includes('Invalid login credentials')) {
-          toast({
-            variant: "destructive",
-            title: "Invalid Credentials",
-            description: "The email or password you entered is incorrect. Please check your credentials and try again.",
-          });
-          return;
-        }
-
         toast({
           variant: "destructive",
-          title: "Error",
-          description: "An error occurred during sign in.",
+          title: "Invalid Credentials",
+          description: "The email or password you entered is incorrect. Please check your credentials and try again.",
         });
         return;
       }
 
-      if (!user) {
+      if (!data.user) {
         throw new Error('No user returned after successful sign in');
       }
 
@@ -47,7 +38,7 @@ export const useSignIn = () => {
       const { data: userRole, error: roleError } = await supabase
         .from('user_roles')
         .select('role')
-        .eq('user_id', user.id)
+        .eq('user_id', data.user.id)
         .maybeSingle();
 
       if (roleError) {
