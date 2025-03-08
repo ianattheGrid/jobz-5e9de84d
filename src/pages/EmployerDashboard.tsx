@@ -137,7 +137,7 @@ const EmployerDashboard = () => {
         <h1 className="text-3xl font-bold mb-2 text-primary">
           Welcome{companyName ? `, ${companyName}` : ''}
         </h1>
-        <p className="text-white mb-8">Manage your job postings and candidates</p>
+        <p className="text-gray-600 mb-8">Manage your job postings and candidates</p>
         
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {menuItems.map((item, index) => (
