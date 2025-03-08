@@ -114,7 +114,7 @@ export default function ManageJobs() {
         <h1 className="text-2xl font-bold text-black">Manage Jobs</h1>
         <Button 
           onClick={() => navigate('/employer/create-vacancy')}
-          className="bg-red-800 hover:bg-red-900 text-white"
+          className="bg-[#D946EF] hover:bg-[#D946EF]/90 text-white"
         >
           Post New Job
         </Button>
