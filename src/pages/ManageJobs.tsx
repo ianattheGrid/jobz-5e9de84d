@@ -105,13 +105,13 @@ export default function ManageJobs() {
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbLink className="text-white">Manage Jobs</BreadcrumbLink>
+            <BreadcrumbLink className="text-white">Jobs</BreadcrumbLink>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
 
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-black">Manage Jobs</h1>
+      <div className="flex justify-between items-center my-6">
+        <h1 className="text-2xl font-bold text-white">Manage Jobs</h1>
         <Button 
           onClick={() => navigate('/employer/create-vacancy')}
           className="bg-primary hover:bg-primary/90 text-white"
