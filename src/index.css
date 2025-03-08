@@ -46,15 +46,15 @@
 
 /* Select styles */
 .select-trigger {
-  @apply bg-white text-gray-900 border-gray-200;
+  @apply bg-white text-gray-900 border-gray-200 hover:border-primary/50 transition-colors;
 }
 
 .select-content {
-  @apply bg-white border border-gray-200 text-gray-900;
+  @apply bg-white border border-gray-200 text-gray-900 shadow-lg;
 }
 
 .select-item {
-  @apply hover:bg-gray-100 cursor-pointer text-gray-900;
+  @apply hover:bg-primary/10 cursor-pointer text-gray-900;
 }
 
 /* Override any white backgrounds in dropdowns */
@@ -64,14 +64,14 @@
 }
 
 [role="option"] {
-  @apply hover:bg-gray-100 text-gray-900;
+  @apply hover:bg-primary/10 text-gray-900;
 }
 
 /* Input field styles */
 input, 
 select, 
 textarea {
-  @apply bg-white text-gray-900 border-gray-200;
+  @apply bg-white text-gray-900 border-gray-200 focus:border-primary/50 focus:ring-primary/50;
 }
 
 /* Card styles */
@@ -81,7 +81,7 @@ textarea {
 
 /* Button styles */
 .btn-primary {
-  @apply bg-primary hover:bg-primary-dark text-white transition-colors;
+  @apply bg-primary hover:bg-primary/90 text-white transition-colors;
 }
 
 /* Pink accent line */
@@ -91,35 +91,26 @@ textarea {
 
 /* Glass effect */
 .glass-effect {
-  @apply bg-card/80 backdrop-blur-md border border-white/10;
-}
-
-/* Dropdown menu styles */
-[data-radix-popper-content-wrapper] {
-  @apply bg-background text-foreground;
-}
-
-.select-dropdown {
-  @apply bg-card text-foreground border-border max-h-60 overflow-auto;
+  @apply bg-white/90 backdrop-blur-md border border-gray-200 shadow-lg;
 }
 
 /* Form specific overrides */
 .form-select-trigger {
-  @apply bg-card text-foreground border-border w-full;
+  @apply bg-white text-gray-900 border-gray-200 w-full;
 }
 
 .form-select-content {
-  @apply bg-card border border-border rounded-md shadow-lg;
+  @apply bg-white border border-gray-200 rounded-md shadow-lg;
 }
 
 /* Ensure dropdowns are visible */
 [data-state="open"] > [role="listbox"] {
-  @apply bg-card border border-border shadow-lg;
+  @apply bg-white border border-gray-200 shadow-lg;
 }
 
 /* Override for specific components */
 .work-area-select,
 .specialization-select,
 .job-title-select {
-  @apply bg-card text-foreground border-border;
+  @apply bg-white text-gray-900 border-gray-200;
 }
