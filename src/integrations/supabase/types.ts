@@ -168,49 +168,34 @@ export type Database = {
         Row: {
           candidate_email: string
           candidate_phone: string | null
-          created_at: string
+          created_at: string | null
           id: number
           job_id: number | null
           status: string | null
-          updated_at: string
-          vr_id: string | null
+          updated_at: string | null
+          vr_id: string
         }
         Insert: {
           candidate_email: string
           candidate_phone?: string | null
-          created_at?: string
+          created_at?: string | null
           id?: number
           job_id?: number | null
           status?: string | null
-          updated_at?: string
-          vr_id?: string | null
+          updated_at?: string | null
+          vr_id: string
         }
         Update: {
           candidate_email?: string
           candidate_phone?: string | null
-          created_at?: string
+          created_at?: string | null
           id?: number
           job_id?: number | null
           status?: string | null
-          updated_at?: string
-          vr_id?: string | null
+          updated_at?: string | null
+          vr_id?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "candidate_recommendations_job_id_fkey"
-            columns: ["job_id"]
-            isOneToOne: false
-            referencedRelation: "jobs"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "candidate_recommendations_vr_id_fkey"
-            columns: ["vr_id"]
-            isOneToOne: false
-            referencedRelation: "virtual_recruiter_profiles"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       commission_negotiations: {
         Row: {
@@ -586,74 +571,66 @@ export type Database = {
       vr_candidate_messages: {
         Row: {
           candidate_email: string
-          created_at: string
+          created_at: string | null
           id: number
           is_flagged: boolean | null
           message_text: string
-          recommendation_id: number
-          updated_at: string
+          recommendation_id: number | null
+          updated_at: string | null
           vr_id: string
         }
         Insert: {
           candidate_email: string
-          created_at?: string
+          created_at?: string | null
           id?: number
           is_flagged?: boolean | null
           message_text: string
-          recommendation_id: number
-          updated_at?: string
+          recommendation_id?: number | null
+          updated_at?: string | null
           vr_id: string
         }
         Update: {
           candidate_email?: string
-          created_at?: string
+          created_at?: string | null
           id?: number
           is_flagged?: boolean | null
           message_text?: string
-          recommendation_id?: number
-          updated_at?: string
+          recommendation_id?: number | null
+          updated_at?: string | null
           vr_id?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "vr_candidate_messages_recommendation_id_fkey"
-            columns: ["recommendation_id"]
-            isOneToOne: false
-            referencedRelation: "candidate_recommendations"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       vr_referrals: {
         Row: {
           candidate_email: string
           candidate_id: string | null
-          created_at: string
+          created_at: string | null
           id: number
           referral_code: string
           signed_up_at: string | null
           status: string
-          vr_id: string | null
+          vr_id: string
         }
         Insert: {
           candidate_email: string
           candidate_id?: string | null
-          created_at?: string
+          created_at?: string | null
           id?: number
           referral_code: string
           signed_up_at?: string | null
           status?: string
-          vr_id?: string | null
+          vr_id: string
         }
         Update: {
           candidate_email?: string
           candidate_id?: string | null
-          created_at?: string
+          created_at?: string | null
           id?: number
           referral_code?: string
           signed_up_at?: string | null
           status?: string
-          vr_id?: string | null
+          vr_id?: string
         }
         Relationships: []
       }

@@ -11,8 +11,7 @@ export const useSignUp = () => {
 
   const signUp = async (email: string, password: string, userType: string, fullName: string, companyName: string) => {
     setLoading(true);
-    console.log('Starting signup process for:', email, userType);
-
+    
     try {
       const { data: { user }, error: signUpError } = await supabase.auth.signUp({
         email,
@@ -20,26 +19,16 @@ export const useSignUp = () => {
         options: {
           data: {
             user_type: userType,
-            email,
-            company_name: companyName,
             full_name: fullName,
           },
         },
       });
 
-      if (signUpError) {
-        console.error('Signup error:', signUpError);
-        throw signUpError;
-      }
+      if (signUpError) throw signUpError;
+      if (!user) throw new Error('No user data returned after signup');
 
-      if (!user) {
-        throw new Error('No user data returned after signup');
-      }
-
-      console.log('Signup successful, user data:', user);
-
-      // Create employer profile if needed
-      if (userType === 'employer') {
+      // Only create employer profile if signing up as employer
+      if (userType === 'employer' && user) {
         const { error: profileError } = await supabase
           .from('employer_profiles')
           .insert({
@@ -49,10 +38,7 @@ export const useSignUp = () => {
             job_title: 'Not specified'
           });
 
-        if (profileError) {
-          console.error('Error creating employer profile:', profileError);
-          throw profileError;
-        }
+        if (profileError) throw profileError;
       }
 
       toast({
@@ -63,24 +49,21 @@ export const useSignUp = () => {
       navigate(`/${userType}/signin`);
       
     } catch (error: any) {
-      console.error('Signup process error:', error);
+      console.error('Signup error:', error);
       
-      let errorMessage = 'An unexpected error occurred during sign up';
-      
-      if (error.message?.toLowerCase().includes('already registered') || 
-          error.message?.toLowerCase().includes('already exists') ||
-          error.message?.toLowerCase().includes('duplicate key value')) {
-        errorMessage = 'This email is already registered. Please sign in instead.';
-        navigate(`/${userType}/signin`);
-      } else if (error.message?.toLowerCase().includes('invalid email')) {
-        errorMessage = 'Please enter a valid email address.';
-      }
+      const errorMessage = error.message?.toLowerCase().includes('already registered') 
+        ? 'This email is already registered. Please sign in instead.'
+        : 'An error occurred during sign up. Please try again.';
 
       toast({
         variant: "destructive",
         title: "Error",
         description: errorMessage,
       });
+
+      if (errorMessage.includes('already registered')) {
+        navigate(`/${userType}/signin`);
+      }
     } finally {
       setLoading(false);
     }
