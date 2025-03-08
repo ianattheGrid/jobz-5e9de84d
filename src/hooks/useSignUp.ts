@@ -4,6 +4,19 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
 
+const createEmployerProfile = async (userId: string, companyName: string, fullName: string) => {
+  const { error } = await supabase
+    .from('employer_profiles')
+    .insert({
+      id: userId,
+      company_name: companyName,
+      full_name: fullName,
+      job_title: 'Not specified'
+    });
+
+  if (error) throw error;
+};
+
 export const useSignUp = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -12,8 +25,7 @@ export const useSignUp = () => {
   const signUp = async (email: string, password: string, userType: string, fullName: string, companyName: string) => {
     try {
       setLoading(true);
-      
-      // First create the user account
+
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
@@ -25,24 +37,28 @@ export const useSignUp = () => {
         },
       });
 
-      if (error) throw error;
+      if (error) {
+        const isAlreadyRegistered = error.message.toLowerCase().includes('already registered');
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: isAlreadyRegistered 
+            ? 'This email is already registered. Please sign in instead.'
+            : error.message,
+        });
+
+        if (isAlreadyRegistered) {
+          navigate(`/${userType}/signin`);
+        }
+        return;
+      }
 
       if (!data.user) {
         throw new Error('No user data returned');
       }
 
-      // Then create the employer profile
       if (userType === 'employer') {
-        const { error: profileError } = await supabase
-          .from('employer_profiles')
-          .insert({
-            id: data.user.id,
-            company_name: companyName,
-            full_name: fullName,
-            job_title: 'Not specified'
-          });
-
-        if (profileError) throw profileError;
+        await createEmployerProfile(data.user.id, companyName, fullName);
       }
 
       toast({
@@ -53,19 +69,11 @@ export const useSignUp = () => {
       navigate(`/${userType}/signin`);
       
     } catch (error: any) {
-      const errorMessage = error.message?.toLowerCase().includes('already registered') 
-        ? 'This email is already registered. Please sign in instead.'
-        : 'An error occurred during sign up. Please try again.';
-
       toast({
         variant: "destructive",
         title: "Error",
-        description: errorMessage,
+        description: error.message || 'An error occurred during sign up. Please try again.',
       });
-
-      if (errorMessage.includes('already registered')) {
-        navigate(`/${userType}/signin`);
-      }
     } finally {
       setLoading(false);
     }
