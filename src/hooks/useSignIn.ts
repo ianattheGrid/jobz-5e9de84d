@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -32,17 +33,6 @@ export const useSignIn = () => {
           return;
         }
 
-        // Handle database schema error specifically
-        if (error.message?.includes('Database error querying schema')) {
-          toast({
-            variant: "destructive",
-            title: "System Error",
-            description: "There was a problem connecting to the database. Please try again in a few minutes or contact support if the problem persists.",
-          });
-          return;
-        }
-
-        // Handle invalid credentials
         if (error.message?.includes('Invalid login credentials')) {
           toast({
             variant: "destructive",
@@ -52,7 +42,6 @@ export const useSignIn = () => {
           return;
         }
 
-        // Generic error handler
         toast({
           variant: "destructive",
           title: "Error",
@@ -65,31 +54,56 @@ export const useSignIn = () => {
         throw new Error('No user returned after successful sign in');
       }
 
-      const userType = user.user_metadata?.user_type?.toLowerCase();
-      console.log('Detected user type:', userType); 
+      // Check both user_metadata and identity_data for user type
+      const userMetadataType = user.user_metadata?.user_type?.toLowerCase();
+      const identityDataType = user.identities?.[0]?.identity_data?.user_type?.toLowerCase();
+      const effectiveUserType = userMetadataType || identityDataType;
+
+      console.log('User types found:', { userMetadataType, identityDataType, effectiveUserType });
 
       // Check if user is trying to sign in with the correct user type
-      if (intendedUserType && userType !== intendedUserType) {
-        toast({
-          variant: "destructive",
-          title: "Access Denied",
-          description: `This login is for ${intendedUserType} accounts only. Please use the correct login page.`,
-        });
-        return;
+      if (intendedUserType && effectiveUserType !== intendedUserType) {
+        console.log('User type mismatch:', { intendedUserType, effectiveUserType });
+        
+        // Query the user_roles table to verify the role
+        const { data: userRole } = await supabase
+          .from('user_roles')
+          .select('role')
+          .eq('user_id', user.id)
+          .single();
+
+        if (!userRole || userRole.role !== intendedUserType) {
+          toast({
+            variant: "destructive",
+            title: "Access Denied",
+            description: `This login is for ${intendedUserType} accounts only. Please use the correct login page.`,
+          });
+          return;
+        }
       }
 
-      if (!userType) {
-        console.error('No user type found in metadata');
+      // Get the user's role from the user_roles table
+      const { data: userRole } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', user.id)
+        .single();
+
+      if (!userRole) {
+        console.error('No user role found');
         toast({
           variant: "destructive",
           title: "Error",
-          description: "User type not found. Please contact support.",
+          description: "User role not found. Please contact support.",
         });
         return;
       }
 
-      // Immediately redirect based on user type
-      switch(userType) {
+      const role = userRole.role;
+      console.log('User role from database:', role);
+
+      // Redirect based on the role from the database
+      switch(role) {
         case 'candidate':
           console.log('Redirecting to candidate dashboard');
           navigate('/candidate/dashboard', { replace: true });
@@ -103,7 +117,7 @@ export const useSignIn = () => {
           navigate('/vr/dashboard', { replace: true });
           break;
         default:
-          console.error('Invalid user type:', userType);
+          console.error('Invalid user type:', role);
           toast({
             variant: "destructive",
             title: "Error",
