@@ -101,3 +101,27 @@ select,
 [data-radix-label] {
   @apply text-gray-900 !important;
 }
+
+/* Select trigger and content styles */
+.select-trigger,
+.select-content {
+  @apply bg-white text-gray-900 border-gray-200 !important;
+}
+
+/* Select dropdown content specific styles */
+.select-content {
+  @apply shadow-lg !important;
+}
+
+/* Select placeholder and value text */
+.select-trigger [data-placeholder],
+.select-value {
+  @apply text-gray-900 !important;
+}
+
+/* FormLabel component override */
+[data-radix-label],
+.form-label,
+.form-field-label {
+  @apply text-gray-900 font-medium text-sm mb-2 block !important;
+}

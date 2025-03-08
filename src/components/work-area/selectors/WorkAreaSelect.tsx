@@ -1,3 +1,4 @@
+
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Control } from "react-hook-form";
@@ -16,7 +17,7 @@ const WorkAreaSelect = ({ control, onWorkAreaChange, defaultValue }: WorkAreaSel
       name="workArea"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Current Area of Work</FormLabel>
+          <FormLabel className="text-gray-900">Current Area of Work</FormLabel>
           <FormControl>
             <Select 
               onValueChange={(value) => {
@@ -25,15 +26,15 @@ const WorkAreaSelect = ({ control, onWorkAreaChange, defaultValue }: WorkAreaSel
               }}
               defaultValue={defaultValue || field.value}
             >
-              <SelectTrigger className="form-select-trigger">
-                <SelectValue placeholder="Select your current area of work" />
+              <SelectTrigger className="select-trigger">
+                <SelectValue placeholder="Select your current area of work" className="text-gray-900" />
               </SelectTrigger>
-              <SelectContent className="form-select-content select-dropdown">
+              <SelectContent className="select-content">
                 {workAreas.map((area) => (
                   <SelectItem 
                     key={area} 
                     value={area}
-                    className="text-foreground hover:bg-muted"
+                    className="text-gray-900"
                   >
                     {area}
                   </SelectItem>

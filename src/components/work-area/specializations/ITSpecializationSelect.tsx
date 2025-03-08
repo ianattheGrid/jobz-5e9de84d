@@ -1,3 +1,4 @@
+
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Control } from "react-hook-form";
@@ -15,7 +16,7 @@ const ITSpecializationSelect = ({ control, onSpecializationChange }: ITSpecializ
       name="itSpecialization"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>IT Specialization</FormLabel>
+          <FormLabel className="text-gray-900">IT Specialization</FormLabel>
           <FormControl>
             <Select 
               onValueChange={(value) => {
@@ -24,12 +25,16 @@ const ITSpecializationSelect = ({ control, onSpecializationChange }: ITSpecializ
               }}
               defaultValue={field.value}
             >
-              <SelectTrigger className="w-full bg-white border border-gray-300">
-                <SelectValue placeholder="Select your IT specialization" />
+              <SelectTrigger className="select-trigger">
+                <SelectValue placeholder="Select your IT specialization" className="text-gray-900" />
               </SelectTrigger>
-              <SelectContent className="bg-white">
+              <SelectContent className="select-content">
                 {itSpecializations.map((specialization) => (
-                  <SelectItem key={specialization} value={specialization}>
+                  <SelectItem 
+                    key={specialization} 
+                    value={specialization}
+                    className="text-gray-900"
+                  >
                     {specialization}
                   </SelectItem>
                 ))}
