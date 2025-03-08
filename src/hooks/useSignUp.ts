@@ -17,7 +17,23 @@ export const useSignUp = () => {
       // Sign out any existing session first
       await supabase.auth.signOut();
       
-      // Attempt to sign up
+      // Try to get user by email first
+      const { data: existingUser } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (existingUser?.user) {
+        toast({
+          variant: "destructive",
+          title: "Account exists",
+          description: "This email is already registered. Please sign in instead.",
+        });
+        navigate(`/${userType}/signin`);
+        return;
+      }
+
+      // If no existing user, proceed with signup
       const { data: { user }, error: signUpError } = await supabase.auth.signUp({
         email,
         password,
@@ -71,12 +87,12 @@ export const useSignUp = () => {
       
       let errorMessage = 'An unexpected error occurred during sign up';
       
-      if (error.message?.includes('already registered') || 
-          error.message?.includes('already exists') ||
-          error.message?.includes('duplicate key value')) {
+      if (error.message?.toLowerCase().includes('already registered') || 
+          error.message?.toLowerCase().includes('already exists') ||
+          error.message?.toLowerCase().includes('duplicate key value')) {
         errorMessage = 'This email is already registered. Please sign in instead.';
         navigate('/employer/signin');
-      } else if (error.message?.includes('invalid email')) {
+      } else if (error.message?.toLowerCase().includes('invalid email')) {
         errorMessage = 'Please enter a valid email address.';
       }
 
