@@ -10,10 +10,11 @@ export const useSignUp = () => {
   const { toast } = useToast();
 
   const signUp = async (email: string, password: string, userType: string, fullName: string, companyName: string) => {
-    setLoading(true);
-    
     try {
-      const { data: { user }, error: signUpError } = await supabase.auth.signUp({
+      setLoading(true);
+      
+      // First create the user account
+      const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -24,15 +25,18 @@ export const useSignUp = () => {
         },
       });
 
-      if (signUpError) throw signUpError;
-      if (!user) throw new Error('No user data returned after signup');
+      if (error) throw error;
 
-      // Only create employer profile if signing up as employer
-      if (userType === 'employer' && user) {
+      if (!data.user) {
+        throw new Error('No user data returned');
+      }
+
+      // Then create the employer profile
+      if (userType === 'employer') {
         const { error: profileError } = await supabase
           .from('employer_profiles')
           .insert({
-            id: user.id,
+            id: data.user.id,
             company_name: companyName,
             full_name: fullName,
             job_title: 'Not specified'
@@ -49,8 +53,6 @@ export const useSignUp = () => {
       navigate(`/${userType}/signin`);
       
     } catch (error: any) {
-      console.error('Signup error:', error);
-      
       const errorMessage = error.message?.toLowerCase().includes('already registered') 
         ? 'This email is already registered. Please sign in instead.'
         : 'An error occurred during sign up. Please try again.';
