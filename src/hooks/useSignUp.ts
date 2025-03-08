@@ -15,7 +15,7 @@ export const useSignUp = () => {
 
     try {
       // First try to sign up the user
-      const { data, error } = await supabase.auth.signUp({
+      const { data: { user }, error: signUpError } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -28,55 +28,57 @@ export const useSignUp = () => {
         },
       });
 
-      if (error) {
-        console.error('Signup error:', error);
-        throw error;
+      if (signUpError) {
+        console.error('Signup error:', signUpError);
+        throw signUpError;
       }
 
-      if (!data.user) {
+      if (!user) {
         throw new Error('No user data returned after signup');
       }
 
-      console.log('Signup successful, user data:', data.user);
+      console.log('Signup successful, user data:', user);
 
-      // Verify the user_roles entry was created
+      // Wait to ensure the user is fully created
+      await new Promise(resolve => setTimeout(resolve, 2000));
+
+      // Verify the user creation by attempting to get the user's role
       const { data: roleData, error: roleError } = await supabase
         .from('user_roles')
         .select('role')
-        .eq('user_id', data.user.id)
+        .eq('user_id', user.id)
         .single();
 
       if (roleError) {
         console.error('Error checking user role:', roleError);
-        throw new Error('Failed to verify user role creation');
+        throw new Error('Could not verify user role creation. Please try signing in.');
       }
 
       console.log('User role verified:', roleData);
 
       // Create employer profile if it's an employer
       if (userType === 'employer') {
-        const { error: profileError } = await supabase
-          .from('employer_profiles')
-          .insert({
-            id: data.user.id,
-            company_name: companyName,
-            full_name: fullName,
-            job_title: 'Not specified' // Default value
-          });
+        try {
+          const { error: profileError } = await supabase
+            .from('employer_profiles')
+            .insert({
+              id: user.id,
+              company_name: companyName,
+              full_name: fullName,
+              job_title: 'Not specified'
+            });
 
-        if (profileError) {
-          console.error('Error creating employer profile:', profileError);
-          throw new Error('Failed to create employer profile');
+          if (profileError) {
+            console.error('Error creating employer profile:', profileError);
+            // Don't throw here, just log the error as the user is already created
+          } else {
+            console.log('Employer profile created successfully');
+          }
+        } catch (err) {
+          console.error('Error in employer profile creation:', err);
         }
-
-        console.log('Employer profile created successfully');
       }
 
-      // Wait a moment to ensure all database operations complete
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
-      console.log('Signup process completed successfully');
-      
       toast({
         title: "Success!",
         description: "Account created successfully. Please sign in.",
@@ -87,10 +89,20 @@ export const useSignUp = () => {
       
     } catch (error: any) {
       console.error('Signup process error:', error);
+      
+      // Handle specific error cases
+      let errorMessage = 'An unexpected error occurred during sign up';
+      
+      if (error.message?.includes('already registered')) {
+        errorMessage = 'This email is already registered. Please sign in instead.';
+      } else if (error.message?.includes('Database error')) {
+        errorMessage = 'Error creating account. Please try again in a few moments.';
+      }
+
       toast({
         variant: "destructive",
         title: "Error",
-        description: error.message || "An unexpected error occurred during sign up",
+        description: errorMessage,
       });
     } finally {
       setLoading(false);
