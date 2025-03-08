@@ -17,22 +17,29 @@ interface VacancyFormProps {
 export function VacancyForm({ form, onSubmit }: VacancyFormProps) {
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 text-left">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="max-w-4xl mx-auto space-y-8 p-6 bg-white rounded-lg shadow-sm">
         <div className="space-y-8">
-          <div className="border-l-4 border-primary pl-4 mb-8">
-            <h1 className="text-2xl font-bold text-gray-900">Create New Vacancy</h1>
-            <p className="text-primary mt-2">Post your job vacancy and find the right candidates.</p>
+          <div className="border-l-4 border-primary pl-6 mb-8">
+            <h1 className="text-3xl font-bold text-gray-900">Create New Vacancy</h1>
+            <p className="text-primary text-lg mt-2">Post your job vacancy and find the right candidates.</p>
           </div>
-          <div className="space-y-8 [&_label]:text-gray-900 [&_label]:font-medium [&_h3]:text-gray-900 [&_h3]:text-xl [&_h3]:font-semibold [&_p]:text-primary/90">
-            <WorkAreaField control={form.control} />
-            <JobDetailsFields control={form.control} />
-            <EssentialCriteriaFields control={form.control} />
-            <CommissionSection salary={form.watch("actualSalary")} form={form} />
-            <ApplicationPreferencesField control={form.control} />
+          
+          <div className="space-y-12">
+            <div className="space-y-8 [&_label]:form-field-label [&_h3]:section-header [&_p]:form-field-description">
+              <WorkAreaField control={form.control} />
+              <JobDetailsFields control={form.control} />
+              <EssentialCriteriaFields control={form.control} />
+              <CommissionSection salary={form.watch("actualSalary")} form={form} />
+              <ApplicationPreferencesField control={form.control} />
+            </div>
           </div>
         </div>
-        <div className="flex justify-start">
-          <Button type="submit" className="bg-primary hover:bg-primary/90 text-white px-8">
+        
+        <div className="flex justify-start pt-6 border-t border-gray-200">
+          <Button 
+            type="submit" 
+            className="bg-primary hover:bg-primary/90 text-white px-8 py-2.5 text-lg"
+          >
             Post Vacancy
           </Button>
         </div>
