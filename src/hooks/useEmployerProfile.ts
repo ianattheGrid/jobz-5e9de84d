@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -14,6 +15,29 @@ export const useEmployerProfile = () => {
     full_name: "",
     job_title: "",
   });
+
+  const isProfileComplete = (profile: EmployerProfile) => {
+    return profile.company_name.length > 0 &&
+           profile.full_name.length > 0 &&
+           profile.job_title.length > 0;
+  };
+
+  const checkProfileCompletion = () => {
+    const currentPath = window.location.pathname;
+    // Skip redirect if already on profile page
+    if (!isProfileComplete(profile) && 
+        !currentPath.includes('/employer/profile') && 
+        (currentPath.includes('/employer/create-vacancy') || 
+         currentPath.includes('/employer/candidate-search'))) {
+      toast({
+        title: "Profile Incomplete",
+        description: "Please complete your profile before accessing this feature.",
+      });
+      navigate('/employer/profile');
+      return false;
+    }
+    return true;
+  };
 
   const loadProfile = async (userId: string) => {
     try {
@@ -96,5 +120,11 @@ export const useEmployerProfile = () => {
     checkUser();
   }, [navigate, toast]);
 
-  return { loading, profile, setProfile, email };
+  useEffect(() => {
+    if (!loading) {
+      checkProfileCompletion();
+    }
+  }, [profile, loading]);
+
+  return { loading, profile, setProfile, email, isProfileComplete: () => isProfileComplete(profile) };
 };

@@ -1,3 +1,4 @@
+
 import { Loader2 } from "lucide-react";
 import {
   Card,
@@ -9,6 +10,9 @@ import {
 import { DeleteAccountDialog } from "@/components/employer/DeleteAccountDialog";
 import { ProfileForm } from "@/components/employer/ProfileForm";
 import { useEmployerProfile } from "@/hooks/useEmployerProfile";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { LayoutDashboard } from "lucide-react";
 
 export default function EmployerProfile() {
   const { loading, profile, setProfile, email } = useEmployerProfile();
@@ -22,13 +26,27 @@ export default function EmployerProfile() {
   }
 
   return (
-    <div className="container mx-auto py-8 px-4">
-      <Card className="max-w-4xl mx-auto">
+    <div className="container mx-auto py-10 px-4">
+      <div className="flex justify-end mb-4">
+        <Link to="/employer/dashboard">
+          <Button 
+            variant="default"
+            className="bg-primary hover:bg-primary/90 text-white gap-2"
+          >
+            <LayoutDashboard className="h-4 w-4" />
+            Dashboard
+          </Button>
+        </Link>
+      </div>
+
+      <Card className="max-w-4xl mx-auto bg-white">
         <CardHeader>
-          <CardTitle>Employer Profile</CardTitle>
-          <CardDescription>
-            Manage your profile information and account settings
-          </CardDescription>
+          <div className="border-l-4 border-primary pl-6 mb-4">
+            <CardTitle className="text-3xl font-bold text-gray-900">Employer Profile</CardTitle>
+            <CardDescription className="text-gray-600 text-lg mt-2">
+              Complete your profile to access all employer features
+            </CardDescription>
+          </div>
         </CardHeader>
         <CardContent>
           <div className="space-y-6">
