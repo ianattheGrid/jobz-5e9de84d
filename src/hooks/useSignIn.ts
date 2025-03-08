@@ -3,7 +3,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { AuthError, AuthApiError } from '@supabase/supabase-js';
 
 export const useSignIn = () => {
   const [loading, setLoading] = useState(false);
@@ -22,17 +21,7 @@ export const useSignIn = () => {
 
       if (error) {
         console.error('Sign in error:', error);
-        let errorMessage = "An error occurred during sign in.";
         
-        if (error.message?.includes('Email not confirmed')) {
-          toast({
-            variant: "destructive",
-            title: "Email Not Verified",
-            description: "Please check your email and verify your account before signing in.",
-          });
-          return;
-        }
-
         if (error.message?.includes('Invalid login credentials')) {
           toast({
             variant: "destructive",
@@ -45,7 +34,7 @@ export const useSignIn = () => {
         toast({
           variant: "destructive",
           title: "Error",
-          description: errorMessage,
+          description: "An error occurred during sign in.",
         });
         return;
       }
@@ -54,43 +43,25 @@ export const useSignIn = () => {
         throw new Error('No user returned after successful sign in');
       }
 
-      // Check both user_metadata and identity_data for user type
-      const userMetadataType = user.user_metadata?.user_type?.toLowerCase();
-      const identityDataType = user.identities?.[0]?.identity_data?.user_type?.toLowerCase();
-      const effectiveUserType = userMetadataType || identityDataType;
-
-      console.log('User types found:', { userMetadataType, identityDataType, effectiveUserType });
-
-      // Check if user is trying to sign in with the correct user type
-      if (intendedUserType && effectiveUserType !== intendedUserType) {
-        console.log('User type mismatch:', { intendedUserType, effectiveUserType });
-        
-        // Query the user_roles table to verify the role
-        const { data: userRole } = await supabase
-          .from('user_roles')
-          .select('role')
-          .eq('user_id', user.id)
-          .single();
-
-        if (!userRole || userRole.role !== intendedUserType) {
-          toast({
-            variant: "destructive",
-            title: "Access Denied",
-            description: `This login is for ${intendedUserType} accounts only. Please use the correct login page.`,
-          });
-          return;
-        }
-      }
-
-      // Get the user's role from the user_roles table
-      const { data: userRole } = await supabase
+      // Get the user's role from the user_roles table - this is our source of truth
+      const { data: userRole, error: roleError } = await supabase
         .from('user_roles')
         .select('role')
         .eq('user_id', user.id)
-        .single();
+        .maybeSingle();
+
+      if (roleError) {
+        console.error('Error fetching user role:', roleError);
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Could not verify user role. Please try again.",
+        });
+        return;
+      }
 
       if (!userRole) {
-        console.error('No user role found');
+        console.error('No user role found in database');
         toast({
           variant: "destructive",
           title: "Error",
@@ -99,25 +70,28 @@ export const useSignIn = () => {
         return;
       }
 
-      const role = userRole.role;
-      console.log('User role from database:', role);
+      // If there's an intended user type, verify it matches
+      if (intendedUserType && userRole.role !== intendedUserType) {
+        toast({
+          variant: "destructive",
+          title: "Access Denied",
+          description: `This login is for ${intendedUserType} accounts only. Please use the correct login page.`,
+        });
+        return;
+      }
 
       // Redirect based on the role from the database
-      switch(role) {
+      switch(userRole.role) {
         case 'candidate':
-          console.log('Redirecting to candidate dashboard');
           navigate('/candidate/dashboard', { replace: true });
           break;
         case 'employer':
-          console.log('Redirecting to employer dashboard');
           navigate('/employer/dashboard', { replace: true });
           break;
         case 'vr':
-          console.log('Redirecting to VR dashboard');
           navigate('/vr/dashboard', { replace: true });
           break;
         default:
-          console.error('Invalid user type:', role);
           toast({
             variant: "destructive",
             title: "Error",
@@ -132,13 +106,11 @@ export const useSignIn = () => {
       });
       
     } catch (error: any) {
-      console.error('Sign in error:', error); 
-      let errorMessage = "An unexpected error occurred. Please try again later.";
-      
+      console.error('Sign in error:', error);
       toast({
         variant: "destructive",
         title: "Error",
-        description: errorMessage,
+        description: "An unexpected error occurred. Please try again later.",
       });
     } finally {
       setLoading(false);
