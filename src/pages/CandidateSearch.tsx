@@ -1,10 +1,13 @@
+
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
+import { Button } from "@/components/ui/button";
 import { SearchForm } from "@/components/candidate-search/SearchForm";
 import { SearchResults } from "@/components/candidate-search/SearchResults";
 import { searchFormSchema } from "@/components/candidate-search/searchFormSchema";
+import { LayoutDashboard } from "lucide-react";
 import type { z } from "zod";
 
 interface CandidateProfile {
@@ -162,6 +165,18 @@ export default function CandidateSearch() {
   return (
     <div className="min-h-screen bg-[#121212]">
       <div className="container max-w-7xl mx-auto px-4 py-8">
+        <div className="flex justify-end mb-4">
+          <Link to="/employer/dashboard">
+            <Button 
+              variant="default"
+              className="bg-primary hover:bg-primary/90 text-white gap-2"
+            >
+              <LayoutDashboard className="h-4 w-4" />
+              Dashboard
+            </Button>
+          </Link>
+        </div>
+
         <div className="flex flex-col gap-8">
           <div>
             <h1 className="text-4xl font-bold text-primary [&]:!text-primary">Search Candidates</h1>
