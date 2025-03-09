@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Database } from "@/integrations/supabase/types";
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil, Trash2, LayoutDashboard } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -96,6 +96,18 @@ export default function ManageJobs() {
 
   return (
     <div className="container mx-auto py-8 px-4">
+      <div className="flex justify-end mb-4">
+        <Link to="/employer/dashboard">
+          <Button 
+            variant="default"
+            className="bg-primary hover:bg-primary/90 text-white gap-2"
+          >
+            <LayoutDashboard className="h-4 w-4" />
+            Dashboard
+          </Button>
+        </Link>
+      </div>
+
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
