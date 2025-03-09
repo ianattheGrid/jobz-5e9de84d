@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -166,7 +165,7 @@ export default function CandidateSearch() {
         <div className="flex flex-col gap-8">
           <div>
             <h1 className="text-4xl font-bold text-[#FF69B4]">Search Candidates</h1>
-            <p className="mt-2 text-white">
+            <p className="mt-2 text-neutral-200">
               Find the perfect candidates for your roles by using our advanced search filters.
             </p>
           </div>
