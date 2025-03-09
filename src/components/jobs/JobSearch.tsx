@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -8,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { JobSearchSchema, jobSearchSchema } from "./JobSearchSchema";
 import CommissionFilterField from "./CommissionFilterField";
+import { PRIMARY_COLOR_PATTERN } from "@/styles/colorPatterns";
 
 interface JobSearchProps {
   onSearch: (data: JobSearchSchema) => void;
@@ -36,8 +36,8 @@ const JobSearch = ({ onSearch }: JobSearchProps) => {
         onClick={() => setIsExpanded(!isExpanded)}
       >
         <div className="flex items-center mb-2">
-          <Search className="h-5 w-5 text-white mr-2" />
-          <h2 className="text-lg font-semibold text-white">
+          <Search className="h-5 w-5 text-primary mr-2" />
+          <h2 className={`text-lg font-semibold ${PRIMARY_COLOR_PATTERN}`}>
             Find Your Perfect Job Match (Click here)
           </h2>
         </div>
