@@ -47,7 +47,7 @@ export const DashboardMenu = () => {
     {
       title: "Contact Us",
       icon: <MessageSquare className="h-6 w-6" />,
-      path: "#",
+      path: "/employer/contact",
       description: "Get in touch with our support team"
     }
   ];
@@ -71,3 +71,4 @@ export const DashboardMenu = () => {
     </div>
   );
 };
+
