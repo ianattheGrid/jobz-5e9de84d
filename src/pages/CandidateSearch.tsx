@@ -165,8 +165,8 @@ export default function CandidateSearch() {
       <div className="container max-w-7xl mx-auto px-4 py-8">
         <div className="flex flex-col gap-8">
           <div>
-            <h1 className="text-4xl font-bold text-[#D946EF]">Search Candidates</h1>
-            <p className="mt-2 text-white/90">
+            <h1 className="text-4xl font-bold text-[#FF69B4]">Search Candidates</h1>
+            <p className="mt-2 text-white">
               Find the perfect candidates for your roles by using our advanced search filters.
             </p>
           </div>
