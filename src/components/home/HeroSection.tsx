@@ -1,3 +1,4 @@
+
 import { Link } from "react-router-dom";
 
 export const HeroSection = () => {
@@ -11,7 +12,7 @@ export const HeroSection = () => {
       <div className="absolute inset-0 bg-black/40" />
       <div className="relative container mx-auto px-4 h-full flex items-center pt-16 md:pt-0">
         <div className="max-w-2xl text-white">
-          <h1 className="text-[#FF69B4] text-4xl md:text-5xl font-bold mb-4 drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]">
+          <h1 className="[&]:!text-[#FF69B4] text-4xl md:text-5xl font-bold mb-4 drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]">
             Revolutionising Hiring with AI, Automation, and Human Ingenuity.
           </h1>
           <p className="text-xl mb-8">
