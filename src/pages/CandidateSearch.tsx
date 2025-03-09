@@ -150,10 +150,10 @@ export default function CandidateSearch() {
 
   if (loading) {
     return (
-      <div className="container mx-auto py-8 px-4">
-        <div className="max-w-5xl mx-auto">
+      <div className="min-h-screen bg-background">
+        <div className="container max-w-7xl mx-auto px-4 py-8">
           <div className="flex items-center justify-center h-32">
-            <p className="text-gray-500">Loading...</p>
+            <p className="text-white">Loading...</p>
           </div>
         </div>
       </div>
@@ -161,33 +161,35 @@ export default function CandidateSearch() {
   }
 
   return (
-    <div className="container mx-auto py-8 px-4">
-      <div className="max-w-5xl mx-auto">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-[#D946EF]">Search Candidates</h1>
-          <p className="mt-2 text-white">
-            Find the perfect candidates for your roles by using our advanced search filters.
-          </p>
-        </div>
-
-        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-          <div className="mb-6">
-            <h2 className="text-xl font-semibold text-gray-900">Search Filters</h2>
-            <p className="text-sm text-gray-600 mt-1">
-              Use the filters below to narrow down your candidate search.
+    <div className="min-h-screen bg-background">
+      <div className="container max-w-7xl mx-auto px-4 py-8">
+        <div className="flex flex-col gap-8">
+          <div>
+            <h1 className="text-4xl font-bold text-[#D946EF]">Search Candidates</h1>
+            <p className="mt-2 text-white/90">
+              Find the perfect candidates for your roles by using our advanced search filters.
             </p>
           </div>
-          <SearchForm onSubmit={onSubmit} />
-        </div>
 
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <div className="mb-6">
-            <h2 className="text-xl font-semibold text-gray-900">Search Results</h2>
-            <p className="text-sm text-gray-600 mt-1">
-              View and filter through matching candidates.
-            </p>
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="mb-6">
+              <h2 className="text-xl font-semibold text-gray-900">Search Filters</h2>
+              <p className="text-sm text-gray-600 mt-1">
+                Use the filters below to narrow down your candidate search.
+              </p>
+            </div>
+            <SearchForm onSubmit={onSubmit} />
           </div>
-          <SearchResults candidates={candidates} />
+
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="mb-6">
+              <h2 className="text-xl font-semibold text-gray-900">Search Results</h2>
+              <p className="text-sm text-gray-600 mt-1">
+                View and filter through matching candidates.
+              </p>
+            </div>
+            <SearchResults candidates={candidates} />
+          </div>
         </div>
       </div>
     </div>

@@ -83,7 +83,10 @@ export function SearchForm({ onSubmit }: SearchFormProps) {
         </div>
         
         <div className="flex justify-end mt-8">
-          <Button type="submit" className="bg-red-800 hover:bg-red-900 text-white px-8">
+          <Button 
+            type="submit" 
+            className="bg-[#D946EF] hover:bg-[#D946EF]/90 text-white w-full sm:w-auto px-8"
+          >
             Search Candidates
           </Button>
         </div>
