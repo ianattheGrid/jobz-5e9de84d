@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -68,7 +69,7 @@ export const SignUpForm = ({ onSubmit, loading, userType, showCompanyField = fal
         </Alert>
       )}
       <div className="space-y-2">
-        <Label htmlFor="fullName">Full Name</Label>
+        <Label htmlFor="fullName" className="text-gray-900">Full Name</Label>
         <Input 
           id="fullName" 
           type="text" 
@@ -76,10 +77,11 @@ export const SignUpForm = ({ onSubmit, loading, userType, showCompanyField = fal
           onChange={(e) => setFullName(e.target.value)}
           placeholder="Enter your full name" 
           required
+          className="bg-[#000000e6] text-white placeholder:text-gray-400"
         />
       </div>
       <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
+        <Label htmlFor="email" className="text-gray-900">Email</Label>
         <Input 
           id="email" 
           type="email" 
@@ -87,11 +89,12 @@ export const SignUpForm = ({ onSubmit, loading, userType, showCompanyField = fal
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Enter your email" 
           required
+          className="bg-[#000000e6] text-white placeholder:text-gray-400"
         />
       </div>
       {showCompanyField && (
         <div className="space-y-2">
-          <Label htmlFor="companyName">Company Name</Label>
+          <Label htmlFor="companyName" className="text-gray-900">Company Name</Label>
           <Input 
             id="companyName" 
             type="text" 
@@ -99,11 +102,12 @@ export const SignUpForm = ({ onSubmit, loading, userType, showCompanyField = fal
             onChange={(e) => setCompanyName(e.target.value)}
             placeholder="Enter your company name" 
             required
+            className="bg-[#000000e6] text-white placeholder:text-gray-400"
           />
         </div>
       )}
       <div className="space-y-2">
-        <Label htmlFor="password">Password</Label>
+        <Label htmlFor="password" className="text-gray-900">Password</Label>
         <Input 
           id="password" 
           type="password" 
@@ -111,14 +115,19 @@ export const SignUpForm = ({ onSubmit, loading, userType, showCompanyField = fal
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Create a password" 
           required
+          className="bg-[#000000e6] text-white placeholder:text-gray-400"
         />
       </div>
-      <Button className="w-full bg-primary hover:bg-primary-dark text-white" type="submit" disabled={loading}>
+      <Button 
+        className="w-full bg-[#D946EF] hover:bg-[#D946EF]/90 text-white" 
+        type="submit" 
+        disabled={loading}
+      >
         {loading ? "Signing up..." : "Sign Up"}
       </Button>
       <div className="text-center text-sm text-muted-foreground">
         Already have an account?{" "}
-        <Link to={getSignInLink()} className="text-primary hover:underline">
+        <Link to={getSignInLink()} className="text-[#D946EF] hover:underline">
           Sign In
         </Link>
       </div>
