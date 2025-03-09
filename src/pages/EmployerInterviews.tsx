@@ -136,25 +136,25 @@ const EmployerInterviews = () => {
 
   return (
     <div className="container mx-auto py-8">
-      <h1 className="text-3xl font-bold mb-8 text-red-800">Interview Schedule</h1>
+      <h1 className="text-3xl font-bold mb-8 text-primary [&]:!text-primary">Interview Schedule</h1>
 
       <Tabs defaultValue="today" className="space-y-6">
         <TabsList className="bg-red-50">
           <TabsTrigger 
             value="today"
-            className="data-[state=active]:bg-red-800 data-[state=active]:text-white"
+            className="data-[state=active]:bg-primary data-[state=active]:text-white"
           >
             Today's Interviews ({today.length})
           </TabsTrigger>
           <TabsTrigger 
             value="upcoming"
-            className="data-[state=active]:bg-red-800 data-[state=active]:text-white"
+            className="data-[state=active]:bg-primary data-[state=active]:text-white"
           >
             Upcoming Interviews ({future.length})
           </TabsTrigger>
           <TabsTrigger 
             value="past"
-            className="data-[state=active]:bg-red-800 data-[state=active]:text-white"
+            className="data-[state=active]:bg-primary data-[state=active]:text-white"
           >
             Past Interviews ({past.length})
           </TabsTrigger>
