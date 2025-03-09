@@ -59,7 +59,10 @@ export const DashboardMenu = () => {
           key={index}
           variant="outline"
           className="h-auto p-6 flex flex-col items-center gap-4 bg-white hover:bg-red-50 transition-all duration-200 border border-gray-200 rounded-lg shadow-sm hover:shadow-md"
-          onClick={() => navigate(item.path)}
+          onClick={() => {
+            console.log('Navigating to:', item.path); // Add debug log
+            navigate(item.path);
+          }}
         >
           <div className="text-red-800">{item.icon}</div>
           <div className="text-center">
@@ -71,4 +74,3 @@ export const DashboardMenu = () => {
     </div>
   );
 };
-
