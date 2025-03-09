@@ -1,11 +1,9 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2, Upload } from "lucide-react";
-import { FormLabel } from "@/components/ui/form";
 
 interface FileUploadSectionProps {
   userId: string;
@@ -53,7 +51,6 @@ export const FileUploadSection = ({ userId, currentProfilePicture, currentCompan
         description: `${isProfile ? 'Profile picture' : 'Company logo'} uploaded successfully`,
       });
 
-      // Reload the page to show the new file
       window.location.reload();
     } catch (error: any) {
       toast({
@@ -69,7 +66,7 @@ export const FileUploadSection = ({ userId, currentProfilePicture, currentCompan
   return (
     <div className="space-y-6">
       <div className="space-y-4">
-        <FormLabel>Profile Picture</FormLabel>
+        <div className="text-sm font-medium">Profile Picture</div>
         <div className="flex items-center gap-4">
           <Button
             variant="outline"
@@ -102,7 +99,7 @@ export const FileUploadSection = ({ userId, currentProfilePicture, currentCompan
       </div>
 
       <div className="space-y-4">
-        <FormLabel>Company Logo</FormLabel>
+        <div className="text-sm font-medium">Company Logo</div>
         <div className="flex items-center gap-4">
           <Button
             variant="outline"

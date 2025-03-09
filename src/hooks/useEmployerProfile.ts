@@ -15,6 +15,9 @@ export const useEmployerProfile = () => {
     company_name: "",
     full_name: "",
     job_title: "",
+    company_website: null,
+    company_logo_url: null,
+    profile_picture_url: null,
   });
 
   const isProfileComplete = (profile: EmployerProfile) => {
@@ -68,6 +71,9 @@ export const useEmployerProfile = () => {
               company_name: "",
               full_name: "",
               job_title: "",
+              company_website: null,
+              company_logo_url: null,
+              profile_picture_url: null,
             }
           ]);
 
@@ -78,6 +84,9 @@ export const useEmployerProfile = () => {
           company_name: "",
           full_name: "",
           job_title: "",
+          company_website: null,
+          company_logo_url: null,
+          profile_picture_url: null,
         });
       }
     } catch (error: any) {
