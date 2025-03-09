@@ -77,7 +77,7 @@ export const SignUpForm = ({ onSubmit, loading, userType, showCompanyField = fal
           onChange={(e) => setFullName(e.target.value)}
           placeholder="Enter your full name" 
           required
-          className="bg-[#000000e6] text-white placeholder:text-gray-400"
+          className="bg-[#000000e6] text-white placeholder:text-gray-400 border-gray-200"
         />
       </div>
       <div className="space-y-2">
@@ -89,7 +89,7 @@ export const SignUpForm = ({ onSubmit, loading, userType, showCompanyField = fal
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Enter your email" 
           required
-          className="bg-[#000000e6] text-white placeholder:text-gray-400"
+          className="bg-[#000000e6] text-white placeholder:text-gray-400 border-gray-200"
         />
       </div>
       {showCompanyField && (
@@ -102,7 +102,7 @@ export const SignUpForm = ({ onSubmit, loading, userType, showCompanyField = fal
             onChange={(e) => setCompanyName(e.target.value)}
             placeholder="Enter your company name" 
             required
-            className="bg-[#000000e6] text-white placeholder:text-gray-400"
+            className="bg-[#000000e6] text-white placeholder:text-gray-400 border-gray-200"
           />
         </div>
       )}
@@ -115,17 +115,17 @@ export const SignUpForm = ({ onSubmit, loading, userType, showCompanyField = fal
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Create a password" 
           required
-          className="bg-[#000000e6] text-white placeholder:text-gray-400"
+          className="bg-[#000000e6] text-white placeholder:text-gray-400 border-gray-200"
         />
       </div>
       <Button 
-        className="w-full bg-[#D946EF] hover:bg-[#D946EF]/90 text-white" 
+        className="w-full bg-[#D946EF] hover:bg-[#D946EF]/90 text-white mt-6" 
         type="submit" 
         disabled={loading}
       >
         {loading ? "Signing up..." : "Sign Up"}
       </Button>
-      <div className="text-center text-sm text-muted-foreground">
+      <div className="text-center text-sm text-gray-600">
         Already have an account?{" "}
         <Link to={getSignInLink()} className="text-[#D946EF] hover:underline">
           Sign In

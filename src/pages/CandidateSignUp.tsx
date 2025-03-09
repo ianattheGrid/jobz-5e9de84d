@@ -11,12 +11,12 @@ const CandidateSignUp = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-white">
       <NavBar />
       <div className="container mx-auto px-4 py-8 pt-24">
         <div className="max-w-md mx-auto">
-          <h1 className="text-3xl font-bold text-center mb-8 text-gray-900">Sign Up as Candidate</h1>
-          <div className="bg-white rounded-lg shadow-lg p-6 border border-gray-200">
+          <h1 className="text-2xl font-bold text-center mb-8 text-gray-900">Sign Up as Candidate</h1>
+          <div className="bg-white rounded-lg shadow-lg p-6">
             <SignUpForm 
               onSubmit={handleSubmit} 
               loading={loading} 
