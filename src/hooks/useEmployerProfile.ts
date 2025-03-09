@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -52,11 +53,11 @@ export const useEmployerProfile = () => {
         setProfile({
           id: userId,
           company_name: data.company_name || "",
-          full_name: data.full_name || "",
-          job_title: data.job_title || "",
           company_website: data.company_website,
           company_logo_url: data.company_logo_url,
           profile_picture_url: data.profile_picture_url,
+          full_name: data.full_name || "",
+          job_title: data.job_title || "",
         });
       } else {
         const { error: createError } = await supabase
