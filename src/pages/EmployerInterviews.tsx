@@ -10,8 +10,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useAuth } from "@/hooks/useAuth";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
+import { LayoutDashboard } from "lucide-react";
 
 interface Interview {
   id: number;
@@ -136,6 +138,18 @@ const EmployerInterviews = () => {
 
   return (
     <div className="container mx-auto py-8">
+      <div className="flex justify-end mb-4">
+        <Link to="/employer/dashboard">
+          <Button 
+            variant="default"
+            className="bg-primary hover:bg-primary/90 text-white gap-2"
+          >
+            <LayoutDashboard className="h-4 w-4" />
+            Dashboard
+          </Button>
+        </Link>
+      </div>
+
       <h1 className="text-3xl font-bold mb-8 text-primary [&]:!text-primary">Interview Schedule</h1>
 
       <Tabs defaultValue="today" className="space-y-6">
