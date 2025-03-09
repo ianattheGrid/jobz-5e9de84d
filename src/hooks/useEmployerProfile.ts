@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -11,6 +10,7 @@ export const useEmployerProfile = () => {
   const [loading, setLoading] = useState(true);
   const [email, setEmail] = useState("");
   const [profile, setProfile] = useState<EmployerProfile>({
+    id: "",
     company_name: "",
     full_name: "",
     job_title: "",
@@ -24,7 +24,6 @@ export const useEmployerProfile = () => {
 
   const checkProfileCompletion = () => {
     const currentPath = window.location.pathname;
-    // Skip redirect if already on profile page
     if (!isProfileComplete(profile) && 
         !currentPath.includes('/employer/profile') && 
         (currentPath.includes('/employer/create-vacancy') || 
@@ -51,12 +50,15 @@ export const useEmployerProfile = () => {
 
       if (data) {
         setProfile({
+          id: userId,
           company_name: data.company_name || "",
           full_name: data.full_name || "",
           job_title: data.job_title || "",
+          company_website: data.company_website,
+          company_logo_url: data.company_logo_url,
+          profile_picture_url: data.profile_picture_url,
         });
       } else {
-        // Create a new profile if none exists
         const { error: createError } = await supabase
           .from('employer_profiles')
           .insert([
@@ -70,21 +72,12 @@ export const useEmployerProfile = () => {
 
         if (createError) throw createError;
         
-        // Fetch the newly created profile
-        const { data: newProfile, error: fetchError } = await supabase
-          .from('employer_profiles')
-          .select('*')
-          .eq('id', userId)
-          .single();
-
-        if (fetchError) throw fetchError;
-        if (newProfile) {
-          setProfile({
-            company_name: newProfile.company_name || "",
-            full_name: newProfile.full_name || "",
-            job_title: newProfile.job_title || "",
-          });
-        }
+        setProfile({
+          id: userId,
+          company_name: "",
+          full_name: "",
+          job_title: "",
+        });
       }
     } catch (error: any) {
       toast({
