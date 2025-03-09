@@ -243,7 +243,9 @@ export type Database = {
       }
       employer_profiles: {
         Row: {
+          company_logo_url: string | null
           company_name: string
+          company_website: string | null
           created_at: string
           full_name: string
           id: string
@@ -252,7 +254,9 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          company_logo_url?: string | null
           company_name: string
+          company_website?: string | null
           created_at?: string
           full_name: string
           id: string
@@ -261,7 +265,9 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          company_logo_url?: string | null
           company_name?: string
+          company_website?: string | null
           created_at?: string
           full_name?: string
           id?: string

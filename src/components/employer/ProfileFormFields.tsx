@@ -36,6 +36,24 @@ export function ProfileFormFields({ control }: ProfileFormFieldsProps) {
 
       <FormField
         control={control}
+        name="company_website"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel className="text-gray-900 font-medium">Company Website</FormLabel>
+            <FormControl>
+              <Input 
+                placeholder="https://www.example.com" 
+                className="bg-white border-gray-200 text-gray-900" 
+                {...field} 
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
+      <FormField
+        control={control}
         name="full_name"
         render={({ field }) => (
           <FormItem>
@@ -61,24 +79,6 @@ export function ProfileFormFields({ control }: ProfileFormFieldsProps) {
             <FormControl>
               <Input 
                 placeholder="Enter your job title" 
-                className="bg-white border-gray-200 text-gray-900" 
-                {...field} 
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-
-      <FormField
-        control={control}
-        name="linkedin_url"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel className="text-gray-900 font-medium">LinkedIn Profile URL (Optional)</FormLabel>
-            <FormControl>
-              <Input 
-                placeholder="Enter your LinkedIn URL" 
                 className="bg-white border-gray-200 text-gray-900" 
                 {...field} 
               />

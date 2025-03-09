@@ -1,3 +1,4 @@
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -7,27 +8,32 @@ import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { ProfileCard } from "@/components/shared/ProfileCard";
 import { ProfileFormFields } from "./ProfileFormFields";
+import { FileUploadSection } from "./FileUploadSection";
 
 const formSchema = z.object({
   company_name: z.string().min(2, {
     message: "Company name must be at least 2 characters.",
   }),
+  company_website: z.string().url({
+    message: "Please enter a valid URL.",
+  }).optional().or(z.literal('')),
   full_name: z.string().min(2, {
     message: "Name must be at least 2 characters.",
   }),
   job_title: z.string().min(2, {
     message: "Job title must be at least 2 characters.",
   }),
-  linkedin_url: z.string().url().optional().or(z.literal('')),
 });
 
 export type FormValues = z.infer<typeof formSchema>;
 
 interface EmployerProfile {
   company_name: string;
+  company_website?: string;
   full_name: string;
   job_title: string;
-  linkedin_url?: string;
+  profile_picture_url?: string | null;
+  company_logo_url?: string | null;
 }
 
 interface ProfileFormProps {
@@ -42,9 +48,9 @@ export function ProfileForm({ profile, setProfile, email }: ProfileFormProps) {
     resolver: zodResolver(formSchema),
     defaultValues: {
       company_name: profile.company_name || "",
+      company_website: profile.company_website || "",
       full_name: profile.full_name || "",
       job_title: profile.job_title || "",
-      linkedin_url: profile.linkedin_url || "",
     },
   });
 
@@ -61,33 +67,18 @@ export function ProfileForm({ profile, setProfile, email }: ProfileFormProps) {
         return;
       }
 
-      const dbValues = {
-        id: session.user.id,
-        company_name: values.company_name,
-        full_name: values.full_name,
-        job_title: values.job_title,
-        linkedin_url: values.linkedin_url,
-      };
-
       const { error } = await supabase
         .from('employer_profiles')
-        .upsert(dbValues);
-
-      if (error) {
-        console.error('Error updating profile:', error);
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description: error.message || "Failed to update profile",
+        .upsert({
+          id: session.user.id,
+          ...values
         });
-        return;
-      }
+
+      if (error) throw error;
 
       setProfile({
-        company_name: values.company_name,
-        full_name: values.full_name,
-        job_title: values.job_title,
-        linkedin_url: values.linkedin_url,
+        ...profile,
+        ...values
       });
       
       toast({
@@ -111,8 +102,14 @@ export function ProfileForm({ profile, setProfile, email }: ProfileFormProps) {
         additionalInfo={[
           { label: "Company", value: profile.company_name },
           { label: "Email", value: email },
-          ...(profile.linkedin_url ? [{ label: "LinkedIn", value: profile.linkedin_url }] : [])
+          ...(profile.company_website ? [{ label: "Website", value: profile.company_website }] : [])
         ]}
+      />
+
+      <FileUploadSection 
+        userId={profile.id}
+        currentProfilePicture={profile.profile_picture_url}
+        currentCompanyLogo={profile.company_logo_url}
       />
 
       <Form {...form}>
