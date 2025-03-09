@@ -9,6 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { ProfileCard } from "@/components/shared/ProfileCard";
 import { ProfileFormFields } from "./ProfileFormFields";
 import { FileUploadSection } from "./FileUploadSection";
+import { EmployerProfile } from "@/types/employer";
 
 const formSchema = z.object({
   company_name: z.string().min(2, {
@@ -27,15 +28,6 @@ const formSchema = z.object({
 
 export type FormValues = z.infer<typeof formSchema>;
 
-interface EmployerProfile {
-  company_name: string;
-  company_website?: string;
-  full_name: string;
-  job_title: string;
-  profile_picture_url?: string | null;
-  company_logo_url?: string | null;
-}
-
 interface ProfileFormProps {
   profile: EmployerProfile;
   setProfile: (profile: EmployerProfile) => void;
@@ -47,10 +39,10 @@ export function ProfileForm({ profile, setProfile, email }: ProfileFormProps) {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      company_name: profile.company_name || "",
+      company_name: profile.company_name,
       company_website: profile.company_website || "",
-      full_name: profile.full_name || "",
-      job_title: profile.job_title || "",
+      full_name: profile.full_name,
+      job_title: profile.job_title,
     },
   });
 
@@ -67,18 +59,23 @@ export function ProfileForm({ profile, setProfile, email }: ProfileFormProps) {
         return;
       }
 
+      const updateData = {
+        id: session.user.id,
+        company_name: values.company_name,
+        company_website: values.company_website,
+        full_name: values.full_name,
+        job_title: values.job_title,
+      };
+
       const { error } = await supabase
         .from('employer_profiles')
-        .upsert({
-          id: session.user.id,
-          ...values
-        });
+        .upsert(updateData);
 
       if (error) throw error;
 
       setProfile({
         ...profile,
-        ...values
+        ...updateData
       });
       
       toast({
@@ -99,6 +96,7 @@ export function ProfileForm({ profile, setProfile, email }: ProfileFormProps) {
       <ProfileCard
         fullName={profile.full_name}
         title={profile.job_title}
+        profilePicture={profile.profile_picture_url || undefined}
         additionalInfo={[
           { label: "Company", value: profile.company_name },
           { label: "Email", value: email },

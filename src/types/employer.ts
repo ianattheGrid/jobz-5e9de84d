@@ -1,5 +1,6 @@
 
 export interface EmployerProfile {
+  id: string;
   company_name: string;
   company_website?: string;
   company_logo_url?: string | null;
