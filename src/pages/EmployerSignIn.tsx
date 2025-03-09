@@ -9,6 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useSignIn } from "@/hooks/useSignIn";
 import NavBar from "@/components/NavBar";
+import { PRIMARY_COLOR_PATTERN } from "@/styles/colorPatterns";
 
 const EmployerSignIn = () => {
   const [email, setEmail] = useState("");
@@ -53,8 +54,8 @@ const EmployerSignIn = () => {
         <Card className="w-full max-w-md">
           <CardHeader className="space-y-1">
             <div className="flex items-center justify-center gap-2">
-              <Building2 className="h-8 w-8 text-[#FFB6C1]" />
-              <CardTitle className="text-2xl">Employer Sign In</CardTitle>
+              <Building2 className="h-8 w-8 text-primary" />
+              <CardTitle className={`text-2xl ${PRIMARY_COLOR_PATTERN}`}>Employer Sign In</CardTitle>
             </div>
             <CardDescription>
               {resetMode ? "Reset your password" : "Sign in to manage your job postings"}

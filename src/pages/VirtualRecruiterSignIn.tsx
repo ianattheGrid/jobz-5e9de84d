@@ -9,6 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useSignIn } from "@/hooks/useSignIn";
 import NavBar from "@/components/NavBar";
+import { PRIMARY_COLOR_PATTERN } from "@/styles/colorPatterns";
 
 const VirtualRecruiterSignIn = () => {
   const [email, setEmail] = useState("");
@@ -54,7 +55,7 @@ const VirtualRecruiterSignIn = () => {
           <CardHeader className="space-y-1">
             <div className="flex items-center justify-center gap-2">
               <UserPlus className="h-8 w-8 text-primary" />
-              <CardTitle className="text-2xl">Virtual Recruiter Sign In</CardTitle>
+              <CardTitle className={`text-2xl ${PRIMARY_COLOR_PATTERN}`}>Virtual Recruiter Sign In</CardTitle>
             </div>
             <CardDescription>
               {resetMode ? "Reset your password" : "Sign in to manage your recommendations"}
