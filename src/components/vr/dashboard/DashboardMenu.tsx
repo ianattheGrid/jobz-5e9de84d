@@ -60,7 +60,7 @@ export const DashboardMenu = () => {
           variant="outline"
           className="h-auto p-6 flex flex-col items-center gap-4 bg-white hover:bg-red-50 transition-all duration-200 border border-gray-200 rounded-lg shadow-sm hover:shadow-md"
           onClick={() => {
-            console.log('Navigating to:', item.path); // Add debug log
+            console.log('Navigating to:', item.path);
             navigate(item.path);
           }}
         >

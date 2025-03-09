@@ -86,6 +86,10 @@ export const routes = [
     element: <ManageJobs />
   },
   {
+    path: "/employer/candidate-search",
+    element: <CandidateSearch />,
+  },
+  {
     path: "/vr/signup",
     element: <VirtualRecruiterSignUp />
   },

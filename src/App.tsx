@@ -14,7 +14,6 @@ const queryClient = new QueryClient({
 });
 
 function App() {
-  // Enhanced debug logging
   console.log('Route Debug:', {
     currentPath: window.location.pathname,
     availableRoutes: routes.map(r => ({ path: r.path, element: r.element?.type?.name })),
@@ -27,19 +26,18 @@ function App() {
       <Router>
         <AppLayout>
           <Routes>
-            {/* Explicitly define the dummy profile route first */}
             <Route 
               path="/candidate/dummy-profile" 
               element={routes.find(r => r.path === '/candidate/dummy-profile')?.element} 
             />
             
-            {/* Then map through the rest of the routes */}
             {routes.filter(route => route.path !== '/candidate/dummy-profile').map((route) => {
               const requiresAuth = route.path.startsWith('/dashboard') || 
                                  route.path.startsWith('/profile') || 
                                  route.path.startsWith('/interviews') || 
                                  route.path.startsWith('/create-vacancy') || 
                                  route.path.startsWith('/manage-jobs') || 
+                                 route.path.startsWith('/candidate-search') ||
                                  route.path.startsWith('/recommendations');
               
               return (
