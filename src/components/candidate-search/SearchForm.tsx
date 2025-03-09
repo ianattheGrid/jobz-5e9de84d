@@ -40,37 +40,50 @@ export function SearchForm({ onSubmit }: SearchFormProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 text-left">
-        <WorkAreaField control={form.control} />
-        <LocationInput control={form.control} />
-        <RadiusSearch control={form.control} />
-        <SalaryRangeField control={form.control} />
-        <CommissionPercentageField control={form.control} />
-        
-        <FormField
-          control={form.control}
-          name="qualification"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>IT Qualification</FormLabel>
-              <FormControl>
-                <QualificationSelector
-                  selectedQualification={field.value}
-                  onSelect={field.onChange}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-6">
+            <WorkAreaField control={form.control} />
+            <LocationInput control={form.control} />
+            <RadiusSearch control={form.control} />
+          </div>
+          
+          <div className="space-y-6">
+            <SalaryRangeField control={form.control} />
+            <CommissionPercentageField control={form.control} />
+            <FormField
+              control={form.control}
+              name="qualification"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>IT Qualification</FormLabel>
+                  <FormControl>
+                    <QualificationSelector
+                      selectedQualification={field.value}
+                      onSelect={field.onChange}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+        </div>
 
-        <ITSkillsField control={form.control} />
-        <SecurityClearanceFields control={form.control} />
-        <WorkEligibilityField control={form.control} />
-        <SignupPeriodField control={form.control} />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-6">
+            <ITSkillsField control={form.control} />
+            <SecurityClearanceFields control={form.control} />
+          </div>
+          
+          <div className="space-y-6">
+            <WorkEligibilityField control={form.control} />
+            <SignupPeriodField control={form.control} />
+          </div>
+        </div>
         
-        <div className="flex justify-start">
-          <Button type="submit" className="bg-red-800 hover:bg-red-900 text-white">
+        <div className="flex justify-end mt-8">
+          <Button type="submit" className="bg-red-800 hover:bg-red-900 text-white px-8">
             Search Candidates
           </Button>
         </div>

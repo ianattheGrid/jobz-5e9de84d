@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -148,19 +149,44 @@ export default function CandidateSearch() {
   };
 
   if (loading) {
-    return <div className="container mx-auto py-10">Loading...</div>;
+    return (
+      <div className="container mx-auto py-8 px-4">
+        <div className="max-w-5xl mx-auto">
+          <div className="flex items-center justify-center h-32">
+            <p className="text-gray-500">Loading...</p>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div className="container max-w-5xl mx-auto py-10">
-      <h1 className="text-2xl font-bold mb-6 text-left text-red-800">Search Candidate Database</h1>
-      
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div>
+    <div className="container mx-auto py-8 px-4">
+      <div className="max-w-5xl mx-auto">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900">Search Candidates</h1>
+          <p className="mt-2 text-gray-600">
+            Find the perfect candidates for your roles by using our advanced search filters.
+          </p>
+        </div>
+
+        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+          <div className="mb-6">
+            <h2 className="text-xl font-semibold text-gray-900">Search Filters</h2>
+            <p className="text-sm text-gray-600 mt-1">
+              Use the filters below to narrow down your candidate search.
+            </p>
+          </div>
           <SearchForm onSubmit={onSubmit} />
         </div>
-        <div>
-          <h2 className="text-xl font-semibold mb-4">Search Results</h2>
+
+        <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="mb-6">
+            <h2 className="text-xl font-semibold text-gray-900">Search Results</h2>
+            <p className="text-sm text-gray-600 mt-1">
+              View and filter through matching candidates.
+            </p>
+          </div>
           <SearchResults candidates={candidates} />
         </div>
       </div>
