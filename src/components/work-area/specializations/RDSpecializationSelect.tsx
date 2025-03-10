@@ -80,16 +80,16 @@ const RDSpecializationSelect = ({ control, onSpecializationChange }: RDSpecializ
                 </SelectContent>
               </Select>
             </FormControl>
+            {field.value && (
+              <JobTitleSelect 
+                control={control} 
+                titles={getTitlesForSpecialization(field.value)}
+                name="title"
+              />
+            )}
           </FormItem>
         )}
       />
-      {field.value && (
-        <JobTitleSelect 
-          control={control} 
-          titles={getTitlesForSpecialization(field.value)}
-          name="title"
-        />
-      )}
     </div>
   );
 };
