@@ -4,12 +4,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Form } from "@/components/ui/form";
 import { JobSearchSchema, jobSearchSchema } from "./JobSearchSchema";
 import CommissionFilterField from "./CommissionFilterField";
 import WorkAreaField from "@/components/WorkAreaField";
 import { PRIMARY_COLOR_PATTERN } from "@/styles/colorPatterns";
+import BristolPostcodeSelect from "./BristolPostcodeSelect";
 
 interface JobSearchProps {
   onSearch: (data: JobSearchSchema) => void;
@@ -46,7 +46,7 @@ const JobSearch = ({ onSearch }: JobSearchProps) => {
           </h2>
         </div>
         <p className="text-sm text-muted-foreground ml-7">
-          Search jobs by sector, specialization, or filter by location and jobs with "You're Hired" bonuses
+          Search jobs by sector, specialization, or filter by Bristol postcodes and jobs with "You're Hired" bonuses
         </p>
       </div>
 
@@ -55,15 +55,14 @@ const JobSearch = ({ onSearch }: JobSearchProps) => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <div className="space-y-4">
               <WorkAreaField control={form.control} />
+              <div className="space-y-2">
+                <label className="text-white font-medium text-base">
+                  Select Bristol Area
+                </label>
+                <BristolPostcodeSelect control={form.control} />
+              </div>
+              <CommissionFilterField control={form.control} />
             </div>
-
-            <Input
-              placeholder="Search by city or region (e.g. London, Manchester)"
-              className="bg-white text-gray-900"
-              {...form.register("location")}
-            />
-
-            <CommissionFilterField control={form.control} />
 
             <div className="flex justify-start">
               <Button 

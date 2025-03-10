@@ -44,7 +44,11 @@ const Jobs = () => {
         }
 
         if (searchFilters.location) {
-          query = query.ilike('location', `%${searchFilters.location}%`);
+          if (searchFilters.location === 'all') {
+            // Don't apply any location filter for 'all'
+          } else {
+            query = query.ilike('location', `%${searchFilters.location}%`);
+          }
         }
 
         if (searchFilters.hasCommission) {
