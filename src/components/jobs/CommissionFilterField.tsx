@@ -29,7 +29,7 @@ const CommissionFilterField = ({ control }: CommissionFilterFieldProps) => {
                   <RadioGroupItem value="true" id="show-bonus" />
                   <label 
                     htmlFor="show-bonus" 
-                    className="text-[#FFFFFF] cursor-pointer text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    className="text-white text-sm font-normal cursor-pointer"
                   >
                     Only show jobs with bonus
                   </label>
@@ -38,7 +38,7 @@ const CommissionFilterField = ({ control }: CommissionFilterFieldProps) => {
                   <RadioGroupItem value="false" id="hide-bonus" />
                   <label 
                     htmlFor="hide-bonus" 
-                    className="text-[#FFFFFF] cursor-pointer text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    className="text-white text-sm font-normal cursor-pointer"
                   >
                     Show all jobs
                   </label>
