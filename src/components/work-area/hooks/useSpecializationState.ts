@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Control } from "react-hook-form";
 import { UseSpecializationStateReturn } from "./useSpecializationState.d";
@@ -18,6 +17,7 @@ export const useSpecializationState = (control: Control<any>): UseSpecialization
   const [showPharmaSpecialisation, setShowPharmaSpecialisation] = useState(false);
   const [showRDSpecialisation, setShowRDSpecialisation] = useState(false);
   const [showSalesSpecialisation, setShowSalesSpecialisation] = useState(false);
+  const [showQASpecialisation, setShowQASpecialisation] = useState(false);
   const [selectedSpecialisation, setSelectedSpecialisation] = useState<string>("");
   const [availableTitles, setAvailableTitles] = useState<string[]>([]);
 
@@ -36,6 +36,7 @@ export const useSpecializationState = (control: Control<any>): UseSpecialization
     setShowPharmaSpecialisation(false);
     setShowRDSpecialisation(false);
     setShowSalesSpecialisation(false);
+    setShowQASpecialisation(false);
     setSelectedSpecialisation("");
     setAvailableTitles([]);
     control._formValues.title = "";
@@ -57,6 +58,7 @@ export const useSpecializationState = (control: Control<any>): UseSpecialization
       showPharmaSpecialisation,
       showRDSpecialisation,
       showSalesSpecialisation,
+      showQASpecialisation,
       selectedSpecialisation,
       availableTitles
     },
@@ -75,6 +77,7 @@ export const useSpecializationState = (control: Control<any>): UseSpecialization
       setShowPharmaSpecialisation,
       setShowRDSpecialisation,
       setShowSalesSpecialisation,
+      setShowQASpecialisation,
       setSelectedSpecialisation,
       setAvailableTitles
     },
