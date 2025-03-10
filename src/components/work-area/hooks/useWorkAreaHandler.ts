@@ -1,4 +1,3 @@
-
 import { Control } from "react-hook-form";
 import { useState } from "react";
 import { 
@@ -59,6 +58,9 @@ export const useWorkAreaHandler = (control: Control<any>) => {
 
     setShowOtherInput(false);
     setShowSpecializations(resetState);
+    setSelectedSpecialisation("");
+    setAvailableTitles([]);
+    control._formValues.title = "";
 
     switch (value) {
       case "IT":
@@ -110,10 +112,6 @@ export const useWorkAreaHandler = (control: Control<any>) => {
         setShowOtherInput(true);
         break;
     }
-
-    setSelectedSpecialisation("");
-    setAvailableTitles([]);
-    control._formValues.title = "";
   };
 
   const handleSpecialisationChange = (specialisation: string) => {
