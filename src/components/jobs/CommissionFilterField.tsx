@@ -23,17 +23,17 @@ const CommissionFilterField = ({ control }: CommissionFilterFieldProps) => {
               <RadioGroup
                 onValueChange={(value) => field.onChange(value === 'true')}
                 defaultValue={field.value ? 'true' : 'false'}
-                className="flex flex-col space-y-3 bg-muted rounded-lg p-4"
+                className="flex flex-col space-y-3 bg-white rounded-lg p-4"
               >
                 <div className="flex items-center space-x-3">
                   <RadioGroupItem value="true" id="show-bonus" />
-                  <label htmlFor="show-bonus" className="font-normal text-sm text-white">
+                  <label htmlFor="show-bonus" className="font-normal text-sm text-gray-900">
                     Only show jobs with bonus
                   </label>
                 </div>
                 <div className="flex items-center space-x-3">
                   <RadioGroupItem value="false" id="hide-bonus" />
-                  <label htmlFor="hide-bonus" className="font-normal text-sm text-white">
+                  <label htmlFor="hide-bonus" className="font-normal text-sm text-gray-900">
                     Show all jobs
                   </label>
                 </div>
