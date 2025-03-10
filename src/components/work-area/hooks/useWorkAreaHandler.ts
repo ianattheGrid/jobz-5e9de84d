@@ -8,7 +8,8 @@ import {
   getTitlesForEngineeringSpecialisation,
   getTitlesForHospitalitySpecialisation,
   getTitlesForRDSpecialisation,
-  getTitlesForSalesSpecialisation
+  getTitlesForSalesSpecialisation,
+  getTitlesForQASpecialisation
 } from "../utils/getTitlesForSpecialisation";
 
 export const useWorkAreaHandler = (control: Control<any>) => {
@@ -26,7 +27,8 @@ export const useWorkAreaHandler = (control: Control<any>) => {
     energy: false,
     pharma: false,
     rd: false,
-    sales: false
+    sales: false,
+    qa: false
   });
   const [selectedSpecialisation, setSelectedSpecialisation] = useState<string>("");
   const [availableTitles, setAvailableTitles] = useState<string[]>([]);
@@ -45,7 +47,8 @@ export const useWorkAreaHandler = (control: Control<any>) => {
       energy: false,
       pharma: false,
       rd: false,
-      sales: false
+      sales: false,
+      qa: false
     };
 
     setShowOtherInput(false);
@@ -91,6 +94,9 @@ export const useWorkAreaHandler = (control: Control<any>) => {
       case "Sales":
         setShowSpecializations({ ...resetState, sales: true });
         break;
+      case "Quality Assurance":
+        setShowSpecializations({ ...resetState, qa: true });
+        break;
       case "Other":
         setShowOtherInput(true);
         break;
@@ -106,7 +112,7 @@ export const useWorkAreaHandler = (control: Control<any>) => {
     control._formValues.title = "";
     
     let titles: string[] = [];
-    const { it, customerService, finance, publicSector, engineering, hospitality, rd, sales } = showSpecializations;
+    const { it, customerService, finance, publicSector, engineering, hospitality, rd, sales, qa } = showSpecializations;
     
     if (it) {
       titles = getTitlesForITSpecialisation(specialisation);
@@ -124,6 +130,8 @@ export const useWorkAreaHandler = (control: Control<any>) => {
       titles = getTitlesForRDSpecialisation(specialisation);
     } else if (sales) {
       titles = getTitlesForSalesSpecialisation(specialisation);
+    } else if (qa) {
+      titles = getTitlesForQASpecialisation(specialisation);
     }
     
     setAvailableTitles(titles);
