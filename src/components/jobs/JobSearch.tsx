@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -86,7 +87,7 @@ const JobSearch = ({ onSearch }: JobSearchProps) => {
             <div className="flex justify-start">
               <Button 
                 type="submit"
-                className="btn-white"
+                className="btn-white text-foreground hover:text-primary"
               >
                 Search
               </Button>
