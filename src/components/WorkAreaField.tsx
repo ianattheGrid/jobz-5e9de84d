@@ -1,6 +1,16 @@
 import { useState } from "react";
 import { Control } from "react-hook-form";
 import WorkAreaSelect from "./work-area/selectors/WorkAreaSelect";
+import { 
+  getTitlesForITSpecialization,
+  getTitlesForCustomerServiceSpecialization,
+  getTitlesForFinanceSpecialization,
+  getTitlesForPublicSectorSpecialization,
+  getTitlesForEngineeringSpecialization,
+  getTitlesForHospitalitySpecialization,
+  getTitlesForRDSpecialization,
+  getTitlesForSalesSpecialization
+} from "./work-area/utils/getTitlesForSpecialization";
 import ITSpecializationSelect from "./work-area/specializations/ITSpecializationSelect";
 import CustomerServiceSpecializationSelect from "./work-area/specializations/CustomerServiceSpecializationSelect";
 import FinanceSpecializationSelect from "./work-area/specializations/FinanceSpecializationSelect";
