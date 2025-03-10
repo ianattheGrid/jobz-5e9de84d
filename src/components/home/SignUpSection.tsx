@@ -1,13 +1,15 @@
-
 import { Link } from "react-router-dom";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { User, Building2, Users } from "lucide-react";
+import { PRIMARY_COLOR_PATTERN } from "@/styles/colorPatterns";
 
 export const SignUpSection = () => {
   return (
     <section id="signup-section" className="py-16 bg-background">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-12">Get Started Today</h2>
+        <h2 className={`text-3xl font-bold text-center mb-12 ${PRIMARY_COLOR_PATTERN}`}>
+          Get Started Today
+        </h2>
         <div className="grid gap-6 md:grid-cols-3">
           <UserTypeCard
             icon={User}
