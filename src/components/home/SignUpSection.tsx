@@ -1,3 +1,4 @@
+
 import { Link } from "react-router-dom";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { User, Building2, Users } from "lucide-react";
@@ -63,8 +64,8 @@ const UserTypeCard = ({
         <div className="mx-auto mb-4">
           <Icon className="h-12 w-12 text-primary" />
         </div>
-        <CardTitle>{title}</CardTitle>
-        <CardDescription>{description}</CardDescription>
+        <CardTitle className={PRIMARY_COLOR_PATTERN}>{title}</CardTitle>
+        <CardDescription className="text-foreground">{description}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-2">
         <Link 
