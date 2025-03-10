@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Control } from "react-hook-form";
 import WorkAreaSelect from "./work-area/selectors/WorkAreaSelect";
@@ -16,15 +15,7 @@ import PharmaSpecializationSelect from "./work-area/specializations/PharmaSpecia
 import RDSpecializationSelect from "./work-area/specializations/RDSpecializationSelect";
 import JobTitleSelect from "./work-area/JobTitleSelect";
 import OtherFields from "./work-area/fields/OtherFields";
-import {
-  getTitlesForITSpecialization,
-  getTitlesForCustomerServiceSpecialization,
-  getTitlesForFinanceSpecialization,
-  getTitlesForPublicSectorSpecialization,
-  getTitlesForEngineeringSpecialization,
-  getTitlesForHospitalitySpecialization,
-  getTitlesForRDSpecialization
-} from "./work-area/utils/getTitlesForSpecialization";
+import SalesSpecializationSelect from "./work-area/specializations/SalesSpecializationSelect";
 
 interface WorkAreaFieldProps {
   control: Control<any>;
@@ -44,6 +35,7 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
   const [showEnergySpecialization, setShowEnergySpecialization] = useState(false);
   const [showPharmaSpecialization, setShowPharmaSpecialization] = useState(false);
   const [showRDSpecialization, setShowRDSpecialization] = useState(false);
+  const [showSalesSpecialization, setShowSalesSpecialization] = useState(false);
   const [selectedSpecialization, setSelectedSpecialization] = useState<string>("");
   const [availableTitles, setAvailableTitles] = useState<string[]>([]);
 
@@ -62,6 +54,7 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
     setShowEnergySpecialization(false);
     setShowPharmaSpecialization(false);
     setShowRDSpecialization(false);
+    setShowSalesSpecialization(false);
 
     // Set the appropriate specialization based on work area
     switch (value) {
@@ -101,6 +94,9 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
       case "R&D":
         setShowRDSpecialization(true);
         break;
+      case "Sales":
+        setShowSalesSpecialization(true);
+        break;
       case "Other":
         setShowOtherInput(true);
         break;
@@ -130,6 +126,8 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
       titles = getTitlesForHospitalitySpecialization(specialization);
     } else if (showRDSpecialization) {
       titles = getTitlesForRDSpecialization(specialization);
+    } else if (showSalesSpecialization) {
+      titles = getTitlesForSalesSpecialization(specialization);
     }
     setAvailableTitles(titles);
   };
@@ -220,6 +218,13 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
 
       {showRDSpecialization && (
         <RDSpecializationSelect
+          control={control}
+          onSpecializationChange={handleSpecializationChange}
+        />
+      )}
+
+      {showSalesSpecialization && (
+        <SalesSpecializationSelect
           control={control}
           onSpecializationChange={handleSpecializationChange}
         />

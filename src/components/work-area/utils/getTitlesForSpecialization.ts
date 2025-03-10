@@ -9,6 +9,7 @@ import {
 } from "../constants/customer-service-roles";
 import { financeRoles } from "../constants/finance-roles";
 import { rdRoles } from "../constants/rd-roles";
+import { salesRoles } from "../constants/sales-roles";
 
 export const getTitlesForITSpecialization = (specialization: string): string[] => {
   const {
@@ -147,6 +148,46 @@ export const getTitlesForRDSpecialization = (specialization: string): string[] =
       return clinicalResearchTitles;
     case "Agricultural Research":
       return agriculturalResearchTitles;
+    default:
+      return [];
+  }
+};
+
+export const getTitlesForSalesSpecialization = (specialization: string): string[] => {
+  const {
+    accountManagementTitles,
+    businessDevelopmentTitles,
+    insideSalesTitles,
+    fieldSalesTitles,
+    salesManagementTitles,
+    technicalSalesTitles,
+    enterpriseSalesTitles,
+    channelSalesTitles,
+    retailSalesTitles,
+    salesOperationsTitles
+  } = salesRoles;
+
+  switch (specialization) {
+    case "Account Management":
+      return accountManagementTitles;
+    case "Business Development":
+      return businessDevelopmentTitles;
+    case "Inside Sales":
+      return insideSalesTitles;
+    case "Field Sales":
+      return fieldSalesTitles;
+    case "Sales Management":
+      return salesManagementTitles;
+    case "Technical Sales":
+      return technicalSalesTitles;
+    case "Enterprise Sales":
+      return enterpriseSalesTitles;
+    case "Channel Sales":
+      return channelSalesTitles;
+    case "Retail Sales":
+      return retailSalesTitles;
+    case "Sales Operations":
+      return salesOperationsTitles;
     default:
       return [];
   }
