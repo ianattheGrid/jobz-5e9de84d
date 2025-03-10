@@ -10,6 +10,7 @@ import JobsHeader from "@/components/jobs/JobsHeader";
 import JobSearch from "@/components/jobs/JobSearch";
 import { useState } from "react";
 import { JobSearchSchema } from "@/components/jobs/JobSearchSchema";
+import { bristolPostcodes } from "@/data/bristolPostcodes";
 
 const Jobs = () => {
   const { user, userType } = useAuth();
@@ -43,11 +44,11 @@ const Jobs = () => {
           query = query.ilike('title', `%${searchFilters.title}%`);
         }
 
-        if (searchFilters.location) {
-          if (searchFilters.location === 'all') {
-            // Don't apply any location filter for 'all'
+        if (searchFilters.location && searchFilters.location.length > 0) {
+          if (searchFilters.location.length === bristolPostcodes.length) {
+            // Don't apply any location filter when all postcodes are selected
           } else {
-            query = query.ilike('location', `%${searchFilters.location}%`);
+            query = query.in('location', searchFilters.location);
           }
         }
 

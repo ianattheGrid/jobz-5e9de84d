@@ -4,12 +4,13 @@ import { Control } from "react-hook-form";
 import { JobSearchSchema } from "./JobSearchSchema";
 import { bristolPostcodes } from "@/data/bristolPostcodes";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+  DropdownMenuCheckboxItem,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { ChevronDown } from "lucide-react";
 
 interface BristolPostcodeSelectProps {
   control: Control<JobSearchSchema>;
@@ -23,19 +24,42 @@ const BristolPostcodeSelect = ({ control }: BristolPostcodeSelectProps) => {
       render={({ field }) => (
         <FormItem>
           <FormControl>
-            <Select onValueChange={field.onChange} value={field.value}>
-              <SelectTrigger className="bg-white text-gray-900">
-                <SelectValue placeholder="Select Bristol postcode area" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Bristol Areas</SelectItem>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" className="w-full justify-between bg-white text-gray-900">
+                  {field.value.length === 0 
+                    ? "Select postcodes" 
+                    : field.value.length === bristolPostcodes.length 
+                      ? "All Bristol Areas"
+                      : `${field.value.length} area${field.value.length > 1 ? 's' : ''} selected`}
+                  <ChevronDown className="ml-2 h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-full min-w-[200px]">
+                <DropdownMenuCheckboxItem
+                  checked={field.value.length === bristolPostcodes.length}
+                  onCheckedChange={(checked) => {
+                    field.onChange(checked ? bristolPostcodes : []);
+                  }}
+                >
+                  All Bristol Areas
+                </DropdownMenuCheckboxItem>
                 {bristolPostcodes.map((postcode) => (
-                  <SelectItem key={postcode} value={postcode}>
-                    BS {postcode}
-                  </SelectItem>
+                  <DropdownMenuCheckboxItem
+                    key={postcode}
+                    checked={field.value.includes(postcode)}
+                    onCheckedChange={(checked) => {
+                      const newValue = checked
+                        ? [...field.value, postcode]
+                        : field.value.filter((p: string) => p !== postcode);
+                      field.onChange(newValue);
+                    }}
+                  >
+                    {postcode}
+                  </DropdownMenuCheckboxItem>
                 ))}
-              </SelectContent>
-            </Select>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </FormControl>
         </FormItem>
       )}

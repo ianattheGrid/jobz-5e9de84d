@@ -6,7 +6,7 @@ export const jobSearchSchema = z.object({
   specialization: z.string().optional(),
   title: z.string().optional(),
   otherWorkArea: z.string().optional(),
-  location: z.string().optional(),
+  location: z.array(z.string()).default([]),
   hasCommission: z.boolean().default(false),
 });
 
