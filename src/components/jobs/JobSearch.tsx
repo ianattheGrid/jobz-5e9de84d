@@ -5,9 +5,10 @@ import { useForm } from "react-hook-form";
 import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
+import { Form } from "@/components/ui/form";
 import { JobSearchSchema, jobSearchSchema } from "./JobSearchSchema";
 import CommissionFilterField from "./CommissionFilterField";
+import WorkAreaField from "@/components/WorkAreaField";
 import { PRIMARY_COLOR_PATTERN } from "@/styles/colorPatterns";
 
 interface JobSearchProps {
@@ -20,7 +21,9 @@ const JobSearch = ({ onSearch }: JobSearchProps) => {
   const form = useForm<JobSearchSchema>({
     resolver: zodResolver(jobSearchSchema),
     defaultValues: {
-      keyword: "",
+      workArea: "",
+      specialization: "",
+      title: "",
       location: "",
       hasCommission: false,
     },
@@ -43,43 +46,21 @@ const JobSearch = ({ onSearch }: JobSearchProps) => {
           </h2>
         </div>
         <p className="text-sm text-muted-foreground ml-7">
-          Search by job title, skills, company name, or filter by location and jobs with "You're Hired" bonuses
+          Search jobs by sector, specialization, or filter by location and jobs with "You're Hired" bonuses
         </p>
       </div>
 
       {isExpanded && (
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField
-              control={form.control}
-              name="keyword"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      placeholder="Enter job title, skills, or company name"
-                      className="bg-muted text-white"
-                      {...field}
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <div className="space-y-4">
+              <WorkAreaField control={form.control} />
+            </div>
 
-            <FormField
-              control={form.control}
-              name="location"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      placeholder="Search by city or region (e.g. London, Manchester)"
-                      className="bg-muted text-white"
-                      {...field}
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
+            <Input
+              placeholder="Search by city or region (e.g. London, Manchester)"
+              className="bg-white text-gray-900"
+              {...form.register("location")}
             />
 
             <CommissionFilterField control={form.control} />
@@ -87,9 +68,9 @@ const JobSearch = ({ onSearch }: JobSearchProps) => {
             <div className="flex justify-start">
               <Button 
                 type="submit"
-                className="btn-white text-foreground hover:text-primary"
+                className="bg-primary hover:bg-primary/90 text-white"
               >
-                Search
+                Search Jobs
               </Button>
             </div>
           </form>

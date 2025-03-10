@@ -1,7 +1,11 @@
+
 import * as z from "zod";
 
 export const jobSearchSchema = z.object({
-  keyword: z.string().optional(),
+  workArea: z.string().optional(),
+  specialization: z.string().optional(),
+  title: z.string().optional(),
+  otherWorkArea: z.string().optional(),
   location: z.string().optional(),
   hasCommission: z.boolean().default(false),
 });
