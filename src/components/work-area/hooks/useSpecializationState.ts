@@ -1,41 +1,42 @@
+
 import { useState } from "react";
 import { Control } from "react-hook-form";
 import { UseSpecializationStateReturn } from "./useSpecializationState.d";
 
 export const useSpecializationState = (control: Control<any>): UseSpecializationStateReturn => {
   const [showOtherInput, setShowOtherInput] = useState(false);
-  const [showITSpecialization, setShowITSpecialization] = useState(false);
-  const [showCustomerServiceSpecialization, setShowCustomerServiceSpecialization] = useState(false);
-  const [showFinanceSpecialization, setShowFinanceSpecialization] = useState(false);
-  const [showPublicSectorSpecialization, setShowPublicSectorSpecialization] = useState(false);
-  const [showEngineeringSpecialization, setShowEngineeringSpecialization] = useState(false);
-  const [showHospitalitySpecialization, setShowHospitalitySpecialization] = useState(false);
-  const [showHRSpecialization, setShowHRSpecialization] = useState(false);
-  const [showLegalSpecialization, setShowLegalSpecialization] = useState(false);
-  const [showManufacturingSpecialization, setShowManufacturingSpecialization] = useState(false);
-  const [showEnergySpecialization, setShowEnergySpecialization] = useState(false);
-  const [showPharmaSpecialization, setShowPharmaSpecialization] = useState(false);
-  const [showRDSpecialization, setShowRDSpecialization] = useState(false);
-  const [showSalesSpecialization, setShowSalesSpecialization] = useState(false);
-  const [selectedSpecialization, setSelectedSpecialization] = useState<string>("");
+  const [showITSpecialisation, setShowITSpecialisation] = useState(false);
+  const [showCustomerServiceSpecialisation, setShowCustomerServiceSpecialisation] = useState(false);
+  const [showFinanceSpecialisation, setShowFinanceSpecialisation] = useState(false);
+  const [showPublicSectorSpecialisation, setShowPublicSectorSpecialisation] = useState(false);
+  const [showEngineeringSpecialisation, setShowEngineeringSpecialisation] = useState(false);
+  const [showHospitalitySpecialisation, setShowHospitalitySpecialisation] = useState(false);
+  const [showHRSpecialisation, setShowHRSpecialisation] = useState(false);
+  const [showLegalSpecialisation, setShowLegalSpecialisation] = useState(false);
+  const [showManufacturingSpecialisation, setShowManufacturingSpecialisation] = useState(false);
+  const [showEnergySpecialisation, setShowEnergySpecialisation] = useState(false);
+  const [showPharmaSpecialisation, setShowPharmaSpecialisation] = useState(false);
+  const [showRDSpecialisation, setShowRDSpecialisation] = useState(false);
+  const [showSalesSpecialisation, setShowSalesSpecialisation] = useState(false);
+  const [selectedSpecialisation, setSelectedSpecialisation] = useState<string>("");
   const [availableTitles, setAvailableTitles] = useState<string[]>([]);
 
   const resetAllSpecializations = () => {
     setShowOtherInput(false);
-    setShowITSpecialization(false);
-    setShowCustomerServiceSpecialization(false);
-    setShowFinanceSpecialization(false);
-    setShowPublicSectorSpecialization(false);
-    setShowEngineeringSpecialization(false);
-    setShowHospitalitySpecialization(false);
-    setShowHRSpecialization(false);
-    setShowLegalSpecialization(false);
-    setShowManufacturingSpecialization(false);
-    setShowEnergySpecialization(false);
-    setShowPharmaSpecialization(false);
-    setShowRDSpecialization(false);
-    setShowSalesSpecialization(false);
-    setSelectedSpecialization("");
+    setShowITSpecialisation(false);
+    setShowCustomerServiceSpecialisation(false);
+    setShowFinanceSpecialisation(false);
+    setShowPublicSectorSpecialisation(false);
+    setShowEngineeringSpecialisation(false);
+    setShowHospitalitySpecialisation(false);
+    setShowHRSpecialisation(false);
+    setShowLegalSpecialisation(false);
+    setShowManufacturingSpecialisation(false);
+    setShowEnergySpecialisation(false);
+    setShowPharmaSpecialisation(false);
+    setShowRDSpecialisation(false);
+    setShowSalesSpecialisation(false);
+    setSelectedSpecialisation("");
     setAvailableTitles([]);
     control._formValues.title = "";
   };
@@ -43,38 +44,38 @@ export const useSpecializationState = (control: Control<any>): UseSpecialization
   return {
     states: {
       showOtherInput,
-      showITSpecialization,
-      showCustomerServiceSpecialization,
-      showFinanceSpecialization,
-      showPublicSectorSpecialization,
-      showEngineeringSpecialization,
-      showHospitalitySpecialization,
-      showHRSpecialization,
-      showLegalSpecialization,
-      showManufacturingSpecialization,
-      showEnergySpecialization,
-      showPharmaSpecialization,
-      showRDSpecialization,
-      showSalesSpecialization,
-      selectedSpecialization,
+      showITSpecialisation,
+      showCustomerServiceSpecialisation,
+      showFinanceSpecialisation,
+      showPublicSectorSpecialisation,
+      showEngineeringSpecialisation,
+      showHospitalitySpecialisation,
+      showHRSpecialisation,
+      showLegalSpecialisation,
+      showManufacturingSpecialisation,
+      showEnergySpecialisation,
+      showPharmaSpecialisation,
+      showRDSpecialisation,
+      showSalesSpecialisation,
+      selectedSpecialisation,
       availableTitles
     },
     setters: {
       setShowOtherInput,
-      setShowITSpecialization,
-      setShowCustomerServiceSpecialization,
-      setShowFinanceSpecialization,
-      setShowPublicSectorSpecialization,
-      setShowEngineeringSpecialization,
-      setShowHospitalitySpecialization,
-      setShowHRSpecialization,
-      setShowLegalSpecialization,
-      setShowManufacturingSpecialization,
-      setShowEnergySpecialization,
-      setShowPharmaSpecialization,
-      setShowRDSpecialization,
-      setShowSalesSpecialization,
-      setSelectedSpecialization,
+      setShowITSpecialisation,
+      setShowCustomerServiceSpecialisation,
+      setShowFinanceSpecialisation,
+      setShowPublicSectorSpecialisation,
+      setShowEngineeringSpecialisation,
+      setShowHospitalitySpecialisation,
+      setShowHRSpecialisation,
+      setShowLegalSpecialisation,
+      setShowManufacturingSpecialisation,
+      setShowEnergySpecialisation,
+      setShowPharmaSpecialisation,
+      setShowRDSpecialisation,
+      setShowSalesSpecialisation,
+      setSelectedSpecialisation,
       setAvailableTitles
     },
     resetAllSpecializations
