@@ -1,4 +1,3 @@
-
 import { FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Switch } from "@/components/ui/switch";
 import { Control } from "react-hook-form";
@@ -22,7 +21,7 @@ const CommissionFilterField = ({ control }: CommissionFilterFieldProps) => {
               onCheckedChange={field.onChange}
             />
           </FormControl>
-          <label className={`${PRIMARY_COLOR_PATTERN} text-sm font-medium leading-none cursor-pointer`}>
+          <label className="text-pink-400 hover:text-pink-300 text-sm font-medium leading-none cursor-pointer">
             Show jobs with "You're Hired" bonus
           </label>
         </FormItem>
@@ -32,4 +31,3 @@ const CommissionFilterField = ({ control }: CommissionFilterFieldProps) => {
 };
 
 export default CommissionFilterField;
-
