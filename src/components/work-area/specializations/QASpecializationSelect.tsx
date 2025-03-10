@@ -9,10 +9,7 @@ interface QASpecializationSelectProps {
   onSpecializationChange: (value: string) => void;
 }
 
-const QASpecializationSelect = ({
-  control,
-  onSpecializationChange
-}: QASpecializationSelectProps) => {
+const QASpecializationSelect = ({ control, onSpecializationChange }: QASpecializationSelectProps) => {
   return (
     <FormField
       control={control}
@@ -21,15 +18,15 @@ const QASpecializationSelect = ({
         <FormItem>
           <FormLabel>QA Specialization</FormLabel>
           <FormControl>
-            <Select
+            <Select 
               onValueChange={(value) => {
                 field.onChange(value);
                 onSpecializationChange(value);
               }}
-              defaultValue={field.value}
+              value={field.value}
             >
-              <SelectTrigger>
-                <SelectValue placeholder="Select your QA specialization" />
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select QA specialization" />
               </SelectTrigger>
               <SelectContent>
                 {qaSpecializations.map((specialization) => (

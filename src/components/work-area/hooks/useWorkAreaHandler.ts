@@ -114,7 +114,9 @@ export const useWorkAreaHandler = (control: Control<any>) => {
     let titles: string[] = [];
     const { it, customerService, finance, publicSector, engineering, hospitality, rd, sales, qa } = showSpecializations;
     
-    if (it) {
+    if (qa) {
+      titles = getTitlesForQASpecialisation(specialisation);
+    } else if (it) {
       titles = getTitlesForITSpecialisation(specialisation);
     } else if (customerService) {
       titles = getTitlesForCustomerServiceSpecialisation(specialisation);
@@ -130,8 +132,6 @@ export const useWorkAreaHandler = (control: Control<any>) => {
       titles = getTitlesForRDSpecialisation(specialisation);
     } else if (sales) {
       titles = getTitlesForSalesSpecialisation(specialisation);
-    } else if (qa) {
-      titles = getTitlesForQASpecialisation(specialisation);
     }
     
     setAvailableTitles(titles);

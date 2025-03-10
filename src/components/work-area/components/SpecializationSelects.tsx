@@ -1,4 +1,3 @@
-
 import { Control } from "react-hook-form";
 import ITSpecializationSelect from "../specializations/ITSpecializationSelect";
 import CustomerServiceSpecializationSelect from "../specializations/CustomerServiceSpecializationSelect";
@@ -13,6 +12,7 @@ import EnergySpecializationSelect from "../specializations/EnergySpecializationS
 import PharmaSpecializationSelect from "../specializations/PharmaSpecializationSelect";
 import RDSpecializationSelect from "../specializations/RDSpecializationSelect";
 import SalesSpecializationSelect from "../specializations/SalesSpecializationSelect";
+import QASpecializationSelect from "../specializations/QASpecializationSelect";
 
 interface SpecializationSelectsProps {
   control: Control<any>;
@@ -30,6 +30,7 @@ interface SpecializationSelectsProps {
     pharma: boolean;
     rd: boolean;
     sales: boolean;
+    qa: boolean;
   };
   onSpecialisationChange: (value: string) => void;
 }
@@ -42,7 +43,7 @@ export const SpecializationSelects = ({
   const {
     it, customerService, finance, publicSector,
     engineering, hospitality, hr, legal,
-    manufacturing, energy, pharma, rd, sales
+    manufacturing, energy, pharma, rd, sales, qa
   } = showSpecializations;
 
   return (
@@ -121,6 +122,12 @@ export const SpecializationSelects = ({
       )}
       {sales && (
         <SalesSpecializationSelect
+          control={control}
+          onSpecializationChange={onSpecialisationChange}
+        />
+      )}
+      {qa && (
+        <QASpecializationSelect
           control={control}
           onSpecializationChange={onSpecialisationChange}
         />

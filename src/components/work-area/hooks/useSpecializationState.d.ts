@@ -1,4 +1,3 @@
-
 import { Control } from "react-hook-form";
 import { Dispatch, SetStateAction } from "react";
 
@@ -17,6 +16,7 @@ export interface SpecializationStates {
   showPharmaSpecialisation: boolean;
   showRDSpecialisation: boolean;
   showSalesSpecialisation: boolean;
+  showQASpecialisation: boolean;
   selectedSpecialisation: string;
   availableTitles: string[];
 }
@@ -36,6 +36,7 @@ export interface SpecializationSetters {
   setShowPharmaSpecialisation: Dispatch<SetStateAction<boolean>>;
   setShowRDSpecialisation: Dispatch<SetStateAction<boolean>>;
   setShowSalesSpecialisation: Dispatch<SetStateAction<boolean>>;
+  setShowQASpecialisation: (value: boolean) => void;
   setSelectedSpecialisation: Dispatch<SetStateAction<string>>;
   setAvailableTitles: Dispatch<SetStateAction<string[]>>;
 }
