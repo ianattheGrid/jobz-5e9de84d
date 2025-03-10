@@ -1,11 +1,10 @@
-
 import { UseSpecializationStateReturn } from "../hooks/useSpecializationState";
 
 export const handleWorkAreaChange = (
   value: string,
-  { setters, resetAllSpecializations }: UseSpecializationStateReturn
+  { setters, resetAllSpecialisations }: UseSpecializationStateReturn
 ) => {
-  resetAllSpecializations();
+  resetAllSpecialisations();
 
   switch (value) {
     case "IT":
