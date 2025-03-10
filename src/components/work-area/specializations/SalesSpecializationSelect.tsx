@@ -16,7 +16,7 @@ const SalesSpecializationSelect = ({ control, onSpecializationChange }: SalesSpe
       name="specialization"
       render={({ field }) => (
         <FormItem className="space-y-2">
-          <FormLabel className="block text-gray-900 font-medium">Sales Specialization</FormLabel>
+          <FormLabel className="text-gray-900 font-medium">Sales Specialization</FormLabel>
           <FormControl>
             <Select
               onValueChange={(value) => {

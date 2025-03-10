@@ -18,6 +18,7 @@ export const useSpecializationState = () => {
   const [showRDSpecialisation, setShowRDSpecialisation] = useState(false);
   const [showSalesSpecialisation, setShowSalesSpecialisation] = useState(false);
   const [showQASpecialisation, setShowQASpecialisation] = useState(false);
+  const [selectedSpecialisation, setSelectedSpecialisation] = useState<string>("");
   const [availableTitles, setAvailableTitles] = useState<string[]>([]);
 
   const resetAllSpecialisations = () => {
@@ -55,6 +56,7 @@ export const useSpecializationState = () => {
     showRDSpecialisation,
     showSalesSpecialisation,
     showQASpecialisation,
+    selectedSpecialisation,
     availableTitles,
   };
 
@@ -74,6 +76,7 @@ export const useSpecializationState = () => {
     setShowRDSpecialisation,
     setShowSalesSpecialisation,
     setShowQASpecialisation,
+    setSelectedSpecialisation,
     setAvailableTitles,
   };
 
@@ -83,3 +86,5 @@ export const useSpecializationState = () => {
     resetAllSpecialisations,
   };
 };
+
+export type UseSpecializationStateReturn = ReturnType<typeof useSpecializationState>;
