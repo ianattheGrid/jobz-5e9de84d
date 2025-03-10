@@ -35,9 +35,12 @@ const BristolPostcodeSelect = ({ control }: BristolPostcodeSelectProps) => {
                   <ChevronDown className="ml-2 h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-full min-w-[200px] bg-white">
+              <DropdownMenuContent 
+                className="w-full min-w-[200px] bg-white max-h-[300px] overflow-y-auto"
+                align="start"
+              >
                 <DropdownMenuCheckboxItem
-                  className="text-gray-900"
+                  className="text-gray-900 flex items-center gap-2"
                   checked={field.value.length === bristolPostcodes.length}
                   onCheckedChange={(checked) => {
                     field.onChange(checked ? bristolPostcodes : []);
@@ -48,7 +51,7 @@ const BristolPostcodeSelect = ({ control }: BristolPostcodeSelectProps) => {
                 {bristolPostcodes.map((postcode) => (
                   <DropdownMenuCheckboxItem
                     key={postcode}
-                    className="text-gray-900"
+                    className="text-gray-900 flex items-center gap-2"
                     checked={field.value.includes(postcode)}
                     onCheckedChange={(checked) => {
                       const newValue = checked
@@ -70,4 +73,3 @@ const BristolPostcodeSelect = ({ control }: BristolPostcodeSelectProps) => {
 };
 
 export default BristolPostcodeSelect;
-
