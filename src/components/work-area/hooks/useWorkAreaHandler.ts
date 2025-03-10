@@ -4,16 +4,12 @@ import {
   getTitlesForITSpecialisation,
   getTitlesForCustomerServiceSpecialisation,
   getTitlesForFinanceSpecialisation,
-  getTitlesForPublicSectorSpecialisation,
-  getTitlesForEngineeringSpecialisation,
-  getTitlesForHospitalitySpecialisation,
   getTitlesForHRSpecialisation,
   getTitlesForLegalSpecialisation,
   getTitlesForManufacturingSpecialisation,
   getTitlesForEnergySpecialisation,
-  getTitlesForRDSpecialisation,
-  getTitlesForSalesSpecialisation,
   getTitlesForQASpecialisation,
+  getTitlesForRDSpecialisation,
   getTitlesForMarketingSpecialisation
 } from "../utils/titles";
 
@@ -130,20 +126,6 @@ export const useWorkAreaHandler = (control: Control<any>) => {
       titles = getTitlesForCustomerServiceSpecialisation(specialisation);
     } else if (showSpec.finance) {
       titles = getTitlesForFinanceSpecialisation(specialisation);
-    } else if (showSpec.publicSector) {
-      titles = getTitlesForPublicSectorSpecialisation(specialisation);
-    } else if (showSpec.engineering) {
-      titles = getTitlesForEngineeringSpecialisation(specialisation);
-    } else if (showSpec.hospitality) {
-      titles = getTitlesForHospitalitySpecialisation(specialisation);
-    } else if (showSpec.rd) {
-      titles = getTitlesForRDSpecialisation(specialisation);
-    } else if (showSpec.sales) {
-      titles = getTitlesForSalesSpecialisation(specialisation);
-    } else if (showSpec.qa) {
-      titles = getTitlesForQASpecialisation(specialisation);
-    } else if (showSpec.marketing) {
-      titles = getTitlesForMarketingSpecialisation(specialisation);
     } else if (showSpec.hr) {
       titles = getTitlesForHRSpecialisation(specialisation);
     } else if (showSpec.legal) {
@@ -152,6 +134,12 @@ export const useWorkAreaHandler = (control: Control<any>) => {
       titles = getTitlesForManufacturingSpecialisation(specialisation);
     } else if (showSpec.energy) {
       titles = getTitlesForEnergySpecialisation(specialisation);
+    } else if (showSpec.rd) {
+      titles = getTitlesForRDSpecialisation(specialisation);
+    } else if (showSpec.qa) {
+      titles = getTitlesForQASpecialisation(specialisation);
+    } else if (showSpec.marketing) {
+      titles = getTitlesForMarketingSpecialisation(specialisation);
     }
     
     setAvailableTitles(titles);
