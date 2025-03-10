@@ -1,3 +1,4 @@
+
 import { Job } from "@/integrations/supabase/types/jobs";
 import { formatBenefits } from "../utils";
 
@@ -9,15 +10,15 @@ const JobDetails = ({ job }: JobDetailsProps) => {
   return (
     <div className="space-y-4">
       <div className="text-sm">
-        <h4 className="font-medium mb-2">Full Job Description</h4>
-        <p className="text-muted-foreground whitespace-pre-line">
+        <h4 className="font-medium mb-2 text-white">Full Job Description</h4>
+        <p className="text-gray-300 whitespace-pre-line">
           {job.description}
         </p>
       </div>
 
       <div>
-        <h4 className="font-medium mb-2">Benefits</h4>
-        <ul className="text-sm text-muted-foreground list-disc pl-4 space-y-1">
+        <h4 className="font-medium mb-2 text-white">Benefits</h4>
+        <ul className="text-sm text-gray-300 list-disc pl-4 space-y-1">
           <li>Holiday Entitlement: {job.holiday_entitlement || 25} days</li>
           {formatBenefits(job.company_benefits).map((benefit, index) => (
             <li key={index}>{benefit}</li>

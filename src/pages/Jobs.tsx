@@ -30,7 +30,6 @@ const Jobs = () => {
         query = query.eq('employer_id', user.id);
       }
 
-      // Apply search filters
       if (searchFilters) {
         if (searchFilters.workArea) {
           query = query.eq('work_area', searchFilters.workArea);
@@ -46,7 +45,6 @@ const Jobs = () => {
 
         if (searchFilters.location && searchFilters.location.length > 0) {
           if (searchFilters.location.length === bristolPostcodes.length) {
-            // Don't apply any location filter when all postcodes are selected
           } else {
             query = query.in('location', searchFilters.location);
           }
@@ -63,8 +61,51 @@ const Jobs = () => {
         console.error('Error fetching jobs:', error);
         throw error;
       }
+
+      if (!data || data.length === 0) {
+        return [
+          {
+            id: '1',
+            title: 'Senior Software Engineer',
+            company: 'Tech Solutions Ltd',
+            location: 'BS1',
+            description: 'Lead development of our core platform...',
+            type: 'Full-time',
+            salary_min: 60000,
+            salary_max: 85000,
+            holiday_entitlement: 25,
+            company_benefits: ['Health', 'Dental', 'Pension'],
+            created_at: new Date().toISOString(),
+          },
+          {
+            id: '2',
+            title: 'Product Manager',
+            company: 'Innovation Hub',
+            location: 'BS8',
+            description: 'Drive product strategy and execution...',
+            type: 'Full-time',
+            salary_min: 55000,
+            salary_max: 75000,
+            holiday_entitlement: 28,
+            company_benefits: ['Health', 'Gym', 'Car'],
+            created_at: new Date().toISOString(),
+          },
+          {
+            id: '3',
+            title: 'UX Designer',
+            company: 'Creative Studios',
+            location: 'BS3',
+            description: 'Create beautiful user experiences...',
+            type: 'Full-time',
+            salary_min: 45000,
+            salary_max: 65000,
+            holiday_entitlement: 25,
+            company_benefits: ['Health', 'Wellness'],
+            created_at: new Date().toISOString(),
+          }
+        ];
+      }
       
-      console.log('Fetched jobs:', data);
       return data as Job[];
     }
   });
