@@ -24,7 +24,7 @@ const JobSearch = ({ onSearch }: JobSearchProps) => {
       workArea: "",
       specialization: "",
       title: "",
-      location: "",
+      location: [], // Changed from string to empty array to match the schema type
       hasCommission: false,
     },
   });
