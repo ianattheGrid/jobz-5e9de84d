@@ -1,3 +1,4 @@
+
 import { Control } from "react-hook-form";
 import { useState } from "react";
 import { 
@@ -10,7 +11,8 @@ import {
   getTitlesForEnergySpecialisation,
   getTitlesForQASpecialisation,
   getTitlesForRDSpecialisation,
-  getTitlesForMarketingSpecialisation
+  getTitlesForMarketingSpecialisation,
+  getTitlesForPharmaSpecialisation
 } from "../utils/titles";
 
 export const useWorkAreaHandler = (control: Control<any>) => {
@@ -134,6 +136,8 @@ export const useWorkAreaHandler = (control: Control<any>) => {
       titles = getTitlesForManufacturingSpecialisation(specialisation);
     } else if (showSpec.energy) {
       titles = getTitlesForEnergySpecialisation(specialisation);
+    } else if (showSpec.pharma) {
+      titles = getTitlesForPharmaSpecialisation(specialisation);
     } else if (showSpec.rd) {
       titles = getTitlesForRDSpecialisation(specialisation);
     } else if (showSpec.qa) {

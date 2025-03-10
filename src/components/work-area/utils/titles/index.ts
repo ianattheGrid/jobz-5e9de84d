@@ -9,3 +9,4 @@ export * from './energy-titles';
 export * from './qa-titles';
 export * from './rd-titles';
 export * from './marketing-titles';
+export * from './pharma-titles';
