@@ -14,16 +14,16 @@ const CommissionFilterField = ({ control }: CommissionFilterFieldProps) => {
       control={control}
       name="hasCommission"
       render={({ field }) => (
-        <FormItem className="flex items-center gap-2">
+        <FormItem className="flex items-center space-x-3">
           <FormControl>
             <Switch
               checked={field.value}
               onCheckedChange={field.onChange}
             />
           </FormControl>
-          <label className="text-[#FFFFFF] font-medium leading-none cursor-pointer select-none">
+          <span className="text-white font-medium leading-none cursor-pointer select-none">
             Show jobs with "You're Hired" bonus
-          </label>
+          </span>
         </FormItem>
       )}
     />
