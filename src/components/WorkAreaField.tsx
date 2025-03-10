@@ -2,16 +2,17 @@ import { useState } from "react";
 import { Control } from "react-hook-form";
 import WorkAreaSelect from "./work-area/selectors/WorkAreaSelect";
 import { 
-  getTitlesForITSpecialization,
-  getTitlesForCustomerServiceSpecialization,
-  getTitlesForFinanceSpecialization,
-  getTitlesForPublicSectorSpecialization,
-  getTitlesForEngineeringSpecialization,
-  getTitlesForHospitalitySpecialization,
-  getTitlesForRDSpecialization,
-  getTitlesForSalesSpecialization
-} from "./work-area/utils/getTitlesForSpecialization";
-import ITSpecializationSelect from "./work-area/specializations/ITSpecializationSelect";
+  getTitlesForITSpecialisation,
+  getTitlesForCustomerServiceSpecialisation,
+  getTitlesForFinanceSpecialisation,
+  getTitlesForPublicSectorSpecialisation,
+  getTitlesForEngineeringSpecialisation,
+  getTitlesForHospitalitySpecialisation,
+  getTitlesForRDSpecialisation,
+  getTitlesForSalesSpecialisation
+} from "./work-area/utils/getTitlesForSpecialisation";
+
+import ITSpecialisationSelect from "./work-area/specializations/ITSpecializationSelect";
 import CustomerServiceSpecializationSelect from "./work-area/specializations/CustomerServiceSpecializationSelect";
 import FinanceSpecializationSelect from "./work-area/specializations/FinanceSpecializationSelect";
 import PublicSectorSpecializationSelect from "./work-area/specializations/PublicSectorSpecializationSelect";
@@ -33,111 +34,109 @@ interface WorkAreaFieldProps {
 
 const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
   const [showOtherInput, setShowOtherInput] = useState(false);
-  const [showITSpecialization, setShowITSpecialization] = useState(false);
-  const [showCustomerServiceSpecialization, setShowCustomerServiceSpecialization] = useState(false);
-  const [showFinanceSpecialization, setShowFinanceSpecialization] = useState(false);
-  const [showPublicSectorSpecialization, setShowPublicSectorSpecialization] = useState(false);
-  const [showEngineeringSpecialization, setShowEngineeringSpecialization] = useState(false);
-  const [showHospitalitySpecialization, setShowHospitalitySpecialization] = useState(false);
-  const [showHRSpecialization, setShowHRSpecialization] = useState(false);
-  const [showLegalSpecialization, setShowLegalSpecialization] = useState(false);
-  const [showManufacturingSpecialization, setShowManufacturingSpecialization] = useState(false);
-  const [showEnergySpecialization, setShowEnergySpecialization] = useState(false);
-  const [showPharmaSpecialization, setShowPharmaSpecialization] = useState(false);
-  const [showRDSpecialization, setShowRDSpecialization] = useState(false);
-  const [showSalesSpecialization, setShowSalesSpecialization] = useState(false);
-  const [selectedSpecialization, setSelectedSpecialization] = useState<string>("");
+  const [showITSpecialisation, setShowITSpecialisation] = useState(false);
+  const [showCustomerServiceSpecialisation, setShowCustomerServiceSpecialisation] = useState(false);
+  const [showFinanceSpecialisation, setShowFinanceSpecialisation] = useState(false);
+  const [showPublicSectorSpecialisation, setShowPublicSectorSpecialisation] = useState(false);
+  const [showEngineeringSpecialisation, setShowEngineeringSpecialisation] = useState(false);
+  const [showHospitalitySpecialisation, setShowHospitalitySpecialisation] = useState(false);
+  const [showHRSpecialisation, setShowHRSpecialisation] = useState(false);
+  const [showLegalSpecialisation, setShowLegalSpecialisation] = useState(false);
+  const [showManufacturingSpecialisation, setShowManufacturingSpecialisation] = useState(false);
+  const [showEnergySpecialisation, setShowEnergySpecialisation] = useState(false);
+  const [showPharmaSpecialisation, setShowPharmaSpecialisation] = useState(false);
+  const [showRDSpecialisation, setShowRDSpecialisation] = useState(false);
+  const [showSalesSpecialisation, setShowSalesSpecialisation] = useState(false);
+  const [selectedSpecialisation, setSelectedSpecialisation] = useState<string>("");
   const [availableTitles, setAvailableTitles] = useState<string[]>([]);
 
   const handleWorkAreaChange = (value: string) => {
-    // Reset all specialization states
     setShowOtherInput(false);
-    setShowITSpecialization(false);
-    setShowCustomerServiceSpecialization(false);
-    setShowFinanceSpecialization(false);
-    setShowPublicSectorSpecialization(false);
-    setShowEngineeringSpecialization(false);
-    setShowHospitalitySpecialization(false);
-    setShowHRSpecialization(false);
-    setShowLegalSpecialization(false);
-    setShowManufacturingSpecialization(false);
-    setShowEnergySpecialization(false);
-    setShowPharmaSpecialization(false);
-    setShowRDSpecialization(false);
-    setShowSalesSpecialization(false);
+    setShowITSpecialisation(false);
+    setShowCustomerServiceSpecialisation(false);
+    setShowFinanceSpecialisation(false);
+    setShowPublicSectorSpecialisation(false);
+    setShowEngineeringSpecialisation(false);
+    setShowHospitalitySpecialisation(false);
+    setShowHRSpecialisation(false);
+    setShowLegalSpecialisation(false);
+    setShowManufacturingSpecialisation(false);
+    setShowEnergySpecialisation(false);
+    setShowPharmaSpecialisation(false);
+    setShowRDSpecialisation(false);
+    setShowSalesSpecialisation(false);
 
-    // Set the appropriate specialization based on work area
     switch (value) {
       case "IT":
-        setShowITSpecialization(true);
+        setShowITSpecialisation(true);
         break;
       case "Customer Service":
-        setShowCustomerServiceSpecialization(true);
+        setShowCustomerServiceSpecialisation(true);
         break;
       case "Accounting & Finance":
-        setShowFinanceSpecialization(true);
+        setShowFinanceSpecialisation(true);
         break;
       case "Public Sector":
-        setShowPublicSectorSpecialization(true);
+        setShowPublicSectorSpecialisation(true);
         break;
       case "Engineering":
-        setShowEngineeringSpecialization(true);
+        setShowEngineeringSpecialisation(true);
         break;
       case "Hospitality & Tourism":
-        setShowHospitalitySpecialization(true);
+        setShowHospitalitySpecialisation(true);
         break;
       case "Human Resources":
-        setShowHRSpecialization(true);
+        setShowHRSpecialisation(true);
         break;
       case "Legal":
-        setShowLegalSpecialization(true);
+        setShowLegalSpecialisation(true);
         break;
       case "Manufacturing":
-        setShowManufacturingSpecialization(true);
+        setShowManufacturingSpecialisation(true);
         break;
       case "Energy & Utilities":
-        setShowEnergySpecialization(true);
+        setShowEnergySpecialisation(true);
         break;
       case "Pharma":
-        setShowPharmaSpecialization(true);
+        setShowPharmaSpecialisation(true);
         break;
       case "R&D":
-        setShowRDSpecialization(true);
+        setShowRDSpecialisation(true);
         break;
       case "Sales":
-        setShowSalesSpecialization(true);
+        setShowSalesSpecialisation(true);
         break;
       case "Other":
         setShowOtherInput(true);
         break;
     }
 
-    setSelectedSpecialization("");
+    setSelectedSpecialisation("");
     setAvailableTitles([]);
     control._formValues.title = "";
   };
 
-  const handleSpecializationChange = (specialization: string) => {
-    setSelectedSpecialization(specialization);
+  const handleSpecialisationChange = (specialisation: string) => {
+    setSelectedSpecialisation(specialisation);
     control._formValues.title = "";
     
     let titles: string[] = [];
-    if (showITSpecialization) {
-      titles = getTitlesForITSpecialization(specialization);
-    } else if (showCustomerServiceSpecialization) {
-      titles = getTitlesForCustomerServiceSpecialization(specialization);
-    } else if (showFinanceSpecialization) {
-      titles = getTitlesForFinanceSpecialization(specialization);
-    } else if (showPublicSectorSpecialization) {
-      titles = getTitlesForPublicSectorSpecialization(specialization);
-    } else if (showEngineeringSpecialization) {
-      titles = getTitlesForEngineeringSpecialization(specialization);
-    } else if (showHospitalitySpecialization) {
-      titles = getTitlesForHospitalitySpecialization(specialization);
-    } else if (showRDSpecialization) {
-      titles = getTitlesForRDSpecialization(specialization);
-    } else if (showSalesSpecialization) {
-      titles = getTitlesForSalesSpecialization(specialization);
+    if (showITSpecialisation) {
+      titles = getTitlesForITSpecialisation(specialisation);
+    } else if (showCustomerServiceSpecialisation) {
+      titles = getTitlesForCustomerServiceSpecialisation(specialisation);
+    } else if (showFinanceSpecialisation) {
+      titles = getTitlesForFinanceSpecialisation(specialisation);
+    } else if (showPublicSectorSpecialisation) {
+      titles = getTitlesForPublicSectorSpecialisation(specialisation);
+    } else if (showEngineeringSpecialisation) {
+      titles = getTitlesForEngineeringSpecialisation(specialisation);
+    } else if (showHospitalitySpecialisation) {
+      titles = getTitlesForHospitalitySpecialisation(specialisation);
+    } else if (showRDSpecialisation) {
+      titles = getTitlesForRDSpecialisation(specialisation);
+    } else if (showSalesSpecialisation) {
+      titles = getTitlesForSalesSpecialisation(specialisation);
     }
     setAvailableTitles(titles);
   };
@@ -149,98 +148,98 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
         onWorkAreaChange={handleWorkAreaChange}
       />
 
-      {showITSpecialization && (
-        <ITSpecializationSelect 
+      {showITSpecialisation && (
+        <ITSpecialisationSelect 
           control={control}
-          onSpecializationChange={handleSpecializationChange}
+          onSpecializationChange={handleSpecialisationChange}
         />
       )}
 
-      {showCustomerServiceSpecialization && (
+      {showCustomerServiceSpecialisation && (
         <CustomerServiceSpecializationSelect 
           control={control}
-          onSpecializationChange={handleSpecializationChange}
+          onSpecializationChange={handleSpecialisationChange}
         />
       )}
 
-      {showFinanceSpecialization && (
+      {showFinanceSpecialisation && (
         <FinanceSpecializationSelect
           control={control}
-          onSpecializationChange={handleSpecializationChange}
+          onSpecializationChange={handleSpecialisationChange}
         />
       )}
 
-      {showPublicSectorSpecialization && (
+      {showPublicSectorSpecialisation && (
         <PublicSectorSpecializationSelect
           control={control}
-          onSpecializationChange={handleSpecializationChange}
+          onSpecializationChange={handleSpecialisationChange}
         />
       )}
 
-      {showEngineeringSpecialization && (
+      {showEngineeringSpecialisation && (
         <EngineeringSpecializationSelect
           control={control}
-          onSpecializationChange={handleSpecializationChange}
+          onSpecializationChange={handleSpecialisationChange}
         />
       )}
 
-      {showHospitalitySpecialization && (
+      {showHospitalitySpecialisation && (
         <HospitalitySpecializationSelect
           control={control}
-          onSpecializationChange={handleSpecializationChange}
+          onSpecializationChange={handleSpecialisationChange}
         />
       )}
 
-      {showHRSpecialization && (
+      {showHRSpecialisation && (
         <HRSpecializationSelect
           control={control}
-          onSpecializationChange={handleSpecializationChange}
+          onSpecializationChange={handleSpecialisationChange}
         />
       )}
 
-      {showLegalSpecialization && (
+      {showLegalSpecialisation && (
         <LegalSpecializationSelect
           control={control}
-          onSpecializationChange={handleSpecializationChange}
+          onSpecializationChange={handleSpecialisationChange}
         />
       )}
 
-      {showManufacturingSpecialization && (
+      {showManufacturingSpecialisation && (
         <ManufacturingSpecializationSelect
           control={control}
-          onSpecializationChange={handleSpecializationChange}
+          onSpecializationChange={handleSpecialisationChange}
         />
       )}
 
-      {showEnergySpecialization && (
+      {showEnergySpecialisation && (
         <EnergySpecializationSelect
           control={control}
-          onSpecializationChange={handleSpecializationChange}
+          onSpecializationChange={handleSpecialisationChange}
         />
       )}
 
-      {showPharmaSpecialization && (
+      {showPharmaSpecialisation && (
         <PharmaSpecializationSelect
           control={control}
-          onSpecializationChange={handleSpecializationChange}
+          onSpecializationChange={handleSpecialisationChange}
         />
       )}
 
-      {showRDSpecialization && (
+      {showRDSpecialisation && (
         <RDSpecializationSelect
           control={control}
-          onSpecializationChange={handleSpecializationChange}
+          onSpecializationChange={handleSpecialisationChange}
         />
       )}
 
-      {showSalesSpecialization && (
+      {showSalesSpecialisation && (
         <SalesSpecializationSelect
           control={control}
-          onSpecializationChange={handleSpecializationChange}
+          onSpecializationChange={handleSpecialisationChange}
         />
       )}
 
-      {selectedSpecialization && availableTitles.length > 0 && (
+      {selectedSpecialisation && availableTitles.length > 0 && (
         <JobTitleSelect
           control={control}
           titles={availableTitles}
