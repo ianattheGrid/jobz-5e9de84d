@@ -10,14 +10,14 @@ const JobDetails = ({ job }: JobDetailsProps) => {
   return (
     <div className="space-y-4">
       <div className="text-sm">
-        <h4 className="font-semibold mb-2 text-white">Full Job Description</h4>
+        <h4 className="font-semibold mb-2 text-primary">Full Job Description</h4>
         <p className="text-gray-200 whitespace-pre-line">
           {job.description}
         </p>
       </div>
 
       <div>
-        <h4 className="font-semibold mb-2 text-white">Benefits</h4>
+        <h4 className="font-semibold mb-2 text-primary">Benefits</h4>
         <ul className="text-sm text-gray-200 list-disc pl-4 space-y-1">
           <li>Holiday Entitlement: {job.holiday_entitlement || 25} days</li>
           {formatBenefits(job.company_benefits).map((benefit, index) => (
