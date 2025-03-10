@@ -1,3 +1,4 @@
+
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Job } from "@/integrations/supabase/types/jobs";
@@ -65,7 +66,7 @@ const Jobs = () => {
       if (!data || data.length === 0) {
         return [
           {
-            id: '1',
+            id: 1,
             title: 'Senior Software Engineer',
             company: 'Tech Solutions Ltd',
             location: 'BS1',
@@ -74,11 +75,24 @@ const Jobs = () => {
             salary_min: 60000,
             salary_max: 85000,
             holiday_entitlement: 25,
-            company_benefits: ['Health', 'Dental', 'Pension'],
+            company_benefits: 'Health, Dental, Pension',
             created_at: new Date().toISOString(),
+            candidate_commission: null,
+            employer_id: null,
+            required_qualifications: null,
+            title_essential: false,
+            years_experience_essential: false,
+            min_years_experience: null,
+            salary_essential: false,
+            skills_essential: false,
+            qualification_essential: false,
+            citizenship_essential: false,
+            required_citizenship: null,
+            work_area: 'Technology',
+            specialization: 'Software Development'
           },
           {
-            id: '2',
+            id: 2,
             title: 'Product Manager',
             company: 'Innovation Hub',
             location: 'BS8',
@@ -87,11 +101,24 @@ const Jobs = () => {
             salary_min: 55000,
             salary_max: 75000,
             holiday_entitlement: 28,
-            company_benefits: ['Health', 'Gym', 'Car'],
+            company_benefits: 'Health, Gym, Car',
             created_at: new Date().toISOString(),
+            candidate_commission: null,
+            employer_id: null,
+            required_qualifications: null,
+            title_essential: false,
+            years_experience_essential: false,
+            min_years_experience: null,
+            salary_essential: false,
+            skills_essential: false,
+            qualification_essential: false,
+            citizenship_essential: false,
+            required_citizenship: null,
+            work_area: 'Product',
+            specialization: 'Product Management'
           },
           {
-            id: '3',
+            id: 3,
             title: 'UX Designer',
             company: 'Creative Studios',
             location: 'BS3',
@@ -100,10 +127,23 @@ const Jobs = () => {
             salary_min: 45000,
             salary_max: 65000,
             holiday_entitlement: 25,
-            company_benefits: ['Health', 'Wellness'],
+            company_benefits: 'Health, Wellness',
             created_at: new Date().toISOString(),
+            candidate_commission: null,
+            employer_id: null,
+            required_qualifications: null,
+            title_essential: false,
+            years_experience_essential: false,
+            min_years_experience: null,
+            salary_essential: false,
+            skills_essential: false,
+            qualification_essential: false,
+            citizenship_essential: false,
+            required_citizenship: null,
+            work_area: 'Design',
+            specialization: 'UX/UI Design'
           }
-        ];
+        ] as Job[];
       }
       
       return data as Job[];
