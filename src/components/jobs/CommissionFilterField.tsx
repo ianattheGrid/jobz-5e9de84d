@@ -21,7 +21,7 @@ const CommissionFilterField = ({ control }: CommissionFilterFieldProps) => {
               onCheckedChange={field.onChange}
             />
           </FormControl>
-          <label className="text-white text-sm font-medium leading-none cursor-pointer">
+          <label className="text-secondary font-medium leading-none cursor-pointer select-none">
             Show jobs with "You're Hired" bonus
           </label>
         </FormItem>
