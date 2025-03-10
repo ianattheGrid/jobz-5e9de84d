@@ -1,4 +1,3 @@
-
 import { UseSpecializationStateReturn } from "../hooks/useSpecializationState";
 
 export const handleWorkAreaChange = (

@@ -1,8 +1,8 @@
-
 import { useState } from "react";
 import { Control } from "react-hook-form";
+import { UseSpecializationStateReturn } from "./useSpecializationState.d";
 
-export const useSpecializationState = (control: Control<any>) => {
+export const useSpecializationState = (control: Control<any>): UseSpecializationStateReturn => {
   const [showOtherInput, setShowOtherInput] = useState(false);
   const [showITSpecialization, setShowITSpecialization] = useState(false);
   const [showCustomerServiceSpecialization, setShowCustomerServiceSpecialization] = useState(false);
@@ -80,3 +80,5 @@ export const useSpecializationState = (control: Control<any>) => {
     resetAllSpecializations
   };
 };
+
+export type { UseSpecializationStateReturn };

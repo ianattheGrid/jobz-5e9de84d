@@ -46,4 +46,3 @@ export interface UseSpecializationStateReturn {
   resetAllSpecializations: () => void;
 }
 
-export function useSpecializationState(control: Control<any>): UseSpecializationStateReturn;
