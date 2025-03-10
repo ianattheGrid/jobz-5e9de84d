@@ -12,7 +12,8 @@ import {
   getTitlesForQASpecialisation,
   getTitlesForRDSpecialisation,
   getTitlesForMarketingSpecialisation,
-  getTitlesForPharmaSpecialisation
+  getTitlesForPharmaSpecialisation,
+  getTitlesForPublicSectorSpecialisation
 } from "../utils/titles";
 
 export const useWorkAreaHandler = (control: Control<any>) => {
@@ -138,6 +139,8 @@ export const useWorkAreaHandler = (control: Control<any>) => {
       titles = getTitlesForEnergySpecialisation(specialisation);
     } else if (showSpec.pharma) {
       titles = getTitlesForPharmaSpecialisation(specialisation);
+    } else if (showSpec.publicSector) {
+      titles = getTitlesForPublicSectorSpecialisation(specialisation);
     } else if (showSpec.rd) {
       titles = getTitlesForRDSpecialisation(specialisation);
     } else if (showSpec.qa) {
