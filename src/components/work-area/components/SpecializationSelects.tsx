@@ -13,6 +13,7 @@ import PharmaSpecializationSelect from "../specializations/PharmaSpecializationS
 import RDSpecializationSelect from "../specializations/RDSpecializationSelect";
 import SalesSpecializationSelect from "../specializations/SalesSpecializationSelect";
 import QASpecializationSelect from "../specializations/QASpecializationSelect";
+import MarketingSpecializationSelect from "../specializations/MarketingSpecializationSelect";
 
 interface SpecializationSelectsProps {
   control: Control<any>;
@@ -31,6 +32,7 @@ interface SpecializationSelectsProps {
     rd: boolean;
     sales: boolean;
     qa: boolean;
+    marketing: boolean;
   };
   onSpecialisationChange: (value: string) => void;
 }
@@ -43,7 +45,8 @@ export const SpecializationSelects = ({
   const {
     it, customerService, finance, publicSector,
     engineering, hospitality, hr, legal,
-    manufacturing, energy, pharma, rd, sales, qa
+    manufacturing, energy, pharma, rd, sales, qa,
+    marketing
   } = showSpecializations;
 
   return (
@@ -128,6 +131,12 @@ export const SpecializationSelects = ({
       )}
       {qa && (
         <QASpecializationSelect
+          control={control}
+          onSpecializationChange={onSpecialisationChange}
+        />
+      )}
+      {marketing && (
+        <MarketingSpecializationSelect
           control={control}
           onSpecializationChange={onSpecialisationChange}
         />

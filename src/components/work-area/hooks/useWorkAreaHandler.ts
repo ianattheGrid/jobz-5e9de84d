@@ -11,6 +11,7 @@ import {
   getTitlesForSalesSpecialisation,
   getTitlesForQASpecialisation
 } from "../utils/getTitlesForSpecialisation";
+import { getTitlesForMarketingSpecialisation } from "../utils/getTitlesForSpecialisation";
 
 export const useWorkAreaHandler = (control: Control<any>) => {
   const [showOtherInput, setShowOtherInput] = useState(false);
@@ -28,7 +29,8 @@ export const useWorkAreaHandler = (control: Control<any>) => {
     pharma: false,
     rd: false,
     sales: false,
-    qa: false
+    qa: false,
+    marketing: false
   });
   const [selectedSpecialisation, setSelectedSpecialisation] = useState<string>("");
   const [availableTitles, setAvailableTitles] = useState<string[]>([]);
@@ -48,7 +50,8 @@ export const useWorkAreaHandler = (control: Control<any>) => {
       pharma: false,
       rd: false,
       sales: false,
-      qa: false
+      qa: false,
+      marketing: false
     };
 
     setShowOtherInput(false);
@@ -97,6 +100,9 @@ export const useWorkAreaHandler = (control: Control<any>) => {
       case "Quality Assurance":
         setShowSpecializations({ ...resetState, qa: true });
         break;
+      case "Marketing":
+        setShowSpecializations({ ...resetState, marketing: true });
+        break;
       case "Other":
         setShowOtherInput(true);
         break;
@@ -105,36 +111,6 @@ export const useWorkAreaHandler = (control: Control<any>) => {
     setSelectedSpecialisation("");
     setAvailableTitles([]);
     control._formValues.title = "";
-  };
-
-  const handleSpecialisationChange = (specialisation: string) => {
-    setSelectedSpecialisation(specialisation);
-    control._formValues.title = "";
-    
-    let titles: string[] = [];
-    const { it, customerService, finance, publicSector, engineering, hospitality, rd, sales, qa } = showSpecializations;
-    
-    if (qa) {
-      titles = getTitlesForQASpecialisation(specialisation);
-    } else if (it) {
-      titles = getTitlesForITSpecialisation(specialisation);
-    } else if (customerService) {
-      titles = getTitlesForCustomerServiceSpecialisation(specialisation);
-    } else if (finance) {
-      titles = getTitlesForFinanceSpecialisation(specialisation);
-    } else if (publicSector) {
-      titles = getTitlesForPublicSectorSpecialisation(specialisation);
-    } else if (engineering) {
-      titles = getTitlesForEngineeringSpecialisation(specialisation);
-    } else if (hospitality) {
-      titles = getTitlesForHospitalitySpecialisation(specialisation);
-    } else if (rd) {
-      titles = getTitlesForRDSpecialisation(specialisation);
-    } else if (sales) {
-      titles = getTitlesForSalesSpecialisation(specialisation);
-    }
-    
-    setAvailableTitles(titles);
   };
 
   return {
