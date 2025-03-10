@@ -1,35 +1,29 @@
-import { FormField, FormItem, FormLabel, FormControl } from "@/components/ui/form";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+
+import { FormControl, FormField, FormItem } from "@/components/ui/form";
+import { Switch } from "@/components/ui/switch";
 import { Control } from "react-hook-form";
+import { JobSearchSchema } from "./JobSearchSchema";
 
 interface CommissionFilterFieldProps {
-  control: Control<any>;
+  control: Control<JobSearchSchema>;
 }
 
 const CommissionFilterField = ({ control }: CommissionFilterFieldProps) => {
   return (
     <FormField
       control={control}
-      name="includeCommission"
+      name="hasCommission"
       render={({ field }) => (
-        <FormItem>
-          <FormLabel>Show jobs with "You're Hired" bonus?</FormLabel>
+        <FormItem className="flex items-center gap-2">
           <FormControl>
-            <RadioGroup
-              onValueChange={(value) => field.onChange(value === 'yes')}
-              defaultValue={field.value ? 'yes' : 'no'}
-              className="flex flex-row space-x-2"
-            >
-              <div className="flex items-center space-x-1">
-                <RadioGroupItem value="yes" id="commission-yes" className="h-3 w-3" />
-                <label htmlFor="commission-yes" className="text-xs">Yes</label>
-              </div>
-              <div className="flex items-center space-x-1">
-                <RadioGroupItem value="no" id="commission-no" className="h-3 w-3" />
-                <label htmlFor="commission-no" className="text-xs">No</label>
-              </div>
-            </RadioGroup>
+            <Switch
+              checked={field.value}
+              onCheckedChange={field.onChange}
+            />
           </FormControl>
+          <label className="text-foreground text-sm font-medium leading-none cursor-pointer">
+            Show jobs with "You're Hired" bonus
+          </label>
         </FormItem>
       )}
     />
