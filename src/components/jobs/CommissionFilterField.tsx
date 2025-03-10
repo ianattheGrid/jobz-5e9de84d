@@ -47,4 +47,3 @@ const CommissionFilterField = ({ control }: CommissionFilterFieldProps) => {
 };
 
 export default CommissionFilterField;
-
