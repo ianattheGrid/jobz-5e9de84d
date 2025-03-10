@@ -1,29 +1,32 @@
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FileText, Coins, Bot, Calculator, User, Target, Users, Sparkles, Building2, PoundSterling } from "lucide-react";
+import { PRIMARY_COLOR_PATTERN } from "@/styles/colorPatterns";
 
 export const PlatformFeatures = () => {
   return (
     <section className="py-20 container mx-auto px-4">
-      <h2 className="text-3xl font-bold text-center mb-12">How jobz Works</h2>
+      <h2 className={`text-3xl font-bold text-center mb-12 ${PRIMARY_COLOR_PATTERN}`}>
+        How jobz Works
+      </h2>
       
       <Tabs defaultValue="hiring" className="w-full max-w-4xl mx-auto">
-        <TabsList className="grid w-full grid-cols-3 bg-primary-light">
+        <TabsList className="grid w-full grid-cols-3 bg-primary/10">
           <TabsTrigger 
             value="hiring" 
-            className="text-white data-[state=active]:bg-primary data-[state=active]:text-white"
+            className={`${PRIMARY_COLOR_PATTERN} data-[state=active]:bg-primary data-[state=active]:text-white`}
           >
             For Employers
           </TabsTrigger>
           <TabsTrigger 
             value="candidates"
-            className="text-white data-[state=active]:bg-primary data-[state=active]:text-white"
+            className={`${PRIMARY_COLOR_PATTERN} data-[state=active]:bg-primary data-[state=active]:text-white`}
           >
             For Candidates
           </TabsTrigger>
           <TabsTrigger 
             value="recruiters"
-            className="text-white data-[state=active]:bg-primary data-[state=active]:text-white"
+            className={`${PRIMARY_COLOR_PATTERN} data-[state=active]:bg-primary data-[state=active]:text-white`}
           >
             Virtual Recruiters
           </TabsTrigger>
@@ -118,11 +121,11 @@ const FeatureCard = ({
   description: string; 
 }) => {
   return (
-    <Card className="border-none shadow-lg">
+    <Card className="border-none shadow-lg bg-card">
       <CardHeader>
-        <Icon className="h-12 w-12 text-white mb-4" />
-        <CardTitle>{title}</CardTitle>
-        <CardDescription>{description}</CardDescription>
+        <Icon className="h-12 w-12 text-primary mb-4" />
+        <CardTitle className={PRIMARY_COLOR_PATTERN}>{title}</CardTitle>
+        <CardDescription className="text-foreground">{description}</CardDescription>
       </CardHeader>
     </Card>
   );
