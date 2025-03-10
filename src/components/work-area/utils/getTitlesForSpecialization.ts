@@ -8,6 +8,7 @@ import {
   technicalSupportTitles
 } from "../constants/customer-service-roles";
 import { financeRoles } from "../constants/finance-roles";
+import { rdRoles } from "../constants/rd-roles";
 
 export const getTitlesForITSpecialization = (specialization: string): string[] => {
   const {
@@ -100,16 +101,53 @@ export const getTitlesForFinanceSpecialization = (specialization: string): strin
 };
 
 export const getTitlesForPublicSectorSpecialization = (specialization: string): string[] => {
-  // Import and use public sector titles from constants
-  return []; // Implement based on public sector roles
+  return [];
 };
 
 export const getTitlesForEngineeringSpecialization = (specialization: string): string[] => {
-  // Import and use engineering titles from constants
-  return []; // Implement based on engineering roles
+  return [];
 };
 
 export const getTitlesForHospitalitySpecialization = (specialization: string): string[] => {
-  // Import and use hospitality titles from constants
-  return []; // Implement based on hospitality roles
+  return [];
+};
+
+export const getTitlesForRDSpecialization = (specialization: string): string[] => {
+  const {
+    productRDTitles,
+    scientificResearchTitles,
+    biomedicalResearchTitles,
+    engineeringRDTitles,
+    environmentalResearchTitles,
+    technologyResearchTitles,
+    industrialResearchTitles,
+    materialsResearchTitles,
+    clinicalResearchTitles,
+    agriculturalResearchTitles
+  } = rdRoles;
+
+  switch (specialization) {
+    case "Product Research and Development":
+      return productRDTitles;
+    case "Scientific Research":
+      return scientificResearchTitles;
+    case "Biomedical Research":
+      return biomedicalResearchTitles;
+    case "Engineering R&D":
+      return engineeringRDTitles;
+    case "Environmental Research":
+      return environmentalResearchTitles;
+    case "Technology Research":
+      return technologyResearchTitles;
+    case "Industrial Research":
+      return industrialResearchTitles;
+    case "Materials Research":
+      return materialsResearchTitles;
+    case "Clinical Research":
+      return clinicalResearchTitles;
+    case "Agricultural Research":
+      return agriculturalResearchTitles;
+    default:
+      return [];
+  }
 };

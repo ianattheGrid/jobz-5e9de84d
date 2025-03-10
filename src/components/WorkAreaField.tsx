@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Control } from "react-hook-form";
 import WorkAreaSelect from "./work-area/selectors/WorkAreaSelect";
@@ -12,6 +13,7 @@ import LegalSpecializationSelect from "./work-area/specializations/LegalSpeciali
 import ManufacturingSpecializationSelect from "./work-area/specializations/ManufacturingSpecializationSelect";
 import EnergySpecializationSelect from "./work-area/specializations/EnergySpecializationSelect";
 import PharmaSpecializationSelect from "./work-area/specializations/PharmaSpecializationSelect";
+import RDSpecializationSelect from "./work-area/specializations/RDSpecializationSelect";
 import JobTitleSelect from "./work-area/JobTitleSelect";
 import OtherFields from "./work-area/fields/OtherFields";
 import {
@@ -20,7 +22,8 @@ import {
   getTitlesForFinanceSpecialization,
   getTitlesForPublicSectorSpecialization,
   getTitlesForEngineeringSpecialization,
-  getTitlesForHospitalitySpecialization
+  getTitlesForHospitalitySpecialization,
+  getTitlesForRDSpecialization
 } from "./work-area/utils/getTitlesForSpecialization";
 
 interface WorkAreaFieldProps {
@@ -40,6 +43,7 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
   const [showManufacturingSpecialization, setShowManufacturingSpecialization] = useState(false);
   const [showEnergySpecialization, setShowEnergySpecialization] = useState(false);
   const [showPharmaSpecialization, setShowPharmaSpecialization] = useState(false);
+  const [showRDSpecialization, setShowRDSpecialization] = useState(false);
   const [selectedSpecialization, setSelectedSpecialization] = useState<string>("");
   const [availableTitles, setAvailableTitles] = useState<string[]>([]);
 
@@ -57,6 +61,7 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
     setShowManufacturingSpecialization(false);
     setShowEnergySpecialization(false);
     setShowPharmaSpecialization(false);
+    setShowRDSpecialization(false);
 
     // Set the appropriate specialization based on work area
     switch (value) {
@@ -93,6 +98,9 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
       case "Pharma":
         setShowPharmaSpecialization(true);
         break;
+      case "R&D":
+        setShowRDSpecialization(true);
+        break;
       case "Other":
         setShowOtherInput(true);
         break;
@@ -120,6 +128,8 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
       titles = getTitlesForEngineeringSpecialization(specialization);
     } else if (showHospitalitySpecialization) {
       titles = getTitlesForHospitalitySpecialization(specialization);
+    } else if (showRDSpecialization) {
+      titles = getTitlesForRDSpecialization(specialization);
     }
     setAvailableTitles(titles);
   };
@@ -203,6 +213,13 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
 
       {showPharmaSpecialization && (
         <PharmaSpecializationSelect
+          control={control}
+          onSpecializationChange={handleSpecializationChange}
+        />
+      )}
+
+      {showRDSpecialization && (
+        <RDSpecializationSelect
           control={control}
           onSpecializationChange={handleSpecializationChange}
         />
