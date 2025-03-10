@@ -1,15 +1,14 @@
-
 import { Control } from "react-hook-form";
 import { useState } from "react";
 import { 
-  getTitlesForITSpecialization,
-  getTitlesForCustomerServiceSpecialization,
-  getTitlesForFinanceSpecialization,
-  getTitlesForPublicSectorSpecialization,
-  getTitlesForEngineeringSpecialization,
-  getTitlesForHospitalitySpecialization,
-  getTitlesForRDSpecialization,
-  getTitlesForSalesSpecialization
+  getTitlesForITSpecialisation,
+  getTitlesForCustomerServiceSpecialisation,
+  getTitlesForFinanceSpecialisation,
+  getTitlesForPublicSectorSpecialisation,
+  getTitlesForEngineeringSpecialisation,
+  getTitlesForHospitalitySpecialisation,
+  getTitlesForRDSpecialisation,
+  getTitlesForSalesSpecialisation
 } from "../utils/getTitlesForSpecialisation";
 
 export const useWorkAreaHandler = (control: Control<any>) => {
@@ -110,21 +109,21 @@ export const useWorkAreaHandler = (control: Control<any>) => {
     const { it, customerService, finance, publicSector, engineering, hospitality, rd, sales } = showSpecializations;
     
     if (it) {
-      titles = getTitlesForITSpecialization(specialisation);
+      titles = getTitlesForITSpecialisation(specialisation);
     } else if (customerService) {
-      titles = getTitlesForCustomerServiceSpecialization(specialisation);
+      titles = getTitlesForCustomerServiceSpecialisation(specialisation);
     } else if (finance) {
-      titles = getTitlesForFinanceSpecialization(specialisation);
+      titles = getTitlesForFinanceSpecialisation(specialisation);
     } else if (publicSector) {
-      titles = getTitlesForPublicSectorSpecialization(specialisation);
+      titles = getTitlesForPublicSectorSpecialisation(specialisation);
     } else if (engineering) {
-      titles = getTitlesForEngineeringSpecialization(specialisation);
+      titles = getTitlesForEngineeringSpecialisation(specialisation);
     } else if (hospitality) {
-      titles = getTitlesForHospitalitySpecialization(specialisation);
+      titles = getTitlesForHospitalitySpecialisation(specialisation);
     } else if (rd) {
-      titles = getTitlesForRDSpecialization(specialisation);
+      titles = getTitlesForRDSpecialisation(specialisation);
     } else if (sales) {
-      titles = getTitlesForSalesSpecialization(specialisation);
+      titles = getTitlesForSalesSpecialisation(specialisation);
     }
     
     setAvailableTitles(titles);

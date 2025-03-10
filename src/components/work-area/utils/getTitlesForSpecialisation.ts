@@ -11,7 +11,7 @@ import { financeRoles } from "../constants/finance-roles";
 import { rdRoles } from "../constants/rd-roles";
 import { salesRoles } from "../constants/sales-roles";
 
-export const getTitlesForITSpecialization = (specialization: string): string[] => {
+export const getTitlesForITSpecialisation = (specialisation: string): string[] => {
   const {
     softwareDevTitles,
     itSupportTitles,
@@ -25,7 +25,7 @@ export const getTitlesForITSpecialization = (specialization: string): string[] =
     specializedITTitles
   } = itRoles;
 
-  switch (specialization) {
+  switch (specialisation) {
     case "Software Development and Programming":
       return softwareDevTitles;
     case "IT Support and Operations":
@@ -51,8 +51,8 @@ export const getTitlesForITSpecialization = (specialization: string): string[] =
   }
 };
 
-export const getTitlesForCustomerServiceSpecialization = (specialization: string): string[] => {
-  switch (specialization) {
+export const getTitlesForCustomerServiceSpecialisation = (specialisation: string): string[] => {
+  switch (specialisation) {
     case "Customer Support Roles":
       return customerSupportTitles;
     case "Customer Experience Roles":
@@ -70,7 +70,7 @@ export const getTitlesForCustomerServiceSpecialization = (specialization: string
   }
 };
 
-export const getTitlesForFinanceSpecialization = (specialization: string): string[] => {
+export const getTitlesForFinanceSpecialisation = (specialisation: string): string[] => {
   const {
     accountingRoles,
     financialAnalysisRoles,
@@ -81,7 +81,7 @@ export const getTitlesForFinanceSpecialization = (specialization: string): strin
     specializedFinanceRoles
   } = financeRoles;
 
-  switch (specialization) {
+  switch (specialisation) {
     case "Accounting Roles":
       return accountingRoles;
     case "Financial Analysis and Planning Roles":
@@ -101,19 +101,19 @@ export const getTitlesForFinanceSpecialization = (specialization: string): strin
   }
 };
 
-export const getTitlesForPublicSectorSpecialization = (specialization: string): string[] => {
+export const getTitlesForPublicSectorSpecialisation = (specialisation: string): string[] => {
   return [];
 };
 
-export const getTitlesForEngineeringSpecialization = (specialization: string): string[] => {
+export const getTitlesForEngineeringSpecialisation = (specialisation: string): string[] => {
   return [];
 };
 
-export const getTitlesForHospitalitySpecialization = (specialization: string): string[] => {
+export const getTitlesForHospitalitySpecialisation = (specialisation: string): string[] => {
   return [];
 };
 
-export const getTitlesForRDSpecialization = (specialization: string): string[] => {
+export const getTitlesForRDSpecialisation = (specialisation: string): string[] => {
   const {
     productRDTitles,
     scientificResearchTitles,
@@ -127,7 +127,7 @@ export const getTitlesForRDSpecialization = (specialization: string): string[] =
     agriculturalResearchTitles
   } = rdRoles;
 
-  switch (specialization) {
+  switch (specialisation) {
     case "Product Research and Development":
       return productRDTitles;
     case "Scientific Research":
@@ -153,7 +153,7 @@ export const getTitlesForRDSpecialization = (specialization: string): string[] =
   }
 };
 
-export const getTitlesForSalesSpecialization = (specialization: string): string[] => {
+export const getTitlesForSalesSpecialisation = (specialisation: string): string[] => {
   const {
     accountManagementTitles,
     businessDevelopmentTitles,
@@ -167,7 +167,7 @@ export const getTitlesForSalesSpecialization = (specialization: string): string[
     salesOperationsTitles
   } = salesRoles;
 
-  switch (specialization) {
+  switch (specialisation) {
     case "Account Management":
       return accountManagementTitles;
     case "Business Development":

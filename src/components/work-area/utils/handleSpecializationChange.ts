@@ -1,41 +1,44 @@
+
 import { Control } from "react-hook-form";
 import { UseSpecializationStateReturn } from "../hooks/useSpecializationState";
 import { 
-  getTitlesForITSpecialization,
-  getTitlesForCustomerServiceSpecialization,
-  getTitlesForFinanceSpecialization,
-  getTitlesForPublicSectorSpecialization,
-  getTitlesForEngineeringSpecialization,
-  getTitlesForHospitalitySpecialization,
-  getTitlesForRDSpecialization,
-  getTitlesForSalesSpecialization
-} from "./getTitlesForSpecialization";
+  getTitlesForITSpecialisation,
+  getTitlesForCustomerServiceSpecialisation,
+  getTitlesForFinanceSpecialisation,
+  getTitlesForPublicSectorSpecialisation,
+  getTitlesForEngineeringSpecialisation,
+  getTitlesForHospitalitySpecialisation,
+  getTitlesForRDSpecialisation,
+  getTitlesForSalesSpecialisation
+} from "./getTitlesForSpecialisation";
 
 export const handleSpecializationChange = (
-  specialization: string,
+  specialisation: string,
   control: Control<any>,
   { states, setters }: UseSpecializationStateReturn
 ) => {
-  setters.setSelectedSpecialization(specialization);
+  setters.setSelectedSpecialisation(specialisation);
   control._formValues.title = "";
   
   let titles: string[] = [];
   if (states.showITSpecialization) {
-    titles = getTitlesForITSpecialization(specialization);
+    titles = getTitlesForITSpecialisation(specialisation);
   } else if (states.showCustomerServiceSpecialization) {
-    titles = getTitlesForCustomerServiceSpecialization(specialization);
+    titles = getTitlesForCustomerServiceSpecialisation(specialisation);
   } else if (states.showFinanceSpecialization) {
-    titles = getTitlesForFinanceSpecialization(specialization);
+    titles = getTitlesForFinanceSpecialisation(specialisation);
   } else if (states.showPublicSectorSpecialization) {
-    titles = getTitlesForPublicSectorSpecialization(specialization);
+    titles = getTitlesForPublicSectorSpecialisation(specialisation);
   } else if (states.showEngineeringSpecialization) {
-    titles = getTitlesForEngineeringSpecialization(specialization);
+    titles = getTitlesForEngineeringSpecialisation(specialisation);
   } else if (states.showHospitalitySpecialization) {
-    titles = getTitlesForHospitalitySpecialization(specialization);
+    titles = getTitlesForHospitalitySpecialisation(specialisation);
   } else if (states.showRDSpecialization) {
-    titles = getTitlesForRDSpecialization(specialization);
+    titles = getTitlesForRDSpecialisation(specialisation);
   } else if (states.showSalesSpecialization) {
-    titles = getTitlesForSalesSpecialization(specialization);
+    titles = getTitlesForSalesSpecialisation(specialisation);
   }
+  
   setters.setAvailableTitles(titles);
 };
+
