@@ -1,4 +1,3 @@
-
 import { Control } from "react-hook-form";
 import { useState } from "react";
 import { 
@@ -11,7 +10,8 @@ import {
   getTitlesForRDSpecialisation,
   getTitlesForSalesSpecialisation,
   getTitlesForQASpecialisation,
-  getTitlesForMarketingSpecialisation
+  getTitlesForMarketingSpecialisation,
+  getTitlesForHRSpecialisation
 } from "../utils/getTitlesForSpecialisation";
 
 export const useWorkAreaHandler = (control: Control<any>) => {
@@ -141,6 +141,8 @@ export const useWorkAreaHandler = (control: Control<any>) => {
       titles = getTitlesForQASpecialisation(specialisation);
     } else if (showSpec.marketing) {
       titles = getTitlesForMarketingSpecialisation(specialisation);
+    } else if (showSpec.hr) {
+      titles = getTitlesForHRSpecialisation(specialisation);
     }
     
     setAvailableTitles(titles);
