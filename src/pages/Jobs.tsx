@@ -31,8 +31,16 @@ const Jobs = () => {
 
       // Apply search filters
       if (searchFilters) {
-        if (searchFilters.keyword) {
-          query = query.ilike('title', `%${searchFilters.keyword}%`);
+        if (searchFilters.workArea) {
+          query = query.eq('work_area', searchFilters.workArea);
+        }
+
+        if (searchFilters.specialization) {
+          query = query.eq('specialization', searchFilters.specialization);
+        }
+
+        if (searchFilters.title) {
+          query = query.ilike('title', `%${searchFilters.title}%`);
         }
 
         if (searchFilters.location) {
