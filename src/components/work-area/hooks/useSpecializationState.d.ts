@@ -4,39 +4,39 @@ import { Dispatch, SetStateAction } from "react";
 
 export interface SpecializationStates {
   showOtherInput: boolean;
-  showITSpecialization: boolean;
-  showCustomerServiceSpecialization: boolean;
-  showFinanceSpecialization: boolean;
-  showPublicSectorSpecialization: boolean;
-  showEngineeringSpecialization: boolean;
-  showHospitalitySpecialization: boolean;
-  showHRSpecialization: boolean;
-  showLegalSpecialization: boolean;
-  showManufacturingSpecialization: boolean;
-  showEnergySpecialization: boolean;
-  showPharmaSpecialization: boolean;
-  showRDSpecialization: boolean;
-  showSalesSpecialization: boolean;
-  selectedSpecialization: string;
+  showITSpecialisation: boolean;
+  showCustomerServiceSpecialisation: boolean;
+  showFinanceSpecialisation: boolean;
+  showPublicSectorSpecialisation: boolean;
+  showEngineeringSpecialisation: boolean;
+  showHospitalitySpecialisation: boolean;
+  showHRSpecialisation: boolean;
+  showLegalSpecialisation: boolean;
+  showManufacturingSpecialisation: boolean;
+  showEnergySpecialisation: boolean;
+  showPharmaSpecialisation: boolean;
+  showRDSpecialisation: boolean;
+  showSalesSpecialisation: boolean;
+  selectedSpecialisation: string;
   availableTitles: string[];
 }
 
 export interface SpecializationSetters {
   setShowOtherInput: Dispatch<SetStateAction<boolean>>;
-  setShowITSpecialization: Dispatch<SetStateAction<boolean>>;
-  setShowCustomerServiceSpecialization: Dispatch<SetStateAction<boolean>>;
-  setShowFinanceSpecialization: Dispatch<SetStateAction<boolean>>;
-  setShowPublicSectorSpecialization: Dispatch<SetStateAction<boolean>>;
-  setShowEngineeringSpecialization: Dispatch<SetStateAction<boolean>>;
-  setShowHospitalitySpecialization: Dispatch<SetStateAction<boolean>>;
-  setShowHRSpecialization: Dispatch<SetStateAction<boolean>>;
-  setShowLegalSpecialization: Dispatch<SetStateAction<boolean>>;
-  setShowManufacturingSpecialization: Dispatch<SetStateAction<boolean>>;
-  setShowEnergySpecialization: Dispatch<SetStateAction<boolean>>;
-  setShowPharmaSpecialization: Dispatch<SetStateAction<boolean>>;
-  setShowRDSpecialization: Dispatch<SetStateAction<boolean>>;
-  setShowSalesSpecialization: Dispatch<SetStateAction<boolean>>;
-  setSelectedSpecialization: Dispatch<SetStateAction<string>>;
+  setShowITSpecialisation: Dispatch<SetStateAction<boolean>>;
+  setShowCustomerServiceSpecialisation: Dispatch<SetStateAction<boolean>>;
+  setShowFinanceSpecialisation: Dispatch<SetStateAction<boolean>>;
+  setShowPublicSectorSpecialisation: Dispatch<SetStateAction<boolean>>;
+  setShowEngineeringSpecialisation: Dispatch<SetStateAction<boolean>>;
+  setShowHospitalitySpecialisation: Dispatch<SetStateAction<boolean>>;
+  setShowHRSpecialisation: Dispatch<SetStateAction<boolean>>;
+  setShowLegalSpecialisation: Dispatch<SetStateAction<boolean>>;
+  setShowManufacturingSpecialisation: Dispatch<SetStateAction<boolean>>;
+  setShowEnergySpecialisation: Dispatch<SetStateAction<boolean>>;
+  setShowPharmaSpecialisation: Dispatch<SetStateAction<boolean>>;
+  setShowRDSpecialisation: Dispatch<SetStateAction<boolean>>;
+  setShowSalesSpecialisation: Dispatch<SetStateAction<boolean>>;
+  setSelectedSpecialisation: Dispatch<SetStateAction<string>>;
   setAvailableTitles: Dispatch<SetStateAction<string[]>>;
 }
 
@@ -45,4 +45,3 @@ export interface UseSpecializationStateReturn {
   setters: SpecializationSetters;
   resetAllSpecializations: () => void;
 }
-

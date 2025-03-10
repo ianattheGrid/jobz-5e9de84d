@@ -21,24 +21,23 @@ export const handleSpecializationChange = (
   control._formValues.title = "";
   
   let titles: string[] = [];
-  if (states.showITSpecialization) {
+  if (states.showITSpecialisation) {
     titles = getTitlesForITSpecialisation(specialisation);
-  } else if (states.showCustomerServiceSpecialization) {
+  } else if (states.showCustomerServiceSpecialisation) {
     titles = getTitlesForCustomerServiceSpecialisation(specialisation);
-  } else if (states.showFinanceSpecialization) {
+  } else if (states.showFinanceSpecialisation) {
     titles = getTitlesForFinanceSpecialisation(specialisation);
-  } else if (states.showPublicSectorSpecialization) {
+  } else if (states.showPublicSectorSpecialisation) {
     titles = getTitlesForPublicSectorSpecialisation(specialisation);
-  } else if (states.showEngineeringSpecialization) {
+  } else if (states.showEngineeringSpecialisation) {
     titles = getTitlesForEngineeringSpecialisation(specialisation);
-  } else if (states.showHospitalitySpecialization) {
+  } else if (states.showHospitalitySpecialisation) {
     titles = getTitlesForHospitalitySpecialisation(specialisation);
-  } else if (states.showRDSpecialization) {
+  } else if (states.showRDSpecialisation) {
     titles = getTitlesForRDSpecialisation(specialisation);
-  } else if (states.showSalesSpecialization) {
+  } else if (states.showSalesSpecialisation) {
     titles = getTitlesForSalesSpecialisation(specialisation);
   }
   
   setters.setAvailableTitles(titles);
 };
-
