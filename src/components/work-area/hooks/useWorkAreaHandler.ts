@@ -1,4 +1,5 @@
-
+import { Control } from "react-hook-form";
+import { useState } from "react";
 import { 
   getTitlesForITSpecialisation,
   getTitlesForCustomerServiceSpecialisation,
@@ -14,7 +15,7 @@ import {
   getTitlesForSalesSpecialisation,
   getTitlesForQASpecialisation,
   getTitlesForMarketingSpecialisation
-} from "../utils/getTitlesForSpecialisation";
+} from "../utils/titles";
 
 export const useWorkAreaHandler = (control: Control<any>) => {
   const [showOtherInput, setShowOtherInput] = useState(false);
