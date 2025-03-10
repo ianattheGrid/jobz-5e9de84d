@@ -10,6 +10,7 @@ import {
   getTitlesForHospitalitySpecialisation,
   getTitlesForHRSpecialisation,
   getTitlesForLegalSpecialisation,
+  getTitlesForManufacturingSpecialisation,
   getTitlesForRDSpecialisation,
   getTitlesForSalesSpecialisation,
   getTitlesForQASpecialisation,
@@ -147,6 +148,8 @@ export const useWorkAreaHandler = (control: Control<any>) => {
       titles = getTitlesForHRSpecialisation(specialisation);
     } else if (showSpec.legal) {
       titles = getTitlesForLegalSpecialisation(specialisation);
+    } else if (showSpec.manufacturing) {
+      titles = getTitlesForManufacturingSpecialisation(specialisation);
     }
     
     setAvailableTitles(titles);
