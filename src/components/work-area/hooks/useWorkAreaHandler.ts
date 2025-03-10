@@ -1,6 +1,4 @@
 
-import { Control } from "react-hook-form";
-import { useState } from "react";
 import { 
   getTitlesForITSpecialisation,
   getTitlesForCustomerServiceSpecialisation,
@@ -11,6 +9,7 @@ import {
   getTitlesForHRSpecialisation,
   getTitlesForLegalSpecialisation,
   getTitlesForManufacturingSpecialisation,
+  getTitlesForEnergySpecialisation,
   getTitlesForRDSpecialisation,
   getTitlesForSalesSpecialisation,
   getTitlesForQASpecialisation,
@@ -150,6 +149,8 @@ export const useWorkAreaHandler = (control: Control<any>) => {
       titles = getTitlesForLegalSpecialisation(specialisation);
     } else if (showSpec.manufacturing) {
       titles = getTitlesForManufacturingSpecialisation(specialisation);
+    } else if (showSpec.energy) {
+      titles = getTitlesForEnergySpecialisation(specialisation);
     }
     
     setAvailableTitles(titles);
