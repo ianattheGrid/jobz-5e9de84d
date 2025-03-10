@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { Control } from "react-hook-form";
-import { UseSpecializationStateReturn } from "./useSpecializationState.d";
 
-export const useSpecializationState = (control: Control<any>): UseSpecializationStateReturn => {
+import { useState } from 'react';
+import { SpecializationStates, SpecializationSetters } from './useSpecializationState.d';
+
+export const useSpecializationState = () => {
   const [showOtherInput, setShowOtherInput] = useState(false);
   const [showITSpecialisation, setShowITSpecialisation] = useState(false);
   const [showCustomerServiceSpecialisation, setShowCustomerServiceSpecialisation] = useState(false);
@@ -18,10 +18,9 @@ export const useSpecializationState = (control: Control<any>): UseSpecialization
   const [showRDSpecialisation, setShowRDSpecialisation] = useState(false);
   const [showSalesSpecialisation, setShowSalesSpecialisation] = useState(false);
   const [showQASpecialisation, setShowQASpecialisation] = useState(false);
-  const [selectedSpecialisation, setSelectedSpecialisation] = useState<string>("");
   const [availableTitles, setAvailableTitles] = useState<string[]>([]);
 
-  const resetAllSpecializations = () => {
+  const resetAllSpecialisations = () => {
     setShowOtherInput(false);
     setShowITSpecialisation(false);
     setShowCustomerServiceSpecialisation(false);
@@ -37,52 +36,50 @@ export const useSpecializationState = (control: Control<any>): UseSpecialization
     setShowRDSpecialisation(false);
     setShowSalesSpecialisation(false);
     setShowQASpecialisation(false);
-    setSelectedSpecialisation("");
     setAvailableTitles([]);
-    control._formValues.title = "";
+  };
+
+  const states: SpecializationStates = {
+    showOtherInput,
+    showITSpecialisation,
+    showCustomerServiceSpecialisation,
+    showFinanceSpecialisation,
+    showPublicSectorSpecialisation,
+    showEngineeringSpecialisation,
+    showHospitalitySpecialisation,
+    showHRSpecialisation,
+    showLegalSpecialisation,
+    showManufacturingSpecialisation,
+    showEnergySpecialisation,
+    showPharmaSpecialisation,
+    showRDSpecialisation,
+    showSalesSpecialisation,
+    showQASpecialisation,
+    availableTitles,
+  };
+
+  const setters: SpecializationSetters = {
+    setShowOtherInput,
+    setShowITSpecialisation,
+    setShowCustomerServiceSpecialisation,
+    setShowFinanceSpecialisation,
+    setShowPublicSectorSpecialisation,
+    setShowEngineeringSpecialisation,
+    setShowHospitalitySpecialisation,
+    setShowHRSpecialisation,
+    setShowLegalSpecialisation,
+    setShowManufacturingSpecialisation,
+    setShowEnergySpecialisation,
+    setShowPharmaSpecialisation,
+    setShowRDSpecialisation,
+    setShowSalesSpecialisation,
+    setShowQASpecialisation,
+    setAvailableTitles,
   };
 
   return {
-    states: {
-      showOtherInput,
-      showITSpecialisation,
-      showCustomerServiceSpecialisation,
-      showFinanceSpecialisation,
-      showPublicSectorSpecialisation,
-      showEngineeringSpecialisation,
-      showHospitalitySpecialisation,
-      showHRSpecialisation,
-      showLegalSpecialisation,
-      showManufacturingSpecialisation,
-      showEnergySpecialisation,
-      showPharmaSpecialisation,
-      showRDSpecialisation,
-      showSalesSpecialisation,
-      showQASpecialisation,
-      selectedSpecialisation,
-      availableTitles
-    },
-    setters: {
-      setShowOtherInput,
-      setShowITSpecialisation,
-      setShowCustomerServiceSpecialisation,
-      setShowFinanceSpecialisation,
-      setShowPublicSectorSpecialisation,
-      setShowEngineeringSpecialisation,
-      setShowHospitalitySpecialisation,
-      setShowHRSpecialisation,
-      setShowLegalSpecialisation,
-      setShowManufacturingSpecialisation,
-      setShowEnergySpecialisation,
-      setShowPharmaSpecialisation,
-      setShowRDSpecialisation,
-      setShowSalesSpecialisation,
-      setShowQASpecialisation,
-      setSelectedSpecialisation,
-      setAvailableTitles
-    },
-    resetAllSpecializations
+    states,
+    setters,
+    resetAllSpecialisations,
   };
 };
-
-export type { UseSpecializationStateReturn };

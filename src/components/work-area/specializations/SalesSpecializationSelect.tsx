@@ -15,8 +15,8 @@ const SalesSpecializationSelect = ({ control, onSpecializationChange }: SalesSpe
       control={control}
       name="specialization"
       render={({ field }) => (
-        <FormItem>
-          <FormLabel>Sales Specialization</FormLabel>
+        <FormItem className="space-y-2">
+          <FormLabel className="block text-gray-900 font-medium">Sales Specialization</FormLabel>
           <FormControl>
             <Select
               onValueChange={(value) => {
@@ -25,10 +25,10 @@ const SalesSpecializationSelect = ({ control, onSpecializationChange }: SalesSpe
               }}
               value={field.value}
             >
-              <SelectTrigger className="w-full">
+              <SelectTrigger className="w-full bg-white border border-gray-300">
                 <SelectValue placeholder="Select your sales specialization" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-white">
                 {salesSpecializations.map((specialization) => (
                   <SelectItem key={specialization} value={specialization}>
                     {specialization}
