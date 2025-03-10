@@ -14,27 +14,33 @@ const CommissionFilterField = ({ control }: CommissionFilterFieldProps) => {
       control={control}
       name="hasCommission"
       render={({ field }) => (
-        <div className="space-y-2">
-          <h3 className="text-white font-medium">
+        <div className="space-y-3">
+          <div className="text-white font-medium text-base">
             Show jobs with "You're Hired" bonus
-          </h3>
-          <FormItem>
+          </div>
+          <FormItem className="space-y-2">
             <FormControl>
               <RadioGroup
                 onValueChange={(value) => field.onChange(value === 'true')}
                 defaultValue={field.value ? 'true' : 'false'}
-                className="flex flex-col space-y-1"
+                className="flex flex-col space-y-2"
               >
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="true" id="show-bonus" />
-                  <label htmlFor="show-bonus" className="text-white text-sm cursor-pointer">
-                    Yes, show jobs with bonus
+                  <label 
+                    htmlFor="show-bonus" 
+                    className="text-[#FFFFFF] cursor-pointer text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    Only show jobs with bonus
                   </label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="false" id="hide-bonus" />
-                  <label htmlFor="hide-bonus" className="text-white text-sm cursor-pointer">
-                    No, show all jobs
+                  <label 
+                    htmlFor="hide-bonus" 
+                    className="text-[#FFFFFF] cursor-pointer text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    Show all jobs
                   </label>
                 </div>
               </RadioGroup>
