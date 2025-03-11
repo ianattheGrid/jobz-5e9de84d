@@ -34,7 +34,7 @@ const CandidateDashboard = () => {
 
       const { data: profile, error } = await supabase
         .from('candidate_profiles')
-        .select('full_name')
+        .select('*')
         .eq('id', session.user.id)
         .maybeSingle();
 
@@ -52,7 +52,7 @@ const CandidateDashboard = () => {
             id: session.user.id,
             email: session.user.email,
             job_title: 'Not specified',
-            location: 'Not specified',
+            location: ['Not specified'],
             min_salary: 0,
             max_salary: 0,
             years_experience: 0

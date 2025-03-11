@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Job } from "@/integrations/supabase/types/jobs";
+import { CandidateProfile } from "@/integrations/supabase/types/profiles";
 
-export const useMatchScore = (job: Job) => {
+export const useMatchScore = (profile: CandidateProfile, job: any) => {
   const [matchScore, setMatchScore] = useState<number | null>(null);
   const [showMatchWarning, setShowMatchWarning] = useState(false);
 
@@ -36,9 +37,8 @@ export const useMatchScore = (job: Job) => {
       totalCriteria += 1;
 
       // Location match
-      if (job.location.toLowerCase() === candidateProfile.location.toLowerCase()) {
-        score += 1;
-      }
+      const locationMatchScore = locationMatch();
+      score += locationMatchScore;
       totalCriteria += 1;
 
       // Salary match
@@ -56,6 +56,13 @@ export const useMatchScore = (job: Job) => {
       console.error('Error calculating match score:', error);
       return null;
     }
+  };
+
+  const locationMatch = () => {
+    if (!profile.location || !job.location) return 0;
+    return profile.location.some(loc => 
+      loc.toLowerCase() === job.location.toLowerCase()
+    ) ? 1 : 0;
   };
 
   return {

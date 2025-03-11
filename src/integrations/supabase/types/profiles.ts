@@ -1,10 +1,9 @@
-import { Json } from "./common";
 
 export interface CandidateProfile {
   id: string;
   job_title: string;
   years_experience: number;
-  location: string;
+  location: string[];
   min_salary: number;
   max_salary: number;
   created_at: string;
@@ -30,41 +29,6 @@ export interface CandidateProfile {
   ai_synopsis: string | null;
   ai_synopsis_status: string | null;
   ai_synopsis_last_updated: string | null;
-}
-
-export interface EmployerProfile {
-  id: string;
-  company_name: string;
-  full_name: string;
-  job_title: string;
-  created_at: string;
-  updated_at: string;
-}
-
-export interface RecruiterProfile {
-  id: string;
-  full_name: string;
-  experience_years: number;
-  verification_status: string;
-  rating: number | null;
-  successful_placements: number | null;
-  is_probation: boolean | null;
-  created_at: string;
-  updated_at: string;
-}
-
-export interface VirtualRecruiterProfile {
-  id: string;
-  vr_number: string;
-  full_name: string;
-  email: string;
-  location: string;
-  created_at: string;
-  updated_at: string;
-  is_active: boolean | null;
-  recommendations_count: number | null;
-  successful_placements: number | null;
-  bank_account_verified: boolean | null;
-  national_insurance_number: string | null;
-  bank_account_details: Json | null;
+  home_postcode: string | null;
+  linkedin_url: string | null;
 }
