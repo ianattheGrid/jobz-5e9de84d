@@ -1,10 +1,11 @@
+
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Briefcase, MapPin, GraduationCap, Shield, Clock } from "lucide-react";
+import { ArrowLeft, Briefcase, MapPin, GraduationCap, Shield } from "lucide-react";
 import { CandidateProfile } from "@/integrations/supabase/types/profiles";
 
 function ViewCandidateProfile() {
@@ -129,7 +130,7 @@ function ViewCandidateProfile() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Briefcase className="h-5 w-5" />
-            {profile?.job_title}
+            {profile.job_title}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -140,10 +141,18 @@ function ViewCandidateProfile() {
                 Location & Work Details
               </h3>
               <div className="space-y-2">
-                <p>Location: {profile?.location?.join(", ")}</p>
-                <p>Preferred Work Type: {profile?.preferred_work_type}</p>
-                <p>Work Eligibility: {profile?.work_eligibility}</p>
-                <p>Availability: {profile?.availability}</p>
+                {profile.location?.length > 0 && (
+                  <p>Location: {profile.location.join(", ")}</p>
+                )}
+                {profile.preferred_work_type && (
+                  <p>Preferred Work Type: {profile.preferred_work_type}</p>
+                )}
+                {profile.work_eligibility && (
+                  <p>Work Eligibility: {profile.work_eligibility}</p>
+                )}
+                {profile.availability && (
+                  <p>Availability: {profile.availability}</p>
+                )}
               </div>
             </div>
 
@@ -153,40 +162,42 @@ function ViewCandidateProfile() {
                 Experience & Skills
               </h3>
               <div className="space-y-2">
-                <p>Years of Experience: {profile?.years_experience}</p>
-                <p>Salary Expectation: £{profile?.min_salary.toLocaleString()} - £{profile?.max_salary.toLocaleString()}</p>
-                {profile?.commission_percentage && (
-                  <p>Desired "You're Hired" Bonus: {profile?.commission_percentage}%</p>
+                <p>Years of Experience: {profile.years_experience}</p>
+                <p>Salary Expectation: £{profile.min_salary.toLocaleString()} - £{profile.max_salary.toLocaleString()}</p>
+                {profile.commission_percentage && (
+                  <p>Desired "You're Hired" Bonus: {profile.commission_percentage}%</p>
                 )}
               </div>
             </div>
           </div>
 
-          <div>
-            <h3 className="font-semibold flex items-center gap-2 mb-2">
-              <Shield className="h-4 w-4" />
-              Qualifications & Security
-            </h3>
-            {profile?.required_qualifications && profile?.required_qualifications.length > 0 && (
-              <div className="mb-4">
-                <p className="font-medium">Qualifications:</p>
-                <ul className="list-disc list-inside">
-                  {profile?.required_qualifications.map((qual, index) => (
-                    <li key={index}>{qual}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-            {profile?.security_clearance && (
-              <p>Security Clearance: {profile?.security_clearance}</p>
-            )}
-          </div>
+          {(profile.required_qualifications?.length > 0 || profile.security_clearance) && (
+            <div>
+              <h3 className="font-semibold flex items-center gap-2 mb-2">
+                <Shield className="h-4 w-4" />
+                Qualifications & Security
+              </h3>
+              {profile.required_qualifications && profile.required_qualifications.length > 0 && (
+                <div className="mb-4">
+                  <p className="font-medium">Qualifications:</p>
+                  <ul className="list-disc list-inside">
+                    {profile.required_qualifications.map((qual, index) => (
+                      <li key={index}>{qual}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              {profile.security_clearance && (
+                <p>Security Clearance: {profile.security_clearance}</p>
+              )}
+            </div>
+          )}
 
-          {profile?.required_skills && profile?.required_skills.length > 0 && (
+          {profile.required_skills && profile.required_skills.length > 0 && (
             <div>
               <h3 className="font-semibold mb-2">Technical Skills</h3>
               <div className="flex flex-wrap gap-2">
-                {profile?.required_skills.map((skill, index) => (
+                {profile.required_skills.map((skill, index) => (
                   <span
                     key={index}
                     className="bg-gray-100 px-3 py-1 rounded-full text-sm"
@@ -198,10 +209,10 @@ function ViewCandidateProfile() {
             </div>
           )}
 
-          {profile?.additional_skills && (
+          {profile.additional_skills && (
             <div>
               <h3 className="font-semibold mb-2">Additional Skills & Certifications</h3>
-              <p>{profile?.additional_skills}</p>
+              <p>{profile.additional_skills}</p>
             </div>
           )}
         </CardContent>
