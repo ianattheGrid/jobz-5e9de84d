@@ -32,3 +32,44 @@ export interface CandidateProfile {
   home_postcode: string | null;
   linkedin_url: string | null;
 }
+
+export interface EmployerProfile {
+  id: string;
+  company_name: string;
+  company_website: string | null;
+  company_logo_url: string | null;
+  full_name: string;
+  job_title: string;
+  linkedin_url: string | null;
+  profile_picture_url: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface RecruiterProfile {
+  id: string;
+  full_name: string;
+  experience_years: number;
+  verification_status: string;
+  rating: number | null;
+  successful_placements: number | null;
+  is_probation: boolean | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface VirtualRecruiterProfile {
+  id: string;
+  vr_number: string;
+  full_name: string;
+  email: string;
+  location: string;
+  recommendations_count: number | null;
+  successful_placements: number | null;
+  is_active: boolean | null;
+  bank_account_verified: boolean | null;
+  bank_account_details: any | null;
+  national_insurance_number: string | null;
+  created_at: string;
+  updated_at: string;
+}
