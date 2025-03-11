@@ -36,46 +36,42 @@ const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
       return null;
     }
 
-    if (profileData) {
-      const profile: CandidateProfile = {
-        ...profileData,
-        location: profileData.location || [],
-        required_qualifications: profileData.required_qualifications || null,
-        required_skills: profileData.required_skills || null,
-        additional_skills: profileData.additional_skills || null,
-        address: profileData.address || null,
-        ai_synopsis: profileData.ai_synopsis || null,
-        ai_synopsis_last_updated: profileData.ai_synopsis_last_updated || null,
-        ai_synopsis_status: profileData.ai_synopsis_status || null,
-        availability: profileData.availability || null,
-        commission_percentage: profileData.commission_percentage || null,
-        created_at: profileData.created_at,
-        current_employer: profileData.current_employer || null,
-        cv_url: profileData.cv_url || null,
-        desired_job_title: profileData.desired_job_title || null,
-        email: profileData.email,
-        full_name: profileData.full_name || null,
-        home_postcode: profileData.home_postcode || null,
-        id: profileData.id,
-        job_title: profileData.job_title,
-        linkedin_url: profileData.linkedin_url || null,
-        max_salary: profileData.max_salary,
-        min_salary: profileData.min_salary,
-        phone_number: profileData.phone_number || null,
-        preferred_work_type: profileData.preferred_work_type || null,
-        profile_picture_url: profileData.profile_picture_url || null,
-        security_clearance: profileData.security_clearance || null,
-        signup_date: profileData.signup_date || null,
-        travel_radius: profileData.travel_radius || null,
-        updated_at: profileData.updated_at,
-        work_eligibility: profileData.work_eligibility || null,
-        work_preferences: profileData.work_preferences || null,
-        years_experience: profileData.years_experience
-      };
-      return profile;
-    }
+    const profile: CandidateProfile = {
+      id: profileData.id,
+      email: profileData.email,
+      job_title: profileData.job_title,
+      years_experience: profileData.years_experience,
+      location: profileData.location || [],
+      min_salary: profileData.min_salary,
+      max_salary: profileData.max_salary,
+      required_qualifications: profileData.required_qualifications || null,
+      required_skills: profileData.required_skills || null,
+      security_clearance: profileData.security_clearance,
+      commission_percentage: profileData.commission_percentage,
+      created_at: profileData.created_at,
+      updated_at: profileData.updated_at,
+      signup_date: profileData.signup_date,
+      work_eligibility: profileData.work_eligibility,
+      preferred_work_type: profileData.preferred_work_type,
+      availability: profileData.availability,
+      additional_skills: profileData.additional_skills,
+      address: profileData.address,
+      ai_synopsis: profileData.ai_synopsis,
+      ai_synopsis_last_updated: profileData.ai_synopsis_last_updated,
+      ai_synopsis_status: profileData.ai_synopsis_status,
+      current_employer: profileData.current_employer,
+      cv_url: profileData.cv_url,
+      full_name: profileData.full_name,
+      phone_number: profileData.phone_number,
+      profile_picture_url: profileData.profile_picture_url,
+      travel_radius: profileData.travel_radius,
+      work_preferences: profileData.work_preferences,
+      desired_job_title: profileData.desired_job_title,
+      home_postcode: profileData.home_postcode,
+      linkedin_url: profileData.linkedin_url
+    };
 
-    return null;
+    return profile;
   };
   
   const { application, handleAccept } = useApplication(job);

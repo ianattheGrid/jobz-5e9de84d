@@ -1,5 +1,4 @@
-
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
@@ -116,33 +115,40 @@ export default function CandidateSearch() {
 
       if (error) throw error;
 
-      const validCandidateProfiles = candidateProfiles.map(profile => ({
-        ...profile,
-        location: profile.location || [],
-        required_qualifications: profile.required_qualifications || null,
-        required_skills: profile.required_skills || null,
-        ai_synopsis: profile.ai_synopsis || null,
-        ai_synopsis_last_updated: profile.ai_synopsis_last_updated || null,
-        ai_synopsis_status: profile.ai_synopsis_status || null,
-        additional_skills: profile.additional_skills || null,
-        address: profile.address || null,
-        work_preferences: profile.work_preferences || null,
-        cv_url: profile.cv_url || null,
-        full_name: profile.full_name || null,
-        phone_number: profile.phone_number || null,
-        profile_picture_url: profile.profile_picture_url || null,
-        travel_radius: profile.travel_radius || null,
-        desired_job_title: profile.desired_job_title || null,
-        home_postcode: profile.home_postcode || null,
-        linkedin_url: profile.linkedin_url || null,
-        commission_percentage: profile.commission_percentage || null,
-        security_clearance: profile.security_clearance || null,
-        work_eligibility: profile.work_eligibility || null,
-        preferred_work_type: profile.preferred_work_type || null,
-        availability: profile.availability || null,
-        current_employer: profile.current_employer || null,
-        signup_date: profile.signup_date || null
-      })) as CandidateProfile[];
+      const validCandidateProfiles = candidateProfiles.map(profileData => ({
+        id: profileData.id,
+        email: profileData.email,
+        job_title: profileData.job_title,
+        years_experience: profileData.years_experience,
+        location: profileData.location || [],
+        min_salary: profileData.min_salary,
+        max_salary: profileData.max_salary,
+        required_qualifications: profileData.required_qualifications || null,
+        required_skills: profileData.required_skills || null,
+        security_clearance: profileData.security_clearance,
+        commission_percentage: profileData.commission_percentage,
+        created_at: profileData.created_at,
+        updated_at: profileData.updated_at,
+        signup_date: profileData.signup_date,
+        work_eligibility: profileData.work_eligibility,
+        preferred_work_type: profileData.preferred_work_type,
+        availability: profileData.availability,
+        additional_skills: profileData.additional_skills,
+        address: profileData.address,
+        ai_synopsis: profileData.ai_synopsis,
+        ai_synopsis_last_updated: profileData.ai_synopsis_last_updated,
+        ai_synopsis_status: profileData.ai_synopsis_status,
+        current_employer: profileData.current_employer,
+        cv_url: profileData.cv_url,
+        full_name: profileData.full_name,
+        phone_number: profileData.phone_number,
+        profile_picture_url: profileData.profile_picture_url,
+        travel_radius: profileData.travel_radius,
+        work_preferences: profileData.work_preferences,
+        desired_job_title: profileData.desired_job_title,
+        home_postcode: profileData.home_postcode,
+        linkedin_url: profileData.linkedin_url
+      }));
 
       setCandidates(validCandidateProfiles);
       toast({
