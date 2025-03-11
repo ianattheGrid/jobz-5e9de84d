@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -140,10 +141,10 @@ export default function ViewCandidateProfile() {
                 Location & Work Details
               </h3>
               <div className="space-y-2">
-                <p>Location: {profile?.location?.join(", ") || "Not specified"}</p>
-                <p>Preferred Work Type: {profile?.preferred_work_type || 'Not specified'}</p>
-                <p>Work Eligibility: {profile?.work_eligibility || 'Not specified'}</p>
-                <p>Availability: {profile?.availability || 'Not specified'}</p>
+                <p>Location: {profile?.location?.join(", ")}</p>
+                <p>Preferred Work Type: {profile?.preferred_work_type}</p>
+                <p>Work Eligibility: {profile?.work_eligibility}</p>
+                <p>Availability: {profile?.availability}</p>
               </div>
             </div>
 
@@ -209,3 +210,5 @@ export default function ViewCandidateProfile() {
     </div>
   );
 }
+
+export default ViewCandidateProfile;
