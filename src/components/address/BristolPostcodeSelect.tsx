@@ -11,7 +11,7 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Check } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface BristolPostcodeSelectProps {
@@ -33,7 +33,7 @@ const BristolPostcodeSelect = ({ control }: BristolPostcodeSelectProps) => {
                   className="w-full justify-between bg-white text-gray-900 h-auto min-h-10 py-2"
                 >
                   <div className="flex flex-wrap gap-1 items-center">
-                    {field.value?.length === 0 && <span>Select postcodes</span>}
+                    {(!field.value || field.value.length === 0) && <span>Select postcodes</span>}
                     {field.value?.length === bristolPostcodes.length && <span>All Bristol Areas</span>}
                     {field.value?.length > 0 && field.value?.length < bristolPostcodes.length && (
                       field.value.map((postcode: string) => (
@@ -52,22 +52,25 @@ const BristolPostcodeSelect = ({ control }: BristolPostcodeSelectProps) => {
               <DropdownMenuContent 
                 className="w-[200px] bg-white"
                 align="start"
+                side="bottom"
               >
-                <ScrollArea className="h-[300px] w-full">
+                <ScrollArea className="h-[300px] w-full p-2">
                   <DropdownMenuCheckboxItem
-                    className="cursor-pointer"
+                    className="cursor-pointer rounded-md mb-2"
                     checked={field.value?.length === bristolPostcodes.length}
                     onCheckedChange={(checked) => {
                       field.onChange(checked ? bristolPostcodes : []);
                     }}
                   >
-                    All Bristol Areas
+                    <span className="flex items-center">
+                      All Bristol Areas
+                    </span>
                   </DropdownMenuCheckboxItem>
                   <DropdownMenuSeparator />
                   {bristolPostcodes.map((postcode) => (
                     <DropdownMenuCheckboxItem
                       key={postcode}
-                      className="cursor-pointer"
+                      className="cursor-pointer rounded-md"
                       checked={field.value?.includes(postcode)}
                       onCheckedChange={(checked) => {
                         const newValue = checked
@@ -76,7 +79,9 @@ const BristolPostcodeSelect = ({ control }: BristolPostcodeSelectProps) => {
                         field.onChange(newValue);
                       }}
                     >
-                      {postcode}
+                      <span className="flex items-center">
+                        {postcode}
+                      </span>
                     </DropdownMenuCheckboxItem>
                   ))}
                 </ScrollArea>
