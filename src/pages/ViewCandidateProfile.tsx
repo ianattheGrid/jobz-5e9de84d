@@ -43,12 +43,13 @@ export default function ViewCandidateProfile() {
         if (error) throw error;
 
         if (data) {
-          const profile = {
+          const validProfile = {
             ...data,
             location: data.location || [],
-            required_qualifications: data.required_qualifications || []
+            required_qualifications: data.required_qualifications || null,
+            required_skills: data.required_skills || null
           };
-          setProfile(profile);
+          setProfile(validProfile);
         }
       } catch (error: any) {
         toast({

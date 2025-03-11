@@ -19,7 +19,29 @@ const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
   const [isApplying, setIsApplying] = useState(false);
   
   const checkAuthentication = useAuthenticationCheck();
-  const checkProfile = useProfileCheck();
+  const checkProfile = async (userId: string) => {
+    const { data: profile, error } = await supabase
+      .from('candidate_profiles')
+      .select('*')
+      .eq('id', userId)
+      .single();
+
+    if (error) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to fetch profile"
+      });
+      return null;
+    }
+
+    return profile ? {
+      ...profile,
+      location: profile.location || [],
+      required_qualifications: profile.required_qualifications || null,
+      required_skills: profile.required_skills || null
+    } : null;
+  };
   
   const { application, handleAccept } = useApplication(job);
 

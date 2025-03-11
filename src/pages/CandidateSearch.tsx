@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -83,44 +82,36 @@ export default function CandidateSearch() {
         .from('candidate_profiles')
         .select('*');
 
-      // Apply location filter if provided
       if (values.location) {
         query = query.ilike('location', `%${values.location}%`);
       }
 
-      // Apply flexible salary range filter
       const flexibleMinSalary = minSalary - 5000;
       const flexibleMaxSalary = maxSalary + 5000;
       
       query = query
         .or(`min_salary.lte.${flexibleMaxSalary},max_salary.gte.${flexibleMinSalary}`);
 
-      // Apply commission filter if selected
       if (values.includeCommissionCandidates) {
         query = query.not('commission_percentage', 'is', null);
       }
 
-      // Apply qualification filter if specified
       if (values.qualification && values.qualification !== 'None') {
         query = query.contains('required_qualifications', [values.qualification]);
       }
 
-      // Apply IT skills filter if selected
       if (values.required_skills && values.required_skills.length > 0) {
         query = query.contains('required_skills', values.required_skills);
       }
 
-      // Apply security clearance filter if selected
       if (values.requiresSecurityClearance && values.securityClearanceLevel) {
         query = query.eq('security_clearance', values.securityClearanceLevel);
       }
 
-      // Apply work eligibility filter if selected
       if (values.workEligibility) {
         query = query.eq('work_eligibility', values.workEligibility);
       }
 
-      // Apply signup date filter if selected
       if (values.signupPeriod) {
         const signupDate = getSignupDateFilter(values.signupPeriod);
         if (signupDate) {
@@ -136,10 +127,17 @@ export default function CandidateSearch() {
 
       if (error) throw error;
 
-      setCandidates(candidateProfiles);
+      const validCandidateProfiles = candidateProfiles.map(profile => ({
+        ...profile,
+        location: profile.location || [],
+        required_qualifications: profile.required_qualifications || null,
+        required_skills: profile.required_skills || null
+      }));
+
+      setCandidates(validCandidateProfiles);
       toast({
         title: "Search Completed",
-        description: `Found ${candidateProfiles.length} matching candidates.`,
+        description: `Found ${validCandidateProfiles.length} matching candidates.`,
       });
     } catch (error: any) {
       toast({
