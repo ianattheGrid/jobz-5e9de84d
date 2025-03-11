@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -11,6 +10,7 @@ import ApplicationStatus from "./application/ApplicationStatus";
 import { useApplication } from "./hooks/useApplication";
 import { validateEssentialCriteria } from "./utils/applicationValidation";
 import { X } from "lucide-react";
+import { useEmployerValidation } from "@/hooks/useEmployerValidation";
 
 const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
   const { toast } = useToast();
@@ -22,6 +22,8 @@ const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
   const checkProfile = useProfileCheck();
   
   const { application, handleAccept } = useApplication(job);
+
+  const { validateEmployerApplication } = useEmployerValidation();
 
   const handleStartApply = async (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -50,6 +52,9 @@ const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
       });
       return;
     }
+
+    const canApply = await validateEmployerApplication(profile.current_employer, job.company);
+    if (!canApply) return;
     
     setIsApplying(true);
   };
@@ -119,7 +124,6 @@ const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
     <div 
       className="h-full p-6 bg-[#2A2A2A] text-foreground overflow-y-auto rounded-lg"
       onClick={(e) => {
-        // Only close if clicking on the background, not on any interactive elements
         if (e.target === e.currentTarget) {
           onClose();
         }

@@ -241,6 +241,30 @@ export type Database = {
           },
         ]
       }
+      employer_names: {
+        Row: {
+          created_at: string
+          id: number
+          name_variations: string[]
+          standard_name: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          name_variations?: string[]
+          standard_name: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          name_variations?: string[]
+          standard_name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       employer_profiles: {
         Row: {
           company_logo_url: string | null
@@ -648,6 +672,20 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      can_apply_to_job: {
+        Args: {
+          candidate_employer: string
+          job_company: string
+        }
+        Returns: boolean
+      }
+      company_names_match: {
+        Args: {
+          name1: string
+          name2: string
+        }
+        Returns: boolean
+      }
       generate_referral_code: {
         Args: Record<PropertyKey, never>
         Returns: string
@@ -655,6 +693,58 @@ export type Database = {
       generate_vr_number: {
         Args: Record<PropertyKey, never>
         Returns: string
+      }
+      gtrgm_compress: {
+        Args: {
+          "": unknown
+        }
+        Returns: unknown
+      }
+      gtrgm_decompress: {
+        Args: {
+          "": unknown
+        }
+        Returns: unknown
+      }
+      gtrgm_in: {
+        Args: {
+          "": unknown
+        }
+        Returns: unknown
+      }
+      gtrgm_options: {
+        Args: {
+          "": unknown
+        }
+        Returns: undefined
+      }
+      gtrgm_out: {
+        Args: {
+          "": unknown
+        }
+        Returns: unknown
+      }
+      normalize_company_name: {
+        Args: {
+          company_name: string
+        }
+        Returns: string
+      }
+      set_limit: {
+        Args: {
+          "": number
+        }
+        Returns: number
+      }
+      show_limit: {
+        Args: Record<PropertyKey, never>
+        Returns: number
+      }
+      show_trgm: {
+        Args: {
+          "": string
+        }
+        Returns: string[]
       }
     }
     Enums: {
