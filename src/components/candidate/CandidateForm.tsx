@@ -1,3 +1,4 @@
+
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
@@ -31,7 +32,7 @@ export function CandidateForm() {
       email: "",
       phone_number: "",
       address: "",
-      location: "",
+      location: [], // Changed from string to empty array
       workArea: "",
       min_salary: 0,
       max_salary: 0,
@@ -45,7 +46,6 @@ export function CandidateForm() {
       availability: "Immediate",
       work_preferences: "",
       current_employer: "",
-      travel_radius: 10,
       job_seeking_reasons: [],
       other_job_seeking_reason: "",
     }
@@ -61,7 +61,7 @@ export function CandidateForm() {
       email: profile.email || "",
       phone_number: profile.phone_number || "",
       address: profile.address || "",
-      location: profile.location || "",
+      location: profile.location ? Array.isArray(profile.location) ? profile.location : [profile.location] : [], // Handle both string and array cases
       workArea: profile.job_title || "",
       min_salary: profile.min_salary || 0,
       max_salary: profile.max_salary || 0,
@@ -75,7 +75,6 @@ export function CandidateForm() {
       availability: profile.availability || "Immediate",
       work_preferences: profile.work_preferences || "",
       current_employer: profile.current_employer || "",
-      travel_radius: profile.travel_radius || 10,
       job_seeking_reasons: [],
       other_job_seeking_reason: "",
     };
