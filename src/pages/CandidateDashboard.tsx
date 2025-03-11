@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -128,26 +129,26 @@ const CandidateDashboard = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-white">
       <NavBar />
       <div className="container mx-auto px-4 py-8 pt-20">
-        <h1 className="text-3xl font-bold mb-2 text-[#FF69B4]">
+        <h1 className="text-3xl font-bold mb-2 text-gray-900">
           Welcome{fullName ? `, ${fullName}` : ''}
         </h1>
-        <p className="text-[#FF69B4] mb-8">Manage your job search and applications</p>
+        <p className="text-gray-600 mb-8">Manage your job search and applications</p>
         
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {menuItems.map((item, index) => (
             <Button
               key={index}
               variant="outline"
-              className="h-auto p-6 flex flex-col items-center gap-4 bg-zinc-900 hover:bg-zinc-800 transition-all duration-200 border border-zinc-700 rounded-lg shadow-sm hover:shadow-md"
+              className="h-auto p-6 flex flex-col items-center gap-4 bg-white hover:bg-gray-50 transition-all duration-200 border border-gray-200 rounded-lg shadow-sm hover:shadow-md"
               onClick={() => navigate(item.path)}
             >
-              <div className="text-[#FF69B4]">{item.icon}</div>
+              <div className="text-primary">{item.icon}</div>
               <div className="text-center">
-                <h3 className="font-semibold text-lg mb-2 text-[#FF69B4]">{item.title}</h3>
-                <p className="text-sm text-gray-300">{item.description}</p>
+                <h3 className="font-semibold text-lg mb-2 text-gray-900">{item.title}</h3>
+                <p className="text-sm text-gray-600">{item.description}</p>
               </div>
             </Button>
           ))}
