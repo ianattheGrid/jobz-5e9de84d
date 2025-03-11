@@ -1,13 +1,14 @@
+
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Control } from "react-hook-form";
 import { CandidateFormValues } from "../candidateFormSchema";
 import { FileUploadSection } from "../FileUploadSection";
-import AddressFinder from "@/components/AddressFinder";
 import TravelRadiusSelect from "./TravelRadiusSelect";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Link } from "lucide-react";
+import BristolPostcodeSelect from "@/components/address/BristolPostcodeSelect";
 
 interface ContactInformationProps {
   control: Control<CandidateFormValues>;
@@ -149,8 +150,11 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
         />
 
         <FormItem>
-          <FormLabel className="text-gray-900">Your home postcode</FormLabel>
-          <AddressFinder control={control} />
+          <FormLabel className="text-gray-900">Your postcode area</FormLabel>
+          <BristolPostcodeSelect control={control} />
+          <p className="text-sm text-gray-600 mt-1">
+            Currently only available in Bristol area during beta testing
+          </p>
         </FormItem>
 
         <TravelRadiusSelect control={control} />
