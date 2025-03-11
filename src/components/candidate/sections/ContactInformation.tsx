@@ -7,7 +7,6 @@ import AddressFinder from "@/components/AddressFinder";
 import TravelRadiusSelect from "./TravelRadiusSelect";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { ProfileCard } from "@/components/shared/ProfileCard";
 import { Link } from "lucide-react";
 
 interface ContactInformationProps {
@@ -19,11 +18,6 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
   const [profile, setProfile] = useState<{ 
     profile_picture_url: string | null; 
     cv_url: string | null;
-    full_name: string | null;
-    job_title: string | null;
-    location: string | null;
-    years_experience: number | null;
-    required_skills: string[] | null;
   } | null>(null);
 
   useEffect(() => {
@@ -34,7 +28,7 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
         
         const { data: profileData } = await supabase
           .from('candidate_profiles')
-          .select('profile_picture_url, cv_url, full_name, job_title, location, years_experience, required_skills')
+          .select('profile_picture_url, cv_url')
           .eq('id', session.user.id)
           .maybeSingle();
           
@@ -47,17 +41,6 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
 
   return (
     <div className="space-y-8">
-      {profile && (
-        <ProfileCard
-          profilePicture={profile.profile_picture_url}
-          fullName={profile.full_name || "Your Name"}
-          title={profile.job_title || "Your Title"}
-          location={profile.location || undefined}
-          experience={profile.years_experience ? `${profile.years_experience} years of experience` : undefined}
-          skills={profile.required_skills || undefined}
-        />
-      )}
-
       <div className="space-y-4">
         <h3 className="text-lg font-semibold text-gray-900">Contact Information</h3>
         
