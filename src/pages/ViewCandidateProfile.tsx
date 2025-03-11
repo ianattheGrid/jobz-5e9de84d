@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -8,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, Briefcase, MapPin, GraduationCap, Shield, Clock } from "lucide-react";
 import { CandidateProfile } from "@/integrations/supabase/types/profiles";
 
-export default function ViewCandidateProfile() {
+function ViewCandidateProfile() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { toast } = useToast();
