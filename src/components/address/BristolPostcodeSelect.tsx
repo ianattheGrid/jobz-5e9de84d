@@ -1,7 +1,7 @@
 
-import { FormField, FormItem, FormControl, FormMessage } from "@/components/ui/form";
+import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Control } from "react-hook-form";
-import { CandidateFormValues } from "@/components/candidate/candidateFormSchema";
+import { CandidateFormValues } from "../candidate/candidateFormSchema";
 import { bristolPostcodes } from "@/data/bristolPostcodes";
 import {
   DropdownMenu,
@@ -25,6 +25,7 @@ const BristolPostcodeSelect = ({ control }: BristolPostcodeSelectProps) => {
       name="location"
       render={({ field }) => (
         <FormItem>
+          <FormLabel className="text-gray-900">What Bristol locations are you willing to work in?</FormLabel>
           <FormControl>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -88,6 +89,9 @@ const BristolPostcodeSelect = ({ control }: BristolPostcodeSelectProps) => {
               </DropdownMenuContent>
             </DropdownMenu>
           </FormControl>
+          <p className="text-sm text-gray-600 mt-1">
+            Select the Bristol areas where you are willing to work
+          </p>
           <FormMessage />
         </FormItem>
       )}
