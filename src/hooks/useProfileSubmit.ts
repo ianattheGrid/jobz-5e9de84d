@@ -1,4 +1,3 @@
-
 import { toast } from "@/components/ui/use-toast";
 import { CandidateFormValues } from "@/components/candidate/candidateFormSchema";
 import { supabase } from "@/integrations/supabase/client";
@@ -29,9 +28,10 @@ export const useProfileSubmit = (toast: ToastFunction) => {
           email: values.email,
           phone_number: values.phone_number,
           address: values.address,
+          home_postcode: values.home_postcode,
+          location: values.location,
           job_title: values.workArea,
           years_experience: values.years_experience ? parseInt(values.years_experience) : 0,
-          location: values.location, // Now correctly handling array of locations
           min_salary: values.min_salary,
           max_salary: values.max_salary,
           required_skills: values.required_skills,

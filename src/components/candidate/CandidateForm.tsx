@@ -1,4 +1,3 @@
-
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
@@ -32,7 +31,8 @@ export function CandidateForm() {
       email: "",
       phone_number: "",
       address: "",
-      location: [], // Changed from string to empty array
+      home_postcode: "",
+      location: [],
       workArea: "",
       min_salary: 0,
       max_salary: 0,
@@ -61,7 +61,8 @@ export function CandidateForm() {
       email: profile.email || "",
       phone_number: profile.phone_number || "",
       address: profile.address || "",
-      location: profile.location ? Array.isArray(profile.location) ? profile.location : [profile.location] : [], // Handle both string and array cases
+      home_postcode: profile.home_postcode || "",
+      location: profile.location || [],
       workArea: profile.job_title || "",
       min_salary: profile.min_salary || 0,
       max_salary: profile.max_salary || 0,
@@ -79,20 +80,16 @@ export function CandidateForm() {
       other_job_seeking_reason: "",
     };
 
-    // Get current form values
     const currentValues = form.getValues();
     
-    // Only update fields that are empty or different, preserving user input
     Object.keys(formData).forEach((key) => {
       const currentValue = currentValues[key as keyof CandidateFormValues];
       const newValue = formData[key as keyof CandidateFormValues];
       
-      // Skip travel_radius if it has been modified by the user
       if (key === 'travel_radius' && currentValue !== 10) {
         return;
       }
       
-      // Only update if the field is empty or different from the profile data
       if (currentValue === "" || currentValue === undefined || currentValue === null || 
           (Array.isArray(currentValue) && currentValue.length === 0) ||
           (typeof currentValue === 'number' && currentValue === 0)) {

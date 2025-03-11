@@ -1,4 +1,3 @@
-
 import * as z from "zod";
 
 export const candidateFormSchema = z.object({
@@ -6,6 +5,7 @@ export const candidateFormSchema = z.object({
   email: z.string().email("Invalid email address"),
   phone_number: z.string().optional(),
   address: z.string().optional(),
+  home_postcode: z.string().min(1, "Please select your home postcode"),
   location: z.array(z.string()).min(1, "Please select at least one work location"),
   workArea: z.string({
     required_error: "Please select your area of work.",
@@ -45,6 +45,4 @@ export const candidateFormSchema = z.object({
   path: ["max_salary"],
 });
 
-// Export the type inference from the schema
 export type CandidateFormValues = z.infer<typeof candidateFormSchema>;
-

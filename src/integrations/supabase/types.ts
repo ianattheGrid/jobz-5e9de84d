@@ -80,10 +80,11 @@ export type Database = {
           desired_job_title: string | null
           email: string
           full_name: string | null
+          home_postcode: string | null
           id: string
           job_title: string
           linkedin_url: string | null
-          location: string
+          location: string[] | null
           max_salary: number
           min_salary: number
           phone_number: string | null
@@ -112,10 +113,11 @@ export type Database = {
           desired_job_title?: string | null
           email: string
           full_name?: string | null
+          home_postcode?: string | null
           id: string
           job_title: string
           linkedin_url?: string | null
-          location: string
+          location?: string[] | null
           max_salary: number
           min_salary: number
           phone_number?: string | null
@@ -144,10 +146,11 @@ export type Database = {
           desired_job_title?: string | null
           email?: string
           full_name?: string | null
+          home_postcode?: string | null
           id?: string
           job_title?: string
           linkedin_url?: string | null
-          location?: string
+          location?: string[] | null
           max_salary?: number
           min_salary?: number
           phone_number?: string | null

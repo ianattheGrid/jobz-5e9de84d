@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Link } from "lucide-react";
 import BristolPostcodeSelect from "@/components/address/BristolPostcodeSelect";
+import HomePostcodeSelect from "@/components/address/HomePostcodeSelect";
 
 interface ContactInformationProps {
   control: Control<CandidateFormValues>;
@@ -148,7 +149,11 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
         />
 
         <FormItem>
-          <FormLabel className="text-gray-900">Your work locations</FormLabel>
+          <HomePostcodeSelect control={control} />
+        </FormItem>
+
+        <FormItem>
+          <FormLabel className="text-gray-900">What Bristol locations are you willing to work in?</FormLabel>
           <BristolPostcodeSelect control={control} />
           <p className="text-sm text-gray-600 mt-1">
             Select the Bristol areas where you are willing to work
