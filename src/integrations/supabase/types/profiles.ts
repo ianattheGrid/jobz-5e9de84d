@@ -1,4 +1,3 @@
-
 export interface CandidateProfile {
   id: string;
   job_title: string;
@@ -9,6 +8,7 @@ export interface CandidateProfile {
   created_at: string;
   updated_at: string;
   required_skills: string[] | null;
+  required_qualifications: string[] | null;
   security_clearance: string | null;
   signup_date: string | null;
   work_eligibility: string | null;
