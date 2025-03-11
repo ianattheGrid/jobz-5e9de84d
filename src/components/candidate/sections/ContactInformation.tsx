@@ -155,9 +155,6 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
         <FormItem>
           <FormLabel className="text-gray-900">What Bristol locations are you willing to work in?</FormLabel>
           <BristolPostcodeSelect control={control} />
-          <p className="text-sm text-gray-600 mt-1">
-            Select the Bristol areas where you are willing to work
-          </p>
         </FormItem>
 
         {userId && (
