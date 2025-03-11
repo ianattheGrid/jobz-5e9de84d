@@ -141,13 +141,13 @@ const CandidateDashboard = () => {
             <Button
               key={index}
               variant="outline"
-              className="h-auto p-6 flex flex-col items-center gap-4 bg-black hover:bg-zinc-900 transition-all duration-200 border border-zinc-800 rounded-lg shadow-sm hover:shadow-md"
+              className="h-auto p-6 flex flex-col items-center gap-4 bg-zinc-900 hover:bg-zinc-800 transition-all duration-200 border border-zinc-700 rounded-lg shadow-sm hover:shadow-md"
               onClick={() => navigate(item.path)}
             >
               <div className="text-[#FF69B4]">{item.icon}</div>
               <div className="text-center">
                 <h3 className="font-semibold text-lg mb-2 text-[#FF69B4]">{item.title}</h3>
-                <p className="text-sm text-zinc-400">{item.description}</p>
+                <p className="text-sm text-gray-300">{item.description}</p>
               </div>
             </Button>
           ))}
