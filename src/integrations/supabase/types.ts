@@ -90,6 +90,7 @@ export type Database = {
           phone_number: string | null
           preferred_work_type: string | null
           profile_picture_url: string | null
+          required_qualifications: string[] | null
           required_skills: string[] | null
           security_clearance: string | null
           signup_date: string | null
@@ -123,6 +124,7 @@ export type Database = {
           phone_number?: string | null
           preferred_work_type?: string | null
           profile_picture_url?: string | null
+          required_qualifications?: string[] | null
           required_skills?: string[] | null
           security_clearance?: string | null
           signup_date?: string | null
@@ -156,6 +158,7 @@ export type Database = {
           phone_number?: string | null
           preferred_work_type?: string | null
           profile_picture_url?: string | null
+          required_qualifications?: string[] | null
           required_skills?: string[] | null
           security_clearance?: string | null
           signup_date?: string | null

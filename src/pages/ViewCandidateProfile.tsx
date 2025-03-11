@@ -51,7 +51,7 @@ export default function ViewCandidateProfile() {
             location: data.location || [],
             min_salary: data.min_salary,
             max_salary: data.max_salary,
-            required_qualifications: data.required_qualifications || null,
+            required_qualifications: data.required_qualifications || [],
             required_skills: data.required_skills || null,
             security_clearance: data.security_clearance,
             commission_percentage: data.commission_percentage,

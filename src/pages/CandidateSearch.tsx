@@ -123,7 +123,7 @@ export default function CandidateSearch() {
         location: profileData.location || [],
         min_salary: profileData.min_salary,
         max_salary: profileData.max_salary,
-        required_qualifications: profileData.required_qualifications || null,
+        required_qualifications: profileData.required_qualifications || [],
         required_skills: profileData.required_skills || null,
         security_clearance: profileData.security_clearance,
         commission_percentage: profileData.commission_percentage,
