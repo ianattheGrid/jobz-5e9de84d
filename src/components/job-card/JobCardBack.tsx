@@ -11,6 +11,7 @@ import { useApplication } from "./hooks/useApplication";
 import { validateEssentialCriteria } from "./utils/applicationValidation";
 import { X } from "lucide-react";
 import { useEmployerValidation } from "@/hooks/useEmployerValidation";
+import { CandidateProfile } from "@/integrations/supabase/types/profiles";
 
 const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
   const { toast } = useToast();
@@ -20,7 +21,7 @@ const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
   
   const checkAuthentication = useAuthenticationCheck();
   const checkProfile = async (userId: string) => {
-    const { data: profile, error } = await supabase
+    const { data: profileData, error } = await supabase
       .from('candidate_profiles')
       .select('*')
       .eq('id', userId)
@@ -35,12 +36,46 @@ const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
       return null;
     }
 
-    return profile ? {
-      ...profile,
-      location: profile.location || [],
-      required_qualifications: profile.required_qualifications || null,
-      required_skills: profile.required_skills || null
-    } : null;
+    if (profileData) {
+      const profile: CandidateProfile = {
+        ...profileData,
+        location: profileData.location || [],
+        required_qualifications: profileData.required_qualifications || null,
+        required_skills: profileData.required_skills || null,
+        additional_skills: profileData.additional_skills || null,
+        address: profileData.address || null,
+        ai_synopsis: profileData.ai_synopsis || null,
+        ai_synopsis_last_updated: profileData.ai_synopsis_last_updated || null,
+        ai_synopsis_status: profileData.ai_synopsis_status || null,
+        availability: profileData.availability || null,
+        commission_percentage: profileData.commission_percentage || null,
+        created_at: profileData.created_at,
+        current_employer: profileData.current_employer || null,
+        cv_url: profileData.cv_url || null,
+        desired_job_title: profileData.desired_job_title || null,
+        email: profileData.email,
+        full_name: profileData.full_name || null,
+        home_postcode: profileData.home_postcode || null,
+        id: profileData.id,
+        job_title: profileData.job_title,
+        linkedin_url: profileData.linkedin_url || null,
+        max_salary: profileData.max_salary,
+        min_salary: profileData.min_salary,
+        phone_number: profileData.phone_number || null,
+        preferred_work_type: profileData.preferred_work_type || null,
+        profile_picture_url: profileData.profile_picture_url || null,
+        security_clearance: profileData.security_clearance || null,
+        signup_date: profileData.signup_date || null,
+        travel_radius: profileData.travel_radius || null,
+        updated_at: profileData.updated_at,
+        work_eligibility: profileData.work_eligibility || null,
+        work_preferences: profileData.work_preferences || null,
+        years_experience: profileData.years_experience
+      };
+      return profile;
+    }
+
+    return null;
   };
   
   const { application, handleAccept } = useApplication(job);

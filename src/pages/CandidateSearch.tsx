@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -8,19 +9,7 @@ import { SearchResults } from "@/components/candidate-search/SearchResults";
 import { searchFormSchema } from "@/components/candidate-search/searchFormSchema";
 import { LayoutDashboard } from "lucide-react";
 import type { z } from "zod";
-
-interface CandidateProfile {
-  id: string;
-  job_title: string;
-  years_experience: number;
-  location: string;
-  min_salary: number;
-  max_salary: number;
-  required_qualifications?: string[];
-  required_skills?: string[];
-  security_clearance?: string;
-  commission_percentage?: number;
-}
+import { CandidateProfile } from "@/integrations/supabase/types/profiles";
 
 export default function CandidateSearch() {
   const { toast } = useToast();
@@ -131,8 +120,29 @@ export default function CandidateSearch() {
         ...profile,
         location: profile.location || [],
         required_qualifications: profile.required_qualifications || null,
-        required_skills: profile.required_skills || null
-      }));
+        required_skills: profile.required_skills || null,
+        ai_synopsis: profile.ai_synopsis || null,
+        ai_synopsis_last_updated: profile.ai_synopsis_last_updated || null,
+        ai_synopsis_status: profile.ai_synopsis_status || null,
+        additional_skills: profile.additional_skills || null,
+        address: profile.address || null,
+        work_preferences: profile.work_preferences || null,
+        cv_url: profile.cv_url || null,
+        full_name: profile.full_name || null,
+        phone_number: profile.phone_number || null,
+        profile_picture_url: profile.profile_picture_url || null,
+        travel_radius: profile.travel_radius || null,
+        desired_job_title: profile.desired_job_title || null,
+        home_postcode: profile.home_postcode || null,
+        linkedin_url: profile.linkedin_url || null,
+        commission_percentage: profile.commission_percentage || null,
+        security_clearance: profile.security_clearance || null,
+        work_eligibility: profile.work_eligibility || null,
+        preferred_work_type: profile.preferred_work_type || null,
+        availability: profile.availability || null,
+        current_employer: profile.current_employer || null,
+        signup_date: profile.signup_date || null
+      })) as CandidateProfile[];
 
       setCandidates(validCandidateProfiles);
       toast({
