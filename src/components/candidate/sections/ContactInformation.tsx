@@ -65,6 +65,26 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
 
         <FormField
           control={control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-gray-900">Email Address</FormLabel>
+              <FormControl>
+                <Input 
+                  {...field} 
+                  type="email"
+                  placeholder="Enter your email address" 
+                  className="bg-zinc-900 text-white border-zinc-700 placeholder:text-gray-400"
+                  value={field.value || ''}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={control}
           name="phone_number"
           render={({ field }) => (
             <FormItem>
