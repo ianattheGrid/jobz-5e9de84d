@@ -1,20 +1,9 @@
+
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Eye } from "lucide-react";
-
-interface CandidateProfile {
-  id: string;
-  job_title: string;
-  years_experience: number;
-  location: string;
-  min_salary: number;
-  max_salary: number;
-  required_qualifications?: string[];
-  required_skills?: string[];
-  security_clearance?: string;
-  commission_percentage?: number;
-}
+import { CandidateProfile } from "@/integrations/supabase/types/profiles";
 
 interface SearchResultsProps {
   candidates: CandidateProfile[];
@@ -41,9 +30,9 @@ export function SearchResults({ candidates }: SearchResultsProps) {
           <CardContent>
             <div className="space-y-2">
               <p><span className="font-semibold">Experience:</span> {candidate.years_experience} years</p>
-              <p><span className="font-semibold">Location:</span> {candidate.location}</p>
+              <p><span className="font-semibold">Location:</span> {candidate.location.join(", ")}</p>
               <p><span className="font-semibold">Salary Range:</span> £{candidate.min_salary.toLocaleString()} - £{candidate.max_salary.toLocaleString()}</p>
-              {candidate.commission_percentage !== null && candidate.commission_percentage !== undefined && (
+              {candidate.commission_percentage !== null && (
                 <p><span className="font-semibold">Desired "You're Hired" Bonus:</span> {candidate.commission_percentage}%</p>
               )}
               {candidate.required_qualifications && candidate.required_qualifications.length > 0 && (

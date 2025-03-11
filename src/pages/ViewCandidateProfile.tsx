@@ -43,7 +43,12 @@ export default function ViewCandidateProfile() {
         if (error) throw error;
 
         if (data) {
-          setProfile(data);
+          const profile = {
+            ...data,
+            location: data.location || [],
+            required_qualifications: data.required_qualifications || []
+          };
+          setProfile(profile);
         }
       } catch (error: any) {
         toast({
@@ -106,10 +111,10 @@ export default function ViewCandidateProfile() {
                 Location & Work Details
               </h3>
               <div className="space-y-2">
-                <p>Location: {profile?.location?.join(", ")}</p>
+                <p>Location: {profile?.location?.join(", ") || "Not specified"}</p>
                 <p>Preferred Work Type: {profile?.preferred_work_type || 'Not specified'}</p>
-                <p>Work Eligibility: {profile?.work_eligibility}</p>
-                <p>Availability: {profile?.availability}</p>
+                <p>Work Eligibility: {profile?.work_eligibility || 'Not specified'}</p>
+                <p>Availability: {profile?.availability || 'Not specified'}</p>
               </div>
             </div>
 
