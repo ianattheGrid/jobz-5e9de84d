@@ -31,7 +31,6 @@ const BristolPostcodeSelect = ({ control }: BristolPostcodeSelectProps) => {
           
         return (
           <FormItem>
-            <FormLabel className="text-gray-900">What Bristol locations are you willing to work in?</FormLabel>
             <FormControl>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -95,9 +94,6 @@ const BristolPostcodeSelect = ({ control }: BristolPostcodeSelectProps) => {
                 </DropdownMenuContent>
               </DropdownMenu>
             </FormControl>
-            <p className="text-sm text-gray-600 mt-1">
-              Select the Bristol areas where you are willing to work
-            </p>
             <FormMessage />
           </FormItem>
         );
