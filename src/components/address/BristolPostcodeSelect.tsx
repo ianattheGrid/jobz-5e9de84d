@@ -60,7 +60,7 @@ const BristolPostcodeSelect = ({ control }: BristolPostcodeSelectProps) => {
                     className="cursor-pointer rounded-md mb-2 text-gray-900 hover:bg-gray-100"
                     checked={field.value?.length === bristolPostcodes.length}
                     onCheckedChange={(checked) => {
-                      field.onChange(checked ? bristolPostcodes : []);
+                      field.onChange(checked ? [...bristolPostcodes] : []);
                     }}
                   >
                     <span className="flex items-center font-medium">
@@ -74,10 +74,10 @@ const BristolPostcodeSelect = ({ control }: BristolPostcodeSelectProps) => {
                       className="cursor-pointer rounded-md text-gray-900 hover:bg-gray-100 my-1"
                       checked={field.value?.includes(postcode)}
                       onCheckedChange={(checked) => {
-                        const newValue = checked
+                        const updatedValue = checked
                           ? [...(field.value || []), postcode]
                           : (field.value || []).filter((p: string) => p !== postcode);
-                        field.onChange(newValue);
+                        field.onChange(updatedValue);
                       }}
                     >
                       <span className="flex items-center">
