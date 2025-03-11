@@ -1,9 +1,16 @@
 
 import { FormField, FormItem, FormControl, FormMessage } from "@/components/ui/form";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Control } from "react-hook-form";
 import { CandidateFormValues } from "../candidate/candidateFormSchema";
 import { bristolPostcodes } from "@/data/bristolPostcodes";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+  DropdownMenuCheckboxItem,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { ChevronDown } from "lucide-react";
 
 interface BristolPostcodeSelectProps {
   control: Control<CandidateFormValues>;
@@ -17,18 +24,47 @@ const BristolPostcodeSelect = ({ control }: BristolPostcodeSelectProps) => {
       render={({ field }) => (
         <FormItem>
           <FormControl>
-            <Select onValueChange={field.onChange} value={field.value}>
-              <SelectTrigger className="bg-zinc-900 text-white border-zinc-700">
-                <SelectValue placeholder="Select your postcode area" />
-              </SelectTrigger>
-              <SelectContent>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" className="w-full justify-between bg-white text-gray-900">
+                  {field.value?.length === 0 
+                    ? "Select postcodes" 
+                    : field.value?.length === bristolPostcodes.length 
+                      ? "All Bristol Areas"
+                      : `${field.value?.length} area${field.value?.length > 1 ? 's' : ''} selected`}
+                  <ChevronDown className="ml-2 h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent 
+                className="w-full min-w-[200px] bg-white max-h-[300px] overflow-y-auto"
+                align="start"
+              >
+                <DropdownMenuCheckboxItem
+                  className="text-gray-900 flex items-center gap-2"
+                  checked={field.value?.length === bristolPostcodes.length}
+                  onCheckedChange={(checked) => {
+                    field.onChange(checked ? bristolPostcodes : []);
+                  }}
+                >
+                  All Bristol Areas
+                </DropdownMenuCheckboxItem>
                 {bristolPostcodes.map((postcode) => (
-                  <SelectItem key={postcode} value={postcode}>
+                  <DropdownMenuCheckboxItem
+                    key={postcode}
+                    className="text-gray-900 flex items-center gap-2"
+                    checked={field.value?.includes(postcode)}
+                    onCheckedChange={(checked) => {
+                      const newValue = checked
+                        ? [...(field.value || []), postcode]
+                        : (field.value || []).filter((p: string) => p !== postcode);
+                      field.onChange(newValue);
+                    }}
+                  >
                     {postcode}
-                  </SelectItem>
+                  </DropdownMenuCheckboxItem>
                 ))}
-              </SelectContent>
-            </Select>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </FormControl>
           <FormMessage />
         </FormItem>

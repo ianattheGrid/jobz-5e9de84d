@@ -1,10 +1,8 @@
-
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Control } from "react-hook-form";
 import { CandidateFormValues } from "../candidateFormSchema";
 import { FileUploadSection } from "../FileUploadSection";
-import TravelRadiusSelect from "./TravelRadiusSelect";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Link } from "lucide-react";
@@ -150,14 +148,12 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
         />
 
         <FormItem>
-          <FormLabel className="text-gray-900">Your postcode area</FormLabel>
+          <FormLabel className="text-gray-900">Your work locations</FormLabel>
           <BristolPostcodeSelect control={control} />
           <p className="text-sm text-gray-600 mt-1">
-            Currently only available in Bristol area during beta testing
+            Select the Bristol areas where you are willing to work
           </p>
         </FormItem>
-
-        <TravelRadiusSelect control={control} />
 
         {userId && (
           <FileUploadSection
