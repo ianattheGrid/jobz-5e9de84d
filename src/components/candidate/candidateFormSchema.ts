@@ -45,3 +45,6 @@ export const candidateFormSchema = z.object({
   path: ["max_salary"],
 });
 
+// Export the type inference from the schema
+export type CandidateFormValues = z.infer<typeof candidateFormSchema>;
+
