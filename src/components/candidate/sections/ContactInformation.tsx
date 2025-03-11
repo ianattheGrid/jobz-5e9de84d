@@ -59,19 +59,19 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
       )}
 
       <div className="space-y-4">
-        <h3 className="text-lg font-semibold text-foreground">Contact Information</h3>
+        <h3 className="text-lg font-semibold text-gray-900">Contact Information</h3>
         
         <FormField
           control={control}
           name="full_name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-foreground">Full Name</FormLabel>
+              <FormLabel className="text-gray-900">Full Name</FormLabel>
               <FormControl>
                 <Input 
                   {...field} 
                   placeholder="Enter your full name" 
-                  className="form-field"
+                  className="bg-zinc-900 text-white border-zinc-700 placeholder:text-gray-400"
                   value={field.value || ''}
                 />
               </FormControl>
@@ -85,13 +85,13 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
           name="phone_number"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-foreground">Phone Number</FormLabel>
+              <FormLabel className="text-gray-900">Phone Number</FormLabel>
               <FormControl>
                 <Input 
                   {...field} 
                   type="tel" 
                   placeholder="Enter your phone number" 
-                  className="form-field"
+                  className="bg-zinc-900 text-white border-zinc-700 placeholder:text-gray-400"
                   value={field.value || ''}
                 />
               </FormControl>
@@ -105,17 +105,17 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
           name="linkedin_url"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-foreground">LinkedIn Profile URL</FormLabel>
+              <FormLabel className="text-gray-900">LinkedIn Profile URL</FormLabel>
               <FormControl>
                 <div className="relative">
                   <Input 
                     {...field} 
                     type="url" 
                     placeholder="https://www.linkedin.com/in/your-profile" 
-                    className="form-field pl-10"
+                    className="bg-zinc-900 text-white border-zinc-700 placeholder:text-gray-400 pl-10"
                     value={field.value || ''}
                   />
-                  <Link className="absolute left-3 top-2.5 h-5 w-5 text-muted-foreground" />
+                  <Link className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
                 </div>
               </FormControl>
               <FormMessage />
@@ -128,16 +128,16 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
           name="current_employer"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-foreground">Current Employer</FormLabel>
+              <FormLabel className="text-gray-900">Current Employer</FormLabel>
               <FormControl>
                 <Input 
                   {...field}
                   placeholder="Enter your current employer's name" 
-                  className="form-field"
+                  className="bg-zinc-900 text-white border-zinc-700 placeholder:text-gray-400"
                   value={field.value || ''}
                 />
               </FormControl>
-              <p className="text-sm text-muted-foreground mt-1">
+              <p className="text-sm text-gray-600 mt-1">
                 This helps us ensure you don't accidentally apply to positions at your current company
               </p>
               <FormMessage />
@@ -146,7 +146,7 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
         />
 
         <FormItem>
-          <FormLabel className="text-foreground">Your home postcode</FormLabel>
+          <FormLabel className="text-gray-900">Your home postcode</FormLabel>
           <AddressFinder control={control} />
         </FormItem>
 

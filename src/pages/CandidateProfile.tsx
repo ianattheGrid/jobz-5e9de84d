@@ -1,3 +1,4 @@
+
 import { CandidateForm } from "@/components/candidate/CandidateForm";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -51,17 +52,17 @@ export default function CandidateProfile() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen bg-background">
+      <div className="flex justify-center items-center min-h-screen bg-white">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-white">
       <div className="container mx-auto px-4 py-10">
-        <h1 className="text-2xl font-bold mb-4 text-foreground text-left">Update Your Profile</h1>
-        <p className="text-primary mb-8 text-sm text-left">
+        <h1 className="text-2xl font-bold mb-4 text-gray-900">Update Your Profile</h1>
+        <p className="text-primary mb-8 text-sm">
           Keep your profile up to date to find the best job matches.
         </p>
         <div className="flex justify-center">
