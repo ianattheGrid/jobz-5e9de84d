@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { Briefcase, Home, UserPlus, LogIn } from "lucide-react";
@@ -9,10 +8,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
+import { NotificationsPopover } from "@/components/notifications/NotificationsPopover";
 
 const NavigationLinks = () => {
   const { user } = useAuth();
-  console.log('Current user state:', user);
 
   return (
     <div className="flex items-center gap-4">
@@ -34,6 +33,7 @@ const NavigationLinks = () => {
       </nav>
       
       <div className="flex items-center gap-4">
+        {user && <NotificationsPopover />}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button 
