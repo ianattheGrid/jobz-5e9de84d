@@ -43,14 +43,14 @@ const CandidateAccountSettings = () => {
   };
 
   return (
-    <>
+    <div className="min-h-screen bg-gray-50">
       <NavBar />
       <div className="container mx-auto px-4 py-8 pt-20">
         <h1 className="text-3xl font-bold mb-8 text-gray-900">Account Settings</h1>
         
-        <div className="space-y-6 max-w-2xl">
+        <div className="space-y-6 max-w-2xl mx-auto">
           {/* Account Info */}
-          <Card>
+          <Card className="bg-white shadow-sm">
             <CardHeader>
               <CardTitle>Account Information</CardTitle>
               <CardDescription>Your login details and account management</CardDescription>
@@ -59,14 +59,14 @@ const CandidateAccountSettings = () => {
               <div className="space-y-4">
                 <div>
                   <label className="text-sm font-medium text-gray-700">Email</label>
-                  <p className="mt-1 text-gray-900">{user?.email}</p>
+                  <p className="mt-1 text-gray-900 p-2 bg-gray-50 rounded-md">{user?.email}</p>
                 </div>
               </div>
             </CardContent>
           </Card>
 
           {/* Password Change */}
-          <Card>
+          <Card className="bg-white shadow-sm">
             <CardHeader>
               <CardTitle>Change Password</CardTitle>
               <CardDescription>Update your password to keep your account secure</CardDescription>
@@ -79,12 +79,13 @@ const CandidateAccountSettings = () => {
                     placeholder="New password"
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
-                    className="max-w-md"
+                    className="max-w-md bg-gray-50"
                   />
                 </div>
                 <Button 
                   onClick={handlePasswordChange} 
                   disabled={!newPassword || loading}
+                  className="bg-primary hover:bg-primary/90"
                 >
                   Update Password
                 </Button>
@@ -93,7 +94,7 @@ const CandidateAccountSettings = () => {
           </Card>
 
           {/* Delete Account */}
-          <Card>
+          <Card className="bg-white shadow-sm">
             <CardHeader>
               <CardTitle>Delete Account</CardTitle>
               <CardDescription>Permanently delete your account and all associated data</CardDescription>
@@ -104,7 +105,7 @@ const CandidateAccountSettings = () => {
           </Card>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
