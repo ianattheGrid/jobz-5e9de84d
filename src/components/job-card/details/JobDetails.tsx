@@ -1,4 +1,3 @@
-
 import { Job } from "@/integrations/supabase/types/jobs";
 import { formatBenefits } from "../utils";
 import { GraduationCap, Clock, ListChecks, Briefcase, Target, Building2 } from "lucide-react";
@@ -78,6 +77,9 @@ const JobDetails = ({ job }: JobDetailsProps) => {
             {job.required_qualifications.map((qual, index) => (
               <li key={index}>{qual}</li>
             ))}
+            {job.citizenship_essential && (
+              <li>{job.required_citizenship || 'Must have right to work in the UK'}</li>
+            )}
           </ul>
           
           {job.min_years_experience > 0 && (
@@ -114,16 +116,6 @@ const JobDetails = ({ job }: JobDetailsProps) => {
           ))}
         </ul>
       </div>
-
-      {/* Additional Requirements */}
-      {(job.citizenship_essential || job.required_citizenship) && (
-        <div className="text-sm text-gray-700 p-4 bg-gray-50 rounded-lg">
-          <p className="font-medium mb-2">Additional Requirements:</p>
-          {job.citizenship_essential && (
-            <p>{job.required_citizenship || 'Must have right to work in the UK'}</p>
-          )}
-        </div>
-      )}
     </div>
   );
 };
