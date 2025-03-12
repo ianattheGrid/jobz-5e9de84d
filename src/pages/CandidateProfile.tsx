@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { Button } from "@/components/ui/button";
+import { LayoutDashboard } from "lucide-react";
 
 export default function CandidateProfile() {
   const { toast } = useToast();
@@ -61,6 +63,14 @@ export default function CandidateProfile() {
   return (
     <div className="min-h-screen bg-white">
       <div className="container mx-auto px-4 py-10">
+        <Button
+          onClick={() => navigate('/candidate/dashboard')}
+          className="mb-6 text-white"
+          variant="default"
+        >
+          <LayoutDashboard className="w-4 h-4 mr-2" />
+          Dashboard
+        </Button>
         <h1 className="text-2xl font-bold mb-4 text-gray-900">Update Your Profile</h1>
         <p className="text-primary mb-8 text-sm">
           Keep your profile up to date to find the best job matches.
