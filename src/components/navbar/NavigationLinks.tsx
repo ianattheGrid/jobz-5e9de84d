@@ -29,7 +29,7 @@ const NavigationLinks = () => {
           className="text-white hover:text-white/80 flex items-center gap-2"
         >
           <Briefcase className="h-4 w-4" />
-          <span>Jobs</span>
+          <span>Job Board</span>
         </Link>
       </nav>
       

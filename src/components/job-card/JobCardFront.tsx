@@ -1,5 +1,5 @@
 
-import { PoundSterling } from "lucide-react";
+import { PoundSterling, MapPin, Building2, Clock, BriefcaseIcon } from "lucide-react";
 import { formatSalary } from "./utils";
 import { JobCardFrontProps } from "./types";
 import { PRIMARY_COLOR_PATTERN } from "@/styles/colorPatterns";
@@ -24,26 +24,46 @@ const JobCardFront = ({ job, showEmployerDetails = false, onFlip }: JobCardFront
             {job.type}
           </span>
         </div>
-        <p className="text-sm text-muted-foreground mt-2">
-          {showEmployerDetails ? job.company : "Company details hidden until match"}
-        </p>
+        <div className="flex items-center gap-2 mt-2">
+          <Building2 className="h-4 w-4 text-muted-foreground" />
+          <p className="text-sm text-muted-foreground">
+            {showEmployerDetails ? job.company : "Company details hidden until match"}
+          </p>
+        </div>
       </div>
 
       <div className="space-y-4 flex-grow">
         <div className="flex items-center text-sm text-foreground">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2 flex-shrink-0 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-          </svg>
+          <MapPin className="h-4 w-4 mr-2 flex-shrink-0 text-primary" />
           <span className="truncate">{job.location}</span>
         </div>
 
-        <div className="text-sm">
-          <span className="font-medium text-foreground">Salary Range: </span>
+        <div className="flex items-center text-sm text-foreground">
+          <Clock className="h-4 w-4 mr-2 flex-shrink-0 text-primary" />
+          <span>{job.type}</span>
+        </div>
+
+        <div className="flex items-center text-sm">
+          <PoundSterling className="h-4 w-4 mr-2 flex-shrink-0 text-primary" />
           <span className="text-foreground">
             {formatSalary(job.salary_min)} - {formatSalary(job.salary_max)}
           </span>
         </div>
+
+        {job.required_skills && job.required_skills.length > 0 && (
+          <div className="flex flex-wrap gap-2 mt-2">
+            {job.required_skills.slice(0, 3).map((skill, index) => (
+              <span key={index} className="px-2 py-1 text-xs bg-primary/10 text-primary rounded-full">
+                {skill}
+              </span>
+            ))}
+            {job.required_skills.length > 3 && (
+              <span className="px-2 py-1 text-xs bg-primary/10 text-primary rounded-full">
+                +{job.required_skills.length - 3} more
+              </span>
+            )}
+          </div>
+        )}
 
         {hasBonus && (
           <div className="text-sm bg-primary/10 p-3 rounded-md border border-primary/20">
@@ -72,16 +92,8 @@ const JobCardFront = ({ job, showEmployerDetails = false, onFlip }: JobCardFront
         }}
         className="w-full mt-6 text-sm bg-primary text-white hover:bg-primary/90 transition-colors py-2 rounded-md flex items-center justify-center group"
       >
-        View Details
-        <svg 
-          xmlns="http://www.w3.org/2000/svg" 
-          className="h-4 w-4 ml-2 transform transition-transform group-hover:translate-x-1" 
-          fill="none" 
-          viewBox="0 0 24 24" 
-          stroke="currentColor"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-        </svg>
+        View Full Details
+        <BriefcaseIcon className="h-4 w-4 ml-2 transform transition-transform group-hover:translate-x-1" />
       </button>
     </div>
   );
