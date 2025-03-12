@@ -87,12 +87,8 @@ const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
   return (
     <div 
       className="h-full p-6 bg-[#2A2A2A] text-foreground overflow-y-auto rounded-lg"
-      onClick={(e) => {
-        e.stopPropagation();
-        onClose();
-      }}
     >
-      <div className="relative" onClick={(e) => e.stopPropagation()}>
+      <div className="relative">
         <button
           onClick={(e) => {
             e.stopPropagation();
@@ -107,9 +103,7 @@ const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
           <CommissionDetails candidateCommission={job.candidate_commission} />
         )}
 
-        <div onClick={(e) => e.stopPropagation()}>
-          <JobDetails job={job} />
-        </div>
+        <JobDetails job={job} />
         
         {application ? (
           <ApplicationStatus 

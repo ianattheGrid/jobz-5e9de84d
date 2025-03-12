@@ -9,7 +9,7 @@ interface JobDetailsProps {
 
 const JobDetails = ({ job }: JobDetailsProps) => {
   return (
-    <div className="space-y-6 bg-white p-6 rounded-lg cursor-pointer">
+    <div className="space-y-6 bg-white p-6 rounded-lg">
       {/* Full Description */}
       <div className="text-sm">
         <h4 className="font-semibold text-lg mb-3 text-gray-900">About This Role</h4>
@@ -17,15 +17,23 @@ const JobDetails = ({ job }: JobDetailsProps) => {
           <p className="whitespace-pre-line leading-relaxed">
             {job.description}
             {'\n\n'}
-            We are looking for an exceptional individual to join our dynamic team. This role offers an exciting opportunity to:
+            We are seeking a talented and motivated professional to join our growing team. In this role, you will have the opportunity to:
             {'\n\n'}
-            • Take ownership of key projects and initiatives
-            • Work with cutting-edge technologies and methodologies
-            • Collaborate with cross-functional teams
-            • Drive innovation and process improvements
-            • Contribute to the company's growth and success
+            • Lead and deliver high-impact projects from conception to completion
+            • Collaborate with cross-functional teams to drive innovation
+            • Identify and implement process improvements
+            • Mentor and support junior team members
+            • Contribute to strategic planning and decision-making
             {'\n\n'}
-            The ideal candidate will bring fresh perspectives, demonstrate initiative, and have a proven track record of delivering results in a fast-paced environment.
+            What makes you stand out:
+            {'\n\n'}
+            • A track record of successful project delivery
+            • Strong analytical and problem-solving capabilities
+            • Excellence in both written and verbal communication
+            • Ability to thrive in a fast-paced environment
+            • Passion for innovation and continuous improvement
+            {'\n\n'}
+            This is an excellent opportunity for a driven professional looking to make a significant impact while working with cutting-edge technologies and methodologies.
           </p>
           
           <div className="flex items-center gap-2 mt-4 text-primary">
