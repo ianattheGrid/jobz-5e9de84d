@@ -20,6 +20,7 @@ import VirtualRecruiterRecommendations from "@/pages/VirtualRecruiterRecommendat
 import CandidateSearch from "@/pages/CandidateSearch";
 import ViewCandidateProfile from "@/pages/ViewCandidateProfile";
 import CandidateApplications from "@/pages/CandidateApplications";
+import CandidateAccountSettings from "@/pages/CandidateAccountSettings";
 
 export const routes = [
   {
@@ -61,6 +62,10 @@ export const routes = [
   {
     path: "/candidate/applications",
     element: <CandidateApplications />
+  },
+  {
+    path: "/candidate/settings",
+    element: <CandidateAccountSettings />
   },
   {
     path: "/employer/signup",

@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -109,7 +110,7 @@ const CandidateDashboard = () => {
     {
       title: "Account Settings",
       icon: <Settings className="h-6 w-6" />,
-      path: "#",
+      path: "/candidate/settings",
       description: "Manage your account"
     },
     {
