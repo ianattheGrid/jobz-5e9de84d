@@ -1,5 +1,5 @@
 
-import { PoundSterling, MapPin, Building2, Clock, BriefcaseIcon } from "lucide-react";
+import { PoundSterling, MapPin, Building2, Clock, BriefcaseIcon, GraduationCap, ListChecks } from "lucide-react";
 import { formatSalary } from "./utils";
 import { JobCardFrontProps } from "./types";
 import { PRIMARY_COLOR_PATTERN } from "@/styles/colorPatterns";
@@ -9,13 +9,14 @@ const JobCardFront = ({ job, showEmployerDetails = false, onFlip }: JobCardFront
 
   return (
     <div 
-      className={`h-full p-6 flex flex-col bg-card rounded-lg border border-border`}
+      className="h-full p-6 flex flex-col bg-card rounded-lg border border-border"
       onClick={(e) => {
         e.stopPropagation();
         onFlip?.();
       }}
     >
-      <div className="mb-6">
+      {/* Header Section */}
+      <div className="mb-4">
         <div className="flex justify-between items-start gap-4">
           <h3 className={`text-xl font-semibold ${PRIMARY_COLOR_PATTERN}`}>
             {job.title}
@@ -32,59 +33,67 @@ const JobCardFront = ({ job, showEmployerDetails = false, onFlip }: JobCardFront
         </div>
       </div>
 
-      <div className="space-y-4 flex-grow">
+      {/* Key Details Section */}
+      <div className="space-y-3 flex-grow">
         <div className="flex items-center text-sm text-foreground">
           <MapPin className="h-4 w-4 mr-2 flex-shrink-0 text-primary" />
-          <span className="truncate">{job.location}</span>
+          <span>{job.location}</span>
+        </div>
+
+        <div className="flex items-center text-sm text-foreground">
+          <PoundSterling className="h-4 w-4 mr-2 flex-shrink-0 text-primary" />
+          <span>
+            {formatSalary(job.salary_min)} - {formatSalary(job.salary_max)} per annum
+          </span>
         </div>
 
         <div className="flex items-center text-sm text-foreground">
           <Clock className="h-4 w-4 mr-2 flex-shrink-0 text-primary" />
-          <span>{job.type}</span>
+          <span>{job.type} · {job.holiday_entitlement} days holiday</span>
         </div>
 
-        <div className="flex items-center text-sm">
-          <PoundSterling className="h-4 w-4 mr-2 flex-shrink-0 text-primary" />
-          <span className="text-foreground">
-            {formatSalary(job.salary_min)} - {formatSalary(job.salary_max)}
-          </span>
-        </div>
-
+        {/* Skills Preview */}
         {job.required_skills && job.required_skills.length > 0 && (
-          <div className="flex flex-wrap gap-2 mt-2">
-            {job.required_skills.slice(0, 3).map((skill, index) => (
-              <span key={index} className="px-2 py-1 text-xs bg-primary/10 text-primary rounded-full">
-                {skill}
-              </span>
-            ))}
-            {job.required_skills.length > 3 && (
-              <span className="px-2 py-1 text-xs bg-primary/10 text-primary rounded-full">
-                +{job.required_skills.length - 3} more
-              </span>
-            )}
+          <div>
+            <div className="flex items-center gap-2 mb-2 text-sm text-foreground">
+              <ListChecks className="h-4 w-4 text-primary" />
+              <span>Key Skills</span>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {job.required_skills.slice(0, 3).map((skill, index) => (
+                <span key={index} className="px-2 py-1 text-xs bg-primary/10 text-primary rounded-full">
+                  {skill}
+                </span>
+              ))}
+              {job.required_skills.length > 3 && (
+                <span className="px-2 py-1 text-xs bg-primary/10 text-primary rounded-full">
+                  +{job.required_skills.length - 3} more
+                </span>
+              )}
+            </div>
           </div>
         )}
 
-        {hasBonus && (
-          <div className="text-sm bg-primary/10 p-3 rounded-md border border-primary/20">
-            <span className={`font-medium flex items-center gap-2 ${PRIMARY_COLOR_PATTERN}`}>
-              <PoundSterling className="h-4 w-4" />
-              Exclusive "You're Hired" Bonus
-            </span>
-            <p className="text-foreground text-xs mt-1">
-              This position comes with our unique "You're Hired" bonus scheme. View details for more information.
-            </p>
-          </div>
-        )}
-
+        {/* Brief Description */}
         <div>
-          <h4 className="font-medium text-sm text-foreground mb-2">Job Summary</h4>
+          <h4 className="font-medium text-sm text-foreground mb-2">Overview</h4>
           <p className="text-sm text-muted-foreground line-clamp-3">
             {job.description}
           </p>
         </div>
+
+        {/* Bonus Preview */}
+        {hasBonus && (
+          <div className="text-sm bg-primary/10 p-3 rounded-md border border-primary/20">
+            <span className={`font-medium flex items-center gap-2 ${PRIMARY_COLOR_PATTERN}`}>
+              <PoundSterling className="h-4 w-4" />
+              Exclusive "You're Hired" Bonus Available
+            </span>
+          </div>
+        )}
       </div>
 
+      {/* View Details Button */}
       <button 
         onClick={(e) => {
           e.stopPropagation();
