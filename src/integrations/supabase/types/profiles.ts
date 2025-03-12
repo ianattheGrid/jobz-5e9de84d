@@ -1,4 +1,3 @@
-
 export interface CandidateProfile {
   id: string;
   email: string;
@@ -32,6 +31,7 @@ export interface CandidateProfile {
   desired_job_title: string | null;
   home_postcode: string | null;
   linkedin_url: string | null;
+  years_in_current_title: number;
 }
 
 export interface EmployerProfile {
