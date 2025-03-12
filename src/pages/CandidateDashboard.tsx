@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -10,7 +9,8 @@ import {
   Briefcase,
   Database,
   Settings,
-  Mail
+  Mail,
+  Calendar
 } from "lucide-react";
 
 const CandidateDashboard = () => {
@@ -106,6 +106,12 @@ const CandidateDashboard = () => {
       icon: <Database className="h-6 w-6" />,
       path: "/candidate/applications",
       description: "Track your job applications"
+    },
+    {
+      title: "My Interviews",
+      icon: <Calendar className="h-6 w-6" />,
+      path: "/candidate/interviews",
+      description: "View and schedule interviews"
     },
     {
       title: "Account Settings",

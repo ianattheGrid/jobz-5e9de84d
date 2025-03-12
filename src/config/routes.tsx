@@ -21,6 +21,7 @@ import CandidateSearch from "@/pages/CandidateSearch";
 import ViewCandidateProfile from "@/pages/ViewCandidateProfile";
 import CandidateApplications from "@/pages/CandidateApplications";
 import CandidateAccountSettings from "@/pages/CandidateAccountSettings";
+import CandidateInterviews from "@/pages/CandidateInterviews";
 
 export const routes = [
   {
@@ -66,6 +67,10 @@ export const routes = [
   {
     path: "/candidate/settings",
     element: <CandidateAccountSettings />
+  },
+  {
+    path: "/candidate/interviews",
+    element: <CandidateInterviews />
   },
   {
     path: "/employer/signup",
