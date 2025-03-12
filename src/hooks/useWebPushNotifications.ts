@@ -6,9 +6,25 @@ import { supabase } from '@/integrations/supabase/client';
 export const useWebPushNotifications = () => {
   const { user } = useAuth();
   const [subscription, setSubscription] = useState<PushSubscription | null>(null);
+  const [vapidPublicKey, setVapidPublicKey] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!user || !('serviceWorker' in navigator) || !('Notification' in window)) {
+    // Get VAPID public key
+    const getVapidKey = async () => {
+      try {
+        const { data, error } = await supabase.functions.invoke('configure-push');
+        if (error) throw error;
+        setVapidPublicKey(data.publicKey);
+      } catch (error) {
+        console.error('Error getting VAPID key:', error);
+      }
+    };
+
+    getVapidKey();
+  }, []);
+
+  useEffect(() => {
+    if (!user || !vapidPublicKey || !('serviceWorker' in navigator) || !('Notification' in window)) {
       return;
     }
 
@@ -20,18 +36,15 @@ export const useWebPushNotifications = () => {
         if (permission === 'granted') {
           const sub = await registration.pushManager.subscribe({
             userVisibleOnly: true,
-            applicationServerKey: 'YOUR_VAPID_PUBLIC_KEY' // We'll need to set this up
+            applicationServerKey: vapidPublicKey
           });
 
-          // Store subscription in Supabase for the user
-          await supabase
-            .from('user_push_subscriptions')
-            .upsert({
-              user_id: user.id,
-              subscription: JSON.stringify(sub)
-            })
-            .eq('user_id', user.id);
+          const { error } = await supabase.from('user_push_subscriptions').insert({
+            user_id: user.id,
+            subscription: sub.toJSON()
+          });
 
+          if (error) throw error;
           setSubscription(sub);
         }
       } catch (error) {
@@ -40,7 +53,7 @@ export const useWebPushNotifications = () => {
     };
 
     registerServiceWorker();
-  }, [user]);
+  }, [user, vapidPublicKey]);
 
   return { subscription };
 };
