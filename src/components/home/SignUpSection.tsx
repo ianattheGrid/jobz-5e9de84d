@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { User, Building2, Users } from "lucide-react";
@@ -33,12 +32,6 @@ export const SignUpSection = () => {
             signInPath="/vr/signin"
             signUpPath="/vr/signup"
           />
-        </div>
-
-        <div className="mt-8 text-center">
-          <Link to="/jobs" className="text-primary hover:underline">
-            Browse Jobs Without Signing In →
-          </Link>
         </div>
       </div>
     </section>
