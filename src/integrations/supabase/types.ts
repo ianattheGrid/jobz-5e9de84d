@@ -99,6 +99,7 @@ export type Database = {
           work_eligibility: string | null
           work_preferences: string | null
           years_experience: number
+          years_in_current_title: number | null
         }
         Insert: {
           additional_skills?: string | null
@@ -133,6 +134,7 @@ export type Database = {
           work_eligibility?: string | null
           work_preferences?: string | null
           years_experience?: number
+          years_in_current_title?: number | null
         }
         Update: {
           additional_skills?: string | null
@@ -167,6 +169,7 @@ export type Database = {
           work_eligibility?: string | null
           work_preferences?: string | null
           years_experience?: number
+          years_in_current_title?: number | null
         }
         Relationships: []
       }
@@ -367,6 +370,7 @@ export type Database = {
           id: number
           location: string
           min_years_experience: number | null
+          min_years_in_title: number | null
           qualification_essential: boolean | null
           required_citizenship: string | null
           required_qualifications: string[] | null
@@ -393,6 +397,7 @@ export type Database = {
           id?: number
           location: string
           min_years_experience?: number | null
+          min_years_in_title?: number | null
           qualification_essential?: boolean | null
           required_citizenship?: string | null
           required_qualifications?: string[] | null
@@ -419,6 +424,7 @@ export type Database = {
           id?: number
           location?: string
           min_years_experience?: number | null
+          min_years_in_title?: number | null
           qualification_essential?: boolean | null
           required_citizenship?: string | null
           required_qualifications?: string[] | null

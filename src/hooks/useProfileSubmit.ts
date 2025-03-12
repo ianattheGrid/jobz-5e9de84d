@@ -43,6 +43,7 @@ export const useProfileSubmit = (toast: ToastFunction) => {
           work_preferences: values.work_preferences,
           current_employer: values.current_employer,
           linkedin_url: values.linkedin_url,
+          years_in_current_title: values.years_in_current_title,
         }, {
           onConflict: 'id'
         });

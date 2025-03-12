@@ -50,6 +50,7 @@ export const vacancyFormSchema = z.object({
   qualificationEssential: z.boolean().default(false),
   citizenshipEssential: z.boolean().default(false),
   requiredCitizenship: z.string().default("UK citizens only"),
+  min_years_in_title: z.number().min(0).default(0),
 });
 
 export type VacancyFormValues = z.infer<typeof vacancyFormSchema>;
