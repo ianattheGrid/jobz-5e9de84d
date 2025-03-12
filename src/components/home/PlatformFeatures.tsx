@@ -1,6 +1,6 @@
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FileText, Coins, Bot, Calculator, User, Target, Users, Sparkles, Building2, PoundSterling } from "lucide-react";
+import { FileText, Coins, Bot, Calculator, User, Target, Users, MapPin, HandCoins, ListCheck, Clock, Building2, PoundSterling } from "lucide-react";
 import { PRIMARY_COLOR_PATTERN } from "@/styles/colorPatterns";
 
 export const PlatformFeatures = () => {
@@ -85,24 +85,24 @@ export const PlatformFeatures = () => {
         <TabsContent value="recruiters" className="space-y-8">
           <div className="grid md:grid-cols-2 gap-6">
             <FeatureCard
-              icon={Bot}
-              title="AI-Powered Matching"
-              description="Our advanced algorithms analyze job requirements and candidate profiles to create perfect matches."
+              icon={MapPin}
+              title="Work From Anywhere"
+              description="Be your own boss and work flexibly from any location. All you need is a laptop and internet connection."
             />
             <FeatureCard
-              icon={Building2}
-              title="Automated Sourcing"
-              description="Virtual recruiters work 24/7 to identify and engage with potential candidates."
+              icon={HandCoins}
+              title="Earn Extra Income"
+              description="Perfect as a second income or scale it into your primary source of earnings - you're in control of how much you make."
             />
             <FeatureCard
-              icon={PoundSterling}
-              title="Cost-Effective"
-              description="Save thousands on recruitment costs with our AI-driven approach."
+              icon={ListCheck}
+              title="Easy Recommendations"
+              description="View candidate recommendations via your dashboard and match them to live jobs or add them to our talent pool."
             />
             <FeatureCard
-              icon={Target}
-              title="Quality Matches"
-              description="AI ensures consistent, high-quality matches based on skills, experience, and preferences."
+              icon={Clock}
+              title="Flexible Schedule"
+              description="Work as little or as often as you want. You decide when and how much time to dedicate."
             />
           </div>
         </TabsContent>
