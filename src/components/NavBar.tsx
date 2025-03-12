@@ -39,6 +39,22 @@ const NavBar = () => {
     }
   };
 
+  const renderNavLinks = () => {
+    return (
+      <div className="hidden md:flex space-x-6">
+        <Link to="/jobs" className="text-gray-600 hover:text-primary">
+          Find Jobs
+        </Link>
+        <Link to="/candidate-search" className="text-gray-600 hover:text-primary">
+          Find Candidates
+        </Link>
+        <Link to="/about" className="text-gray-600 hover:text-primary">
+          About
+        </Link>
+      </div>
+    );
+  };
+
   const renderAuthButtons = () => {
     if (!session) {
       return (
@@ -81,9 +97,13 @@ const NavBar = () => {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between items-center h-16">
-          <Link to={getDashboardLink()} className="text-2xl font-bold text-primary">
-            HireHub
-          </Link>
+          <div className="flex items-center">
+            <Link to={getDashboardLink()} className="flex items-center">
+              <img src="/logo.png" alt="jobz logo" className="h-8 w-auto mr-2" />
+              <span className="text-2xl font-bold text-primary">jobz</span>
+            </Link>
+            {renderNavLinks()}
+          </div>
           
           <div className="flex items-center gap-4">
             <NotificationBell />
