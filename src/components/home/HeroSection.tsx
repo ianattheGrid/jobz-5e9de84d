@@ -16,7 +16,7 @@ export const HeroSection = () => {
             No more recruitment agencies
           </h1>
           <p className="text-xl mb-8">
-            Save thousands per hire, empower anyone to earn, and attract top talent with our 'You're Hired Bonus.' No agencies. No wasted time. Just smarter hiring.
+            AI changes the game. Save thousands per hire. Recruit in a click. Empower anyone to earn. Attract top talent with our "You're hired bonus".
           </p>
           <div className="flex gap-4">
             <Link 
