@@ -31,7 +31,7 @@ export interface CandidateProfile {
   desired_job_title: string | null;
   home_postcode: string | null;
   linkedin_url: string | null;
-  years_in_current_title: number;
+  years_in_current_title: number | null;
 }
 
 export interface EmployerProfile {

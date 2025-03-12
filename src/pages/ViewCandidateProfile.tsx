@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -76,7 +75,8 @@ function ViewCandidateProfile() {
             work_preferences: data.work_preferences,
             desired_job_title: data.desired_job_title,
             home_postcode: data.home_postcode,
-            linkedin_url: data.linkedin_url
+            linkedin_url: data.linkedin_url,
+            years_in_current_title: data.years_in_current_title || null
           };
           setProfile(validProfile);
         }
