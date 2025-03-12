@@ -33,7 +33,7 @@ const NavigationLinks = () => {
       </nav>
       
       <div className="flex items-center gap-4">
-        {user && <NotificationsPopover />}
+        {user?.user_metadata?.user_type && <NotificationsPopover />}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button 
