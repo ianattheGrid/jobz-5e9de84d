@@ -1,7 +1,7 @@
-
-import { PoundSterling, MapPin, Building2, Clock, BriefcaseIcon, GraduationCap, ListChecks } from "lucide-react";
+import { PoundSterling, MapPin, Building2, Clock, BriefcaseIcon, ListChecks } from "lucide-react";
 import { formatSalary } from "./utils";
 import { JobCardFrontProps } from "./types";
+import { formatDistanceToNow } from "date-fns";
 import { PRIMARY_COLOR_PATTERN } from "@/styles/colorPatterns";
 
 const JobCardFront = ({ job, showEmployerDetails = false, onFlip }: JobCardFrontProps) => {
@@ -47,9 +47,21 @@ const JobCardFront = ({ job, showEmployerDetails = false, onFlip }: JobCardFront
           </span>
         </div>
 
+        {job.min_years_in_title > 0 && (
+          <div className="flex items-center text-sm text-foreground">
+            <BriefcaseIcon className="h-4 w-4 mr-2 flex-shrink-0 text-primary" />
+            <span>Minimum {job.min_years_in_title} years in title required</span>
+          </div>
+        )}
+
         <div className="flex items-center text-sm text-foreground">
           <Clock className="h-4 w-4 mr-2 flex-shrink-0 text-primary" />
-          <span>{job.type} · {job.holiday_entitlement} days holiday</span>
+          <span>{job.holiday_entitlement} days holiday</span>
+        </div>
+
+        <div className="flex items-center text-sm text-muted-foreground">
+          <Clock className="h-4 w-4 mr-2 flex-shrink-0" />
+          <span>Posted {formatDistanceToNow(new Date(job.created_at))} ago</span>
         </div>
 
         {/* Skills Preview */}

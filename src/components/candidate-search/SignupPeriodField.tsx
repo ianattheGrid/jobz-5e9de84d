@@ -1,3 +1,4 @@
+
 import {
   FormField,
   FormItem,
@@ -16,12 +17,11 @@ import { Control } from "react-hook-form";
 
 const SIGNUP_PERIODS = [
   { value: "24h", label: "Last 24 hours" },
-  { value: "48h", label: "Last 48 hours" },
   { value: "1w", label: "Last week" },
-  { value: "2w", label: "Last 2 weeks" },
-  { value: "4w", label: "Last 4 weeks" },
+  { value: "1m", label: "Last month" },
   { value: "3m", label: "Last 3 months" },
-  { value: "6m+", label: "6+ months" },
+  { value: "6m", label: "Last 6 months" },
+  { value: "12m", label: "Last 12 months" },
 ] as const;
 
 interface SignupPeriodFieldProps {
@@ -56,4 +56,4 @@ export default function SignupPeriodField({ control }: SignupPeriodFieldProps) {
       )}
     />
   );
-}
+};
