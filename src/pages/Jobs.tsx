@@ -1,4 +1,3 @@
-
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Job } from "@/integrations/supabase/types/jobs";
@@ -71,7 +70,6 @@ const Jobs = () => {
         return [];
       }
       
-      // Transform the data to ensure all required fields exist
       const transformedData: Job[] = data.map(job => ({
         ...job as Omit<Job, 'match_threshold' | 'required_skills'>,
         match_threshold: (job as any).match_threshold || 60,
@@ -92,12 +90,12 @@ const Jobs = () => {
       <NavBar />
       <div className="container mx-auto py-8 px-4 bg-background min-h-screen">
         <div className="mb-8">
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-start">
             <JobsHeader userType={userType} jobCount={jobs?.length || 0} />
             {userType === 'candidate' && (
               <Button
                 onClick={() => navigate('/candidate/dashboard')}
-                className="text-white"
+                className="text-white mt-8"
                 variant="default"
               >
                 <LayoutDashboard className="w-4 h-4 mr-2" />
