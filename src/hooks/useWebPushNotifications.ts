@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
+import type { Json } from '@/integrations/supabase/types';
 
 export const useWebPushNotifications = () => {
   const { user } = useAuth();
@@ -39,16 +40,19 @@ export const useWebPushNotifications = () => {
             applicationServerKey: vapidPublicKey
           });
 
+          // Create a properly typed subscription object
+          const subscriptionData: Json = {
+            endpoint: sub.endpoint,
+            expirationTime: sub.expirationTime,
+            keys: {
+              p256dh: sub.toJSON().keys.p256dh,
+              auth: sub.toJSON().keys.auth
+            }
+          };
+
           const { error } = await supabase.from('user_push_subscriptions').insert({
             user_id: user.id,
-            subscription: {
-              endpoint: sub.endpoint,
-              expirationTime: sub.expirationTime,
-              keys: {
-                p256dh: sub.toJSON().keys.p256dh,
-                auth: sub.toJSON().keys.auth
-              }
-            }
+            subscription: subscriptionData
           });
 
           if (error) throw error;
