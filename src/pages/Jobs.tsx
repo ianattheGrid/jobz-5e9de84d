@@ -12,9 +12,13 @@ import JobSearch from "@/components/jobs/JobSearch";
 import { useState } from "react";
 import { JobSearchSchema } from "@/components/jobs/JobSearchSchema";
 import { bristolPostcodes } from "@/data/bristolPostcodes";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
+import { LayoutDashboard } from "lucide-react";
 
 const Jobs = () => {
   const { user, userType } = useAuth();
+  const navigate = useNavigate();
   const [searchFilters, setSearchFilters] = useState<JobSearchSchema | null>(null);
 
   const { data: jobs, isLoading, error } = useQuery({
@@ -87,7 +91,19 @@ const Jobs = () => {
     <>
       <NavBar />
       <div className="container mx-auto py-8 px-4 bg-background min-h-screen">
-        <JobsHeader userType={userType} jobCount={jobs?.length || 0} />
+        <div className="flex justify-between items-center mb-6">
+          <JobsHeader userType={userType} jobCount={jobs?.length || 0} />
+          {userType === 'candidate' && (
+            <Button
+              onClick={() => navigate('/candidate/dashboard')}
+              className="text-white"
+              variant="default"
+            >
+              <LayoutDashboard className="w-4 h-4 mr-2" />
+              Dashboard
+            </Button>
+          )}
+        </div>
         <JobSearch onSearch={handleSearch} />
         {isLoading ? (
           <LoadingSpinner />
