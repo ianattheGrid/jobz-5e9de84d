@@ -313,8 +313,50 @@ export type Database = {
         }
         Relationships: []
       }
+      interview_slots: {
+        Row: {
+          candidate_id: string
+          created_at: string
+          employer_id: string
+          id: string
+          job_id: number
+          proposed_times: string[]
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          candidate_id: string
+          created_at?: string
+          employer_id: string
+          id?: string
+          job_id: number
+          proposed_times: string[]
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          candidate_id?: string
+          created_at?: string
+          employer_id?: string
+          id?: string
+          job_id?: number
+          proposed_times?: string[]
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "interview_slots_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       interviews: {
         Row: {
+          cancellation_reason: string | null
           candidate_id: string
           created_at: string
           employer_id: string
@@ -326,6 +368,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          cancellation_reason?: string | null
           candidate_id: string
           created_at?: string
           employer_id: string
@@ -337,6 +380,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          cancellation_reason?: string | null
           candidate_id?: string
           created_at?: string
           employer_id?: string
@@ -820,7 +864,7 @@ export type Database = {
       }
     }
     Enums: {
-      [_ in never]: never
+      interview_status: "pending" | "scheduled" | "completed" | "cancelled"
     }
     CompositeTypes: {
       [_ in never]: never

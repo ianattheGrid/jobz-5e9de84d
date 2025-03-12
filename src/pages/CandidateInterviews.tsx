@@ -7,14 +7,18 @@ import { Button } from "@/components/ui/button";
 import { LayoutDashboard } from "lucide-react";
 import LoadingSpinner from "@/components/interviews/LoadingSpinner";
 import InterviewsTable from "@/components/interviews/InterviewsTable";
+import InterviewSlots from "@/components/interviews/InterviewSlots";
 import { useInterviews } from "@/hooks/useInterviews";
+import { useInterviewSlots } from "@/hooks/useInterviewSlots";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const CandidateInterviews = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const { data: interviews, isLoading } = useInterviews(user?.id);
+  const { data: interviews, isLoading: interviewsLoading } = useInterviews(user?.id);
+  const { data: slots, isLoading: slotsLoading } = useInterviewSlots(user?.id);
 
-  if (isLoading) {
+  if (interviewsLoading || slotsLoading) {
     return (
       <div className="min-h-screen bg-gray-50">
         <NavBar />
@@ -41,13 +45,32 @@ const CandidateInterviews = () => {
           </Button>
         </div>
 
-        {interviews && interviews.length > 0 ? (
-          <InterviewsTable interviews={interviews} />
-        ) : (
-          <div className="text-center py-8">
-            <p className="text-gray-600">No interviews scheduled yet.</p>
-          </div>
-        )}
+        <Tabs defaultValue="scheduled">
+          <TabsList>
+            <TabsTrigger value="scheduled">Scheduled Interviews</TabsTrigger>
+            <TabsTrigger value="proposals">Interview Proposals</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="scheduled">
+            {interviews && interviews.length > 0 ? (
+              <InterviewsTable interviews={interviews} />
+            ) : (
+              <div className="text-center py-8">
+                <p className="text-gray-600">No interviews scheduled yet.</p>
+              </div>
+            )}
+          </TabsContent>
+
+          <TabsContent value="proposals">
+            {slots && slots.length > 0 ? (
+              <InterviewSlots slots={slots} />
+            ) : (
+              <div className="text-center py-8">
+                <p className="text-gray-600">No interview proposals yet.</p>
+              </div>
+            )}
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
