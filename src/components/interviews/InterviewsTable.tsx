@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/table";
 
 interface Interview {
-  id: string;
+  id: number;  // Changed from string to number to match Supabase's type
   scheduled_at: string;
   interviewer_name: string;
   status: string;
