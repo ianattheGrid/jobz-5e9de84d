@@ -41,7 +41,14 @@ export const useWebPushNotifications = () => {
 
           const { error } = await supabase.from('user_push_subscriptions').insert({
             user_id: user.id,
-            subscription: sub.toJSON()
+            subscription: {
+              endpoint: sub.endpoint,
+              expirationTime: sub.expirationTime,
+              keys: {
+                p256dh: sub.toJSON().keys.p256dh,
+                auth: sub.toJSON().keys.auth
+              }
+            }
           });
 
           if (error) throw error;
