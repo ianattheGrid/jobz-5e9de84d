@@ -4,7 +4,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { CandidateProfile } from "@/integrations/supabase/types/profiles";
 
 export const useSearchState = () => {
-  const [candidates, setCandidates] = useState<CandidateProfile[]>[];
+  const [candidates, setCandidates] = useState<CandidateProfile[]>([]);
   const { toast } = useToast();
 
   const handleSearchError = () => {
