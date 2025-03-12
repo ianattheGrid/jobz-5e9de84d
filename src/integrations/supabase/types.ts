@@ -441,42 +441,6 @@ export type Database = {
         }
         Relationships: []
       }
-      push_notifications: {
-        Row: {
-          created_at: string | null
-          id: string
-          is_read: boolean | null
-          message: string
-          related_entity_id: string | null
-          title: string
-          type: string
-          updated_at: string | null
-          user_id: string
-        }
-        Insert: {
-          created_at?: string | null
-          id?: string
-          is_read?: boolean | null
-          message: string
-          related_entity_id?: string | null
-          title: string
-          type: string
-          updated_at?: string | null
-          user_id: string
-        }
-        Update: {
-          created_at?: string | null
-          id?: string
-          is_read?: boolean | null
-          message?: string
-          related_entity_id?: string | null
-          title?: string
-          type?: string
-          updated_at?: string | null
-          user_id?: string
-        }
-        Relationships: []
-      }
       recruiter_messages: {
         Row: {
           application_id: number

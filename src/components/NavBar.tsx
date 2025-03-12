@@ -1,114 +1,49 @@
-import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
+
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { useNavigate } from "react-router-dom";
-import { NotificationBell } from './NotificationBell';
+import MobileNav from "./navbar/MobileNav";
+import NavigationLinks from "./navbar/NavigationLinks";
 
 const NavBar = () => {
-  const navigate = useNavigate();
-  const { toast } = useToast();
-  const [session, setSession] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userType, setUserType] = useState<string | null>(null);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session)
-    })
+    const checkAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      setIsAuthenticated(!!session);
+      if (session?.user.user_metadata.user_type) {
+        setUserType(session.user.user_metadata.user_type);
+      }
+    };
 
-    supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session)
-    })
-  }, [])
+    checkAuth();
 
-  const signOut = async () => {
-    const { error } = await supabase.auth.signOut();
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsAuthenticated(!!session);
+      if (session?.user.user_metadata.user_type) {
+        setUserType(session.user.user_metadata.user_type);
+      }
+    });
 
-    if (error) {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Failed to sign out",
-      });
-    } else {
-      navigate('/');
-      toast({
-        title: "Success",
-        description: "Signed out successfully",
-      });
-    }
-  };
-
-  const renderNavLinks = () => {
-    return (
-      <div className="hidden md:flex space-x-6">
-        <Link to="/jobs" className="text-gray-600 hover:text-primary">
-          Job Board
-        </Link>
-        <Link to="/about" className="text-gray-600 hover:text-primary">
-          About Us
-        </Link>
-        <Link to="/contact" className="text-gray-600 hover:text-primary">
-          Contact
-        </Link>
-      </div>
-    );
-  };
-
-  const renderAuthButtons = () => {
-    if (!session) {
-      return (
-        <>
-          <Link to="/signin">
-            <Button variant="outline" className="mr-2">Sign In</Button>
-          </Link>
-          <Link to="/signup">
-            <Button>Sign Up</Button>
-          </Link>
-        </>
-      );
-    } else {
-      return (
-        <Button onClick={signOut}>Sign Out</Button>
-      );
-    }
-  };
-
-  const getDashboardLink = () => {
-    if (!session) return "/";
-
-    const userType = session.user?.user_metadata?.user_type;
-    switch (userType) {
-      case "candidate":
-        return "/candidate/dashboard";
-      case "employer":
-        return "/employer/dashboard";
-        case "vr":
-          return "/vr/dashboard";
-      default:
-        return "/";
-    }
-  };
+    return () => subscription.unsubscribe();
+  }, []);
 
   return (
-    <nav className="bg-white shadow-sm">
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="flex justify-between items-center h-16">
-          <div className="flex items-center">
-            <Link to={getDashboardLink()} className="flex items-center">
-              <img src="/logo.png" alt="jobz logo" className="h-8 w-auto mr-2" />
-              <span className="text-2xl font-bold text-primary">jobz</span>
+    <header className="fixed top-0 left-0 right-0 z-50 bg-background border-b border-border h-16">
+      <div className="container mx-auto px-4 h-full">
+        <div className="flex justify-between items-center h-full">
+          <div className="flex items-center gap-8">
+            <MobileNav isAuthenticated={isAuthenticated} userType={userType} />
+            <Link to="/" className="text-xl font-bold text-white">
+              jobz
             </Link>
-            {renderNavLinks()}
           </div>
-          
-          <div className="flex items-center gap-4">
-            <NotificationBell />
-            {renderAuthButtons()}
-          </div>
+          <NavigationLinks />
         </div>
       </div>
-    </nav>
+    </header>
   );
 };
 
