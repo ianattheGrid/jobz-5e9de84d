@@ -6,6 +6,7 @@ import JobDetails from "./details/JobDetails";
 import CommissionDetails from "./details/CommissionDetails";
 import ApplicationSection from "./application/ApplicationSection";
 import ApplicationStatus from "./application/ApplicationStatus";
+import ApplicationControls from "./application/ApplicationControls";
 import { useApplication } from "./hooks/useApplication";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
