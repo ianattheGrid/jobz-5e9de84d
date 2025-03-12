@@ -75,7 +75,7 @@ export const PlatformFeatures = () => {
               description="Refer friends and colleagues to jobs and share the bonus when they're hired."
             />
             <FeatureCard
-              icon={Sparkles}
+              icon={Target}
               title="Transparent Process"
               description="See exactly what bonuses are available and track your application status in real-time."
             />
