@@ -8,45 +8,51 @@ export const useNotifications = () => {
   const [unreadCount, setUnreadCount] = useState(0);
 
   useEffect(() => {
-    // Subscribe to notifications
-    const channel = supabase
-      .channel('push_notifications')
-      .on(
-        'postgres_changes',
-        {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'push_notifications',
-          filter: `user_id=eq.${supabase.auth.user()?.id}`
-        },
-        async (payload) => {
-          // Show toast notification
-          toast({
-            title: payload.new.title,
-            description: payload.new.message,
-          });
-
-          // Trigger push notification
-          try {
-            await supabase.functions.invoke('send-push-notification', {
-              body: { notification_id: payload.new.id }
+    const setupNotifications = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      // Subscribe to notifications
+      const channel = supabase
+        .channel('push_notifications')
+        .on(
+          'postgres_changes',
+          {
+            event: 'INSERT',
+            schema: 'public',
+            table: 'push_notifications',
+            filter: `user_id=eq.${user?.id}`
+          },
+          async (payload) => {
+            // Show toast notification
+            toast({
+              title: payload.new.title,
+              description: payload.new.message,
             });
-          } catch (error) {
-            console.error('Failed to send push notification:', error);
+
+            // Trigger push notification
+            try {
+              await supabase.functions.invoke('send-push-notification', {
+                body: { notification_id: payload.new.id }
+              });
+            } catch (error) {
+              console.error('Failed to send push notification:', error);
+            }
+
+            // Update unread count
+            setUnreadCount(prev => prev + 1);
           }
+        )
+        .subscribe();
 
-          // Update unread count
-          setUnreadCount(prev => prev + 1);
-        }
-      )
-      .subscribe();
+      // Fetch initial unread count
+      fetchUnreadCount();
 
-    // Fetch initial unread count
-    fetchUnreadCount();
-
-    return () => {
-      supabase.removeChannel(channel);
+      return () => {
+        supabase.removeChannel(channel);
+      };
     };
+
+    setupNotifications();
   }, []);
 
   const fetchUnreadCount = async () => {
