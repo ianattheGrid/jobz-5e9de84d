@@ -69,9 +69,9 @@ const Jobs = () => {
       
       // Transform the data to ensure all required fields exist
       const transformedData: Job[] = data.map(job => ({
-        ...job,
-        match_threshold: job.match_threshold || 60, // Default value if not set
-        required_skills: job.required_skills || null
+        ...job as Omit<Job, 'match_threshold' | 'required_skills'>,
+        match_threshold: (job as any).match_threshold || 60,
+        required_skills: (job as any).required_skills || null
       }));
       
       return transformedData;

@@ -17,11 +17,17 @@ export const validateEssentialCriteria = (
     failedCriteria.push("Job title does not match the required title");
   }
 
-  // Check years of experience if essential
+  // Check years of experience if essential, with 1 year flexibility
   if (job.years_experience_essential && 
       job.min_years_experience && 
-      candidateProfile.years_experience < job.min_years_experience) {
-    failedCriteria.push(`Minimum ${job.min_years_experience} years of experience required`);
+      candidateProfile.years_experience < (job.min_years_experience - 1)) {
+    failedCriteria.push(`Minimum ${job.min_years_experience} years of experience required (or close)`);
+  }
+
+  // Check years in current title with 1 year flexibility
+  if (job.min_years_in_title > 0 && 
+      (candidateProfile.years_in_current_title < (job.min_years_in_title - 1))) {
+    failedCriteria.push(`Minimum ${job.min_years_in_title} years in current title required (or close)`);
   }
 
   // Check salary expectations if essential
