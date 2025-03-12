@@ -18,18 +18,18 @@ const CommissionDetails = ({ candidateCommission }: CommissionDetailsProps) => {
   if (!candidateCommission) return null;
 
   return (
-    <div className="mb-6 p-4 bg-primary/5 rounded-lg border border-primary/20">
+    <div className="mb-6 p-4 bg-white rounded-lg border border-primary/20">
       <div className="flex items-center gap-2 mb-3">
         <Award className="h-5 w-5 text-primary" />
-        <h3 className="text-base font-semibold text-primary">
+        <h3 className="text-base font-semibold text-gray-900">
           "You're Hired" Bonus Details
         </h3>
       </div>
       <div className="space-y-2 text-sm">
-        <p className="text-foreground font-medium">
+        <p className="text-gray-900 font-medium">
           Total Bonus: {formatSalary(candidateCommission)}
         </p>
-        <div className="pl-4 space-y-1 text-muted-foreground">
+        <div className="pl-4 space-y-1 text-gray-700">
           <p>• Candidate: {formatSalary(candidateCommission - calculateReferralCommission(candidateCommission))}</p>
           <p>• Referral: {formatSalary(calculateReferralCommission(candidateCommission))}</p>
         </div>

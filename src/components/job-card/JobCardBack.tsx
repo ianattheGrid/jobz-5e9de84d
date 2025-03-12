@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { X } from "lucide-react";
 import { Job } from "@/integrations/supabase/types/jobs";
@@ -6,7 +7,6 @@ import CommissionDetails from "./details/CommissionDetails";
 import ApplicationSection from "./application/ApplicationSection";
 import ApplicationStatus from "./application/ApplicationStatus";
 import { useApplication } from "./hooks/useApplication";
-import ApplicationControls from "./application/ApplicationControls";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -87,14 +87,18 @@ const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
   return (
     <div 
       className="h-full p-6 bg-[#2A2A2A] text-foreground overflow-y-auto rounded-lg"
+      onClick={(e) => {
+        e.stopPropagation();
+        onClose();
+      }}
     >
-      <div className="relative">
+      <div className="relative p-4">
         <button
           onClick={(e) => {
             e.stopPropagation();
             onClose();
           }}
-          className="absolute top-4 right-4 p-2 rounded-full hover:bg-accent/10 transition-colors"
+          className="absolute top-0 right-0 p-2 rounded-full hover:bg-accent/10 transition-colors"
         >
           <X className="h-5 w-5" />
         </button>
@@ -105,32 +109,34 @@ const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
 
         <JobDetails job={job} />
         
-        {application ? (
-          <ApplicationStatus 
-            status={application}
-            onAccept={handleAccept}
-            onChat={() => window.location.href = `/messages/${application.id}`}
-          />
-        ) : (
-          isApplying ? (
-            <ApplicationSection
-              jobId={job.id}
-              employerId={job.employer_id || ''}
-              onSubmit={handleSubmitApplication}
-              setResumeFile={setResumeFile}
-              setCoverLetter={setCoverLetter}
-              coverLetter={coverLetter}
-              onStartApply={async () => Promise.resolve()}
-              isApplying={isApplying}
-              setIsApplying={setIsApplying}
+        <div className="mt-8">
+          {application ? (
+            <ApplicationStatus 
+              status={application}
+              onAccept={handleAccept}
+              onChat={() => window.location.href = `/messages/${application.id}`}
             />
           ) : (
-            <ApplicationControls 
-              job={job}
-              setIsApplying={setIsApplying}
-            />
-          )
-        )}
+            isApplying ? (
+              <ApplicationSection
+                jobId={job.id}
+                employerId={job.employer_id || ''}
+                onSubmit={handleSubmitApplication}
+                setResumeFile={setResumeFile}
+                setCoverLetter={setCoverLetter}
+                coverLetter={coverLetter}
+                onStartApply={async () => Promise.resolve()}
+                isApplying={isApplying}
+                setIsApplying={setIsApplying}
+              />
+            ) : (
+              <ApplicationControls 
+                job={job}
+                setIsApplying={setIsApplying}
+              />
+            )
+          )}
+        </div>
       </div>
     </div>
   );
