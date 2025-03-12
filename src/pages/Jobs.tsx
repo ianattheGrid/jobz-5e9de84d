@@ -1,3 +1,4 @@
+
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Job } from "@/integrations/supabase/types/jobs";
@@ -66,7 +67,14 @@ const Jobs = () => {
         return [];
       }
       
-      return data as Job[];
+      // Transform the data to ensure all required fields exist
+      const transformedData: Job[] = data.map(job => ({
+        ...job,
+        match_threshold: job.match_threshold || 60, // Default value if not set
+        required_skills: job.required_skills || null
+      }));
+      
+      return transformedData;
     }
   });
 

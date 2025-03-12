@@ -1,4 +1,3 @@
-import { Json } from "./common";
 
 export interface Job {
   id: number;
