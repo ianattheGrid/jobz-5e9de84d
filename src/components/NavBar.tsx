@@ -1,49 +1,97 @@
-
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
+import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import MobileNav from "./navbar/MobileNav";
-import NavigationLinks from "./navbar/NavigationLinks";
+import { useNavigate } from "react-router-dom";
+import { NotificationBell } from './NotificationBell';
 
 const NavBar = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userType, setUserType] = useState<string | null>(null);
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const [session, setSession] = useState(null);
 
   useEffect(() => {
-    const checkAuth = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      setIsAuthenticated(!!session);
-      if (session?.user.user_metadata.user_type) {
-        setUserType(session.user.user_metadata.user_type);
-      }
-    };
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session)
+    })
 
-    checkAuth();
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session)
+    })
+  }, [])
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setIsAuthenticated(!!session);
-      if (session?.user.user_metadata.user_type) {
-        setUserType(session.user.user_metadata.user_type);
-      }
-    });
+  const signOut = async () => {
+    const { error } = await supabase.auth.signOut();
 
-    return () => subscription.unsubscribe();
-  }, []);
+    if (error) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to sign out",
+      });
+    } else {
+      navigate('/');
+      toast({
+        title: "Success",
+        description: "Signed out successfully",
+      });
+    }
+  };
+
+  const renderAuthButtons = () => {
+    if (!session) {
+      return (
+        <>
+          <Link to="/candidate/signup">
+            <Button variant="outline" className="mr-2">Candidate Sign Up</Button>
+          </Link>
+          <Link to="/employer/signup">
+            <Button variant="outline" className="mr-2">Employer Sign Up</Button>
+          </Link>
+          <Link to="/vr/signup">
+            <Button variant="outline">VR Sign Up</Button>
+          </Link>
+        </>
+      );
+    } else {
+      return (
+        <Button onClick={signOut}>Sign Out</Button>
+      );
+    }
+  };
+
+  const getDashboardLink = () => {
+    if (!session) return "/";
+
+    const userType = session.user?.user_metadata?.user_type;
+    switch (userType) {
+      case "candidate":
+        return "/candidate/dashboard";
+      case "employer":
+        return "/employer/dashboard";
+        case "vr":
+          return "/vr/dashboard";
+      default:
+        return "/";
+    }
+  };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background border-b border-border h-16">
-      <div className="container mx-auto px-4 h-full">
-        <div className="flex justify-between items-center h-full">
-          <div className="flex items-center gap-8">
-            <MobileNav isAuthenticated={isAuthenticated} userType={userType} />
-            <Link to="/" className="text-xl font-bold text-white">
-              jobz
-            </Link>
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="flex justify-between items-center h-16">
+          <Link to={getDashboardLink()} className="text-2xl font-bold text-primary">
+            HireHub
+          </Link>
+          
+          <div className="flex items-center gap-4">
+            <NotificationBell />
+            {renderAuthButtons()}
           </div>
-          <NavigationLinks />
         </div>
       </div>
-    </header>
+    </nav>
   );
 };
 
