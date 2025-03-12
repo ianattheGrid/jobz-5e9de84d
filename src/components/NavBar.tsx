@@ -43,13 +43,13 @@ const NavBar = () => {
     return (
       <div className="hidden md:flex space-x-6">
         <Link to="/jobs" className="text-gray-600 hover:text-primary">
-          Find Jobs
-        </Link>
-        <Link to="/candidate-search" className="text-gray-600 hover:text-primary">
-          Find Candidates
+          Job Board
         </Link>
         <Link to="/about" className="text-gray-600 hover:text-primary">
-          About
+          About Us
+        </Link>
+        <Link to="/contact" className="text-gray-600 hover:text-primary">
+          Contact
         </Link>
       </div>
     );
@@ -59,14 +59,11 @@ const NavBar = () => {
     if (!session) {
       return (
         <>
-          <Link to="/candidate/signup">
-            <Button variant="outline" className="mr-2">Candidate Sign Up</Button>
+          <Link to="/signin">
+            <Button variant="outline" className="mr-2">Sign In</Button>
           </Link>
-          <Link to="/employer/signup">
-            <Button variant="outline" className="mr-2">Employer Sign Up</Button>
-          </Link>
-          <Link to="/vr/signup">
-            <Button variant="outline">VR Sign Up</Button>
+          <Link to="/signup">
+            <Button>Sign Up</Button>
           </Link>
         </>
       );
@@ -94,7 +91,7 @@ const NavBar = () => {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200">
+    <nav className="bg-white shadow-sm">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
