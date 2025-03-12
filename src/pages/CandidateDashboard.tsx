@@ -105,7 +105,7 @@ const CandidateDashboard = () => {
     {
       title: "My Applications",
       icon: <Database className="h-6 w-6" />,
-      path: "#",
+      path: "/candidate/applications",
       description: "Track your job applications"
     },
     {
