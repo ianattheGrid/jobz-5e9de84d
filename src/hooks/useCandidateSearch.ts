@@ -1,36 +1,15 @@
 
-import { useState } from "react";
-import { useToast } from "@/components/ui/use-toast";
-import { supabase } from "@/integrations/supabase/client";
-import { CandidateProfile } from "@/integrations/supabase/types/profiles";
 import { searchFormSchema } from "@/components/candidate-search/searchFormSchema";
+import { supabase } from "@/integrations/supabase/client";
 import type { z } from "zod";
+import { useSalaryFilter } from "./search/useSalaryFilter";
+import { useSignupDateFilter } from "./search/useSignupDateFilter";
+import { useSearchState } from "./search/useSearchState";
 
 export const useCandidateSearch = () => {
-  const { toast } = useToast();
-  const [candidates, setCandidates] = useState<CandidateProfile[]>([]);
-
-  const getSignupDateFilter = (period: string) => {
-    const now = new Date();
-    switch (period) {
-      case "24h":
-        return new Date(now.setHours(now.getHours() - 24));
-      case "48h":
-        return new Date(now.setHours(now.getHours() - 48));
-      case "1w":
-        return new Date(now.setDate(now.getDate() - 7));
-      case "2w":
-        return new Date(now.setDate(now.getDate() - 14));
-      case "4w":
-        return new Date(now.setDate(now.getDate() - 28));
-      case "3m":
-        return new Date(now.setMonth(now.getMonth() - 3));
-      case "6m+":
-        return new Date(now.setMonth(now.getMonth() - 6));
-      default:
-        return null;
-    }
-  };
+  const { buildSalaryQuery } = useSalaryFilter();
+  const { buildSignupDateQuery } = useSignupDateFilter();
+  const { candidates, handleSearchError, handleSearchSuccess } = useSearchState();
 
   const searchCandidates = async (values: z.infer<typeof searchFormSchema>) => {
     try {
@@ -46,11 +25,7 @@ export const useCandidateSearch = () => {
         query = query.ilike('location', `%${values.location}%`);
       }
 
-      const flexibleMinSalary = minSalary - 5000;
-      const flexibleMaxSalary = maxSalary + 5000;
-      
-      query = query
-        .or(`min_salary.lte.${flexibleMaxSalary},max_salary.gte.${flexibleMinSalary}`);
+      query = buildSalaryQuery(query, minSalary, maxSalary);
 
       if (values.includeCommissionCandidates) {
         query = query.not('commission_percentage', 'is', null);
@@ -73,14 +48,7 @@ export const useCandidateSearch = () => {
       }
 
       if (values.signupPeriod) {
-        const signupDate = getSignupDateFilter(values.signupPeriod);
-        if (signupDate) {
-          if (values.signupPeriod === "6m+") {
-            query = query.lte('signup_date', signupDate.toISOString());
-          } else {
-            query = query.gte('signup_date', signupDate.toISOString());
-          }
-        }
+        query = buildSignupDateQuery(query, values.signupPeriod);
       }
 
       const { data: candidateProfiles, error } = await query;
@@ -123,17 +91,9 @@ export const useCandidateSearch = () => {
         years_in_current_title: profileData.years_in_current_title || null
       }));
 
-      setCandidates(validCandidateProfiles);
-      toast({
-        title: "Search Completed",
-        description: `Found ${validCandidateProfiles.length} matching candidates.`,
-      });
+      handleSearchSuccess(validCandidateProfiles);
     } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Failed to search candidates. Please try again.",
-      });
+      handleSearchError();
     }
   };
 
