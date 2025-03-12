@@ -95,7 +95,7 @@ const Jobs = () => {
             {userType === 'candidate' && (
               <Button
                 onClick={() => navigate('/candidate/dashboard')}
-                className="text-white mt-8"
+                className="text-white mt-12"
                 variant="default"
               >
                 <LayoutDashboard className="w-4 h-4 mr-2" />
