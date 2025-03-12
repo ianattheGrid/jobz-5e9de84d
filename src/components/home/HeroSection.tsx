@@ -13,7 +13,7 @@ export const HeroSection = () => {
       <div className="relative container mx-auto px-4 h-full flex items-center pt-16 md:pt-0">
         <div className="max-w-2xl text-white">
           <h1 className="text-primary [&]:!text-primary text-4xl md:text-5xl font-bold mb-4">
-            Revolutionising Hiring with AI, Automation, and Human Ingenuity.
+            No more recruitment agencies
           </h1>
           <p className="text-xl mb-8">
             Save thousands per hire, empower anyone to earn, and attract top talent with our 'You're Hired Bonus.' No agencies. No wasted time. Just smarter hiring.
