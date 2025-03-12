@@ -48,7 +48,7 @@ const CandidateApplications = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-4 py-10">
         <div className="flex justify-between items-center mb-8">
           <div>
@@ -65,24 +65,24 @@ const CandidateApplications = () => {
           </Button>
         </div>
 
-        <div className="bg-white rounded-lg shadow">
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200">
           <Table>
             <TableHeader>
-              <TableRow>
-                <TableHead>Job Title</TableHead>
-                <TableHead>Company</TableHead>
-                <TableHead>Applied Date</TableHead>
-                <TableHead>Salary Range</TableHead>
-                <TableHead>Status</TableHead>
+              <TableRow className="bg-gray-50">
+                <TableHead className="text-gray-700">Job Title</TableHead>
+                <TableHead className="text-gray-700">Company</TableHead>
+                <TableHead className="text-gray-700">Applied Date</TableHead>
+                <TableHead className="text-gray-700">Salary Range</TableHead>
+                <TableHead className="text-gray-700">Status</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {dummyApplications.map((application) => (
-                <TableRow key={application.id}>
-                  <TableCell className="font-medium">{application.jobTitle}</TableCell>
-                  <TableCell>{application.company}</TableCell>
-                  <TableCell>{application.appliedDate}</TableCell>
-                  <TableCell>{application.salary}</TableCell>
+                <TableRow key={application.id} className="hover:bg-gray-50">
+                  <TableCell className="font-medium text-gray-900">{application.jobTitle}</TableCell>
+                  <TableCell className="text-gray-700">{application.company}</TableCell>
+                  <TableCell className="text-gray-700">{application.appliedDate}</TableCell>
+                  <TableCell className="text-gray-700">{application.salary}</TableCell>
                   <TableCell>
                     <Badge className={`${getStatusColor(application.status)} text-white`}>
                       {application.status.charAt(0).toUpperCase() + application.status.slice(1)}
