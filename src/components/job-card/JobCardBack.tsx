@@ -125,7 +125,7 @@ const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
               setResumeFile={setResumeFile}
               setCoverLetter={setCoverLetter}
               coverLetter={coverLetter}
-              onStartApply={() => {}}
+              onStartApply={async () => Promise.resolve()}
               isApplying={isApplying}
               setIsApplying={setIsApplying}
             />
