@@ -12,6 +12,7 @@ import {
   Mail,
   Calendar
 } from "lucide-react";
+import { TestScenarioButton } from "@/components/dashboard/TestScenarioButton";
 
 const CandidateDashboard = () => {
   const navigate = useNavigate();
@@ -130,7 +131,11 @@ const CandidateDashboard = () => {
   return (
     <div className="min-h-screen bg-white">
       <NavBar />
-      <div className="container mx-auto px-4 py-8 pt-20">
+      <div className="container mx-auto py-8 px-4">
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-3xl font-bold">Candidate Dashboard</h1>
+          <TestScenarioButton />
+        </div>
         <h1 className="text-3xl font-bold mb-2 text-gray-900">
           Welcome{fullName ? `, ${fullName}` : ''}
         </h1>
