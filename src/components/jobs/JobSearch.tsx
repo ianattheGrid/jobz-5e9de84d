@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -52,31 +51,30 @@ const JobSearch = ({ onSearch }: JobSearchProps) => {
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6 text-left">
       <div className="flex justify-between items-start mb-4">
-        <div 
-          className="flex flex-col cursor-pointer"
-          onClick={handleExpandToggle}
-        >
-          <div className="flex items-center mb-2">
-            <Search className="h-5 w-5 text-primary mr-2" />
-            <h2 className={`text-lg font-semibold ${PRIMARY_COLOR_PATTERN}`}>
-              Find Your Perfect Job Match (Click here)
-            </h2>
-          </div>
-          <p className="text-sm text-gray-600 ml-7">
-            Search jobs by sector, specialization, or filter by Bristol postcodes and jobs with "You're Hired" bonuses
-          </p>
+        <div className="flex items-center">
+          <Search className="h-5 w-5 text-primary mr-2" />
+          <h2 className={`text-lg font-semibold ${PRIMARY_COLOR_PATTERN}`}>
+            Find Your Perfect Job Match
+          </h2>
         </div>
-        {isExpanded && (
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleExpandToggle}
-            className="border border-gray-200 bg-white text-gray-700 hover:bg-primary hover:text-white hover:border-primary transition-colors"
-          >
-            <X className="h-4 w-4 mr-1" />
-            Collapse
-          </Button>
-        )}
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={handleExpandToggle}
+          className="border border-gray-200 bg-white text-gray-700 hover:bg-primary hover:text-white hover:border-primary transition-colors"
+        >
+          {isExpanded ? (
+            <>
+              <X className="h-4 w-4 mr-1" />
+              Collapse
+            </>
+          ) : (
+            <>
+              <Search className="h-4 w-4 mr-1" />
+              Search
+            </>
+          )}
+        </Button>
       </div>
 
       {isExpanded && (
