@@ -63,18 +63,22 @@ export default function CandidateProfile() {
   return (
     <div className="min-h-screen bg-white">
       <div className="container mx-auto px-4 py-10">
-        <Button
-          onClick={() => navigate('/candidate/dashboard')}
-          className="mb-6 text-white"
-          variant="default"
-        >
-          <LayoutDashboard className="w-4 h-4 mr-2" />
-          Dashboard
-        </Button>
-        <h1 className="text-2xl font-bold mb-4 text-gray-900">Update Your Profile</h1>
-        <p className="text-primary mb-8 text-sm">
-          Keep your profile up to date to find the best job matches.
-        </p>
+        <div className="flex justify-between items-center mb-6">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900">Update Your Profile</h1>
+            <p className="text-primary text-sm">
+              Keep your profile up to date to find the best job matches.
+            </p>
+          </div>
+          <Button
+            onClick={() => navigate('/candidate/dashboard')}
+            className="text-white"
+            variant="default"
+          >
+            <LayoutDashboard className="w-4 h-4 mr-2" />
+            Dashboard
+          </Button>
+        </div>
         <div className="flex justify-center">
           <CandidateForm />
         </div>
