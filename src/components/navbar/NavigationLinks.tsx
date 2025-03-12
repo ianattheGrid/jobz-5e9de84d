@@ -8,7 +8,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { NotificationsPopover } from "@/components/notifications/NotificationsPopover";
 
 const NavigationLinks = () => {
   const { user } = useAuth();
@@ -33,7 +32,6 @@ const NavigationLinks = () => {
       </nav>
       
       <div className="flex items-center gap-4">
-        {user?.user_metadata?.user_type && <NotificationsPopover />}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button 
