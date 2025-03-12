@@ -88,12 +88,11 @@ const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
     <div 
       className="h-full p-6 bg-[#2A2A2A] text-foreground overflow-y-auto rounded-lg"
       onClick={(e) => {
-        if (e.target === e.currentTarget) {
-          onClose();
-        }
+        e.stopPropagation();
+        onClose();
       }}
     >
-      <div onClick={(e) => e.stopPropagation()}>
+      <div className="relative" onClick={(e) => e.stopPropagation()}>
         <button
           onClick={(e) => {
             e.stopPropagation();
@@ -108,7 +107,9 @@ const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
           <CommissionDetails candidateCommission={job.candidate_commission} />
         )}
 
-        <JobDetails job={job} />
+        <div onClick={(e) => e.stopPropagation()}>
+          <JobDetails job={job} />
+        </div>
         
         {application ? (
           <ApplicationStatus 

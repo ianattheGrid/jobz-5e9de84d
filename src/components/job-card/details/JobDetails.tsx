@@ -9,13 +9,23 @@ interface JobDetailsProps {
 
 const JobDetails = ({ job }: JobDetailsProps) => {
   return (
-    <div className="space-y-6 bg-white p-6 rounded-lg">
+    <div className="space-y-6 bg-white p-6 rounded-lg cursor-pointer">
       {/* Full Description */}
       <div className="text-sm">
         <h4 className="font-semibold text-lg mb-3 text-gray-900">About This Role</h4>
         <div className="space-y-4 text-gray-700">
           <p className="whitespace-pre-line leading-relaxed">
             {job.description}
+            {'\n\n'}
+            We are looking for an exceptional individual to join our dynamic team. This role offers an exciting opportunity to:
+            {'\n\n'}
+            • Take ownership of key projects and initiatives
+            • Work with cutting-edge technologies and methodologies
+            • Collaborate with cross-functional teams
+            • Drive innovation and process improvements
+            • Contribute to the company's growth and success
+            {'\n\n'}
+            The ideal candidate will bring fresh perspectives, demonstrate initiative, and have a proven track record of delivering results in a fast-paced environment.
           </p>
           
           <div className="flex items-center gap-2 mt-4 text-primary">
@@ -63,9 +73,16 @@ const JobDetails = ({ job }: JobDetailsProps) => {
           </ul>
           
           {job.min_years_experience > 0 && (
-            <p className="mt-3 text-sm text-gray-700">
-              Minimum {job.min_years_experience} years of relevant experience required
-            </p>
+            <div className="mt-3 text-sm text-gray-700">
+              <p>Minimum {job.min_years_experience} years of relevant experience required</p>
+              <p className="mt-2">The successful candidate should demonstrate:</p>
+              <ul className="list-disc pl-5 mt-2 space-y-1">
+                <li>Strong problem-solving abilities</li>
+                <li>Excellent communication skills</li>
+                <li>Ability to work independently and in teams</li>
+                <li>Strong attention to detail</li>
+              </ul>
+            </div>
           )}
         </div>
       )}
