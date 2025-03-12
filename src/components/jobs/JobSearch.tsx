@@ -10,6 +10,7 @@ import CommissionFilterField from "./CommissionFilterField";
 import WorkAreaField from "@/components/WorkAreaField";
 import { PRIMARY_COLOR_PATTERN } from "@/styles/colorPatterns";
 import BristolPostcodeSelect from "./BristolPostcodeSelect";
+import JobDetailsFields from "@/components/JobDetailsFields";
 
 interface JobSearchProps {
   onSearch: (data: JobSearchSchema) => void;
@@ -26,6 +27,12 @@ const JobSearch = ({ onSearch }: JobSearchProps) => {
       title: "",
       location: [],
       hasCommission: false,
+      min_salary: undefined,
+      max_salary: undefined,
+      description: "",
+      workLocation: "office",
+      holidayEntitlement: undefined,
+      companyBenefits: undefined,
     },
   });
 
@@ -38,7 +45,7 @@ const JobSearch = ({ onSearch }: JobSearchProps) => {
       setIsExpanded(true);
     } else {
       setIsExpanded(false);
-      form.reset(); // Reset form when collapsing
+      form.reset();
     }
   };
 
@@ -70,6 +77,7 @@ const JobSearch = ({ onSearch }: JobSearchProps) => {
                 </label>
                 <BristolPostcodeSelect control={form.control} />
               </div>
+              <JobDetailsFields control={form.control} />
               <CommissionFilterField control={form.control} />
             </div>
 
