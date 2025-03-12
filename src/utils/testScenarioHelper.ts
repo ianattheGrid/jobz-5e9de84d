@@ -67,12 +67,12 @@ export const setupTestScenario = async () => {
 
     if (vrError) throw vrError;
 
-    // Create VR profile
+    // Create VR profile - Note: vr_number is generated automatically by DB trigger
     await supabase.from('virtual_recruiter_profiles').insert({
-      id: vrData.user?.id,
       email: 'test.vr@example.com',
       full_name: 'Test VR',
-      location: 'Bristol'
+      location: 'Bristol',
+      id: vrData.user?.id
     });
 
     // 4. Create a test job posting
