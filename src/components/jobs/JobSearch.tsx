@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Search } from "lucide-react";
+import { Search, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { JobSearchSchema, jobSearchSchema } from "./JobSearchSchema";
@@ -51,19 +51,32 @@ const JobSearch = ({ onSearch }: JobSearchProps) => {
 
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6 text-left">
-      <div 
-        className="flex flex-col cursor-pointer mb-4"
-        onClick={handleExpandToggle}
-      >
-        <div className="flex items-center mb-2">
-          <Search className="h-5 w-5 text-primary mr-2" />
-          <h2 className={`text-lg font-semibold ${PRIMARY_COLOR_PATTERN}`}>
-            Find Your Perfect Job Match (Click here)
-          </h2>
+      <div className="flex justify-between items-start mb-4">
+        <div 
+          className="flex flex-col cursor-pointer"
+          onClick={handleExpandToggle}
+        >
+          <div className="flex items-center mb-2">
+            <Search className="h-5 w-5 text-primary mr-2" />
+            <h2 className={`text-lg font-semibold ${PRIMARY_COLOR_PATTERN}`}>
+              Find Your Perfect Job Match (Click here)
+            </h2>
+          </div>
+          <p className="text-sm text-gray-600 ml-7">
+            Search jobs by sector, specialization, or filter by Bristol postcodes and jobs with "You're Hired" bonuses
+          </p>
         </div>
-        <p className="text-sm text-gray-600 ml-7">
-          Search jobs by sector, specialization, or filter by Bristol postcodes and jobs with "You're Hired" bonuses
-        </p>
+        {isExpanded && (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleExpandToggle}
+            className="text-gray-500 hover:text-gray-700"
+          >
+            <X className="h-4 w-4 mr-1" />
+            Collapse
+          </Button>
+        )}
       </div>
 
       {isExpanded && (
