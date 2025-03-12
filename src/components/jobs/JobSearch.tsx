@@ -24,7 +24,7 @@ const JobSearch = ({ onSearch }: JobSearchProps) => {
       workArea: "",
       specialization: "",
       title: "",
-      location: [], // Changed from string to empty array to match the schema type
+      location: [],
       hasCommission: false,
     },
   });
@@ -33,11 +33,20 @@ const JobSearch = ({ onSearch }: JobSearchProps) => {
     onSearch(data);
   };
 
+  const handleExpandToggle = () => {
+    if (!isExpanded) {
+      setIsExpanded(true);
+    } else {
+      setIsExpanded(false);
+      form.reset(); // Reset form when collapsing
+    }
+  };
+
   return (
-    <div className="bg-card rounded-lg shadow-sm border border-border p-4 mb-6 text-left">
+    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6 text-left">
       <div 
         className="flex flex-col cursor-pointer mb-4"
-        onClick={() => setIsExpanded(!isExpanded)}
+        onClick={handleExpandToggle}
       >
         <div className="flex items-center mb-2">
           <Search className="h-5 w-5 text-primary mr-2" />
@@ -45,7 +54,7 @@ const JobSearch = ({ onSearch }: JobSearchProps) => {
             Find Your Perfect Job Match (Click here)
           </h2>
         </div>
-        <p className="text-sm text-muted-foreground ml-7">
+        <p className="text-sm text-gray-600 ml-7">
           Search jobs by sector, specialization, or filter by Bristol postcodes and jobs with "You're Hired" bonuses
         </p>
       </div>
@@ -56,7 +65,7 @@ const JobSearch = ({ onSearch }: JobSearchProps) => {
             <div className="space-y-4">
               <WorkAreaField control={form.control} />
               <div className="space-y-2">
-                <label className="text-white font-medium text-base">
+                <label className="text-gray-900 font-medium text-base">
                   Select Bristol Area
                 </label>
                 <BristolPostcodeSelect control={form.control} />
