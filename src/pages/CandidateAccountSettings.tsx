@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
@@ -9,6 +8,7 @@ import { DeleteAccountDialog } from "@/components/employer/DeleteAccountDialog";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/hooks/useAuth";
 import NavBar from "@/components/NavBar";
+import { LayoutDashboard } from "lucide-react";
 
 const CandidateAccountSettings = () => {
   const { user } = useAuth();
@@ -46,7 +46,17 @@ const CandidateAccountSettings = () => {
     <div className="min-h-screen bg-gray-50">
       <NavBar />
       <div className="container mx-auto px-4 py-8 pt-20">
-        <h1 className="text-3xl font-bold mb-8 text-gray-900">Account Settings</h1>
+        <div className="flex justify-between items-start">
+          <h1 className="text-3xl font-bold mb-8 text-gray-900">Account Settings</h1>
+          <Button
+            onClick={() => navigate('/candidate/dashboard')}
+            className="text-white"
+            variant="default"
+          >
+            <LayoutDashboard className="w-4 h-4 mr-2" />
+            Dashboard
+          </Button>
+        </div>
         
         <div className="space-y-6 max-w-2xl mx-auto">
           {/* Account Info */}
