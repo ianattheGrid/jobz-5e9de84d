@@ -91,18 +91,20 @@ const Jobs = () => {
     <>
       <NavBar />
       <div className="container mx-auto py-8 px-4 bg-background min-h-screen">
-        <div className="flex justify-between items-center mb-6">
-          <JobsHeader userType={userType} jobCount={jobs?.length || 0} />
-          {userType === 'candidate' && (
-            <Button
-              onClick={() => navigate('/candidate/dashboard')}
-              className="text-white"
-              variant="default"
-            >
-              <LayoutDashboard className="w-4 h-4 mr-2" />
-              Dashboard
-            </Button>
-          )}
+        <div className="mb-8">
+          <div className="flex justify-between items-center">
+            <JobsHeader userType={userType} jobCount={jobs?.length || 0} />
+            {userType === 'candidate' && (
+              <Button
+                onClick={() => navigate('/candidate/dashboard')}
+                className="text-white"
+                variant="default"
+              >
+                <LayoutDashboard className="w-4 h-4 mr-2" />
+                Dashboard
+              </Button>
+            )}
+          </div>
         </div>
         <JobSearch onSearch={handleSearch} />
         {isLoading ? (
