@@ -41,6 +41,8 @@ export const candidateFormSchema = z.object({
   job_seeking_reasons: z.array(z.string()).default([]),
   other_job_seeking_reason: z.string().optional(),
   linkedin_url: z.string().url("Please enter a valid LinkedIn URL").optional(),
+  hasQualification: z.boolean().default(false),
+  qualificationDetails: z.string().optional(),
 }).refine((data) => data.max_salary >= data.min_salary, {
   message: "Maximum salary must be greater than or equal to minimum salary",
   path: ["max_salary"],

@@ -7,13 +7,12 @@ import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "
 import WorkAreaField from "@/components/WorkAreaField";
 import SalaryRangeField from "@/components/SalaryRangeField";
 import { searchFormSchema } from "./searchFormSchema";
-import QualificationSelector from "@/components/job-details/QualificationSelector";
 import ITSkillsField from "@/components/job-details/ITSkillsField";
 import SecurityClearanceFields from "@/components/job-details/SecurityClearanceFields";
 import SignupPeriodField from "./SignupPeriodField";
 import WorkEligibilityField from "@/components/job-details/WorkEligibilityField";
 import CommissionPercentageField from "./CommissionPercentageField";
-import RadiusSearch from "./RadiusSearch";
+import QualificationField from "@/components/shared/QualificationField";
 
 interface SearchFormProps {
   onSubmit: (values: z.infer<typeof searchFormSchema>) => Promise<void>;
@@ -27,7 +26,8 @@ export function SearchForm({ onSubmit }: SearchFormProps) {
       officePostcode: "",
       searchRadius: undefined,
       salary: "",
-      qualification: "None",
+      requiresQualification: false,
+      qualificationRequired: "",
       required_skills: [],
       requiresSecurityClearance: false,
       securityClearanceLevel: undefined,
@@ -48,22 +48,7 @@ export function SearchForm({ onSubmit }: SearchFormProps) {
           </div>
           
           <div className="space-y-6">
-            <FormField
-              control={form.control}
-              name="qualification"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>IT Qualification</FormLabel>
-                  <FormControl>
-                    <QualificationSelector
-                      selectedQualification={field.value}
-                      onSelect={field.onChange}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <QualificationField control={form.control} />
             <ITSkillsField control={form.control} />
           </div>
         </div>
