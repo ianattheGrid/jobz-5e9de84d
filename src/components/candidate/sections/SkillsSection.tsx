@@ -11,10 +11,10 @@ interface SkillsSectionProps {
 
 const SkillsSection = ({ control }: SkillsSectionProps) => {
   return (
-    <>
+    <div className="space-y-6 bg-white rounded-lg p-6">
       <ITSkillsField control={control} />
       <QualificationField control={control} />
-    </>
+    </div>
   );
 };
 
