@@ -1,10 +1,7 @@
 
-"use client";
-
 import * as React from "react";
 import { X } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Command, CommandGroup, CommandItem } from "@/components/ui/command";
 
 type Option = {
   value: string;
@@ -36,7 +33,6 @@ export function MultiSelect({
   };
 
   const selectables = options.filter(option => !selected.includes(option.value));
-
   const filtered = selectables.filter((option) =>
     option.label.toLowerCase().includes(inputValue.toLowerCase())
   );
@@ -100,28 +96,22 @@ export function MultiSelect({
           />
         </div>
       </div>
-      {open && (
-        <div className="absolute w-full z-50 top-full mt-1 rounded-md border bg-white text-gray-900 shadow-md">
-          <Command className="w-full bg-transparent">
-            <CommandGroup className="overflow-auto max-h-[200px]">
-              {filtered.length > 0 ? (
-                filtered.map((option) => (
-                  <CommandItem
-                    key={option.value}
-                    onSelect={() => {
-                      onChange([...selected, option.value]);
-                      setInputValue("");
-                    }}
-                    className="cursor-pointer px-2 py-1.5 hover:bg-gray-100"
-                  >
-                    {option.label}
-                  </CommandItem>
-                ))
-              ) : (
-                <div className="py-6 text-center text-sm">No results found.</div>
-              )}
-            </CommandGroup>
-          </Command>
+      {open && filtered.length > 0 && (
+        <div className="absolute w-full z-50 top-full mt-1 rounded-md border bg-white">
+          <div className="max-h-[200px] overflow-auto py-1">
+            {filtered.map((option) => (
+              <div
+                key={option.value}
+                className="px-2 py-1.5 text-sm cursor-pointer hover:bg-gray-100"
+                onClick={() => {
+                  onChange([...selected, option.value]);
+                  setInputValue("");
+                }}
+              >
+                {option.label}
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </div>
