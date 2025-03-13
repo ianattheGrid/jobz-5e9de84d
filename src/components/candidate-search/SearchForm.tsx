@@ -1,3 +1,4 @@
+
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -12,7 +13,6 @@ import SecurityClearanceFields from "@/components/job-details/SecurityClearanceF
 import SignupPeriodField from "./SignupPeriodField";
 import WorkEligibilityField from "@/components/job-details/WorkEligibilityField";
 import CommissionPercentageField from "./CommissionPercentageField";
-import LocationInput from "./LocationInput";
 import RadiusSearch from "./RadiusSearch";
 
 interface SearchFormProps {
@@ -24,7 +24,6 @@ export function SearchForm({ onSubmit }: SearchFormProps) {
     resolver: zodResolver(searchFormSchema),
     defaultValues: {
       workArea: "",
-      location: "",
       officePostcode: "",
       searchRadius: undefined,
       salary: "",
@@ -44,13 +43,11 @@ export function SearchForm({ onSubmit }: SearchFormProps) {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-6">
             <WorkAreaField control={form.control} />
-            <LocationInput control={form.control} />
-            <RadiusSearch control={form.control} />
+            <SalaryRangeField control={form.control} />
+            <CommissionPercentageField control={form.control} />
           </div>
           
           <div className="space-y-6">
-            <SalaryRangeField control={form.control} />
-            <CommissionPercentageField control={form.control} />
             <FormField
               control={form.control}
               name="qualification"
@@ -67,12 +64,12 @@ export function SearchForm({ onSubmit }: SearchFormProps) {
                 </FormItem>
               )}
             />
+            <ITSkillsField control={form.control} />
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-6">
-            <ITSkillsField control={form.control} />
             <SecurityClearanceFields control={form.control} />
           </div>
           
