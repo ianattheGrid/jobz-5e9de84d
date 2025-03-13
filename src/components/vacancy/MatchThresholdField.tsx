@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -14,14 +13,16 @@ import {
 
 interface MatchThresholdFieldProps {
   control: Control<any>;
+  onMatchingChange: (useMatching: boolean) => void;
 }
 
-const MatchThresholdField = ({ control }: MatchThresholdFieldProps) => {
+const MatchThresholdField = ({ control, onMatchingChange }: MatchThresholdFieldProps) => {
   const [showMatchingOptions, setShowMatchingOptions] = useState(true);
 
   const handleMatchingChange = (value: string) => {
     const isEnabled = value === 'yes';
     setShowMatchingOptions(isEnabled);
+    onMatchingChange(isEnabled);
     if (!isEnabled) {
       control._formValues.matchThreshold = 0;
     } else {
@@ -99,4 +100,3 @@ const MatchThresholdField = ({ control }: MatchThresholdFieldProps) => {
 };
 
 export default MatchThresholdField;
-

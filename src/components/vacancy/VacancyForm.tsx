@@ -17,6 +17,8 @@ interface VacancyFormProps {
 }
 
 export function VacancyForm({ form, onSubmit }: VacancyFormProps) {
+  const [showEssentialCriteria, setShowEssentialCriteria] = useState(false);
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="bg-white rounded-lg shadow-sm p-8">
@@ -41,8 +43,13 @@ export function VacancyForm({ form, onSubmit }: VacancyFormProps) {
           <div className="space-y-8">
             <WorkAreaField control={form.control} />
             <JobDetailsFields control={form.control} />
-            <MatchThresholdField control={form.control} />
-            <EssentialCriteriaFields control={form.control} />
+            <MatchThresholdField 
+              control={form.control} 
+              onMatchingChange={(useMatching) => setShowEssentialCriteria(!useMatching)} 
+            />
+            {showEssentialCriteria && (
+              <EssentialCriteriaFields control={form.control} />
+            )}
             <CommissionSection salary={form.watch("actualSalary")} form={form} />
             <ApplicationPreferencesField control={form.control} />
           </div>
