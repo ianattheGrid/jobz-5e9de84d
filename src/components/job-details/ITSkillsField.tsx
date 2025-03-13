@@ -1,10 +1,9 @@
-
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Control } from "react-hook-form";
 import { Badge } from "@/components/ui/badge";
 import { X } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { itSkills } from "@/components/job-details/constants";
 
 interface ITSkillsFieldProps {
@@ -30,6 +29,12 @@ const ITSkillsField = ({ control }: ITSkillsFieldProps) => {
     onChange(updatedSkills);
   };
 
+  useEffect(() => {
+    if (control._formValues.required_skills) {
+      setSelectedSkills(control._formValues.required_skills);
+    }
+  }, [control._formValues.required_skills]);
+
   return (
     <FormField
       control={control}
@@ -40,24 +45,24 @@ const ITSkillsField = ({ control }: ITSkillsFieldProps) => {
           <FormControl>
             <div className="space-y-2">
               <Select 
-                onValueChange={(value) => {
-                  handleSkillSelect(value, field.onChange);
-                }}
+                value=""
+                onValueChange={(value) => handleSkillSelect(value, field.onChange)}
               >
                 <SelectTrigger className="w-full bg-white">
                   <SelectValue placeholder="Select required skills" />
                 </SelectTrigger>
                 <SelectContent className="bg-white max-h-[300px]">
-                  {itSkills.map((skill) => (
-                    <SelectItem 
-                      key={skill} 
-                      value={skill}
-                      disabled={selectedSkills.includes(skill) || selectedSkills.length >= 10}
-                      className="cursor-pointer"
-                    >
-                      {skill}
-                    </SelectItem>
-                  ))}
+                  {itSkills
+                    .filter(skill => !selectedSkills.includes(skill))
+                    .map((skill) => (
+                      <SelectItem 
+                        key={skill} 
+                        value={skill}
+                        className="cursor-pointer"
+                      >
+                        {skill}
+                      </SelectItem>
+                    ))}
                 </SelectContent>
               </Select>
               <div className="flex flex-wrap gap-2">
