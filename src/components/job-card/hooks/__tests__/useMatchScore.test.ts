@@ -1,6 +1,7 @@
-
+import { describe, it, expect } from 'vitest';
 import { CandidateProfile } from "@/integrations/supabase/types/profiles";
 import { calculateSkillsMatchScore } from "../../utils/skillsMatching";
+import { useMatchScore } from "../useMatchScore";
 
 describe('Job Matching Algorithm', () => {
   describe('Skills Matching', () => {
