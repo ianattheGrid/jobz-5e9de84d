@@ -48,16 +48,16 @@ const MatchThresholdField = ({ control }: MatchThresholdFieldProps) => {
   };
 
   return (
-    <Card className="border-2">
-      <CardHeader>
-        <CardTitle>Candidate Matching Preferences</CardTitle>
-        <CardDescription>
+    <Card className="border bg-white shadow-sm">
+      <CardHeader className="bg-gray-50 rounded-t-lg border-b">
+        <CardTitle className="text-gray-900">Candidate Matching Preferences</CardTitle>
+        <CardDescription className="text-gray-600">
           Configure how strictly you want to match candidates to your job requirements
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-6">
+      <CardContent className="space-y-6 p-6">
         <FormItem className="space-y-3">
-          <FormLabel>Would you like to use jobz's intelligent matching algorithm to automatically filter candidates?</FormLabel>
+          <FormLabel className="text-gray-900">Would you like to use jobz's intelligent matching algorithm to automatically filter candidates?</FormLabel>
           <RadioGroup
             defaultValue="yes"
             onValueChange={handleMatchingChange}
@@ -65,24 +65,24 @@ const MatchThresholdField = ({ control }: MatchThresholdFieldProps) => {
           >
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="yes" id="matching-yes" />
-              <label htmlFor="matching-yes">Yes</label>
+              <label htmlFor="matching-yes" className="text-gray-700">Yes</label>
             </div>
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="no" id="matching-no" />
-              <label htmlFor="matching-no">No</label>
+              <label htmlFor="matching-no" className="text-gray-700">No</label>
             </div>
           </RadioGroup>
         </FormItem>
 
         {showMatchingOptions && (
           <div className="space-y-6">
-            <div className="rounded-lg bg-blue-50 p-4 text-sm text-blue-600">
+            <div className="rounded-lg bg-blue-50/50 border border-blue-100 p-4">
               <div className="flex items-start gap-2">
-                <InfoIcon className="h-5 w-5 mt-0.5" />
+                <InfoIcon className="h-5 w-5 mt-0.5 text-blue-600" />
                 <div>
-                  <p className="font-medium mb-1">Matching Score Guidelines</p>
-                  <p>A 100% match is extremely rare as it would require perfect alignment across all criteria. We recommend:</p>
-                  <ul className="list-disc ml-4 mt-2 space-y-1">
+                  <p className="font-medium mb-1 text-blue-900">Matching Score Guidelines</p>
+                  <p className="text-blue-800">A 100% match is extremely rare as it would require perfect alignment across all criteria. We recommend:</p>
+                  <ul className="list-disc ml-4 mt-2 space-y-1 text-blue-800">
                     <li>60-70% for a balanced pool of qualified candidates</li>
                     <li>70-80% for highly specific roles</li>
                     <li>Above 80% only for extremely specialized positions</li>
@@ -96,7 +96,7 @@ const MatchThresholdField = ({ control }: MatchThresholdFieldProps) => {
               name="matchThreshold"
               render={({ field }) => (
                 <FormItem className="space-y-4">
-                  <FormLabel>Match Threshold</FormLabel>
+                  <FormLabel className="text-gray-900">Match Threshold</FormLabel>
                   <FormControl>
                     <div className="space-y-4">
                       <Slider
@@ -107,11 +107,11 @@ const MatchThresholdField = ({ control }: MatchThresholdFieldProps) => {
                         step={5}
                         className="w-full"
                       />
-                      <div className="flex items-center gap-4">
-                        <Progress value={field.value} className={getMatchColor(field.value)} />
-                        <span className="min-w-[4rem] text-right">{field.value}%</span>
+                      <div className="flex items-center gap-4 bg-gray-50/50 p-3 rounded-lg border border-gray-100">
+                        <Progress value={field.value} className={`${getMatchColor(field.value)} h-3`} />
+                        <span className="min-w-[4rem] text-right font-medium text-gray-700">{field.value}%</span>
                       </div>
-                      <div className="text-sm font-medium text-gray-700">
+                      <div className="text-sm font-medium text-gray-700 bg-gray-50/50 p-3 rounded-lg border border-gray-100">
                         {getMatchDescription(field.value)}
                       </div>
                     </div>
