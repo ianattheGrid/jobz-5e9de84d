@@ -39,7 +39,7 @@ const ITSkillsField = ({ control }: ITSkillsFieldProps) => {
           <FormLabel>Required Skills (Select up to 10)</FormLabel>
           <FormControl>
             <div className="space-y-2">
-              <Select onValueChange={(value) => handleSkillSelect(value, field.onChange)} value="">
+              <Select onValueChange={(value) => handleSkillSelect(value, field.onChange)}>
                 <SelectTrigger className="w-full bg-white">
                   <SelectValue placeholder="Select required skills" />
                 </SelectTrigger>
