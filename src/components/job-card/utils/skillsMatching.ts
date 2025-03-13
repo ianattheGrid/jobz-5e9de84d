@@ -1,4 +1,3 @@
-
 // Groups of similar/related skills for better matching
 const similarSkillsGroups = [
   // Programming Languages
@@ -53,26 +52,26 @@ export const findSimilarSkills = (skill: string): string[] => {
   return group || [skill];
 };
 
-export const calculateSkillsMatchScore = (
+export const calculateSkillsMatchScore = async (
   profileSkills: string[] = [], 
-  jobSkills: string[] = []
-): number => {
+  jobSkills: string[] = [],
+  cvUrl?: string | null
+): Promise<number> => {
   if (!profileSkills.length || !jobSkills.length) return 0;
 
   const normalizedProfileSkills = profileSkills.map(skill => skill.toLowerCase());
   const normalizedJobSkills = jobSkills.map(skill => skill.toLowerCase());
   
-  let matches = 0;
+  let profileSkillsScore = 0;
   const processedSkills = new Set<string>();
 
-  // Check each job skill against profile skills and their similar variations
+  // Calculate profile skills match (50% of skills score)
   for (const jobSkill of normalizedJobSkills) {
     if (processedSkills.has(jobSkill)) continue;
     
     const similarSkills = findSimilarSkills(jobSkill)
       .map(s => s.toLowerCase());
     
-    // If any variation of the skill is found in profile skills, count it as a match
     if (similarSkills.some(skill => 
       normalizedProfileSkills.includes(skill) || 
       normalizedProfileSkills.some(profileSkill => 
@@ -81,11 +80,31 @@ export const calculateSkillsMatchScore = (
           .includes(skill)
       )
     )) {
-      matches++;
+      profileSkillsScore++;
     }
     
     similarSkills.forEach(s => processedSkills.add(s));
   }
 
-  return matches / jobSkills.length;
+  // Calculate CV skills match if CV is available (50% of skills score)
+  let cvSkillsScore = 0;
+  if (cvUrl) {
+    try {
+      const { data } = await supabase.functions.invoke('parse-cv', {
+        body: { fileUrl: cvUrl, requiredSkills: jobSkills }
+      });
+      
+      cvSkillsScore = data.cvSkillsMatchScore || 0;
+    } catch (error) {
+      console.error('Error analyzing CV:', error);
+    }
+  }
+
+  // Final score combines profile skills (50%) and CV skills (50%)
+  // If no CV is available, profile skills count for 100%
+  if (cvUrl) {
+    return (profileSkillsScore / jobSkills.length * 0.5) + (cvSkillsScore * 0.5);
+  }
+  
+  return profileSkillsScore / jobSkills.length;
 };

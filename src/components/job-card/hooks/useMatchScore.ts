@@ -1,4 +1,3 @@
-
 import { CandidateProfile } from "@/integrations/supabase/types/profiles";
 import { calculateSkillsMatchScore } from "../utils/skillsMatching";
 
@@ -20,9 +19,13 @@ export const useMatchScore = (profile: CandidateProfile, job: any) => {
     ) ? 1 : 0;
   };
 
-  const skillsMatch = () => {
+  const skillsMatch = async () => {
     if (!profile.required_skills || !job.required_skills) return 0;
-    return calculateSkillsMatchScore(profile.required_skills, job.required_skills);
+    return calculateSkillsMatchScore(
+      profile.required_skills, 
+      job.required_skills,
+      profile.cv_url
+    );
   };
 
   const experienceMatch = () => {
@@ -50,14 +53,14 @@ export const useMatchScore = (profile: CandidateProfile, job: any) => {
     return overlapAmount / combinedRange;
   };
 
-  const calculateTotalScore = () => {
+  const calculateTotalScore = async () => {
     let totalScore = 0;
     totalScore += titleMatch() * 0.30;          // Job title match (30%)
-    totalScore += skillsMatch() * 0.15;         // Skills match (15%)
-    totalScore += locationMatch() * 0.15;        // Location match (15%)
-    totalScore += experienceMatch() * 0.15;      // Experience match (15%)
-    totalScore += specializationMatch() * 0.15;  // Specialization match (15%)
-    totalScore += salaryMatch() * 0.10;          // Salary match (10%)
+    totalScore += await skillsMatch() * 0.15;   // Skills match (15%)
+    totalScore += locationMatch() * 0.15;       // Location match (15%)
+    totalScore += experienceMatch() * 0.15;     // Experience match (15%)
+    totalScore += specializationMatch() * 0.15; // Specialization match (15%)
+    totalScore += salaryMatch() * 0.10;         // Salary match (10%)
     return totalScore;
   };
 
