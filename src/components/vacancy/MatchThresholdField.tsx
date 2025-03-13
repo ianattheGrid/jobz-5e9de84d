@@ -1,11 +1,8 @@
 
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Slider } from "@/components/ui/slider";
 import { Progress } from "@/components/ui/progress";
 import { Control } from "react-hook-form";
-import { InfoIcon } from "lucide-react";
-import { useState } from "react";
 import { 
   Card,
   CardContent,
@@ -29,14 +26,6 @@ const MatchThresholdField = ({ control }: MatchThresholdFieldProps) => {
     } else {
       control._formValues.matchThreshold = 60;
     }
-  };
-
-  const getMatchDescription = (value: number) => {
-    if (value >= 90) return "Very strict - might miss good candidates";
-    if (value >= 75) return "Strict - high quality matches only";
-    if (value >= 60) return "Balanced - recommended";
-    if (value >= 45) return "Relaxed - wider candidate pool";
-    return "Very relaxed - may include less relevant matches";
   };
 
   const getMatchColor = (value: number) => {
@@ -75,52 +64,28 @@ const MatchThresholdField = ({ control }: MatchThresholdFieldProps) => {
         </FormItem>
 
         {showMatchingOptions && (
-          <div className="space-y-6">
-            <div className="rounded-lg bg-blue-50/50 border border-blue-100 p-4">
-              <div className="flex items-start gap-2">
-                <InfoIcon className="h-5 w-5 mt-0.5 text-blue-600" />
-                <div>
-                  <p className="font-medium mb-1 text-blue-900">Matching Score Guidelines</p>
-                  <p className="text-blue-800">A 100% match is extremely rare as it would require perfect alignment across all criteria. We recommend:</p>
-                  <ul className="list-disc ml-4 mt-2 space-y-1 text-blue-800">
-                    <li>60-70% for a balanced pool of qualified candidates</li>
-                    <li>70-80% for highly specific roles</li>
-                    <li>Above 80% only for extremely specialized positions</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-
-            <FormField
-              control={control}
-              name="matchThreshold"
-              render={({ field }) => (
-                <FormItem className="space-y-4">
-                  <FormLabel className="text-gray-900">Match Threshold</FormLabel>
-                  <FormControl>
-                    <div className="space-y-4">
-                      <Slider
-                        value={[field.value]}
-                        onValueChange={(value) => field.onChange(value[0])}
-                        min={0}
-                        max={100}
-                        step={5}
-                        className="w-full"
-                      />
-                      <div className="flex items-center gap-4 bg-gray-50/50 p-3 rounded-lg border border-gray-100">
-                        <Progress value={field.value} className={`${getMatchColor(field.value)} h-3`} />
-                        <span className="min-w-[4rem] text-right font-medium text-gray-700">{field.value}%</span>
-                      </div>
-                      <div className="text-sm font-medium text-gray-700 bg-gray-50/50 p-3 rounded-lg border border-gray-100">
-                        {getMatchDescription(field.value)}
-                      </div>
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
+          <FormField
+            control={control}
+            name="matchThreshold"
+            render={({ field }) => (
+              <FormItem className="space-y-4">
+                <FormLabel className="text-gray-900">Match Threshold</FormLabel>
+                <FormControl>
+                  <div className="flex items-center gap-4 bg-gray-50/50 p-3 rounded-lg border border-gray-100">
+                    <Progress value={field.value} className={`${getMatchColor(field.value)} h-3 flex-grow`} />
+                    <input 
+                      type="number"
+                      value={field.value}
+                      onChange={(e) => field.onChange(Math.min(100, Math.max(0, parseInt(e.target.value) || 0)))}
+                      className="w-16 text-right font-medium text-gray-700 bg-white border rounded px-2 py-1"
+                    />
+                    <span className="text-gray-700">%</span>
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         )}
       </CardContent>
     </Card>
