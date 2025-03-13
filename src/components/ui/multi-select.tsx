@@ -1,6 +1,6 @@
 
 import * as React from "react";
-import { X } from "lucide-react";
+import { X, ChevronDown } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 type Option = {
@@ -23,62 +23,68 @@ export function MultiSelect({
   placeholder = "Select items...",
   className,
 }: MultiSelectProps) {
-  const [open, setOpen] = React.useState(false);
-  const [inputValue, setInputValue] = React.useState("");
-  const inputRef = React.useRef<HTMLInputElement>(null);
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [searchValue, setSearchValue] = React.useState("");
   const containerRef = React.useRef<HTMLDivElement>(null);
+  const inputRef = React.useRef<HTMLInputElement>(null);
 
-  const handleUnselect = (value: string) => {
-    onChange(selected.filter((s) => s !== value));
+  const handleRemoveItem = (valueToRemove: string) => {
+    onChange(selected.filter((value) => value !== valueToRemove));
   };
 
-  const selectables = options.filter(option => !selected.includes(option.value));
-  const filtered = selectables.filter((option) =>
-    option.label.toLowerCase().includes(inputValue.toLowerCase())
+  const availableOptions = options.filter(
+    (option) => 
+      !selected.includes(option.value) &&
+      option.label.toLowerCase().includes(searchValue.toLowerCase())
   );
 
-  // Handle clicking outside to close dropdown
-  React.useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
-        setOpen(false);
-      }
-    };
+  const handleClickOutside = React.useCallback((event: MouseEvent) => {
+    if (
+      containerRef.current && 
+      !containerRef.current.contains(event.target as Node)
+    ) {
+      setIsOpen(false);
+    }
+  }, []);
 
+  React.useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  }, [handleClickOutside]);
+
+  const handleSelectOption = (option: Option) => {
+    onChange([...selected, option.value]);
+    setSearchValue("");
+    inputRef.current?.focus();
+  };
 
   return (
     <div className="relative" ref={containerRef}>
       <div
-        className="relative group rounded-md border border-input px-3 py-2 text-sm ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 cursor-pointer"
+        className={`min-h-[40px] w-full rounded-md border border-input bg-white px-3 py-2 text-sm ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 cursor-pointer ${className}`}
         onClick={() => {
-          setOpen(true);
+          setIsOpen(true);
           inputRef.current?.focus();
         }}
       >
-        <div className="flex gap-1 flex-wrap">
+        <div className="flex flex-wrap gap-1">
           {selected.map((value) => {
-            const option = options.find((o) => o.value === value);
-            if (!option) return null;
+            const selectedOption = options.find((o) => o.value === value);
+            if (!selectedOption) return null;
+            
             return (
               <Badge
                 key={value}
                 variant="secondary"
                 className="rounded-sm px-1 font-normal"
               >
-                {option.label}
+                {selectedOption.label}
                 <button
+                  type="button"
                   className="ml-1 ring-offset-background rounded-sm outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-                  onMouseDown={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                  }}
                   onClick={(e) => {
-                    e.preventDefault();
                     e.stopPropagation();
-                    handleUnselect(value);
+                    handleRemoveItem(value);
                   }}
                 >
                   <X className="h-3 w-3 text-muted-foreground hover:text-foreground" />
@@ -88,25 +94,25 @@ export function MultiSelect({
           })}
           <input
             ref={inputRef}
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            className="flex-1 bg-transparent outline-none placeholder:text-muted-foreground cursor-pointer"
-            placeholder={selected.length === 0 ? placeholder : undefined}
-            onFocus={() => setOpen(true)}
+            type="text"
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+            className="flex-1 bg-transparent outline-none placeholder:text-muted-foreground cursor-pointer min-w-[80px]"
+            placeholder={selected.length === 0 ? placeholder : ""}
+            onFocus={() => setIsOpen(true)}
           />
         </div>
+        <ChevronDown className="absolute right-3 top-3 h-4 w-4 opacity-50" />
       </div>
-      {open && filtered.length > 0 && (
-        <div className="absolute w-full z-50 top-full mt-1 rounded-md border bg-white">
+      
+      {isOpen && availableOptions.length > 0 && (
+        <div className="absolute w-full z-50 top-[calc(100%+4px)] rounded-md border border-input bg-white shadow-md">
           <div className="max-h-[200px] overflow-auto py-1">
-            {filtered.map((option) => (
+            {availableOptions.map((option) => (
               <div
                 key={option.value}
-                className="px-2 py-1.5 text-sm cursor-pointer hover:bg-gray-100"
-                onClick={() => {
-                  onChange([...selected, option.value]);
-                  setInputValue("");
-                }}
+                className="px-3 py-2 text-sm cursor-pointer hover:bg-gray-100"
+                onClick={() => handleSelectOption(option)}
               >
                 {option.label}
               </div>
