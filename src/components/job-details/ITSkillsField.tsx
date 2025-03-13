@@ -19,7 +19,7 @@ const ITSkillsField = ({ control }: ITSkillsFieldProps) => {
           <FormControl>
             <MultiSelect
               options={itSkills.map(skill => ({ label: skill, value: skill }))}
-              selected={field.value || []}
+              selected={field.value ?? []}
               onChange={(values) => {
                 if (values.length <= 10) {
                   field.onChange(values);
