@@ -1,3 +1,4 @@
+
 import { CandidateProfile } from "@/integrations/supabase/types/profiles";
 import { calculateSkillsMatchScore } from "../utils/skillsMatching";
 
