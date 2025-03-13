@@ -1,3 +1,4 @@
+
 export const itSpecializations = [
   "Software Development and Programming",
   "IT Support and Operations",
