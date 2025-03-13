@@ -55,10 +55,17 @@ const MatchThresholdField = ({ control, onMatchingChange }: MatchThresholdFieldP
         <div className="flex items-center gap-2">
           <CardTitle className="text-gray-900">Candidate Matching Preferences</CardTitle>
           <Popover>
-            <PopoverTrigger>
-              <HelpCircle className="h-5 w-5 text-gray-500 hover:text-gray-700" />
+            <PopoverTrigger asChild>
+              <button className="hover:bg-gray-100 p-1 rounded-full transition-colors">
+                <HelpCircle className="h-5 w-5 text-gray-500 hover:text-gray-700" />
+              </button>
             </PopoverTrigger>
-            <PopoverContent className="w-80">
+            <PopoverContent 
+              className="w-80 z-50 shadow-lg"
+              side="right"
+              align="start"
+              sideOffset={5}
+            >
               <div className="space-y-2">
                 <h4 className="font-medium">Match Threshold Guide</h4>
                 <div className="space-y-1 text-sm">
