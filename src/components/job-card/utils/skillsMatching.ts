@@ -46,10 +46,23 @@ const similarSkillsGroups = [
 
 export const findSimilarSkills = (skill: string): string[] => {
   const lowerSkill = skill.toLowerCase();
-  const group = similarSkillsGroups.find(group => 
+  
+  // First check for exact group matches
+  const exactGroup = similarSkillsGroups.find(group => 
     group.some(s => s.toLowerCase() === lowerSkill)
   );
-  return group || [skill];
+  
+  if (exactGroup) return exactGroup;
+
+  // Then check for partial matches
+  const partialGroup = similarSkillsGroups.find(group =>
+    group.some(s => 
+      s.toLowerCase().includes(lowerSkill) || 
+      lowerSkill.includes(s.toLowerCase())
+    )
+  );
+  
+  return partialGroup || [skill];
 };
 
 export const calculateSkillsMatchScore = async (
@@ -65,28 +78,32 @@ export const calculateSkillsMatchScore = async (
   let profileSkillsScore = 0;
   const processedSkills = new Set<string>();
 
-  // Calculate profile skills match (50% of skills score)
+  // Calculate profile skills match with more nuanced scoring
   for (const jobSkill of normalizedJobSkills) {
     if (processedSkills.has(jobSkill)) continue;
     
     const similarSkills = findSimilarSkills(jobSkill)
       .map(s => s.toLowerCase());
     
-    if (similarSkills.some(skill => 
-      normalizedProfileSkills.includes(skill) || 
+    // Check for exact matches first
+    if (similarSkills.some(skill => normalizedProfileSkills.includes(skill))) {
+      profileSkillsScore += 1;
+    }
+    // Then check for partial matches
+    else if (similarSkills.some(skill => 
       normalizedProfileSkills.some(profileSkill => 
         findSimilarSkills(profileSkill)
           .map(s => s.toLowerCase())
-          .includes(skill)
+          .some(s => s.includes(skill) || skill.includes(s))
       )
     )) {
-      profileSkillsScore++;
+      profileSkillsScore += 0.7; // Partial match score
     }
     
     similarSkills.forEach(s => processedSkills.add(s));
   }
 
-  // Calculate CV skills match if CV is available (50% of skills score)
+  // Calculate CV skills match if CV is available
   let cvSkillsScore = 0;
   if (cvUrl) {
     try {
@@ -100,11 +117,13 @@ export const calculateSkillsMatchScore = async (
     }
   }
 
+  // Normalize profile skills score
+  profileSkillsScore = profileSkillsScore / jobSkills.length;
+
   // Final score combines profile skills (50%) and CV skills (50%)
-  // If no CV is available, profile skills count for 100%
   if (cvUrl) {
-    return (profileSkillsScore / jobSkills.length * 0.5) + (cvSkillsScore * 0.5);
+    return (profileSkillsScore * 0.5) + (cvSkillsScore * 0.5);
   }
   
-  return profileSkillsScore / jobSkills.length;
+  return profileSkillsScore;
 };
