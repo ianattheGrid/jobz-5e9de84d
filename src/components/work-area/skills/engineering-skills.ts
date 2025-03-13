@@ -1,3 +1,4 @@
+
 export const engineeringSkills = [
   "CAD",
   "Project Management",
@@ -8,5 +9,15 @@ export const engineeringSkills = [
   "Systems Engineering",
   "Mechanical Design",
   "Electrical Systems",
-  "AutoCAD"
+  "AutoCAD",
+  "3D Modeling",
+  "Engineering Analysis",
+  "Design Optimization",
+  "Problem Solving",
+  "Technical Documentation",
+  "Engineering Software",
+  "Testing & Validation",
+  "Design Review",
+  "Prototyping",
+  "Manufacturing Processes"
 ];

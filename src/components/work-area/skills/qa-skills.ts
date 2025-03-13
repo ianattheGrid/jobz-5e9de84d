@@ -1,3 +1,4 @@
+
 export const qaSkills = [
   "Quality Control",
   "Test Planning",
@@ -8,5 +9,15 @@ export const qaSkills = [
   "Root Cause Analysis",
   "Auditing",
   "Risk Assessment",
-  "Six Sigma"
+  "Six Sigma",
+  "Quality Management Systems",
+  "CAPA Management",
+  "Validation",
+  "Standard Operating Procedures",
+  "Statistical Process Control",
+  "Quality Metrics",
+  "Inspection Techniques",
+  "GMP Compliance",
+  "Change Control",
+  "Vendor Quality Management"
 ];

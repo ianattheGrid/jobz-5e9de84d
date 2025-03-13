@@ -1,3 +1,4 @@
+
 export const hospitalitySkills = [
   "Customer Service",
   "Hotel Management",
@@ -8,5 +9,15 @@ export const hospitalitySkills = [
   "Tourism Marketing",
   "Guest Relations",
   "Hospitality Operations",
-  "Travel Planning"
+  "Travel Planning",
+  "Restaurant Management",
+  "Front Office Operations",
+  "Hospitality Marketing",
+  "Property Management",
+  "Housekeeping Management",
+  "Banquet Operations",
+  "Concierge Services",
+  "Quality Assurance",
+  "Staff Training",
+  "Vendor Management"
 ];

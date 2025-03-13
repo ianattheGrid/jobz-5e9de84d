@@ -1,3 +1,4 @@
+
 export const salesSkills = [
   "Negotiation",
   "Client Relationship Management",
@@ -8,5 +9,15 @@ export const salesSkills = [
   "Sales Analytics",
   "CRM Software",
   "Presentation Skills",
-  "Contract Negotiation"
+  "Contract Negotiation",
+  "Cold Calling",
+  "Sales Pipeline Management",
+  "Territory Management",
+  "Solution Selling",
+  "Customer Needs Analysis",
+  "Sales Forecasting",
+  "Relationship Building",
+  "Sales Technology",
+  "Cross-selling",
+  "Closing Techniques"
 ];

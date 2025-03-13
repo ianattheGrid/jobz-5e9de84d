@@ -1,3 +1,4 @@
+
 export const publicSectorSkills = [
   "Public Policy",
   "Government Relations",
@@ -8,5 +9,15 @@ export const publicSectorSkills = [
   "Stakeholder Management",
   "Regulatory Compliance",
   "Budget Management",
-  "Community Outreach"
+  "Community Outreach",
+  "Strategic Planning",
+  "Public Speaking",
+  "Legislative Process",
+  "Project Management",
+  "Research & Analysis",
+  "Report Writing",
+  "Procurement",
+  "Risk Management",
+  "Change Management",
+  "Performance Measurement"
 ];

@@ -1,3 +1,4 @@
+
 export const hrSkills = [
   "Recruitment",
   "Employee Relations",
@@ -8,5 +9,15 @@ export const hrSkills = [
   "HRIS",
   "Labor Laws",
   "Talent Management",
-  "Organizational Development"
+  "Organizational Development",
+  "HR Analytics",
+  "Employee Engagement",
+  "Succession Planning",
+  "Diversity & Inclusion",
+  "Change Management",
+  "Conflict Resolution",
+  "HR Strategy",
+  "Benefits Administration",
+  "Employee Onboarding",
+  "Workplace Safety"
 ];

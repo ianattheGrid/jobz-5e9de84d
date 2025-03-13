@@ -1,3 +1,4 @@
+
 export const manufacturingSkills = [
   "Production Planning",
   "Quality Control",
@@ -8,5 +9,15 @@ export const manufacturingSkills = [
   "Safety Compliance",
   "Equipment Maintenance",
   "CAD/CAM",
-  "Six Sigma"
+  "Six Sigma",
+  "Production Scheduling",
+  "Cost Reduction",
+  "Industrial Safety",
+  "Machine Operation",
+  "Production Optimization",
+  "Team Leadership",
+  "Production Control",
+  "Preventive Maintenance",
+  "Quality Assurance",
+  "Manufacturing Software"
 ];

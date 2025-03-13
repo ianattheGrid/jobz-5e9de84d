@@ -1,3 +1,4 @@
+
 export const rdSkills = [
   "Research Design",
   "Data Analysis",
@@ -8,5 +9,15 @@ export const rdSkills = [
   "Experimental Design",
   "Patent Research",
   "Product Development",
-  "Innovation Management"
+  "Innovation Management",
+  "Research Methodology",
+  "Clinical Research",
+  "Hypothesis Testing",
+  "Literature Review",
+  "Quality Control",
+  "Documentation",
+  "Research Tools",
+  "Regulatory Compliance",
+  "Protocol Development",
+  "Research Ethics"
 ];

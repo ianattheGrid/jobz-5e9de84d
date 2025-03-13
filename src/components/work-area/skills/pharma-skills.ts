@@ -1,3 +1,4 @@
+
 export const pharmaSkills = [
   "Clinical Research",
   "Drug Development",
@@ -8,5 +9,15 @@ export const pharmaSkills = [
   "Pharmaceutical Analysis",
   "Drug Safety",
   "Pharmacology",
-  "Research & Development"
+  "Research & Development",
+  "Validation",
+  "Documentation",
+  "Pharmaceutical Manufacturing",
+  "Compliance",
+  "Quality Assurance",
+  "Laboratory Techniques",
+  "Product Development",
+  "Clinical Data Management",
+  "Pharmacovigilance",
+  "Standard Operating Procedures"
 ];

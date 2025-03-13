@@ -1,3 +1,4 @@
+
 export const marketingSkills = [
   "Digital Marketing",
   "Social Media Marketing",
@@ -8,5 +9,15 @@ export const marketingSkills = [
   "Analytics",
   "Campaign Management",
   "Email Marketing",
-  "Marketing Automation"
+  "Marketing Automation",
+  "Content Creation",
+  "Public Relations",
+  "Influencer Marketing",
+  "Marketing Strategy",
+  "CRM",
+  "Marketing Analytics",
+  "Lead Generation",
+  "Copywriting",
+  "A/B Testing",
+  "Marketing Technology"
 ];
