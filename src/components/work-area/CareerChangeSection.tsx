@@ -62,7 +62,9 @@ const CareerChangeSection = ({
         onCareerChangeResponse={onCareerChangeResponse}
       />
 
-      {wantsCareerChange && (
+      {w
+
+antsCareerChange && (
         <>
           <DesiredWorkArea 
             control={control}
