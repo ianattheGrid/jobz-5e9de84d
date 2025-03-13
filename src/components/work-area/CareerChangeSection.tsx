@@ -1,19 +1,9 @@
+
 import { Control } from "react-hook-form";
 import ITSpecializationSelect from "./ITSpecializationSelect";
 import JobTitleSelect from "./JobTitleSelect";
 import { useState } from "react";
-import { 
-  softwareDevTitles,
-  itSupportTitles,
-  networkingTitles,
-  cybersecurityTitles,
-  dataAnalyticsTitles,
-  cloudComputingTitles,
-  aiTitles,
-  testingTitles,
-  itManagementTitles,
-  specializedITTitles
-} from "./constants";
+import { itRoles } from "./constants";
 import CareerChangeRadio from "./career-change/CareerChangeRadio";
 import DesiredWorkArea from "./career-change/DesiredWorkArea";
 import DesiredExperience from "./career-change/DesiredExperience";
@@ -87,43 +77,43 @@ const CareerChangeSection = ({
           )}
 
           {showSoftwareDevTitles && (
-            <JobTitleSelect control={control} titles={softwareDevTitles} name="desired_job_title" />
+            <JobTitleSelect control={control} titles={itRoles.softwareDevTitles} name="desired_job_title" />
           )}
 
           {showITSupportTitles && (
-            <JobTitleSelect control={control} titles={itSupportTitles} name="desired_job_title" />
+            <JobTitleSelect control={control} titles={itRoles.itSupportTitles} name="desired_job_title" />
           )}
 
           {showNetworkingTitles && (
-            <JobTitleSelect control={control} titles={networkingTitles} name="desired_job_title" />
+            <JobTitleSelect control={control} titles={itRoles.networkingTitles} name="desired_job_title" />
           )}
 
           {showCybersecurityTitles && (
-            <JobTitleSelect control={control} titles={cybersecurityTitles} name="desired_job_title" />
+            <JobTitleSelect control={control} titles={itRoles.cybersecurityTitles} name="desired_job_title" />
           )}
 
           {showDataAnalyticsTitles && (
-            <JobTitleSelect control={control} titles={dataAnalyticsTitles} name="desired_job_title" />
+            <JobTitleSelect control={control} titles={itRoles.dataAnalyticsTitles} name="desired_job_title" />
           )}
 
           {showCloudComputingTitles && (
-            <JobTitleSelect control={control} titles={cloudComputingTitles} name="desired_job_title" />
+            <JobTitleSelect control={control} titles={itRoles.cloudComputingTitles} name="desired_job_title" />
           )}
 
           {showAITitles && (
-            <JobTitleSelect control={control} titles={aiTitles} name="desired_job_title" />
+            <JobTitleSelect control={control} titles={itRoles.aiTitles} name="desired_job_title" />
           )}
 
           {showTestingTitles && (
-            <JobTitleSelect control={control} titles={testingTitles} name="desired_job_title" />
+            <JobTitleSelect control={control} titles={itRoles.testingTitles} name="desired_job_title" />
           )}
 
           {showITManagementTitles && (
-            <JobTitleSelect control={control} titles={itManagementTitles} name="desired_job_title" />
+            <JobTitleSelect control={control} titles={itRoles.itManagementTitles} name="desired_job_title" />
           )}
 
           {showSpecializedITTitles && (
-            <JobTitleSelect control={control} titles={specializedITTitles} name="desired_job_title" />
+            <JobTitleSelect control={control} titles={itRoles.specializedITTitles} name="desired_job_title" />
           )}
 
           {showOtherInput && (
