@@ -463,6 +463,7 @@ export type Database = {
           qualification_essential: boolean | null
           required_citizenship: string | null
           required_qualifications: string[] | null
+          required_skills: string[] | null
           salary_essential: boolean | null
           salary_max: number
           salary_min: number
@@ -490,6 +491,7 @@ export type Database = {
           qualification_essential?: boolean | null
           required_citizenship?: string | null
           required_qualifications?: string[] | null
+          required_skills?: string[] | null
           salary_essential?: boolean | null
           salary_max: number
           salary_min: number
@@ -517,6 +519,7 @@ export type Database = {
           qualification_essential?: boolean | null
           required_citizenship?: string | null
           required_qualifications?: string[] | null
+          required_skills?: string[] | null
           salary_essential?: boolean | null
           salary_max?: number
           salary_min?: number
