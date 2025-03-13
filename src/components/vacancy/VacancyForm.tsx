@@ -10,6 +10,7 @@ import EssentialCriteriaFields from "./EssentialCriteriaFields";
 import MatchThresholdField from "./MatchThresholdField";
 import { LayoutDashboard } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 interface VacancyFormProps {
   form: UseFormReturn<VacancyFormValues>;
