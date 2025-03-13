@@ -1,10 +1,11 @@
+
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Control } from "react-hook-form";
 import { Badge } from "@/components/ui/badge";
 import { X } from "lucide-react";
-import { useState, useEffect } from "react";
-import { getSkillsByWorkArea } from "@/components/work-area/skills";
+import { useState } from "react";
+import { itSkills } from "@/components/job-details/constants";
 
 interface ITSkillsFieldProps {
   control: Control<any>;
@@ -12,30 +13,21 @@ interface ITSkillsFieldProps {
 
 const ITSkillsField = ({ control }: ITSkillsFieldProps) => {
   const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
-  const [availableSkills, setAvailableSkills] = useState<string[]>([]);
-
-  useEffect(() => {
-    const workArea = control._formValues.workArea;
-    if (workArea) {
-      setAvailableSkills(getSkillsByWorkArea(workArea));
-    }
-  }, [control._formValues.workArea]);
 
   const handleSkillSelect = (skill: string) => {
-    if (skill === "none") {
-      setSelectedSkills([]);
-      return;
-    }
+    if (!skill || skill === "none") return;
 
-    if (selectedSkills.includes(skill)) {
-      setSelectedSkills(selectedSkills.filter((s) => s !== skill));
-    } else if (selectedSkills.length < 10) {
-      setSelectedSkills([...selectedSkills, skill]);
+    if (!selectedSkills.includes(skill) && selectedSkills.length < 10) {
+      const updatedSkills = [...selectedSkills, skill];
+      setSelectedSkills(updatedSkills);
+      control._formValues.required_skills = updatedSkills;
     }
   };
 
   const removeSkill = (skillToRemove: string) => {
-    setSelectedSkills(selectedSkills.filter((skill) => skill !== skillToRemove));
+    const updatedSkills = selectedSkills.filter((skill) => skill !== skillToRemove);
+    setSelectedSkills(updatedSkills);
+    control._formValues.required_skills = updatedSkills;
   };
 
   return (
@@ -44,26 +36,23 @@ const ITSkillsField = ({ control }: ITSkillsFieldProps) => {
       name="required_skills"
       render={({ field }) => (
         <FormItem>
-          <FormLabel className="text-sm">Your top skills (Max 10)</FormLabel>
+          <FormLabel>Required Skills (Select up to 10)</FormLabel>
           <FormControl>
             <div className="space-y-2">
               <Select 
-                onValueChange={(value) => {
-                  handleSkillSelect(value);
-                  field.onChange(selectedSkills);
-                }} 
+                onValueChange={handleSkillSelect}
                 value=""
               >
                 <SelectTrigger className="w-full bg-white">
-                  <SelectValue placeholder="None">None</SelectValue>
+                  <SelectValue placeholder="Select required skills" />
                 </SelectTrigger>
                 <SelectContent className="bg-white max-h-[300px]">
-                  <SelectItem value="none">None</SelectItem>
-                  {availableSkills.map((skill) => (
+                  {itSkills.map((skill) => (
                     <SelectItem 
                       key={skill} 
                       value={skill}
                       disabled={selectedSkills.length >= 10 && !selectedSkills.includes(skill)}
+                      className="cursor-pointer"
                     >
                       {skill}
                     </SelectItem>
@@ -80,10 +69,7 @@ const ITSkillsField = ({ control }: ITSkillsFieldProps) => {
                     {skill}
                     <button
                       type="button"
-                      onClick={() => {
-                        removeSkill(skill);
-                        field.onChange(selectedSkills.filter(s => s !== skill));
-                      }}
+                      onClick={() => removeSkill(skill)}
                       className="ml-2 hover:text-destructive"
                     >
                       <X className="h-3 w-3" />
