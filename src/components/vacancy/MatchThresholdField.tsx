@@ -39,11 +39,11 @@ const MatchThresholdField = ({ control, onMatchingChange }: MatchThresholdFieldP
   };
 
   const getMatchDescription = (value: number) => {
-    if (value >= 90) return "Very strict matching - Only show candidates who almost exactly match all requirements";
-    if (value >= 75) return "Strict matching - Show candidates who match most requirements closely";
-    if (value >= 60) return "Balanced matching - Show candidates with good overall fit (Recommended)";
-    if (value >= 45) return "Flexible matching - Show candidates who match some key requirements";
-    return "Very flexible matching - Show a wider range of potential candidates";
+    if (value >= 90) return "Warning: Such high matching requirements may exclude qualified candidates who have equivalent skills or experience";
+    if (value >= 75) return "High threshold: Will only show candidates who closely match your requirements";
+    if (value >= 60) return "Recommended: Good balance between matching requirements and finding skilled candidates";
+    if (value >= 45) return "Lower threshold: Will show a broader range of candidates who match your core requirements";
+    return "Very low threshold: Will show most candidates, including those with transferable skills";
   };
 
   return (
