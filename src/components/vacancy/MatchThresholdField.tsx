@@ -38,6 +38,14 @@ const MatchThresholdField = ({ control, onMatchingChange }: MatchThresholdFieldP
     return "text-gray-500";
   };
 
+  const getMatchDescription = (value: number) => {
+    if (value >= 90) return "Very strict matching - Only show candidates who almost exactly match all requirements";
+    if (value >= 75) return "Strict matching - Show candidates who match most requirements closely";
+    if (value >= 60) return "Balanced matching - Show candidates with good overall fit (Recommended)";
+    if (value >= 45) return "Flexible matching - Show candidates who match some key requirements";
+    return "Very flexible matching - Show a wider range of potential candidates";
+  };
+
   return (
     <Card className="border bg-white shadow-sm">
       <CardHeader className="bg-gray-50 rounded-t-lg border-b">
@@ -82,7 +90,10 @@ const MatchThresholdField = ({ control, onMatchingChange }: MatchThresholdFieldP
                       onValueChange={(vals) => field.onChange(vals[0])}
                       className="w-full"
                     />
-                    <div className="flex justify-end">
+                    <div className="flex justify-between items-center">
+                      <p className="text-sm text-gray-600">
+                        {getMatchDescription(field.value)}
+                      </p>
                       <span className={`font-medium ${getMatchColor(field.value)}`}>
                         {field.value}%
                       </span>
