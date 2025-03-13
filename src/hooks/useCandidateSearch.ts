@@ -38,10 +38,6 @@ export const useCandidateSearch = () => {
         query = query.eq('security_clearance', values.securityClearanceLevel);
       }
 
-      if (values.workEligibility) {
-        query = query.eq('work_eligibility', values.workEligibility);
-      }
-
       if (values.signupPeriod) {
         query = buildSignupDateQuery(query, values.signupPeriod);
       }
