@@ -19,20 +19,4 @@ export {
   specializedRoles
 } from './public-sector';
 export type { PublicSectorSpecialization } from './public-sector';
-export {
-  civilEngineeringTitles,
-  mechanicalEngineeringTitles,
-  electricalEngineeringTitles,
-  chemicalEngineeringTitles,
-  aerospaceEngineeringTitles,
-  environmentalEngineeringTitles,
-  softwareEngineeringTitles,
-  energyEngineeringTitles,
-  manufacturingEngineeringTitles,
-  marineEngineeringTitles,
-  biomedicalEngineeringTitles,
-  miningEngineeringTitles,
-  projectManagementTitles,
-  specializedEngineeringTitles
-} from './engineering';
 export { hospitalityRoles, allHospitalityRoles } from './hospitality';

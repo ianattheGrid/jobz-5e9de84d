@@ -56,7 +56,7 @@ const CareerChangeSection = ({
   if (!showCareerChange) return null;
 
   return (
-    <>
+    <div className="space-y-6 bg-white p-6 rounded-lg shadow-sm">
       <CareerChangeRadio 
         control={control}
         onCareerChangeResponse={onCareerChangeResponse}
@@ -128,7 +128,7 @@ const CareerChangeSection = ({
           )}
         </>
       )}
-    </>
+    </div>
   );
 };
 
