@@ -1,4 +1,3 @@
-
 import { supabase } from "@/integrations/supabase/client";
 
 export const setupTestScenario = async () => {
@@ -131,4 +130,3 @@ export const setupTestScenario = async () => {
     throw error;
   }
 };
-

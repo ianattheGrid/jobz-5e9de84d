@@ -17,7 +17,6 @@ export const TestScenarioButton = () => {
             <p>Test accounts created with password: {credentials.password}</p>
             <p>Employer: {credentials.employerEmail}</p>
             <p>Candidate: {credentials.candidateEmail}</p>
-            <p>VR: {credentials.vrEmail}</p>
           </div>
         ),
         duration: 10000,
