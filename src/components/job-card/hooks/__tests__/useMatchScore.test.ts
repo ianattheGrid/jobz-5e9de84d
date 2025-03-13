@@ -1,3 +1,4 @@
+
 import { describe, it, expect } from 'vitest';
 import { CandidateProfile } from "@/integrations/supabase/types/profiles";
 import { calculateSkillsMatchScore } from "../../utils/skillsMatching";
@@ -126,3 +127,4 @@ describe('Job Matching Algorithm', () => {
     });
   });
 });
+
