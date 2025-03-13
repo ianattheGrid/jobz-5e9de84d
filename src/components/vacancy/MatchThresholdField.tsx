@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Progress } from "@/components/ui/progress";
+import { Slider } from "@/components/ui/slider";
 import { Control } from "react-hook-form";
 import { 
   Card,
@@ -30,11 +30,11 @@ const MatchThresholdField = ({ control }: MatchThresholdFieldProps) => {
   };
 
   const getMatchColor = (value: number) => {
-    if (value >= 90) return "bg-red-500";
-    if (value >= 75) return "bg-orange-500";
-    if (value >= 60) return "bg-green-500";
-    if (value >= 45) return "bg-blue-500";
-    return "bg-gray-500";
+    if (value >= 90) return "text-red-500";
+    if (value >= 75) return "text-orange-500";
+    if (value >= 60) return "text-green-500";
+    if (value >= 45) return "text-blue-500";
+    return "text-gray-500";
   };
 
   return (
@@ -72,15 +72,20 @@ const MatchThresholdField = ({ control }: MatchThresholdFieldProps) => {
               <FormItem className="space-y-4">
                 <FormLabel className="text-gray-900">Match Threshold</FormLabel>
                 <FormControl>
-                  <div className="flex items-center gap-4 bg-gray-50/50 p-3 rounded-lg border border-gray-100">
-                    <Progress value={field.value} className={`${getMatchColor(field.value)} h-3 flex-grow`} />
-                    <input 
-                      type="number"
-                      value={field.value}
-                      onChange={(e) => field.onChange(Math.min(100, Math.max(0, parseInt(e.target.value) || 0)))}
-                      className="w-16 text-right font-medium text-gray-700 bg-white border rounded px-2 py-1"
+                  <div className="space-y-4">
+                    <Slider
+                      min={0}
+                      max={100}
+                      step={1}
+                      value={[field.value]}
+                      onValueChange={(vals) => field.onChange(vals[0])}
+                      className="w-full"
                     />
-                    <span className="text-gray-700">%</span>
+                    <div className="flex justify-end">
+                      <span className={`font-medium ${getMatchColor(field.value)}`}>
+                        {field.value}%
+                      </span>
+                    </div>
                   </div>
                 </FormControl>
                 <FormMessage />
@@ -94,3 +99,4 @@ const MatchThresholdField = ({ control }: MatchThresholdFieldProps) => {
 };
 
 export default MatchThresholdField;
+
