@@ -29,37 +29,29 @@ export function MultiSelect({
 }: MultiSelectProps) {
   const [open, setOpen] = React.useState(false);
   const [inputValue, setInputValue] = React.useState("");
-  const inputRef = React.useRef<HTMLInputElement>(null);
+  const containerRef = React.useRef<HTMLDivElement>(null);
 
-  const handleUnselect = React.useCallback((value: string) => {
+  const handleUnselect = (value: string) => {
     onChange(selected.filter((s) => s !== value));
-  }, [onChange, selected]);
+  };
 
-  const handleKeyDown = React.useCallback((e: React.KeyboardEvent) => {
-    if (e.key === "Backspace" && !inputValue && selected.length > 0) {
-      handleUnselect(selected[selected.length - 1]);
-    }
-  }, [inputValue, selected, handleUnselect]);
+  const selectables = React.useMemo(() => {
+    return options.filter(option => !selected.includes(option.value));
+  }, [options, selected]);
 
-  // Filter out already selected items and based on input value
-  const filteredOptions = React.useMemo(() => {
-    const availableOptions = options.filter(option => !selected.includes(option.value));
-    if (!inputValue) return availableOptions;
-    return availableOptions.filter((option) =>
+  const filtered = React.useMemo(() => {
+    return selectables.filter((option) =>
       option.label.toLowerCase().includes(inputValue.toLowerCase())
     );
-  }, [options, selected, inputValue]);
+  }, [selectables, inputValue]);
 
   return (
-    <Command className="overflow-visible bg-transparent">
-      <div 
-        className="group rounded-md border border-input px-3 py-2 text-sm ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2"
-        onClick={() => {
-          setOpen(true);
-          inputRef.current?.focus();
-        }}
+    <div className="relative" ref={containerRef}>
+      <div
+        className="relative group rounded-md border border-input px-3 py-2 text-sm ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2"
+        onClick={() => setOpen(true)}
       >
-        <div className="flex flex-wrap gap-1">
+        <div className="flex gap-1 flex-wrap">
           {selected.map((value) => {
             const option = options.find((o) => o.value === value);
             if (!option) return null;
@@ -71,9 +63,13 @@ export function MultiSelect({
               >
                 {option.label}
                 <button
-                  type="button"
-                  className="ml-1 rounded-sm outline-none ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                  className="ml-1 ring-offset-background rounded-sm outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                  onMouseDown={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                  }}
                   onClick={(e) => {
+                    e.preventDefault();
                     e.stopPropagation();
                     handleUnselect(value);
                   }}
@@ -83,38 +79,41 @@ export function MultiSelect({
               </Badge>
             );
           })}
-          <CommandPrimitive.Input
-            ref={inputRef}
+          <input
             value={inputValue}
-            onValueChange={setInputValue}
-            onKeyDown={handleKeyDown}
-            onBlur={() => setOpen(false)}
-            onFocus={() => setOpen(true)}
-            placeholder={selected.length === 0 ? placeholder : undefined}
+            onChange={(e) => setInputValue(e.target.value)}
             className="flex-1 bg-transparent outline-none placeholder:text-muted-foreground"
+            placeholder={selected.length === 0 ? placeholder : undefined}
+            onFocus={() => setOpen(true)}
           />
         </div>
       </div>
-      <div className="relative">
-        {open && filteredOptions.length > 0 && (
-          <div className="absolute z-50 mt-1 w-full rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in">
-            <CommandGroup className="h-full overflow-auto max-h-[200px]">
-              {filteredOptions.map((option) => (
-                <CommandItem
-                  key={option.value}
-                  onSelect={() => {
-                    setInputValue("");
-                    onChange([...selected, option.value]);
-                  }}
-                  className="cursor-pointer py-2 px-2 hover:bg-accent"
-                >
-                  {option.label}
-                </CommandItem>
-              ))}
+      {open && (
+        <div 
+          className="absolute w-full z-50 top-full mt-1 rounded-md border bg-popover text-popover-foreground shadow-md outline-none"
+        >
+          <Command className="overflow-visible bg-transparent">
+            <CommandGroup className="overflow-auto max-h-[200px]">
+              {filtered.length > 0 ? (
+                filtered.map((option) => (
+                  <CommandItem
+                    key={option.value}
+                    onSelect={() => {
+                      onChange([...selected, option.value]);
+                      setInputValue("");
+                    }}
+                    className="cursor-pointer py-2 px-2 hover:bg-accent"
+                  >
+                    {option.label}
+                  </CommandItem>
+                ))
+              ) : (
+                <div className="py-6 text-center text-sm">No results found.</div>
+              )}
             </CommandGroup>
-          </div>
-        )}
-      </div>
-    </Command>
+          </Command>
+        </div>
+      )}
+    </div>
   );
 }
