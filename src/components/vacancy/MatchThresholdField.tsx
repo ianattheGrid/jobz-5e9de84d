@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -10,6 +11,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { HelpCircle } from "lucide-react";
 
 interface MatchThresholdFieldProps {
   control: Control<any>;
@@ -39,21 +42,40 @@ const MatchThresholdField = ({ control, onMatchingChange }: MatchThresholdFieldP
   };
 
   const getMatchDescription = (value: number) => {
-    if (value >= 90) return "Warning: Such high matching requirements may exclude qualified candidates who have equivalent skills or experience";
-    if (value >= 75) return "High threshold: Will only show candidates who closely match your requirements";
-    if (value >= 60) return "Recommended: Good balance between matching requirements and finding skilled candidates";
-    if (value >= 45) return "Lower threshold: Will show a broader range of candidates who match your core requirements";
-    return "Very low threshold: Will show most candidates, including those with transferable skills";
+    if (value >= 90) return "Very high threshold";
+    if (value >= 75) return "High threshold";
+    if (value >= 60) return "Recommended threshold";
+    if (value >= 45) return "Lower threshold";
+    return "Very low threshold";
   };
 
   return (
     <Card className="border bg-white shadow-sm">
       <CardHeader className="bg-gray-50 rounded-t-lg border-b">
-        <CardTitle className="text-gray-900">Candidate Matching Preferences</CardTitle>
+        <div className="flex items-center gap-2">
+          <CardTitle className="text-gray-900">Candidate Matching Preferences</CardTitle>
+          <Popover>
+            <PopoverTrigger>
+              <HelpCircle className="h-5 w-5 text-gray-500 hover:text-gray-700" />
+            </PopoverTrigger>
+            <PopoverContent className="w-80">
+              <div className="space-y-2">
+                <h4 className="font-medium">Match Threshold Guide</h4>
+                <div className="space-y-1 text-sm">
+                  <p><span className="font-medium">60-70%:</span> Recommended for most roles - provides a good balance between matching requirements and finding skilled candidates</p>
+                  <p><span className="font-medium">70-80%:</span> Better for specialized roles where specific experience is important</p>
+                  <p><span className="font-medium">80-90%:</span> Use carefully - may exclude qualified candidates with transferable skills</p>
+                  <p><span className="font-medium">90%+:</span> Not recommended - likely to miss excellent candidates with equivalent skills or experience</p>
+                </div>
+              </div>
+            </PopoverContent>
+          </Popover>
+        </div>
         <CardDescription className="text-gray-600">
           Configure how strictly you want to match candidates to your job requirements
         </CardDescription>
       </CardHeader>
+
       <CardContent className="space-y-6 p-6">
         <FormItem className="space-y-3">
           <FormLabel className="text-gray-900">Would you like to use jobz's intelligent matching algorithm to automatically filter candidates?</FormLabel>
