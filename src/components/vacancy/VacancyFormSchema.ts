@@ -1,4 +1,4 @@
-import * as z from "zod";
+import { z } from "zod";
 
 export const vacancyFormSchema = z.object({
   workArea: z.string({
@@ -41,7 +41,10 @@ export const vacancyFormSchema = z.object({
   offerReferralCommission: z.boolean().default(false),
   candidateCommission: z.string().optional(),
   referralCommission: z.string().optional(),
-  matchThreshold: z.number().min(0).max(100).default(60),
+  matchThreshold: z.number()
+    .min(0, "Match threshold must be at least 0%")
+    .max(100, "Match threshold cannot exceed 100%")
+    .default(60),
   titleEssential: z.boolean().default(false),
   yearsExperienceEssential: z.boolean().default(false),
   minYearsExperience: z.number().min(0).default(0),

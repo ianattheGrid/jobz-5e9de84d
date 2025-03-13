@@ -1,4 +1,3 @@
-
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { UseFormReturn } from "react-hook-form";
@@ -8,6 +7,7 @@ import JobDetailsFields from "@/components/JobDetailsFields";
 import CommissionSection from "@/components/CommissionSection";
 import ApplicationPreferencesField from "@/components/ApplicationPreferencesField";
 import EssentialCriteriaFields from "./EssentialCriteriaFields";
+import MatchThresholdField from "./MatchThresholdField";
 import { LayoutDashboard } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -41,6 +41,7 @@ export function VacancyForm({ form, onSubmit }: VacancyFormProps) {
           <div className="space-y-8">
             <WorkAreaField control={form.control} />
             <JobDetailsFields control={form.control} />
+            <MatchThresholdField control={form.control} />
             <EssentialCriteriaFields control={form.control} />
             <CommissionSection salary={form.watch("actualSalary")} form={form} />
             <ApplicationPreferencesField control={form.control} />
