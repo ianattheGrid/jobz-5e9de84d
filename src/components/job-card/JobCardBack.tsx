@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { X } from "lucide-react";
 import { Job } from "@/integrations/supabase/types/jobs";
@@ -32,34 +31,31 @@ const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) return;
 
-      if (!resumeFile) {
-        toast({
-          title: "Resume Required",
-          description: "Please upload your resume",
-          variant: "destructive",
-        });
-        return;
+      let resumeUrl = null;
+
+      if (resumeFile) {
+        const fileExt = resumeFile.name.split('.').pop();
+        const fileName = `${session.user.id}/${Date.now()}.${fileExt}`;
+
+        const { error: uploadError } = await supabase.storage
+          .from('cvs')
+          .upload(fileName, resumeFile);
+
+        if (uploadError) throw uploadError;
+
+        const { data: urlData } = supabase.storage
+          .from('cvs')
+          .getPublicUrl(fileName);
+          
+        resumeUrl = urlData.publicUrl;
       }
-
-      const fileExt = resumeFile.name.split('.').pop();
-      const fileName = `${session.user.id}/${Date.now()}.${fileExt}`;
-
-      const { error: uploadError } = await supabase.storage
-        .from('cvs')
-        .upload(fileName, resumeFile);
-
-      if (uploadError) throw uploadError;
-
-      const { data: urlData } = supabase.storage
-        .from('cvs')
-        .getPublicUrl(fileName);
 
       const { error: applicationError } = await supabase
         .from('applications')
         .insert({
           job_id: job.id,
           applicant_id: session.user.id,
-          resume_url: urlData.publicUrl,
+          resume_url: resumeUrl,
           cover_letter: coverLetter,
           employer_accepted: false,
           candidate_accepted: false,

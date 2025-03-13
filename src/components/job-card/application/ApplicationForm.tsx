@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,12 +22,11 @@ const ApplicationForm = ({
   return (
     <form onSubmit={onSubmit} onClick={(e) => e.stopPropagation()} className="space-y-4">
       <div>
-        <label className="block text-sm font-medium mb-1 text-red-800">Resume</label>
+        <label className="block text-sm font-medium mb-1 text-red-800">Resume (Optional)</label>
         <Input
           type="file"
           accept=".pdf,.doc,.docx"
           onChange={(e) => setResumeFile(e.target.files?.[0] || null)}
-          required
         />
       </div>
       <div>
