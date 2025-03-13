@@ -1,8 +1,10 @@
+
 import { Control } from "react-hook-form";
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const salaryOptions = [
+  { value: "15000", label: "£15,000" },
   { value: "20000", label: "£20,000" },
   { value: "25000", label: "£25,000" },
   { value: "30000", label: "£30,000" },
@@ -46,10 +48,10 @@ const SalaryRangeField = ({ control }: SalaryRangeFieldProps) => {
                 value={field.value?.toString()}
                 onValueChange={(value) => field.onChange(parseInt(value))}
               >
-                <SelectTrigger className="form-select-trigger">
+                <SelectTrigger className="form-select-trigger bg-white">
                   <SelectValue placeholder="Select minimum salary" />
                 </SelectTrigger>
-                <SelectContent className="form-select-content select-dropdown">
+                <SelectContent className="form-select-content select-dropdown max-h-[300px]">
                   {salaryOptions.map((option) => (
                     <SelectItem 
                       key={option.value} 
@@ -78,10 +80,10 @@ const SalaryRangeField = ({ control }: SalaryRangeFieldProps) => {
                 value={field.value?.toString()}
                 onValueChange={(value) => field.onChange(parseInt(value))}
               >
-                <SelectTrigger className="form-select-trigger">
+                <SelectTrigger className="form-select-trigger bg-white">
                   <SelectValue placeholder="Select maximum salary" />
                 </SelectTrigger>
-                <SelectContent className="form-select-content select-dropdown">
+                <SelectContent className="form-select-content select-dropdown max-h-[300px]">
                   {salaryOptions.map((option) => (
                     <SelectItem 
                       key={option.value} 
