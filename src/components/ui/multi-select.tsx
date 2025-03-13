@@ -1,3 +1,4 @@
+
 "use client";
 
 import * as React from "react";
@@ -16,7 +17,7 @@ type MultiSelectProps = {
 
 export function MultiSelect({
   options,
-  selected,
+  selected = [], // Provide default empty array
   onChange,
   placeholder = "Select items...",
   className,
@@ -29,29 +30,13 @@ export function MultiSelect({
     onChange(selected.filter((s) => s !== value));
   };
 
-  const handleKeyDown = React.useCallback(
-    (e: React.KeyboardEvent<HTMLDivElement>) => {
-      const input = inputRef.current;
-      if (input) {
-        if (e.key === "Delete" || e.key === "Backspace") {
-          if (input.value === "" && selected.length > 0) {
-            onChange(selected.slice(0, -1));
-          }
-        }
-        if (e.key === "Escape") {
-          input.blur();
-        }
-      }
-    },
-    [selected, onChange]
-  );
-
-  const selectables = options.filter((option) => !selected.includes(option.value));
+  const selectables = React.useMemo(() => {
+    return options.filter((option) => !selected.includes(option.value));
+  }, [options, selected]);
 
   return (
     <div className="relative">
       <Command
-        onKeyDown={handleKeyDown}
         className="overflow-visible bg-transparent"
       >
         <div
@@ -98,10 +83,10 @@ export function MultiSelect({
             />
           </div>
         </div>
-        <div className="relative">
+        <div className="relative mt-2">
           {open && selectables.length > 0 ? (
             <div className="absolute top-0 z-10 w-full rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in">
-              <CommandGroup className="h-full overflow-auto">
+              <CommandGroup className="max-h-[200px] overflow-auto">
                 {selectables.map((option) => {
                   return (
                     <CommandItem
