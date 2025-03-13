@@ -39,7 +39,11 @@ const ITSkillsField = ({ control }: ITSkillsFieldProps) => {
           <FormLabel>Required Skills (Select up to 10)</FormLabel>
           <FormControl>
             <div className="space-y-2">
-              <Select onValueChange={(value) => handleSkillSelect(value, field.onChange)}>
+              <Select 
+                onValueChange={(value) => {
+                  handleSkillSelect(value, field.onChange);
+                }}
+              >
                 <SelectTrigger className="w-full bg-white">
                   <SelectValue placeholder="Select required skills" />
                 </SelectTrigger>
@@ -48,7 +52,7 @@ const ITSkillsField = ({ control }: ITSkillsFieldProps) => {
                     <SelectItem 
                       key={skill} 
                       value={skill}
-                      disabled={selectedSkills.length >= 10 && !selectedSkills.includes(skill)}
+                      disabled={selectedSkills.includes(skill) || selectedSkills.length >= 10}
                       className="cursor-pointer"
                     >
                       {skill}
