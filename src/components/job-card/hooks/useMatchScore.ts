@@ -1,5 +1,5 @@
-
 import { CandidateProfile } from "@/integrations/supabase/types/profiles";
+import { calculateSkillsMatchScore } from "../utils/skillsMatching";
 
 export const useMatchScore = (profile: CandidateProfile, job: any) => {
   const titleMatch = () => {
@@ -21,15 +21,7 @@ export const useMatchScore = (profile: CandidateProfile, job: any) => {
 
   const skillsMatch = () => {
     if (!profile.required_skills || !job.required_skills) return 0;
-    const profileSkillsLower = profile.required_skills.map(skill => skill.toLowerCase());
-    const jobSkillsLower = job.required_skills.map(skill => skill.toLowerCase());
-    let matches = 0;
-    for (const skill of jobSkillsLower) {
-      if (profileSkillsLower.includes(skill)) {
-        matches++;
-      }
-    }
-    return matches / jobSkillsLower.length;
+    return calculateSkillsMatchScore(profile.required_skills, job.required_skills);
   };
 
   const experienceMatch = () => {
