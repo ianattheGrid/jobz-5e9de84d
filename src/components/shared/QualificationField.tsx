@@ -25,6 +25,7 @@ const QualificationField = ({ control }: QualificationFieldProps) => {
               <Switch
                 checked={field.value}
                 onCheckedChange={field.onChange}
+                className="data-[state=checked]:bg-[#FF69B4]"
               />
             </FormControl>
           </FormItem>
