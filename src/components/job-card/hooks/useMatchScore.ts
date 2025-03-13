@@ -1,3 +1,4 @@
+
 import { CandidateProfile } from "@/integrations/supabase/types/profiles";
 
 export const useMatchScore = (profile: CandidateProfile, job: any) => {
@@ -58,12 +59,12 @@ export const useMatchScore = (profile: CandidateProfile, job: any) => {
 
   const calculateTotalScore = () => {
     let totalScore = 0;
-    totalScore += titleMatch() * 0.15;
-    totalScore += specializationMatch() * 0.10;
-    totalScore += locationMatch() * 0.20;
-    totalScore += skillsMatch() * 0.30;
-    totalScore += experienceMatch() * 0.15;
-    totalScore += salaryMatch() * 0.10;
+    totalScore += titleMatch() * 0.30;          // Changed from 0.15 to 0.30 (30%)
+    totalScore += specializationMatch() * 0.10;  // Kept at 0.10 (10%)
+    totalScore += locationMatch() * 0.15;        // Reduced from 0.20 to 0.15 (15%)
+    totalScore += skillsMatch() * 0.25;          // Reduced from 0.30 to 0.25 (25%)
+    totalScore += experienceMatch() * 0.10;      // Reduced from 0.15 to 0.10 (10%)
+    totalScore += salaryMatch() * 0.10;          // Kept at 0.10 (10%)
     return totalScore;
   };
 
