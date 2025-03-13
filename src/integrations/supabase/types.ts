@@ -313,6 +313,51 @@ export type Database = {
         }
         Relationships: []
       }
+      employer_searches: {
+        Row: {
+          created_at: string | null
+          employer_id: string
+          id: string
+          is_active: boolean | null
+          match_threshold: number | null
+          max_salary: number | null
+          min_salary: number | null
+          required_qualifications: string[] | null
+          required_skills: string[] | null
+          specialization: string | null
+          updated_at: string | null
+          work_area: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          employer_id: string
+          id?: string
+          is_active?: boolean | null
+          match_threshold?: number | null
+          max_salary?: number | null
+          min_salary?: number | null
+          required_qualifications?: string[] | null
+          required_skills?: string[] | null
+          specialization?: string | null
+          updated_at?: string | null
+          work_area?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          employer_id?: string
+          id?: string
+          is_active?: boolean | null
+          match_threshold?: number | null
+          max_salary?: number | null
+          min_salary?: number | null
+          required_qualifications?: string[] | null
+          required_skills?: string[] | null
+          specialization?: string | null
+          updated_at?: string | null
+          work_area?: string | null
+        }
+        Relationships: []
+      }
       interview_slots: {
         Row: {
           candidate_id: string

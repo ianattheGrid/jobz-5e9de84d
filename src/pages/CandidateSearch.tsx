@@ -1,4 +1,3 @@
-
 import { useEffect } from "react";
 import { useEmployerAuthCheck } from "@/hooks/useEmployerAuthCheck";
 import { useCandidateSearch } from "@/hooks/useCandidateSearch";
@@ -6,6 +5,7 @@ import { SearchForm } from "@/components/candidate-search/SearchForm";
 import { SearchResults } from "@/components/candidate-search/SearchResults";
 import { LoadingState } from "@/components/candidate-search/LoadingState";
 import { Header } from "@/components/candidate-search/Header";
+import { SavedSearches } from "@/components/candidate-search/SavedSearches";
 
 export default function CandidateSearch() {
   const { loading, checkUser } = useEmployerAuthCheck();
@@ -25,6 +25,10 @@ export default function CandidateSearch() {
         <Header />
 
         <div className="flex flex-col gap-8">
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <SavedSearches />
+          </div>
+
           <div className="bg-white rounded-lg shadow-md p-6">
             <div className="mb-6">
               <h2 className="text-xl font-semibold text-gray-900">Search Filters</h2>

@@ -1,4 +1,3 @@
-
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -12,12 +11,14 @@ import SecurityClearanceFields from "@/components/job-details/SecurityClearanceF
 import SignupPeriodField from "./SignupPeriodField";
 import CommissionPercentageField from "./CommissionPercentageField";
 import QualificationField from "@/components/shared/QualificationField";
+import { useSavedSearches } from "@/hooks/search/useSavedSearches";
 
 interface SearchFormProps {
   onSubmit: (values: z.infer<typeof searchFormSchema>) => Promise<void>;
 }
 
 export function SearchForm({ onSubmit }: SearchFormProps) {
+  const { saveSearch } = useSavedSearches();
   const form = useForm<z.infer<typeof searchFormSchema>>({
     resolver: zodResolver(searchFormSchema),
     defaultValues: {
@@ -34,6 +35,19 @@ export function SearchForm({ onSubmit }: SearchFormProps) {
       includeCommissionCandidates: false,
     },
   });
+
+  const handleSaveSearch = () => {
+    const values = form.getValues();
+    saveSearch({
+      work_area: values.workArea,
+      specialization: values.itSpecialization,
+      min_salary: parseInt(values.salary.split(" - ")[0].replace(/[£,]/g, "")),
+      max_salary: parseInt(values.salary.split(" - ")[1].replace(/[£,]/g, "")),
+      required_skills: values.required_skills || [],
+      required_qualifications: values.requiresQualification ? [values.qualificationRequired || ""] : [],
+      match_threshold: 60,
+    });
+  };
 
   return (
     <Form {...form}>
@@ -61,10 +75,19 @@ export function SearchForm({ onSubmit }: SearchFormProps) {
           </div>
         </div>
         
-        <div className="flex justify-end mt-8">
+        <div className="flex justify-between mt-8">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={handleSaveSearch}
+            className="bg-secondary hover:bg-secondary/90"
+          >
+            Save Search
+          </Button>
+          
           <Button 
             type="submit" 
-            className="bg-[#FF69B4] hover:bg-[#FF69B4]/90 text-white w-full sm:w-auto px-8"
+            className="bg-[#FF69B4] hover:bg-[#FF69B4]/90 text-white"
           >
             Search Candidates
           </Button>
