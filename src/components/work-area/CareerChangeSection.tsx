@@ -1,4 +1,3 @@
-
 import { Control } from "react-hook-form";
 import ITSpecializationSelect from "./ITSpecializationSelect";
 import JobTitleSelect from "./JobTitleSelect";
@@ -62,9 +61,7 @@ const CareerChangeSection = ({
         onCareerChangeResponse={onCareerChangeResponse}
       />
 
-      {w
-
-antsCareerChange && (
+      {wantsCareerChange && (
         <>
           <DesiredWorkArea 
             control={control}
