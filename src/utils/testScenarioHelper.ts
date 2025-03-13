@@ -101,10 +101,11 @@ export const setupTestScenario = async () => {
 
     if (profile && jobData) {
       const { useMatchScore } = await import('../components/job-card/hooks/useMatchScore');
-      const { totalScore } = useMatchScore(profile, jobData);
+      const matchScoreHook = useMatchScore(profile, jobData);
+      const score = await matchScoreHook.totalScore;
       
       console.log('\n=== Match Score Analysis ===');
-      console.log(`Total Match Score: ${(totalScore * 100).toFixed(1)}%`);
+      console.log(`Total Match Score: ${(Number(score) * 100).toFixed(1)}%`);
       console.log('Profile:', {
         title: profile.job_title,
         experience: profile.years_experience,

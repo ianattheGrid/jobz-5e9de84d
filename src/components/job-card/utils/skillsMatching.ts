@@ -44,6 +44,8 @@ const similarSkillsGroups = [
   ['Project Management', 'Product Management'],
 ];
 
+import { supabase } from "@/integrations/supabase/client";
+
 export const findSimilarSkills = (skill: string): string[] => {
   const lowerSkill = skill.toLowerCase();
   
@@ -111,7 +113,7 @@ export const calculateSkillsMatchScore = async (
         body: { fileUrl: cvUrl, requiredSkills: jobSkills }
       });
       
-      cvSkillsScore = data.cvSkillsMatchScore || 0;
+      cvSkillsScore = data?.cvSkillsMatchScore || 0;
     } catch (error) {
       console.error('Error analyzing CV:', error);
     }
