@@ -5,7 +5,6 @@ import * as React from "react";
 import { X } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Command, CommandGroup, CommandItem } from "@/components/ui/command";
-import { Command as CommandPrimitive } from "cmdk";
 
 type Option = {
   value: string;
@@ -29,27 +28,39 @@ export function MultiSelect({
 }: MultiSelectProps) {
   const [open, setOpen] = React.useState(false);
   const [inputValue, setInputValue] = React.useState("");
+  const inputRef = React.useRef<HTMLInputElement>(null);
   const containerRef = React.useRef<HTMLDivElement>(null);
 
   const handleUnselect = (value: string) => {
     onChange(selected.filter((s) => s !== value));
   };
 
-  const selectables = React.useMemo(() => {
-    return options.filter(option => !selected.includes(option.value));
-  }, [options, selected]);
+  const selectables = options.filter(option => !selected.includes(option.value));
 
-  const filtered = React.useMemo(() => {
-    return selectables.filter((option) =>
-      option.label.toLowerCase().includes(inputValue.toLowerCase())
-    );
-  }, [selectables, inputValue]);
+  const filtered = selectables.filter((option) =>
+    option.label.toLowerCase().includes(inputValue.toLowerCase())
+  );
+
+  // Handle clicking outside to close dropdown
+  React.useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <div className="relative" ref={containerRef}>
       <div
-        className="relative group rounded-md border border-input px-3 py-2 text-sm ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2"
-        onClick={() => setOpen(true)}
+        className="relative group rounded-md border border-input px-3 py-2 text-sm ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 cursor-pointer"
+        onClick={() => {
+          setOpen(true);
+          inputRef.current?.focus();
+        }}
       >
         <div className="flex gap-1 flex-wrap">
           {selected.map((value) => {
@@ -80,19 +91,18 @@ export function MultiSelect({
             );
           })}
           <input
+            ref={inputRef}
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            className="flex-1 bg-transparent outline-none placeholder:text-muted-foreground"
+            className="flex-1 bg-transparent outline-none placeholder:text-muted-foreground cursor-pointer"
             placeholder={selected.length === 0 ? placeholder : undefined}
             onFocus={() => setOpen(true)}
           />
         </div>
       </div>
       {open && (
-        <div 
-          className="absolute w-full z-50 top-full mt-1 rounded-md border bg-popover text-popover-foreground shadow-md outline-none"
-        >
-          <Command className="overflow-visible bg-transparent">
+        <div className="absolute w-full z-50 top-full mt-1 rounded-md border bg-white text-gray-900 shadow-md">
+          <Command className="w-full bg-transparent">
             <CommandGroup className="overflow-auto max-h-[200px]">
               {filtered.length > 0 ? (
                 filtered.map((option) => (
@@ -102,7 +112,7 @@ export function MultiSelect({
                       onChange([...selected, option.value]);
                       setInputValue("");
                     }}
-                    className="cursor-pointer py-2 px-2 hover:bg-accent"
+                    className="cursor-pointer px-2 py-1.5 hover:bg-gray-100"
                   >
                     {option.label}
                   </CommandItem>
