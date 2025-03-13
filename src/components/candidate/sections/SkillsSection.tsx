@@ -13,7 +13,7 @@ const SkillsSection = ({ control }: SkillsSectionProps) => {
   return (
     <>
       <ITSkillsField control={control} />
-      <QualificationField control={form.control} />
+      <QualificationField control={control} />
     </>
   );
 };

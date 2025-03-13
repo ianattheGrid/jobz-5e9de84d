@@ -1,4 +1,3 @@
-
 import { searchFormSchema } from "@/components/candidate-search/searchFormSchema";
 import { supabase } from "@/integrations/supabase/client";
 import type { z } from "zod";
@@ -21,18 +20,14 @@ export const useCandidateSearch = () => {
         .from('candidate_profiles')
         .select('*');
 
-      if (values.location) {
-        query = query.ilike('location', `%${values.location}%`);
-      }
-
       query = buildSalaryQuery(query, minSalary, maxSalary);
 
       if (values.includeCommissionCandidates) {
         query = query.not('commission_percentage', 'is', null);
       }
 
-      if (values.qualification && values.qualification !== 'None') {
-        query = query.contains('required_qualifications', [values.qualification]);
+      if (values.requiresQualification && values.qualificationRequired) {
+        query = query.ilike('qualificationDetails', `%${values.qualificationRequired}%`);
       }
 
       if (values.required_skills && values.required_skills.length > 0) {
