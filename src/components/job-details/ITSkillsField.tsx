@@ -13,6 +13,7 @@ interface ITSkillsFieldProps {
 
 const ITSkillsField = ({ control }: ITSkillsFieldProps) => {
   const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
+  const [currentSelection, setCurrentSelection] = useState<string>("");
 
   const handleSkillSelect = (skill: string, onChange: (value: string[]) => void) => {
     if (!skill || skill === "none") return;
@@ -22,6 +23,7 @@ const ITSkillsField = ({ control }: ITSkillsFieldProps) => {
       setSelectedSkills(updatedSkills);
       onChange(updatedSkills);
     }
+    setCurrentSelection("");
   };
 
   const removeSkill = (skillToRemove: string, onChange: (value: string[]) => void) => {
@@ -40,8 +42,8 @@ const ITSkillsField = ({ control }: ITSkillsFieldProps) => {
           <FormControl>
             <div className="space-y-2">
               <Select 
+                value={currentSelection}
                 onValueChange={(value) => handleSkillSelect(value, field.onChange)}
-                value=""
               >
                 <SelectTrigger className="w-full bg-white">
                   <SelectValue placeholder="Select required skills" />
