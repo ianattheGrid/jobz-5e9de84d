@@ -13,17 +13,15 @@ interface ITSkillsFieldProps {
 
 const ITSkillsField = ({ control }: ITSkillsFieldProps) => {
   const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
-  const [currentSelection, setCurrentSelection] = useState<string>("");
 
-  const handleSkillSelect = (skill: string, onChange: (value: string[]) => void) => {
-    if (!skill || skill === "none") return;
+  const handleSkillSelect = (value: string, onChange: (value: string[]) => void) => {
+    if (!value || value === "none") return;
 
-    if (!selectedSkills.includes(skill) && selectedSkills.length < 10) {
-      const updatedSkills = [...selectedSkills, skill];
+    if (!selectedSkills.includes(value) && selectedSkills.length < 10) {
+      const updatedSkills = [...selectedSkills, value];
       setSelectedSkills(updatedSkills);
       onChange(updatedSkills);
     }
-    setCurrentSelection("");
   };
 
   const removeSkill = (skillToRemove: string, onChange: (value: string[]) => void) => {
@@ -41,10 +39,7 @@ const ITSkillsField = ({ control }: ITSkillsFieldProps) => {
           <FormLabel>Required Skills (Select up to 10)</FormLabel>
           <FormControl>
             <div className="space-y-2">
-              <Select 
-                value={currentSelection}
-                onValueChange={(value) => handleSkillSelect(value, field.onChange)}
-              >
+              <Select onValueChange={(value) => handleSkillSelect(value, field.onChange)}>
                 <SelectTrigger className="w-full bg-white">
                   <SelectValue placeholder="Select required skills" />
                 </SelectTrigger>
