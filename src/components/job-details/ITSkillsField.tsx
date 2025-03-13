@@ -14,20 +14,20 @@ interface ITSkillsFieldProps {
 const ITSkillsField = ({ control }: ITSkillsFieldProps) => {
   const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
 
-  const handleSkillSelect = (skill: string) => {
+  const handleSkillSelect = (skill: string, onChange: (value: string[]) => void) => {
     if (!skill || skill === "none") return;
 
     if (!selectedSkills.includes(skill) && selectedSkills.length < 10) {
       const updatedSkills = [...selectedSkills, skill];
       setSelectedSkills(updatedSkills);
-      control._formValues.required_skills = updatedSkills;
+      onChange(updatedSkills);
     }
   };
 
-  const removeSkill = (skillToRemove: string) => {
+  const removeSkill = (skillToRemove: string, onChange: (value: string[]) => void) => {
     const updatedSkills = selectedSkills.filter((skill) => skill !== skillToRemove);
     setSelectedSkills(updatedSkills);
-    control._formValues.required_skills = updatedSkills;
+    onChange(updatedSkills);
   };
 
   return (
@@ -40,7 +40,7 @@ const ITSkillsField = ({ control }: ITSkillsFieldProps) => {
           <FormControl>
             <div className="space-y-2">
               <Select 
-                onValueChange={handleSkillSelect}
+                onValueChange={(value) => handleSkillSelect(value, field.onChange)}
                 value=""
               >
                 <SelectTrigger className="w-full bg-white">
@@ -69,7 +69,7 @@ const ITSkillsField = ({ control }: ITSkillsFieldProps) => {
                     {skill}
                     <button
                       type="button"
-                      onClick={() => removeSkill(skill)}
+                      onClick={() => removeSkill(skill, field.onChange)}
                       className="ml-2 hover:text-destructive"
                     >
                       <X className="h-3 w-3" />
