@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { format } from "date-fns";
 import {
@@ -64,32 +65,35 @@ const InterviewSlots = ({ slots: initialSlots, onSlotAccepted }: InterviewSlotsP
           table: 'interview_slots'
         },
         (payload) => {
-          setSlots(currentSlots => 
-            currentSlots.map(slot => 
+          setSlots(currentSlots => {
+            const updatedSlots = currentSlots.map(slot => 
               slot.id === payload.new.id ? { ...slot, ...payload.new } : slot
-            )
-          );
+            );
 
-          if (payload.new.status === 'accepted') {
-            toast({
-              title: "Interview Scheduled",
-              description: `Interview time has been confirmed for ${format(new Date(payload.new.selected_time), 'PPP p')}`
-            });
+            if (payload.new.status === 'accepted') {
+              toast({
+                title: "Interview Scheduled",
+                description: `Interview time has been confirmed for ${format(new Date(payload.new.selected_time), 'PPP p')}`
+              });
 
-            const updatedSlot: InterviewSlot = {
-              id: payload.new.id,
-              job: currentSlots.find(slot => slot.id === payload.new.id)?.job || {
-                company: '',
-                title: ''
-              },
-              proposed_times: payload.new.proposed_times || [],
-              status: payload.new.status,
-              interview_type: payload.new.interview_type,
-              selected_time: payload.new.selected_time
-            };
-            
-            onSlotAccepted?.(updatedSlot);
-          }
+              const matchingSlot = currentSlots.find(slot => slot.id === payload.new.id);
+              const updatedSlot: InterviewSlot = {
+                id: payload.new.id,
+                job: matchingSlot?.job || {
+                  company: '',
+                  title: ''
+                },
+                proposed_times: payload.new.proposed_times || [],
+                status: payload.new.status,
+                interview_type: payload.new.interview_type,
+                selected_time: payload.new.selected_time
+              };
+              
+              onSlotAccepted?.(updatedSlot);
+            }
+
+            return updatedSlots;
+          });
         }
       )
       .subscribe();
