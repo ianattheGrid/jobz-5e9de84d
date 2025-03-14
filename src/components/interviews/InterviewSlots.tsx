@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { format } from "date-fns";
 import {
   Table,
@@ -12,6 +12,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { InterviewTimeSelect } from "./InterviewTimeSelect";
 import { InterviewResponseDialog } from "./InterviewResponseDialog";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 interface InterviewSlot {
   id: string;
@@ -22,13 +24,16 @@ interface InterviewSlot {
   proposed_times: string[];
   status: string;
   interview_type: string;
+  selected_time?: string;
 }
 
 interface InterviewSlotsProps {
   slots: InterviewSlot[];
+  onSlotAccepted?: () => void;
 }
 
-const InterviewSlots = ({ slots }: InterviewSlotsProps) => {
+const InterviewSlots = ({ slots: initialSlots, onSlotAccepted }: InterviewSlotsProps) => {
+  const [slots, setSlots] = useState<InterviewSlot[]>(initialSlots);
   const [expandedSlot, setExpandedSlot] = useState<string | null>(null);
   const [responseDialog, setResponseDialog] = useState<{
     isOpen: boolean;
@@ -39,6 +44,41 @@ const InterviewSlots = ({ slots }: InterviewSlotsProps) => {
     slotId: null,
     mode: 'unavailable'
   });
+
+  const { toast } = useToast();
+
+  useEffect(() => {
+    const channel = supabase
+      .channel('interview-slots-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'interview_slots'
+        },
+        (payload) => {
+          setSlots(currentSlots => 
+            currentSlots.map(slot => 
+              slot.id === payload.new.id ? { ...slot, ...payload.new } : slot
+            )
+          );
+
+          if (payload.new.status === 'accepted') {
+            toast({
+              title: "Interview Scheduled",
+              description: `Interview time has been confirmed for ${format(new Date(payload.new.selected_time), 'PPP p')}`
+            });
+            onSlotAccepted?.();
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [onSlotAccepted, toast]);
 
   const getInterviewTypeLabel = (type: string) => {
     const types = {
@@ -80,7 +120,11 @@ const InterviewSlots = ({ slots }: InterviewSlotsProps) => {
               </Badge>
             </TableCell>
             <TableCell className="text-gray-900">
-              {expandedSlot === slot.id ? (
+              {slot.status === 'accepted' ? (
+                <div className="text-green-600">
+                  Scheduled for {format(new Date(slot.selected_time!), 'PPP p')}
+                </div>
+              ) : expandedSlot === slot.id ? (
                 <InterviewTimeSelect
                   slotId={slot.id}
                   times={slot.proposed_times}
@@ -101,44 +145,48 @@ const InterviewSlots = ({ slots }: InterviewSlotsProps) => {
               )}
             </TableCell>
             <TableCell>
-              <span className="text-gray-900 capitalize">{slot.status}</span>
+              <span className={`capitalize ${slot.status === 'accepted' ? 'text-green-600' : 'text-gray-900'}`}>
+                {slot.status}
+              </span>
             </TableCell>
             <TableCell>
-              <div className="flex gap-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setResponseDialog({
-                    isOpen: true,
-                    slotId: slot.id,
-                    mode: 'unavailable'
-                  })}
-                >
-                  Can't Do These Times
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setResponseDialog({
-                    isOpen: true,
-                    slotId: slot.id,
-                    mode: 'suggest'
-                  })}
-                >
-                  Suggest Times
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setResponseDialog({
-                    isOpen: true,
-                    slotId: slot.id,
-                    mode: 'decline'
-                  })}
-                >
-                  Decline
-                </Button>
-              </div>
+              {slot.status !== 'accepted' && (
+                <div className="flex gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setResponseDialog({
+                      isOpen: true,
+                      slotId: slot.id,
+                      mode: 'unavailable'
+                    })}
+                  >
+                    Can't Do These Times
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setResponseDialog({
+                      isOpen: true,
+                      slotId: slot.id,
+                      mode: 'suggest'
+                    })}
+                  >
+                    Suggest Times
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setResponseDialog({
+                      isOpen: true,
+                      slotId: slot.id,
+                      mode: 'decline'
+                    })}
+                  >
+                    Decline
+                  </Button>
+                </div>
+              )}
             </TableCell>
           </TableRow>
         ))}
