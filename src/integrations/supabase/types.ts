@@ -361,31 +361,40 @@ export type Database = {
       interview_slots: {
         Row: {
           candidate_id: string
+          candidate_message: string | null
+          candidate_suggested_times: string[] | null
           created_at: string
           employer_id: string
           id: string
           job_id: number
           proposed_times: string[]
+          selected_time: string | null
           status: string
           updated_at: string
         }
         Insert: {
           candidate_id: string
+          candidate_message?: string | null
+          candidate_suggested_times?: string[] | null
           created_at?: string
           employer_id: string
           id?: string
           job_id: number
           proposed_times: string[]
+          selected_time?: string | null
           status?: string
           updated_at?: string
         }
         Update: {
           candidate_id?: string
+          candidate_message?: string | null
+          candidate_suggested_times?: string[] | null
           created_at?: string
           employer_id?: string
           id?: string
           job_id?: number
           proposed_times?: string[]
+          selected_time?: string | null
           status?: string
           updated_at?: string
         }
