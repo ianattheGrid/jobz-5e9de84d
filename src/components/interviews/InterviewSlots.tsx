@@ -29,24 +29,24 @@ const InterviewSlots = ({ slots }: InterviewSlotsProps) => {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>Company</TableHead>
-          <TableHead>Position</TableHead>
-          <TableHead>Proposed Times</TableHead>
-          <TableHead>Status</TableHead>
+          <TableHead className="text-gray-900">Company</TableHead>
+          <TableHead className="text-gray-900">Position</TableHead>
+          <TableHead className="text-gray-900">Proposed Times</TableHead>
+          <TableHead className="text-gray-900">Status</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         {slots.map((slot) => (
           <TableRow key={slot.id}>
-            <TableCell>{slot.job.company}</TableCell>
-            <TableCell>{slot.job.title}</TableCell>
-            <TableCell>
+            <TableCell className="text-gray-900">{slot.job.company}</TableCell>
+            <TableCell className="text-gray-900">{slot.job.title}</TableCell>
+            <TableCell className="text-gray-900">
               {slot.proposed_times.map((time) => (
                 <div key={time}>{format(new Date(time), 'PPP p')}</div>
               ))}
             </TableCell>
             <TableCell>
-              <span className="capitalize">{slot.status}</span>
+              <span className="text-gray-900 capitalize">{slot.status}</span>
             </TableCell>
           </TableRow>
         ))}

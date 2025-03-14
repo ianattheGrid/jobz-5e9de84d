@@ -38,25 +38,25 @@ const InterviewsTable = ({ interviews }: InterviewsTableProps) => {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>Company</TableHead>
-          <TableHead>Position</TableHead>
-          <TableHead>Date</TableHead>
-          <TableHead>Time</TableHead>
-          <TableHead>Interviewer</TableHead>
-          <TableHead>Status</TableHead>
+          <TableHead className="text-gray-900">Company</TableHead>
+          <TableHead className="text-gray-900">Position</TableHead>
+          <TableHead className="text-gray-900">Date</TableHead>
+          <TableHead className="text-gray-900">Time</TableHead>
+          <TableHead className="text-gray-900">Interviewer</TableHead>
+          <TableHead className="text-gray-900">Status</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         {interviews.map((interview) => (
           <TableRow key={interview.id}>
-            <TableCell>{interview.job.company}</TableCell>
-            <TableCell>{interview.job.title}</TableCell>
-            <TableCell>{format(new Date(interview.scheduled_at), 'PPP')}</TableCell>
-            <TableCell>{format(new Date(interview.scheduled_at), 'p')}</TableCell>
-            <TableCell>{interview.interviewer_name}</TableCell>
+            <TableCell className="text-gray-900">{interview.job.company}</TableCell>
+            <TableCell className="text-gray-900">{interview.job.title}</TableCell>
+            <TableCell className="text-gray-900">{format(new Date(interview.scheduled_at), 'PPP')}</TableCell>
+            <TableCell className="text-gray-900">{format(new Date(interview.scheduled_at), 'p')}</TableCell>
+            <TableCell className="text-gray-900">{interview.interviewer_name}</TableCell>
             <TableCell>
               <div className="flex items-center gap-2">
-                <span className="capitalize">{interview.status}</span>
+                <span className="text-gray-900 capitalize">{interview.status}</span>
                 {interview.cancellation_reason && (
                   <TooltipProvider>
                     <Tooltip>
@@ -64,7 +64,7 @@ const InterviewsTable = ({ interviews }: InterviewsTableProps) => {
                         <InfoIcon className="h-4 w-4 text-gray-500" />
                       </TooltipTrigger>
                       <TooltipContent>
-                        <p>{interview.cancellation_reason}</p>
+                        <p className="text-gray-900">{interview.cancellation_reason}</p>
                       </TooltipContent>
                     </Tooltip>
                   </TooltipProvider>
