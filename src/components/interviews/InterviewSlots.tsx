@@ -10,6 +10,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { InterviewTimeSelect } from "./InterviewTimeSelect";
 import { InterviewResponseDialog } from "./InterviewResponseDialog";
 
@@ -21,6 +22,7 @@ interface InterviewSlot {
   };
   proposed_times: string[];
   status: string;
+  interview_type: string;
 }
 
 interface InterviewSlotsProps {
@@ -39,6 +41,18 @@ const InterviewSlots = ({ slots }: InterviewSlotsProps) => {
     mode: 'unavailable'
   });
 
+  const getInterviewTypeLabel = (type: string) => {
+    const types = {
+      'online': 'Online Video Interview',
+      'phone': 'Telephone Interview',
+      'face-to-face': 'Face to Face Interview',
+      'group': 'Group Interview',
+      'assessment': 'Assessment Center',
+      'technical': 'Technical Interview'
+    };
+    return types[type as keyof typeof types] || type;
+  };
+
   const handleResponseSubmitted = () => {
     setExpandedSlot(null);
     setResponseDialog({ isOpen: false, slotId: null, mode: 'unavailable' });
@@ -50,6 +64,7 @@ const InterviewSlots = ({ slots }: InterviewSlotsProps) => {
         <TableRow>
           <TableHead className="text-gray-900">Company</TableHead>
           <TableHead className="text-gray-900">Position</TableHead>
+          <TableHead className="text-gray-900">Interview Type</TableHead>
           <TableHead className="text-gray-900">Offered Times</TableHead>
           <TableHead className="text-gray-900">Status</TableHead>
           <TableHead className="text-gray-900">Actions</TableHead>
@@ -61,10 +76,16 @@ const InterviewSlots = ({ slots }: InterviewSlotsProps) => {
             <TableCell className="text-gray-900">{slot.job.company}</TableCell>
             <TableCell className="text-gray-900">{slot.job.title}</TableCell>
             <TableCell className="text-gray-900">
+              <Badge variant="outline">
+                {getInterviewTypeLabel(slot.interview_type)}
+              </Badge>
+            </TableCell>
+            <TableCell className="text-gray-900">
               {expandedSlot === slot.id ? (
                 <InterviewTimeSelect
                   slotId={slot.id}
                   times={slot.proposed_times}
+                  interviewType={slot.interview_type}
                   onResponseSubmitted={handleResponseSubmitted}
                 />
               ) : (
