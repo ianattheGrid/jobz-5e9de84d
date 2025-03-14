@@ -19,12 +19,13 @@ import { InfoIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 interface Interview {
-  id: number;
+  id: number | string;
   scheduled_at: string;
   interviewer_name: string;
   status: string;
   interview_type: string;
   cancellation_reason?: string;
+  selected_time?: string;
   job: {
     company: string;
     title: string;
@@ -71,9 +72,13 @@ const InterviewsTable = ({ interviews }: InterviewsTableProps) => {
                 {getInterviewTypeLabel(interview.interview_type)}
               </Badge>
             </TableCell>
-            <TableCell className="text-gray-900">{format(new Date(interview.scheduled_at), 'PPP')}</TableCell>
-            <TableCell className="text-gray-900">{format(new Date(interview.scheduled_at), 'p')}</TableCell>
-            <TableCell className="text-gray-900">{interview.interviewer_name}</TableCell>
+            <TableCell className="text-gray-900">
+              {format(new Date(interview.selected_time || interview.scheduled_at), 'PPP')}
+            </TableCell>
+            <TableCell className="text-gray-900">
+              {format(new Date(interview.selected_time || interview.scheduled_at), 'p')}
+            </TableCell>
+            <TableCell className="text-gray-900">{interview.interviewer_name || 'TBD'}</TableCell>
             <TableCell>
               <div className="flex items-center gap-2">
                 <span className="text-gray-900 capitalize">{interview.status}</span>

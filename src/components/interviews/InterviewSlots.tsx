@@ -101,20 +101,23 @@ const InterviewSlots = ({ slots: initialSlots, onSlotAccepted }: InterviewSlotsP
   const handleSelectTime = async (slotId: string, selectedTime: string) => {
     try {
       if (slotId.startsWith('slot-')) {
+        const updatedSlot = {
+          ...slots.find(slot => slot.id === slotId)!,
+          status: 'accepted',
+          selected_time: selectedTime
+        };
+        
         setSlots(currentSlots => 
-          currentSlots.map(slot => 
-            slot.id === slotId 
-              ? { ...slot, status: 'accepted', selected_time: selectedTime }
-              : slot
-          )
+          currentSlots.filter(slot => slot.id !== slotId)
         );
         
         toast({
           title: "Interview Scheduled",
           description: `Your interview has been scheduled for ${format(new Date(selectedTime), 'PPP p')}`
         });
+        
         setSelectedSlot({ isOpen: false, slot: null });
-        onSlotAccepted?.();
+        onSlotAccepted?.(updatedSlot);
         return;
       }
 
@@ -128,12 +131,14 @@ const InterviewSlots = ({ slots: initialSlots, onSlotAccepted }: InterviewSlotsP
 
       if (error) throw error;
 
+      const updatedSlot = {
+        ...slots.find(slot => slot.id === slotId)!,
+        status: 'accepted',
+        selected_time: selectedTime
+      };
+
       setSlots(currentSlots => 
-        currentSlots.map(slot => 
-          slot.id === slotId 
-            ? { ...slot, status: 'accepted', selected_time: selectedTime }
-            : slot
-        )
+        currentSlots.filter(slot => slot.id !== slotId)
       );
 
       toast({
@@ -142,7 +147,7 @@ const InterviewSlots = ({ slots: initialSlots, onSlotAccepted }: InterviewSlotsP
       });
       
       setSelectedSlot({ isOpen: false, slot: null });
-      onSlotAccepted?.();
+      onSlotAccepted?.(updatedSlot);
     } catch (error: any) {
       console.error('Error selecting interview time:', error);
       toast({
