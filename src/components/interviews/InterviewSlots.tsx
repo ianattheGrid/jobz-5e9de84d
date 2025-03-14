@@ -92,6 +92,10 @@ const InterviewSlots = ({ slots: initialSlots, onSlotAccepted }: InterviewSlotsP
     return types[type as keyof typeof types] || type;
   };
 
+  const handleViewTimes = (slotId: string) => {
+    setExpandedSlot(slotId);
+  };
+
   const handleResponseSubmitted = () => {
     setExpandedSlot(null);
     setResponseDialog({ isOpen: false, slotId: null, mode: 'unavailable' });
@@ -132,12 +136,12 @@ const InterviewSlots = ({ slots: initialSlots, onSlotAccepted }: InterviewSlotsP
                   onResponseSubmitted={handleResponseSubmitted}
                 />
               ) : (
-                <div>
-                  {slot.proposed_times.length} time{slot.proposed_times.length !== 1 ? 's' : ''} offered
+                <div className="flex items-center gap-2">
+                  <span>{slot.proposed_times.length} time{slot.proposed_times.length !== 1 ? 's' : ''} offered</span>
                   <Button 
                     variant="link" 
-                    onClick={() => setExpandedSlot(slot.id)}
-                    className="ml-2"
+                    className="text-primary"
+                    onClick={() => handleViewTimes(slot.id)}
                   >
                     View times
                   </Button>
