@@ -11,27 +11,27 @@ interface InterviewsTabsProps {
 
 const InterviewsTabs = ({ interviews, slots }: InterviewsTabsProps) => {
   return (
-    <Tabs defaultValue="scheduled">
-      <TabsList>
+    <Tabs defaultValue="scheduled" className="w-full">
+      <TabsList className="mb-4">
         <TabsTrigger value="scheduled">Scheduled Interviews</TabsTrigger>
         <TabsTrigger value="proposals">Interview Proposals</TabsTrigger>
       </TabsList>
 
-      <TabsContent value="scheduled">
-        {interviews && interviews.length > 0 ? (
+      <TabsContent value="scheduled" className="mt-2">
+        {interviews?.length > 0 ? (
           <InterviewsTable interviews={interviews} />
         ) : (
-          <div className="text-center py-8">
+          <div className="text-center py-8 bg-white rounded-lg shadow">
             <p className="text-gray-600">No interviews scheduled yet.</p>
           </div>
         )}
       </TabsContent>
 
-      <TabsContent value="proposals">
-        {slots && slots.length > 0 ? (
+      <TabsContent value="proposals" className="mt-2">
+        {slots?.length > 0 ? (
           <InterviewSlots slots={slots} />
         ) : (
-          <div className="text-center py-8">
+          <div className="text-center py-8 bg-white rounded-lg shadow">
             <p className="text-gray-600">No interview proposals yet.</p>
           </div>
         )}
