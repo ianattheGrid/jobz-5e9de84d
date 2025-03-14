@@ -24,33 +24,33 @@ export const useInterviewUpdates = (
         },
         (payload) => {
           setSlots(currentSlots => {
-            const updatedSlots = currentSlots.map(slot => 
-              slot.id === payload.new.id ? { ...slot, ...payload.new } : slot
-            );
-
+            // If the slot was accepted, remove it from the slots list
             if (payload.new.status === 'accepted') {
               toast({
                 title: "Interview Scheduled",
                 description: `Interview time has been confirmed for ${format(new Date(payload.new.selected_time), 'PPP p')}`
               });
 
+              // Find the accepted slot
               const matchingSlot = currentSlots.find(slot => slot.id === payload.new.id);
-              const updatedSlot: InterviewSlot = {
-                id: payload.new.id,
-                job: matchingSlot?.job || {
-                  company: '',
-                  title: ''
-                },
-                proposed_times: payload.new.proposed_times || [],
-                status: payload.new.status,
-                interview_type: payload.new.interview_type,
-                selected_time: payload.new.selected_time
-              };
-              
-              onSlotAccepted?.(updatedSlot);
+              if (matchingSlot) {
+                const updatedSlot: InterviewSlot = {
+                  ...matchingSlot,
+                  ...payload.new,
+                };
+                
+                // Notify parent about the accepted slot
+                onSlotAccepted?.(updatedSlot);
+                
+                // Remove the slot from the interview offers list
+                return currentSlots.filter(slot => slot.id !== payload.new.id);
+              }
             }
 
-            return updatedSlots;
+            // For other updates, update the slot data
+            return currentSlots.map(slot => 
+              slot.id === payload.new.id ? { ...slot, ...payload.new } : slot
+            );
           });
         }
       )

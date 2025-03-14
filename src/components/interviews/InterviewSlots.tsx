@@ -1,6 +1,5 @@
 
 import React from 'react';
-import { format } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { InterviewResponseDialog } from "./InterviewResponseDialog";
@@ -25,6 +24,7 @@ const InterviewSlots = ({ slots: initialSlots, onSlotAccepted }: InterviewSlotsP
 
   const handleSelectTime = async (slotId: string, selectedTime: string) => {
     try {
+      // For preview slots, handle locally
       if (slotId.startsWith('slot-')) {
         const updatedSlot = {
           ...slots.find(slot => slot.id === slotId)!,
@@ -46,6 +46,7 @@ const InterviewSlots = ({ slots: initialSlots, onSlotAccepted }: InterviewSlotsP
         return;
       }
 
+      // For real slots, update in Supabase
       const { error } = await supabase
         .from('interview_slots')
         .update({ 
@@ -56,23 +57,7 @@ const InterviewSlots = ({ slots: initialSlots, onSlotAccepted }: InterviewSlotsP
 
       if (error) throw error;
 
-      const updatedSlot = {
-        ...slots.find(slot => slot.id === slotId)!,
-        status: 'accepted',
-        selected_time: selectedTime
-      };
-
-      setSlots(currentSlots => 
-        currentSlots.filter(slot => slot.id !== slotId)
-      );
-
-      toast({
-        title: "Interview Scheduled",
-        description: `Your interview has been scheduled for ${format(new Date(selectedTime), 'PPP p')}`
-      });
-      
       closeTimeSelection();
-      onSlotAccepted?.(updatedSlot);
     } catch (error: any) {
       console.error('Error selecting interview time:', error);
       toast({
