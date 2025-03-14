@@ -136,7 +136,7 @@ const InterviewSlots = ({ slots: initialSlots, onSlotAccepted }: InterviewSlotsP
     <div className="space-y-6">
       <Table>
         <TableHeader>
-          <TableRow>
+          <TableRow className="hover:bg-transparent">
             <TableHead className="text-gray-900">Company</TableHead>
             <TableHead className="text-gray-900">Position</TableHead>
             <TableHead className="text-gray-900">Interview Type</TableHead>
@@ -147,7 +147,7 @@ const InterviewSlots = ({ slots: initialSlots, onSlotAccepted }: InterviewSlotsP
         </TableHeader>
         <TableBody>
           {slots.map((slot) => (
-            <TableRow key={slot.id}>
+            <TableRow key={slot.id} className="hover:bg-transparent">
               <TableCell className="text-gray-900 font-medium">{slot.job.company}</TableCell>
               <TableCell className="text-gray-900">{slot.job.title}</TableCell>
               <TableCell>
