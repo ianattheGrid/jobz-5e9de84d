@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { format } from "date-fns";
 import {
@@ -100,6 +101,11 @@ const InterviewSlots = ({ slots: initialSlots, onSlotAccepted }: InterviewSlotsP
 
   const handleSelectTime = async (slotId: string, selectedTime: string) => {
     try {
+      // Ensure the slotId is a valid UUID
+      if (!slotId.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/)) {
+        throw new Error('Invalid slot ID format');
+      }
+
       const { error } = await supabase
         .from('interview_slots')
         .update({ 
@@ -164,7 +170,7 @@ const InterviewSlots = ({ slots: initialSlots, onSlotAccepted }: InterviewSlotsP
                   <Button
                     variant="outline"
                     size="sm"
-                    className="text-primary hover:bg-primary/10"
+                    className="text-white bg-primary hover:bg-primary/90"
                     onClick={() => setSelectedSlot({ isOpen: true, slot })}
                   >
                     View Available Times ({slot.proposed_times.length})
