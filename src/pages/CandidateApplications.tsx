@@ -5,7 +5,7 @@ import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@
 import { Badge } from "@/components/ui/badge";
 import { LayoutDashboard } from "lucide-react";
 import { useApplicationsList } from "@/hooks/useApplicationsList";
-import { formatDate } from "@/lib/utils";
+import { format } from "date-fns";
 
 const getStatusColor = (status: string) => {
   switch (status) {
@@ -16,6 +16,14 @@ const getStatusColor = (status: string) => {
     default:
       return 'bg-yellow-500';
   }
+};
+
+const formatCurrency = (amount: number) => {
+  return new Intl.NumberFormat('en-GB', {
+    style: 'currency',
+    currency: 'GBP',
+    maximumFractionDigits: 0
+  }).format(amount);
 };
 
 const CandidateApplications = () => {
@@ -63,9 +71,10 @@ const CandidateApplications = () => {
                 <TableRow className="bg-gray-50">
                   <TableHead className="text-gray-700">Job Title</TableHead>
                   <TableHead className="text-gray-700">Company</TableHead>
-                  <TableHead className="text-gray-700">Applied Date</TableHead>
+                  <TableHead className="text-gray-700">Applied</TableHead>
                   <TableHead className="text-gray-700">Salary Range</TableHead>
                   <TableHead className="text-gray-700">Status</TableHead>
+                  <TableHead className="text-gray-700">Last Updated</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -78,15 +87,24 @@ const CandidateApplications = () => {
                       {application.jobs?.company}
                     </TableCell>
                     <TableCell className="text-gray-700">
-                      {formatDate(application.created_at)}
+                      {format(new Date(application.created_at), 'dd MMM yyyy')}
                     </TableCell>
                     <TableCell className="text-gray-700">
-                      £{application.jobs?.salary_min.toLocaleString()} - £{application.jobs?.salary_max.toLocaleString()}
+                      {application.jobs?.salary_min && application.jobs?.salary_max ? (
+                        <span>
+                          {formatCurrency(application.jobs.salary_min)} - {formatCurrency(application.jobs.salary_max)}
+                        </span>
+                      ) : (
+                        'Not specified'
+                      )}
                     </TableCell>
                     <TableCell>
                       <Badge className={`${getStatusColor(application.status)} text-white`}>
                         {application.status.charAt(0).toUpperCase() + application.status.slice(1)}
                       </Badge>
+                    </TableCell>
+                    <TableCell className="text-gray-700">
+                      {format(new Date(application.updated_at), 'dd MMM yyyy')}
                     </TableCell>
                   </TableRow>
                 ))}
