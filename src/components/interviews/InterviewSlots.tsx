@@ -29,7 +29,7 @@ interface InterviewSlot {
 
 interface InterviewSlotsProps {
   slots: InterviewSlot[];
-  onSlotAccepted?: () => void;
+  onSlotAccepted?: (slot: InterviewSlot) => void;
 }
 
 const InterviewSlots = ({ slots: initialSlots, onSlotAccepted }: InterviewSlotsProps) => {
@@ -75,7 +75,7 @@ const InterviewSlots = ({ slots: initialSlots, onSlotAccepted }: InterviewSlotsP
               title: "Interview Scheduled",
               description: `Interview time has been confirmed for ${format(new Date(payload.new.selected_time), 'PPP p')}`
             });
-            onSlotAccepted?.();
+            onSlotAccepted?.(payload.new);
           }
         }
       )
@@ -286,3 +286,4 @@ const InterviewSlots = ({ slots: initialSlots, onSlotAccepted }: InterviewSlotsP
 };
 
 export default InterviewSlots;
+
