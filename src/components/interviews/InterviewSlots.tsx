@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { format } from "date-fns";
 import {
@@ -100,6 +101,17 @@ const InterviewSlots = ({ slots: initialSlots, onSlotAccepted }: InterviewSlotsP
 
   const handleSelectTime = async (slotId: string, selectedTime: string) => {
     try {
+      // For dummy data, skip the update
+      if (slotId.startsWith('slot-')) {
+        toast({
+          title: "Interview Scheduled",
+          description: `Your interview has been scheduled for ${format(new Date(selectedTime), 'PPP p')}`
+        });
+        setSelectedSlot({ isOpen: false, slot: null });
+        onSlotAccepted?.();
+        return;
+      }
+
       const { error } = await supabase
         .from('interview_slots')
         .update({ 
@@ -221,20 +233,20 @@ const InterviewSlots = ({ slots: initialSlots, onSlotAccepted }: InterviewSlotsP
       </Table>
 
       <Dialog open={selectedSlot.isOpen} onOpenChange={(isOpen) => !isOpen && setSelectedSlot({ isOpen: false, slot: null })}>
-        <DialogContent className="sm:max-w-[425px] bg-background text-foreground">
+        <DialogContent className="sm:max-w-[425px] bg-white">
           <DialogHeader>
-            <DialogTitle>Select Interview Time</DialogTitle>
+            <DialogTitle className="text-primary">Select Interview Time</DialogTitle>
           </DialogHeader>
           <div className="space-y-4 py-4">
             {selectedSlot.slot?.proposed_times.map((time) => (
               <Button
                 key={time}
-                className="w-full p-4 bg-card border border-gray-200 hover:bg-accent text-left justify-between items-center"
+                className="w-full p-4 bg-white border border-gray-200 hover:bg-gray-50 text-left justify-between items-center"
                 variant="outline"
                 onClick={() => handleSelectTime(selectedSlot.slot!.id, time)}
               >
-                <span className="text-foreground font-medium">{format(new Date(time), 'PPP p')}</span>
-                <span className="text-white">Schedule Interview</span>
+                <span className="text-gray-900 font-medium">{format(new Date(time), 'PPP p')}</span>
+                <span className="text-primary">Schedule Interview</span>
               </Button>
             ))}
           </div>
