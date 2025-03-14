@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { format } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { InterviewResponseDialog } from "./InterviewResponseDialog";
@@ -55,7 +56,9 @@ const InterviewSlots = ({ slots: initialSlots, onSlotAccepted }: InterviewSlotsP
         })
         .eq('id', slotId);
 
-      if (error) throw error;
+      if (error) {
+        throw error;
+      }
 
       closeTimeSelection();
     } catch (error: any) {

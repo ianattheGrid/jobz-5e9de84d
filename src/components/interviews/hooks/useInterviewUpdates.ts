@@ -26,11 +26,6 @@ export const useInterviewUpdates = (
           setSlots(currentSlots => {
             // If the slot was accepted, remove it from the slots list
             if (payload.new.status === 'accepted') {
-              toast({
-                title: "Interview Scheduled",
-                description: `Interview time has been confirmed for ${format(new Date(payload.new.selected_time), 'PPP p')}`
-              });
-
               // Find the accepted slot
               const matchingSlot = currentSlots.find(slot => slot.id === payload.new.id);
               if (matchingSlot) {
@@ -41,6 +36,11 @@ export const useInterviewUpdates = (
                 
                 // Notify parent about the accepted slot
                 onSlotAccepted?.(updatedSlot);
+
+                toast({
+                  title: "Interview Scheduled",
+                  description: `Interview time has been confirmed for ${format(new Date(payload.new.selected_time), 'PPP p')}`
+                });
                 
                 // Remove the slot from the interview offers list
                 return currentSlots.filter(slot => slot.id !== payload.new.id);
