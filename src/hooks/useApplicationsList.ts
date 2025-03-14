@@ -6,9 +6,7 @@ import { useToast } from "@/components/ui/use-toast";
 const testData = [
   {
     id: 1,
-    status: 'pending',
     created_at: '2024-02-15T10:00:00Z',
-    updated_at: '2024-02-17T15:30:00Z',
     jobs: {
       title: 'Frontend Developer',
       company: 'Tech Solutions Ltd',
@@ -18,9 +16,7 @@ const testData = [
   },
   {
     id: 2,
-    status: 'accepted',
     created_at: '2024-02-05T09:00:00Z',
-    updated_at: '2024-02-10T14:20:00Z',
     jobs: {
       title: 'Senior Backend Engineer',
       company: 'Digital Innovations',
@@ -30,9 +26,7 @@ const testData = [
   },
   {
     id: 3,
-    status: 'rejected',
     created_at: '2024-02-10T11:00:00Z',
-    updated_at: '2024-02-16T16:45:00Z',
     jobs: {
       title: 'Full Stack Developer',
       company: 'StartUp Next',
@@ -51,14 +45,14 @@ export const useApplicationsList = () => {
       const { data: { session } } = await supabase.auth.getSession();
       
       if (!session) {
-        // Return test data when no user is logged in
         return testData;
       }
 
       const { data, error } = await supabase
         .from('applications')
         .select(`
-          *,
+          id,
+          created_at,
           jobs (
             title,
             company,
