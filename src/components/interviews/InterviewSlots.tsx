@@ -52,6 +52,11 @@ const InterviewSlots = ({ slots }: InterviewSlotsProps) => {
     return types[type as keyof typeof types] || type;
   };
 
+  const handleResponseSubmitted = () => {
+    setExpandedSlot(null);
+    setResponseDialog({ isOpen: false, slotId: null, mode: 'unavailable' });
+  };
+
   return (
     <Table>
       <TableHeader>
