@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { format } from "date-fns";
 import {
@@ -101,8 +100,15 @@ const InterviewSlots = ({ slots: initialSlots, onSlotAccepted }: InterviewSlotsP
 
   const handleSelectTime = async (slotId: string, selectedTime: string) => {
     try {
-      // For dummy data, skip the update
       if (slotId.startsWith('slot-')) {
+        setSlots(currentSlots => 
+          currentSlots.map(slot => 
+            slot.id === slotId 
+              ? { ...slot, status: 'accepted', selected_time: selectedTime }
+              : slot
+          )
+        );
+        
         toast({
           title: "Interview Scheduled",
           description: `Your interview has been scheduled for ${format(new Date(selectedTime), 'PPP p')}`
@@ -121,6 +127,14 @@ const InterviewSlots = ({ slots: initialSlots, onSlotAccepted }: InterviewSlotsP
         .eq('id', slotId);
 
       if (error) throw error;
+
+      setSlots(currentSlots => 
+        currentSlots.map(slot => 
+          slot.id === slotId 
+            ? { ...slot, status: 'accepted', selected_time: selectedTime }
+            : slot
+        )
+      );
 
       toast({
         title: "Interview Scheduled",
@@ -144,6 +158,8 @@ const InterviewSlots = ({ slots: initialSlots, onSlotAccepted }: InterviewSlotsP
     setResponseDialog({ isOpen: false, slotId: null, mode: 'unavailable' });
   };
 
+  const pendingSlots = slots.filter(slot => slot.status !== 'accepted');
+
   return (
     <div className="space-y-6">
       <Table>
@@ -158,7 +174,7 @@ const InterviewSlots = ({ slots: initialSlots, onSlotAccepted }: InterviewSlotsP
           </TableRow>
         </TableHeader>
         <TableBody>
-          {slots.map((slot) => (
+          {pendingSlots.map((slot) => (
             <TableRow key={slot.id} className="hover:bg-transparent">
               <TableCell className="text-gray-900 font-medium">{slot.job.company}</TableCell>
               <TableCell className="text-gray-900">{slot.job.title}</TableCell>
