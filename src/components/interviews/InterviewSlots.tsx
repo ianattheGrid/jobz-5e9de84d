@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { format } from "date-fns";
 import {
@@ -101,11 +100,6 @@ const InterviewSlots = ({ slots: initialSlots, onSlotAccepted }: InterviewSlotsP
 
   const handleSelectTime = async (slotId: string, selectedTime: string) => {
     try {
-      // Ensure the slotId is a valid UUID
-      if (!slotId.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/)) {
-        throw new Error('Invalid slot ID format');
-      }
-
       const { error } = await supabase
         .from('interview_slots')
         .update({ 
@@ -227,7 +221,7 @@ const InterviewSlots = ({ slots: initialSlots, onSlotAccepted }: InterviewSlotsP
       </Table>
 
       <Dialog open={selectedSlot.isOpen} onOpenChange={(isOpen) => !isOpen && setSelectedSlot({ isOpen: false, slot: null })}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="sm:max-w-[425px] bg-background text-foreground">
           <DialogHeader>
             <DialogTitle>Select Interview Time</DialogTitle>
           </DialogHeader>
@@ -235,12 +229,12 @@ const InterviewSlots = ({ slots: initialSlots, onSlotAccepted }: InterviewSlotsP
             {selectedSlot.slot?.proposed_times.map((time) => (
               <Button
                 key={time}
-                className="w-full p-4 bg-white border border-gray-200 hover:bg-gray-50 text-left justify-between items-center"
+                className="w-full p-4 bg-card border border-gray-200 hover:bg-accent text-left justify-between items-center"
                 variant="outline"
                 onClick={() => handleSelectTime(selectedSlot.slot!.id, time)}
               >
-                <span className="text-gray-900 font-medium">{format(new Date(time), 'PPP p')}</span>
-                <span className="text-primary">Schedule Interview</span>
+                <span className="text-foreground font-medium">{format(new Date(time), 'PPP p')}</span>
+                <span className="text-white">Schedule Interview</span>
               </Button>
             ))}
           </div>
