@@ -77,9 +77,9 @@ const CandidateInterviews = () => {
 
   const isLoading = interviewsLoading || slotsLoading;
 
-  // Use dummy data for preview, in production would use actual data
-  const displayInterviews = interviews || dummyInterviews;
-  const displaySlots = slots || dummySlots;
+  // Always use dummy data for preview/development
+  const displayInterviews = dummyInterviews;
+  const displaySlots = dummySlots;
 
   return (
     <InterviewsLayout isLoading={isLoading}>
