@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { format } from "date-fns";
 import { ArrowLeft } from "lucide-react";
@@ -108,7 +107,7 @@ const InterviewSlots = ({ slots: initialSlots, onSlotAccepted }: InterviewSlotsP
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       {expandedSlot && (
         <Button
           variant="ghost"
@@ -134,10 +133,10 @@ const InterviewSlots = ({ slots: initialSlots, onSlotAccepted }: InterviewSlotsP
         <TableBody>
           {slots.map((slot) => (
             <TableRow key={slot.id}>
-              <TableCell className="text-gray-900">{slot.job.company}</TableCell>
+              <TableCell className="text-gray-900 font-medium">{slot.job.company}</TableCell>
               <TableCell className="text-gray-900">{slot.job.title}</TableCell>
               <TableCell className="text-gray-900">
-                <Badge variant="outline" className="font-normal">
+                <Badge className="bg-gray-100 text-gray-800 hover:bg-gray-200">
                   {getInterviewTypeLabel(slot.interview_type)}
                 </Badge>
               </TableCell>
@@ -146,30 +145,31 @@ const InterviewSlots = ({ slots: initialSlots, onSlotAccepted }: InterviewSlotsP
                   <div className="text-green-600 font-medium">
                     Scheduled for {format(new Date(slot.selected_time!), 'PPP p')}
                   </div>
-                ) : expandedSlot === slot.id ? (
-                  <div className="space-y-2">
-                    <p className="text-gray-700 mb-4">
-                      Please select your preferred interview time:
-                    </p>
-                    <InterviewTimeSelect
-                      slotId={slot.id}
-                      times={slot.proposed_times}
-                      interviewType={slot.interview_type}
-                      onResponseSubmitted={handleResponseSubmitted}
-                    />
-                  </div>
                 ) : (
-                  <div className="flex items-center gap-2">
-                    <span>{slot.proposed_times.length} time{slot.proposed_times.length !== 1 ? 's' : ''} available</span>
-                    <Button 
-                      variant="outline"
-                      size="sm"
-                      className="text-primary border-primary hover:bg-primary hover:text-white"
-                      onClick={() => handleViewTimes(slot.id)}
-                    >
-                      View & Select Times
-                    </Button>
-                  </div>
+                  <>
+                    {expandedSlot === slot.id ? (
+                      <div className="space-y-2">
+                        <InterviewTimeSelect
+                          slotId={slot.id}
+                          times={slot.proposed_times}
+                          interviewType={slot.interview_type}
+                          onResponseSubmitted={handleResponseSubmitted}
+                        />
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-2">
+                        <span>{slot.proposed_times.length} time{slot.proposed_times.length !== 1 ? 's' : ''} available</span>
+                        <Button 
+                          variant="outline"
+                          size="sm"
+                          className="text-primary border-primary hover:bg-primary/10"
+                          onClick={() => handleViewTimes(slot.id)}
+                        >
+                          View & Select Times
+                        </Button>
+                      </div>
+                    )}
+                  </>
                 )}
               </TableCell>
               <TableCell>

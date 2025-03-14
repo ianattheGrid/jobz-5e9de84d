@@ -33,7 +33,7 @@ export const InterviewTimeSelect = ({ slotId, times, onResponseSubmitted }: Inte
       });
       
       onResponseSubmitted();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error selecting interview time:', error);
       toast({
         variant: "destructive",
@@ -44,17 +44,19 @@ export const InterviewTimeSelect = ({ slotId, times, onResponseSubmitted }: Inte
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 bg-gray-50 p-6 rounded-lg">
       <div className="space-y-2">
         {times.map((time) => (
-          <Button
-            key={time}
-            className="w-full py-6 text-base justify-between bg-white border-2 border-gray-200 text-gray-900 hover:bg-gray-50 hover:border-primary"
-            onClick={() => handleSelectTime(time)}
-          >
-            <span className="text-left flex-1">{format(new Date(time), 'PPP p')}</span>
-            <span className="text-primary font-medium">Schedule Interview</span>
-          </Button>
+          <div key={time} className="bg-white rounded-lg shadow">
+            <Button
+              className="w-full py-6 text-base flex justify-between items-center hover:bg-gray-50"
+              variant="ghost"
+              onClick={() => handleSelectTime(time)}
+            >
+              <span className="text-left flex-1 font-medium">{format(new Date(time), 'PPP p')}</span>
+              <span className="text-primary">Schedule Interview</span>
+            </Button>
+          </div>
         ))}
       </div>
     </div>
