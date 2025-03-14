@@ -14,7 +14,7 @@ const InterviewsTabs = ({ interviews, slots }: InterviewsTabsProps) => {
     <Tabs defaultValue="scheduled" className="w-full">
       <TabsList className="mb-4">
         <TabsTrigger value="scheduled">Scheduled Interviews</TabsTrigger>
-        <TabsTrigger value="proposals">Interview Proposals</TabsTrigger>
+        <TabsTrigger value="proposals">Interview Offers</TabsTrigger>
       </TabsList>
 
       <TabsContent value="scheduled" className="mt-2">
@@ -32,7 +32,7 @@ const InterviewsTabs = ({ interviews, slots }: InterviewsTabsProps) => {
           <InterviewSlots slots={slots} />
         ) : (
           <div className="text-center py-8 bg-white rounded-lg shadow">
-            <p className="text-gray-600">No interview proposals yet.</p>
+            <p className="text-gray-600">No interview offers yet.</p>
           </div>
         )}
       </TabsContent>

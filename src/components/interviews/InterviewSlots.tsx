@@ -31,7 +31,7 @@ const InterviewSlots = ({ slots }: InterviewSlotsProps) => {
         <TableRow>
           <TableHead className="text-gray-900">Company</TableHead>
           <TableHead className="text-gray-900">Position</TableHead>
-          <TableHead className="text-gray-900">Proposed Times</TableHead>
+          <TableHead className="text-gray-900">Offered Times</TableHead>
           <TableHead className="text-gray-900">Status</TableHead>
         </TableRow>
       </TableHeader>
