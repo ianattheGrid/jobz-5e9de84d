@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { format } from "date-fns";
 import {
   Table,
@@ -11,30 +11,16 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 import { InterviewResponseDialog } from "./InterviewResponseDialog";
-
-interface InterviewSlot {
-  id: string;
-  job: {
-    company: string;
-    title: string;
-  };
-  proposed_times: string[];
-  status: string;
-  interview_type: string;
-  selected_time?: string;
-}
-
-interface InterviewSlotsProps {
-  slots: InterviewSlot[];
-  onSlotAccepted?: (slot: InterviewSlot) => void;
-}
+import { TimeSelectionDialog } from "./TimeSelectionDialog";
+import { useInterviewUpdates } from "./hooks/useInterviewUpdates";
+import { getInterviewTypeLabel } from "./utils/interviewTypeUtils";
+import { InterviewSlot, InterviewSlotsProps } from "./types";
 
 const InterviewSlots = ({ slots: initialSlots, onSlotAccepted }: InterviewSlotsProps) => {
-  const [slots, setSlots] = useState<InterviewSlot[]>(initialSlots);
+  const { slots, setSlots } = useInterviewUpdates(initialSlots, onSlotAccepted);
   const [selectedSlot, setSelectedSlot] = useState<{
     isOpen: boolean;
     slot: InterviewSlot | null;
@@ -51,69 +37,8 @@ const InterviewSlots = ({ slots: initialSlots, onSlotAccepted }: InterviewSlotsP
     slotId: null,
     mode: 'unavailable'
   });
-
+  
   const { toast } = useToast();
-
-  useEffect(() => {
-    const channel = supabase
-      .channel('interview-slots-changes')
-      .on(
-        'postgres_changes',
-        {
-          event: 'UPDATE',
-          schema: 'public',
-          table: 'interview_slots'
-        },
-        (payload) => {
-          setSlots(currentSlots => {
-            const updatedSlots = currentSlots.map(slot => 
-              slot.id === payload.new.id ? { ...slot, ...payload.new } : slot
-            );
-
-            if (payload.new.status === 'accepted') {
-              toast({
-                title: "Interview Scheduled",
-                description: `Interview time has been confirmed for ${format(new Date(payload.new.selected_time), 'PPP p')}`
-              });
-
-              const matchingSlot = currentSlots.find(slot => slot.id === payload.new.id);
-              const updatedSlot: InterviewSlot = {
-                id: payload.new.id,
-                job: matchingSlot?.job || {
-                  company: '',
-                  title: ''
-                },
-                proposed_times: payload.new.proposed_times || [],
-                status: payload.new.status,
-                interview_type: payload.new.interview_type,
-                selected_time: payload.new.selected_time
-              };
-              
-              onSlotAccepted?.(updatedSlot);
-            }
-
-            return updatedSlots;
-          });
-        }
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [onSlotAccepted, toast]);
-
-  const getInterviewTypeLabel = (type: string) => {
-    const types = {
-      'online': 'Online Video Interview',
-      'phone': 'Telephone Interview',
-      'face-to-face': 'Face to Face Interview',
-      'group': 'Group Interview',
-      'assessment': 'Assessment Center',
-      'technical': 'Technical Interview'
-    };
-    return types[type as keyof typeof types] || type;
-  };
 
   const handleSelectTime = async (slotId: string, selectedTime: string) => {
     try {
@@ -270,26 +195,12 @@ const InterviewSlots = ({ slots: initialSlots, onSlotAccepted }: InterviewSlotsP
         </TableBody>
       </Table>
 
-      <Dialog open={selectedSlot.isOpen} onOpenChange={(isOpen) => !isOpen && setSelectedSlot({ isOpen: false, slot: null })}>
-        <DialogContent className="sm:max-w-[425px] bg-white">
-          <DialogHeader>
-            <DialogTitle className="text-primary">Select Interview Time</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4 py-4">
-            {selectedSlot.slot?.proposed_times.map((time) => (
-              <Button
-                key={time}
-                className="w-full p-4 bg-white border border-gray-200 hover:bg-gray-50 text-left justify-between items-center"
-                variant="outline"
-                onClick={() => handleSelectTime(selectedSlot.slot!.id, time)}
-              >
-                <span className="text-gray-900 font-medium">{format(new Date(time), 'PPP p')}</span>
-                <span className="text-primary">Schedule Interview</span>
-              </Button>
-            ))}
-          </div>
-        </DialogContent>
-      </Dialog>
+      <TimeSelectionDialog
+        isOpen={selectedSlot.isOpen}
+        onOpenChange={(isOpen) => !isOpen && setSelectedSlot({ isOpen: false, slot: null })}
+        slot={selectedSlot.slot}
+        onTimeSelected={handleSelectTime}
+      />
 
       <InterviewResponseDialog
         slotId={responseDialog.slotId || ''}
