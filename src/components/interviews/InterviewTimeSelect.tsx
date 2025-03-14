@@ -1,10 +1,9 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { Badge } from "@/components/ui/badge";
-import { Check } from "lucide-react";
 
 interface InterviewTimeSelectProps {
   slotId: string;
@@ -13,20 +12,8 @@ interface InterviewTimeSelectProps {
   onResponseSubmitted: () => void;
 }
 
-export const InterviewTimeSelect = ({ slotId, times, interviewType, onResponseSubmitted }: InterviewTimeSelectProps) => {
+export const InterviewTimeSelect = ({ slotId, times, onResponseSubmitted }: InterviewTimeSelectProps) => {
   const { toast } = useToast();
-
-  const getInterviewTypeLabel = (type: string) => {
-    const types = {
-      'online': 'Online Video Interview',
-      'phone': 'Telephone Interview',
-      'face-to-face': 'Face to Face Interview',
-      'group': 'Group Interview',
-      'assessment': 'Assessment Center',
-      'technical': 'Technical Interview'
-    };
-    return types[type as keyof typeof types] || type;
-  };
 
   const handleSelectTime = async (selectedTime: string) => {
     try {
@@ -58,25 +45,15 @@ export const InterviewTimeSelect = ({ slotId, times, interviewType, onResponseSu
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center gap-2 mb-6">
-        <Badge variant="secondary" className="text-sm">
-          {getInterviewTypeLabel(interviewType)}
-        </Badge>
-      </div>
-      
-      <div className="grid gap-3">
+      <div className="space-y-2">
         {times.map((time) => (
           <Button
             key={time}
-            variant="outline"
-            className="w-full justify-between hover:border-primary hover:text-primary group"
+            className="w-full py-6 text-base justify-between bg-white border-2 border-gray-200 text-gray-900 hover:bg-gray-50 hover:border-primary"
             onClick={() => handleSelectTime(time)}
           >
-            <span>{format(new Date(time), 'PPP p')}</span>
-            <span className="hidden group-hover:flex items-center text-primary">
-              <Check className="w-4 h-4 mr-2" />
-              Accept Time
-            </span>
+            <span className="text-left flex-1">{format(new Date(time), 'PPP p')}</span>
+            <span className="text-primary font-medium">Schedule Interview</span>
           </Button>
         ))}
       </div>

@@ -112,7 +112,7 @@ const InterviewSlots = ({ slots: initialSlots, onSlotAccepted }: InterviewSlotsP
       {expandedSlot && (
         <Button
           variant="ghost"
-          className="mb-4"
+          className="mb-6"
           onClick={handleBackToList}
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
@@ -137,19 +137,19 @@ const InterviewSlots = ({ slots: initialSlots, onSlotAccepted }: InterviewSlotsP
               <TableCell className="text-gray-900">{slot.job.company}</TableCell>
               <TableCell className="text-gray-900">{slot.job.title}</TableCell>
               <TableCell className="text-gray-900">
-                <Badge variant="secondary">
+                <Badge variant="outline" className="font-normal">
                   {getInterviewTypeLabel(slot.interview_type)}
                 </Badge>
               </TableCell>
               <TableCell className="text-gray-900">
                 {slot.status === 'accepted' ? (
-                  <div className="text-green-600">
+                  <div className="text-green-600 font-medium">
                     Scheduled for {format(new Date(slot.selected_time!), 'PPP p')}
                   </div>
                 ) : expandedSlot === slot.id ? (
                   <div className="space-y-2">
                     <p className="text-gray-700 mb-4">
-                      Please select your preferred interview time from the options below:
+                      Please select your preferred interview time:
                     </p>
                     <InterviewTimeSelect
                       slotId={slot.id}
