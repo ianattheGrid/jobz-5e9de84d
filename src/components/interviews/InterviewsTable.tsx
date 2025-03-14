@@ -16,12 +16,14 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { InfoIcon } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 interface Interview {
   id: number;
   scheduled_at: string;
   interviewer_name: string;
   status: string;
+  interview_type: string;
   cancellation_reason?: string;
   job: {
     company: string;
@@ -34,12 +36,25 @@ interface InterviewsTableProps {
 }
 
 const InterviewsTable = ({ interviews }: InterviewsTableProps) => {
+  const getInterviewTypeLabel = (type: string) => {
+    const types = {
+      'online': 'Online Video Interview',
+      'phone': 'Telephone Interview',
+      'face-to-face': 'Face to Face Interview',
+      'group': 'Group Interview',
+      'assessment': 'Assessment Center',
+      'technical': 'Technical Interview'
+    };
+    return types[type as keyof typeof types] || type;
+  };
+
   return (
     <Table>
       <TableHeader>
         <TableRow>
           <TableHead className="text-gray-900">Company</TableHead>
           <TableHead className="text-gray-900">Position</TableHead>
+          <TableHead className="text-gray-900">Interview Type</TableHead>
           <TableHead className="text-gray-900">Date</TableHead>
           <TableHead className="text-gray-900">Time</TableHead>
           <TableHead className="text-gray-900">Interviewer</TableHead>
@@ -51,6 +66,11 @@ const InterviewsTable = ({ interviews }: InterviewsTableProps) => {
           <TableRow key={interview.id}>
             <TableCell className="text-gray-900">{interview.job.company}</TableCell>
             <TableCell className="text-gray-900">{interview.job.title}</TableCell>
+            <TableCell className="text-gray-900">
+              <Badge variant="secondary">
+                {getInterviewTypeLabel(interview.interview_type)}
+              </Badge>
+            </TableCell>
             <TableCell className="text-gray-900">{format(new Date(interview.scheduled_at), 'PPP')}</TableCell>
             <TableCell className="text-gray-900">{format(new Date(interview.scheduled_at), 'p')}</TableCell>
             <TableCell className="text-gray-900">{interview.interviewer_name}</TableCell>

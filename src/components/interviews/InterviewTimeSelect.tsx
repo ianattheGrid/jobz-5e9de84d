@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
@@ -57,8 +58,8 @@ export const InterviewTimeSelect = ({ slotId, times, interviewType, onResponseSu
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center gap-2 mb-4">
-        <Badge variant="outline" className="text-sm">
+      <div className="flex items-center gap-2">
+        <Badge variant="secondary" className="text-sm">
           {getInterviewTypeLabel(interviewType)}
         </Badge>
       </div>
