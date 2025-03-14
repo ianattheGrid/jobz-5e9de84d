@@ -1,10 +1,10 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { Badge } from "@/components/ui/badge";
+import { Check } from "lucide-react";
 
 interface InterviewTimeSelectProps {
   slotId: string;
@@ -41,8 +41,8 @@ export const InterviewTimeSelect = ({ slotId, times, interviewType, onResponseSu
       if (error) throw error;
 
       toast({
-        title: "Interview time selected",
-        description: "The employer has been notified of your selection."
+        title: "Interview Scheduled",
+        description: `Your interview has been scheduled for ${format(new Date(selectedTime), 'PPP p')}`
       });
       
       onResponseSubmitted();
@@ -51,29 +51,35 @@ export const InterviewTimeSelect = ({ slotId, times, interviewType, onResponseSu
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Failed to select interview time. Please try again."
+        description: "Failed to schedule interview. Please try again."
       });
     }
   };
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 mb-6">
         <Badge variant="secondary" className="text-sm">
           {getInterviewTypeLabel(interviewType)}
         </Badge>
       </div>
       
-      {times.map((time) => (
-        <Button
-          key={time}
-          variant="outline"
-          className="w-full justify-start"
-          onClick={() => handleSelectTime(time)}
-        >
-          {format(new Date(time), 'PPP p')}
-        </Button>
-      ))}
+      <div className="grid gap-3">
+        {times.map((time) => (
+          <Button
+            key={time}
+            variant="outline"
+            className="w-full justify-between hover:border-primary hover:text-primary group"
+            onClick={() => handleSelectTime(time)}
+          >
+            <span>{format(new Date(time), 'PPP p')}</span>
+            <span className="hidden group-hover:flex items-center text-primary">
+              <Check className="w-4 h-4 mr-2" />
+              Accept Time
+            </span>
+          </Button>
+        ))}
+      </div>
     </div>
   );
 };

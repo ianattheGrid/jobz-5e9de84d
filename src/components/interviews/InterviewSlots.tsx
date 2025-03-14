@@ -1,5 +1,7 @@
+
 import React, { useState, useEffect } from 'react';
 import { format } from "date-fns";
+import { ArrowLeft } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -101,100 +103,123 @@ const InterviewSlots = ({ slots: initialSlots, onSlotAccepted }: InterviewSlotsP
     setResponseDialog({ isOpen: false, slotId: null, mode: 'unavailable' });
   };
 
+  const handleBackToList = () => {
+    setExpandedSlot(null);
+  };
+
   return (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead className="text-gray-900">Company</TableHead>
-          <TableHead className="text-gray-900">Position</TableHead>
-          <TableHead className="text-gray-900">Interview Type</TableHead>
-          <TableHead className="text-gray-900">Offered Times</TableHead>
-          <TableHead className="text-gray-900">Status</TableHead>
-          <TableHead className="text-gray-900">Actions</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {slots.map((slot) => (
-          <TableRow key={slot.id}>
-            <TableCell className="text-gray-900">{slot.job.company}</TableCell>
-            <TableCell className="text-gray-900">{slot.job.title}</TableCell>
-            <TableCell className="text-gray-900">
-              <Badge variant="secondary">
-                {getInterviewTypeLabel(slot.interview_type)}
-              </Badge>
-            </TableCell>
-            <TableCell className="text-gray-900">
-              {slot.status === 'accepted' ? (
-                <div className="text-green-600">
-                  Scheduled for {format(new Date(slot.selected_time!), 'PPP p')}
-                </div>
-              ) : expandedSlot === slot.id ? (
-                <InterviewTimeSelect
-                  slotId={slot.id}
-                  times={slot.proposed_times}
-                  interviewType={slot.interview_type}
-                  onResponseSubmitted={handleResponseSubmitted}
-                />
-              ) : (
-                <div className="flex items-center gap-2">
-                  <span>{slot.proposed_times.length} time{slot.proposed_times.length !== 1 ? 's' : ''} offered</span>
-                  <Button 
-                    variant="link" 
-                    className="text-primary"
-                    onClick={() => handleViewTimes(slot.id)}
-                  >
-                    View times
-                  </Button>
-                </div>
-              )}
-            </TableCell>
-            <TableCell>
-              <span className={`capitalize ${slot.status === 'accepted' ? 'text-green-600' : 'text-gray-900'}`}>
-                {slot.status}
-              </span>
-            </TableCell>
-            <TableCell>
-              {slot.status !== 'accepted' && (
-                <div className="flex gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setResponseDialog({
-                      isOpen: true,
-                      slotId: slot.id,
-                      mode: 'unavailable'
-                    })}
-                  >
-                    Can't Do These Times
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setResponseDialog({
-                      isOpen: true,
-                      slotId: slot.id,
-                      mode: 'suggest'
-                    })}
-                  >
-                    Suggest Times
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setResponseDialog({
-                      isOpen: true,
-                      slotId: slot.id,
-                      mode: 'decline'
-                    })}
-                  >
-                    Decline
-                  </Button>
-                </div>
-              )}
-            </TableCell>
+    <div className="space-y-4">
+      {expandedSlot && (
+        <Button
+          variant="ghost"
+          className="mb-4"
+          onClick={handleBackToList}
+        >
+          <ArrowLeft className="w-4 h-4 mr-2" />
+          Back to Interview Offers
+        </Button>
+      )}
+      
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="text-gray-900">Company</TableHead>
+            <TableHead className="text-gray-900">Position</TableHead>
+            <TableHead className="text-gray-900">Interview Type</TableHead>
+            <TableHead className="text-gray-900">Offered Times</TableHead>
+            <TableHead className="text-gray-900">Status</TableHead>
+            <TableHead className="text-gray-900">Actions</TableHead>
           </TableRow>
-        ))}
-      </TableBody>
+        </TableHeader>
+        <TableBody>
+          {slots.map((slot) => (
+            <TableRow key={slot.id}>
+              <TableCell className="text-gray-900">{slot.job.company}</TableCell>
+              <TableCell className="text-gray-900">{slot.job.title}</TableCell>
+              <TableCell className="text-gray-900">
+                <Badge variant="secondary">
+                  {getInterviewTypeLabel(slot.interview_type)}
+                </Badge>
+              </TableCell>
+              <TableCell className="text-gray-900">
+                {slot.status === 'accepted' ? (
+                  <div className="text-green-600">
+                    Scheduled for {format(new Date(slot.selected_time!), 'PPP p')}
+                  </div>
+                ) : expandedSlot === slot.id ? (
+                  <div className="space-y-2">
+                    <p className="text-gray-700 mb-4">
+                      Please select your preferred interview time from the options below:
+                    </p>
+                    <InterviewTimeSelect
+                      slotId={slot.id}
+                      times={slot.proposed_times}
+                      interviewType={slot.interview_type}
+                      onResponseSubmitted={handleResponseSubmitted}
+                    />
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <span>{slot.proposed_times.length} time{slot.proposed_times.length !== 1 ? 's' : ''} available</span>
+                    <Button 
+                      variant="outline"
+                      size="sm"
+                      className="text-primary border-primary hover:bg-primary hover:text-white"
+                      onClick={() => handleViewTimes(slot.id)}
+                    >
+                      View & Select Times
+                    </Button>
+                  </div>
+                )}
+              </TableCell>
+              <TableCell>
+                <span className={`capitalize ${slot.status === 'accepted' ? 'text-green-600' : 'text-gray-900'}`}>
+                  {slot.status}
+                </span>
+              </TableCell>
+              <TableCell>
+                {slot.status !== 'accepted' && !expandedSlot && (
+                  <div className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setResponseDialog({
+                        isOpen: true,
+                        slotId: slot.id,
+                        mode: 'unavailable'
+                      })}
+                    >
+                      Can't Do These Times
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setResponseDialog({
+                        isOpen: true,
+                        slotId: slot.id,
+                        mode: 'suggest'
+                      })}
+                    >
+                      Suggest Times
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setResponseDialog({
+                        isOpen: true,
+                        slotId: slot.id,
+                        mode: 'decline'
+                      })}
+                    >
+                      Decline
+                    </Button>
+                  </div>
+                )}
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
 
       <InterviewResponseDialog
         slotId={responseDialog.slotId || ''}
@@ -203,7 +228,7 @@ const InterviewSlots = ({ slots: initialSlots, onSlotAccepted }: InterviewSlotsP
         onResponseSubmitted={handleResponseSubmitted}
         mode={responseDialog.mode}
       />
-    </Table>
+    </div>
   );
 };
 
