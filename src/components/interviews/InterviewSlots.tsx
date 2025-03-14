@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { format } from "date-fns";
 import {
@@ -53,11 +52,6 @@ const InterviewSlots = ({ slots }: InterviewSlotsProps) => {
     return types[type as keyof typeof types] || type;
   };
 
-  const handleResponseSubmitted = () => {
-    setExpandedSlot(null);
-    setResponseDialog({ isOpen: false, slotId: null, mode: 'unavailable' });
-  };
-
   return (
     <Table>
       <TableHeader>
@@ -76,7 +70,7 @@ const InterviewSlots = ({ slots }: InterviewSlotsProps) => {
             <TableCell className="text-gray-900">{slot.job.company}</TableCell>
             <TableCell className="text-gray-900">{slot.job.title}</TableCell>
             <TableCell className="text-gray-900">
-              <Badge variant="outline">
+              <Badge variant="secondary">
                 {getInterviewTypeLabel(slot.interview_type)}
               </Badge>
             </TableCell>

@@ -14,6 +14,7 @@ const dummyInterviews = [
     scheduled_at: "2024-03-20T14:00:00Z",
     interviewer_name: "Sarah Thompson",
     status: "scheduled",
+    interview_type: "online",
     job: {
       company: "Tech Solutions Ltd",
       title: "Senior Frontend Developer"
@@ -24,6 +25,7 @@ const dummyInterviews = [
     scheduled_at: "2024-03-22T10:30:00Z",
     interviewer_name: "Michael Chen",
     status: "completed",
+    interview_type: "face-to-face",
     job: {
       company: "Innovation Labs",
       title: "React Developer"
@@ -34,6 +36,7 @@ const dummyInterviews = [
     scheduled_at: "2024-03-18T15:00:00Z",
     interviewer_name: "Jessica Brown",
     status: "cancelled",
+    interview_type: "phone",
     cancellation_reason: "Interviewer unavailable - will reschedule",
     job: {
       company: "Digital Dynamics",
@@ -54,7 +57,8 @@ const dummySlots = [
       "2024-03-25T15:00:00Z",
       "2024-03-26T10:00:00Z"
     ],
-    status: "pending"
+    status: "pending",
+    interview_type: "technical"
   },
   {
     id: "slot-2",
@@ -66,7 +70,8 @@ const dummySlots = [
       "2024-03-27T14:00:00Z",
       "2024-03-28T16:00:00Z"
     ],
-    status: "pending"
+    status: "pending",
+    interview_type: "group"
   }
 ];
 
