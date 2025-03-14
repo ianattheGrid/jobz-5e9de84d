@@ -75,7 +75,20 @@ const InterviewSlots = ({ slots: initialSlots, onSlotAccepted }: InterviewSlotsP
               title: "Interview Scheduled",
               description: `Interview time has been confirmed for ${format(new Date(payload.new.selected_time), 'PPP p')}`
             });
-            onSlotAccepted?.(payload.new);
+
+            const updatedSlot: InterviewSlot = {
+              id: payload.new.id,
+              job: currentSlots.find(slot => slot.id === payload.new.id)?.job || {
+                company: '',
+                title: ''
+              },
+              proposed_times: payload.new.proposed_times || [],
+              status: payload.new.status,
+              interview_type: payload.new.interview_type,
+              selected_time: payload.new.selected_time
+            };
+            
+            onSlotAccepted?.(updatedSlot);
           }
         }
       )
@@ -286,4 +299,3 @@ const InterviewSlots = ({ slots: initialSlots, onSlotAccepted }: InterviewSlotsP
 };
 
 export default InterviewSlots;
-
