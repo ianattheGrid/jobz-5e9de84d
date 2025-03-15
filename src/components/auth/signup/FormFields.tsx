@@ -29,7 +29,7 @@ export const FormField = ({
       value={value}
       onChange={onChange}
       placeholder={placeholder}
-      className="bg-white border border-input"
+      className="bg-white"
       required={required}
     />
   </div>
