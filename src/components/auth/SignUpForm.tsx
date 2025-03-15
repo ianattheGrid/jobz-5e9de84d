@@ -1,9 +1,11 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Link, useNavigate } from "react-router-dom";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { isFreeEmailProvider, emailMatchesWebsite } from "@/utils/validationUtils";
 
 interface SignUpFormProps {
   onSubmit: (email: string, password: string, fullName: string, companyName?: string) => Promise<void>;
@@ -17,12 +19,66 @@ export const SignUpForm = ({ onSubmit, loading, userType, showCompanyField = fal
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [companyName, setCompanyName] = useState("");
+  const [companyWebsite, setCompanyWebsite] = useState("");
+  const [linkedinUrl, setLinkedinUrl] = useState("");
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+
+  const validateEmployerSignup = () => {
+    if (isFreeEmailProvider(email)) {
+      setError("Please use your work email address. Personal email providers are not allowed for employer accounts.");
+      return false;
+    }
+
+    if (!companyWebsite) {
+      setError("Company website is required for employer registration.");
+      return false;
+    }
+
+    try {
+      new URL(companyWebsite);
+    } catch {
+      setError("Please enter a valid company website URL.");
+      return false;
+    }
+
+    if (!emailMatchesWebsite(email, companyWebsite)) {
+      setError("Your email domain must match your company's website domain.");
+      return false;
+    }
+
+    return true;
+  };
+
+  const validateCandidateSignup = () => {
+    if (linkedinUrl) {
+      try {
+        const url = new URL(linkedinUrl);
+        if (!url.hostname.includes('linkedin.com')) {
+          setError("Please enter a valid LinkedIn profile URL");
+          return false;
+        }
+      } catch {
+        setError("Please enter a valid LinkedIn profile URL");
+        return false;
+      }
+    }
+    return true;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+
+    // Validate based on user type
+    if (userType === 'employer' && !validateEmployerSignup()) {
+      return;
+    }
+
+    if (userType === 'candidate' && !validateCandidateSignup()) {
+      return;
+    }
+
     try {
       await onSubmit(email, password, fullName, companyName);
     } catch (err: any) {
@@ -67,6 +123,7 @@ export const SignUpForm = ({ onSubmit, loading, userType, showCompanyField = fal
           <AlertDescription>{error}</AlertDescription>
         </Alert>
       )}
+      
       <div className="space-y-2">
         <Label htmlFor="fullName">Full Name</Label>
         <Input 
@@ -78,6 +135,7 @@ export const SignUpForm = ({ onSubmit, loading, userType, showCompanyField = fal
           required
         />
       </div>
+
       <div className="space-y-2">
         <Label htmlFor="email">Email</Label>
         <Input 
@@ -85,23 +143,51 @@ export const SignUpForm = ({ onSubmit, loading, userType, showCompanyField = fal
           type="email" 
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="Enter your email" 
+          placeholder={userType === 'employer' ? "Enter your work email" : "Enter your email"} 
           required
         />
       </div>
-      {showCompanyField && (
+
+      {userType === 'employer' && (
+        <>
+          <div className="space-y-2">
+            <Label htmlFor="companyName">Company Name</Label>
+            <Input 
+              id="companyName" 
+              type="text" 
+              value={companyName}
+              onChange={(e) => setCompanyName(e.target.value)}
+              placeholder="Enter your company name" 
+              required
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="companyWebsite">Company Website</Label>
+            <Input 
+              id="companyWebsite" 
+              type="url" 
+              value={companyWebsite}
+              onChange={(e) => setCompanyWebsite(e.target.value)}
+              placeholder="https://www.company.com" 
+              required
+            />
+          </div>
+        </>
+      )}
+
+      {userType === 'candidate' && (
         <div className="space-y-2">
-          <Label htmlFor="companyName">Company Name</Label>
+          <Label htmlFor="linkedinUrl">LinkedIn Profile URL (Optional)</Label>
           <Input 
-            id="companyName" 
-            type="text" 
-            value={companyName}
-            onChange={(e) => setCompanyName(e.target.value)}
-            placeholder="Enter your company name" 
-            required
+            id="linkedinUrl" 
+            type="url" 
+            value={linkedinUrl}
+            onChange={(e) => setLinkedinUrl(e.target.value)}
+            placeholder="https://www.linkedin.com/in/your-profile" 
           />
         </div>
       )}
+
       <div className="space-y-2">
         <Label htmlFor="password">Password</Label>
         <Input 
@@ -113,12 +199,14 @@ export const SignUpForm = ({ onSubmit, loading, userType, showCompanyField = fal
           required
         />
       </div>
+
       <Button className="w-full bg-primary hover:bg-primary-dark text-white" type="submit" disabled={loading}>
         {loading ? "Signing up..." : "Sign Up"}
       </Button>
+
       <div className="text-center text-sm text-muted-foreground">
         Already have an account?{" "}
-        <Link to={getSignInLink()} className="text-primary hover:underline">
+        <Link to={`/${userType}/signin`} className="text-primary hover:underline">
           Sign In
         </Link>
       </div>

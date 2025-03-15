@@ -4,14 +4,27 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
 
-const createEmployerProfile = async (userId: string, companyName: string, fullName: string) => {
+const createEmployerProfile = async (userId: string, companyName: string, fullName: string, companyWebsite: string) => {
   const { error } = await supabase
     .from('employer_profiles')
     .insert({
       id: userId,
       company_name: companyName,
       full_name: fullName,
+      company_website: companyWebsite,
       job_title: 'Not specified'
+    });
+
+  if (error) throw error;
+};
+
+const createCandidateProfile = async (userId: string, fullName: string, linkedinUrl?: string) => {
+  const { error } = await supabase
+    .from('candidate_profiles')
+    .insert({
+      id: userId,
+      full_name: fullName,
+      linkedin_url: linkedinUrl
     });
 
   if (error) throw error;
@@ -22,7 +35,15 @@ export const useSignUp = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const signUp = async (email: string, password: string, userType: string, fullName: string, companyName: string) => {
+  const signUp = async (
+    email: string, 
+    password: string, 
+    userType: string, 
+    fullName: string, 
+    companyName: string = '', 
+    companyWebsite: string = '',
+    linkedinUrl: string = ''
+  ) => {
     try {
       setLoading(true);
 
@@ -58,10 +79,11 @@ export const useSignUp = () => {
       }
 
       if (userType === 'employer') {
-        await createEmployerProfile(data.user.id, companyName, fullName);
+        await createEmployerProfile(data.user.id, companyName, fullName, companyWebsite);
+      } else if (userType === 'candidate') {
+        await createCandidateProfile(data.user.id, fullName, linkedinUrl);
       }
 
-      // Sign in the user immediately after signup
       const { error: signInError } = await supabase.auth.signInWithPassword({
         email,
         password
