@@ -7,12 +7,19 @@ export const useIPMonitoring = () => {
 
   const checkSignupAttempt = async (email: string) => {
     try {
-      // Get the user's IP address from Supabase's request header
-      const { data: { ip_address }, error: ipError } = await supabase.rpc('get_client_ip');
+      // Get the user's IP address from Edge Function
+      const { data: ipResponse, error: ipError } = await supabase.functions.invoke('get_client_ip');
       
       if (ipError) {
         console.error('Error getting IP:', ipError);
         return true; // Allow signup to proceed if we can't check IP
+      }
+
+      const ip_address = ipResponse?.ip_address;
+      
+      if (!ip_address) {
+        console.error('No IP address returned');
+        return true;
       }
 
       // Check signup attempts for this IP
