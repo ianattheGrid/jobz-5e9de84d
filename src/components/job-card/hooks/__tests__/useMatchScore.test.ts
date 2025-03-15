@@ -1,4 +1,3 @@
-
 import { describe, it, expect } from 'vitest';
 import { CandidateProfile } from "@/integrations/supabase/types/profiles";
 import { calculateSkillsMatchScore } from "../../utils/skillsMatching";
@@ -45,7 +44,6 @@ describe('Job Matching Algorithm', () => {
     });
   });
 
-  // Test the complete matching algorithm
   describe('Complete Match Score', () => {
     const mockJob = {
       id: 1,
@@ -113,18 +111,19 @@ describe('Job Matching Algorithm', () => {
       years_in_current_title: 4
     };
 
-    it('should calculate high match score for well-matching profiles', () => {
-      const { totalScore } = useMatchScore(mockProfile, mockJob);
-      expect(totalScore).toBeGreaterThan(0.8); // Should be a strong match
+    it('should calculate high match score for well-matching profiles', async () => {
+      const matchScoreHook = useMatchScore(mockProfile, mockJob);
+      const score = await matchScoreHook.calculateTotalScore();
+      expect(score).toBeGreaterThan(0.8); // Should be a strong match
     });
 
-    it('should handle missing data gracefully', () => {
+    it('should handle missing data gracefully', async () => {
       const incompleteProfile = { ...mockProfile, required_skills: null };
-      const { totalScore } = useMatchScore(incompleteProfile, mockJob);
-      expect(totalScore).toBeDefined();
-      expect(totalScore).toBeGreaterThanOrEqual(0);
-      expect(totalScore).toBeLessThanOrEqual(1);
+      const matchScoreHook = useMatchScore(incompleteProfile, mockJob);
+      const score = await matchScoreHook.calculateTotalScore();
+      expect(score).toBeDefined();
+      expect(score).toBeGreaterThanOrEqual(0);
+      expect(score).toBeLessThanOrEqual(1);
     });
   });
 });
-
