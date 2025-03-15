@@ -1,5 +1,7 @@
+import { useState, useEffect } from "react";
 import { CandidateProfile } from "@/integrations/supabase/types/profiles";
 import { calculateSkillsMatchScore } from "../utils/skillsMatching";
+import { supabase } from "@/integrations/supabase/client";
 
 export const useMatchScore = (profile: CandidateProfile, job: any) => {
   const titleMatch = () => {
@@ -70,18 +72,37 @@ export const useMatchScore = (profile: CandidateProfile, job: any) => {
       : 0.3 * centerScore;
   };
 
+  const verificationBonus = async () => {
+    try {
+      const { data } = await supabase
+        .from('candidate_verifications')
+        .select('verification_status')
+        .eq('candidate_id', profile.id)
+        .maybeSingle();
+      
+      // Add a 10% bonus to match score if verified
+      return data?.verification_status === 'verified' ? 0.1 : 0;
+    } catch (error) {
+      console.error('Error checking verification status:', error);
+      return 0;
+    }
+  };
+
   const calculateTotalScore = async () => {
     let totalScore = 0;
-    totalScore += titleMatch() * 0.30;          // Job title match (30%)
+    totalScore += titleMatch() * 0.25;          // Job title match (25%)
     totalScore += await skillsMatch() * 0.15;   // Skills match (15%)
     totalScore += locationMatch() * 0.15;       // Location match (15%)
     totalScore += experienceMatch() * 0.15;     // Experience match (15%)
     totalScore += specializationMatch() * 0.15; // Specialization match (15%)
     totalScore += salaryMatch() * 0.10;         // Salary match (10%)
+    
+    // Add verification bonus if verified (can increase score by up to 10%)
+    const bonus = await verificationBonus();
+    totalScore = Math.min(1, totalScore * (1 + bonus));
+    
     return totalScore;
   };
-
-  const totalScore = calculateTotalScore();
 
   return {
     titleMatch,
@@ -90,6 +111,6 @@ export const useMatchScore = (profile: CandidateProfile, job: any) => {
     skillsMatch,
     experienceMatch,
     salaryMatch,
-    totalScore
+    calculateTotalScore
   };
 };
