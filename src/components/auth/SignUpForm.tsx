@@ -132,6 +132,7 @@ export const SignUpForm = ({ onSubmit, loading, userType, showCompanyField = fal
           value={fullName}
           onChange={(e) => setFullName(e.target.value)}
           placeholder="Enter your full name" 
+          className="bg-white"
           required
         />
       </div>
@@ -144,6 +145,7 @@ export const SignUpForm = ({ onSubmit, loading, userType, showCompanyField = fal
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder={userType === 'employer' ? "Enter your work email" : "Enter your email"} 
+          className="bg-white"
           required
         />
       </div>
@@ -158,6 +160,7 @@ export const SignUpForm = ({ onSubmit, loading, userType, showCompanyField = fal
               value={companyName}
               onChange={(e) => setCompanyName(e.target.value)}
               placeholder="Enter your company name" 
+              className="bg-white"
               required
             />
           </div>
@@ -169,6 +172,7 @@ export const SignUpForm = ({ onSubmit, loading, userType, showCompanyField = fal
               value={companyWebsite}
               onChange={(e) => setCompanyWebsite(e.target.value)}
               placeholder="https://www.company.com" 
+              className="bg-white"
               required
             />
           </div>
@@ -184,6 +188,7 @@ export const SignUpForm = ({ onSubmit, loading, userType, showCompanyField = fal
             value={linkedinUrl}
             onChange={(e) => setLinkedinUrl(e.target.value)}
             placeholder="https://www.linkedin.com/in/your-profile" 
+            className="bg-white"
           />
         </div>
       )}
@@ -196,6 +201,7 @@ export const SignUpForm = ({ onSubmit, loading, userType, showCompanyField = fal
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Create a password" 
+          className="bg-white"
           required
         />
       </div>
