@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,6 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Link, useNavigate } from "react-router-dom";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { isFreeEmailProvider, emailMatchesWebsite } from "@/utils/validationUtils";
+import { useIPMonitoring } from "@/hooks/useIPMonitoring";
 
 interface SignUpFormProps {
   onSubmit: (email: string, password: string, fullName: string, companyName?: string) => Promise<void>;
@@ -23,6 +23,7 @@ export const SignUpForm = ({ onSubmit, loading, userType, showCompanyField = fal
   const [linkedinUrl, setLinkedinUrl] = useState("");
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const { isBlocked, checkSignupAttempt } = useIPMonitoring();
 
   const validateEmployerSignup = () => {
     if (isFreeEmailProvider(email)) {
@@ -69,6 +70,13 @@ export const SignUpForm = ({ onSubmit, loading, userType, showCompanyField = fal
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+
+    // Check for IP-based blocking
+    const canProceed = await checkSignupAttempt(email);
+    if (!canProceed) {
+      setError("Too many signup attempts from this IP address. Please try again later.");
+      return;
+    }
 
     // Validate based on user type
     if (userType === 'employer' && !validateEmployerSignup()) {
@@ -118,9 +126,11 @@ export const SignUpForm = ({ onSubmit, loading, userType, showCompanyField = fal
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 w-full max-w-md mx-auto">
-      {error && (
+      {(error || isBlocked) && (
         <Alert variant="destructive">
-          <AlertDescription>{error}</AlertDescription>
+          <AlertDescription>
+            {error || "Too many signup attempts from this IP address. Please try again later."}
+          </AlertDescription>
         </Alert>
       )}
       

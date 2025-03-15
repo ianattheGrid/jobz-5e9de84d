@@ -9,6 +9,24 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      admins: {
+        Row: {
+          created_at: string | null
+          email: string
+          id: string
+        }
+        Insert: {
+          created_at?: string | null
+          email: string
+          id?: string
+        }
+        Update: {
+          created_at?: string | null
+          email?: string
+          id?: string
+        }
+        Relationships: []
+      }
       applications: {
         Row: {
           applicant_id: string
@@ -684,6 +702,36 @@ export type Database = {
         }
         Relationships: []
       }
+      signup_attempts: {
+        Row: {
+          attempt_count: number | null
+          email: string
+          first_attempt_at: string | null
+          id: string
+          ip_address: string
+          is_blocked: boolean | null
+          last_attempt_at: string | null
+        }
+        Insert: {
+          attempt_count?: number | null
+          email: string
+          first_attempt_at?: string | null
+          id?: string
+          ip_address: string
+          is_blocked?: boolean | null
+          last_attempt_at?: string | null
+        }
+        Update: {
+          attempt_count?: number | null
+          email?: string
+          first_attempt_at?: string | null
+          id?: string
+          ip_address?: string
+          is_blocked?: boolean | null
+          last_attempt_at?: string | null
+        }
+        Relationships: []
+      }
       user_push_subscriptions: {
         Row: {
           created_at: string | null
@@ -851,6 +899,18 @@ export type Database = {
           job_company: string
         }
         Returns: boolean
+      }
+      check_signup_attempts: {
+        Args: {
+          p_ip_address: string
+          p_email: string
+          max_attempts?: number
+          block_duration_hours?: number
+        }
+        Returns: {
+          can_proceed: boolean
+          message: string
+        }[]
       }
       company_names_match: {
         Args: {
