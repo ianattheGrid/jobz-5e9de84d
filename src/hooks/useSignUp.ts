@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -18,13 +17,18 @@ const createEmployerProfile = async (userId: string, companyName: string, fullNa
   if (error) throw error;
 };
 
-const createCandidateProfile = async (userId: string, fullName: string, linkedinUrl?: string) => {
+const createCandidateProfile = async (userId: string, fullName: string, email: string, linkedinUrl?: string) => {
   const { error } = await supabase
     .from('candidate_profiles')
     .insert({
       id: userId,
       full_name: fullName,
-      linkedin_url: linkedinUrl
+      email: email,
+      linkedin_url: linkedinUrl,
+      job_title: 'Not specified',
+      min_salary: 0,
+      max_salary: 0,
+      years_experience: 0
     });
 
   if (error) throw error;
@@ -81,7 +85,7 @@ export const useSignUp = () => {
       if (userType === 'employer') {
         await createEmployerProfile(data.user.id, companyName, fullName, companyWebsite);
       } else if (userType === 'candidate') {
-        await createCandidateProfile(data.user.id, fullName, linkedinUrl);
+        await createCandidateProfile(data.user.id, fullName, email, linkedinUrl);
       }
 
       const { error: signInError } = await supabase.auth.signInWithPassword({
