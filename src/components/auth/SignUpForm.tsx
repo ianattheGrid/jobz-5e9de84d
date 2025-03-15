@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Link, useNavigate } from "react-router-dom";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 import { isFreeEmailProvider, emailMatchesWebsite } from "@/utils/validationUtils";
 import { useIPMonitoring } from "@/hooks/useIPMonitoring";
+import { FormField } from "./signup/FormFields";
+import { EmployerFields } from "./signup/EmployerFields";
+import { CandidateFields } from "./signup/CandidateFields";
+import { SignUpError } from "./signup/SignUpError";
 
 interface SignUpFormProps {
   onSubmit: (email: string, password: string, fullName: string, companyName?: string) => Promise<void>;
@@ -71,14 +72,12 @@ export const SignUpForm = ({ onSubmit, loading, userType, showCompanyField = fal
     e.preventDefault();
     setError(null);
 
-    // Check for IP-based blocking
     const canProceed = await checkSignupAttempt(email);
     if (!canProceed) {
       setError("Too many signup attempts from this IP address. Please try again later.");
       return;
     }
 
-    // Validate based on user type
     if (userType === 'employer' && !validateEmployerSignup()) {
       return;
     }
@@ -101,7 +100,6 @@ export const SignUpForm = ({ onSubmit, loading, userType, showCompanyField = fal
         ))
       ) {
         setError("This email is already registered for this role. Please sign in instead.");
-        // Automatically redirect to sign in page after 2 seconds
         setTimeout(() => {
           navigate(`/${userType}/signin`);
         }, 2000);
@@ -126,95 +124,52 @@ export const SignUpForm = ({ onSubmit, loading, userType, showCompanyField = fal
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 w-full max-w-md mx-auto">
-      {(error || isBlocked) && (
-        <Alert variant="destructive">
-          <AlertDescription>
-            {error || "Too many signup attempts from this IP address. Please try again later."}
-          </AlertDescription>
-        </Alert>
-      )}
+      <SignUpError error={error} isBlocked={isBlocked} />
       
-      <div className="space-y-2">
-        <Label htmlFor="fullName">Full Name</Label>
-        <Input 
-          id="fullName" 
-          type="text" 
-          value={fullName}
-          onChange={(e) => setFullName(e.target.value)}
-          placeholder="Enter your full name" 
-          className="bg-white border border-input"
-          required
-        />
-      </div>
+      <FormField
+        id="fullName"
+        label="Full Name"
+        value={fullName}
+        onChange={(e) => setFullName(e.target.value)}
+        placeholder="Enter your full name"
+        required
+      />
 
-      <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
-        <Input 
-          id="email" 
-          type="email" 
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder={userType === 'employer' ? "Enter your work email" : "Enter your email"} 
-          className="bg-white border border-input"
-          required
-        />
-      </div>
+      <FormField
+        id="email"
+        label="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder={userType === 'employer' ? "Enter your work email" : "Enter your email"}
+        type="email"
+        required
+      />
 
       {userType === 'employer' && (
-        <>
-          <div className="space-y-2">
-            <Label htmlFor="companyName">Company Name</Label>
-            <Input 
-              id="companyName" 
-              type="text" 
-              value={companyName}
-              onChange={(e) => setCompanyName(e.target.value)}
-              placeholder="Enter your company name" 
-              className="bg-white border border-input"
-              required
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="companyWebsite">Company Website</Label>
-            <Input 
-              id="companyWebsite" 
-              type="url" 
-              value={companyWebsite}
-              onChange={(e) => setCompanyWebsite(e.target.value)}
-              placeholder="https://www.company.com" 
-              className="bg-white border border-input"
-              required
-            />
-          </div>
-        </>
+        <EmployerFields
+          companyName={companyName}
+          setCompanyName={setCompanyName}
+          companyWebsite={companyWebsite}
+          setCompanyWebsite={setCompanyWebsite}
+        />
       )}
 
       {userType === 'candidate' && (
-        <div className="space-y-2">
-          <Label htmlFor="linkedinUrl">LinkedIn Profile URL (Optional)</Label>
-          <Input 
-            id="linkedinUrl" 
-            type="url" 
-            value={linkedinUrl}
-            onChange={(e) => setLinkedinUrl(e.target.value)}
-            placeholder="https://www.linkedin.com/in/your-profile" 
-            className="bg-white border border-input"
-          />
-        </div>
+        <CandidateFields
+          linkedinUrl={linkedinUrl}
+          setLinkedinUrl={setLinkedinUrl}
+        />
       )}
 
-      <div className="space-y-2">
-        <Label htmlFor="password">Password</Label>
-        <Input 
-          id="password" 
-          type="password" 
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Create a password" 
-          className="bg-white border border-input"
-          required
-        />
-      </div>
+      <FormField
+        id="password"
+        label="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        placeholder="Create a password"
+        type="password"
+        required
+      />
 
       <Button className="w-full bg-primary hover:bg-primary-dark text-white" type="submit" disabled={loading}>
         {loading ? "Signing up..." : "Sign Up"}
