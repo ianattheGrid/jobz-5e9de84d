@@ -25,16 +25,8 @@ export const VerificationSection = () => {
         return;
       }
 
-      // Create verification record
-      const { error } = await supabase
-        .from('candidate_verifications')
-        .insert({
-          candidate_id: session.user.id,
-          verification_status: 'pending'
-        });
-
-      if (error) throw error;
-
+      // For now, just show the coming soon message without database interaction
+      // We'll implement the database part after types are updated
       toast({
         title: "Coming Soon",
         description: "Identity verification will be available soon!"
@@ -64,7 +56,7 @@ export const VerificationSection = () => {
           <h2 className="text-xl font-semibold">Identity Verification</h2>
         </div>
         {verificationStatus === 'verified' && (
-          <Badge variant="success" className="bg-green-100 text-green-800">
+          <Badge variant="secondary" className="bg-green-100 text-green-800">
             Verified
           </Badge>
         )}
