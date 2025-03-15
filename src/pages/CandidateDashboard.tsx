@@ -13,6 +13,7 @@ import {
   Calendar
 } from "lucide-react";
 import { TestScenarioButton } from "@/components/dashboard/TestScenarioButton";
+import { VerificationSection } from "@/components/candidate/VerificationSection";
 
 const CandidateDashboard = () => {
   const navigate = useNavigate();
@@ -140,6 +141,8 @@ const CandidateDashboard = () => {
           Welcome{fullName ? `, ${fullName}` : ''}
         </h1>
         <p className="text-gray-600 mb-8">Manage your job search and applications</p>
+        
+        <VerificationSection />
         
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {menuItems.map((item, index) => (
