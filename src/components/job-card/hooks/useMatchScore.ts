@@ -72,7 +72,7 @@ export const useMatchScore = (profile: CandidateProfile, job: any) => {
       : 0.3 * centerScore;
   };
 
-  const verificationBonus = async () => {
+  const checkVerificationStatus = async () => {
     try {
       const { data } = await supabase
         .from('candidate_verifications')
@@ -80,11 +80,10 @@ export const useMatchScore = (profile: CandidateProfile, job: any) => {
         .eq('candidate_id', profile.id)
         .maybeSingle();
       
-      // Add a 10% bonus to match score if verified
-      return data?.verification_status === 'verified' ? 0.1 : 0;
+      return data?.verification_status === 'verified';
     } catch (error) {
       console.error('Error checking verification status:', error);
-      return 0;
+      return false;
     }
   };
 
@@ -97,11 +96,9 @@ export const useMatchScore = (profile: CandidateProfile, job: any) => {
     totalScore += specializationMatch() * 0.15; // Specialization match (15%)
     totalScore += salaryMatch() * 0.10;         // Salary match (10%)
     
-    // Add verification bonus if verified (can increase score by up to 10%)
-    const bonus = await verificationBonus();
-    totalScore = Math.min(1, totalScore * (1 + bonus));
-    
-    return totalScore;
+    // Only return the score if the candidate is verified, otherwise return 0
+    const isVerified = await checkVerificationStatus();
+    return isVerified ? totalScore : 0;
   };
 
   return {
