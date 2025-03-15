@@ -224,6 +224,33 @@ export type Database = {
         }
         Relationships: []
       }
+      candidate_verifications: {
+        Row: {
+          candidate_id: string
+          created_at: string | null
+          id: string
+          updated_at: string | null
+          verification_status: string
+          verified_at: string | null
+        }
+        Insert: {
+          candidate_id: string
+          created_at?: string | null
+          id?: string
+          updated_at?: string | null
+          verification_status?: string
+          verified_at?: string | null
+        }
+        Update: {
+          candidate_id?: string
+          created_at?: string | null
+          id?: string
+          updated_at?: string | null
+          verification_status?: string
+          verified_at?: string | null
+        }
+        Relationships: []
+      }
       commission_negotiations: {
         Row: {
           candidate_id: string | null

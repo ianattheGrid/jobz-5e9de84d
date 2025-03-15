@@ -3,13 +3,37 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Shield, ShieldCheck } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
 export const VerificationSection = () => {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [verificationStatus, setVerificationStatus] = useState<string>('unverified');
+
+  useEffect(() => {
+    loadVerificationStatus();
+  }, []);
+
+  const loadVerificationStatus = async () => {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) return;
+
+      const { data, error } = await supabase
+        .from('candidate_verifications')
+        .select('verification_status')
+        .eq('candidate_id', session.user.id)
+        .single();
+
+      if (error) throw error;
+      if (data) {
+        setVerificationStatus(data.verification_status);
+      }
+    } catch (error) {
+      console.error('Error loading verification status:', error);
+    }
+  };
 
   const startVerification = async () => {
     try {
@@ -25,8 +49,16 @@ export const VerificationSection = () => {
         return;
       }
 
-      // For now, just show the coming soon message without database interaction
-      // We'll implement the database part after types are updated
+      const { error } = await supabase
+        .from('candidate_verifications')
+        .insert({
+          candidate_id: session.user.id,
+          verification_status: 'pending'
+        });
+
+      if (error) throw error;
+
+      setVerificationStatus('pending');
       toast({
         title: "Coming Soon",
         description: "Identity verification will be available soon!"
