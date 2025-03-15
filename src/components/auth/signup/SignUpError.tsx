@@ -17,3 +17,4 @@ export const SignUpError = ({ error, isBlocked }: SignUpErrorProps) => {
     </Alert>
   );
 };
+
