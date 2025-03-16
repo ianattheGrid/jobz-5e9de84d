@@ -3,7 +3,6 @@ import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/comp
 import { Control } from "react-hook-form";
 import { CandidateFormValues } from "../candidateFormSchema";
 import { Textarea } from "@/components/ui/textarea";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { getSkillsByWorkArea } from "@/components/work-area/skills";
 
@@ -99,55 +98,28 @@ const SkillsSection = ({ control }: SkillsSectionProps) => {
         />
       </div>
 
-      {/* Security Clearance Section */}
+      {/* Security Clearance Level Section */}
       <div>
         <h3 className="text-lg font-semibold text-gray-900 mb-6">Security Clearance</h3>
         <FormField
           control={control}
-          name="security_clearance"
+          name="security_clearance_level"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Do you have security clearance?</FormLabel>
-              <FormControl>
-                <RadioGroup
-                  onValueChange={field.onChange}
-                  value={field.value}
-                  className="flex flex-col space-y-1"
-                >
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="yes" id="security-yes" />
-                    <label htmlFor="security-yes">Yes</label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="no" id="security-no" />
-                    <label htmlFor="security-no">No</label>
-                  </div>
-                </RadioGroup>
-              </FormControl>
-              {field.value === 'yes' && (
-                <FormField
-                  control={control}
-                  name="security_clearance_level"
-                  render={({ field }) => (
-                    <FormItem className="mt-4">
-                      <FormLabel>What level of security clearance do you have?</FormLabel>
-                      <Select onValueChange={field.onChange} value={field.value}>
-                        <SelectTrigger className="bg-white">
-                          <SelectValue placeholder="Select clearance level" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-white">
-                          {SecurityClearanceLevels.map((level) => (
-                            <SelectItem key={level} value={level}>
-                              {level}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              )}
+              <FormLabel>What level of security clearance do you have?</FormLabel>
+              <Select onValueChange={field.onChange} value={field.value}>
+                <SelectTrigger className="bg-white">
+                  <SelectValue placeholder="Select clearance level" />
+                </SelectTrigger>
+                <SelectContent className="bg-white">
+                  {SecurityClearanceLevels.map((level) => (
+                    <SelectItem key={level} value={level}>
+                      {level}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FormMessage />
             </FormItem>
           )}
         />
