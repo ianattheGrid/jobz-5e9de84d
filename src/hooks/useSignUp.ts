@@ -19,14 +19,13 @@ const createEmployerProfile = async (userId: string, companyName: string, fullNa
   if (error) throw error;
 };
 
-const createCandidateProfile = async (userId: string, fullName: string, email: string, linkedinUrl?: string) => {
+const createCandidateProfile = async (userId: string, fullName: string, email: string) => {
   const { error } = await supabase
     .from('candidate_profiles')
     .insert({
       id: userId,
       full_name: fullName,
       email: email,
-      linkedin_url: linkedinUrl,
       job_title: 'Not specified',
       min_salary: 0,
       max_salary: 0,
@@ -87,7 +86,7 @@ export const useSignUp = () => {
       if (userType === 'employer') {
         await createEmployerProfile(data.user.id, companyName, fullName, companyWebsite, companySize);
       } else if (userType === 'candidate') {
-        await createCandidateProfile(data.user.id, fullName, email, linkedinUrl);
+        await createCandidateProfile(data.user.id, fullName, email);
       }
 
       const { error: signInError } = await supabase.auth.signInWithPassword({
