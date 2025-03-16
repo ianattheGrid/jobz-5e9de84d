@@ -1,3 +1,4 @@
+
 import { SignUpForm } from "@/components/auth/SignUpForm";
 import { useSignUp } from "@/hooks/useSignUp";
 import NavBar from "@/components/NavBar";
@@ -20,6 +21,7 @@ const EmployerSignUp = () => {
       password, 
       'employer', 
       fullName, 
+      jobTitle || '',
       companyName || '', 
       companyWebsite || '',
       companySize || 0

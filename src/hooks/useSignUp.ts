@@ -44,7 +44,8 @@ export const useSignUp = () => {
     email: string, 
     password: string, 
     userType: string, 
-    fullName: string, 
+    fullName: string,
+    jobTitle: string = '',
     companyName: string = '', 
     companyWebsite: string = '',
     companySize: number = 0
