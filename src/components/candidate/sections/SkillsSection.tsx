@@ -26,7 +26,7 @@ const SkillsSection = ({ control }: SkillsSectionProps) => {
   return (
     <div className="space-y-8 bg-white rounded-lg p-6">
       <div>
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Skills & Qualifications</h3>
+        <h3 className="text-lg font-semibold text-gray-900 mb-6">Technical Skills</h3>
         
         {availableSkills.length > 0 && (
           <FormField
@@ -34,7 +34,7 @@ const SkillsSection = ({ control }: SkillsSectionProps) => {
             name="required_skills"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Technical Skills</FormLabel>
+                <FormLabel>Skills in your area</FormLabel>
                 <FormControl>
                   <Select
                     onValueChange={(value) => {
@@ -77,12 +77,15 @@ const SkillsSection = ({ control }: SkillsSectionProps) => {
             )}
           />
         )}
+      </div>
 
+      <div>
+        <h3 className="text-lg font-semibold text-gray-900 mb-6">Industry Qualifications</h3>
         <FormField
           control={control}
           name="qualifications"
           render={({ field }) => (
-            <FormItem className="mt-6">
+            <FormItem>
               <FormLabel>Do you have any industry qualifications?</FormLabel>
               <FormControl>
                 <Textarea
@@ -91,19 +94,19 @@ const SkillsSection = ({ control }: SkillsSectionProps) => {
                   {...field}
                 />
               </FormControl>
-              <p className="text-sm text-gray-600">
-                Please list any relevant qualifications, separated by commas
-              </p>
               <FormMessage />
             </FormItem>
           )}
         />
+      </div>
 
+      <div>
+        <h3 className="text-lg font-semibold text-gray-900 mb-6">Security Clearance</h3>
         <FormField
           control={control}
           name="security_clearance"
           render={({ field }) => (
-            <FormItem className="mt-6">
+            <FormItem>
               <FormLabel>Do you have security clearance?</FormLabel>
               <FormControl>
                 <RadioGroup
