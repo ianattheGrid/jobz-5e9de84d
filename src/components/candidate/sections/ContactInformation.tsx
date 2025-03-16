@@ -1,3 +1,4 @@
+
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Control } from "react-hook-form";
@@ -8,7 +9,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { Link } from "lucide-react";
 import BristolPostcodeSelect from "@/components/address/BristolPostcodeSelect";
 import HomePostcodeSelect from "@/components/address/HomePostcodeSelect";
-import TitleExperienceSelect from "@/components/work-area/TitleExperienceSelect";
 
 interface ContactInformationProps {
   control: Control<CandidateFormValues>;
@@ -146,18 +146,6 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
               </p>
               <FormMessage />
             </FormItem>
-          )}
-        />
-
-        <FormField
-          control={control}
-          name="years_in_current_title"
-          render={({ field }) => (
-            <TitleExperienceSelect
-              control={control}
-              name="years_in_current_title"
-              label="Years of experience in your current job title"
-            />
           )}
         />
 
