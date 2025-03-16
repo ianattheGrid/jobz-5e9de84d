@@ -1,4 +1,3 @@
-
 import { SignUpForm } from "@/components/auth/SignUpForm";
 import { useSignUp } from "@/hooks/useSignUp";
 import NavBar from "@/components/NavBar";
@@ -10,12 +9,21 @@ const EmployerSignUp = () => {
   const handleSubmit = async (
     email: string, 
     password: string, 
-    fullName: string, 
-    companyName: string, 
-    companyWebsite: string,
-    companySize: number
+    fullName: string,
+    jobTitle?: string,
+    companyName?: string, 
+    companyWebsite?: string,
+    companySize?: number
   ) => {
-    await signUp(email, password, 'employer', fullName, companyName, companyWebsite, companySize);
+    await signUp(
+      email, 
+      password, 
+      'employer', 
+      fullName, 
+      companyName || '', 
+      companyWebsite || '',
+      companySize || 0
+    );
   };
 
   return (

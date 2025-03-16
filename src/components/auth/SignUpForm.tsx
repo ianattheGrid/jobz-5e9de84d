@@ -1,12 +1,11 @@
-import { useState } from "react";
+
 import { Button } from "@/components/ui/button";
-import { Link, useNavigate } from "react-router-dom";
-import { isFreeEmailProvider, emailMatchesWebsite } from "@/utils/validationUtils";
-import { useIPMonitoring } from "@/hooks/useIPMonitoring";
-import { FormField } from "./signup/FormFields";
+import { Link } from "react-router-dom";
 import { EmployerFields } from "./signup/EmployerFields";
 import { CandidateFields } from "./signup/CandidateFields";
 import { SignUpError } from "./signup/SignUpError";
+import { CommonFields } from "./signup/CommonFields";
+import { useSignUpForm } from "./signup/useSignUpForm";
 
 interface SignUpFormProps {
   onSubmit: (email: string, password: string, fullName: string, jobTitle?: string, companyName?: string, companyWebsite?: string, companySize?: number) => Promise<void>;
@@ -16,124 +15,7 @@ interface SignUpFormProps {
 }
 
 export const SignUpForm = ({ onSubmit, loading, userType, showCompanyField = false }: SignUpFormProps) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [fullName, setFullName] = useState("");
-  const [jobTitle, setJobTitle] = useState("");
-  const [companyName, setCompanyName] = useState("");
-  const [companyWebsite, setCompanyWebsite] = useState("");
-  const [companySize, setCompanySize] = useState("");
-  const [isSME, setIsSME] = useState(false);
-  const [linkedinUrl, setLinkedinUrl] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const navigate = useNavigate();
-  const { isBlocked, checkSignupAttempt } = useIPMonitoring();
-
-  const validateCandidateSignup = () => {
-    if (linkedinUrl) {
-      try {
-        const url = new URL(linkedinUrl);
-        if (!url.hostname.includes('linkedin.com')) {
-          setError("Please enter a valid LinkedIn profile URL");
-          return false;
-        }
-      } catch {
-        setError("Please enter a valid LinkedIn profile URL");
-        return false;
-      }
-    }
-    return true;
-  };
-
-  const validateEmployerSignup = () => {
-    if (!companySize || isNaN(Number(companySize)) || Number(companySize) < 1) {
-      setError("Please enter a valid number of employees");
-      return false;
-    }
-
-    if (!isSME) {
-      setError("You must confirm that your company has 499 employees or fewer");
-      return false;
-    }
-
-    if (Number(companySize) > 499) {
-      setError("This platform is only for companies with 499 employees or fewer");
-      return false;
-    }
-
-    if (isFreeEmailProvider(email)) {
-      setError("Please use your work email address. Personal email providers are not allowed for employer accounts.");
-      return false;
-    }
-
-    if (!companyWebsite) {
-      setError("Company website is required for employer registration.");
-      return false;
-    }
-
-    try {
-      new URL(companyWebsite);
-    } catch {
-      setError("Please enter a valid company website URL.");
-      return false;
-    }
-
-    if (!emailMatchesWebsite(email, companyWebsite)) {
-      setError("Your email domain must match your company's website domain.");
-      return false;
-    }
-
-    return true;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
-
-    const canProceed = await checkSignupAttempt(email);
-    if (!canProceed) {
-      setError("Too many signup attempts from this IP address. Please try again later.");
-      return;
-    }
-
-    if (userType === 'employer' && !validateEmployerSignup()) {
-      return;
-    }
-
-    if (userType === 'candidate' && !validateCandidateSignup()) {
-      return;
-    }
-
-    try {
-      await onSubmit(
-        email, 
-        password, 
-        fullName,
-        jobTitle,
-        companyName, 
-        companyWebsite, 
-        0 // Set a default company size of 0 since we're not collecting it anymore
-      );
-    } catch (err: any) {
-      const errorMessage = err.message || "";
-      if (
-        errorMessage.includes('already registered') || 
-        errorMessage.includes('already exists') ||
-        errorMessage.includes(`User already has the role ${userType}`) ||
-        (err.error?.message && (
-          err.error.message.includes('already registered') ||
-          err.error.message.includes(`User already has the role ${userType}`)
-        ))
-      ) {
-        setError("This email is already registered for this role. Please sign in instead.");
-        setTimeout(() => {
-          navigate(`/${userType}/signin`);
-        }, 2000);
-      } else {
-        setError(errorMessage || "An error occurred during sign up");
-      }
-    }
-  };
+  const { formState, handleSubmit } = useSignUpForm({ userType, onSubmit });
 
   const getSignInLink = () => {
     switch(userType) {
@@ -150,62 +32,37 @@ export const SignUpForm = ({ onSubmit, loading, userType, showCompanyField = fal
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 w-full max-w-md mx-auto">
-      <SignUpError error={error} isBlocked={isBlocked} />
+      <SignUpError error={formState.error} isBlocked={formState.isBlocked} />
       
-      <FormField
-        id="fullName"
-        label="Full Name"
-        value={fullName}
-        onChange={(e) => setFullName(e.target.value)}
-        placeholder="Enter your full name"
-        required
-      />
-
-      <FormField
-        id="email"
-        label="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder={userType === 'employer' ? "Enter your work email" : "Enter your email"}
-        type="email"
-        required
-      />
-
-      <FormField
-        id="jobTitle"
-        label="Job Title"
-        value={jobTitle}
-        onChange={(e) => setJobTitle(e.target.value)}
-        placeholder="Enter your job title"
+      <CommonFields
+        email={formState.email}
+        setEmail={formState.setEmail}
+        password={formState.password}
+        setPassword={formState.setPassword}
+        fullName={formState.fullName}
+        setFullName={formState.setFullName}
+        jobTitle={formState.jobTitle}
+        setJobTitle={formState.setJobTitle}
+        userType={userType}
       />
 
       {userType === 'employer' && (
         <EmployerFields
-          companyName={companyName}
-          setCompanyName={setCompanyName}
-          companyWebsite={companyWebsite}
-          setCompanyWebsite={setCompanyWebsite}
-          isSME={isSME}
-          setIsSME={setIsSME}
+          companyName={formState.companyName}
+          setCompanyName={formState.setCompanyName}
+          companyWebsite={formState.companyWebsite}
+          setCompanyWebsite={formState.setCompanyWebsite}
+          isSME={formState.isSME}
+          setIsSME={formState.setIsSME}
         />
       )}
 
       {userType === 'candidate' && (
         <CandidateFields
-          linkedinUrl={linkedinUrl}
-          setLinkedinUrl={setLinkedinUrl}
+          linkedinUrl={formState.linkedinUrl}
+          setLinkedinUrl={formState.setLinkedinUrl}
         />
       )}
-
-      <FormField
-        id="password"
-        label="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder="Create a password"
-        type="password"
-        required
-      />
 
       <Button className="w-full bg-primary hover:bg-primary-dark text-white" type="submit" disabled={loading}>
         {loading ? "Signing up..." : "Sign Up"}
