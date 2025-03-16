@@ -44,7 +44,7 @@ const SkillsSection = ({ control }: SkillsSectionProps) => {
                       }
                     }}
                   >
-                    <SelectTrigger>
+                    <SelectTrigger className="bg-white">
                       <SelectValue placeholder="Select skills relevant to your role" />
                     </SelectTrigger>
                     <SelectContent>
@@ -82,12 +82,12 @@ const SkillsSection = ({ control }: SkillsSectionProps) => {
           control={control}
           name="qualifications"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="mt-6">
               <FormLabel>Do you have any industry qualifications?</FormLabel>
               <FormControl>
                 <Textarea
                   placeholder="Enter your qualifications (separate with commas)"
-                  className="min-h-[100px]"
+                  className="min-h-[100px] bg-white"
                   {...field}
                 />
               </FormControl>
@@ -103,7 +103,7 @@ const SkillsSection = ({ control }: SkillsSectionProps) => {
           control={control}
           name="security_clearance"
           render={({ field }) => (
-            <FormItem className="space-y-4">
+            <FormItem className="mt-6">
               <FormLabel>Do you have security clearance?</FormLabel>
               <FormControl>
                 <RadioGroup
@@ -126,10 +126,10 @@ const SkillsSection = ({ control }: SkillsSectionProps) => {
                   control={control}
                   name="security_clearance_level"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="mt-4">
                       <FormLabel>What level of security clearance do you have?</FormLabel>
                       <Select onValueChange={field.onChange} value={field.value}>
-                        <SelectTrigger>
+                        <SelectTrigger className="bg-white">
                           <SelectValue placeholder="Select clearance level" />
                         </SelectTrigger>
                         <SelectContent>
