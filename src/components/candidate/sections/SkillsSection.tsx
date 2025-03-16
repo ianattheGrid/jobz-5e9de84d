@@ -34,7 +34,7 @@ const SkillsSection = ({ control }: SkillsSectionProps) => {
             name="required_skills"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Skills in your area</FormLabel>
+                <FormLabel>Select your technical skills</FormLabel>
                 <FormControl>
                   <Select
                     onValueChange={(value) => {
@@ -45,7 +45,7 @@ const SkillsSection = ({ control }: SkillsSectionProps) => {
                     }}
                   >
                     <SelectTrigger className="bg-white">
-                      <SelectValue placeholder="Select skills relevant to your role" />
+                      <SelectValue placeholder="Select your skills" />
                     </SelectTrigger>
                     <SelectContent>
                       {availableSkills.map((skill) => (
@@ -101,7 +101,6 @@ const SkillsSection = ({ control }: SkillsSectionProps) => {
       </div>
 
       <div>
-        <h3 className="text-lg font-semibold text-gray-900 mb-6">Security Clearance</h3>
         <FormField
           control={control}
           name="security_clearance"
