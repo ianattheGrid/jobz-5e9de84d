@@ -110,7 +110,7 @@ export const SignUpForm = ({ onSubmit, loading, userType, showCompanyField = fal
         fullName, 
         companyName, 
         companyWebsite, 
-        Number(companySize)
+        0 // Set a default company size of 0 since we're not collecting it anymore
       );
     } catch (err: any) {
       const errorMessage = err.message || "";
@@ -175,8 +175,6 @@ export const SignUpForm = ({ onSubmit, loading, userType, showCompanyField = fal
           setCompanyName={setCompanyName}
           companyWebsite={companyWebsite}
           setCompanyWebsite={setCompanyWebsite}
-          companySize={companySize}
-          setCompanySize={setCompanySize}
           isSME={isSME}
           setIsSME={setIsSME}
         />
