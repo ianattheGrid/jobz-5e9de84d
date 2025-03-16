@@ -7,8 +7,6 @@ interface EmployerFieldsProps {
   setCompanyName: (value: string) => void;
   companyWebsite: string;
   setCompanyWebsite: (value: string) => void;
-  companySize: string;
-  setCompanySize: (value: string) => void;
   isSME: boolean;
   setIsSME: (value: boolean) => void;
 }
@@ -18,8 +16,6 @@ export const EmployerFields = ({
   setCompanyName,
   companyWebsite,
   setCompanyWebsite,
-  companySize,
-  setCompanySize,
   isSME,
   setIsSME,
 }: EmployerFieldsProps) => (
@@ -42,8 +38,6 @@ export const EmployerFields = ({
       required
     />
     <SMEVerification
-      companySize={companySize}
-      setCompanySize={setCompanySize}
       isSME={isSME}
       setIsSME={setIsSME}
     />
