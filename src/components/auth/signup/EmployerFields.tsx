@@ -1,11 +1,16 @@
 
 import { FormField } from "./FormFields";
+import { SMEVerification } from "./SMEVerification";
 
 interface EmployerFieldsProps {
   companyName: string;
   setCompanyName: (value: string) => void;
   companyWebsite: string;
   setCompanyWebsite: (value: string) => void;
+  companySize: string;
+  setCompanySize: (value: string) => void;
+  isSME: boolean;
+  setIsSME: (value: boolean) => void;
 }
 
 export const EmployerFields = ({
@@ -13,6 +18,10 @@ export const EmployerFields = ({
   setCompanyName,
   companyWebsite,
   setCompanyWebsite,
+  companySize,
+  setCompanySize,
+  isSME,
+  setIsSME,
 }: EmployerFieldsProps) => (
   <>
     <FormField
@@ -32,6 +41,11 @@ export const EmployerFields = ({
       type="url"
       required
     />
+    <SMEVerification
+      companySize={companySize}
+      setCompanySize={setCompanySize}
+      isSME={isSME}
+      setIsSME={setIsSME}
+    />
   </>
 );
-

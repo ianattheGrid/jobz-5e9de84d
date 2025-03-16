@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
 
-const createEmployerProfile = async (userId: string, companyName: string, fullName: string, companyWebsite: string) => {
+const createEmployerProfile = async (userId: string, companyName: string, fullName: string, companyWebsite: string, companySize: number) => {
   const { error } = await supabase
     .from('employer_profiles')
     .insert({
@@ -11,6 +11,8 @@ const createEmployerProfile = async (userId: string, companyName: string, fullNa
       company_name: companyName,
       full_name: fullName,
       company_website: companyWebsite,
+      company_size: companySize,
+      is_sme: true,
       job_title: 'Not specified'
     });
 
@@ -46,7 +48,7 @@ export const useSignUp = () => {
     fullName: string, 
     companyName: string = '', 
     companyWebsite: string = '',
-    linkedinUrl: string = ''
+    companySize: number = 0
   ) => {
     try {
       setLoading(true);
@@ -83,7 +85,7 @@ export const useSignUp = () => {
       }
 
       if (userType === 'employer') {
-        await createEmployerProfile(data.user.id, companyName, fullName, companyWebsite);
+        await createEmployerProfile(data.user.id, companyName, fullName, companyWebsite, companySize);
       } else if (userType === 'candidate') {
         await createCandidateProfile(data.user.id, fullName, email, linkedinUrl);
       }

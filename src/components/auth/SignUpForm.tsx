@@ -9,7 +9,7 @@ import { CandidateFields } from "./signup/CandidateFields";
 import { SignUpError } from "./signup/SignUpError";
 
 interface SignUpFormProps {
-  onSubmit: (email: string, password: string, fullName: string, companyName?: string) => Promise<void>;
+  onSubmit: (email: string, password: string, fullName: string, companyName?: string, companyWebsite?: string, companySize?: number) => Promise<void>;
   loading: boolean;
   userType: 'candidate' | 'employer' | 'vr';
   showCompanyField?: boolean;
@@ -21,12 +21,45 @@ export const SignUpForm = ({ onSubmit, loading, userType, showCompanyField = fal
   const [fullName, setFullName] = useState("");
   const [companyName, setCompanyName] = useState("");
   const [companyWebsite, setCompanyWebsite] = useState("");
+  const [companySize, setCompanySize] = useState("");
+  const [isSME, setIsSME] = useState(false);
   const [linkedinUrl, setLinkedinUrl] = useState("");
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
   const { isBlocked, checkSignupAttempt } = useIPMonitoring();
 
+  const validateCandidateSignup = () => {
+    if (linkedinUrl) {
+      try {
+        const url = new URL(linkedinUrl);
+        if (!url.hostname.includes('linkedin.com')) {
+          setError("Please enter a valid LinkedIn profile URL");
+          return false;
+        }
+      } catch {
+        setError("Please enter a valid LinkedIn profile URL");
+        return false;
+      }
+    }
+    return true;
+  };
+
   const validateEmployerSignup = () => {
+    if (!companySize || isNaN(Number(companySize)) || Number(companySize) < 1) {
+      setError("Please enter a valid number of employees");
+      return false;
+    }
+
+    if (!isSME) {
+      setError("You must confirm that your company has 499 employees or fewer");
+      return false;
+    }
+
+    if (Number(companySize) > 499) {
+      setError("This platform is only for companies with 499 employees or fewer");
+      return false;
+    }
+
     if (isFreeEmailProvider(email)) {
       setError("Please use your work email address. Personal email providers are not allowed for employer accounts.");
       return false;
@@ -52,22 +85,6 @@ export const SignUpForm = ({ onSubmit, loading, userType, showCompanyField = fal
     return true;
   };
 
-  const validateCandidateSignup = () => {
-    if (linkedinUrl) {
-      try {
-        const url = new URL(linkedinUrl);
-        if (!url.hostname.includes('linkedin.com')) {
-          setError("Please enter a valid LinkedIn profile URL");
-          return false;
-        }
-      } catch {
-        setError("Please enter a valid LinkedIn profile URL");
-        return false;
-      }
-    }
-    return true;
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -87,7 +104,14 @@ export const SignUpForm = ({ onSubmit, loading, userType, showCompanyField = fal
     }
 
     try {
-      await onSubmit(email, password, fullName, companyName);
+      await onSubmit(
+        email, 
+        password, 
+        fullName, 
+        companyName, 
+        companyWebsite, 
+        Number(companySize)
+      );
     } catch (err: any) {
       const errorMessage = err.message || "";
       if (
@@ -151,6 +175,10 @@ export const SignUpForm = ({ onSubmit, loading, userType, showCompanyField = fal
           setCompanyName={setCompanyName}
           companyWebsite={companyWebsite}
           setCompanyWebsite={setCompanyWebsite}
+          companySize={companySize}
+          setCompanySize={setCompanySize}
+          isSME={isSME}
+          setIsSME={setIsSME}
         />
       )}
 

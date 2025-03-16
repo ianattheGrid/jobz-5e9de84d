@@ -7,8 +7,15 @@ import { PRIMARY_COLOR_PATTERN } from "@/styles/colorPatterns";
 const EmployerSignUp = () => {
   const { signUp, loading } = useSignUp();
 
-  const handleSubmit = async (email: string, password: string, fullName: string, companyName: string) => {
-    await signUp(email, password, 'employer', fullName, companyName);
+  const handleSubmit = async (
+    email: string, 
+    password: string, 
+    fullName: string, 
+    companyName: string, 
+    companyWebsite: string,
+    companySize: number
+  ) => {
+    await signUp(email, password, 'employer', fullName, companyName, companyWebsite, companySize);
   };
 
   return (

@@ -100,6 +100,7 @@ export type Database = {
           full_name: string | null
           home_postcode: string | null
           id: string
+          is_currently_employed: boolean | null
           job_title: string
           linkedin_url: string | null
           location: string[] | null
@@ -135,6 +136,7 @@ export type Database = {
           full_name?: string | null
           home_postcode?: string | null
           id: string
+          is_currently_employed?: boolean | null
           job_title: string
           linkedin_url?: string | null
           location?: string[] | null
@@ -170,6 +172,7 @@ export type Database = {
           full_name?: string | null
           home_postcode?: string | null
           id?: string
+          is_currently_employed?: boolean | null
           job_title?: string
           linkedin_url?: string | null
           location?: string[] | null
@@ -323,10 +326,12 @@ export type Database = {
         Row: {
           company_logo_url: string | null
           company_name: string
+          company_size: number | null
           company_website: string | null
           created_at: string
           full_name: string
           id: string
+          is_sme: boolean | null
           job_title: string
           linkedin_url: string | null
           profile_picture_url: string | null
@@ -335,10 +340,12 @@ export type Database = {
         Insert: {
           company_logo_url?: string | null
           company_name: string
+          company_size?: number | null
           company_website?: string | null
           created_at?: string
           full_name: string
           id: string
+          is_sme?: boolean | null
           job_title: string
           linkedin_url?: string | null
           profile_picture_url?: string | null
@@ -347,10 +354,12 @@ export type Database = {
         Update: {
           company_logo_url?: string | null
           company_name?: string
+          company_size?: number | null
           company_website?: string | null
           created_at?: string
           full_name?: string
           id?: string
+          is_sme?: boolean | null
           job_title?: string
           linkedin_url?: string | null
           profile_picture_url?: string | null
@@ -1005,6 +1014,12 @@ export type Database = {
           "": string
         }
         Returns: string[]
+      }
+      validate_sme_size: {
+        Args: {
+          size: number
+        }
+        Returns: boolean
       }
     }
     Enums: {
