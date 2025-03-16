@@ -9,7 +9,7 @@ import { CandidateFields } from "./signup/CandidateFields";
 import { SignUpError } from "./signup/SignUpError";
 
 interface SignUpFormProps {
-  onSubmit: (email: string, password: string, fullName: string, companyName?: string, companyWebsite?: string, companySize?: number) => Promise<void>;
+  onSubmit: (email: string, password: string, fullName: string, jobTitle?: string, companyName?: string, companyWebsite?: string, companySize?: number) => Promise<void>;
   loading: boolean;
   userType: 'candidate' | 'employer' | 'vr';
   showCompanyField?: boolean;
@@ -19,6 +19,7 @@ export const SignUpForm = ({ onSubmit, loading, userType, showCompanyField = fal
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
+  const [jobTitle, setJobTitle] = useState("");
   const [companyName, setCompanyName] = useState("");
   const [companyWebsite, setCompanyWebsite] = useState("");
   const [companySize, setCompanySize] = useState("");
@@ -107,7 +108,8 @@ export const SignUpForm = ({ onSubmit, loading, userType, showCompanyField = fal
       await onSubmit(
         email, 
         password, 
-        fullName, 
+        fullName,
+        jobTitle,
         companyName, 
         companyWebsite, 
         0 // Set a default company size of 0 since we're not collecting it anymore
@@ -167,6 +169,14 @@ export const SignUpForm = ({ onSubmit, loading, userType, showCompanyField = fal
         placeholder={userType === 'employer' ? "Enter your work email" : "Enter your email"}
         type="email"
         required
+      />
+
+      <FormField
+        id="jobTitle"
+        label="Job Title"
+        value={jobTitle}
+        onChange={(e) => setJobTitle(e.target.value)}
+        placeholder="Enter your job title"
       />
 
       {userType === 'employer' && (
