@@ -20,6 +20,11 @@ export const useProfileSubmit = (toast: ToastFunction) => {
 
       console.log("Submitting profile data:", values);
 
+      // Parse qualifications from comma-separated string to array
+      const qualifications = values.qualifications
+        ? values.qualifications.split(',').map(q => q.trim()).filter(Boolean)
+        : [];
+
       const { error } = await supabase
         .from('candidate_profiles')
         .upsert({
@@ -34,8 +39,9 @@ export const useProfileSubmit = (toast: ToastFunction) => {
           years_experience: values.years_experience ? parseInt(values.years_experience) : 0,
           min_salary: values.min_salary,
           max_salary: values.max_salary,
-          required_skills: values.required_skills,
-          security_clearance: values.security_clearance,
+          required_skills: values.required_skills || [],
+          required_qualifications: qualifications,
+          security_clearance: values.security_clearance === 'yes' ? values.security_clearance_level : null,
           work_eligibility: values.work_eligibility,
           commission_percentage: values.open_to_commission ? values.commission_percentage : null,
           additional_skills: values.additional_skills,

@@ -30,6 +30,7 @@ export const candidateFormSchema = z.object({
   }),
   required_skills: z.array(z.string()).optional(),
   security_clearance: z.string().optional(),
+  security_clearance_level: z.string().optional(),
   work_eligibility: z.string().optional(),
   years_experience: z.string().min(1, "Years of experience is required"),
   years_in_current_title: z.number().min(0, "Please specify your years of experience in current role"),
@@ -43,6 +44,7 @@ export const candidateFormSchema = z.object({
   linkedin_url: z.string().url("Please enter a valid LinkedIn URL").optional(),
   hasQualification: z.boolean().default(false),
   qualificationDetails: z.string().optional(),
+  qualifications: z.string().optional(),
 }).refine((data) => data.max_salary >= data.min_salary, {
   message: "Maximum salary must be greater than or equal to minimum salary",
   path: ["max_salary"],
