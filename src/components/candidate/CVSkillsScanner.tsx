@@ -29,38 +29,51 @@ export const CVSkillsScanner = ({ cvUrl }: CVSkillsScannerProps) => {
     try {
       setScanning(true);
       
-      // Balanced skill list mixing technical and professional skills
+      // Balanced skill list with technical, professional, creative and industry-specific skills
       const skillsToScan = [
-        // Technical Skills - Programming Languages
-        "JavaScript", "TypeScript", "Python", "Java", "C# .NET", "PHP", "Ruby on Rails", 
-        "Swift", "Kotlin", "C++", "SQL Database",
+        // Web and App Development Skills
+        "Web Design", "Web Development", "App Development", "Mobile App Development",
+        "User Interface Design", "User Experience Design", "UX Research",
+        "Frontend Development", "Backend Development", "Full Stack Development",
+        "Responsive Design", "Cross-platform Development", "E-commerce Development",
         
-        // Technical Skills - Frameworks & Tools
-        "React.js", "Angular.js", "Node.js", "Docker Containers", 
-        "Cloud Computing", "Data Analysis", "AWS", "Microsoft Azure",
+        // Technical Skills - Programming & Tools
+        "JavaScript Programming", "TypeScript Development", "Python Development", "Java Development", 
+        "C# Programming", "PHP Programming", "Ruby on Rails Development",
+        "Swift Development", "Kotlin Development", "C++ Programming", "SQL Database Management",
+        "React Framework", "Angular Framework", "Vue.js", "Node.js",
+        "WordPress Development", "Shopify Development", "Webflow Design",
+        "Docker Containerization", "Git Version Control",
         
-        // Professional Skills
+        // Design & Creative Skills
+        "Graphic Design", "UI Design", "Figma", "Adobe Creative Suite",
+        "Logo Design", "Brand Identity Design", "Content Creation",
+        "Wireframing", "Prototyping", "Interaction Design",
+        "Digital Marketing", "SEO Optimization", "Visual Communication",
+        
+        // Cloud & DevOps
+        "Cloud Computing", "AWS Architecture", "Microsoft Azure",
+        "CI/CD Implementation", "DevOps Engineering", "Infrastructure as Code",
+        
+        // Professional Skills & Project Management
         "Project Management", "Team Leadership", "Strategic Planning",
         "Business Analysis", "Agile Methodology", "Scrum Framework",
         "Stakeholder Management", "Client Relations", "Requirements Gathering",
+        "Product Development", "Process Improvement", "Change Management",
         
         // Soft Skills & Management
         "Communication Skills", "Problem Solving", "Critical Thinking",
         "Time Management", "Presentation Skills", "Negotiation",
-        "Change Management", "Budget Management", "Resource Allocation",
+        "Budget Management", "Resource Allocation", "Team Building",
         
         // Industry Knowledge
-        "Digital Marketing", "Financial Analysis", "Human Resources",
+        "Digital Transformation", "Financial Analysis", "Human Resources",
         "Supply Chain Management", "Quality Assurance", "Research Methods",
-        "Customer Experience", "Product Development", "Risk Management",
+        "Customer Experience", "Risk Management", "Compliance Management",
         
         // Business Tools
-        "Microsoft Office", "Google Workspace", "Salesforce", 
-        "JIRA Project Management", "Power BI", "Tableau Dashboard",
-        
-        // Creative Skills
-        "Content Creation", "UI/UX Design", "Graphic Design",
-        "Copywriting", "Video Production"
+        "Microsoft Office Suite", "Google Workspace", "Salesforce CRM", 
+        "JIRA Project Management", "Power BI Analytics", "Tableau Dashboard"
       ];
       
       // Call the parse-cv function
@@ -141,9 +154,9 @@ export const CVSkillsScanner = ({ cvUrl }: CVSkillsScannerProps) => {
               <p className="text-sm text-amber-800">
                 No skills were detected in your CV. To improve your matches:
                 <ul className="list-disc pl-5 mt-2 space-y-1">
-                  <li>Include specific technical skills and professional competencies in your CV</li> 
+                  <li>Include specific skills like "Web Design" or "Project Management" in your CV</li> 
                   <li>Make sure your CV is in a readable text format (not just images)</li>
-                  <li>Use complete terms like "Project Management" rather than abbreviations</li>
+                  <li>Use complete terms rather than abbreviations</li>
                   <li>List skills clearly, ideally in a dedicated "Skills" section</li>
                 </ul>
               </p>

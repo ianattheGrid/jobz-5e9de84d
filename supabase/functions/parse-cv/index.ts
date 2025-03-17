@@ -49,46 +49,59 @@ serve(async (req) => {
     const cvContentLower = cvContent.toLowerCase();
     console.log('CV content length:', cvContentLower.length);
     
-    // Enhanced skill matching algorithm with balanced approach
+    // Enhanced skill matching algorithm with comprehensive approach
     const matchedSkills = requiredSkills.filter((skill) => {
       const skillLower = skill.toLowerCase();
       
-      // Skip very short skills (1-2 characters) completely
+      // Skip very short skills completely
       if (skillLower.length <= 2) {
         return false;
       }
       
-      // For short skills (3-4 chars), use strict word boundaries
+      // For short skills (3-4 chars), use strict word boundaries and validate context
       if (skillLower.length <= 4) {
         const strictRegex = new RegExp(`\\b${skillLower.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
         const result = strictRegex.test(cvContentLower);
-        console.log(`Checking skill "${skill}" (short) with strict matching: ${result}`);
+        console.log(`Checking short skill "${skill}" with strict matching: ${result}`);
         return result;
       }
       
-      // For longer skills, be slightly more flexible but still use proper word boundaries
+      // For longer skills, check with proper word boundaries first
       const wordBoundaryRegex = new RegExp(`\\b${skillLower.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
       if (wordBoundaryRegex.test(cvContentLower)) {
         console.log(`Found skill "${skill}" with word boundary match`);
         return true;
       }
 
-      // For multi-word professional skills (like "project management"), 
-      // allow more flexible matching as they might appear in various forms
-      if (skillLower.includes(' ') && skillLower.length > 8) {
-        // For longer multi-word skills, we can be a bit more lenient
-        // This helps with skills like "project management" which might appear 
-        // in different forms like "managing projects" or "project manager"
-        const words = skillLower.split(' ');
+      // For multi-word skills, advanced matching logic
+      if (skillLower.includes(' ')) {
+        const words = skillLower.split(' ').filter(word => word.length > 3);
+        if (words.length === 0) return false;
         
-        // Check if all words from the skill appear close to each other in the CV
-        const wordProximity = words.every(word => {
-          if (word.length <= 3) return true; // Skip very short words like "of", "in", etc.
-          return cvContentLower.includes(word);
-        });
+        // Check if all significant words appear in the CV within reasonable proximity
+        const allWordsPresent = words.every(word => cvContentLower.includes(word));
         
-        if (wordProximity) {
-          console.log(`Found skill "${skill}" with word proximity match`);
+        if (allWordsPresent) {
+          // Check if the words are within a reasonable distance of each other
+          // This helps detect phrases like "managing projects" when looking for "project management"
+          const firstWordIndex = cvContentLower.indexOf(words[0]);
+          const lastWordIndex = cvContentLower.indexOf(words[words.length - 1]);
+          
+          // If words are within 100 characters of each other, likely related
+          const proximity = Math.abs(lastWordIndex - firstWordIndex) < 100;
+          
+          console.log(`Found multi-word skill "${skill}": all words present? ${allWordsPresent}, proximity? ${proximity}`);
+          return proximity;
+        }
+      }
+      
+      // For technical skills that might appear with different endings (e.g., "design" vs "designing")
+      if (skillLower.length > 5 && !skillLower.includes(' ')) {
+        // Check for skill as a root word (e.g., "design" would match "designer" or "designing")
+        const rootRegex = new RegExp(`\\b${skillLower.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}[a-z]*\\b`, 'i');
+        const result = rootRegex.test(cvContentLower);
+        if (result) {
+          console.log(`Found skill "${skill}" with root word match`);
           return true;
         }
       }
