@@ -72,8 +72,7 @@ export default function CandidateProfile() {
           </div>
           <Button
             onClick={() => navigate('/candidate/dashboard')}
-            className="text-white"
-            variant="default"
+            style={{ backgroundColor: "#FF69B4", color: "white" }}
           >
             <LayoutDashboard className="w-4 h-4 mr-2" />
             Dashboard
