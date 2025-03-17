@@ -160,7 +160,17 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Override button styles to restore the primary pink button */
-button[type="submit"],
-.bg-primary {
-  @apply bg-primary hover:bg-primary/90 text-white !important;
+button[type="submit"] {
+  background-color: #FF69B4 !important;
+  color: white !important;
+}
+
+button[type="submit"]:hover {
+  background-color: #FF50A8 !important;
+}
+
+/* Fix for commission toggles and other form elements */
+.commission-toggle-container,
+.form-item-container {
+  @apply bg-white text-gray-900 !important;
 }

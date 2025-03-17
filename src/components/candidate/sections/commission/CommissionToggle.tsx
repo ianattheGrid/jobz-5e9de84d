@@ -17,7 +17,7 @@ const CommissionToggle = ({ control, name, label, onChange }: CommissionTogglePr
       name={name}
       render={({ field }) => (
         <FormItem>
-          <div className="flex flex-row items-center justify-between rounded-lg border p-3 bg-white">
+          <div className="flex flex-row items-center justify-between rounded-lg border p-3 bg-white commission-toggle-container">
             <div>
               <FormLabel className="text-sm text-gray-900">{label}</FormLabel>
             </div>

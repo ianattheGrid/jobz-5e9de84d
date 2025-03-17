@@ -1,3 +1,4 @@
+
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
@@ -135,7 +136,7 @@ export function CandidateForm() {
         </div>
         
         <div className="flex justify-start">
-          <Button type="submit" className="bg-primary hover:bg-primary/90 text-white">
+          <Button type="submit" style={{ backgroundColor: "#FF69B4", color: "white" }}>
             Update Profile
           </Button>
         </div>
