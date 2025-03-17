@@ -26,7 +26,7 @@ export const useProfileSubmit = (toast: ToastFunction) => {
         return false;
       }
 
-      // Process form values
+      // Process form values - ensure all string values are properly handled
       const profileData = {
         id: session.user.id,
         full_name: values.full_name || '',
@@ -34,12 +34,12 @@ export const useProfileSubmit = (toast: ToastFunction) => {
         phone_number: values.phone_number || '',
         address: values.address || '',
         home_postcode: values.home_postcode || '',
-        location: values.location || [],
+        location: Array.isArray(values.location) ? values.location : [],
         job_title: values.workArea || '',
         years_experience: values.years_experience ? parseInt(values.years_experience) : 0,
         min_salary: values.min_salary || 0,
         max_salary: values.max_salary || 0,
-        required_skills: values.required_skills || [],
+        required_skills: Array.isArray(values.required_skills) ? values.required_skills : [],
         required_qualifications: values.qualifications
           ? values.qualifications.split(',').map(q => q.trim()).filter(Boolean)
           : [],

@@ -29,7 +29,6 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
               <FormLabel className="text-gray-900">Full Name</FormLabel>
               <FormControl>
                 <Input 
-                  id="full_name"
                   placeholder="Enter your full name" 
                   className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400"
                   {...field}
@@ -48,7 +47,6 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
               <FormLabel className="text-gray-900">Email Address</FormLabel>
               <FormControl>
                 <Input 
-                  id="email"
                   type="email"
                   placeholder="Enter your email address" 
                   className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400"
@@ -68,7 +66,6 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
               <FormLabel className="text-gray-900">Phone Number</FormLabel>
               <FormControl>
                 <Input 
-                  id="phone_number"
                   type="tel" 
                   placeholder="Enter your phone number" 
                   className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400"
@@ -89,7 +86,6 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
               <FormControl>
                 <div className="relative">
                   <Input 
-                    id="linkedin_url"
                     type="url" 
                     placeholder="https://www.linkedin.com/in/your-profile" 
                     className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 pl-10"
@@ -111,7 +107,6 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
               <FormLabel className="text-gray-900">Current Employer</FormLabel>
               <FormControl>
                 <Input 
-                  id="current_employer"
                   placeholder="Enter your current employer's name" 
                   className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400"
                   {...field}
