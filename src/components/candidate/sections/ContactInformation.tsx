@@ -27,8 +27,6 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
                   placeholder="Enter your full name" 
                   className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400"
                   {...field}
-                  onChange={(e) => field.onChange(e.target.value)}
-                  value={field.value || ""}
                 />
               </FormControl>
               <FormMessage />
@@ -48,8 +46,6 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
                   placeholder="Enter your email address" 
                   className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400"
                   {...field}
-                  onChange={(e) => field.onChange(e.target.value)}
-                  value={field.value || ""}
                 />
               </FormControl>
               <FormMessage />
@@ -69,8 +65,6 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
                   placeholder="Enter your phone number" 
                   className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400"
                   {...field}
-                  onChange={(e) => field.onChange(e.target.value)}
-                  value={field.value || ""}
                 />
               </FormControl>
               <FormMessage />
@@ -91,8 +85,6 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
                     placeholder="https://www.linkedin.com/in/your-profile" 
                     className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 pl-10"
                     {...field}
-                    onChange={(e) => field.onChange(e.target.value)}
-                    value={field.value || ""}
                   />
                   <Link className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
                 </div>
@@ -113,8 +105,6 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
                   placeholder="Enter your current employer's name" 
                   className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400"
                   {...field}
-                  onChange={(e) => field.onChange(e.target.value)}
-                  value={field.value || ""}
                 />
               </FormControl>
               <p className="text-sm text-gray-600 mt-1">
