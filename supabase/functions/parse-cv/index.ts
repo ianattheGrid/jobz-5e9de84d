@@ -23,109 +23,124 @@ serve(async (req) => {
     console.log('Processing CV:', fileUrl);
     console.log('Required skills to check:', requiredSkills);
 
-    // Enhanced PDF handling with multiple strategies
-    let cvContent = '';
-    let retryCount = 0;
-    const maxRetries = 3;
-    let lastError = null;
-    
-    // Try different approaches to extract text from the PDF
-    const strategies = [
-      // Strategy 1: Simple fetch with text extraction
+    // Attempt PDF text extraction with different methods
+    const extractTextMethods = [
+      // Method 1: Using text extraction with PDF.js approach
       async () => {
-        console.log("Trying strategy 1: Simple fetch");
-        const response = await fetch(fileUrl);
-        if (!response.ok) {
-          throw new Error(`Failed to fetch CV: ${response.status}`);
+        console.log("Trying fetch with PDF.js approach");
+        try {
+          // Fetch the PDF file as an ArrayBuffer
+          const response = await fetch(fileUrl);
+          if (!response.ok) {
+            throw new Error(`Failed to fetch PDF: ${response.status}`);
+          }
+          
+          // Get the file content as text directly (might work for some PDFs)
+          const text = await response.text();
+          
+          // If the text starts with "%PDF" it's likely in binary format and we need to extract visible text
+          if (text.startsWith("%PDF") || text.includes("PDF-")) {
+            // For binary PDFs, extract text using the content we have
+            // Remove binary noise but keep text content
+            const cleanedText = text.replace(/[\x00-\x09\x0B\x0C\x0E-\x1F\x7F-\xFF]/g, ' ')
+                                    .replace(/\s+/g, ' ');
+            return cleanedText;
+          }
+          
+          return text;
+        } catch (error) {
+          console.error("Method 1 failed:", error);
+          return null;
         }
-        return await response.text();
       },
       
-      // Strategy 2: Set explicit headers for PDF handling
+      // Method 2: Try with different headers and Accept types
       async () => {
-        console.log("Trying strategy 2: With PDF headers");
-        const response = await fetch(fileUrl, {
-          headers: {
-            'Accept': 'application/pdf, text/plain, */*',
-            'Range': 'bytes=0-10000000',  // Get up to 10MB which should cover most CVs
-          },
-        });
-        if (!response.ok) {
-          throw new Error(`Failed with headers: ${response.status}`);
+        console.log("Trying fetch with different Accept headers");
+        try {
+          const response = await fetch(fileUrl, {
+            headers: {
+              'Accept': 'text/plain, application/pdf, */*',
+              'Cache-Control': 'no-cache'
+            }
+          });
+          
+          if (!response.ok) {
+            throw new Error(`Failed to fetch with Accept headers: ${response.status}`);
+          }
+          
+          // Try to get text content
+          const text = await response.text();
+          return text;
+        } catch (error) {
+          console.error("Method 2 failed:", error);
+          return null;
         }
-        return await response.text();
       },
       
-      // Strategy 3: Try to get raw binary data and convert
+      // Method 3: Try to get raw bytes and perform manual text extraction
       async () => {
-        console.log("Trying strategy 3: Binary approach");
-        const response = await fetch(fileUrl);
-        if (!response.ok) {
-          throw new Error(`Failed binary fetch: ${response.status}`);
+        console.log("Trying binary approach with manual text extraction");
+        try {
+          const response = await fetch(fileUrl);
+          if (!response.ok) {
+            throw new Error(`Failed with binary fetch: ${response.status}`);
+          }
+          
+          const arrayBuffer = await response.arrayBuffer();
+          const bytes = new Uint8Array(arrayBuffer);
+          
+          // Extract text content manually from PDF structure
+          // This is a simplified approach - we're looking for text between PDF stream markers
+          let extractedText = "";
+          const bytesStr = new TextDecoder().decode(bytes);
+          
+          // Look for text between BT (Begin Text) and ET (End Text) markers in the PDF
+          const textRegex = /BT\s*(.*?)\s*ET/gs;
+          const matches = bytesStr.match(textRegex);
+          
+          if (matches && matches.length > 0) {
+            extractedText = matches.join(' ');
+          }
+          
+          // If no matches, try to get any readable text 
+          if (!extractedText) {
+            extractedText = bytesStr.replace(/[^\x20-\x7E]/g, ' ').replace(/\s+/g, ' ');
+          }
+          
+          return extractedText;
+        } catch (error) {
+          console.error("Method 3 failed:", error);
+          return null;
         }
-        const arrayBuffer = await response.arrayBuffer();
-        const textDecoder = new TextDecoder('utf-8', { fatal: false, ignoreBOM: true });
-        const content = textDecoder.decode(arrayBuffer);
-        
-        // Clean up binary noise while keeping text
-        return content.replace(/[\x00-\x09\x0B\x0C\x0E-\x1F\x7F]/g, ' ')
-                      .replace(/\s+/g, ' ');
       }
     ];
     
-    // Try each strategy until one succeeds
-    let successfulStrategy = false;
+    // Try each extraction method until one succeeds
+    let cvContent = "";
+    let extractionMethod = 0;
     
-    for (const [index, strategy] of strategies.entries()) {
-      if (successfulStrategy) break;
+    for (const method of extractTextMethods) {
+      extractionMethod++;
+      console.log(`Attempting extraction method ${extractionMethod}`);
       
-      try {
-        console.log(`Attempting extraction strategy ${index + 1}`);
-        const content = await strategy();
-        
-        // Check if we got meaningful content
-        if (content && content.length > 100 && content.match(/[a-zA-Z]{5,}/g)) {
-          cvContent = content;
-          console.log(`Strategy ${index + 1} succeeded with ${content.length} chars of content`);
-          successfulStrategy = true;
-          break;
-        } else {
-          console.log(`Strategy ${index + 1} returned insufficient content (${content?.length || 0} chars)`);
-        }
-      } catch (error) {
-        console.error(`Strategy ${index + 1} failed:`, error);
-        lastError = error;
+      const result = await method();
+      if (result && result.length > 100) {
+        cvContent = result;
+        console.log(`Method ${extractionMethod} succeeded with ${result.length} chars`);
+        break;
+      } else {
+        console.log(`Method ${extractionMethod} failed or returned insufficient content`);
       }
     }
     
-    if (!successfulStrategy) {
-      // Fall back to multiple retries of the basic approach
-      while (retryCount < maxRetries && !cvContent) {
-        try {
-          console.log(`Retry attempt ${retryCount + 1} using basic fetch`);
-          const response = await fetch(fileUrl);
-          
-          if (!response.ok) {
-            throw new Error(`Failed to fetch CV: ${response.status}`);
-          }
-          
-          cvContent = await response.text();
-          break;
-        } catch (error) {
-          console.error(`CV download attempt ${retryCount + 1} failed:`, error);
-          lastError = error;
-          retryCount++;
-          await new Promise(resolve => setTimeout(resolve, 1000));
-        }
-      }
-    }
-    
-    if (!cvContent || cvContent.length < 50) {
+    // If all methods fail, return an error
+    if (!cvContent || cvContent.length < 100) {
       return new Response(JSON.stringify({ 
-        error: "Could not extract text from the CV. The file may be an image-based PDF or protected.",
-        debug: debug ? { lastError: lastError?.message, contentLength: cvContent?.length || 0 } : undefined
+        error: "Could not extract text from the PDF. The file may be an image-based PDF or protected.",
+        debug: debug ? { contentLength: cvContent?.length || 0 } : undefined
       }), {
-        status: 200,  // Return 200 but with error in payload so frontend can display it
+        status: 200,  // Return 200 but with error in payload 
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
@@ -140,85 +155,75 @@ serve(async (req) => {
     
     if (debug) {
       // Log a sample of the content for debugging
-      console.log('CV content sample:', cvContentLower.substring(0, 500) + '...');
+      console.log('CV content sample (first 300 chars):', cvContentLower.substring(0, 300));
     }
     
-    // Improved skill matching algorithm with comprehensive approach
-    const matchedSkills = requiredSkills.filter((skill) => {
+    // Enhanced skill matching with multiple approaches
+    const matchedSkills = [];
+    
+    for (const skill of requiredSkills) {
       const skillLower = skill.toLowerCase();
+      let found = false;
       
       // Skip very short skills 
       if (skillLower.length <= 2) {
-        return false;
+        continue;
       }
       
-      if (debug) {
-        console.log(`Checking skill: "${skill}"`);
+      // 1. Direct exact match
+      if (cvContentLower.includes(skillLower)) {
+        matchedSkills.push(skill);
+        found = true;
+        if (debug) console.log(`Found direct match for "${skill}"`);
+        continue;
       }
       
-      // For multi-word skills, try different approaches
-      if (skillLower.includes(' ')) {
-        // Exact phrase match with word boundaries
-        const phraseRegex = new RegExp(`\\b${skillLower.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
-        if (phraseRegex.test(cvContentLower)) {
-          if (debug) console.log(`  Found exact phrase match for "${skill}"`);
-          return true;
+      // 2. Word boundary match
+      if (!found) {
+        const wordBoundaryRegex = new RegExp(`\\b${skillLower}\\b`, 'i');
+        if (wordBoundaryRegex.test(cvContentLower)) {
+          matchedSkills.push(skill);
+          found = true;
+          if (debug) console.log(`Found word boundary match for "${skill}"`);
+          continue;
         }
-        
-        // Check for all words in proximity
-        const words = skillLower.split(' ').filter(word => word.length > 2);
-        if (words.length === 0) return false;
-        
-        const allWordsPresent = words.every(word => {
-          const wordRegex = new RegExp(`\\b${word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\w*\\b`, 'i');
-          return wordRegex.test(cvContentLower);
-        });
-        
-        if (allWordsPresent) {
-          // Check if the words are within a reasonable distance of each other
-          // This helps detect variations like "designing web applications" vs "web design"
-          const positions = words.map(word => {
-            const wordRegex = new RegExp(`\\b${word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\w*\\b`, 'i');
-            const match = wordRegex.exec(cvContentLower);
-            return match ? match.index : -1;
-          }).filter(pos => pos >= 0);
+      }
+      
+      // 3. For multi-word skills, try individual word matching
+      if (!found && skillLower.includes(' ')) {
+        const words = skillLower.split(' ').filter(w => w.length > 2);
+        if (words.length > 0) {
+          const allWordsPresent = words.every(word => 
+            cvContentLower.includes(word)
+          );
           
-          if (positions.length >= words.length) {
-            const minPos = Math.min(...positions);
-            const maxPos = Math.max(...positions);
-            
-            // If words are within 100 characters of each other, likely related
-            const proximity = maxPos - minPos < 150;
-            
-            if (debug) {
-              console.log(`  Multi-word skill "${skill}": all words present with proximity=${proximity}`);
-            }
-            
-            if (proximity) return true;
-          }
-        }
-      } else {
-        // For single word skills
-        
-        // First try exact word boundary match
-        const exactRegex = new RegExp(`\\b${skillLower.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
-        if (exactRegex.test(cvContentLower)) {
-          if (debug) console.log(`  Found exact match for "${skill}"`);
-          return true;
-        }
-        
-        // Then try root word matching (e.g., "design" matches "designer")
-        if (skillLower.length > 4) {
-          const rootRegex = new RegExp(`\\b${skillLower.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\w*\\b`, 'i');
-          if (rootRegex.test(cvContentLower)) {
-            if (debug) console.log(`  Found root word match for "${skill}"`);
-            return true;
+          if (allWordsPresent) {
+            matchedSkills.push(skill);
+            found = true;
+            if (debug) console.log(`Found all words match for "${skill}"`);
+            continue;
           }
         }
       }
       
-      return false;
-    });
+      // 4. For technical skills, check for variations (e.g., React/ReactJS)
+      if (!found) {
+        if ((skillLower === 'react' && 
+            (cvContentLower.includes('reactjs') || cvContentLower.includes('react.js'))) ||
+            (skillLower === 'angular' && 
+            (cvContentLower.includes('angularjs') || cvContentLower.includes('angular.js'))) ||
+            (skillLower === 'vue' && 
+            (cvContentLower.includes('vuejs') || cvContentLower.includes('vue.js'))) ||
+            (skillLower === 'node' && 
+            (cvContentLower.includes('nodejs') || cvContentLower.includes('node.js')))
+           ) {
+          matchedSkills.push(skill);
+          found = true;
+          if (debug) console.log(`Found variation match for "${skill}"`);
+          continue;
+        }
+      }
+    }
 
     console.log('Matched skills:', matchedSkills);
 
@@ -237,7 +242,8 @@ serve(async (req) => {
       cvSkillsMatchScore,
       debug: debug ? {
         contentLength: cvContentLower.length,
-        contentSample: cvContentLower.substring(0, 200) + '...'
+        contentSample: cvContentLower.substring(0, 200) + '...',
+        extractionMethod
       } : undefined
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -246,7 +252,7 @@ serve(async (req) => {
   } catch (error) {
     console.error('Error parsing CV:', error);
     return new Response(
-      JSON.stringify({ error: error.message }), {
+      JSON.stringify({ error: error.message || "Unknown error occurred" }), {
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       }

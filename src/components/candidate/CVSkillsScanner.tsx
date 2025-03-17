@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2, Search, AlertTriangle } from "lucide-react";
+import { Loader2, Search, AlertTriangle, CheckCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 interface CVSkillsScannerProps {
@@ -31,47 +31,48 @@ export const CVSkillsScanner = ({ cvUrl }: CVSkillsScannerProps) => {
       setScanning(true);
       setScanError(null);
       
-      // Balanced skill list with technical, professional, creative and industry-specific skills
+      // Extended skill list with web design, app development and more technical skills
       const skillsToScan = [
-        // Professional Skills
-        "Project Management", "Team Leadership", "Strategic Planning",
-        "Business Analysis", "Client Relations", "Communication",
-        "Presentation", "Problem Solving", "Negotiation",
+        // Web Design & Development
+        "HTML", "CSS", "JavaScript", "TypeScript", "React", "Angular", 
+        "Vue", "Web Design", "Responsive Design", "Web Development",
+        "UI Design", "UX Design", "WordPress", "Webflow", "Figma",
+        "Adobe XD", "Sketch", "InVision", "Prototyping",
         
-        // Web & Design Skills
-        "Web Design", "UI Design", "UX Design", "Responsive Design",
-        "User Interface", "User Experience", "Wireframing", "Prototyping", 
-        "Visual Design", "Interaction Design", "Information Architecture",
+        // Mobile & App Development
+        "Mobile Development", "iOS Development", "Android Development", 
+        "Swift", "Kotlin", "React Native", "Flutter", "App Development",
+        "Hybrid Apps", "Mobile Apps", "Cross Platform", "Mobile UI",
         
-        // App Development
-        "Mobile Development", "App Development", "iOS Development",
-        "Android Development", "Cross Platform", "Hybrid Apps",
-        "Mobile Apps", "React Native", "Flutter", "Swift",
+        // Backend
+        "Node.js", "Express", "Django", "Flask", "Ruby on Rails",
+        "PHP", "Laravel", "ASP.NET", "Spring Boot", "Java", 
+        "C#", "Python", "Go", "Rust", "API Development", "GraphQL", "REST API",
         
-        // Programming & Tech
-        "JavaScript", "TypeScript", "React", "Angular", 
-        "Vue", "Node.js", "HTML", "CSS", "SASS",
-        "PHP", "Python", "Java", "SQL", "NoSQL",
-        "AWS", "Azure", "Docker", "Git", "DevOps",
-        "Frontend", "Backend", "Full Stack", "Web Development",
+        // Databases
+        "SQL", "MySQL", "PostgreSQL", "MongoDB", "NoSQL", 
+        "Firebase", "Redis", "Database Design", "ORM",
         
-        // Marketing & Business
-        "Digital Marketing", "Content Creation", "SEO",
-        "Social Media", "Email Marketing", "Data Analysis",
-        "Market Research", "Campaign Management",
+        // DevOps & Infrastructure
+        "AWS", "Azure", "Google Cloud", "DevOps", "Docker", "Kubernetes",
+        "CI/CD", "Jenkins", "Git", "GitHub", "GitLab", "Bitbucket",
         
-        // Project & Process
-        "Agile Methodology", "Scrum", "Kanban",
-        "Waterfall", "Product Development", "Requirements Gathering",
-        "Stakeholder Management", "Process Improvement",
+        // Project Management & Professional
+        "Agile", "Scrum", "Kanban", "Jira", "Project Management",
+        "Team Leadership", "Communication", "Problem Solving",
         
-        // Creative
-        "Graphic Design", "Branding", "Creative Direction",
-        "Illustration", "Animation", "Video Editing", "Copywriting",
+        // Design & Creative
+        "Graphic Design", "Photoshop", "Illustrator", "InDesign", 
+        "After Effects", "UI/UX", "Animation", "Video Editing",
+        "Content Creation", "Branding", 
         
-        // Industry Knowledge
-        "Ecommerce", "Fintech", "Healthcare", "Education",
-        "Real Estate", "Retail", "Hospitality"
+        // Marketing & Analytics 
+        "SEO", "Digital Marketing", "Google Analytics", "Social Media",
+        "Content Strategy", "Email Marketing", "A/B Testing",
+        
+        // AI & Data
+        "Machine Learning", "Data Science", "Data Analysis", 
+        "Big Data", "Artificial Intelligence", "TensorFlow", "PyTorch"
       ];
       
       console.log("Starting CV scan with URL:", cvUrl);
@@ -151,9 +152,15 @@ export const CVSkillsScanner = ({ cvUrl }: CVSkillsScannerProps) => {
       {hasScanned && !scanError && (
         <div className="mt-4">
           {detectedSkills.length > 0 ? (
-            <div>
+            <div className="p-4 border border-green-200 bg-green-50 rounded-md">
+              <div className="flex items-center mb-2">
+                <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
+                <p className="text-sm font-medium text-green-800">
+                  {detectedSkills.length} skills detected in your CV
+                </p>
+              </div>
               <p className="text-sm text-gray-600 mb-2">
-                The following skills were detected in your CV:
+                The following skills were identified:
               </p>
               <div className="flex flex-wrap gap-2">
                 {detectedSkills.map((skill, index) => (
@@ -168,25 +175,21 @@ export const CVSkillsScanner = ({ cvUrl }: CVSkillsScannerProps) => {
             </div>
           ) : (
             <div className="p-4 border border-amber-200 bg-amber-50 rounded-md">
-              <p className="text-sm text-amber-800">
-                No skills were detected in your CV. To improve your matches:
-              </p>
-              <div className="mt-2 space-y-1">
-                <div className="flex items-start">
-                  <span className="mr-2">•</span>
-                  <span>Include specific skills like "Web Design" or "Project Management" in your CV</span>
-                </div>
-                <div className="flex items-start">
-                  <span className="mr-2">•</span>
-                  <span>Make sure your CV is in a readable text format (not just images)</span>
-                </div>
-                <div className="flex items-start">
-                  <span className="mr-2">•</span>
-                  <span>Use complete terms rather than abbreviations</span>
-                </div>
-                <div className="flex items-start">
-                  <span className="mr-2">•</span>
-                  <span>List skills clearly, ideally in a dedicated "Skills" section</span>
+              <div className="flex items-start">
+                <AlertTriangle className="h-5 w-5 text-amber-500 mr-2 flex-shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-sm font-medium text-amber-800">
+                    No skills were detected in your CV
+                  </p>
+                  <div className="mt-2 space-y-1 text-sm text-amber-700">
+                    <p className="font-medium">To improve your matches:</p>
+                    <div className="ml-1 space-y-1">
+                      <p>• Include specific skills like "Web Design" or "App Development" in your CV</p>
+                      <p>• Make sure your CV is in a readable text format (not just images)</p>
+                      <p>• Use complete terms rather than abbreviations</p>
+                      <p>• List skills clearly, ideally in a dedicated "Skills" section</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -202,9 +205,13 @@ export const CVSkillsScanner = ({ cvUrl }: CVSkillsScannerProps) => {
               <p className="text-sm font-medium text-red-800">Error scanning CV</p>
               <p className="text-sm text-red-700 mt-1">{scanError}</p>
               <p className="text-sm text-red-600 mt-2">
-                Try uploading your CV again in a different format (PDF or DOC) or ensure your PDF contains 
-                extractable text rather than just images of text.
+                Try the following:
               </p>
+              <ul className="mt-1 list-disc list-inside text-sm text-red-600 space-y-1">
+                <li>Upload your CV again in PDF format</li>
+                <li>Ensure your PDF contains extractable text rather than just images</li>
+                <li>Try converting your CV to a different format if possible</li>
+              </ul>
             </div>
           </div>
         </div>
@@ -214,16 +221,6 @@ export const CVSkillsScanner = ({ cvUrl }: CVSkillsScannerProps) => {
         <p className="text-sm text-amber-600">
           Please upload your CV first before scanning for skills.
         </p>
-      )}
-      
-      {/* Complete analysis UI for when scan is done */}
-      {hasScanned && detectedSkills.length > 0 && (
-        <div className="mt-4 p-4 border border-green-200 bg-green-50 rounded-md">
-          <p className="text-sm font-medium text-green-800">CV Analysis Complete</p>
-          <p className="text-sm text-green-700 mt-1">
-            {detectedSkills.length} skills detected in your CV.
-          </p>
-        </div>
       )}
     </div>
   );

@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2, Upload } from "lucide-react";
+import { Loader2, Upload, FileText, Check } from "lucide-react";
 
 interface FileUploadSectionProps {
   userId: string;
@@ -21,6 +21,7 @@ export const FileUploadSection = ({
 }: FileUploadSectionProps) => {
   const [uploadingPicture, setUploadingPicture] = useState(false);
   const [uploadingCV, setUploadingCV] = useState(false);
+  const [uploadSuccess, setUploadSuccess] = useState<'picture' | 'cv' | null>(null);
   const { toast } = useToast();
 
   const handleFileUpload = async (file: File, type: 'profile_picture' | 'cv') => {
@@ -32,6 +33,7 @@ export const FileUploadSection = ({
 
     try {
       setUploading(true);
+      setUploadSuccess(null);
 
       const { error: uploadError, data } = await supabase.storage
         .from(bucket)
@@ -53,6 +55,14 @@ export const FileUploadSection = ({
         .eq('id', userId);
 
       if (updateError) throw updateError;
+
+      // Show success indicator
+      setUploadSuccess(isProfile ? 'picture' : 'cv');
+      
+      // Set timeout to clear success indicator after 2 seconds
+      setTimeout(() => {
+        setUploadSuccess(null);
+      }, 2000);
 
       toast({
         title: "Success",
@@ -84,12 +94,17 @@ export const FileUploadSection = ({
             size="default"
             onClick={() => document.getElementById('profile-picture-input')?.click()}
             disabled={uploadingPicture}
-            className="w-[200px]"
+            className="w-[200px] relative"
           >
             {uploadingPicture ? (
               <>
                 <Loader2 className="h-4 w-4 animate-spin mr-2" />
                 Uploading...
+              </>
+            ) : uploadSuccess === 'picture' ? (
+              <>
+                <Check className="h-4 w-4 mr-2 text-green-500" />
+                Uploaded!
               </>
             ) : (
               <>
@@ -100,7 +115,9 @@ export const FileUploadSection = ({
           </Button>
           <Avatar className="h-20 w-20">
             <AvatarImage src={currentProfilePicture || undefined} />
-            <AvatarFallback>{/* Intentionally left blank */}</AvatarFallback>
+            <AvatarFallback className="bg-gray-200 text-gray-500">
+              {/* Add initials or icon here if needed */}
+            </AvatarFallback>
           </Avatar>
           <input
             type="file"
@@ -130,6 +147,11 @@ export const FileUploadSection = ({
                 <Loader2 className="h-4 w-4 animate-spin mr-2" />
                 Uploading...
               </>
+            ) : uploadSuccess === 'cv' ? (
+              <>
+                <Check className="h-4 w-4 mr-2 text-green-500" />
+                Uploaded!
+              </>
             ) : (
               <>
                 <Upload className="h-4 w-4 mr-2" />
@@ -138,14 +160,17 @@ export const FileUploadSection = ({
             )}
           </Button>
           {currentCV && (
-            <a
-              href={currentCV}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm text-blue-600 hover:underline"
-            >
-              View Current CV
-            </a>
+            <div className="flex items-center gap-2">
+              <FileText className="h-4 w-4 text-blue-600" />
+              <a
+                href={currentCV}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-blue-600 hover:underline"
+              >
+                View Current CV
+              </a>
+            </div>
           )}
           <input
             type="file"
@@ -157,6 +182,9 @@ export const FileUploadSection = ({
               if (file) handleFileUpload(file, 'cv');
             }}
           />
+        </div>
+        <div className="text-xs text-gray-500">
+          Supported formats: PDF, DOC, DOCX. For best results, use PDF format with selectable text.
         </div>
       </div>
     </div>
