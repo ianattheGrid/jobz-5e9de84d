@@ -5,7 +5,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2, Upload } from "lucide-react";
-import { FormLabel } from "@/components/ui/form";
 
 interface FileUploadSectionProps {
   userId: string;
@@ -70,14 +69,14 @@ export const FileUploadSection = ({ userId, currentProfilePicture, currentCV }: 
   return (
     <div className="space-y-6">
       <div className="space-y-4">
-        <FormLabel>Profile Picture</FormLabel>
+        <div className="text-sm font-medium text-gray-900">Profile Picture</div>
         <div className="flex items-center gap-4">
           <Button
             variant="outline"
-            size="default"  // Explicitly set to match Upload CV button
+            size="default"
             onClick={() => document.getElementById('profile-picture-input')?.click()}
             disabled={uploadingPicture}
-            className="w-[200px]"  // Added explicit width to match buttons
+            className="w-[200px]"
           >
             {uploadingPicture ? (
               <Loader2 className="h-4 w-4 animate-spin mr-2" />
@@ -104,14 +103,14 @@ export const FileUploadSection = ({ userId, currentProfilePicture, currentCV }: 
       </div>
 
       <div className="space-y-4">
-        <FormLabel>CV / Resume</FormLabel>
+        <div className="text-sm font-medium text-gray-900">CV / Resume</div>
         <div className="flex items-center gap-4">
           <Button
             variant="outline"
-            size="default"  // Explicitly set to match Upload Picture button
+            size="default"
             onClick={() => document.getElementById('cv-input')?.click()}
             disabled={uploadingCV}
-            className="w-[200px]"  // Added explicit width to match buttons
+            className="w-[200px]"
           >
             {uploadingCV ? (
               <Loader2 className="h-4 w-4 animate-spin mr-2" />
@@ -144,4 +143,4 @@ export const FileUploadSection = ({ userId, currentProfilePicture, currentCV }: 
       </div>
     </div>
   );
-};
+}

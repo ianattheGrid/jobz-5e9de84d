@@ -3,8 +3,7 @@ import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/comp
 import { Input } from "@/components/ui/input";
 import { Control } from "react-hook-form";
 import { CandidateFormValues } from "../candidateFormSchema";
-import { FileUploadSection } from "../FileUploadSection";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Link } from "lucide-react";
 import BristolPostcodeSelect from "@/components/address/BristolPostcodeSelect";
@@ -15,31 +14,6 @@ interface ContactInformationProps {
 }
 
 const ContactInformation = ({ control }: ContactInformationProps) => {
-  const [userId, setUserId] = useState<string | null>(null);
-  const [profile, setProfile] = useState<{ 
-    profile_picture_url: string | null; 
-    cv_url: string | null;
-  } | null>(null);
-
-  useEffect(() => {
-    const getSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session) {
-        setUserId(session.user.id);
-        
-        const { data: profileData } = await supabase
-          .from('candidate_profiles')
-          .select('profile_picture_url, cv_url')
-          .eq('id', session.user.id)
-          .maybeSingle();
-          
-        setProfile(profileData);
-      }
-    };
-    
-    getSession();
-  }, []);
-
   return (
     <div className="space-y-8">
       <div className="space-y-4">
@@ -157,14 +131,6 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
           <FormLabel className="text-gray-900">What Bristol locations are you willing to work in?</FormLabel>
           <BristolPostcodeSelect control={control} />
         </FormItem>
-
-        {userId && (
-          <FileUploadSection
-            userId={userId}
-            currentProfilePicture={profile?.profile_picture_url}
-            currentCV={profile?.cv_url}
-          />
-        )}
       </div>
     </div>
   );

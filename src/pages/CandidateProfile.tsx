@@ -6,6 +6,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { LayoutDashboard } from "lucide-react";
 import { FileUploadSection } from "@/components/candidate/FileUploadSection";
+import { CVSkillsScanner } from "@/components/candidate/CVSkillsScanner";
 
 export default function CandidateProfile() {
   const { toast } = useToast();
@@ -96,16 +97,24 @@ export default function CandidateProfile() {
           </button>
         </div>
         
-        {userId && (
-          <div className="mb-8 max-w-2xl mx-auto">
-            <h2 className="text-xl font-semibold mb-4 text-gray-900">Documents & Profile Picture</h2>
-            <FileUploadSection 
-              userId={userId} 
-              currentProfilePicture={profilePicture} 
-              currentCV={cvUrl}
-            />
-          </div>
-        )}
+        <div className="mb-8 max-w-2xl mx-auto">
+          <h2 className="text-xl font-semibold mb-4 text-gray-900">Documents & Profile Picture</h2>
+          {userId && (
+            <div className="space-y-6">
+              <div className="bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
+                <FileUploadSection 
+                  userId={userId} 
+                  currentProfilePicture={profilePicture} 
+                  currentCV={cvUrl}
+                />
+                
+                {cvUrl && (
+                  <CVSkillsScanner cvUrl={cvUrl} />
+                )}
+              </div>
+            </div>
+          )}
+        </div>
         
         <div className="flex justify-center">
           <CandidateForm />
