@@ -100,7 +100,6 @@ export const useCandidateForm = () => {
         required_skills: Array.isArray(profile.required_skills) ? profile.required_skills : [],
         qualifications: Array.isArray(profile.required_qualifications) ? profile.required_qualifications.join(', ') : "",
         security_clearance: profile.security_clearance ? "yes" : "no",
-        security_clearance_level: profile.security_clearance || undefined,
         work_eligibility: profile.work_eligibility || "UK citizens only",
         years_experience: profile.years_experience?.toString() || "",
         commission_percentage: profile.commission_percentage || null,

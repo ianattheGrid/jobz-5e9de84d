@@ -5,17 +5,12 @@ import { Control } from "react-hook-form";
 import { CandidateFormValues } from "../candidateFormSchema";
 import { Link } from "lucide-react";
 import HomePostcodeSelect from "@/components/address/HomePostcodeSelect";
-import { useEffect } from "react";
 
 interface ContactInformationProps {
   control: Control<CandidateFormValues>;
 }
 
 const ContactInformation = ({ control }: ContactInformationProps) => {
-  useEffect(() => {
-    console.log("ContactInformation component mounted");
-  }, []);
-
   return (
     <div className="space-y-8">
       <div className="space-y-4">
@@ -31,13 +26,7 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
                 <Input 
                   placeholder="Enter your full name" 
                   className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400"
-                  value={field.value || ''}
-                  onChange={(e) => {
-                    console.log("Name input changed:", e.target.value);
-                    field.onChange(e.target.value);
-                  }}
-                  onBlur={field.onBlur}
-                  name={field.name}
+                  {...field}
                 />
               </FormControl>
               <FormMessage />
@@ -56,10 +45,7 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
                   type="email"
                   placeholder="Enter your email address" 
                   className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400"
-                  value={field.value || ''}
-                  onChange={(e) => field.onChange(e.target.value)}
-                  onBlur={field.onBlur}
-                  name={field.name}
+                  {...field}
                 />
               </FormControl>
               <FormMessage />
@@ -78,13 +64,7 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
                   type="tel" 
                   placeholder="Enter your phone number" 
                   className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400"
-                  value={field.value || ''}
-                  onChange={(e) => {
-                    console.log("Phone input changed:", e.target.value);
-                    field.onChange(e.target.value);
-                  }}
-                  onBlur={field.onBlur}
-                  name={field.name}
+                  {...field}
                 />
               </FormControl>
               <FormMessage />
@@ -104,10 +84,7 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
                     type="url" 
                     placeholder="https://www.linkedin.com/in/your-profile" 
                     className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 pl-10"
-                    value={field.value || ''}
-                    onChange={(e) => field.onChange(e.target.value)}
-                    onBlur={field.onBlur}
-                    name={field.name}
+                    {...field}
                   />
                   <Link className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
                 </div>
@@ -127,10 +104,7 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
                 <Input 
                   placeholder="Enter your current employer's name" 
                   className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400"
-                  value={field.value || ''}
-                  onChange={(e) => field.onChange(e.target.value)}
-                  onBlur={field.onBlur}
-                  name={field.name}
+                  {...field}
                 />
               </FormControl>
               <p className="text-sm text-gray-600 mt-1">
