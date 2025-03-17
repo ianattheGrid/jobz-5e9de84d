@@ -1,63 +1,89 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
-import { AppLayout } from "@/components/layout/AppLayout";
-import { routes } from "@/config/routes";
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 1000 * 60 * 5, // 5 minutes
-      retry: 1
-    }
-  }
-});
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import './App.css';
+import AppLayout from './components/layout/AppLayout';
+import { Toaster } from './components/ui/toaster';
+import Index from './pages/Index';
+
+// Candidate routes
+import CandidateSignIn from './pages/CandidateSignIn';
+import CandidateSignUp from './pages/CandidateSignUp';
+import CandidateDashboard from './pages/CandidateDashboard';
+import CandidateProfile from './pages/CandidateProfile';
+import PreviewCandidateProfile from './pages/PreviewCandidateProfile';
+import CandidateApplications from './pages/CandidateApplications';
+import CandidateInterviews from './pages/CandidateInterviews';
+import CandidateAccountSettings from './pages/CandidateAccountSettings';
+
+// Employer routes
+import EmployerSignIn from './pages/EmployerSignIn';
+import EmployerSignUp from './pages/EmployerSignUp';
+import EmployerDashboard from './pages/EmployerDashboard';
+import CreateVacancy from './pages/CreateVacancy';
+import ManageJobs from './pages/ManageJobs';
+import EmployerProfile from './pages/EmployerProfile';
+import EmployerInterviews from './pages/EmployerInterviews';
+
+// Virtual Recruiter routes
+import VirtualRecruiterSignIn from './pages/VirtualRecruiterSignIn';
+import VirtualRecruiterSignUp from './pages/VirtualRecruiterSignUp';
+import VirtualRecruiterDashboard from './pages/VirtualRecruiterDashboard';
+import VirtualRecruiterRecommendations from './pages/VirtualRecruiterRecommendations';
+
+// Common routes
+import Jobs from './pages/Jobs';
+import ViewCandidateProfile from './pages/ViewCandidateProfile';
+import CandidateSearch from './pages/CandidateSearch';
+
+// Protected route wrapper
+import ProtectedRoute from './components/auth/ProtectedRoute';
+
+// Test only
+import DummyCandidateProfile from './pages/DummyCandidateProfile';
 
 function App() {
-  console.log('Route Debug:', {
-    currentPath: window.location.pathname,
-    availableRoutes: routes.map(r => ({ path: r.path, element: r.element?.type?.name })),
-    dummyProfileRoute: routes.find(r => r.path === '/candidate/dummy-profile'),
-    routesLength: routes.length
-  });
-
   return (
-    <QueryClientProvider client={queryClient}>
-      <Router>
-        <AppLayout>
-          <Routes>
-            <Route 
-              path="/candidate/dummy-profile" 
-              element={routes.find(r => r.path === '/candidate/dummy-profile')?.element} 
-            />
-            
-            {routes.filter(route => route.path !== '/candidate/dummy-profile').map((route) => {
-              const requiresAuth = route.path.startsWith('/dashboard') || 
-                                 route.path.startsWith('/profile') || 
-                                 route.path.startsWith('/interviews') || 
-                                 route.path.startsWith('/create-vacancy') || 
-                                 route.path.startsWith('/manage-jobs') || 
-                                 route.path.startsWith('/candidate-search') ||
-                                 route.path.startsWith('/recommendations');
-              
-              return (
-                <Route
-                  key={route.path}
-                  path={route.path}
-                  element={
-                    requiresAuth ? (
-                      <ProtectedRoute>{route.element}</ProtectedRoute>
-                    ) : (
-                      route.element
-                    )
-                  }
-                />
-              );
-            })}
-          </Routes>
-        </AppLayout>
-      </Router>
-    </QueryClientProvider>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<AppLayout />}>
+          <Route index element={<Index />} />
+          
+          {/* Candidate routes */}
+          <Route path="candidate/signin" element={<CandidateSignIn />} />
+          <Route path="candidate/signup" element={<CandidateSignUp />} />
+          <Route path="candidate/dashboard" element={<ProtectedRoute userType="candidate"><CandidateDashboard /></ProtectedRoute>} />
+          <Route path="candidate/profile" element={<ProtectedRoute userType="candidate"><CandidateProfile /></ProtectedRoute>} />
+          <Route path="candidate/profile/preview" element={<ProtectedRoute userType="candidate"><PreviewCandidateProfile /></ProtectedRoute>} />
+          <Route path="candidate/applications" element={<ProtectedRoute userType="candidate"><CandidateApplications /></ProtectedRoute>} />
+          <Route path="candidate/interviews" element={<ProtectedRoute userType="candidate"><CandidateInterviews /></ProtectedRoute>} />
+          <Route path="candidate/account" element={<ProtectedRoute userType="candidate"><CandidateAccountSettings /></ProtectedRoute>} />
+          
+          {/* Employer routes */}
+          <Route path="employer/signin" element={<EmployerSignIn />} />
+          <Route path="employer/signup" element={<EmployerSignUp />} />
+          <Route path="employer/dashboard" element={<ProtectedRoute userType="employer"><EmployerDashboard /></ProtectedRoute>} />
+          <Route path="employer/create-vacancy" element={<ProtectedRoute userType="employer"><CreateVacancy /></ProtectedRoute>} />
+          <Route path="employer/manage-jobs" element={<ProtectedRoute userType="employer"><ManageJobs /></ProtectedRoute>} />
+          <Route path="employer/profile" element={<ProtectedRoute userType="employer"><EmployerProfile /></ProtectedRoute>} />
+          <Route path="employer/interviews" element={<ProtectedRoute userType="employer"><EmployerInterviews /></ProtectedRoute>} />
+          <Route path="employer/candidate/:id" element={<ProtectedRoute userType="employer"><ViewCandidateProfile /></ProtectedRoute>} />
+          <Route path="employer/candidates" element={<ProtectedRoute userType="employer"><CandidateSearch /></ProtectedRoute>} />
+          
+          {/* Virtual Recruiter routes */}
+          <Route path="vr/signin" element={<VirtualRecruiterSignIn />} />
+          <Route path="vr/signup" element={<VirtualRecruiterSignUp />} />
+          <Route path="vr/dashboard" element={<ProtectedRoute userType="vr"><VirtualRecruiterDashboard /></ProtectedRoute>} />
+          <Route path="vr/recommendations" element={<ProtectedRoute userType="vr"><VirtualRecruiterRecommendations /></ProtectedRoute>} />
+          
+          {/* Common routes */}
+          <Route path="jobs" element={<Jobs />} />
+          
+          {/* Test Routes */}
+          <Route path="dummy-profile" element={<DummyCandidateProfile />} />
+        </Route>
+      </Routes>
+      <Toaster />
+    </BrowserRouter>
   );
 }
 

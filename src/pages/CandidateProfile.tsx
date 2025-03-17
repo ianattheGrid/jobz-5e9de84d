@@ -6,6 +6,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { LayoutDashboard } from "lucide-react";
 import { FileUploadSection } from "@/components/candidate/FileUploadSection";
+import { PreviewButton } from "@/components/candidate/PreviewButton";
 
 export default function CandidateProfile() {
   const { toast } = useToast();
@@ -105,13 +106,16 @@ export default function CandidateProfile() {
               Keep your profile up to date to find the best job matches.
             </p>
           </div>
-          <button
-            onClick={() => navigate('/candidate/dashboard')}
-            className="inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium text-white bg-[#FF69B4] hover:bg-[#FF50A8]"
-          >
-            <LayoutDashboard className="w-4 h-4 mr-2" />
-            Dashboard
-          </button>
+          <div className="flex space-x-2">
+            <PreviewButton />
+            <button
+              onClick={() => navigate('/candidate/dashboard')}
+              className="inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium text-white bg-[#FF69B4] hover:bg-[#FF50A8]"
+            >
+              <LayoutDashboard className="w-4 h-4 mr-2" />
+              Dashboard
+            </button>
+          </div>
         </div>
         
         <div className="mb-8 max-w-2xl mx-auto">
