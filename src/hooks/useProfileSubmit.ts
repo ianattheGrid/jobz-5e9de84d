@@ -26,16 +26,21 @@ export const useProfileSubmit = (toast: ToastFunction) => {
         return false;
       }
 
+      // Ensure all string values are properly handled
+      const cleanStringValue = (value: any): string => {
+        return value !== null && value !== undefined ? String(value) : '';
+      };
+
       // Prepare profile data with correct types
       const profileData = {
         id: session.user.id,
-        full_name: values.full_name || '',
-        email: values.email || '',
-        phone_number: values.phone_number || '',
-        address: values.address || '',
-        home_postcode: values.home_postcode || '',
+        full_name: cleanStringValue(values.full_name),
+        email: cleanStringValue(values.email),
+        phone_number: cleanStringValue(values.phone_number),
+        address: cleanStringValue(values.address),
+        home_postcode: cleanStringValue(values.home_postcode),
         location: Array.isArray(values.location) ? values.location : [],
-        job_title: values.workArea || '',
+        job_title: cleanStringValue(values.workArea),
         years_experience: values.years_experience ? Number(values.years_experience) : 0,
         min_salary: typeof values.min_salary === 'number' ? values.min_salary : 0,
         max_salary: typeof values.max_salary === 'number' ? values.max_salary : 0,
@@ -44,13 +49,13 @@ export const useProfileSubmit = (toast: ToastFunction) => {
           ? String(values.qualifications).split(',').map(q => q.trim()).filter(Boolean)
           : [],
         security_clearance: values.security_clearance === 'yes' ? values.security_clearance_level : null,
-        work_eligibility: values.work_eligibility || '',
+        work_eligibility: cleanStringValue(values.work_eligibility),
         commission_percentage: values.open_to_commission ? values.commission_percentage : null,
-        additional_skills: values.additional_skills || '',
-        availability: values.availability || '',
-        work_preferences: values.work_preferences || '',
-        current_employer: values.current_employer || '',
-        linkedin_url: values.linkedin_url || '',
+        additional_skills: cleanStringValue(values.additional_skills),
+        availability: cleanStringValue(values.availability),
+        work_preferences: cleanStringValue(values.work_preferences),
+        current_employer: cleanStringValue(values.current_employer),
+        linkedin_url: cleanStringValue(values.linkedin_url),
         years_in_current_title: typeof values.years_in_current_title === 'number' 
           ? values.years_in_current_title 
           : 0,
