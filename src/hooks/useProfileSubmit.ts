@@ -26,54 +26,34 @@ export const useProfileSubmit = (toast: ToastFunction) => {
         return false;
       }
 
-      // Ensure all string fields are properly handled - convert undefined to empty strings
-      const fullName = values.full_name || '';
-      const email = values.email || '';
-      const phoneNumber = values.phone_number || null;
-      const address = values.address || null;
-      const homePostcode = values.home_postcode || '';
-      const currentEmployer = values.current_employer || null;
-      const linkedinUrl = values.linkedin_url || null;
-      
-      console.log("Processing full name for submission:", fullName);
-      
-      // Parse qualifications from comma-separated string to array
-      const qualifications = values.qualifications
-        ? values.qualifications.split(',').map(q => q.trim()).filter(Boolean)
-        : [];
-
-      // Ensure numeric fields are properly converted
-      const yearsExperience = values.years_experience ? parseInt(values.years_experience) : 0;
-      const yearsInCurrentTitle = typeof values.years_in_current_title === 'number' 
-        ? values.years_in_current_title 
-        : 0;
-
-      // Log the data we're about to save
-      console.log("Saving profile with full name:", fullName);
-
+      // Process form values
       const profileData = {
         id: session.user.id,
-        full_name: fullName,
-        email: email,
-        phone_number: phoneNumber,
-        address: address,
-        home_postcode: homePostcode,
+        full_name: values.full_name || '',
+        email: values.email || '',
+        phone_number: values.phone_number || null,
+        address: values.address || null,
+        home_postcode: values.home_postcode || '',
         location: values.location || [],
         job_title: values.workArea || '',
-        years_experience: yearsExperience,
+        years_experience: values.years_experience ? parseInt(values.years_experience) : 0,
         min_salary: values.min_salary || 0,
         max_salary: values.max_salary || 0,
         required_skills: values.required_skills || [],
-        required_qualifications: qualifications,
+        required_qualifications: values.qualifications
+          ? values.qualifications.split(',').map(q => q.trim()).filter(Boolean)
+          : [],
         security_clearance: values.security_clearance === 'yes' ? values.security_clearance_level : null,
         work_eligibility: values.work_eligibility || '',
         commission_percentage: values.open_to_commission ? values.commission_percentage : null,
         additional_skills: values.additional_skills || null,
         availability: values.availability || '',
         work_preferences: values.work_preferences || '',
-        current_employer: currentEmployer,
-        linkedin_url: linkedinUrl,
-        years_in_current_title: yearsInCurrentTitle,
+        current_employer: values.current_employer || null,
+        linkedin_url: values.linkedin_url || null,
+        years_in_current_title: typeof values.years_in_current_title === 'number' 
+          ? values.years_in_current_title 
+          : 0,
       };
       
       console.log("Final profile data to save:", profileData);
@@ -95,7 +75,7 @@ export const useProfileSubmit = (toast: ToastFunction) => {
         return false;
       }
 
-      console.log('Profile updated successfully with name:', fullName);
+      console.log('Profile updated successfully with name:', profileData.full_name);
       toast({
         title: "Success",
         description: "Profile updated successfully"

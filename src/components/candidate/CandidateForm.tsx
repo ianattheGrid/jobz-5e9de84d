@@ -25,7 +25,6 @@ export function CandidateForm() {
   const { toast } = useToast();
   const [formUpdated, setFormUpdated] = useState(false);
   const [profileLoaded, setProfileLoaded] = useState(false);
-  const [formKey, setFormKey] = useState(Date.now()); // Key to force form re-render
 
   // Define complete default values for all form fields
   const defaultFormValues: CandidateFormValues = {
@@ -54,6 +53,7 @@ export function CandidateForm() {
     years_in_current_title: 0,
   };
 
+  // Initialize form with default values
   const form = useForm<CandidateFormValues>({
     resolver: zodResolver(candidateFormSchema),
     mode: "onChange",
@@ -64,12 +64,10 @@ export function CandidateForm() {
 
   const handleSubmit = async (values: CandidateFormValues) => {
     console.log("Form submitted with values:", values);
-    console.log("Full name being submitted:", values.full_name);
     
     const success = await onSubmit(values);
     
     if (success) {
-      // Reset the form update flag but don't reset the form
       setFormUpdated(false);
       toast({
         title: "Success",
@@ -91,6 +89,7 @@ export function CandidateForm() {
   // LoadProfile callback
   const loadProfileData = (profile: CandidateProfile | null) => {
     if (!profile) {
+      console.log("No profile data received, using defaults");
       setProfileLoaded(true);
       return;
     }
@@ -98,7 +97,7 @@ export function CandidateForm() {
     try {
       console.log("Loading profile data:", profile);
       
-      // Safe parsing of profile data with fallbacks for all fields
+      // Prepare form data
       const formData: CandidateFormValues = {
         full_name: profile.full_name || "",
         email: profile.email || "",
@@ -127,18 +126,20 @@ export function CandidateForm() {
         years_in_current_title: typeof profile.years_in_current_title === 'number' ? profile.years_in_current_title : 0,
       };
 
-      console.log("Setting form data from profile:", formData);
-      console.log("Full name to be set in form:", formData.full_name);
+      console.log("Setting form data:", formData);
+      console.log("Full name from profile:", profile.full_name);
+      console.log("Form data full name:", formData.full_name);
       
-      // Reset the form with the prepared data
+      // Reset form with new data
       form.reset(formData);
-      
-      // Reset the update flag after setting initial data
       setFormUpdated(false);
-      // Mark profile as loaded
       setProfileLoaded(true);
-      // Force a re-render to ensure values are shown
-      setFormKey(Date.now());
+      
+      // Debug check form values after reset
+      setTimeout(() => {
+        const currentValues = form.getValues();
+        console.log("Form values after reset:", currentValues);
+      }, 100);
       
     } catch (error) {
       console.error("Error setting form data:", error);
@@ -158,13 +159,11 @@ export function CandidateForm() {
   useEffect(() => {
     const currentValues = form.getValues();
     console.log("Current form values:", currentValues);
-    console.log("Full name in form:", currentValues.full_name);
-    console.log("Form state:", form.formState);
   }, [form]);
 
   return (
     <Form {...form}>
-      <form key={formKey} onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8 w-full max-w-2xl">
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8 w-full max-w-2xl">
         <div className="space-y-8">
           <div className="text-left">
             <ContactInformation control={form.control} />
