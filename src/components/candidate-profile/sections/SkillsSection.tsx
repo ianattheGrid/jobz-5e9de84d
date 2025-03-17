@@ -1,4 +1,7 @@
 
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Check, LucideIcon, Star } from "lucide-react";
 import type { CandidateProfile } from "@/integrations/supabase/types/profiles";
 
 interface SkillsSectionProps {
@@ -6,18 +9,81 @@ interface SkillsSectionProps {
 }
 
 const SkillsSection = ({ profile }: SkillsSectionProps) => {
-  if (!profile.additional_skills) {
+  // Parse skills from the additional_skills field if it exists
+  const parseSkills = (skillsString: string | null): string[] => {
+    if (!skillsString) return [];
+    
+    // Try to split by common separators (commas, semicolons, or newlines)
+    const skillsArray = skillsString.split(/[,;\n]+/).map(skill => skill.trim()).filter(Boolean);
+    return skillsArray;
+  };
+
+  const additionalSkills = parseSkills(profile.additional_skills);
+  const requiredSkills = profile.required_skills || [];
+
+  // If there are no skills at all, don't render the section
+  if (additionalSkills.length === 0 && requiredSkills.length === 0) {
     return null;
   }
 
   return (
-    <div>
-      {profile.additional_skills && (
-        <div>
-          <h3 className="font-semibold mb-2">Additional Skills & Certifications</h3>
-          <p>{profile.additional_skills}</p>
-        </div>
-      )}
+    <div className="mt-6">
+      <div className="flex items-center space-x-2 mb-4">
+        <Star className="h-5 w-5 text-blue-500" />
+        <h3 className="text-xl font-semibold">Skills & Certifications</h3>
+      </div>
+
+      <Tabs defaultValue="all" className="w-full">
+        <TabsList className="mb-4">
+          <TabsTrigger value="all">All Skills</TabsTrigger>
+          {requiredSkills.length > 0 && (
+            <TabsTrigger value="technical">Technical Skills</TabsTrigger>
+          )}
+          {additionalSkills.length > 0 && (
+            <TabsTrigger value="additional">Additional Skills</TabsTrigger>
+          )}
+        </TabsList>
+
+        <TabsContent value="all" className="space-y-4">
+          <div className="flex flex-wrap gap-2">
+            {requiredSkills.map((skill, index) => (
+              <Badge key={`tech-${index}`} variant="default" className="bg-blue-500 text-white py-1 px-3">
+                {skill}
+              </Badge>
+            ))}
+            
+            {additionalSkills.map((skill, index) => (
+              <Badge key={`add-${index}`} variant="secondary" className="py-1 px-3">
+                {skill}
+              </Badge>
+            ))}
+          </div>
+        </TabsContent>
+
+        {requiredSkills.length > 0 && (
+          <TabsContent value="technical" className="space-y-4">
+            <div className="flex flex-wrap gap-2">
+              {requiredSkills.map((skill, index) => (
+                <Badge key={index} variant="default" className="bg-blue-500 text-white py-1 px-3">
+                  {skill}
+                </Badge>
+              ))}
+            </div>
+          </TabsContent>
+        )}
+
+        {additionalSkills.length > 0 && (
+          <TabsContent value="additional" className="space-y-4">
+            <div className="flex flex-wrap gap-2">
+              {additionalSkills.map((skill, index) => (
+                <Badge key={index} variant="secondary" className="py-1 px-3">
+                  {skill}
+                </Badge>
+              ))}
+            </div>
+          </TabsContent>
+        )}
+      </Tabs>
     </div>
   );
 };
