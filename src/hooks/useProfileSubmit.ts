@@ -26,27 +26,17 @@ export const useProfileSubmit = (toast: ToastFunction) => {
         return false;
       }
 
-      // Ensure all string fields are properly handled
-      const fullName = values.full_name === undefined ? '' : String(values.full_name).trim();
-      const email = values.email === undefined ? '' : String(values.email).trim();
-      const phoneNumber = values.phone_number === undefined ? null : String(values.phone_number).trim() || null;
-      const address = values.address === undefined ? null : String(values.address).trim() || null;
-      const homePostcode = values.home_postcode === undefined ? '' : String(values.home_postcode).trim();
-      const currentEmployer = values.current_employer === undefined ? null : String(values.current_employer).trim() || null;
-      const linkedinUrl = values.linkedin_url === undefined ? null : String(values.linkedin_url).trim() || null;
+      // Ensure all string fields are properly handled - convert undefined to empty strings
+      const fullName = values.full_name || '';
+      const email = values.email || '';
+      const phoneNumber = values.phone_number || null;
+      const address = values.address || null;
+      const homePostcode = values.home_postcode || '';
+      const currentEmployer = values.current_employer || null;
+      const linkedinUrl = values.linkedin_url || null;
       
-      console.log("Processing full name for submission:", fullName, "Original:", values.full_name);
+      console.log("Processing full name for submission:", fullName);
       
-      if (!fullName) {
-        toast({
-          variant: "destructive",
-          title: "Validation Error",
-          description: "Full name is required"
-        });
-        setIsSubmitting(false);
-        return false;
-      }
-
       // Parse qualifications from comma-separated string to array
       const qualifications = values.qualifications
         ? values.qualifications.split(',').map(q => q.trim()).filter(Boolean)

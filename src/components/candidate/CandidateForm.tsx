@@ -27,6 +27,7 @@ export function CandidateForm() {
   const [profileLoaded, setProfileLoaded] = useState(false);
   const [formKey, setFormKey] = useState(Date.now()); // Key to force form re-render
 
+  // Define complete default values for all form fields
   const defaultFormValues: CandidateFormValues = {
     full_name: "",
     email: "",
@@ -95,6 +96,8 @@ export function CandidateForm() {
     }
     
     try {
+      console.log("Loading profile data:", profile);
+      
       // Safe parsing of profile data with fallbacks for all fields
       const formData: CandidateFormValues = {
         full_name: profile.full_name || "",
@@ -125,24 +128,9 @@ export function CandidateForm() {
       };
 
       console.log("Setting form data from profile:", formData);
-      console.log("Full name from profile:", formData.full_name);
+      console.log("Full name to be set in form:", formData.full_name);
       
-      // Make sure we're handling undefined values correctly
-      Object.keys(formData).forEach(key => {
-        if (formData[key as keyof CandidateFormValues] === undefined) {
-          console.log(`Setting ${key} to empty string/default as it was undefined`);
-          const fieldKey = key as keyof CandidateFormValues;
-          
-          if (typeof defaultFormValues[fieldKey] === 'string') {
-            (formData[fieldKey] as string) = "";
-          } else if (typeof defaultFormValues[fieldKey] === 'number') {
-            (formData[fieldKey] as number) = 0;
-          } else if (Array.isArray(defaultFormValues[fieldKey])) {
-            (formData[fieldKey] as any[]) = [];
-          }
-        }
-      });
-      
+      // Reset the form with the prepared data
       form.reset(formData);
       
       // Reset the update flag after setting initial data
@@ -168,7 +156,10 @@ export function CandidateForm() {
 
   // Debug rendered form values
   useEffect(() => {
-    console.log("Current form values:", form.getValues());
+    const currentValues = form.getValues();
+    console.log("Current form values:", currentValues);
+    console.log("Full name in form:", currentValues.full_name);
+    console.log("Form state:", form.formState);
   }, [form]);
 
   return (
