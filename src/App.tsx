@@ -1,7 +1,7 @@
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
-import AppLayout from './components/layout/AppLayout';
+import { AppLayout } from './components/layout/AppLayout';
 import { Toaster } from './components/ui/toaster';
 import Index from './pages/Index';
 
@@ -36,7 +36,7 @@ import ViewCandidateProfile from './pages/ViewCandidateProfile';
 import CandidateSearch from './pages/CandidateSearch';
 
 // Protected route wrapper
-import ProtectedRoute from './components/auth/ProtectedRoute';
+import { ProtectedRoute } from './components/auth/ProtectedRoute';
 
 // Test only
 import DummyCandidateProfile from './pages/DummyCandidateProfile';

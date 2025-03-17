@@ -1,3 +1,4 @@
+
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
@@ -5,10 +6,10 @@ import { useToast } from '@/hooks/use-toast';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
-  allowedUserTypes?: string[];
+  userType: string;
 }
 
-export const ProtectedRoute = ({ children, allowedUserTypes = ['employer', 'candidate', 'vr'] }: ProtectedRouteProps) => {
+export const ProtectedRoute = ({ children, userType }: ProtectedRouteProps) => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -26,9 +27,9 @@ export const ProtectedRoute = ({ children, allowedUserTypes = ['employer', 'cand
         return;
       }
 
-      const userType = session.user.user_metadata.user_type?.toLowerCase();
+      const currentUserType = session.user.user_metadata.user_type?.toLowerCase();
       
-      if (!allowedUserTypes.includes(userType)) {
+      if (currentUserType !== userType) {
         toast({
           variant: "destructive",
           title: "Access Denied",
@@ -39,7 +40,7 @@ export const ProtectedRoute = ({ children, allowedUserTypes = ['employer', 'cand
     };
 
     checkAuth();
-  }, [navigate, allowedUserTypes, toast]);
+  }, [navigate, userType, toast]);
 
   return <>{children}</>;
 };
