@@ -22,7 +22,7 @@ serve(async (req) => {
     }
 
     console.log('Processing CV:', fileUrl);
-    console.log('Required skills:', requiredSkills);
+    console.log('Required skills to check:', requiredSkills);
 
     // Download the CV content
     const response = await fetch(fileUrl);
@@ -32,7 +32,7 @@ serve(async (req) => {
       throw new Error(`Failed to fetch CV: ${response.status} ${response.statusText}`);
     }
     
-    // For PDF files, we'll use a simple regex-based approach instead of trying to parse the full content
+    // Get CV content as text
     const cvContent = await response.text();
     
     // Make sure we have valid text content
@@ -49,11 +49,27 @@ serve(async (req) => {
     const cvContentLower = cvContent.toLowerCase();
     console.log('CV content length:', cvContentLower.length);
     
-    // Match required skills against CV content
+    // Match required skills against CV content with more accurate matching
+    // to avoid false positives for short skill names
     const matchedSkills = requiredSkills.filter((skill) => {
       const skillLower = skill.toLowerCase();
-      return cvContentLower.includes(skillLower);
+      
+      // For very short skills (1-2 characters), require word boundaries or specific context
+      if (skillLower.length <= 2) {
+        // Skip very short skills to avoid false positives
+        return false;
+      } else if (skillLower.length <= 3) {
+        // For short skills (3 chars), check for word boundaries
+        const regex = new RegExp(`\\b${skillLower}\\b`, 'i');
+        return regex.test(cvContentLower);
+      } else {
+        // For longer skills, we can be more lenient but still use word boundaries
+        const regex = new RegExp(`\\b${skillLower}\\b`, 'i');
+        return regex.test(cvContentLower);
+      }
     });
+
+    console.log('Matched skills:', matchedSkills);
 
     // Calculate match percentage for CV skills
     const cvSkillsMatchScore = matchedSkills.length / requiredSkills.length;

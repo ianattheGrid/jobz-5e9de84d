@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2, Search } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 interface CVSkillsScannerProps {
   cvUrl: string | null;
@@ -27,15 +28,15 @@ export const CVSkillsScanner = ({ cvUrl }: CVSkillsScannerProps) => {
     try {
       setScanning(true);
       
-      // Get common skills to scan for
+      // Get common skills to scan for - focusing on more specific terms
       const commonSkills = [
         // Programming Languages
-        "JavaScript", "TypeScript", "Python", "Java", "C#", "PHP", "Ruby", "Go", "Swift", "Kotlin",
-        "C++", "C", "Rust", "Scala", "Perl", "Shell", "SQL", "HTML", "CSS", "SASS", "LESS",
+        "JavaScript", "TypeScript", "Python", "Java", "C#", "PHP", "Ruby", "Golang", "Swift", "Kotlin",
+        "C++", "Rust", "Scala", "Perl", "Bash", "SQL", "HTML", "CSS", "SASS", "LESS",
         
         // Frameworks & Libraries
-        "React", "Angular", "Vue", "Express", "Django", "Flask", "Spring", "Laravel", "Node.js", 
-        "jQuery", "Bootstrap", "Tailwind", ".NET", "ASP.NET", "Rails", "Symfony",
+        "React", "Angular", "Vue.js", "Express.js", "Django", "Flask", "Spring", "Laravel", "Node.js", 
+        "jQuery", "Bootstrap", "Tailwind CSS", ".NET", "ASP.NET", "Ruby on Rails", "Symfony",
         
         // Databases
         "MySQL", "PostgreSQL", "MongoDB", "SQLite", "Oracle", "SQL Server", "Redis", "Cassandra", 
@@ -43,11 +44,11 @@ export const CVSkillsScanner = ({ cvUrl }: CVSkillsScannerProps) => {
         
         // Cloud & DevOps
         "AWS", "Azure", "Google Cloud", "Docker", "Kubernetes", "Jenkins", "CircleCI", "Travis CI",
-        "GitHub Actions", "Terraform", "Ansible", "Puppet", "Chef", "Vagrant", "Prometheus", "Grafana",
+        "GitHub Actions", "Terraform", "Ansible", "Puppet", "Chef", "Prometheus", "Grafana",
         
         // Other Tech Skills
-        "Git", "GraphQL", "REST API", "WebSockets", "Linux", "Unix", "Agile", "Scrum", "Jira",
-        "CI/CD", "TDD", "BDD", "Microservices", "Machine Learning", "AI", "Data Analysis"
+        "Git", "GraphQL", "RESTful API", "WebSockets", "Linux", "Unix", "Agile", "Scrum", "Jira",
+        "CI/CD", "Test-Driven Development", "Microservices", "Machine Learning", "Artificial Intelligence"
       ];
       
       // Call the parse-cv function
@@ -60,16 +61,20 @@ export const CVSkillsScanner = ({ cvUrl }: CVSkillsScannerProps) => {
       setDetectedSkills(data.matchedSkills || []);
       setHasScanned(true);
       
+      const skillCount = data.matchedSkills ? data.matchedSkills.length : 0;
       toast({
         title: "CV Analysis Complete",
-        description: `Found ${data.matchedSkills ? data.matchedSkills.length : 0} skills in your CV.`,
+        description: skillCount > 0 
+          ? `Found ${skillCount} skills in your CV.` 
+          : "No skills were detected in your CV. Consider updating it with specific technical skills.",
+        variant: skillCount > 0 ? "default" : "destructive",
       });
     } catch (error: any) {
       console.error('Error scanning CV:', error);
       toast({
         variant: "destructive",
-        title: "Error",
-        description: error.message || "Failed to scan your CV for skills.",
+        title: "Error Analyzing CV",
+        description: error.message || "Failed to scan your CV for skills. Please try again later.",
       });
     } finally {
       setScanning(false);
@@ -110,19 +115,26 @@ export const CVSkillsScanner = ({ cvUrl }: CVSkillsScannerProps) => {
               </p>
               <div className="flex flex-wrap gap-2">
                 {detectedSkills.map((skill, index) => (
-                  <span
+                  <Badge
                     key={index}
-                    className="bg-[#FF69B4]/10 text-[#FF69B4] px-3 py-1 rounded-full text-sm"
+                    className="bg-[#FF69B4]/10 text-[#FF69B4] hover:bg-[#FF69B4]/20"
                   >
                     {skill}
-                  </span>
+                  </Badge>
                 ))}
               </div>
             </>
           ) : (
-            <p className="text-sm text-gray-600">
-              No skills were detected in your CV. Try updating your CV with more specific technical skills.
-            </p>
+            <div className="p-4 border border-amber-200 bg-amber-50 rounded-md">
+              <p className="text-sm text-amber-800">
+                No skills were detected in your CV. To improve your matches:
+                <ul className="list-disc pl-5 mt-2 space-y-1">
+                  <li>Include specific technical skills and technologies in your CV</li> 
+                  <li>Make sure your CV is in a readable text format (not just images)</li>
+                  <li>List skills clearly, ideally in a dedicated "Skills" section</li>
+                </ul>
+              </p>
+            </div>
           )}
         </div>
       )}
