@@ -21,14 +21,39 @@ serve(async (req) => {
       throw new Error('Missing required parameters');
     }
 
+    console.log('Processing CV:', fileUrl);
+    console.log('Required skills:', requiredSkills);
+
     // Download the CV content
     const response = await fetch(fileUrl);
-    const cvContent = await response.text().toLowerCase();
+    
+    // Check if we got a valid response
+    if (!response.ok) {
+      throw new Error(`Failed to fetch CV: ${response.status} ${response.statusText}`);
+    }
+    
+    // For PDF files, we'll use a simple regex-based approach instead of trying to parse the full content
+    const cvContent = await response.text();
+    
+    // Make sure we have valid text content
+    if (!cvContent || typeof cvContent !== 'string') {
+      console.log('No valid text content found in CV');
+      return new Response(JSON.stringify({
+        matchedSkills: [],
+        cvSkillsMatchScore: 0
+      }), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+    
+    const cvContentLower = cvContent.toLowerCase();
+    console.log('CV content length:', cvContentLower.length);
     
     // Match required skills against CV content
-    const matchedSkills = requiredSkills.filter((skill: string) => 
-      cvContent.includes(skill.toLowerCase())
-    );
+    const matchedSkills = requiredSkills.filter((skill) => {
+      const skillLower = skill.toLowerCase();
+      return cvContentLower.includes(skillLower);
+    });
 
     // Calculate match percentage for CV skills
     const cvSkillsMatchScore = matchedSkills.length / requiredSkills.length;

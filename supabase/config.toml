@@ -1,3 +1,4 @@
+
 project_id = "lfwwhyjtbkfibxzefvkn"
 
 [functions.process-matches]
@@ -7,4 +8,7 @@ verify_jwt = false
 verify_jwt = false
 
 [functions.send-welcome-email]
+verify_jwt = false
+
+[functions.parse-cv]
 verify_jwt = false
