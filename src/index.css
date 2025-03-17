@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -157,6 +156,18 @@ h1, h2, h3, h4, h5, h6 {
 .flex.flex-row.items-center.justify-between.rounded-lg.border.p-3,
 .flex.flex-row.items-center.justify-between.rounded-lg.border.p-3.bg-card {
   @apply bg-white text-gray-900 !important;
+}
+
+/* Pink button styles */
+.pink-button,
+button[style*="FF69B4"] {
+  background-color: #FF69B4 !important;
+  color: white !important;
+}
+
+.pink-button:hover,
+button[style*="FF69B4"]:hover {
+  background-color: #FF50A8 !important;
 }
 
 /* Override button styles to restore the primary pink button */
