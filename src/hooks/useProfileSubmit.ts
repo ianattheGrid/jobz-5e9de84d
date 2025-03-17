@@ -62,7 +62,7 @@ export const useProfileSubmit = (toast: ToastFunction) => {
           title: "Error",
           description: error.message || "Failed to update profile. Please try again."
         });
-        return;
+        return false; // Return false to indicate failure
       }
 
       console.log('Profile updated successfully');
@@ -70,6 +70,7 @@ export const useProfileSubmit = (toast: ToastFunction) => {
         title: "Success",
         description: "Profile updated successfully"
       });
+      return true; // Return true to indicate success
       
     } catch (error: any) {
       console.error('Error:', error);
@@ -78,6 +79,7 @@ export const useProfileSubmit = (toast: ToastFunction) => {
         title: "Error",
         description: "An unexpected error occurred while updating your profile"
       });
+      return false; // Return false to indicate failure
     }
   };
 

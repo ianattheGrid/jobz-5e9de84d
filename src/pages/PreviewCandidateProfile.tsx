@@ -15,59 +15,67 @@ function PreviewCandidateProfile() {
   const [profile, setProfile] = useState<CandidateProfile | null>(null);
   const { toast } = useToast();
 
-  useEffect(() => {
-    const fetchUserProfile = async () => {
-      try {
-        // Get current session
-        const { data: { session } } = await supabase.auth.getSession();
-        
-        if (!session) {
-          toast({
-            variant: "destructive",
-            title: "Access Denied",
-            description: "You must be logged in to view your profile preview.",
-          });
-          navigate('/candidate/signin');
-          return;
-        }
-
-        // Check if user is a candidate
-        if (session.user.user_metadata.user_type !== 'candidate') {
-          toast({
-            variant: "destructive",
-            title: "Access Denied",
-            description: "Only candidates can access this page.",
-          });
-          navigate('/');
-          return;
-        }
-
-        // Fetch the candidate's profile
-        const { data, error } = await supabase
-          .from('candidate_profiles')
-          .select('*')
-          .eq('id', session.user.id)
-          .single();
-
-        if (error) throw error;
-
-        if (data) {
-          console.log("Fetched profile data:", data);
-          setProfile(data as CandidateProfile);
-        }
-      } catch (error) {
-        console.error('Error fetching profile:', error);
+  // Function to fetch profile data
+  const fetchProfile = async () => {
+    setLoading(true);
+    try {
+      // Get current session
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (!session) {
         toast({
           variant: "destructive",
-          title: "Error",
-          description: "Failed to load your profile. Please try again later.",
+          title: "Access Denied",
+          description: "You must be logged in to view your profile preview.",
         });
-      } finally {
-        setLoading(false);
+        navigate('/candidate/signin');
+        return;
       }
-    };
 
-    fetchUserProfile();
+      // Check if user is a candidate
+      if (session.user.user_metadata.user_type !== 'candidate') {
+        toast({
+          variant: "destructive",
+          title: "Access Denied",
+          description: "Only candidates can access this page.",
+        });
+        navigate('/');
+        return;
+      }
+
+      // Fetch the candidate's profile
+      const { data, error } = await supabase
+        .from('candidate_profiles')
+        .select('*')
+        .eq('id', session.user.id)
+        .single();
+
+      if (error) throw error;
+
+      if (data) {
+        console.log("Fetched profile data:", data);
+        setProfile(data as CandidateProfile);
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Profile Not Found",
+          description: "Please complete your profile first.",
+        });
+      }
+    } catch (error) {
+      console.error('Error fetching profile:', error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to load your profile. Please try again later.",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProfile();
   }, [navigate, toast]);
 
   if (loading) {

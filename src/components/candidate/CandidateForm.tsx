@@ -1,4 +1,3 @@
-
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
@@ -16,12 +15,14 @@ import ContactInformation from "./sections/ContactInformation";
 import JobSeekingMotivation from "./sections/JobSeekingMotivation";
 import { useProfileData } from "@/hooks/useProfileData";
 import { useProfileSubmit } from "@/hooks/useProfileSubmit";
+import { useState } from "react";
 import type { Database } from "@/integrations/supabase/types";
 
 type CandidateProfile = Database['public']['Tables']['candidate_profiles']['Row'];
 
 export function CandidateForm() {
   const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<CandidateFormValues>({
     resolver: zodResolver(candidateFormSchema),
@@ -53,6 +54,15 @@ export function CandidateForm() {
 
   const { onSubmit } = useProfileSubmit(toast);
 
+  const handleSubmit = async (values: CandidateFormValues) => {
+    setIsSubmitting(true);
+    try {
+      await onSubmit(values);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   useProfileData((profile: CandidateProfile | null) => {
     if (!profile) return;
     
@@ -67,7 +77,9 @@ export function CandidateForm() {
       min_salary: profile.min_salary || 0,
       max_salary: profile.max_salary || 0,
       required_skills: profile.required_skills || [],
-      security_clearance: profile.security_clearance || undefined,
+      qualifications: profile.required_qualifications?.join(', ') || "",
+      security_clearance: profile.security_clearance ? "yes" : "no",
+      security_clearance_level: profile.security_clearance || undefined,
       work_eligibility: profile.work_eligibility || "UK citizens only",
       years_experience: profile.years_experience?.toString() || "",
       commission_percentage: profile.commission_percentage || null,
@@ -78,33 +90,18 @@ export function CandidateForm() {
       current_employer: profile.current_employer || "",
       job_seeking_reasons: [],
       other_job_seeking_reason: "",
+      linkedin_url: profile.linkedin_url || "",
+      years_in_current_title: profile.years_in_current_title || undefined,
     };
 
-    const currentValues = form.getValues();
+    console.log("Setting form data from profile:", formData);
     
-    Object.keys(formData).forEach((key) => {
-      const currentValue = currentValues[key as keyof CandidateFormValues];
-      const newValue = formData[key as keyof CandidateFormValues];
-      
-      if (key === 'travel_radius' && currentValue !== 10) {
-        return;
-      }
-      
-      if (currentValue === "" || currentValue === undefined || currentValue === null || 
-          (Array.isArray(currentValue) && currentValue.length === 0) ||
-          (typeof currentValue === 'number' && currentValue === 0)) {
-        form.setValue(key as keyof CandidateFormValues, newValue, {
-          shouldDirty: false,
-          shouldTouch: false,
-          shouldValidate: false
-        });
-      }
-    });
+    form.reset(formData);
   });
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full max-w-2xl">
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8 w-full max-w-2xl">
         <div className="space-y-8">
           <div className="text-left">
             <ContactInformation control={form.control} />
@@ -136,8 +133,12 @@ export function CandidateForm() {
         </div>
         
         <div className="flex justify-start">
-          <Button type="submit" style={{ backgroundColor: "#FF69B4", color: "white" }}>
-            Update Profile
+          <Button 
+            type="submit" 
+            style={{ backgroundColor: "#FF69B4", color: "white" }}
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? "Updating..." : "Update Profile"}
           </Button>
         </div>
       </form>
