@@ -11,6 +11,7 @@ export const useProfileSubmit = (toast: ToastFunction) => {
 
   const onSubmit = async (values: CandidateFormValues) => {
     setIsSubmitting(true);
+    console.log("Submitting values:", values);
     
     try {
       const { data: { session } } = await supabase.auth.getSession();
@@ -25,15 +26,16 @@ export const useProfileSubmit = (toast: ToastFunction) => {
         return false;
       }
 
-      console.log("Submitting profile data:", values);
+      console.log("Submitting profile data with full name:", values.full_name);
 
       // Parse qualifications from comma-separated string to array
       const qualifications = values.qualifications
         ? values.qualifications.split(',').map(q => q.trim()).filter(Boolean)
         : [];
 
-      // Validate required fields before submission
-      if (!values.full_name || values.full_name.trim() === '') {
+      // Ensure full name is provided and is a string
+      const fullName = values.full_name?.trim();
+      if (!fullName) {
         toast({
           variant: "destructive",
           title: "Validation Error",
@@ -49,11 +51,14 @@ export const useProfileSubmit = (toast: ToastFunction) => {
         ? values.years_in_current_title 
         : 0;
 
+      // Log the data we're about to save
+      console.log("Saving profile with full name:", fullName);
+
       const { error } = await supabase
         .from('candidate_profiles')
         .upsert({
           id: session.user.id,
-          full_name: values.full_name,
+          full_name: fullName,
           email: values.email,
           phone_number: values.phone_number,
           address: values.address,
@@ -89,7 +94,7 @@ export const useProfileSubmit = (toast: ToastFunction) => {
         return false;
       }
 
-      console.log('Profile updated successfully');
+      console.log('Profile updated successfully with name:', fullName);
       toast({
         title: "Success",
         description: "Profile updated successfully"

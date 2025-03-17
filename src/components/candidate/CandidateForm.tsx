@@ -24,6 +24,7 @@ type CandidateProfile = Database['public']['Tables']['candidate_profiles']['Row'
 export function CandidateForm() {
   const { toast } = useToast();
   const [formUpdated, setFormUpdated] = useState(false);
+  const [profileLoaded, setProfileLoaded] = useState(false);
   const [formKey, setFormKey] = useState(Date.now()); // Key to force form re-render
 
   const form = useForm<CandidateFormValues>({
@@ -58,6 +59,8 @@ export function CandidateForm() {
 
   const handleSubmit = async (values: CandidateFormValues) => {
     console.log("Form submitted with values:", values);
+    console.log("Full name being submitted:", values.full_name);
+    
     const success = await onSubmit(values);
     
     if (success) {
@@ -72,11 +75,13 @@ export function CandidateForm() {
 
   // Track form changes
   useEffect(() => {
+    if (!profileLoaded) return;
+    
     const subscription = form.watch(() => {
       setFormUpdated(true);
     });
     return () => subscription.unsubscribe();
-  }, [form]);
+  }, [form, profileLoaded]);
 
   useProfileData((profile: CandidateProfile | null) => {
     if (!profile) return;
@@ -112,10 +117,14 @@ export function CandidateForm() {
       };
 
       console.log("Setting form data from profile:", formData);
+      console.log("Full name from profile:", formData.full_name);
+      
       form.reset(formData);
       
       // Reset the update flag after setting initial data
       setFormUpdated(false);
+      // Mark profile as loaded
+      setProfileLoaded(true);
       // Force a re-render to ensure values are shown
       setFormKey(Date.now());
       

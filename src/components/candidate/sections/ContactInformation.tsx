@@ -3,17 +3,21 @@ import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/comp
 import { Input } from "@/components/ui/input";
 import { Control } from "react-hook-form";
 import { CandidateFormValues } from "../candidateFormSchema";
-import { useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import { Link } from "lucide-react";
 import BristolPostcodeSelect from "@/components/address/BristolPostcodeSelect";
 import HomePostcodeSelect from "@/components/address/HomePostcodeSelect";
+import { useEffect } from "react";
 
 interface ContactInformationProps {
   control: Control<CandidateFormValues>;
 }
 
 const ContactInformation = ({ control }: ContactInformationProps) => {
+  // Log the control values for debugging
+  useEffect(() => {
+    console.log("Control in ContactInformation:", control);
+  }, [control]);
+
   return (
     <div className="space-y-8">
       <div className="space-y-4">
@@ -22,20 +26,23 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
         <FormField
           control={control}
           name="full_name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-gray-900">Full Name</FormLabel>
-              <FormControl>
-                <Input 
-                  {...field} 
-                  placeholder="Enter your full name" 
-                  className="bg-zinc-900 text-white border-zinc-700 placeholder:text-gray-400"
-                  value={field.value || ''}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+          render={({ field }) => {
+            console.log("Full name field value:", field.value);
+            return (
+              <FormItem>
+                <FormLabel className="text-gray-900">Full Name</FormLabel>
+                <FormControl>
+                  <Input 
+                    {...field} 
+                    placeholder="Enter your full name" 
+                    className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400"
+                    value={field.value || ''}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            );
+          }}
         />
 
         <FormField
@@ -49,7 +56,7 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
                   {...field} 
                   type="email"
                   placeholder="Enter your email address" 
-                  className="bg-zinc-900 text-white border-zinc-700 placeholder:text-gray-400"
+                  className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400"
                   value={field.value || ''}
                 />
               </FormControl>
@@ -69,7 +76,7 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
                   {...field} 
                   type="tel" 
                   placeholder="Enter your phone number" 
-                  className="bg-zinc-900 text-white border-zinc-700 placeholder:text-gray-400"
+                  className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400"
                   value={field.value || ''}
                 />
               </FormControl>
@@ -90,7 +97,7 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
                     {...field} 
                     type="url" 
                     placeholder="https://www.linkedin.com/in/your-profile" 
-                    className="bg-zinc-900 text-white border-zinc-700 placeholder:text-gray-400 pl-10"
+                    className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 pl-10"
                     value={field.value || ''}
                   />
                   <Link className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
@@ -111,7 +118,7 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
                 <Input 
                   {...field}
                   placeholder="Enter your current employer's name" 
-                  className="bg-zinc-900 text-white border-zinc-700 placeholder:text-gray-400"
+                  className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400"
                   value={field.value || ''}
                 />
               </FormControl>
