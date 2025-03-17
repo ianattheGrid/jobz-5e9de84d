@@ -21,15 +21,20 @@ const CommissionToggle = ({ control, name, label, onChange }: CommissionTogglePr
             <div>
               <FormLabel className="text-sm text-gray-900">{label}</FormLabel>
             </div>
-            <FormControl>
-              <Switch
-                checked={field.value}
-                onCheckedChange={(checked) => {
-                  field.onChange(checked);
-                  onChange?.(checked);
-                }}
-              />
-            </FormControl>
+            <div className="flex items-center gap-2">
+              <span className={`text-xs ${!field.value ? "font-medium text-primary" : "text-gray-500"}`}>No</span>
+              <FormControl>
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={(checked) => {
+                    field.onChange(checked);
+                    onChange?.(checked);
+                  }}
+                  className="bg-gray-200 data-[state=checked]:bg-primary"
+                />
+              </FormControl>
+              <span className={`text-xs ${field.value ? "font-medium text-primary" : "text-gray-500"}`}>Yes</span>
+            </div>
           </div>
         </FormItem>
       )}

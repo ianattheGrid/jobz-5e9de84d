@@ -174,3 +174,8 @@ button[type="submit"]:hover {
 .form-item-container {
   @apply bg-white text-gray-900 !important;
 }
+
+/* Style for the Yes/No text in commission toggles */
+.commission-toggle-container .text-primary {
+  color: #FF69B4 !important;
+}
