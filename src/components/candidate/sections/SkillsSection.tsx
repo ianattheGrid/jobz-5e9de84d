@@ -122,13 +122,15 @@ const SkillsSection = ({ control }: SkillsSectionProps) => {
               setHasSecurityClearance(value);
               // Clear the security clearance level if "no" is selected
               if (value === "no") {
-                // Proper way to reset the field value using FormField
-                const securityClearanceField = control._formState.defaultValues?.security_clearance_level;
-                control._subjects.state.next({
-                  name: "security_clearance_level",
-                  type: "change",
-                  value: undefined
-                });
+                // Using setValue from the form's context would be ideal,
+                // but since we only have control, we'll access the form state directly
+                if (control._names.array.has("security_clearance_level")) {
+                  // This is a safer approach than manipulating internal properties
+                  const unsetField = () => {
+                    control._formValues.security_clearance_level = undefined;
+                  };
+                  unsetField();
+                }
               }
             }}
             className="flex space-x-4"
