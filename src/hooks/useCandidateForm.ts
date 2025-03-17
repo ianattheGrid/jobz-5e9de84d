@@ -86,37 +86,37 @@ export const useCandidateForm = () => {
     try {
       console.log("Loading profile data:", profile);
       
-      // Prepare form data
+      // Prepare form data with nullish coalescing to ensure proper value types
       const formData: CandidateFormValues = {
-        full_name: profile.full_name || "",
-        email: profile.email || "",
-        phone_number: profile.phone_number || "",
-        address: profile.address || "",
-        home_postcode: profile.home_postcode || "",
+        full_name: profile.full_name ?? "",
+        email: profile.email ?? "",
+        phone_number: profile.phone_number ?? "",
+        address: profile.address ?? "",
+        home_postcode: profile.home_postcode ?? "",
         location: Array.isArray(profile.location) ? profile.location : [],
-        workArea: profile.job_title || "",
+        workArea: profile.job_title ?? "",
         min_salary: typeof profile.min_salary === 'number' ? profile.min_salary : 0,
         max_salary: typeof profile.max_salary === 'number' ? profile.max_salary : 0,
         required_skills: Array.isArray(profile.required_skills) ? profile.required_skills : [],
         qualifications: Array.isArray(profile.required_qualifications) ? profile.required_qualifications.join(', ') : "",
         security_clearance: profile.security_clearance ? "yes" : "no",
-        work_eligibility: profile.work_eligibility || "UK citizens only",
-        years_experience: profile.years_experience?.toString() || "",
-        commission_percentage: profile.commission_percentage || null,
+        work_eligibility: profile.work_eligibility ?? "UK citizens only",
+        years_experience: profile.years_experience?.toString() ?? "",
+        commission_percentage: profile.commission_percentage ?? null,
         open_to_commission: profile.commission_percentage !== null,
-        additional_skills: profile.additional_skills || "",
-        availability: profile.availability || "Immediate",
-        work_preferences: profile.work_preferences || "",
-        current_employer: profile.current_employer || "",
+        additional_skills: profile.additional_skills ?? "",
+        availability: profile.availability ?? "Immediate",
+        work_preferences: profile.work_preferences ?? "",
+        current_employer: profile.current_employer ?? "",
         job_seeking_reasons: [],
         other_job_seeking_reason: "",
-        linkedin_url: profile.linkedin_url || "",
+        linkedin_url: profile.linkedin_url ?? "",
         years_in_current_title: typeof profile.years_in_current_title === 'number' ? profile.years_in_current_title : 0,
       };
 
       console.log("Setting form data:", formData);
       
-      // Reset form with new data
+      // Reset form with properly sanitized data
       form.reset(formData);
       setFormUpdated(false);
       setProfileLoaded(true);

@@ -1,3 +1,4 @@
+
 import { Navigate } from "react-router-dom";
 import Index from "@/pages/Index";
 import Jobs from "@/pages/Jobs";
@@ -22,6 +23,7 @@ import ViewCandidateProfile from "@/pages/ViewCandidateProfile";
 import CandidateApplications from "@/pages/CandidateApplications";
 import CandidateAccountSettings from "@/pages/CandidateAccountSettings";
 import CandidateInterviews from "@/pages/CandidateInterviews";
+import PreviewCandidateProfile from "@/pages/PreviewCandidateProfile";
 
 export const routes = [
   {
@@ -47,6 +49,10 @@ export const routes = [
   {
     path: "/candidate/profile",
     element: <CandidateProfile />
+  },
+  {
+    path: "/candidate/profile/preview",
+    element: <PreviewCandidateProfile />
   },
   {
     path: "/candidate/dashboard",
