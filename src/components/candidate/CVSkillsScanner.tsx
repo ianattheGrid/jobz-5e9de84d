@@ -28,32 +28,38 @@ export const CVSkillsScanner = ({ cvUrl }: CVSkillsScannerProps) => {
     try {
       setScanning(true);
       
-      // Get common skills to scan for - focusing on more specific terms
-      const commonSkills = [
-        // Programming Languages
-        "JavaScript", "TypeScript", "Python", "Java", "C#", "PHP", "Ruby", "Golang", "Swift", "Kotlin",
-        "C++", "Rust", "Scala", "Perl", "Bash", "SQL", "HTML", "CSS", "SASS", "LESS",
+      // Updated skill list for more accurate matching - focused on technical skills
+      // with longer, more specific names to avoid false positives
+      const skillsToScan = [
+        // Programming Languages - more specific terms
+        "JavaScript", "TypeScript", "Python", "Java", "C# .NET", "PHP", "Ruby on Rails", 
+        "Swift", "Kotlin", "C++", "Rust", "Scala", "Perl", "PowerShell", "SQL Server",
+        "PostgreSQL", "HTML5", "CSS3", "SASS", "LESS",
         
-        // Frameworks & Libraries
-        "React", "Angular", "Vue.js", "Express.js", "Django", "Flask", "Spring", "Laravel", "Node.js", 
-        "jQuery", "Bootstrap", "Tailwind CSS", ".NET", "ASP.NET", "Ruby on Rails", "Symfony",
+        // Frameworks & Libraries - using more specific full names
+        "React.js", "Angular.js", "Vue.js", "Next.js", "Express.js", "Django", 
+        "Flask", "Spring Boot", "Laravel Framework", "Node.js", 
+        "jQuery", "Bootstrap CSS", "Tailwind CSS", "ASP.NET MVC", "Ruby on Rails", "Symfony",
         
-        // Databases
-        "MySQL", "PostgreSQL", "MongoDB", "SQLite", "Oracle", "SQL Server", "Redis", "Cassandra", 
-        "DynamoDB", "Firebase", "Firestore", "ElasticSearch", "MariaDB",
+        // Databases - full names
+        "MySQL Database", "PostgreSQL", "MongoDB", "SQLite", "Oracle Database", "Microsoft SQL Server", 
+        "Redis", "Apache Cassandra", "Amazon DynamoDB", "Google Firebase", "Firestore",
+        "Elasticsearch", "MariaDB",
         
-        // Cloud & DevOps
-        "AWS", "Azure", "Google Cloud", "Docker", "Kubernetes", "Jenkins", "CircleCI", "Travis CI",
-        "GitHub Actions", "Terraform", "Ansible", "Puppet", "Chef", "Prometheus", "Grafana",
+        // Cloud & DevOps - longer specific terms
+        "Amazon Web Services", "Microsoft Azure", "Google Cloud Platform", "Docker Containers", 
+        "Kubernetes Orchestration", "Jenkins Pipeline", "CircleCI", "Travis CI",
+        "GitHub Actions", "Terraform", "Ansible", "Chef", "Prometheus Monitoring", "Grafana",
         
-        // Other Tech Skills
-        "Git", "GraphQL", "RESTful API", "WebSockets", "Linux", "Unix", "Agile", "Scrum", "Jira",
-        "CI/CD", "Test-Driven Development", "Microservices", "Machine Learning", "Artificial Intelligence"
+        // Other Tech Skills - making terms more specific
+        "Git Version Control", "GraphQL API", "RESTful API Design", "WebSockets Protocol", "Linux Administration", 
+        "Agile Methodology", "Scrum Framework", "Test-Driven Development", "Microservices Architecture", 
+        "Machine Learning", "Artificial Intelligence"
       ];
       
       // Call the parse-cv function
       const { data, error } = await supabase.functions.invoke('parse-cv', {
-        body: { fileUrl: cvUrl, requiredSkills: commonSkills }
+        body: { fileUrl: cvUrl, requiredSkills: skillsToScan }
       });
       
       if (error) throw error;
@@ -131,6 +137,7 @@ export const CVSkillsScanner = ({ cvUrl }: CVSkillsScannerProps) => {
                 <ul className="list-disc pl-5 mt-2 space-y-1">
                   <li>Include specific technical skills and technologies in your CV</li> 
                   <li>Make sure your CV is in a readable text format (not just images)</li>
+                  <li>Use complete terms like "JavaScript" rather than abbreviations like "JS"</li>
                   <li>List skills clearly, ideally in a dedicated "Skills" section</li>
                 </ul>
               </p>

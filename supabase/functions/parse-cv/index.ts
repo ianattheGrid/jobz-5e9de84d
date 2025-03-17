@@ -49,30 +49,36 @@ serve(async (req) => {
     const cvContentLower = cvContent.toLowerCase();
     console.log('CV content length:', cvContentLower.length);
     
-    // Match required skills against CV content with more accurate matching
-    // to avoid false positives for short skill names
+    // Enhanced skill matching algorithm with additional safeguards
     const matchedSkills = requiredSkills.filter((skill) => {
       const skillLower = skill.toLowerCase();
       
-      // For very short skills (1-2 characters), require word boundaries or specific context
+      // Skip very short skills (1-2 characters) completely
       if (skillLower.length <= 2) {
-        // Skip very short skills to avoid false positives
         return false;
-      } else if (skillLower.length <= 3) {
-        // For short skills (3 chars), check for word boundaries
-        const regex = new RegExp(`\\b${skillLower}\\b`, 'i');
-        return regex.test(cvContentLower);
-      } else {
-        // For longer skills, we can be more lenient but still use word boundaries
-        const regex = new RegExp(`\\b${skillLower}\\b`, 'i');
-        return regex.test(cvContentLower);
       }
+      
+      // For short skills (3-4 chars), be extremely strict with word boundaries
+      if (skillLower.length <= 4) {
+        // For programming languages like "C#", "Go", "PHP", etc., look for exact matches with word boundaries
+        const strictRegex = new RegExp(`\\b${skillLower.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
+        const result = strictRegex.test(cvContentLower);
+        console.log(`Checking skill "${skill}" (short) with strict matching: ${result}`);
+        return result;
+      }
+      
+      // For longer skills, still use word boundaries but slightly more lenient
+      const regex = new RegExp(`\\b${skillLower.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
+      const result = regex.test(cvContentLower);
+      console.log(`Checking skill "${skill}" with standard matching: ${result}`);
+      return result;
     });
 
     console.log('Matched skills:', matchedSkills);
 
     // Calculate match percentage for CV skills
-    const cvSkillsMatchScore = matchedSkills.length / requiredSkills.length;
+    const cvSkillsMatchScore = requiredSkills.length > 0 ? 
+      matchedSkills.length / requiredSkills.length : 0;
 
     console.log('CV parsing completed:', {
       totalSkills: requiredSkills.length,
