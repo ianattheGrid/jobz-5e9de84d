@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { CandidateProfile } from "@/integrations/supabase/types/profiles";
 import { calculateSkillsMatchScore } from "../utils/skillsMatching";
@@ -29,15 +30,6 @@ export const useMatchScore = (profile: CandidateProfile, job: any) => {
     return profile.location.some(loc => 
       loc.toLowerCase() === job.location.toLowerCase()
     ) ? 1 : 0;
-  };
-
-  const skillsMatch = async () => {
-    if (!profile.required_skills || !job.required_skills) return 0;
-    return calculateSkillsMatchScore(
-      profile.required_skills, 
-      job.required_skills,
-      profile.cv_url
-    );
   };
 
   const experienceMatch = () => {
@@ -89,11 +81,10 @@ export const useMatchScore = (profile: CandidateProfile, job: any) => {
 
   const calculateTotalScore = async () => {
     let totalScore = 0;
-    totalScore += titleMatch() * 0.25;          // Job title match (25%)
-    totalScore += await skillsMatch() * 0.15;   // Skills match (15%)
+    totalScore += titleMatch() * 0.35;          // Job title match (increased from 25% to 35%)
     totalScore += locationMatch() * 0.15;       // Location match (15%)
     totalScore += experienceMatch() * 0.15;     // Experience match (15%)
-    totalScore += specializationMatch() * 0.15; // Specialization match (15%)
+    totalScore += specializationMatch() * 0.25; // Specialization match (increased from 15% to 25%)
     totalScore += salaryMatch() * 0.10;         // Salary match (10%)
     
     // Only return the score if the candidate is verified, otherwise return 0
@@ -105,7 +96,6 @@ export const useMatchScore = (profile: CandidateProfile, job: any) => {
     titleMatch,
     specializationMatch,
     locationMatch,
-    skillsMatch,
     experienceMatch,
     salaryMatch,
     calculateTotalScore
