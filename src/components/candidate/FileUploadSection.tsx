@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2, Upload, FileText, Check } from "lucide-react";
+import { Loader2, Upload, FileText, Check, Trash2 } from "lucide-react";
 
 interface FileUploadSectionProps {
   userId: string;
@@ -21,6 +21,8 @@ export const FileUploadSection = ({
 }: FileUploadSectionProps) => {
   const [uploadingPicture, setUploadingPicture] = useState(false);
   const [uploadingCV, setUploadingCV] = useState(false);
+  const [deletingPicture, setDeletingPicture] = useState(false);
+  const [deletingCV, setDeletingCV] = useState(false);
   const [uploadSuccess, setUploadSuccess] = useState<'picture' | 'cv' | null>(null);
   const { toast } = useToast();
 
@@ -84,6 +86,75 @@ export const FileUploadSection = ({
     }
   };
 
+  const handleFileDelete = async (type: 'profile_picture' | 'cv') => {
+    const isProfile = type === 'profile_picture';
+    const currentFile = isProfile ? currentProfilePicture : currentCV;
+    const setDeleting = isProfile ? setDeletingPicture : setDeletingCV;
+    
+    if (!currentFile) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: `No ${isProfile ? 'profile picture' : 'CV'} to delete`,
+      });
+      return;
+    }
+
+    try {
+      setDeleting(true);
+
+      // Extract the file path from the URL
+      // Format is usually like: https://[base-url]/storage/v1/object/public/[bucket]/[path]
+      const urlParts = currentFile.split('/');
+      const bucketIndex = urlParts.indexOf('public') + 1;
+      if (bucketIndex > 0 && bucketIndex < urlParts.length) {
+        const bucket = urlParts[bucketIndex];
+        const filePath = urlParts.slice(bucketIndex + 1).join('/');
+
+        // First, update the profile to remove the reference
+        const { error: updateError } = await supabase
+          .from('candidate_profiles')
+          .update({
+            [isProfile ? 'profile_picture_url' : 'cv_url']: null,
+          })
+          .eq('id', userId);
+
+        if (updateError) throw updateError;
+
+        // Then, try to remove the actual file from storage
+        // This might fail if the file doesn't exist, but that's ok
+        try {
+          await supabase.storage
+            .from(bucket)
+            .remove([filePath]);
+        } catch (storageError) {
+          console.error("Storage delete error:", storageError);
+          // Don't throw here, we still want to show success since the profile was updated
+        }
+
+        toast({
+          title: "Success",
+          description: `${isProfile ? 'Profile picture' : 'CV'} deleted successfully`,
+        });
+
+        // Call the onUploadComplete callback if provided
+        if (onUploadComplete) {
+          onUploadComplete();
+        }
+      } else {
+        throw new Error(`Invalid URL format for ${isProfile ? 'profile picture' : 'CV'}`);
+      }
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: error.message || `Failed to delete ${isProfile ? 'profile picture' : 'CV'}`,
+      });
+    } finally {
+      setDeleting(false);
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="space-y-4">
@@ -93,7 +164,7 @@ export const FileUploadSection = ({
             variant="outline"
             size="default"
             onClick={() => document.getElementById('profile-picture-input')?.click()}
-            disabled={uploadingPicture}
+            disabled={uploadingPicture || deletingPicture}
             className="w-[200px] relative"
           >
             {uploadingPicture ? (
@@ -113,6 +184,24 @@ export const FileUploadSection = ({
               </>
             )}
           </Button>
+
+          {currentProfilePicture && (
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => handleFileDelete('profile_picture')}
+              disabled={uploadingPicture || deletingPicture}
+              className="bg-red-50 hover:bg-red-100 border-red-200"
+              title="Delete profile picture"
+            >
+              {deletingPicture ? (
+                <Loader2 className="h-4 w-4 animate-spin text-red-500" />
+              ) : (
+                <Trash2 className="h-4 w-4 text-red-500" />
+              )}
+            </Button>
+          )}
+
           <Avatar className="h-20 w-20">
             <AvatarImage src={currentProfilePicture || undefined} />
             <AvatarFallback className="bg-gray-200 text-gray-500">
@@ -139,7 +228,7 @@ export const FileUploadSection = ({
             variant="outline"
             size="default"
             onClick={() => document.getElementById('cv-input')?.click()}
-            disabled={uploadingCV}
+            disabled={uploadingCV || deletingCV}
             className="w-[200px]"
           >
             {uploadingCV ? (
@@ -159,19 +248,38 @@ export const FileUploadSection = ({
               </>
             )}
           </Button>
+
           {currentCV && (
-            <div className="flex items-center gap-2">
-              <FileText className="h-4 w-4 text-blue-600" />
-              <a
-                href={currentCV}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm text-blue-600 hover:underline"
+            <>
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => handleFileDelete('cv')}
+                disabled={uploadingCV || deletingCV}
+                className="bg-red-50 hover:bg-red-100 border-red-200"
+                title="Delete CV"
               >
-                View Current CV
-              </a>
-            </div>
+                {deletingCV ? (
+                  <Loader2 className="h-4 w-4 animate-spin text-red-500" />
+                ) : (
+                  <Trash2 className="h-4 w-4 text-red-500" />
+                )}
+              </Button>
+
+              <div className="flex items-center gap-2">
+                <FileText className="h-4 w-4 text-blue-600" />
+                <a
+                  href={currentCV}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-blue-600 hover:underline"
+                >
+                  View Current CV
+                </a>
+              </div>
+            </>
           )}
+
           <input
             type="file"
             id="cv-input"
@@ -190,3 +298,4 @@ export const FileUploadSection = ({
     </div>
   );
 }
+
