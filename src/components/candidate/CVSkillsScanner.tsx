@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
@@ -28,33 +29,38 @@ export const CVSkillsScanner = ({ cvUrl }: CVSkillsScannerProps) => {
     try {
       setScanning(true);
       
-      // Updated skill list for more accurate matching - focused on technical skills
-      // with longer, more specific names to avoid false positives
+      // Balanced skill list mixing technical and professional skills
       const skillsToScan = [
-        // Programming Languages - more specific terms
+        // Technical Skills - Programming Languages
         "JavaScript", "TypeScript", "Python", "Java", "C# .NET", "PHP", "Ruby on Rails", 
-        "Swift", "Kotlin", "C++", "Rust", "Scala", "Perl", "PowerShell", "SQL Server",
-        "PostgreSQL", "HTML5", "CSS3", "SASS", "LESS",
+        "Swift", "Kotlin", "C++", "SQL Database",
         
-        // Frameworks & Libraries - using more specific full names
-        "React.js", "Angular.js", "Vue.js", "Next.js", "Express.js", "Django", 
-        "Flask", "Spring Boot", "Laravel Framework", "Node.js", 
-        "jQuery", "Bootstrap CSS", "Tailwind CSS", "ASP.NET MVC", "Ruby on Rails", "Symfony",
+        // Technical Skills - Frameworks & Tools
+        "React.js", "Angular.js", "Node.js", "Docker Containers", 
+        "Cloud Computing", "Data Analysis", "AWS", "Microsoft Azure",
         
-        // Databases - full names
-        "MySQL Database", "PostgreSQL", "MongoDB", "SQLite", "Oracle Database", "Microsoft SQL Server", 
-        "Redis", "Apache Cassandra", "Amazon DynamoDB", "Google Firebase", "Firestore",
-        "Elasticsearch", "MariaDB",
+        // Professional Skills
+        "Project Management", "Team Leadership", "Strategic Planning",
+        "Business Analysis", "Agile Methodology", "Scrum Framework",
+        "Stakeholder Management", "Client Relations", "Requirements Gathering",
         
-        // Cloud & DevOps - longer specific terms
-        "Amazon Web Services", "Microsoft Azure", "Google Cloud Platform", "Docker Containers", 
-        "Kubernetes Orchestration", "Jenkins Pipeline", "CircleCI", "Travis CI",
-        "GitHub Actions", "Terraform", "Ansible", "Chef", "Prometheus Monitoring", "Grafana",
+        // Soft Skills & Management
+        "Communication Skills", "Problem Solving", "Critical Thinking",
+        "Time Management", "Presentation Skills", "Negotiation",
+        "Change Management", "Budget Management", "Resource Allocation",
         
-        // Other Tech Skills - making terms more specific
-        "Git Version Control", "GraphQL API", "RESTful API Design", "WebSockets Protocol", "Linux Administration", 
-        "Agile Methodology", "Scrum Framework", "Test-Driven Development", "Microservices Architecture", 
-        "Machine Learning", "Artificial Intelligence"
+        // Industry Knowledge
+        "Digital Marketing", "Financial Analysis", "Human Resources",
+        "Supply Chain Management", "Quality Assurance", "Research Methods",
+        "Customer Experience", "Product Development", "Risk Management",
+        
+        // Business Tools
+        "Microsoft Office", "Google Workspace", "Salesforce", 
+        "JIRA Project Management", "Power BI", "Tableau Dashboard",
+        
+        // Creative Skills
+        "Content Creation", "UI/UX Design", "Graphic Design",
+        "Copywriting", "Video Production"
       ];
       
       // Call the parse-cv function
@@ -72,7 +78,7 @@ export const CVSkillsScanner = ({ cvUrl }: CVSkillsScannerProps) => {
         title: "CV Analysis Complete",
         description: skillCount > 0 
           ? `Found ${skillCount} skills in your CV.` 
-          : "No skills were detected in your CV. Consider updating it with specific technical skills.",
+          : "No skills were detected in your CV. Consider updating it with specific technical and professional skills.",
         variant: skillCount > 0 ? "default" : "destructive",
       });
     } catch (error: any) {
@@ -135,9 +141,9 @@ export const CVSkillsScanner = ({ cvUrl }: CVSkillsScannerProps) => {
               <p className="text-sm text-amber-800">
                 No skills were detected in your CV. To improve your matches:
                 <ul className="list-disc pl-5 mt-2 space-y-1">
-                  <li>Include specific technical skills and technologies in your CV</li> 
+                  <li>Include specific technical skills and professional competencies in your CV</li> 
                   <li>Make sure your CV is in a readable text format (not just images)</li>
-                  <li>Use complete terms like "JavaScript" rather than abbreviations like "JS"</li>
+                  <li>Use complete terms like "Project Management" rather than abbreviations</li>
                   <li>List skills clearly, ideally in a dedicated "Skills" section</li>
                 </ul>
               </p>

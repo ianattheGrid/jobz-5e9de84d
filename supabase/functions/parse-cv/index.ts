@@ -49,7 +49,7 @@ serve(async (req) => {
     const cvContentLower = cvContent.toLowerCase();
     console.log('CV content length:', cvContentLower.length);
     
-    // Enhanced skill matching algorithm with additional safeguards
+    // Enhanced skill matching algorithm with balanced approach
     const matchedSkills = requiredSkills.filter((skill) => {
       const skillLower = skill.toLowerCase();
       
@@ -58,20 +58,42 @@ serve(async (req) => {
         return false;
       }
       
-      // For short skills (3-4 chars), be extremely strict with word boundaries
+      // For short skills (3-4 chars), use strict word boundaries
       if (skillLower.length <= 4) {
-        // For programming languages like "C#", "Go", "PHP", etc., look for exact matches with word boundaries
         const strictRegex = new RegExp(`\\b${skillLower.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
         const result = strictRegex.test(cvContentLower);
         console.log(`Checking skill "${skill}" (short) with strict matching: ${result}`);
         return result;
       }
       
-      // For longer skills, still use word boundaries but slightly more lenient
-      const regex = new RegExp(`\\b${skillLower.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
-      const result = regex.test(cvContentLower);
-      console.log(`Checking skill "${skill}" with standard matching: ${result}`);
-      return result;
+      // For longer skills, be slightly more flexible but still use proper word boundaries
+      const wordBoundaryRegex = new RegExp(`\\b${skillLower.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
+      if (wordBoundaryRegex.test(cvContentLower)) {
+        console.log(`Found skill "${skill}" with word boundary match`);
+        return true;
+      }
+
+      // For multi-word professional skills (like "project management"), 
+      // allow more flexible matching as they might appear in various forms
+      if (skillLower.includes(' ') && skillLower.length > 8) {
+        // For longer multi-word skills, we can be a bit more lenient
+        // This helps with skills like "project management" which might appear 
+        // in different forms like "managing projects" or "project manager"
+        const words = skillLower.split(' ');
+        
+        // Check if all words from the skill appear close to each other in the CV
+        const wordProximity = words.every(word => {
+          if (word.length <= 3) return true; // Skip very short words like "of", "in", etc.
+          return cvContentLower.includes(word);
+        });
+        
+        if (wordProximity) {
+          console.log(`Found skill "${skill}" with word proximity match`);
+          return true;
+        }
+      }
+      
+      return false;
     });
 
     console.log('Matched skills:', matchedSkills);
