@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -160,13 +161,15 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Pink button styles */
 .pink-button,
-button[style*="FF69B4"] {
+button[style*="FF69B4"],
+button.bg-\[\#FF69B4\] {
   background-color: #FF69B4 !important;
   color: white !important;
 }
 
 .pink-button:hover,
-button[style*="FF69B4"]:hover {
+button[style*="FF69B4"]:hover,
+button.bg-\[\#FF69B4\]:hover {
   background-color: #FF50A8 !important;
 }
 

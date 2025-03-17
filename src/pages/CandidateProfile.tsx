@@ -70,14 +70,13 @@ export default function CandidateProfile() {
               Keep your profile up to date to find the best job matches.
             </p>
           </div>
-          <Button
+          <button
             onClick={() => navigate('/candidate/dashboard')}
-            style={{ backgroundColor: "#FF69B4", color: "white" }}
-            className="hover:bg-[#FF50A8]"
+            className="inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium text-white bg-[#FF69B4] hover:bg-[#FF50A8]"
           >
             <LayoutDashboard className="w-4 h-4 mr-2" />
             Dashboard
-          </Button>
+          </button>
         </div>
         <div className="flex justify-center">
           <CandidateForm />
@@ -86,3 +85,4 @@ export default function CandidateProfile() {
     </div>
   );
 }
+
