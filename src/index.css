@@ -98,6 +98,10 @@ label,
 }
 
 /* Radio and checkbox inputs */
+[role="radio"],
+[role="checkbox"],
+[type="radio"],
+[type="checkbox"],
 [type="radio"] + label,
 [type="checkbox"] + label {
   @apply text-gray-900 !important;
@@ -109,6 +113,15 @@ input[type="number"],
 textarea,
 select {
   @apply text-gray-900 bg-white border-gray-200 !important;
+}
+
+/* All form controls and interactive elements */
+.form-control,
+button,
+.select-item,
+.radio-item,
+.checkbox-item {
+  @apply text-gray-900 bg-white !important;
 }
 
 /* Placeholders */
@@ -130,4 +143,12 @@ h1, h2, h3, h4, h5, h6 {
 /* Error messages */
 .error-message {
   @apply text-red-600 !important;
+}
+
+/* Specifically target any dark backgrounds in forms */
+.dark-bg,
+[class*="dark-bg"],
+[class*="dark"],
+[class*="black-bg"] {
+  @apply bg-white text-gray-900 !important;
 }
