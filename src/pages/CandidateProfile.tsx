@@ -85,6 +85,10 @@ export default function CandidateProfile() {
   const handleFileUploadComplete = async () => {
     if (userId) {
       await fetchProfileData(userId);
+      toast({
+        title: "Success",
+        description: "File uploaded successfully."
+      });
     }
   };
 

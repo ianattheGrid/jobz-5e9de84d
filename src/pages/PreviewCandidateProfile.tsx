@@ -52,6 +52,7 @@ function PreviewCandidateProfile() {
         if (error) throw error;
 
         if (data) {
+          console.log("Fetched profile data:", data);
           setProfile(data as CandidateProfile);
         }
       } catch (error) {
