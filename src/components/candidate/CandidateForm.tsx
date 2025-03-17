@@ -7,7 +7,6 @@ import WorkAreaField from "@/components/WorkAreaField";
 import SalaryRangeField from "@/components/SalaryRangeField";
 import AvailabilityField from "@/components/AvailabilityField";
 import WorkPreferencesField from "@/components/WorkPreferencesField";
-import SecurityClearanceFields from "@/components/job-details/SecurityClearanceFields";
 import WorkEligibilityField from "@/components/job-details/WorkEligibilityField";
 import { candidateFormSchema, type CandidateFormValues } from "./candidateFormSchema";
 import CommissionPreferences from "./sections/CommissionPreferences";
@@ -126,9 +125,6 @@ export function CandidateForm() {
           </div>
           <div className="text-left">
             <SkillsSection control={form.control} />
-          </div>
-          <div className="text-left">
-            <SecurityClearanceFields control={form.control} />
           </div>
           <div className="text-left">
             <WorkEligibilityField control={form.control} />
