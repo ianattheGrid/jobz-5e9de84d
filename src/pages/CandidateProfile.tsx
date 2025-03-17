@@ -75,6 +75,7 @@ export default function CandidateProfile() {
           title: "Error",
           description: "An error occurred while loading your profile.",
         });
+        navigate('/');
       }
     };
 

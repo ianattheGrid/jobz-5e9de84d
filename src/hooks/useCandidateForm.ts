@@ -118,8 +118,8 @@ export const useCandidateForm = () => {
       
       // Reset form with properly sanitized data
       form.reset(formData);
-      setFormUpdated(false);
       setProfileLoaded(true);
+      setFormUpdated(false);
     } catch (error) {
       console.error("Error setting form data:", error);
       toast({

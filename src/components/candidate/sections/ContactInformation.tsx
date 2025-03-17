@@ -26,7 +26,7 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
                 <Input 
                   placeholder="Enter your full name" 
                   className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400"
-                  {...field}
+                  {...field} 
                 />
               </FormControl>
               <FormMessage />
