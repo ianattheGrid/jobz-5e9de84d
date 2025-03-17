@@ -27,32 +27,36 @@ export function CandidateForm() {
   const [profileLoaded, setProfileLoaded] = useState(false);
   const [formKey, setFormKey] = useState(Date.now()); // Key to force form re-render
 
+  const defaultFormValues: CandidateFormValues = {
+    full_name: "",
+    email: "",
+    phone_number: "",
+    address: "",
+    home_postcode: "",
+    location: [],
+    workArea: "",
+    min_salary: 0,
+    max_salary: 0,
+    required_skills: [],
+    security_clearance: undefined,
+    work_eligibility: "UK citizens only",
+    years_experience: "",
+    commission_percentage: null,
+    open_to_commission: false,
+    additional_skills: "",
+    availability: "Immediate",
+    work_preferences: "",
+    current_employer: "",
+    job_seeking_reasons: [],
+    other_job_seeking_reason: "",
+    linkedin_url: "",
+    years_in_current_title: 0,
+  };
+
   const form = useForm<CandidateFormValues>({
     resolver: zodResolver(candidateFormSchema),
     mode: "onChange",
-    defaultValues: {
-      full_name: "",
-      email: "",
-      phone_number: "",
-      address: "",
-      home_postcode: "",
-      location: [],
-      workArea: "",
-      min_salary: 0,
-      max_salary: 0,
-      required_skills: [],
-      security_clearance: undefined,
-      work_eligibility: "UK citizens only",
-      years_experience: "",
-      commission_percentage: null,
-      open_to_commission: false,
-      additional_skills: "",
-      availability: "Immediate",
-      work_preferences: "",
-      current_employer: "",
-      job_seeking_reasons: [],
-      other_job_seeking_reason: "",
-    }
+    defaultValues: defaultFormValues
   });
 
   const { onSubmit, isSubmitting } = useProfileSubmit(toast);
@@ -85,10 +89,13 @@ export function CandidateForm() {
 
   // LoadProfile callback
   const loadProfileData = (profile: CandidateProfile | null) => {
-    if (!profile) return;
+    if (!profile) {
+      setProfileLoaded(true);
+      return;
+    }
     
     try {
-      // Safe parsing of profile data
+      // Safe parsing of profile data with fallbacks for all fields
       const formData: CandidateFormValues = {
         full_name: profile.full_name || "",
         email: profile.email || "",
@@ -120,12 +127,18 @@ export function CandidateForm() {
       console.log("Setting form data from profile:", formData);
       console.log("Full name from profile:", formData.full_name);
       
-      // Make sure we're not setting undefined values
+      // Make sure we're handling undefined values correctly
       Object.keys(formData).forEach(key => {
         if (formData[key as keyof CandidateFormValues] === undefined) {
           console.log(`Setting ${key} to empty string/default as it was undefined`);
-          if (typeof formData[key as keyof CandidateFormValues] === 'string') {
-            (formData[key as keyof CandidateFormValues] as any) = "";
+          const fieldKey = key as keyof CandidateFormValues;
+          
+          if (typeof defaultFormValues[fieldKey] === 'string') {
+            (formData[fieldKey] as string) = "";
+          } else if (typeof defaultFormValues[fieldKey] === 'number') {
+            (formData[fieldKey] as number) = 0;
+          } else if (Array.isArray(defaultFormValues[fieldKey])) {
+            (formData[fieldKey] as any[]) = [];
           }
         }
       });
@@ -146,11 +159,17 @@ export function CandidateForm() {
         title: "Error",
         description: "Failed to load your profile data. Please refresh the page."
       });
+      setProfileLoaded(true);
     }
   };
 
   // Use the profile data hook
   useProfileData(loadProfileData);
+
+  // Debug rendered form values
+  useEffect(() => {
+    console.log("Current form values:", form.getValues());
+  }, [form]);
 
   return (
     <Form {...form}>

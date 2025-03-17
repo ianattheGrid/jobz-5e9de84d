@@ -33,14 +33,16 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
                 <FormLabel className="text-gray-900">Full Name</FormLabel>
                 <FormControl>
                   <Input 
-                    {...field} 
                     placeholder="Enter your full name" 
                     className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400"
+                    name={field.name}
+                    value={field.value || ''}
                     onChange={(e) => {
                       console.log("Name input changed to:", e.target.value);
                       field.onChange(e.target.value);
                     }}
-                    value={field.value || ''}
+                    onBlur={field.onBlur}
+                    ref={field.ref}
                   />
                 </FormControl>
                 <FormMessage />
@@ -57,15 +59,17 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
               <FormLabel className="text-gray-900">Email Address</FormLabel>
               <FormControl>
                 <Input 
-                  {...field} 
                   type="email"
                   placeholder="Enter your email address" 
                   className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400"
+                  name={field.name}
+                  value={field.value || ''}
                   onChange={(e) => {
                     console.log("Email input changed to:", e.target.value);
                     field.onChange(e.target.value);
                   }}
-                  value={field.value || ''}
+                  onBlur={field.onBlur}
+                  ref={field.ref}
                 />
               </FormControl>
               <FormMessage />
@@ -81,15 +85,17 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
               <FormLabel className="text-gray-900">Phone Number</FormLabel>
               <FormControl>
                 <Input 
-                  {...field} 
                   type="tel" 
                   placeholder="Enter your phone number" 
                   className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400"
+                  name={field.name}
+                  value={field.value || ''}
                   onChange={(e) => {
                     console.log("Phone number input changed to:", e.target.value);
                     field.onChange(e.target.value);
                   }}
-                  value={field.value || ''}
+                  onBlur={field.onBlur}
+                  ref={field.ref}
                 />
               </FormControl>
               <FormMessage />
@@ -106,15 +112,17 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
               <FormControl>
                 <div className="relative">
                   <Input 
-                    {...field} 
                     type="url" 
                     placeholder="https://www.linkedin.com/in/your-profile" 
                     className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 pl-10"
+                    name={field.name}
+                    value={field.value || ''}
                     onChange={(e) => {
                       console.log("LinkedIn URL input changed to:", e.target.value);
                       field.onChange(e.target.value);
                     }}
-                    value={field.value || ''}
+                    onBlur={field.onBlur}
+                    ref={field.ref}
                   />
                   <Link className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
                 </div>
@@ -132,14 +140,16 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
               <FormLabel className="text-gray-900">Current Employer</FormLabel>
               <FormControl>
                 <Input 
-                  {...field}
                   placeholder="Enter your current employer's name" 
                   className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400"
+                  name={field.name}
+                  value={field.value || ''}
                   onChange={(e) => {
                     console.log("Current employer input changed to:", e.target.value);
                     field.onChange(e.target.value);
                   }}
-                  value={field.value || ''}
+                  onBlur={field.onBlur}
+                  ref={field.ref}
                 />
               </FormControl>
               <p className="text-sm text-gray-600 mt-1">

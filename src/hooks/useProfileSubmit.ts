@@ -26,8 +26,15 @@ export const useProfileSubmit = (toast: ToastFunction) => {
         return false;
       }
 
-      // Ensure full name is provided and is a string
-      const fullName = typeof values.full_name === 'string' ? values.full_name.trim() : '';
+      // Ensure all string fields are properly handled
+      const fullName = values.full_name === undefined ? '' : String(values.full_name).trim();
+      const email = values.email === undefined ? '' : String(values.email).trim();
+      const phoneNumber = values.phone_number === undefined ? null : String(values.phone_number).trim() || null;
+      const address = values.address === undefined ? null : String(values.address).trim() || null;
+      const homePostcode = values.home_postcode === undefined ? '' : String(values.home_postcode).trim();
+      const currentEmployer = values.current_employer === undefined ? null : String(values.current_employer).trim() || null;
+      const linkedinUrl = values.linkedin_url === undefined ? null : String(values.linkedin_url).trim() || null;
+      
       console.log("Processing full name for submission:", fullName, "Original:", values.full_name);
       
       if (!fullName) {
@@ -57,25 +64,25 @@ export const useProfileSubmit = (toast: ToastFunction) => {
       const profileData = {
         id: session.user.id,
         full_name: fullName,
-        email: values.email,
-        phone_number: values.phone_number || null,
-        address: values.address || null,
-        home_postcode: values.home_postcode,
-        location: values.location,
-        job_title: values.workArea,
+        email: email,
+        phone_number: phoneNumber,
+        address: address,
+        home_postcode: homePostcode,
+        location: values.location || [],
+        job_title: values.workArea || '',
         years_experience: yearsExperience,
-        min_salary: values.min_salary,
-        max_salary: values.max_salary,
+        min_salary: values.min_salary || 0,
+        max_salary: values.max_salary || 0,
         required_skills: values.required_skills || [],
         required_qualifications: qualifications,
         security_clearance: values.security_clearance === 'yes' ? values.security_clearance_level : null,
-        work_eligibility: values.work_eligibility,
+        work_eligibility: values.work_eligibility || '',
         commission_percentage: values.open_to_commission ? values.commission_percentage : null,
         additional_skills: values.additional_skills || null,
-        availability: values.availability,
-        work_preferences: values.work_preferences,
-        current_employer: values.current_employer || null,
-        linkedin_url: values.linkedin_url || null,
+        availability: values.availability || '',
+        work_preferences: values.work_preferences || '',
+        current_employer: currentEmployer,
+        linkedin_url: linkedinUrl,
         years_in_current_title: yearsInCurrentTitle,
       };
       
