@@ -10,9 +10,15 @@ interface FileUploadSectionProps {
   userId: string;
   currentProfilePicture?: string | null;
   currentCV?: string | null;
+  onUploadComplete?: () => void;
 }
 
-export const FileUploadSection = ({ userId, currentProfilePicture, currentCV }: FileUploadSectionProps) => {
+export const FileUploadSection = ({ 
+  userId, 
+  currentProfilePicture, 
+  currentCV,
+  onUploadComplete 
+}: FileUploadSectionProps) => {
   const [uploadingPicture, setUploadingPicture] = useState(false);
   const [uploadingCV, setUploadingCV] = useState(false);
   const { toast } = useToast();
@@ -53,8 +59,10 @@ export const FileUploadSection = ({ userId, currentProfilePicture, currentCV }: 
         description: `${isProfile ? 'Profile picture' : 'CV'} uploaded successfully`,
       });
 
-      // Reload the page to show the new file
-      window.location.reload();
+      // Call the onUploadComplete callback if provided
+      if (onUploadComplete) {
+        onUploadComplete();
+      }
     } catch (error: any) {
       toast({
         variant: "destructive",
@@ -79,11 +87,16 @@ export const FileUploadSection = ({ userId, currentProfilePicture, currentCV }: 
             className="w-[200px]"
           >
             {uploadingPicture ? (
-              <Loader2 className="h-4 w-4 animate-spin mr-2" />
+              <>
+                <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                Uploading...
+              </>
             ) : (
-              <Upload className="h-4 w-4 mr-2" />
+              <>
+                <Upload className="h-4 w-4 mr-2" />
+                Upload Picture
+              </>
             )}
-            Upload Picture
           </Button>
           <Avatar className="h-20 w-20">
             <AvatarImage src={currentProfilePicture || undefined} />
@@ -113,11 +126,16 @@ export const FileUploadSection = ({ userId, currentProfilePicture, currentCV }: 
             className="w-[200px]"
           >
             {uploadingCV ? (
-              <Loader2 className="h-4 w-4 animate-spin mr-2" />
+              <>
+                <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                Uploading...
+              </>
             ) : (
-              <Upload className="h-4 w-4 mr-2" />
+              <>
+                <Upload className="h-4 w-4 mr-2" />
+                Upload CV
+              </>
             )}
-            Upload CV
           </Button>
           {currentCV && (
             <a

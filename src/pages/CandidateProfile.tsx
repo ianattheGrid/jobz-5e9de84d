@@ -16,6 +16,26 @@ export default function CandidateProfile() {
   const [profilePicture, setProfilePicture] = useState<string | null>(null);
   const [cvUrl, setCvUrl] = useState<string | null>(null);
 
+  // Function to fetch profile data
+  const fetchProfileData = async (userId: string) => {
+    try {
+      const { data: profile, error } = await supabase
+        .from('candidate_profiles')
+        .select('profile_picture_url, cv_url')
+        .eq('id', userId)
+        .single();
+
+      if (error) throw error;
+      
+      if (profile) {
+        setProfilePicture(profile.profile_picture_url);
+        setCvUrl(profile.cv_url);
+      }
+    } catch (error) {
+      console.error("Error fetching profile data:", error);
+    }
+  };
+
   useEffect(() => {
     const checkAuth = async () => {
       try {
@@ -45,16 +65,7 @@ export default function CandidateProfile() {
         setUserId(session.user.id);
 
         // Fetch profile picture and CV URL
-        const { data: profile, error } = await supabase
-          .from('candidate_profiles')
-          .select('profile_picture_url, cv_url')
-          .eq('id', session.user.id)
-          .single();
-
-        if (profile) {
-          setProfilePicture(profile.profile_picture_url);
-          setCvUrl(profile.cv_url);
-        }
+        await fetchProfileData(session.user.id);
 
         setLoading(false);
       } catch (error) {
@@ -69,6 +80,13 @@ export default function CandidateProfile() {
 
     checkAuth();
   }, [navigate, toast]);
+
+  // Handler for file upload completion
+  const handleFileUploadComplete = async () => {
+    if (userId) {
+      await fetchProfileData(userId);
+    }
+  };
 
   if (loading) {
     return (
@@ -106,6 +124,7 @@ export default function CandidateProfile() {
                   userId={userId} 
                   currentProfilePicture={profilePicture} 
                   currentCV={cvUrl}
+                  onUploadComplete={handleFileUploadComplete}
                 />
                 
                 {cvUrl && (

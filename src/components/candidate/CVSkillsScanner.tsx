@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2, Search } from "lucide-react";
+import { Loader2, Search, AlertTriangle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 interface CVSkillsScannerProps {
@@ -14,6 +14,7 @@ export const CVSkillsScanner = ({ cvUrl }: CVSkillsScannerProps) => {
   const [scanning, setScanning] = useState(false);
   const [detectedSkills, setDetectedSkills] = useState<string[]>([]);
   const [hasScanned, setHasScanned] = useState(false);
+  const [scanError, setScanError] = useState<string | null>(null);
   const { toast } = useToast();
 
   const scanCV = async () => {
@@ -28,6 +29,7 @@ export const CVSkillsScanner = ({ cvUrl }: CVSkillsScannerProps) => {
 
     try {
       setScanning(true);
+      setScanError(null);
       
       // Balanced skill list with technical, professional, creative and industry-specific skills
       const skillsToScan = [
@@ -44,12 +46,14 @@ export const CVSkillsScanner = ({ cvUrl }: CVSkillsScannerProps) => {
         // App Development
         "Mobile Development", "App Development", "iOS Development",
         "Android Development", "Cross Platform", "Hybrid Apps",
+        "Mobile Apps", "React Native", "Flutter", "Swift",
         
         // Programming & Tech
         "JavaScript", "TypeScript", "React", "Angular", 
         "Vue", "Node.js", "HTML", "CSS", "SASS",
         "PHP", "Python", "Java", "SQL", "NoSQL",
-        "AWS", "Azure", "Docker", "Git",
+        "AWS", "Azure", "Docker", "Git", "DevOps",
+        "Frontend", "Backend", "Full Stack", "Web Development",
         
         // Marketing & Business
         "Digital Marketing", "Content Creation", "SEO",
@@ -70,26 +74,45 @@ export const CVSkillsScanner = ({ cvUrl }: CVSkillsScannerProps) => {
         "Real Estate", "Retail", "Hospitality"
       ];
       
-      // Call the parse-cv function
+      console.log("Starting CV scan with URL:", cvUrl);
+      
+      // Call the parse-cv function with additional debug info
       const { data, error } = await supabase.functions.invoke('parse-cv', {
-        body: { fileUrl: cvUrl, requiredSkills: skillsToScan }
+        body: { 
+          fileUrl: cvUrl, 
+          requiredSkills: skillsToScan,
+          debug: true
+        }
       });
       
       if (error) throw error;
       
-      setDetectedSkills(data.matchedSkills || []);
-      setHasScanned(true);
+      console.log("Received scan results:", data);
       
-      const skillCount = data.matchedSkills ? data.matchedSkills.length : 0;
-      toast({
-        title: "CV Analysis Complete",
-        description: skillCount > 0 
-          ? `Found ${skillCount} skills in your CV.` 
-          : "No skills were detected in your CV. Consider updating it with specific technical and professional skills.",
-        variant: skillCount > 0 ? "default" : "destructive",
-      });
+      if (data.error) {
+        setScanError(data.error);
+        toast({
+          variant: "destructive",
+          title: "Error Scanning CV",
+          description: data.error || "Failed to extract skills from your CV.",
+        });
+      } else {
+        setDetectedSkills(data.matchedSkills || []);
+        
+        const skillCount = data.matchedSkills ? data.matchedSkills.length : 0;
+        toast({
+          title: "CV Analysis Complete",
+          description: skillCount > 0 
+            ? `Found ${skillCount} skills in your CV.` 
+            : "No skills were detected in your CV. Consider updating it with specific technical and professional skills.",
+          variant: skillCount > 0 ? "default" : "destructive",
+        });
+      }
+      
+      setHasScanned(true);
     } catch (error: any) {
       console.error('Error scanning CV:', error);
+      setScanError(error.message || "Unknown error occurred");
       toast({
         variant: "destructive",
         title: "Error Analyzing CV",
@@ -125,10 +148,10 @@ export const CVSkillsScanner = ({ cvUrl }: CVSkillsScannerProps) => {
         </Button>
       </div>
       
-      {hasScanned && (
+      {hasScanned && !scanError && (
         <div className="mt-4">
           {detectedSkills.length > 0 ? (
-            <>
+            <div>
               <p className="text-sm text-gray-600 mb-2">
                 The following skills were detected in your CV:
               </p>
@@ -142,13 +165,13 @@ export const CVSkillsScanner = ({ cvUrl }: CVSkillsScannerProps) => {
                   </Badge>
                 ))}
               </div>
-            </>
+            </div>
           ) : (
             <div className="p-4 border border-amber-200 bg-amber-50 rounded-md">
               <p className="text-sm text-amber-800">
                 No skills were detected in your CV. To improve your matches:
               </p>
-              <div className="pl-5 mt-2 space-y-1">
+              <div className="mt-2 space-y-1">
                 <div className="flex items-start">
                   <span className="mr-2">•</span>
                   <span>Include specific skills like "Web Design" or "Project Management" in your CV</span>
@@ -171,10 +194,36 @@ export const CVSkillsScanner = ({ cvUrl }: CVSkillsScannerProps) => {
         </div>
       )}
       
+      {scanError && (
+        <div className="p-4 border border-red-200 bg-red-50 rounded-md">
+          <div className="flex items-start">
+            <AlertTriangle className="h-5 w-5 text-red-500 mr-2 flex-shrink-0 mt-0.5" />
+            <div>
+              <p className="text-sm font-medium text-red-800">Error scanning CV</p>
+              <p className="text-sm text-red-700 mt-1">{scanError}</p>
+              <p className="text-sm text-red-600 mt-2">
+                Try uploading your CV again in a different format (PDF or DOC) or ensure your PDF contains 
+                extractable text rather than just images of text.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+      
       {!cvUrl && (
         <p className="text-sm text-amber-600">
           Please upload your CV first before scanning for skills.
         </p>
+      )}
+      
+      {/* Complete analysis UI for when scan is done */}
+      {hasScanned && detectedSkills.length > 0 && (
+        <div className="mt-4 p-4 border border-green-200 bg-green-50 rounded-md">
+          <p className="text-sm font-medium text-green-800">CV Analysis Complete</p>
+          <p className="text-sm text-green-700 mt-1">
+            {detectedSkills.length} skills detected in your CV.
+          </p>
+        </div>
       )}
     </div>
   );
