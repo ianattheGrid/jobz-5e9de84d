@@ -44,13 +44,6 @@ const JobDetailsFields = ({ control }: JobDetailsFieldsProps) => {
         )}
       />
 
-      <div className="p-4 border border-amber-200 bg-amber-50 rounded-md">
-        <p className="text-amber-700 text-sm">
-          The skills section has been temporarily removed while we work on improving it. 
-          Please include any required skills in the job description above.
-        </p>
-      </div>
-
       <FormField
         control={control}
         name="required_qualifications"

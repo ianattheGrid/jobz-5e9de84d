@@ -119,13 +119,6 @@ const SkillsSection = ({ control }: SkillsSectionProps) => {
           />
         )}
       </div>
-      
-      <div className="p-4 border border-amber-200 bg-amber-50 rounded-md">
-        <p className="text-amber-700 text-sm">
-          The skills section has been temporarily removed while we work on improving it. 
-          You can still add your qualifications and security clearance information above.
-        </p>
-      </div>
     </div>
   );
 };
