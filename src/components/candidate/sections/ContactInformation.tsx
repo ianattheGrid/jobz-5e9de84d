@@ -36,6 +36,10 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
                     {...field} 
                     placeholder="Enter your full name" 
                     className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400"
+                    onChange={(e) => {
+                      console.log("Name input changed to:", e.target.value);
+                      field.onChange(e.target.value);
+                    }}
                     value={field.value || ''}
                   />
                 </FormControl>
@@ -57,6 +61,10 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
                   type="email"
                   placeholder="Enter your email address" 
                   className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400"
+                  onChange={(e) => {
+                    console.log("Email input changed to:", e.target.value);
+                    field.onChange(e.target.value);
+                  }}
                   value={field.value || ''}
                 />
               </FormControl>
@@ -77,6 +85,10 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
                   type="tel" 
                   placeholder="Enter your phone number" 
                   className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400"
+                  onChange={(e) => {
+                    console.log("Phone number input changed to:", e.target.value);
+                    field.onChange(e.target.value);
+                  }}
                   value={field.value || ''}
                 />
               </FormControl>
@@ -98,6 +110,10 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
                     type="url" 
                     placeholder="https://www.linkedin.com/in/your-profile" 
                     className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 pl-10"
+                    onChange={(e) => {
+                      console.log("LinkedIn URL input changed to:", e.target.value);
+                      field.onChange(e.target.value);
+                    }}
                     value={field.value || ''}
                   />
                   <Link className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
@@ -119,6 +135,10 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
                   {...field}
                   placeholder="Enter your current employer's name" 
                   className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400"
+                  onChange={(e) => {
+                    console.log("Current employer input changed to:", e.target.value);
+                    field.onChange(e.target.value);
+                  }}
                   value={field.value || ''}
                 />
               </FormControl>
