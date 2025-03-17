@@ -1,3 +1,4 @@
+
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Control } from "react-hook-form";
@@ -24,12 +25,12 @@ const WorkEligibilityField = ({ control }: WorkEligibilityFieldProps) => {
           <FormLabel>What is your UK work status?</FormLabel>
           <FormControl>
             <Select onValueChange={field.onChange} defaultValue={field.value}>
-              <SelectTrigger className="w-full bg-white border border-gray-300">
-                <SelectValue placeholder="I am a UK citizen" />
+              <SelectTrigger className="w-full bg-white text-gray-900 border-gray-300">
+                <SelectValue placeholder="I am a UK citizen" className="text-gray-900" />
               </SelectTrigger>
-              <SelectContent className="bg-white">
+              <SelectContent className="bg-white border border-gray-300">
                 {WORK_ELIGIBILITY_OPTIONS.map((option) => (
-                  <SelectItem key={option} value={option}>
+                  <SelectItem key={option} value={option} className="text-gray-900 hover:bg-gray-100">
                     {option}
                   </SelectItem>
                 ))}

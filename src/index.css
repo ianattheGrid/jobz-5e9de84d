@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -82,6 +83,20 @@ label,
   @apply text-gray-900 hover:bg-gray-100 !important;
 }
 
+/* Select inputs - fixing specifically the dark background issue */
+[role="combobox"] {
+  @apply bg-white text-gray-900 !important;
+}
+
+[role="option"] {
+  @apply bg-white text-gray-900 hover:bg-gray-100 !important;
+}
+
+/* Dropdown content */
+[role="listbox"] {
+  @apply bg-white !important;
+}
+
 /* Radio and checkbox inputs */
 [type="radio"] + label,
 [type="checkbox"] + label {
@@ -94,12 +109,6 @@ input[type="number"],
 textarea,
 select {
   @apply text-gray-900 bg-white border-gray-200 !important;
-}
-
-/* Dropdown specific styles */
-[role="combobox"],
-[role="option"] {
-  @apply text-gray-900 bg-white !important;
 }
 
 /* Placeholders */
@@ -116,11 +125,6 @@ select {
 /* Form section headings */
 h1, h2, h3, h4, h5, h6 {
   @apply text-gray-900 !important;
-}
-
-/* Dropdown content */
-[role="listbox"] {
-  @apply bg-white !important;
 }
 
 /* Error messages */
