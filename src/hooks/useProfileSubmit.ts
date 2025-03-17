@@ -2,11 +2,16 @@
 import { toast } from "@/components/ui/use-toast";
 import { CandidateFormValues } from "@/components/candidate/candidateFormSchema";
 import { supabase } from "@/integrations/supabase/client";
+import { useState } from "react";
 
 type ToastFunction = typeof toast;
 
 export const useProfileSubmit = (toast: ToastFunction) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const onSubmit = async (values: CandidateFormValues) => {
+    setIsSubmitting(true);
+    
     try {
       const { data: { session } } = await supabase.auth.getSession();
       
@@ -16,7 +21,8 @@ export const useProfileSubmit = (toast: ToastFunction) => {
           title: "Error",
           description: "You must be logged in to update your profile"
         });
-        return;
+        setIsSubmitting(false);
+        return false;
       }
 
       console.log("Submitting profile data:", values);
@@ -25,6 +31,23 @@ export const useProfileSubmit = (toast: ToastFunction) => {
       const qualifications = values.qualifications
         ? values.qualifications.split(',').map(q => q.trim()).filter(Boolean)
         : [];
+
+      // Validate required fields before submission
+      if (!values.full_name || values.full_name.trim() === '') {
+        toast({
+          variant: "destructive",
+          title: "Validation Error",
+          description: "Full name is required"
+        });
+        setIsSubmitting(false);
+        return false;
+      }
+
+      // Ensure numeric fields are properly converted
+      const yearsExperience = values.years_experience ? parseInt(values.years_experience) : 0;
+      const yearsInCurrentTitle = typeof values.years_in_current_title === 'number' 
+        ? values.years_in_current_title 
+        : 0;
 
       const { error } = await supabase
         .from('candidate_profiles')
@@ -37,7 +60,7 @@ export const useProfileSubmit = (toast: ToastFunction) => {
           home_postcode: values.home_postcode,
           location: values.location,
           job_title: values.workArea,
-          years_experience: values.years_experience ? parseInt(values.years_experience) : 0,
+          years_experience: yearsExperience,
           min_salary: values.min_salary,
           max_salary: values.max_salary,
           required_skills: values.required_skills || [],
@@ -50,7 +73,7 @@ export const useProfileSubmit = (toast: ToastFunction) => {
           work_preferences: values.work_preferences,
           current_employer: values.current_employer,
           linkedin_url: values.linkedin_url,
-          years_in_current_title: values.years_in_current_title || 0,
+          years_in_current_title: yearsInCurrentTitle,
         }, {
           onConflict: 'id'
         });
@@ -62,7 +85,8 @@ export const useProfileSubmit = (toast: ToastFunction) => {
           title: "Error",
           description: error.message || "Failed to update profile. Please try again."
         });
-        return false; // Return false to indicate failure
+        setIsSubmitting(false);
+        return false;
       }
 
       console.log('Profile updated successfully');
@@ -70,7 +94,9 @@ export const useProfileSubmit = (toast: ToastFunction) => {
         title: "Success",
         description: "Profile updated successfully"
       });
-      return true; // Return true to indicate success
+      
+      setIsSubmitting(false);
+      return true;
       
     } catch (error: any) {
       console.error('Error:', error);
@@ -79,9 +105,10 @@ export const useProfileSubmit = (toast: ToastFunction) => {
         title: "Error",
         description: "An unexpected error occurred while updating your profile"
       });
-      return false; // Return false to indicate failure
+      setIsSubmitting(false);
+      return false;
     }
   };
 
-  return { onSubmit };
+  return { onSubmit, isSubmitting };
 };

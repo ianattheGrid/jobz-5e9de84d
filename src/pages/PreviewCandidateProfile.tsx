@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Edit } from "lucide-react";
+import { ArrowLeft, Edit, RefreshCw } from "lucide-react";
 import { LoadingState } from "@/components/candidate-search/LoadingState";
 import { supabase } from "@/integrations/supabase/client";
 import ProfileDetails from "@/components/candidate-profile/ProfileDetails";
@@ -43,14 +43,17 @@ function PreviewCandidateProfile() {
         return;
       }
 
-      // Fetch the candidate's profile
+      // Fetch the candidate's profile with fresh data
       const { data, error } = await supabase
         .from('candidate_profiles')
         .select('*')
         .eq('id', session.user.id)
         .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching profile:', error);
+        throw error;
+      }
 
       if (data) {
         console.log("Fetched profile data:", data);
@@ -77,6 +80,14 @@ function PreviewCandidateProfile() {
   useEffect(() => {
     fetchProfile();
   }, [navigate, toast]);
+
+  const handleRefresh = () => {
+    fetchProfile();
+    toast({
+      title: "Refreshing",
+      description: "Updating your profile preview with the latest data."
+    });
+  };
 
   if (loading) {
     return <LoadingState />;
@@ -105,14 +116,24 @@ function PreviewCandidateProfile() {
           Back to Profile
         </Button>
         
-        <div className="flex items-center gap-2 text-sm text-gray-500">
-          <div className="bg-amber-100 text-amber-700 px-3 py-1 rounded-full border border-amber-200">
+        <div className="flex items-center gap-2">
+          <div className="bg-amber-100 text-amber-700 px-3 py-1 rounded-full border border-amber-200 text-sm">
             Profile Preview Mode
           </div>
           <Button
             variant="outline"
+            onClick={handleRefresh}
+            className="flex items-center gap-2 text-sm"
+            size="sm"
+          >
+            <RefreshCw className="h-4 w-4" />
+            Refresh
+          </Button>
+          <Button
+            variant="outline"
             onClick={() => navigate('/candidate/profile')}
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 text-sm"
+            size="sm"
           >
             <Edit className="h-4 w-4" />
             Edit Profile

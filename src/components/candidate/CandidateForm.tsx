@@ -1,3 +1,4 @@
+
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
@@ -15,14 +16,15 @@ import ContactInformation from "./sections/ContactInformation";
 import JobSeekingMotivation from "./sections/JobSeekingMotivation";
 import { useProfileData } from "@/hooks/useProfileData";
 import { useProfileSubmit } from "@/hooks/useProfileSubmit";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { Database } from "@/integrations/supabase/types";
 
 type CandidateProfile = Database['public']['Tables']['candidate_profiles']['Row'];
 
 export function CandidateForm() {
   const { toast } = useToast();
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formUpdated, setFormUpdated] = useState(false);
+  const [formKey, setFormKey] = useState(Date.now()); // Key to force form re-render
 
   const form = useForm<CandidateFormValues>({
     resolver: zodResolver(candidateFormSchema),
@@ -52,56 +54,84 @@ export function CandidateForm() {
     }
   });
 
-  const { onSubmit } = useProfileSubmit(toast);
+  const { onSubmit, isSubmitting } = useProfileSubmit(toast);
 
   const handleSubmit = async (values: CandidateFormValues) => {
-    setIsSubmitting(true);
-    try {
-      await onSubmit(values);
-    } finally {
-      setIsSubmitting(false);
+    console.log("Form submitted with values:", values);
+    const success = await onSubmit(values);
+    
+    if (success) {
+      // Reset the form update flag but don't reset the form
+      setFormUpdated(false);
+      toast({
+        title: "Success",
+        description: "Your profile has been updated successfully"
+      });
     }
   };
+
+  // Track form changes
+  useEffect(() => {
+    const subscription = form.watch(() => {
+      setFormUpdated(true);
+    });
+    return () => subscription.unsubscribe();
+  }, [form]);
 
   useProfileData((profile: CandidateProfile | null) => {
     if (!profile) return;
     
-    const formData: CandidateFormValues = {
-      full_name: profile.full_name || "",
-      email: profile.email || "",
-      phone_number: profile.phone_number || "",
-      address: profile.address || "",
-      home_postcode: profile.home_postcode || "",
-      location: profile.location || [],
-      workArea: profile.job_title || "",
-      min_salary: profile.min_salary || 0,
-      max_salary: profile.max_salary || 0,
-      required_skills: profile.required_skills || [],
-      qualifications: profile.required_qualifications?.join(', ') || "",
-      security_clearance: profile.security_clearance ? "yes" : "no",
-      security_clearance_level: profile.security_clearance || undefined,
-      work_eligibility: profile.work_eligibility || "UK citizens only",
-      years_experience: profile.years_experience?.toString() || "",
-      commission_percentage: profile.commission_percentage || null,
-      open_to_commission: profile.commission_percentage !== null,
-      additional_skills: profile.additional_skills || "",
-      availability: profile.availability || "Immediate",
-      work_preferences: profile.work_preferences || "",
-      current_employer: profile.current_employer || "",
-      job_seeking_reasons: [],
-      other_job_seeking_reason: "",
-      linkedin_url: profile.linkedin_url || "",
-      years_in_current_title: profile.years_in_current_title || undefined,
-    };
+    try {
+      // Safe parsing of profile data
+      const formData: CandidateFormValues = {
+        full_name: profile.full_name || "",
+        email: profile.email || "",
+        phone_number: profile.phone_number || "",
+        address: profile.address || "",
+        home_postcode: profile.home_postcode || "",
+        location: Array.isArray(profile.location) ? profile.location : [],
+        workArea: profile.job_title || "",
+        min_salary: typeof profile.min_salary === 'number' ? profile.min_salary : 0,
+        max_salary: typeof profile.max_salary === 'number' ? profile.max_salary : 0,
+        required_skills: Array.isArray(profile.required_skills) ? profile.required_skills : [],
+        qualifications: Array.isArray(profile.required_qualifications) ? profile.required_qualifications.join(', ') : "",
+        security_clearance: profile.security_clearance ? "yes" : "no",
+        security_clearance_level: profile.security_clearance || undefined,
+        work_eligibility: profile.work_eligibility || "UK citizens only",
+        years_experience: profile.years_experience?.toString() || "",
+        commission_percentage: profile.commission_percentage || null,
+        open_to_commission: profile.commission_percentage !== null,
+        additional_skills: profile.additional_skills || "",
+        availability: profile.availability || "Immediate",
+        work_preferences: profile.work_preferences || "",
+        current_employer: profile.current_employer || "",
+        job_seeking_reasons: [],
+        other_job_seeking_reason: "",
+        linkedin_url: profile.linkedin_url || "",
+        years_in_current_title: typeof profile.years_in_current_title === 'number' ? profile.years_in_current_title : 0,
+      };
 
-    console.log("Setting form data from profile:", formData);
-    
-    form.reset(formData);
+      console.log("Setting form data from profile:", formData);
+      form.reset(formData);
+      
+      // Reset the update flag after setting initial data
+      setFormUpdated(false);
+      // Force a re-render to ensure values are shown
+      setFormKey(Date.now());
+      
+    } catch (error) {
+      console.error("Error setting form data:", error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to load your profile data. Please refresh the page."
+      });
+    }
   });
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8 w-full max-w-2xl">
+      <form key={formKey} onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8 w-full max-w-2xl">
         <div className="space-y-8">
           <div className="text-left">
             <ContactInformation control={form.control} />
