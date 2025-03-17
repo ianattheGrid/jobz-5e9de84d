@@ -135,7 +135,7 @@ export function CandidateForm() {
         </div>
         
         <div className="flex justify-start">
-          <Button type="submit" className="bg-primary hover:bg-primary-dark text-white">
+          <Button type="submit" className="bg-primary hover:bg-primary/90 text-white">
             Update Profile
           </Button>
         </div>

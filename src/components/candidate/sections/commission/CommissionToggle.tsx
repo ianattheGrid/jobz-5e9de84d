@@ -1,3 +1,4 @@
+
 import { FormField, FormItem, FormLabel, FormControl } from "@/components/ui/form";
 import { Switch } from "@/components/ui/switch";
 import { Control } from "react-hook-form";
@@ -16,9 +17,9 @@ const CommissionToggle = ({ control, name, label, onChange }: CommissionTogglePr
       name={name}
       render={({ field }) => (
         <FormItem>
-          <div className="flex flex-row items-center justify-between rounded-lg border p-3 bg-card">
+          <div className="flex flex-row items-center justify-between rounded-lg border p-3 bg-white">
             <div>
-              <FormLabel className="text-sm text-foreground">{label}</FormLabel>
+              <FormLabel className="text-sm text-gray-900">{label}</FormLabel>
             </div>
             <FormControl>
               <Switch

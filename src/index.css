@@ -152,3 +152,15 @@ h1, h2, h3, h4, h5, h6 {
 [class*="black-bg"] {
   @apply bg-white text-gray-900 !important;
 }
+
+/* Fix for dark background in toggle switches and commission sections */
+.flex.flex-row.items-center.justify-between.rounded-lg.border.p-3,
+.flex.flex-row.items-center.justify-between.rounded-lg.border.p-3.bg-card {
+  @apply bg-white text-gray-900 !important;
+}
+
+/* Override button styles to restore the primary pink button */
+button[type="submit"],
+.bg-primary {
+  @apply bg-primary hover:bg-primary/90 text-white !important;
+}
