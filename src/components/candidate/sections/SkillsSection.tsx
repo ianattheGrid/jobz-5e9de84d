@@ -122,9 +122,8 @@ const SkillsSection = ({ control }: SkillsSectionProps) => {
               setHasSecurityClearance(value);
               // Clear the security clearance level if "no" is selected
               if (value === "no") {
-                control._setValue("security_clearance_level", undefined, { 
-                  shouldValidate: true 
-                });
+                // Use proper method to update form field
+                control._fields.security_clearance_level?.onChange(undefined);
               }
             }}
             className="flex space-x-4"
