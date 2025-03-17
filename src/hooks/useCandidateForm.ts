@@ -120,13 +120,6 @@ export const useCandidateForm = () => {
       form.reset(formData);
       setFormUpdated(false);
       setProfileLoaded(true);
-      
-      // Debug check form values after reset
-      setTimeout(() => {
-        const currentValues = form.getValues();
-        console.log("Form values after reset:", currentValues);
-      }, 100);
-      
     } catch (error) {
       console.error("Error setting form data:", error);
       toast({
@@ -140,12 +133,6 @@ export const useCandidateForm = () => {
 
   // Use the profile data hook
   useProfileData(loadProfileData);
-
-  // Debug rendered form values
-  useEffect(() => {
-    const currentValues = form.getValues();
-    console.log("Current form values:", currentValues);
-  }, [form]);
 
   return {
     form,
