@@ -6,7 +6,6 @@ import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { LayoutDashboard } from "lucide-react";
 import { FileUploadSection } from "@/components/candidate/FileUploadSection";
-import { CVSkillsScanner } from "@/components/candidate/CVSkillsScanner";
 
 export default function CandidateProfile() {
   const { toast } = useToast();
@@ -128,7 +127,12 @@ export default function CandidateProfile() {
                 />
                 
                 {cvUrl && (
-                  <CVSkillsScanner cvUrl={cvUrl} />
+                  <div className="mt-4 p-4 border border-amber-200 bg-amber-50 rounded-md">
+                    <p className="text-amber-700 text-sm">
+                      The CV skills scanning feature has been temporarily removed while we work on improving it. 
+                      Your CV has been uploaded successfully and will be visible to employers.
+                    </p>
+                  </div>
                 )}
               </div>
             </div>

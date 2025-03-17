@@ -3,12 +3,9 @@ import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/comp
 import { Control } from "react-hook-form";
 import { CandidateFormValues } from "../candidateFormSchema";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { getSkillsByWorkArea } from "@/components/work-area/skills";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { CVSkillsScanner } from "../CVSkillsScanner";
 
 interface SkillsSectionProps {
   control: Control<CandidateFormValues>;
@@ -23,10 +20,7 @@ const SecurityClearanceLevels = [
 ];
 
 const SkillsSection = ({ control }: SkillsSectionProps) => {
-  const workArea = control._formValues.workArea || '';
-  const availableSkills = getSkillsByWorkArea(workArea);
   const [hasSecurityClearance, setHasSecurityClearance] = useState<string | null>(null);
-  const [cvUrl, setCvUrl] = useState<string | null>(null);
 
   useEffect(() => {
     // Set initial state based on whether security_clearance_level has a value
@@ -34,83 +28,10 @@ const SkillsSection = ({ control }: SkillsSectionProps) => {
     if (clearanceLevel) {
       setHasSecurityClearance("yes");
     }
-
-    // Fetch current user's CV URL
-    const fetchCVUrl = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session?.user?.id) return;
-      
-      const { data, error } = await supabase
-        .from('candidate_profiles')
-        .select('cv_url')
-        .eq('id', session.user.id)
-        .single();
-        
-      if (data?.cv_url) {
-        setCvUrl(data.cv_url);
-      }
-    };
-    
-    fetchCVUrl();
   }, [control._formValues.security_clearance_level]);
 
   return (
     <div className="space-y-8 bg-white rounded-lg p-6">
-      {/* Technical Skills Section */}
-      <div>
-        <h3 className="text-lg font-semibold text-gray-900 mb-6">Technical Skills</h3>
-        <FormField
-          control={control}
-          name="required_skills"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>What technical skills do you have?</FormLabel>
-              <FormControl>
-                <Select
-                  onValueChange={(value) => {
-                    const currentSkills = field.value || [];
-                    if (!currentSkills.includes(value)) {
-                      field.onChange([...currentSkills, value]);
-                    }
-                  }}
-                >
-                  <SelectTrigger className="bg-white text-gray-900">
-                    <SelectValue placeholder="Choose from available skills" className="text-gray-900" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white border border-gray-200">
-                    {availableSkills.map((skill) => (
-                      <SelectItem key={skill} value={skill} className="text-gray-900 hover:bg-gray-100">
-                        {skill}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FormControl>
-              <div className="flex flex-wrap gap-2 mt-2">
-                {field.value?.map((skill) => (
-                  <div key={skill} className="flex items-center bg-gray-100 px-3 py-1 rounded-full text-sm text-gray-900">
-                    {skill}
-                    <button
-                      type="button"
-                      onClick={() => {
-                        field.onChange(field.value?.filter((s) => s !== skill));
-                      }}
-                      className="ml-2 text-gray-500 hover:text-gray-700"
-                    >
-                      ×
-                    </button>
-                  </div>
-                ))}
-              </div>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        
-        {/* CV Skills Scanner */}
-        <CVSkillsScanner cvUrl={cvUrl} />
-      </div>
-
       {/* Industry Qualifications Section */}
       <div>
         <h3 className="text-lg font-semibold text-gray-900 mb-6">Industry Qualifications</h3>
@@ -178,23 +99,32 @@ const SkillsSection = ({ control }: SkillsSectionProps) => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>What level of security clearance do you have?</FormLabel>
-                <Select onValueChange={field.onChange} value={field.value}>
-                  <SelectTrigger className="bg-white text-gray-900">
-                    <SelectValue placeholder="Select clearance level" className="text-gray-900" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white border border-gray-200">
+                <FormControl>
+                  <select
+                    className="w-full p-2 border border-gray-300 rounded-md bg-white text-gray-900"
+                    value={field.value}
+                    onChange={field.onChange}
+                  >
+                    <option value="">Select clearance level</option>
                     {SecurityClearanceLevels.map((level) => (
-                      <SelectItem key={level} value={level} className="text-gray-900 hover:bg-gray-100">
+                      <option key={level} value={level}>
                         {level}
-                      </SelectItem>
+                      </option>
                     ))}
-                  </SelectContent>
-                </Select>
+                  </select>
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
         )}
+      </div>
+      
+      <div className="p-4 border border-amber-200 bg-amber-50 rounded-md">
+        <p className="text-amber-700 text-sm">
+          The skills section has been temporarily removed while we work on improving it. 
+          You can still add your qualifications and security clearance information above.
+        </p>
       </div>
     </div>
   );

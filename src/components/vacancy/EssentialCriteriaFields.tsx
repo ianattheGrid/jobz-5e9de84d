@@ -42,7 +42,6 @@ const EssentialCriteriaFields = ({ control }: EssentialCriteriaFieldsProps) => {
         )}
       />
 
-      {/* Repeat the same pattern for other switches */}
       <FormField
         control={control}
         name="yearsExperienceEssential"
@@ -113,30 +112,11 @@ const EssentialCriteriaFields = ({ control }: EssentialCriteriaFieldsProps) => {
         )}
       />
 
-      <FormField
-        control={control}
-        name="skillsEssential"
-        render={({ field }) => (
-          <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 bg-white">
-            <div className="space-y-0.5">
-              <FormLabel className="text-base text-gray-900">Required Skills</FormLabel>
-              <FormDescription className="text-gray-600">
-                Candidate must have all required skills
-              </FormDescription>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-600">{field.value ? 'Yes' : 'No'}</span>
-              <FormControl>
-                <Switch
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                  className="data-[state=checked]:bg-primary"
-                />
-              </FormControl>
-            </div>
-          </FormItem>
-        )}
-      />
+      <div className="p-4 border border-amber-200 bg-amber-50 rounded-md">
+        <p className="text-amber-700 text-sm">
+          The skills criteria has been temporarily removed while we work on improving it.
+        </p>
+      </div>
 
       <FormField
         control={control}

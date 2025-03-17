@@ -1,3 +1,4 @@
+
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Control } from "react-hook-form";
 import SalaryFields from "./job-details/SalaryFields";
@@ -7,7 +8,6 @@ import SecurityClearanceFields from "./job-details/SecurityClearanceFields";
 import BenefitsFields from "./job-details/BenefitsFields";
 import { Textarea } from "@/components/ui/textarea";
 import ITQualificationsField from "./job-details/ITQualificationsField";
-import ITSkillsField from "./job-details/ITSkillsField";
 
 interface JobDetailsFieldsProps {
   control: Control<any>;
@@ -44,7 +44,12 @@ const JobDetailsFields = ({ control }: JobDetailsFieldsProps) => {
         )}
       />
 
-      <ITSkillsField control={control} />
+      <div className="p-4 border border-amber-200 bg-amber-50 rounded-md">
+        <p className="text-amber-700 text-sm">
+          The skills section has been temporarily removed while we work on improving it. 
+          Please include any required skills in the job description above.
+        </p>
+      </div>
 
       <FormField
         control={control}
