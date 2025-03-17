@@ -31,49 +31,43 @@ export const CVSkillsScanner = ({ cvUrl }: CVSkillsScannerProps) => {
       
       // Balanced skill list with technical, professional, creative and industry-specific skills
       const skillsToScan = [
-        // Web and App Development Skills
-        "Web Design", "Web Development", "App Development", "Mobile App Development",
-        "User Interface Design", "User Experience Design", "UX Research",
-        "Frontend Development", "Backend Development", "Full Stack Development",
-        "Responsive Design", "Cross-platform Development", "E-commerce Development",
-        
-        // Technical Skills - Programming & Tools
-        "JavaScript Programming", "TypeScript Development", "Python Development", "Java Development", 
-        "C# Programming", "PHP Programming", "Ruby on Rails Development",
-        "Swift Development", "Kotlin Development", "C++ Programming", "SQL Database Management",
-        "React Framework", "Angular Framework", "Vue.js", "Node.js",
-        "WordPress Development", "Shopify Development", "Webflow Design",
-        "Docker Containerization", "Git Version Control",
-        
-        // Design & Creative Skills
-        "Graphic Design", "UI Design", "Figma", "Adobe Creative Suite",
-        "Logo Design", "Brand Identity Design", "Content Creation",
-        "Wireframing", "Prototyping", "Interaction Design",
-        "Digital Marketing", "SEO Optimization", "Visual Communication",
-        
-        // Cloud & DevOps
-        "Cloud Computing", "AWS Architecture", "Microsoft Azure",
-        "CI/CD Implementation", "DevOps Engineering", "Infrastructure as Code",
-        
-        // Professional Skills & Project Management
+        // Professional Skills
         "Project Management", "Team Leadership", "Strategic Planning",
-        "Business Analysis", "Agile Methodology", "Scrum Framework",
-        "Stakeholder Management", "Client Relations", "Requirements Gathering",
-        "Product Development", "Process Improvement", "Change Management",
+        "Business Analysis", "Client Relations", "Communication",
+        "Presentation", "Problem Solving", "Negotiation",
         
-        // Soft Skills & Management
-        "Communication Skills", "Problem Solving", "Critical Thinking",
-        "Time Management", "Presentation Skills", "Negotiation",
-        "Budget Management", "Resource Allocation", "Team Building",
+        // Web & Design Skills
+        "Web Design", "UI Design", "UX Design", "Responsive Design",
+        "User Interface", "User Experience", "Wireframing", "Prototyping", 
+        "Visual Design", "Interaction Design", "Information Architecture",
+        
+        // App Development
+        "Mobile Development", "App Development", "iOS Development",
+        "Android Development", "Cross Platform", "Hybrid Apps",
+        
+        // Programming & Tech
+        "JavaScript", "TypeScript", "React", "Angular", 
+        "Vue", "Node.js", "HTML", "CSS", "SASS",
+        "PHP", "Python", "Java", "SQL", "NoSQL",
+        "AWS", "Azure", "Docker", "Git",
+        
+        // Marketing & Business
+        "Digital Marketing", "Content Creation", "SEO",
+        "Social Media", "Email Marketing", "Data Analysis",
+        "Market Research", "Campaign Management",
+        
+        // Project & Process
+        "Agile Methodology", "Scrum", "Kanban",
+        "Waterfall", "Product Development", "Requirements Gathering",
+        "Stakeholder Management", "Process Improvement",
+        
+        // Creative
+        "Graphic Design", "Branding", "Creative Direction",
+        "Illustration", "Animation", "Video Editing", "Copywriting",
         
         // Industry Knowledge
-        "Digital Transformation", "Financial Analysis", "Human Resources",
-        "Supply Chain Management", "Quality Assurance", "Research Methods",
-        "Customer Experience", "Risk Management", "Compliance Management",
-        
-        // Business Tools
-        "Microsoft Office Suite", "Google Workspace", "Salesforce CRM", 
-        "JIRA Project Management", "Power BI Analytics", "Tableau Dashboard"
+        "Ecommerce", "Fintech", "Healthcare", "Education",
+        "Real Estate", "Retail", "Hospitality"
       ];
       
       // Call the parse-cv function
@@ -153,13 +147,25 @@ export const CVSkillsScanner = ({ cvUrl }: CVSkillsScannerProps) => {
             <div className="p-4 border border-amber-200 bg-amber-50 rounded-md">
               <p className="text-sm text-amber-800">
                 No skills were detected in your CV. To improve your matches:
-                <ul className="list-disc pl-5 mt-2 space-y-1">
-                  <li>Include specific skills like "Web Design" or "Project Management" in your CV</li> 
-                  <li>Make sure your CV is in a readable text format (not just images)</li>
-                  <li>Use complete terms rather than abbreviations</li>
-                  <li>List skills clearly, ideally in a dedicated "Skills" section</li>
-                </ul>
               </p>
+              <div className="pl-5 mt-2 space-y-1">
+                <div className="flex items-start">
+                  <span className="mr-2">•</span>
+                  <span>Include specific skills like "Web Design" or "Project Management" in your CV</span>
+                </div>
+                <div className="flex items-start">
+                  <span className="mr-2">•</span>
+                  <span>Make sure your CV is in a readable text format (not just images)</span>
+                </div>
+                <div className="flex items-start">
+                  <span className="mr-2">•</span>
+                  <span>Use complete terms rather than abbreviations</span>
+                </div>
+                <div className="flex items-start">
+                  <span className="mr-2">•</span>
+                  <span>List skills clearly, ideally in a dedicated "Skills" section</span>
+                </div>
+              </div>
             </div>
           )}
         </div>
