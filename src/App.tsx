@@ -1,5 +1,5 @@
 
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
 import './App.css';
 import { AppLayout } from './components/layout/AppLayout';
 import { Toaster } from './components/ui/toaster';
@@ -45,7 +45,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<AppLayout />}>
+        <Route path="/" element={<AppLayout><Outlet /></AppLayout>}>
           <Route index element={<Index />} />
           
           {/* Candidate routes */}
