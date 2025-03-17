@@ -7,6 +7,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { getSkillsByWorkArea } from "@/components/work-area/skills";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { CVSkillsScanner } from "../CVSkillsScanner";
 
 interface SkillsSectionProps {
   control: Control<CandidateFormValues>;
@@ -24,6 +26,7 @@ const SkillsSection = ({ control }: SkillsSectionProps) => {
   const workArea = control._formValues.workArea || '';
   const availableSkills = getSkillsByWorkArea(workArea);
   const [hasSecurityClearance, setHasSecurityClearance] = useState<string | null>(null);
+  const [cvUrl, setCvUrl] = useState<string | null>(null);
 
   useEffect(() => {
     // Set initial state based on whether security_clearance_level has a value
@@ -31,6 +34,24 @@ const SkillsSection = ({ control }: SkillsSectionProps) => {
     if (clearanceLevel) {
       setHasSecurityClearance("yes");
     }
+
+    // Fetch current user's CV URL
+    const fetchCVUrl = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user?.id) return;
+      
+      const { data, error } = await supabase
+        .from('candidate_profiles')
+        .select('cv_url')
+        .eq('id', session.user.id)
+        .single();
+        
+      if (data?.cv_url) {
+        setCvUrl(data.cv_url);
+      }
+    };
+    
+    fetchCVUrl();
   }, [control._formValues.security_clearance_level]);
 
   return (
@@ -85,6 +106,9 @@ const SkillsSection = ({ control }: SkillsSectionProps) => {
             </FormItem>
           )}
         />
+        
+        {/* CV Skills Scanner */}
+        <CVSkillsScanner cvUrl={cvUrl} />
       </div>
 
       {/* Industry Qualifications Section */}

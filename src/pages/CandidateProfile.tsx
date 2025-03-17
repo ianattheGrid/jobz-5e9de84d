@@ -4,13 +4,16 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { Button } from "@/components/ui/button";
 import { LayoutDashboard } from "lucide-react";
+import { FileUploadSection } from "@/components/candidate/FileUploadSection";
 
 export default function CandidateProfile() {
   const { toast } = useToast();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+  const [userId, setUserId] = useState<string | null>(null);
+  const [profilePicture, setProfilePicture] = useState<string | null>(null);
+  const [cvUrl, setCvUrl] = useState<string | null>(null);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -36,6 +39,20 @@ export default function CandidateProfile() {
           });
           navigate('/');
           return;
+        }
+
+        setUserId(session.user.id);
+
+        // Fetch profile picture and CV URL
+        const { data: profile, error } = await supabase
+          .from('candidate_profiles')
+          .select('profile_picture_url, cv_url')
+          .eq('id', session.user.id)
+          .single();
+
+        if (profile) {
+          setProfilePicture(profile.profile_picture_url);
+          setCvUrl(profile.cv_url);
         }
 
         setLoading(false);
@@ -78,6 +95,18 @@ export default function CandidateProfile() {
             Dashboard
           </button>
         </div>
+        
+        {userId && (
+          <div className="mb-8 max-w-2xl mx-auto">
+            <h2 className="text-xl font-semibold mb-4 text-gray-900">Documents & Profile Picture</h2>
+            <FileUploadSection 
+              userId={userId} 
+              currentProfilePicture={profilePicture} 
+              currentCV={cvUrl}
+            />
+          </div>
+        )}
+        
         <div className="flex justify-center">
           <CandidateForm />
         </div>
@@ -85,4 +114,3 @@ export default function CandidateProfile() {
     </div>
   );
 }
-
