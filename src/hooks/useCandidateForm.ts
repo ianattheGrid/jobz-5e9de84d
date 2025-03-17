@@ -116,9 +116,9 @@ export const useCandidateForm = () => {
 
       console.log("Setting form data:", formData);
       
-      // Reset form with properly sanitized data
-      form.reset(formData);
+      // Set all form values individually to ensure proper updates
       setProfileLoaded(true);
+      form.reset(formData);
       setFormUpdated(false);
     } catch (error) {
       console.error("Error setting form data:", error);
