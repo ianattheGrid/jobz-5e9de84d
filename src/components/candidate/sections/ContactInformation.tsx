@@ -115,6 +115,24 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
           )}
         />
 
+        <FormField
+          control={control}
+          name="address"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-gray-900">Address</FormLabel>
+              <FormControl>
+                <Input 
+                  placeholder="Enter your address" 
+                  className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <FormItem>
           <HomePostcodeSelect control={control} />
         </FormItem>
