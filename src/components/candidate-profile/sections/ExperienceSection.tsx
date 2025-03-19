@@ -10,7 +10,7 @@ const ExperienceSection = ({ profile }: ExperienceSectionProps) => {
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="space-y-2 bg-gray-50 p-4 rounded-lg border border-gray-100">
+        <div className="space-y-2 bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
           <div className="flex items-center gap-2">
             <GraduationCap className="h-4 w-4 text-pink-600" />
             <span className="font-medium text-gray-900">Professional Experience</span>
@@ -22,7 +22,7 @@ const ExperienceSection = ({ profile }: ExperienceSectionProps) => {
           )}
         </div>
         
-        <div className="space-y-2 bg-gray-50 p-4 rounded-lg border border-gray-100">
+        <div className="space-y-2 bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
           <div className="flex items-center gap-2">
             <Banknote className="h-4 w-4 text-pink-600" />
             <span className="font-medium text-gray-900">Salary Expectations</span>

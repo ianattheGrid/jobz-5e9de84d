@@ -35,7 +35,7 @@ function ViewCandidateProfile() {
       <Button
         variant="outline"
         onClick={() => navigate(-1)}
-        className="mb-6 flex items-center gap-2"
+        className="mb-6 flex items-center gap-2 bg-white"
       >
         <ArrowLeft className="h-4 w-4" />
         Back to Search
