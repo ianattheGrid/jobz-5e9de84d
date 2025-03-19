@@ -58,7 +58,9 @@ export const setupTestScenario = async () => {
       desired_job_title: 'Senior Frontend Developer',
       required_qualifications: ['BSc Computer Science'],
       availability: 'Immediate',
-      preferred_work_type: 'hybrid'
+      preferred_work_type: 'hybrid',
+      workArea: 'IT',
+      itSpecialization: 'Frontend Development'
     });
 
     // 3. Create a detailed test job posting that should match well

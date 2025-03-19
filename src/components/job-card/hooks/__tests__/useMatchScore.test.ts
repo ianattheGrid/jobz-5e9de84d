@@ -1,3 +1,4 @@
+
 import { describe, it, expect } from 'vitest';
 import { CandidateProfile } from "@/integrations/supabase/types/profiles";
 import { calculateSkillsMatchScore } from "../../utils/skillsMatching";
@@ -108,7 +109,9 @@ describe('Job Matching Algorithm', () => {
       desired_job_title: null,
       home_postcode: null,
       linkedin_url: null,
-      years_in_current_title: 4
+      years_in_current_title: 4,
+      workArea: "Frontend Development",
+      itSpecialization: "React"
     };
 
     it('should calculate high match score for well-matching profiles', async () => {
