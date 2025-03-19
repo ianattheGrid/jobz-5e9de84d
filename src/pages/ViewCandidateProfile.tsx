@@ -19,6 +19,13 @@ function ViewCandidateProfile() {
     return (
       <div className="container mx-auto px-4 py-8">
         <p className="text-gray-500">Profile not found.</p>
+        <Button 
+          variant="outline" 
+          onClick={() => navigate(-1)}
+          className="mt-4"
+        >
+          Go Back
+        </Button>
       </div>
     );
   }
@@ -26,7 +33,7 @@ function ViewCandidateProfile() {
   return (
     <div className="container mx-auto px-4 py-8 max-w-5xl">
       <Button
-        variant="ghost"
+        variant="outline"
         onClick={() => navigate(-1)}
         className="mb-6 flex items-center gap-2"
       >

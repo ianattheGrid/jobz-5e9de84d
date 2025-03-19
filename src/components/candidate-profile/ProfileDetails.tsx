@@ -16,7 +16,7 @@ interface ProfileDetailsProps {
 const ProfileDetails = ({ profile }: ProfileDetailsProps) => {
   // Get initials for the avatar fallback
   const getInitials = (name: string | null) => {
-    if (!name) return "?";
+    if (!name) return "";
     return name
       .split(" ")
       .map(part => part[0])
@@ -29,18 +29,20 @@ const ProfileDetails = ({ profile }: ProfileDetailsProps) => {
     <div className="space-y-6">
       {/* Profile Header */}
       <Card className="border-none shadow-md overflow-hidden">
-        <div className="h-32 bg-gradient-to-r from-blue-500 to-blue-600"></div>
+        <div className="h-32 bg-gradient-to-r from-blue-600 to-blue-400"></div>
         <CardContent className="pt-0 relative pb-6">
           <div className="flex flex-col sm:flex-row -mt-12 sm:-mt-16 items-start sm:items-end gap-4">
             <Avatar className="h-24 w-24 sm:h-32 sm:w-32 border-4 border-white shadow-lg">
-              <AvatarImage src={profile.profile_picture_url || undefined} />
-              <AvatarFallback className="text-2xl">{getInitials(profile.full_name)}</AvatarFallback>
+              <AvatarImage src={profile.profile_picture_url || undefined} alt={profile.full_name || "Profile"} />
+              <AvatarFallback className="text-2xl bg-blue-100 text-blue-800">
+                {getInitials(profile.full_name)}
+              </AvatarFallback>
             </Avatar>
             
             <div className="pt-2 sm:pb-4 flex-1">
-              <h1 className="text-2xl font-bold">{profile.full_name || "Anonymous Candidate"}</h1>
-              <h2 className="text-xl text-gray-700">{profile.job_title}</h2>
-              <div className="flex items-center text-gray-500 gap-2 mt-1">
+              <h1 className="text-2xl font-bold text-gray-900">{profile.full_name || "Anonymous Candidate"}</h1>
+              <h2 className="text-xl text-gray-700">{profile.job_title || "Job Title Not Specified"}</h2>
+              <div className="flex items-center text-gray-600 gap-2 mt-1">
                 <MapPin className="h-4 w-4" />
                 <span>{profile.location?.join(", ") || "Location not specified"}</span>
               </div>
@@ -62,20 +64,20 @@ const ProfileDetails = ({ profile }: ProfileDetailsProps) => {
 
       {/* About/Summary */}
       {profile.ai_synopsis && (
-        <Card>
+        <Card className="shadow-sm border border-gray-200">
           <CardContent className="pt-6">
-            <h3 className="text-xl font-semibold mb-3">About</h3>
+            <h3 className="text-xl font-semibold mb-3 text-gray-900">About</h3>
             <p className="text-gray-700">{profile.ai_synopsis}</p>
           </CardContent>
         </Card>
       )}
 
       {/* Experience */}
-      <Card>
+      <Card className="shadow-sm border border-gray-200">
         <CardContent className="pt-6">
           <div className="flex items-center space-x-2 mb-4">
-            <Briefcase className="h-5 w-5 text-blue-500" />
-            <h3 className="text-xl font-semibold">Experience</h3>
+            <Briefcase className="h-5 w-5 text-blue-600" />
+            <h3 className="text-xl font-semibold text-gray-900">Experience</h3>
           </div>
           
           <div className="space-y-6">
@@ -86,14 +88,14 @@ const ProfileDetails = ({ profile }: ProfileDetailsProps) => {
                     <Briefcase className="h-5 w-5 text-gray-500" />
                   </div>
                   <div>
-                    <h4 className="font-medium">{profile.job_title}</h4>
-                    <p className="text-gray-600">{profile.current_employer}</p>
-                    <div className="flex items-center text-gray-500 text-sm mt-1">
+                    <h4 className="font-medium text-gray-900">{profile.job_title || "No Job Title"}</h4>
+                    <p className="text-gray-700">{profile.current_employer}</p>
+                    <div className="flex items-center text-gray-600 text-sm mt-1">
                       <Calendar className="h-3 w-3 mr-1" />
                       <span>
                         {profile.years_in_current_title 
                           ? `${profile.years_in_current_title} year${profile.years_in_current_title !== 1 ? 's' : ''} in current role` 
-                          : `${profile.years_experience} year${profile.years_experience !== 1 ? 's' : ''} of experience`}
+                          : `${profile.years_experience} year${profile.years_experience !== "1" ? 's' : ''} of experience`}
                       </span>
                     </div>
                   </div>
@@ -109,7 +111,7 @@ const ProfileDetails = ({ profile }: ProfileDetailsProps) => {
       </Card>
 
       {/* Skills and Qualifications */}
-      <Card>
+      <Card className="shadow-sm border border-gray-200">
         <CardContent className="pt-6">
           <SkillsSection profile={profile} />
           
@@ -120,11 +122,11 @@ const ProfileDetails = ({ profile }: ProfileDetailsProps) => {
       </Card>
 
       {/* Location and Preferences */}
-      <Card>
+      <Card className="shadow-sm border border-gray-200">
         <CardContent className="pt-6">
           <div className="flex items-center space-x-2 mb-4">
-            <MapPin className="h-5 w-5 text-blue-500" />
-            <h3 className="text-xl font-semibold">Location & Preferences</h3>
+            <MapPin className="h-5 w-5 text-blue-600" />
+            <h3 className="text-xl font-semibold text-gray-900">Location & Preferences</h3>
           </div>
           
           <LocationSection profile={profile} />

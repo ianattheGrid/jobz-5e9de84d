@@ -12,10 +12,10 @@ const ExperienceSection = ({ profile }: ExperienceSectionProps) => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="space-y-2">
           <div className="flex items-center gap-2">
-            <GraduationCap className="h-4 w-4 text-gray-600" />
-            <span className="font-medium">Professional Experience</span>
+            <GraduationCap className="h-4 w-4 text-blue-600" />
+            <span className="font-medium text-gray-900">Professional Experience</span>
           </div>
-          <p className="text-gray-700">{profile.years_experience} years in {profile.job_title}</p>
+          <p className="text-gray-700">{profile.years_experience} years in {profile.job_title || "current field"}</p>
           
           {profile.years_in_current_title && (
             <p className="text-gray-700">{profile.years_in_current_title} years in current role</p>
@@ -24,8 +24,8 @@ const ExperienceSection = ({ profile }: ExperienceSectionProps) => {
         
         <div className="space-y-2">
           <div className="flex items-center gap-2">
-            <Banknote className="h-4 w-4 text-gray-600" />
-            <span className="font-medium">Salary Expectations</span>
+            <Banknote className="h-4 w-4 text-blue-600" />
+            <span className="font-medium text-gray-900">Salary Expectations</span>
           </div>
           <p className="text-gray-700">£{profile.min_salary.toLocaleString()} - £{profile.max_salary.toLocaleString()} per year</p>
           
