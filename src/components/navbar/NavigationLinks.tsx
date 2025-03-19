@@ -36,8 +36,7 @@ const NavigationLinks = () => {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button 
-              variant="ghost"
-              className="text-white hover:text-white/80"
+              className="bg-[#FF69B4] hover:bg-[#FF50A8] text-white"
             >
               <LogIn className="h-4 w-4 mr-2" />
               Sign In
@@ -70,8 +69,7 @@ const NavigationLinks = () => {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button 
-              variant="outline" 
-              className="border-[#FF69B4] text-[#FF69B4] hover:bg-[#FF69B4] hover:text-white"
+              className="bg-[#FF69B4] hover:bg-[#FF50A8] text-white"
             >
               <UserPlus className="h-4 w-4 mr-2" />
               Sign Up
