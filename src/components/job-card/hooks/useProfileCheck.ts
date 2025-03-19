@@ -56,7 +56,9 @@ export const useProfileCheck = () => {
       desired_job_title: profileData.desired_job_title,
       home_postcode: profileData.home_postcode,
       linkedin_url: profileData.linkedin_url,
-      years_in_current_title: profileData.years_in_current_title || null
+      years_in_current_title: profileData.years_in_current_title || null,
+      workArea: profileData.workArea || null,
+      itSpecialization: profileData.itSpecialization || null
     };
 
     return profile;

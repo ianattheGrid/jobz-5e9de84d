@@ -75,7 +75,9 @@ export const useCandidateProfileData = (id: string | undefined) => {
             desired_job_title: data.desired_job_title,
             home_postcode: data.home_postcode,
             linkedin_url: data.linkedin_url,
-            years_in_current_title: data.years_in_current_title || null
+            years_in_current_title: data.years_in_current_title || null,
+            workArea: data.workArea || null,
+            itSpecialization: data.itSpecialization || null
           };
           setProfile(validProfile);
         }

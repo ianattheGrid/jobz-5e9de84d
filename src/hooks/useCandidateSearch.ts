@@ -1,3 +1,4 @@
+
 import { searchFormSchema } from "@/components/candidate-search/searchFormSchema";
 import { supabase } from "@/integrations/supabase/client";
 import type { z } from "zod";
@@ -79,7 +80,9 @@ export const useCandidateSearch = () => {
         desired_job_title: profileData.desired_job_title,
         home_postcode: profileData.home_postcode,
         linkedin_url: profileData.linkedin_url,
-        years_in_current_title: profileData.years_in_current_title || null
+        years_in_current_title: profileData.years_in_current_title || null,
+        workArea: profileData.workArea || null,
+        itSpecialization: profileData.itSpecialization || null
       }));
 
       handleSearchSuccess(validCandidateProfiles);

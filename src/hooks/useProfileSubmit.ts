@@ -57,7 +57,8 @@ export const useProfileSubmit = (toast: ToastFunction) => {
         current_employer: cleanStringValue(values.current_employer),
         linkedin_url: cleanStringValue(values.linkedin_url),
         years_in_current_title: values.years_in_current_title !== undefined ? Number(values.years_in_current_title) : 0,
-        itSpecialization: values.itSpecialization || null
+        workArea: cleanStringValue(values.workArea),
+        itSpecialization: cleanStringValue(values.itSpecialization)
       };
       
       console.log("Final profile data to save:", profileData);
