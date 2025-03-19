@@ -77,7 +77,7 @@ const ContactInformation = ({ control }: ContactInformationProps) => {
           name="linkedin_url"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-gray-900">LinkedIn Profile URL</FormLabel>
+              <FormLabel className="text-gray-900">LinkedIn Profile URL (Optional)</FormLabel>
               <FormControl>
                 <div className="relative">
                   <Input 

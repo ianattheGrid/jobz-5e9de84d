@@ -1,3 +1,4 @@
+
 import * as z from "zod";
 
 export const candidateFormSchema = z.object({
@@ -41,7 +42,7 @@ export const candidateFormSchema = z.object({
   current_employer: z.string().optional(),
   job_seeking_reasons: z.array(z.string()).default([]),
   other_job_seeking_reason: z.string().optional(),
-  linkedin_url: z.string().url("Please enter a valid LinkedIn URL").optional(),
+  linkedin_url: z.string().url("Please enter a valid LinkedIn URL").optional().or(z.literal('')),
   hasQualification: z.boolean().default(false),
   qualificationDetails: z.string().optional(),
   qualifications: z.string().optional(),

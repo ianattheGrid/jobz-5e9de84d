@@ -19,4 +19,3 @@ export const CandidateFields = ({
     type="url"
   />
 );
-
