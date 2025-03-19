@@ -95,7 +95,7 @@ const ProfileDetails = ({ profile }: ProfileDetailsProps) => {
                       <span>
                         {profile.years_in_current_title 
                           ? `${profile.years_in_current_title} year${profile.years_in_current_title !== 1 ? 's' : ''} in current role` 
-                          : `${profile.years_experience} year${profile.years_experience !== "1" ? 's' : ''} of experience`}
+                          : `${profile.years_experience} year${profile.years_experience !== 1 ? 's' : ''} of experience`}
                       </span>
                     </div>
                   </div>
