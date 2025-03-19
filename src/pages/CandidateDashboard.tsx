@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -152,7 +153,7 @@ const CandidateDashboard = () => {
               className="h-auto p-6 flex flex-col items-center gap-4 bg-white hover:bg-gray-50 transition-all duration-200 border border-gray-200 rounded-lg shadow-sm hover:shadow-md"
               onClick={() => navigate(item.path)}
             >
-              <div className="text-primary">{item.icon}</div>
+              <div className="text-[#FF69B4]">{item.icon}</div>
               <div className="text-center">
                 <h3 className="font-semibold text-lg mb-2 text-gray-900">{item.title}</h3>
                 <p className="text-sm text-gray-600">{item.description}</p>

@@ -1,3 +1,4 @@
+
 import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { Briefcase, Home, UserPlus, LogIn } from "lucide-react";
@@ -70,7 +71,7 @@ const NavigationLinks = () => {
           <DropdownMenuTrigger asChild>
             <Button 
               variant="outline" 
-              className="border-primary text-primary hover:bg-primary hover:text-white"
+              className="border-[#FF69B4] text-[#FF69B4] hover:bg-[#FF69B4] hover:text-white"
             >
               <UserPlus className="h-4 w-4 mr-2" />
               Sign Up

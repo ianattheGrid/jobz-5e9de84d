@@ -64,13 +64,13 @@ export const SignUpForm = ({ onSubmit, loading, userType, showCompanyField = fal
         />
       )}
 
-      <Button className="w-full bg-primary hover:bg-primary-dark text-white" type="submit" disabled={loading}>
+      <Button className="w-full bg-[#FF69B4] hover:bg-[#FF50A8] text-white" type="submit" disabled={loading}>
         {loading ? "Signing up..." : "Sign Up"}
       </Button>
 
       <div className="text-center text-sm text-muted-foreground">
         Already have an account?{" "}
-        <Link to={getSignInLink()} className="text-primary hover:underline">
+        <Link to={getSignInLink()} className="text-[#FF69B4] hover:underline">
           Sign In
         </Link>
       </div>

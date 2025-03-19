@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -54,7 +55,7 @@ const CandidateSignIn = () => {
         <Card className="w-full max-w-md">
           <CardHeader className="space-y-1">
             <div className="flex items-center justify-center gap-2">
-              <UserPlus className="h-8 w-8 text-primary" />
+              <UserPlus className="h-8 w-8 text-[#FF69B4]" />
               <CardTitle className={`text-2xl ${PRIMARY_COLOR_PATTERN}`}>Candidate Sign In</CardTitle>
             </div>
             <CardDescription>
@@ -87,7 +88,7 @@ const CandidateSignIn = () => {
                   />
                 </div>
               )}
-              <Button className="w-full bg-primary hover:bg-primary-dark text-white" type="submit" disabled={loading}>
+              <Button className="w-full bg-[#FF69B4] hover:bg-[#FF50A8] text-white" type="submit" disabled={loading}>
                 {loading ? (resetMode ? "Sending..." : "Signing in...") : (resetMode ? "Send Reset Link" : "Sign In")}
               </Button>
             </form>
@@ -96,14 +97,14 @@ const CandidateSignIn = () => {
                 {resetMode ? (
                   <button 
                     onClick={() => setResetMode(false)} 
-                    className="text-primary hover:underline"
+                    className="text-[#FF69B4] hover:underline"
                   >
                     Back to Sign In
                   </button>
                 ) : (
                   <button 
                     onClick={() => setResetMode(true)} 
-                    className="text-primary hover:underline"
+                    className="text-[#FF69B4] hover:underline"
                   >
                     Forgot Password?
                   </button>
@@ -111,7 +112,7 @@ const CandidateSignIn = () => {
               </div>
               <div>
                 Don't have an account?{" "}
-                <Link to="/candidate/signup" className="text-primary hover:underline">
+                <Link to="/candidate/signup" className="text-[#FF69B4] hover:underline">
                   Sign Up
                 </Link>
               </div>

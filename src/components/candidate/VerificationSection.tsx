@@ -103,7 +103,7 @@ export const VerificationSection = () => {
         <Button
           onClick={startVerification}
           disabled={loading}
-          className="w-full sm:w-auto"
+          className="w-full sm:w-auto bg-[#FF69B4] hover:bg-[#FF50A8] text-white"
         >
           {loading ? "Starting Verification..." : "Start Verification"}
         </Button>
