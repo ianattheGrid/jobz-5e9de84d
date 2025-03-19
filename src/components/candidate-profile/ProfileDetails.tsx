@@ -29,17 +29,17 @@ const ProfileDetails = ({ profile }: ProfileDetailsProps) => {
     <div className="space-y-6">
       {/* Profile Header */}
       <Card className="border-none shadow-md overflow-hidden bg-white">
-        <div className="h-12 bg-gradient-to-r from-pink-500 to-pink-300"></div>
+        <div className="h-24 bg-gradient-to-r from-pink-500 to-pink-300"></div>
         <CardContent className="pt-0 relative pb-6 bg-white">
-          <div className="flex flex-col sm:flex-row -mt-12 sm:-mt-16 items-start sm:items-end gap-4">
-            <Avatar className="h-24 w-24 sm:h-32 sm:w-32 border-4 border-white shadow-lg">
+          <div className="flex flex-col sm:flex-row -mt-12 sm:-mt-12 items-start sm:items-end gap-4">
+            <Avatar className="h-24 w-24 sm:h-32 sm:w-32 border-4 border-white shadow-lg mt-4">
               <AvatarImage src={profile.profile_picture_url || undefined} alt={profile.full_name || "Profile"} />
               <AvatarFallback className="text-2xl bg-pink-100 text-pink-800">
                 {getInitials(profile.full_name)}
               </AvatarFallback>
             </Avatar>
             
-            <div className="pt-2 sm:pb-4 flex-1">
+            <div className="pt-2 sm:pb-4 flex-1 mt-4">
               <h1 className="text-2xl font-bold text-gray-900">{profile.full_name || "Anonymous Candidate"}</h1>
               <h2 className="text-xl text-gray-700">{profile.job_title || "Job Title Not Specified"}</h2>
               <div className="flex items-center text-gray-600 gap-2 mt-1">
