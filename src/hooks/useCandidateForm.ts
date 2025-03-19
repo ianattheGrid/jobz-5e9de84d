@@ -14,6 +14,7 @@ export const useCandidateForm = () => {
   const { toast } = useToast();
   const [formUpdated, setFormUpdated] = useState(false);
   const [profileLoaded, setProfileLoaded] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Define complete default values for all form fields
   const defaultFormValues: CandidateFormValues = {
@@ -65,7 +66,7 @@ export const useCandidateForm = () => {
     }
   };
 
-  // Track form changes
+  // Track form changes only after profile is loaded
   useEffect(() => {
     if (!profileLoaded) return;
     
@@ -80,6 +81,7 @@ export const useCandidateForm = () => {
     if (!profile) {
       console.log("No profile data received, using defaults");
       setProfileLoaded(true);
+      setIsLoading(false);
       return;
     }
     
@@ -116,10 +118,11 @@ export const useCandidateForm = () => {
 
       console.log("Setting form data:", formData);
       
-      // Set all form values individually to ensure proper updates
-      setProfileLoaded(true);
+      // Reset form with all values at once
       form.reset(formData);
+      setProfileLoaded(true);
       setFormUpdated(false);
+      setIsLoading(false);
     } catch (error) {
       console.error("Error setting form data:", error);
       toast({
@@ -128,6 +131,7 @@ export const useCandidateForm = () => {
         description: "Failed to load your profile data. Please refresh the page."
       });
       setProfileLoaded(true);
+      setIsLoading(false);
     }
   };
 
@@ -137,6 +141,7 @@ export const useCandidateForm = () => {
   return {
     form,
     handleSubmit,
-    isSubmitting
+    isSubmitting,
+    isLoading
   };
 };
