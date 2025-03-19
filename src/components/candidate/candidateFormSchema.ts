@@ -11,8 +11,9 @@ export const candidateFormSchema = z.object({
   workArea: z.string({
     required_error: "Please select your area of work.",
   }),
-  otherWorkArea: z.string().optional(),
+  job_title: z.string().optional(),
   itSpecialization: z.string().optional(),
+  otherWorkArea: z.string().optional(),
   title: z.string().optional(),
   desired_job_title: z.string().optional(),
   desired_years_experience: z.string().optional(),

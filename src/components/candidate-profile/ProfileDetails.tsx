@@ -93,7 +93,7 @@ const ProfileDetails = ({ profile }: ProfileDetailsProps) => {
                     <div className="flex items-center text-gray-600 text-sm mt-1">
                       <Calendar className="h-3 w-3 mr-1" />
                       <span>
-                        {profile.years_in_current_title 
+                        {profile.years_in_current_title !== null && profile.years_in_current_title !== undefined 
                           ? `${profile.years_in_current_title} year${profile.years_in_current_title !== 1 ? 's' : ''} in current role` 
                           : `${profile.years_experience} year${profile.years_experience !== 1 ? 's' : ''} of experience`}
                       </span>

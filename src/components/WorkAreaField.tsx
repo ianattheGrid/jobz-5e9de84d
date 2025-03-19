@@ -39,12 +39,12 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
           <JobTitleSelect
             control={control}
             titles={availableTitles}
-            name="title"
+            name="job_title"
           />
           <TitleExperienceSelect
             control={control}
-            name="min_years_in_title"
-            label="Minimum years of experience required in this job title"
+            name="years_in_current_title"
+            label="Years of experience in this job title"
           />
         </>
       )}
