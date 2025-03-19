@@ -17,7 +17,7 @@ function ViewCandidateProfile() {
 
   if (!profile) {
     return (
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8 bg-white">
         <p className="text-gray-500">Profile not found.</p>
         <Button 
           variant="outline" 
@@ -31,7 +31,7 @@ function ViewCandidateProfile() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-5xl">
+    <div className="container mx-auto px-4 py-8 max-w-5xl bg-gray-50 min-h-screen">
       <Button
         variant="outline"
         onClick={() => navigate(-1)}

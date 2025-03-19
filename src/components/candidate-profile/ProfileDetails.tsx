@@ -28,13 +28,13 @@ const ProfileDetails = ({ profile }: ProfileDetailsProps) => {
   return (
     <div className="space-y-6">
       {/* Profile Header */}
-      <Card className="border-none shadow-md overflow-hidden">
-        <div className="h-32 bg-gradient-to-r from-blue-600 to-blue-400"></div>
-        <CardContent className="pt-0 relative pb-6">
+      <Card className="border-none shadow-md overflow-hidden bg-white">
+        <div className="h-32 bg-gradient-to-r from-blue-500 to-blue-300"></div>
+        <CardContent className="pt-0 relative pb-6 bg-white">
           <div className="flex flex-col sm:flex-row -mt-12 sm:-mt-16 items-start sm:items-end gap-4">
             <Avatar className="h-24 w-24 sm:h-32 sm:w-32 border-4 border-white shadow-lg">
               <AvatarImage src={profile.profile_picture_url || undefined} alt={profile.full_name || "Profile"} />
-              <AvatarFallback className="text-2xl bg-blue-100 text-blue-800">
+              <AvatarFallback className="text-2xl bg-pink-100 text-pink-800">
                 {getInitials(profile.full_name)}
               </AvatarFallback>
             </Avatar>
@@ -64,7 +64,7 @@ const ProfileDetails = ({ profile }: ProfileDetailsProps) => {
 
       {/* About/Summary */}
       {profile.ai_synopsis && (
-        <Card className="shadow-sm border border-gray-200">
+        <Card className="shadow-sm border border-gray-200 bg-white">
           <CardContent className="pt-6">
             <h3 className="text-xl font-semibold mb-3 text-gray-900">About</h3>
             <p className="text-gray-700">{profile.ai_synopsis}</p>
@@ -73,19 +73,19 @@ const ProfileDetails = ({ profile }: ProfileDetailsProps) => {
       )}
 
       {/* Experience */}
-      <Card className="shadow-sm border border-gray-200">
+      <Card className="shadow-sm border border-gray-200 bg-white">
         <CardContent className="pt-6">
           <div className="flex items-center space-x-2 mb-4">
-            <Briefcase className="h-5 w-5 text-blue-600" />
+            <Briefcase className="h-5 w-5 text-pink-600" />
             <h3 className="text-xl font-semibold text-gray-900">Experience</h3>
           </div>
           
           <div className="space-y-6">
             {profile.current_employer && (
-              <div className="border-l-2 border-gray-200 pl-4 py-1">
+              <div className="border-l-2 border-pink-200 pl-4 py-1">
                 <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 bg-gray-100 flex items-center justify-center rounded">
-                    <Briefcase className="h-5 w-5 text-gray-500" />
+                  <div className="w-10 h-10 bg-pink-50 flex items-center justify-center rounded">
+                    <Briefcase className="h-5 w-5 text-pink-500" />
                   </div>
                   <div>
                     <h4 className="font-medium text-gray-900">{profile.job_title || "No Job Title"}</h4>
@@ -111,7 +111,7 @@ const ProfileDetails = ({ profile }: ProfileDetailsProps) => {
       </Card>
 
       {/* Skills and Qualifications */}
-      <Card className="shadow-sm border border-gray-200">
+      <Card className="shadow-sm border border-gray-200 bg-white">
         <CardContent className="pt-6">
           <SkillsSection profile={profile} />
           
@@ -122,10 +122,10 @@ const ProfileDetails = ({ profile }: ProfileDetailsProps) => {
       </Card>
 
       {/* Location and Preferences */}
-      <Card className="shadow-sm border border-gray-200">
+      <Card className="shadow-sm border border-gray-200 bg-white">
         <CardContent className="pt-6">
           <div className="flex items-center space-x-2 mb-4">
-            <MapPin className="h-5 w-5 text-blue-600" />
+            <MapPin className="h-5 w-5 text-pink-600" />
             <h3 className="text-xl font-semibold text-gray-900">Location & Preferences</h3>
           </div>
           
@@ -137,7 +137,7 @@ const ProfileDetails = ({ profile }: ProfileDetailsProps) => {
                 href={profile.cv_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-pink-600 hover:bg-pink-700 text-white rounded-md transition-colors"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>

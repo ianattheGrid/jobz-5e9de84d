@@ -95,9 +95,9 @@ function PreviewCandidateProfile() {
 
   if (!profile) {
     return (
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8 bg-white">
         <p className="text-gray-500">Profile not found. Please complete your profile first.</p>
-        <Button onClick={() => navigate('/candidate/profile')} className="mt-4">
+        <Button onClick={() => navigate('/candidate/profile')} className="mt-4 bg-pink-600 hover:bg-pink-700">
           Go to Profile
         </Button>
       </div>
@@ -105,12 +105,12 @@ function PreviewCandidateProfile() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-5xl">
+    <div className="container mx-auto px-4 py-8 max-w-5xl bg-gray-50 min-h-screen">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
         <Button
           variant="outline"
           onClick={() => navigate('/candidate/profile')}
-          className="flex items-center gap-2"
+          className="flex items-center gap-2 bg-white"
         >
           <ArrowLeft className="h-4 w-4" />
           Back to Profile
@@ -123,7 +123,7 @@ function PreviewCandidateProfile() {
           <Button
             variant="outline"
             onClick={handleRefresh}
-            className="flex items-center gap-2 text-sm"
+            className="flex items-center gap-2 text-sm bg-white"
             size="sm"
           >
             <RefreshCw className="h-4 w-4" />
@@ -132,7 +132,7 @@ function PreviewCandidateProfile() {
           <Button
             variant="outline"
             onClick={() => navigate('/candidate/profile')}
-            className="flex items-center gap-2 text-sm"
+            className="flex items-center gap-2 text-sm bg-white"
             size="sm"
           >
             <Edit className="h-4 w-4" />
