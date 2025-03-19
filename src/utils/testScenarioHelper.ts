@@ -104,7 +104,11 @@ export const setupTestScenario = async () => {
 
     if (profile && jobData) {
       const { useMatchScore } = await import('../components/job-card/hooks/useMatchScore');
-      const matchScoreHook = useMatchScore(profile, jobData);
+      const matchScoreHook = useMatchScore({
+        ...profile,
+        workArea: profile.workArea || null,
+        itSpecialization: profile.itSpecialization || null
+      }, jobData);
       const score = await matchScoreHook.calculateTotalScore();
       
       console.log('\n=== Match Score Analysis ===');
