@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Eye, RefreshCw, Edit } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { LoadingState } from "@/components/candidate-search/LoadingState";
 import { supabase } from "@/integrations/supabase/client";
 import ProfileDetails from "@/components/candidate-profile/ProfileDetails";
@@ -81,14 +81,6 @@ function PreviewCandidateProfile() {
     fetchProfile();
   }, [navigate, toast]);
 
-  const handleRefresh = () => {
-    fetchProfile();
-    toast({
-      title: "Refreshing",
-      description: "Updating your profile preview with the latest data."
-    });
-  };
-
   if (loading) {
     return <LoadingState />;
   }
@@ -106,51 +98,14 @@ function PreviewCandidateProfile() {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-5xl bg-gray-50 min-h-screen">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-        <Button
-          variant="outline"
-          onClick={() => navigate('/candidate/profile')}
-          className="flex items-center gap-2 bg-white"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Back to Profile
-        </Button>
-        
-        <div className="flex flex-wrap items-center gap-2">
-          <div className="bg-amber-100 text-amber-700 px-3 py-1 rounded-full border border-amber-200 text-sm">
-            Profile Preview Mode
-          </div>
-          <Button
-            variant="outline"
-            onClick={handleRefresh}
-            className="flex items-center gap-2 text-sm bg-white"
-            size="sm"
-          >
-            <RefreshCw className="h-4 w-4" />
-            Refresh
-          </Button>
-          <Button
-            variant="outline"
-            onClick={() => navigate('/candidate/profile')}
-            className="flex items-center gap-2 text-sm bg-white"
-            size="sm"
-          >
-            <Edit className="h-4 w-4" />
-            Edit Profile
-          </Button>
-        </div>
-      </div>
-
-      <div className="mb-6">
-        <div className="bg-blue-50 border border-blue-200 text-blue-700 px-4 py-3 rounded-md flex items-start">
-          <div className="flex-shrink-0 mt-0.5">
-            <Eye className="h-5 w-5" />
-          </div>
-          <div className="ml-3">
-            <p>This is how employers will see your profile when you match with their job listings.</p>
-          </div>
-        </div>
-      </div>
+      <Button
+        variant="outline"
+        onClick={() => navigate('/candidate/profile')}
+        className="mb-6 flex items-center gap-2 bg-white"
+      >
+        <ArrowLeft className="h-4 w-4" />
+        Back to Profile
+      </Button>
 
       <ProfileDetails profile={profile} />
     </div>

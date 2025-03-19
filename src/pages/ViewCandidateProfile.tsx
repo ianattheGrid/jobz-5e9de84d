@@ -22,7 +22,7 @@ function ViewCandidateProfile() {
         <Button 
           variant="outline" 
           onClick={() => navigate(-1)}
-          className="mt-4"
+          className="mt-4 bg-white"
         >
           Go Back
         </Button>

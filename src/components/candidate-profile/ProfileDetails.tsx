@@ -29,7 +29,7 @@ const ProfileDetails = ({ profile }: ProfileDetailsProps) => {
     <div className="space-y-6">
       {/* Profile Header */}
       <Card className="border-none shadow-md overflow-hidden bg-white">
-        <div className="h-16 bg-gradient-to-r from-pink-500 to-pink-300"></div>
+        <div className="h-12 bg-gradient-to-r from-pink-500 to-pink-300"></div>
         <CardContent className="pt-0 relative pb-6 bg-white">
           <div className="flex flex-col sm:flex-row -mt-12 sm:-mt-16 items-start sm:items-end gap-4">
             <Avatar className="h-24 w-24 sm:h-32 sm:w-32 border-4 border-white shadow-lg">
