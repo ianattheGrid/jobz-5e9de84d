@@ -1,3 +1,4 @@
+
 export interface CandidateProfile {
   id: string;
   email: string;
