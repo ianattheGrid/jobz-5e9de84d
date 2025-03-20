@@ -42,14 +42,19 @@ export const useWorkAreaHandler = (control: Control<any>) => {
   const workArea = useWatch({ control, name: 'workArea' });
   const itSpecialization = useWatch({ control, name: 'itSpecialization' });
   const jobTitle = useWatch({ control, name: 'job_title' });
+  const yearsInCurrentTitle = useWatch({ control, name: 'years_in_current_title' });
+  
+  console.log("Current form values:", { workArea, itSpecialization, jobTitle, yearsInCurrentTitle });
 
   // Initialize based on existing values
   useEffect(() => {
     if (workArea) {
+      console.log("Initializing with workArea:", workArea);
       handleWorkAreaChange(workArea);
       
       // If we also have a specialization, set it up
       if (itSpecialization) {
+        console.log("Initializing with specialization:", itSpecialization);
         setTimeout(() => {
           handleSpecialisationChange(itSpecialization);
         }, 0);
@@ -58,6 +63,8 @@ export const useWorkAreaHandler = (control: Control<any>) => {
   }, []);
 
   const handleWorkAreaChange = (value: string) => {
+    console.log("handleWorkAreaChange called with:", value);
+    
     const resetState = {
       it: false,
       customerService: false,
@@ -79,8 +86,8 @@ export const useWorkAreaHandler = (control: Control<any>) => {
     setShowOtherInput(false);
     setShowSpecializations(resetState);
     
-    // Don't reset these if we already have values and we're initializing
-    if (!itSpecialization) {
+    // Don't reset these if we already have values
+    if (value !== workArea) {
       setSelectedSpecialisation("");
       setAvailableTitles([]);
     }
@@ -138,6 +145,7 @@ export const useWorkAreaHandler = (control: Control<any>) => {
   };
 
   const handleSpecialisationChange = (specialisation: string) => {
+    console.log("handleSpecialisationChange called with:", specialisation);
     setSelectedSpecialisation(specialisation);
     
     let titles: string[] = [];
@@ -169,6 +177,7 @@ export const useWorkAreaHandler = (control: Control<any>) => {
       titles = getTitlesForMarketingSpecialisation(specialisation);
     }
     
+    console.log("Setting available titles:", titles);
     setAvailableTitles(titles);
   };
 

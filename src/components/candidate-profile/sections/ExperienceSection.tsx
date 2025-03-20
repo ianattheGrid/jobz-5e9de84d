@@ -15,7 +15,7 @@ const ExperienceSection = ({ profile }: ExperienceSectionProps) => {
             <GraduationCap className="h-4 w-4 text-pink-600" />
             <span className="font-medium text-gray-900">Professional Experience</span>
           </div>
-          <p className="text-gray-700">{profile.years_experience} years in {profile.job_title || profile.workArea || "current field"}</p>
+          <p className="text-gray-700">{profile.years_in_current_title || profile.years_experience} years in {profile.job_title || profile.workArea || "current field"}</p>
           
           {profile.itSpecialization && (
             <p className="text-gray-700">Specialization: {profile.itSpecialization}</p>

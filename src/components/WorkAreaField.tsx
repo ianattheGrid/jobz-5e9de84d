@@ -6,6 +6,7 @@ import { SpecializationSelects } from "./work-area/components/SpecializationSele
 import JobTitleSelect from "./work-area/JobTitleSelect";
 import OtherFields from "./work-area/fields/OtherFields";
 import TitleExperienceSelect from "./work-area/TitleExperienceSelect";
+import { useEffect, useWatch } from "react-hook-form";
 
 interface WorkAreaFieldProps {
   control: Control<any>;
@@ -21,6 +22,12 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
     handleSpecialisationChange
   } = useWorkAreaHandler(control);
 
+  // Watch job_title field to know when we have a valid title
+  const jobTitle = useWatch({ 
+    control,
+    name: 'job_title'
+  });
+
   return (
     <div className="space-y-4">
       <WorkAreaSelect 
@@ -34,11 +41,12 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
         onSpecialisationChange={handleSpecialisationChange}
       />
 
-      {selectedSpecialisation && availableTitles.length > 0 && (
+      {/* Show job title either when we have specialization + titles OR when we already have a job title */}
+      {((selectedSpecialisation && availableTitles.length > 0) || jobTitle) && (
         <>
           <JobTitleSelect
             control={control}
-            titles={availableTitles}
+            titles={availableTitles.length > 0 ? availableTitles : [jobTitle]}
             name="job_title"
           />
           <TitleExperienceSelect

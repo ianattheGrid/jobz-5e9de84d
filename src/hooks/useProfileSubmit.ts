@@ -47,7 +47,7 @@ export const useProfileSubmit = (toast: ToastFunction) => {
         address: cleanStringValue(values.address),
         home_postcode: cleanStringValue(values.home_postcode),
         location: Array.isArray(values.location) ? values.location : [],
-        job_title: values.job_title || cleanStringValue(values.workArea),
+        job_title: cleanStringValue(values.job_title || ''),
         years_experience: cleanNumberValue(values.years_experience),
         min_salary: cleanNumberValue(values.min_salary),
         max_salary: cleanNumberValue(values.max_salary),
