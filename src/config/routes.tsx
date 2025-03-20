@@ -20,6 +20,7 @@ import VirtualRecruiterDashboard from "@/pages/VirtualRecruiterDashboard";
 import VirtualRecruiterRecommendations from "@/pages/VirtualRecruiterRecommendations";
 import CandidateSearch from "@/pages/CandidateSearch";
 import ViewCandidateProfile from "@/pages/ViewCandidateProfile";
+import ViewEmployerProfile from "@/pages/ViewEmployerProfile";
 import CandidateApplications from "@/pages/CandidateApplications";
 import CandidateAccountSettings from "@/pages/CandidateAccountSettings";
 import CandidateInterviews from "@/pages/CandidateInterviews";
@@ -109,6 +110,10 @@ export const routes = [
   {
     path: "/employer/candidate-search",
     element: <CandidateSearch />,
+  },
+  {
+    path: "/employer/:id",
+    element: <ViewEmployerProfile />
   },
   {
     path: "/vr/signup",
