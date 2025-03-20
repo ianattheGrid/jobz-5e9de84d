@@ -1,3 +1,4 @@
+
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Control } from "react-hook-form";
@@ -5,7 +6,7 @@ import { Control } from "react-hook-form";
 interface JobTitleSelectProps {
   control: Control<any>;
   titles: string[];
-  name: string;  // Added name prop to the interface
+  name: string;
 }
 
 const JobTitleSelect = ({ control, titles, name }: JobTitleSelectProps) => {
@@ -17,7 +18,7 @@ const JobTitleSelect = ({ control, titles, name }: JobTitleSelectProps) => {
         <FormItem>
           <FormLabel>Job Title</FormLabel>
           <FormControl>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
+            <Select onValueChange={field.onChange} defaultValue={field.value} value={field.value || ""}>
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select job title" />
               </SelectTrigger>

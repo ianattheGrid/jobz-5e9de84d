@@ -1,5 +1,6 @@
-import { Control } from "react-hook-form";
-import { useState } from "react";
+
+import { Control, useWatch } from "react-hook-form";
+import { useState, useEffect } from "react";
 import { 
   getTitlesForITSpecialisation,
   getTitlesForCustomerServiceSpecialisation,
@@ -36,6 +37,25 @@ export const useWorkAreaHandler = (control: Control<any>) => {
   });
   const [selectedSpecialisation, setSelectedSpecialisation] = useState<string>("");
   const [availableTitles, setAvailableTitles] = useState<string[]>([]);
+  
+  // Watch for form values
+  const workArea = useWatch({ control, name: 'workArea' });
+  const itSpecialization = useWatch({ control, name: 'itSpecialization' });
+  const jobTitle = useWatch({ control, name: 'job_title' });
+
+  // Initialize based on existing values
+  useEffect(() => {
+    if (workArea) {
+      handleWorkAreaChange(workArea);
+      
+      // If we also have a specialization, set it up
+      if (itSpecialization) {
+        setTimeout(() => {
+          handleSpecialisationChange(itSpecialization);
+        }, 0);
+      }
+    }
+  }, [workArea, itSpecialization]);
 
   const handleWorkAreaChange = (value: string) => {
     const resetState = {
@@ -58,9 +78,12 @@ export const useWorkAreaHandler = (control: Control<any>) => {
 
     setShowOtherInput(false);
     setShowSpecializations(resetState);
-    setSelectedSpecialisation("");
-    setAvailableTitles([]);
-    control._formValues.title = "";
+    
+    // Don't reset these if we already have values and we're initializing
+    if (!itSpecialization) {
+      setSelectedSpecialisation("");
+      setAvailableTitles([]);
+    }
 
     switch (value) {
       case "IT":
@@ -116,7 +139,6 @@ export const useWorkAreaHandler = (control: Control<any>) => {
 
   const handleSpecialisationChange = (specialisation: string) => {
     setSelectedSpecialisation(specialisation);
-    control._formValues.title = "";
     
     let titles: string[] = [];
     const showSpec = showSpecializations;

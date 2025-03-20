@@ -6,6 +6,7 @@ import { SpecializationSelects } from "./work-area/components/SpecializationSele
 import JobTitleSelect from "./work-area/JobTitleSelect";
 import OtherFields from "./work-area/fields/OtherFields";
 import TitleExperienceSelect from "./work-area/TitleExperienceSelect";
+import { useEffect } from "react";
 
 interface WorkAreaFieldProps {
   control: Control<any>;
