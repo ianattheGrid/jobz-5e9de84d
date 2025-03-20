@@ -1,12 +1,12 @@
 
-import { Control } from "react-hook-form";
+import { Control, useWatch } from "react-hook-form";
+import { useEffect } from "react";
 import WorkAreaSelect from "./work-area/selectors/WorkAreaSelect";
 import { useWorkAreaHandler } from "./work-area/hooks/useWorkAreaHandler";
 import { SpecializationSelects } from "./work-area/components/SpecializationSelects";
 import JobTitleSelect from "./work-area/JobTitleSelect";
 import OtherFields from "./work-area/fields/OtherFields";
 import TitleExperienceSelect from "./work-area/TitleExperienceSelect";
-import { useEffect, useWatch } from "react-hook-form";
 
 interface WorkAreaFieldProps {
   control: Control<any>;
