@@ -7,4 +7,6 @@ export interface EmployerProfile {
   profile_picture_url?: string | null;
   full_name: string;
   job_title: string;
+  company_size?: number | null;
+  is_sme?: boolean | null;
 }
