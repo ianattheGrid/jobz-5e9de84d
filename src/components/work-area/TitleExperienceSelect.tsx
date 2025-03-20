@@ -20,7 +20,10 @@ const TitleExperienceSelect = ({ control, name, label }: TitleExperienceSelectPr
         <FormItem>
           <FormLabel>{label}</FormLabel>
           <FormControl>
-            <Select onValueChange={field.onChange} value={field.value?.toString()}>
+            <Select 
+              onValueChange={(value) => field.onChange(Number(value))} 
+              value={field.value?.toString()}
+            >
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select years of experience" />
               </SelectTrigger>

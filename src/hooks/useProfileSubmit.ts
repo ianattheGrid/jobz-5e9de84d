@@ -31,6 +31,13 @@ export const useProfileSubmit = (toast: ToastFunction) => {
         return value !== null && value !== undefined ? String(value) : '';
       };
 
+      // Ensure number values are properly converted
+      const cleanNumberValue = (value: any, defaultValue = 0): number => {
+        if (value === null || value === undefined || value === '') return defaultValue;
+        const num = Number(value);
+        return isNaN(num) ? defaultValue : num;
+      };
+
       // Prepare profile data with correct types
       const profileData = {
         id: session.user.id,
@@ -41,9 +48,9 @@ export const useProfileSubmit = (toast: ToastFunction) => {
         home_postcode: cleanStringValue(values.home_postcode),
         location: Array.isArray(values.location) ? values.location : [],
         job_title: values.job_title || cleanStringValue(values.workArea),
-        years_experience: values.years_experience ? Number(values.years_experience) : 0,
-        min_salary: typeof values.min_salary === 'number' ? values.min_salary : 0,
-        max_salary: typeof values.max_salary === 'number' ? values.max_salary : 0,
+        years_experience: cleanNumberValue(values.years_experience),
+        min_salary: cleanNumberValue(values.min_salary),
+        max_salary: cleanNumberValue(values.max_salary),
         required_skills: Array.isArray(values.required_skills) ? values.required_skills : [],
         required_qualifications: values.qualifications
           ? String(values.qualifications).split(',').map(q => q.trim()).filter(Boolean)
@@ -56,7 +63,7 @@ export const useProfileSubmit = (toast: ToastFunction) => {
         work_preferences: cleanStringValue(values.work_preferences),
         current_employer: cleanStringValue(values.current_employer),
         linkedin_url: cleanStringValue(values.linkedin_url),
-        years_in_current_title: values.years_in_current_title !== undefined ? Number(values.years_in_current_title) : 0,
+        years_in_current_title: cleanNumberValue(values.years_in_current_title),
         workArea: cleanStringValue(values.workArea),
         itSpecialization: cleanStringValue(values.itSpecialization)
       };

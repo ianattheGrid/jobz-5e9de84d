@@ -34,7 +34,7 @@ export const candidateFormSchema = z.object({
   security_clearance: z.string().optional(),
   security_clearance_level: z.string().optional(),
   work_eligibility: z.string().optional(),
-  years_experience: z.string().min(1, "Years of experience is required"),
+  years_experience: z.coerce.number().min(0, "Years of experience is required"),
   years_in_current_title: z.number().min(0, "Please specify your years of experience in current role"),
   commission_percentage: z.number().min(2.5).max(14).nullable(),
   open_to_commission: z.boolean().default(false),
