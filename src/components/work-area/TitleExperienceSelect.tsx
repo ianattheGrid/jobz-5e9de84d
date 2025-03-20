@@ -22,14 +22,14 @@ const TitleExperienceSelect = ({ control, name, label }: TitleExperienceSelectPr
           <FormControl>
             <Select 
               onValueChange={(value) => field.onChange(Number(value))} 
-              value={field.value?.toString()}
+              value={String(field.value || "0")}
             >
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select years of experience" />
               </SelectTrigger>
               <SelectContent>
                 {YEARS_OPTIONS.map((years) => (
-                  <SelectItem key={years} value={years.toString()}>
+                  <SelectItem key={years} value={String(years)}>
                     {years === 20 ? "20+ years" : `${years} ${years === 1 ? "year" : "years"}`}
                   </SelectItem>
                 ))}
