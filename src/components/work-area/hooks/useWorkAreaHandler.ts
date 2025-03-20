@@ -55,7 +55,7 @@ export const useWorkAreaHandler = (control: Control<any>) => {
         }, 0);
       }
     }
-  }, [workArea, itSpecialization]);
+  }, []);
 
   const handleWorkAreaChange = (value: string) => {
     const resetState = {
