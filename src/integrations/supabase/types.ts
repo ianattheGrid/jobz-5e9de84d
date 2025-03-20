@@ -101,6 +101,7 @@ export type Database = {
           home_postcode: string | null
           id: string
           is_currently_employed: boolean | null
+          itSpecialization: string | null
           job_title: string
           linkedin_url: string | null
           location: string[] | null
@@ -117,6 +118,7 @@ export type Database = {
           updated_at: string
           work_eligibility: string | null
           work_preferences: string | null
+          workArea: string | null
           years_experience: number
           years_in_current_title: number | null
         }
@@ -137,6 +139,7 @@ export type Database = {
           home_postcode?: string | null
           id: string
           is_currently_employed?: boolean | null
+          itSpecialization?: string | null
           job_title: string
           linkedin_url?: string | null
           location?: string[] | null
@@ -153,6 +156,7 @@ export type Database = {
           updated_at?: string
           work_eligibility?: string | null
           work_preferences?: string | null
+          workArea?: string | null
           years_experience?: number
           years_in_current_title?: number | null
         }
@@ -173,6 +177,7 @@ export type Database = {
           home_postcode?: string | null
           id?: string
           is_currently_employed?: boolean | null
+          itSpecialization?: string | null
           job_title?: string
           linkedin_url?: string | null
           location?: string[] | null
@@ -189,6 +194,7 @@ export type Database = {
           updated_at?: string
           work_eligibility?: string | null
           work_preferences?: string | null
+          workArea?: string | null
           years_experience?: number
           years_in_current_title?: number | null
         }

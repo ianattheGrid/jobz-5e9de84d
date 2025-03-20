@@ -193,3 +193,35 @@ button[type="submit"]:hover {
 .commission-toggle-container .text-primary {
   color: #FF69B4 !important;
 }
+
+/* Enhance switch visibility with background color */
+.switch-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Highlight active toggle option */
+.toggle-option {
+  font-size: 0.75rem;
+  transition: all 0.2s ease;
+}
+
+.toggle-option.active {
+  font-weight: 500;
+  color: #FF69B4;
+}
+
+.toggle-option.inactive {
+  color: #6c757d;
+}
+
+/* Add background to switch track */
+[data-state=unchecked].bg-gray-200 {
+  background-color: #e2e8f0 !important;
+}
+
+[data-state=checked].data-\[state\=checked\]\:bg-primary {
+  background-color: #FF69B4 !important;
+}
+
