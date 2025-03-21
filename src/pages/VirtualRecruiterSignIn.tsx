@@ -97,14 +97,14 @@ const VirtualRecruiterSignIn = () => {
                 {resetMode ? (
                   <button 
                     onClick={() => setResetMode(false)} 
-                    className="text-[#FF69B4] hover:underline font-medium cursor-pointer"
+                    className="inline text-[#FF69B4] hover:underline font-medium cursor-pointer"
                   >
                     Back to Sign In
                   </button>
                 ) : (
                   <button 
                     onClick={() => setResetMode(true)} 
-                    className="text-[#FF69B4] hover:underline font-medium cursor-pointer"
+                    className="inline text-[#FF69B4] hover:underline font-medium cursor-pointer"
                   >
                     Forgot Password?
                   </button>
@@ -112,7 +112,7 @@ const VirtualRecruiterSignIn = () => {
               </div>
               <div className="text-sm text-muted-foreground">
                 Don't have an account?{" "}
-                <Link to="/vr/signup" className="text-[#FF69B4] hover:underline font-medium">
+                <Link to="/vr/signup" className="inline text-[#FF69B4] hover:underline font-medium">
                   Sign Up
                 </Link>
               </div>
