@@ -1,4 +1,3 @@
-
 import { useEffect } from "react";
 import { useEmployerAuthCheck } from "@/hooks/useEmployerAuthCheck";
 import { useCandidateSearch } from "@/hooks/useCandidateSearch";
@@ -7,28 +6,27 @@ import { SearchResults } from "@/components/candidate-search/SearchResults";
 import { LoadingState } from "@/components/candidate-search/LoadingState";
 import { Header } from "@/components/candidate-search/Header";
 import { SavedSearches } from "@/components/candidate-search/SavedSearches";
-
 export default function CandidateSearch() {
-  const { loading, checkUser } = useEmployerAuthCheck();
-  const { candidates, searchCandidates } = useCandidateSearch();
-
+  const {
+    loading,
+    checkUser
+  } = useEmployerAuthCheck();
+  const {
+    candidates,
+    searchCandidates
+  } = useCandidateSearch();
   useEffect(() => {
     checkUser();
   }, [checkUser]);
-
   if (loading) {
     return <LoadingState />;
   }
-
-  return (
-    <div className="min-h-screen bg-white">
+  return <div className="min-h-screen bg-white">
       <div className="container max-w-7xl mx-auto px-4 py-8">
         <Header />
 
         <div className="flex flex-col gap-8">
-          <div className="bg-white rounded-lg shadow-md p-6 border border-gray-200">
-            <SavedSearches />
-          </div>
+          
 
           <div className="bg-white rounded-lg shadow-md p-6 border border-gray-200">
             <div className="mb-6">
@@ -51,6 +49,5 @@ export default function CandidateSearch() {
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 }
