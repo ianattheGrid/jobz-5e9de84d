@@ -30,8 +30,7 @@ export default function EmployerProfile() {
       <div className="flex justify-end mb-4">
         <Link to="/employer/dashboard">
           <Button 
-            variant="default"
-            className="bg-primary hover:bg-primary/90 text-white gap-2"
+            className="bg-[#FF69B4] hover:bg-[#FF50A8] text-white gap-2"
           >
             <LayoutDashboard className="h-4 w-4" />
             Dashboard
