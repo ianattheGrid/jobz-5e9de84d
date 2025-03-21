@@ -1,3 +1,4 @@
+
 import { Link } from "react-router-dom";
 export const HeroSection = () => {
   return <section className="relative h-[500px] overflow-hidden">
@@ -7,14 +8,6 @@ export const HeroSection = () => {
         <div className="max-w-2xl text-white">
           <h1 className="text-primary [&]:!text-primary text-4xl md:text-5xl font-bold mb-4">Your recruitment agency in your pocket...</h1>
           <p className="text-xl mb-8">AI changes the game for SMEs. Save thousands per hire. Recruit in a click. Empower anyone to earn. Attract top talent with our "You're hired bonus".</p>
-          <div className="flex gap-4">
-            <Link to="/employer/signup" className="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-lg font-medium">
-              Start Hiring
-            </Link>
-            <Link to="/candidate/signup" className="bg-white hover:bg-gray-100 text-primary px-6 py-3 rounded-lg font-medium">
-              Find Jobs
-            </Link>
-          </div>
         </div>
       </div>
     </section>;
