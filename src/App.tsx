@@ -68,6 +68,7 @@ function App() {
           <Route path="employer/interviews" element={<ProtectedRoute userType="employer"><EmployerInterviews /></ProtectedRoute>} />
           <Route path="employer/candidate/:id" element={<ProtectedRoute userType="employer"><ViewCandidateProfile /></ProtectedRoute>} />
           <Route path="employer/candidates" element={<ProtectedRoute userType="employer"><CandidateSearch /></ProtectedRoute>} />
+          <Route path="employer/candidate-search" element={<ProtectedRoute userType="employer"><CandidateSearch /></ProtectedRoute>} />
           
           {/* Virtual Recruiter routes */}
           <Route path="vr/signin" element={<VirtualRecruiterSignIn />} />

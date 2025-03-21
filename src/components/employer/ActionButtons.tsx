@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { Plus, Search } from "lucide-react";
@@ -15,7 +16,7 @@ export default function ActionButtons() {
         Post New Vacancy
       </Button>
       <Button 
-        onClick={() => navigate('/employer/candidate-search')}
+        onClick={() => navigate('/employer/candidates')}
         className="bg-red-800 hover:bg-red-900 text-white"
       >
         <Search className="mr-2 h-4 w-4" />

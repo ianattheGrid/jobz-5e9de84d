@@ -1,3 +1,4 @@
+
 import { useEffect } from "react";
 import { useEmployerAuthCheck } from "@/hooks/useEmployerAuthCheck";
 import { useCandidateSearch } from "@/hooks/useCandidateSearch";
@@ -13,7 +14,7 @@ export default function CandidateSearch() {
 
   useEffect(() => {
     checkUser();
-  }, []);
+  }, [checkUser]);
 
   if (loading) {
     return <LoadingState />;
