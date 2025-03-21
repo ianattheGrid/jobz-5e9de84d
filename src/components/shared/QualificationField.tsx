@@ -15,21 +15,21 @@ const QualificationField = ({ control }: QualificationFieldProps) => {
         control={control}
         name="requiresQualification"
         render={({ field }) => (
-          <FormItem className="bg-white rounded-lg p-3 border border-gray-200">
+          <FormItem className="bg-white rounded-lg p-2 border border-gray-200">
             <div className="space-y-0.5">
-              <FormLabel className="text-sm">
+              <FormLabel className="text-xs text-gray-700">
                 Do you require the candidate to have an industry qualification for this role?
               </FormLabel>
             </div>
             <FormControl>
               <div className="flex items-center gap-2 justify-end">
-                <span className="text-sm text-gray-600">No</span>
+                <span className="text-xs text-gray-600">No</span>
                 <Switch
                   checked={field.value}
                   onCheckedChange={field.onChange}
                   className="data-[state=checked]:bg-[#FF69B4]"
                 />
-                <span className="text-sm text-gray-600">Yes</span>
+                <span className="text-xs text-gray-600">Yes</span>
               </div>
             </FormControl>
           </FormItem>
