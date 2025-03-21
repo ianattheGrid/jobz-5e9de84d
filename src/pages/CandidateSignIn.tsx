@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -94,26 +95,24 @@ const CandidateSignIn = () => {
             <div className="space-y-4 text-center">
               <div>
                 {resetMode ? (
-                  <button 
+                  <a 
                     onClick={() => setResetMode(false)} 
-                    className="inline-block text-[#FF69B4] hover:underline font-medium bg-transparent border-0 shadow-none p-0 m-0"
-                    style={{ backgroundColor: 'transparent', boxShadow: 'none' }}
+                    className="text-[#FF69B4] hover:underline cursor-pointer"
                   >
                     Back to Sign In
-                  </button>
+                  </a>
                 ) : (
-                  <button 
+                  <a 
                     onClick={() => setResetMode(true)} 
-                    className="inline-block text-[#FF69B4] hover:underline font-medium bg-transparent border-0 shadow-none p-0 m-0"
-                    style={{ backgroundColor: 'transparent', boxShadow: 'none' }}
+                    className="text-[#FF69B4] hover:underline cursor-pointer"
                   >
                     Forgot Password?
-                  </button>
+                  </a>
                 )}
               </div>
               <div className="text-sm text-muted-foreground">
                 Don't have an account?{" "}
-                <Link to="/candidate/signup" className="inline-block text-[#FF69B4] hover:underline font-medium bg-transparent border-0 shadow-none p-0 m-0" style={{ backgroundColor: 'transparent', boxShadow: 'none' }}>
+                <Link to="/candidate/signup" className="text-[#FF69B4] hover:underline">
                   Sign Up
                 </Link>
               </div>
