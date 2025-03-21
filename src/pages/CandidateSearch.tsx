@@ -21,16 +21,16 @@ export default function CandidateSearch() {
   }
 
   return (
-    <div className="min-h-screen bg-[#121212]">
+    <div className="min-h-screen bg-white">
       <div className="container max-w-7xl mx-auto px-4 py-8">
         <Header />
 
         <div className="flex flex-col gap-8">
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="bg-white rounded-lg shadow-md p-6 border border-gray-200">
             <SavedSearches />
           </div>
 
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="bg-white rounded-lg shadow-md p-6 border border-gray-200">
             <div className="mb-6">
               <h2 className="text-xl font-semibold text-gray-900">Search Filters</h2>
               <p className="text-sm text-gray-600 mt-1">
@@ -40,7 +40,7 @@ export default function CandidateSearch() {
             <SearchForm onSubmit={searchCandidates} />
           </div>
 
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="bg-white rounded-lg shadow-md p-6 border border-gray-200">
             <div className="mb-6">
               <h2 className="text-xl font-semibold text-gray-900">Search Results</h2>
               <p className="text-sm text-gray-600 mt-1">

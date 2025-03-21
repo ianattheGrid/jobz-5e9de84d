@@ -17,8 +17,8 @@ export function Header() {
           </Button>
         </Link>
       </div>
-      <h1 className="text-3xl font-bold text-white">Candidate Search</h1>
-      <p className="text-gray-300">
+      <h1 className="text-3xl font-bold text-gray-900">Candidate Search</h1>
+      <p className="text-gray-600">
         Search for candidates that match your job requirements.
       </p>
     </div>
