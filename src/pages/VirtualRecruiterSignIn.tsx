@@ -97,14 +97,14 @@ const VirtualRecruiterSignIn = () => {
                 {resetMode ? (
                   <a 
                     onClick={() => setResetMode(false)} 
-                    className="text-[#FF69B4] hover:underline cursor-pointer"
+                    className="text-[#FF69B4] hover:underline cursor-pointer text-sm"
                   >
                     Back to Sign In
                   </a>
                 ) : (
                   <a 
                     onClick={() => setResetMode(true)} 
-                    className="text-[#FF69B4] hover:underline cursor-pointer"
+                    className="text-[#FF69B4] hover:underline cursor-pointer text-sm"
                   >
                     Forgot Password?
                   </a>
