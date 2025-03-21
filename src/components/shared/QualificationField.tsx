@@ -16,11 +16,9 @@ const QualificationField = ({ control }: QualificationFieldProps) => {
         name="requiresQualification"
         render={({ field }) => (
           <div>
-            <div className="mb-2">
-              <FormLabel className="text-sm font-medium text-gray-900">
-                Do you require the candidate to have an industry qualification for this role?
-              </FormLabel>
-            </div>
+            <FormLabel className="text-sm font-medium text-gray-900 mb-2 block">
+              Do you require the candidate to have an industry qualification for this role?
+            </FormLabel>
             <FormItem className="bg-white rounded-lg border border-gray-200 p-1">
               <FormControl>
                 <div className="flex items-center gap-3 justify-end">

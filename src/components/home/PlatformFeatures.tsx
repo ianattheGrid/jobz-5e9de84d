@@ -1,6 +1,7 @@
+
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FileText, Coins, Bot, Calculator, User, Target, Users, MapPin, HandCoins, ListCheck, Clock, Building2, PoundSterling } from "lucide-react";
+import { FileText, Coins, Bot, Calculator, User, Target, Users, MapPin, HandCoins, ListCheck, Clock, Building2 } from "lucide-react";
 import { PRIMARY_COLOR_PATTERN } from "@/styles/colorPatterns";
 
 export const PlatformFeatures = () => {
@@ -11,24 +12,24 @@ export const PlatformFeatures = () => {
       </h2>
       
       <Tabs defaultValue="hiring" className="w-full max-w-4xl mx-auto">
-        <TabsList className="grid w-full grid-cols-3 bg-primary/10">
+        <TabsList className="grid w-full grid-cols-3 mb-8">
           <TabsTrigger 
             value="hiring" 
-            className="text-white data-[state=active]:bg-primary data-[state=active]:text-white"
+            className="text-gray-800 py-3 data-[state=active]:bg-primary data-[state=active]:text-white hover:bg-primary/20 transition-colors"
           >
             For Employers
           </TabsTrigger>
           <TabsTrigger 
             value="candidates"
-            className="text-white data-[state=active]:bg-primary data-[state=active]:text-white"
+            className="text-gray-800 py-3 data-[state=active]:bg-primary data-[state=active]:text-white hover:bg-primary/20 transition-colors"
           >
             For Candidates
           </TabsTrigger>
           <TabsTrigger 
             value="recruiters"
-            className="text-white data-[state=active]:bg-primary data-[state=active]:text-white"
+            className="text-gray-800 py-3 data-[state=active]:bg-primary data-[state=active]:text-white hover:bg-primary/20 transition-colors"
           >
-            Virtual Recruiters
+            For Virtual Recruiters
           </TabsTrigger>
         </TabsList>
 
