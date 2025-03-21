@@ -15,24 +15,24 @@ const QualificationField = ({ control }: QualificationFieldProps) => {
         control={control}
         name="requiresQualification"
         render={({ field }) => (
-          <FormItem className="bg-white rounded-lg p-2 border border-gray-200">
-            <div className="space-y-0.5">
-              <FormLabel className="text-xs text-gray-700">
-                Do you require the candidate to have an industry qualification for this role?
-              </FormLabel>
-            </div>
-            <FormControl>
-              <div className="flex items-center gap-2 justify-end">
-                <span className="text-xs text-gray-600">No</span>
-                <Switch
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                  className="data-[state=checked]:bg-[#FF69B4]"
-                />
-                <span className="text-xs text-gray-600">Yes</span>
-              </div>
-            </FormControl>
-          </FormItem>
+          <div>
+            <FormLabel className="text-sm font-medium text-gray-900 mb-2 block">
+              Do you require the candidate to have an industry qualification for this role?
+            </FormLabel>
+            <FormItem className="bg-white rounded-lg border border-gray-200 p-1.5">
+              <FormControl>
+                <div className="flex items-center gap-3 justify-end">
+                  <span className={`text-xs ${!field.value ? 'text-[#FF69B4] font-medium' : 'text-gray-600'}`}>No</span>
+                  <Switch
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                    className="data-[state=checked]:bg-[#FF69B4]"
+                  />
+                  <span className={`text-xs ${field.value ? 'text-[#FF69B4] font-medium' : 'text-gray-600'}`}>Yes</span>
+                </div>
+              </FormControl>
+            </FormItem>
+          </div>
         )}
       />
 

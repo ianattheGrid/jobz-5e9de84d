@@ -21,7 +21,7 @@ export function Header() {
       <p className="text-gray-600">
         Search for candidates that match your job requirements.
       </p>
-      <div className="bg-[#FF69B4] h-2 w-full rounded-full mt-2"></div>
+      <div className="bg-[#FF69B4] h-2 w-full rounded-full"></div>
     </div>
   );
 }
