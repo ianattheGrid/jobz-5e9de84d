@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -232,10 +233,18 @@ a {
 }
 
 /* Platform Features Tab Styles */
+/* Fix for tab triggers to ensure proper hover effect isolation */
 .tab-trigger {
-  @apply text-gray-800 py-3 transition-colors;
+  @apply text-gray-800 py-3 transition-colors relative;
+  background-color: transparent;
 }
 
+/* Override Radix UI's default styles */
+[data-radix-collection-item]:hover {
+  background-color: transparent !important;
+}
+
+/* Ensure hover only affects the exact element being hovered */
 .tab-trigger:hover {
   background-color: #FF69B4 !important;
   color: white !important;
@@ -244,4 +253,15 @@ a {
 .tab-trigger[data-state="active"] {
   background-color: #FF69B4 !important;
   color: white !important;
+}
+
+/* Reset any inherited hover states */
+.tab-trigger:not(:hover) {
+  background-color: transparent !important;
+}
+
+/* Make sure only the active tab stays highlighted */
+.tab-trigger[data-state="inactive"]:not(:hover) {
+  background-color: transparent !important;
+  color: #1f2937 !important; /* text-gray-800 equivalent */
 }
