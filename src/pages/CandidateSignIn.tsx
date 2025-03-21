@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -97,14 +96,16 @@ const CandidateSignIn = () => {
                 {resetMode ? (
                   <button 
                     onClick={() => setResetMode(false)} 
-                    className="text-[#FF69B4] hover:underline font-medium bg-transparent cursor-pointer border-none p-0"
+                    className="inline-block text-[#FF69B4] hover:underline font-medium bg-transparent border-0 shadow-none p-0 m-0"
+                    style={{ backgroundColor: 'transparent', boxShadow: 'none' }}
                   >
                     Back to Sign In
                   </button>
                 ) : (
                   <button 
                     onClick={() => setResetMode(true)} 
-                    className="text-[#FF69B4] hover:underline font-medium bg-transparent cursor-pointer border-none p-0"
+                    className="inline-block text-[#FF69B4] hover:underline font-medium bg-transparent border-0 shadow-none p-0 m-0"
+                    style={{ backgroundColor: 'transparent', boxShadow: 'none' }}
                   >
                     Forgot Password?
                   </button>
@@ -112,7 +113,7 @@ const CandidateSignIn = () => {
               </div>
               <div className="text-sm text-muted-foreground">
                 Don't have an account?{" "}
-                <Link to="/candidate/signup" className="text-[#FF69B4] hover:underline font-medium bg-transparent">
+                <Link to="/candidate/signup" className="inline-block text-[#FF69B4] hover:underline font-medium bg-transparent border-0 shadow-none p-0 m-0" style={{ backgroundColor: 'transparent', boxShadow: 'none' }}>
                   Sign Up
                 </Link>
               </div>
