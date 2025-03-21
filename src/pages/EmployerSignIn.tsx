@@ -101,14 +101,14 @@ const EmployerSignIn = () => {
                 {resetMode ? (
                   <button 
                     onClick={() => setResetMode(false)} 
-                    className="font-medium text-[#FF69B4] hover:text-[#FF50A8] hover:underline transition-colors"
+                    className="text-[#FF69B4] hover:underline font-medium cursor-pointer"
                   >
                     Back to Sign In
                   </button>
                 ) : (
                   <button 
                     onClick={() => setResetMode(true)} 
-                    className="font-medium text-[#FF69B4] hover:text-[#FF50A8] hover:underline transition-colors"
+                    className="text-[#FF69B4] hover:underline font-medium cursor-pointer"
                   >
                     Forgot Password?
                   </button>
@@ -116,7 +116,7 @@ const EmployerSignIn = () => {
               </div>
               <div className="text-sm text-muted-foreground">
                 Don't have an account?{" "}
-                <Link to="/employer/signup" className="text-[#FF69B4] hover:text-[#FF50A8] hover:underline font-medium transition-colors">
+                <Link to="/employer/signup" className="text-[#FF69B4] hover:underline font-medium">
                   Sign Up
                 </Link>
               </div>
