@@ -15,7 +15,7 @@ const QualificationField = ({ control }: QualificationFieldProps) => {
         control={control}
         name="requiresQualification"
         render={({ field }) => (
-          <FormItem className="bg-white rounded-lg p-4 border border-gray-200">
+          <FormItem className="bg-white rounded-lg p-3 border border-gray-200">
             <div className="space-y-0.5">
               <FormLabel className="text-sm">
                 Do you require the candidate to have an industry qualification for this role?
