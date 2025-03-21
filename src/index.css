@@ -265,3 +265,15 @@ a {
   background-color: transparent !important;
   color: #1f2937 !important; /* text-gray-800 equivalent */
 }
+
+/* Force text color to white for active/hovered tab triggers */
+.tab-trigger:hover,
+.tab-trigger[data-state="active"] {
+  color: white !important;
+}
+
+/* Additional fixes for the TabsList container to ensure proper isolation */
+[role="tablist"] {
+  position: relative;
+  z-index: 1;
+}
