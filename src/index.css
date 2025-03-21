@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -235,7 +234,7 @@ a {
 /* Platform Features Tab Styles */
 /* Fix for tab triggers to ensure proper hover effect isolation */
 .tab-trigger {
-  @apply text-gray-800 py-3 transition-colors relative;
+  @apply text-white py-3 transition-colors relative;
   background-color: transparent;
 }
 
@@ -260,16 +259,14 @@ a {
   background-color: transparent !important;
 }
 
+/* Force text color to white for all tab triggers regardless of state */
+.tab-trigger {
+  color: white !important;
+}
+
 /* Make sure only the active tab stays highlighted */
 .tab-trigger[data-state="inactive"]:not(:hover) {
   background-color: transparent !important;
-  color: #1f2937 !important; /* text-gray-800 equivalent */
-}
-
-/* Force text color to white for active/hovered tab triggers */
-.tab-trigger:hover,
-.tab-trigger[data-state="active"] {
-  color: white !important;
 }
 
 /* Additional fixes for the TabsList container to ensure proper isolation */

@@ -12,22 +12,22 @@ export const PlatformFeatures = () => {
       </h2>
       
       <Tabs defaultValue="hiring" className="w-full max-w-4xl mx-auto">
-        <TabsList className="grid w-full grid-cols-3 mb-8">
+        <TabsList className="grid w-full grid-cols-3 mb-8 bg-black">
           <TabsTrigger 
             value="hiring" 
-            className="tab-trigger"
+            className="tab-trigger text-white"
           >
             For Employers
           </TabsTrigger>
           <TabsTrigger 
             value="candidates"
-            className="tab-trigger"
+            className="tab-trigger text-white"
           >
             For Candidates
           </TabsTrigger>
           <TabsTrigger 
             value="recruiters"
-            className="tab-trigger"
+            className="tab-trigger text-white"
           >
             For Virtual Recruiters
           </TabsTrigger>
