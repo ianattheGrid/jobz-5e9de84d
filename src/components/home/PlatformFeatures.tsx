@@ -15,19 +15,19 @@ export const PlatformFeatures = () => {
         <TabsList className="grid w-full grid-cols-3 mb-8">
           <TabsTrigger 
             value="hiring" 
-            className="text-gray-800 py-3 data-[state=active]:bg-[#FF69B4] data-[state=active]:text-white hover:bg-[#FF69B4] hover:text-white transition-colors"
+            className="tab-trigger"
           >
             For Employers
           </TabsTrigger>
           <TabsTrigger 
             value="candidates"
-            className="text-gray-800 py-3 data-[state=active]:bg-[#FF69B4] data-[state=active]:text-white hover:bg-[#FF69B4] hover:text-white transition-colors"
+            className="tab-trigger"
           >
             For Candidates
           </TabsTrigger>
           <TabsTrigger 
             value="recruiters"
-            className="text-gray-800 py-3 data-[state=active]:bg-[#FF69B4] data-[state=active]:text-white hover:bg-[#FF69B4] hover:text-white transition-colors"
+            className="tab-trigger"
           >
             For Virtual Recruiters
           </TabsTrigger>
