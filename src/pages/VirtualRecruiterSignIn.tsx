@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -54,7 +55,7 @@ const VirtualRecruiterSignIn = () => {
         <Card className="w-full max-w-md">
           <CardHeader className="space-y-1">
             <div className="flex items-center justify-center gap-2">
-              <UserPlus className="h-8 w-8 text-primary" />
+              <UserPlus className="h-8 w-8 text-[#FF69B4]" />
               <CardTitle className={`text-2xl ${PRIMARY_COLOR_PATTERN}`}>Virtual Recruiter Sign In</CardTitle>
             </div>
             <CardDescription>
@@ -87,31 +88,31 @@ const VirtualRecruiterSignIn = () => {
                   />
                 </div>
               )}
-              <Button className="w-full bg-primary hover:bg-primary-dark text-white" type="submit" disabled={loading}>
+              <Button className="w-full bg-[#FF69B4] hover:bg-[#FF50A8] text-white" type="submit" disabled={loading}>
                 {loading ? (resetMode ? "Sending..." : "Signing in...") : (resetMode ? "Send Reset Link" : "Sign In")}
               </Button>
             </form>
-            <div className="space-y-2 text-center text-sm text-muted-foreground">
+            <div className="space-y-4 text-center">
               <div>
                 {resetMode ? (
                   <button 
                     onClick={() => setResetMode(false)} 
-                    className="text-primary hover:underline"
+                    className="text-[#FF69B4] hover:text-[#FF50A8] hover:underline font-medium text-sm transition-colors"
                   >
                     Back to Sign In
                   </button>
                 ) : (
                   <button 
                     onClick={() => setResetMode(true)} 
-                    className="text-primary hover:underline"
+                    className="text-[#FF69B4] hover:text-[#FF50A8] hover:underline font-medium text-sm transition-colors"
                   >
                     Forgot Password?
                   </button>
                 )}
               </div>
-              <div>
+              <div className="text-sm text-muted-foreground">
                 Don't have an account?{" "}
-                <Link to="/vr/signup" className="text-primary hover:underline">
+                <Link to="/vr/signup" className="text-[#FF69B4] hover:text-[#FF50A8] hover:underline font-medium">
                   Sign Up
                 </Link>
               </div>

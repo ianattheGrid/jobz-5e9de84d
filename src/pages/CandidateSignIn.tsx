@@ -92,27 +92,27 @@ const CandidateSignIn = () => {
                 {loading ? (resetMode ? "Sending..." : "Signing in...") : (resetMode ? "Send Reset Link" : "Sign In")}
               </Button>
             </form>
-            <div className="space-y-2 text-center text-sm text-muted-foreground">
+            <div className="space-y-4 text-center">
               <div>
                 {resetMode ? (
                   <button 
                     onClick={() => setResetMode(false)} 
-                    className="text-[#FF69B4] hover:underline"
+                    className="text-[#FF69B4] hover:text-[#FF50A8] hover:underline font-medium text-sm transition-colors"
                   >
                     Back to Sign In
                   </button>
                 ) : (
                   <button 
                     onClick={() => setResetMode(true)} 
-                    className="text-[#FF69B4] hover:underline"
+                    className="text-[#FF69B4] hover:text-[#FF50A8] hover:underline font-medium text-sm transition-colors"
                   >
                     Forgot Password?
                   </button>
                 )}
               </div>
-              <div>
+              <div className="text-sm text-muted-foreground">
                 Don't have an account?{" "}
-                <Link to="/candidate/signup" className="text-[#FF69B4] hover:underline">
+                <Link to="/candidate/signup" className="text-[#FF69B4] hover:text-[#FF50A8] hover:underline font-medium">
                   Sign Up
                 </Link>
               </div>
