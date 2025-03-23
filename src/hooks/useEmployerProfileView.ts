@@ -38,9 +38,9 @@ export const useEmployerProfileView = ({
     }
 
     const loadProfileData = async () => {
+      setLoading(true);
+      
       try {
-        setLoading(true);
-        
         // Fetch profile data
         const profileData = await fetchEmployerProfile(employerId);
         setProfile(profileData);

@@ -49,34 +49,48 @@ export async function fetchGalleryImages(employerId: string): Promise<CompanyGal
 
 /**
  * Checks if there's a match between the current user and the employer
+ * This function has been simplified to avoid TypeScript type inference issues
  */
 export async function checkEmployerMatch(employerId: string): Promise<boolean> {
-  // Get the current session
-  const sessionResponse = await supabase.auth.getSession();
-  if (sessionResponse.error) {
-    console.error("Session error:", sessionResponse.error);
+  let userId: string | undefined;
+  
+  try {
+    // Get user session
+    const { data, error } = await supabase.auth.getSession();
+    
+    if (error) {
+      console.error("Session error:", error);
+      return false;
+    }
+    
+    userId = data.session?.user?.id;
+    
+    if (!userId) {
+      return false;
+    }
+  } catch (err) {
+    console.error("Error getting session:", err);
     return false;
   }
   
-  // Get the user ID from the session
-  const userId = sessionResponse.data?.session?.user?.id;
-  if (!userId) {
+  try {
+    // Check for matches using the retrieved userId
+    const { data, error } = await supabase
+      .from('applications')
+      .select('id')
+      .eq('applicant_id', userId)
+      .eq('employer_id', employerId)
+      .eq('status', 'matched');
+    
+    if (error) {
+      console.error("Error checking match status:", error);
+      return false;
+    }
+    
+    // Return true if we found at least one match
+    return Array.isArray(data) && data.length > 0;
+  } catch (err) {
+    console.error("Error checking for matches:", err);
     return false;
   }
-  
-  // Check for a match
-  const matchResponse = await supabase
-    .from('applications')
-    .select('id')
-    .eq('applicant_id', userId)
-    .eq('employer_id', employerId)
-    .eq('status', 'matched');
-  
-  if (matchResponse.error) {
-    console.error("Error checking match status:", matchResponse.error);
-    return false;
-  }
-  
-  // Return true if there's at least one match
-  return matchResponse.data ? matchResponse.data.length > 0 : false;
 }
