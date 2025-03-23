@@ -992,6 +992,13 @@ export type Database = {
           message: string
         }[]
       }
+      check_user_employer_match: {
+        Args: {
+          user_id: string
+          employer_id: string
+        }
+        Returns: boolean
+      }
       company_names_match: {
         Args: {
           name1: string
