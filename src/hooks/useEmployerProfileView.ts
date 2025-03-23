@@ -87,13 +87,18 @@ export const useEmployerProfileView = ({
           if (!previewMode) {
             const { data: { session } } = await supabase.auth.getSession();
             if (session) {
+              // Define explicit type for the match data
+              interface MatchRecord {
+                id: number;
+              }
+              
               const { data: matchData, error: matchError } = await supabase
                 .from('applications')
                 .select('id')
                 .eq('candidate_id', session.user.id)
                 .eq('status', 'matched')
                 .eq('employer_id', employerId)
-                .limit(1);
+                .limit(1) as { data: MatchRecord[] | null, error: any };
               
               if (matchError) {
                 console.error('Error checking match:', matchError);
