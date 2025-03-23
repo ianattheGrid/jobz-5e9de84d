@@ -17,11 +17,6 @@ interface UseEmployerProfileViewResult {
   hasMatch: boolean;
 }
 
-// Define a simple type for match checking results
-interface ApplicationMatch {
-  id: string;
-}
-
 export const useEmployerProfileView = ({ 
   employerId, 
   previewMode = false 
@@ -91,40 +86,25 @@ export const useEmployerProfileView = ({
           // Check if there's a match with this employer (if not in preview mode)
           if (!previewMode) {
             const { data: { session } } = await supabase.auth.getSession();
+            
             if (session) {
               try {
-                // Execute a direct SQL-like query and handle response explicitly
-                const { data, error } = await supabase.rpc(
-                  'check_match_exists',
-                  { 
-                    candidate_id: session.user.id,
-                    employer_id: employerId
-                  }
-                );
+                // Simplified approach: Just count matches
+                const { count, error: countError } = await supabase
+                  .from('applications')
+                  .select('*', { count: 'exact', head: true })
+                  .eq('applicant_id', session.user.id)
+                  .eq('status', 'matched')
+                  .eq('employer_id', employerId);
                 
-                // If RPC function doesn't exist, fallback to direct query with simplified handling
-                if (error && error.message.includes('does not exist')) {
-                  const { count, error: countError } = await supabase
-                    .from('applications')
-                    .select('*', { count: 'exact', head: true })
-                    .eq('candidate_id', session.user.id)
-                    .eq('status', 'matched')
-                    .eq('employer_id', employerId);
-                  
-                  if (countError) {
-                    console.error('Error checking match count:', countError);
-                  } else {
-                    setHasMatch(count !== null && count > 0);
-                  }
-                } else if (error) {
-                  console.error('Error checking match status:', error);
+                if (countError) {
+                  console.error('Error checking match count:', countError);
+                  setHasMatch(false);
                 } else {
-                  // The RPC call would return true/false directly
-                  setHasMatch(!!data);
+                  setHasMatch(count !== null && count > 0);
                 }
               } catch (error) {
                 console.error('Error checking match status:', error);
-                // Default to false on error
                 setHasMatch(false);
               }
             }
