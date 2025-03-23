@@ -18,22 +18,7 @@ export async function fetchEmployerProfile(employerId: string): Promise<Employer
       throw error;
     }
     
-    return data ? {
-      id: data.id,
-      company_name: data.company_name,
-      company_website: data.company_website,
-      company_logo_url: data.company_logo_url,
-      profile_picture_url: data.profile_picture_url,
-      full_name: data.full_name,
-      job_title: data.job_title,
-      company_size: data.company_size,
-      is_sme: data.is_sme,
-      company_description: data.company_description,
-      office_amenities: data.office_amenities,
-      nearby_amenities: data.nearby_amenities,
-      created_at: data.created_at,
-      updated_at: data.updated_at
-    } : null;
+    return data as EmployerProfile;
   } catch (err) {
     console.error("Error in fetchEmployerProfile:", err);
     return null;
@@ -55,12 +40,7 @@ export async function fetchGalleryImages(employerId: string): Promise<CompanyGal
       throw error;
     }
     
-    return data ? data.map(item => ({
-      id: item.id,
-      employer_id: item.employer_id,
-      image_url: item.image_url,
-      created_at: item.created_at
-    })) : [];
+    return data as CompanyGalleryImage[];
   } catch (err) {
     console.error("Error in fetchGalleryImages:", err);
     return [];
@@ -72,7 +52,13 @@ export async function fetchGalleryImages(employerId: string): Promise<CompanyGal
  */
 export async function checkEmployerMatch(employerId: string): Promise<boolean> {
   try {
-    const { data: sessionData } = await supabase.auth.getSession();
+    const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+    
+    if (sessionError) {
+      console.error("Session error:", sessionError);
+      return false;
+    }
+    
     const userId = sessionData?.session?.user?.id;
     
     if (!userId) {
@@ -88,10 +74,10 @@ export async function checkEmployerMatch(employerId: string): Promise<boolean> {
       
     if (error) {
       console.error("Error checking match status:", error);
-      throw error;
+      return false;
     }
     
-    return data && data.length > 0;
+    return Array.isArray(data) && data.length > 0;
   } catch (err) {
     console.error("Error in checkEmployerMatch:", err);
     return false;

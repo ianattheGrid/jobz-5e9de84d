@@ -25,10 +25,10 @@ export const useEmployerProfileView = ({
   previewMode = false
 }: UseEmployerProfileViewProps): UseEmployerProfileViewResult => {
   const { toast } = useToast();
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState<EmployerProfile | null>(null);
   const [galleryImages, setGalleryImages] = useState<CompanyGalleryImage[]>([]);
-  const [hasMatch, setHasMatch] = useState<boolean>(previewMode);
+  const [hasMatch, setHasMatch] = useState(previewMode);
 
   useEffect(() => {
     // Skip fetching data if no employerId is provided
