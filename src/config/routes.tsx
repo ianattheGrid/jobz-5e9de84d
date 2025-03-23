@@ -10,6 +10,7 @@ import CandidateDashboard from "@/pages/CandidateDashboard";
 import EmployerSignUp from "@/pages/EmployerSignUp";
 import EmployerSignIn from "@/pages/EmployerSignIn";
 import EmployerProfile from "@/pages/EmployerProfile";
+import PreviewEmployerProfile from "@/pages/PreviewEmployerProfile";
 import EmployerDashboard from "@/pages/EmployerDashboard";
 import EmployerInterviews from "@/pages/EmployerInterviews";
 import CreateVacancy from "@/pages/CreateVacancy";
@@ -90,6 +91,10 @@ export const routes = [
   {
     path: "/employer/profile",
     element: <EmployerProfile />
+  },
+  {
+    path: "/employer/profile/preview",
+    element: <PreviewEmployerProfile />
   },
   {
     path: "/employer/dashboard",

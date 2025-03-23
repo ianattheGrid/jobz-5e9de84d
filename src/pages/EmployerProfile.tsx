@@ -13,6 +13,7 @@ import { useEmployerProfile } from "@/hooks/useEmployerProfile";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { LayoutDashboard } from "lucide-react";
+import { PreviewButton } from "@/components/employer/PreviewButton";
 
 export default function EmployerProfile() {
   const { loading, profile, setProfile, email } = useEmployerProfile();
@@ -27,7 +28,8 @@ export default function EmployerProfile() {
 
   return (
     <div className="container mx-auto py-10 px-4">
-      <div className="flex justify-end mb-4">
+      <div className="flex justify-end mb-4 gap-2">
+        <PreviewButton />
         <Link to="/employer/dashboard">
           <Button 
             className="bg-[#FF69B4] hover:bg-[#FF50A8] text-white gap-2"

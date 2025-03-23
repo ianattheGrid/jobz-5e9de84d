@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2, ArrowLeft, Building2, Users, Globe, Mail, Phone, MapPin, Coffee, Landmark } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -14,12 +14,21 @@ import { CompanyCultureSection } from "@/components/employer/public-profile/Comp
 import { EmployerProfile, CompanyGalleryImage } from "@/types/employer";
 import { companySizeOptions } from "@/config/company-size";
 
-const ViewEmployerProfile = () => {
-  const { id } = useParams<{ id: string }>();
+interface ViewEmployerProfileProps {
+  previewMode?: boolean;
+  employerId?: string;
+}
+
+const ViewEmployerProfile = ({ previewMode = false, employerId: propEmployerId }: ViewEmployerProfileProps) => {
+  const { id: paramId } = useParams<{ id: string }>();
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState<EmployerProfile | null>(null);
   const [galleryImages, setGalleryImages] = useState<CompanyGalleryImage[]>([]);
+  const [hasMatch, setHasMatch] = useState(previewMode);
+  
+  const id = propEmployerId || paramId;
   
   useEffect(() => {
     const fetchEmployerProfile = async () => {
@@ -46,6 +55,22 @@ const ViewEmployerProfile = () => {
           if (galleryData) {
             setGalleryImages(galleryData);
           }
+          
+          // Check if there's a match with this employer (if not in preview mode)
+          if (!previewMode) {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (session) {
+              const { data: matchData } = await supabase
+                .from('applications')
+                .select('id')
+                .eq('candidate_id', session.user.id)
+                .eq('status', 'matched')
+                .eq('employer_id', id)
+                .limit(1);
+                
+              setHasMatch(matchData && matchData.length > 0);
+            }
+          }
         }
       } catch (error: any) {
         console.error('Error fetching employer profile:', error);
@@ -60,7 +85,7 @@ const ViewEmployerProfile = () => {
     };
     
     fetchEmployerProfile();
-  }, [id, toast]);
+  }, [id, toast, previewMode]);
   
   const getCompanySizeLabel = (size: number | null | undefined) => {
     if (!size) return "Unknown";
@@ -90,15 +115,45 @@ const ViewEmployerProfile = () => {
     );
   }
   
+  if (!hasMatch && !previewMode) {
+    return (
+      <div className="container mx-auto py-10 px-4">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold">Profile Restricted</h2>
+          <p className="mt-2 text-gray-600">
+            This employer's profile is only visible after you've matched with one of their job vacancies.
+          </p>
+          <Link to="/jobs">
+            <Button variant="outline" className="mt-4">Browse Jobs</Button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
+  
   return (
     <div className="container mx-auto py-10 px-4">
       <div className="flex justify-start mb-6">
-        <Link to="/jobs">
-          <Button variant="outline" className="flex items-center gap-2">
-            <ArrowLeft className="h-4 w-4" /> Back to Jobs
+        {previewMode ? (
+          <Button variant="outline" className="flex items-center gap-2" onClick={() => navigate("/employer/profile")}>
+            <ArrowLeft className="h-4 w-4" /> Back to Profile
           </Button>
-        </Link>
+        ) : (
+          <Link to="/jobs">
+            <Button variant="outline" className="flex items-center gap-2">
+              <ArrowLeft className="h-4 w-4" /> Back to Jobs
+            </Button>
+          </Link>
+        )}
       </div>
+      
+      {previewMode && (
+        <div className="bg-amber-50 border border-amber-200 rounded-md p-4 mb-6">
+          <p className="text-amber-800">
+            This is a preview of how your profile appears to candidates after they match with one of your vacancies.
+          </p>
+        </div>
+      )}
       
       <div className="bg-white rounded-lg shadow-lg overflow-hidden">
         {/* Header with company logo and basic info */}

@@ -22,6 +22,7 @@ import EmployerDashboard from './pages/EmployerDashboard';
 import CreateVacancy from './pages/CreateVacancy';
 import ManageJobs from './pages/ManageJobs';
 import EmployerProfile from './pages/EmployerProfile';
+import PreviewEmployerProfile from './pages/PreviewEmployerProfile';
 import EmployerInterviews from './pages/EmployerInterviews';
 
 // Virtual Recruiter routes
@@ -33,6 +34,7 @@ import VirtualRecruiterRecommendations from './pages/VirtualRecruiterRecommendat
 // Common routes
 import Jobs from './pages/Jobs';
 import ViewCandidateProfile from './pages/ViewCandidateProfile';
+import ViewEmployerProfile from './pages/ViewEmployerProfile';
 import CandidateSearch from './pages/CandidateSearch';
 
 // Protected route wrapper
@@ -65,6 +67,7 @@ function App() {
           <Route path="employer/create-vacancy" element={<ProtectedRoute userType="employer"><CreateVacancy /></ProtectedRoute>} />
           <Route path="employer/manage-jobs" element={<ProtectedRoute userType="employer"><ManageJobs /></ProtectedRoute>} />
           <Route path="employer/profile" element={<ProtectedRoute userType="employer"><EmployerProfile /></ProtectedRoute>} />
+          <Route path="employer/profile/preview" element={<ProtectedRoute userType="employer"><PreviewEmployerProfile /></ProtectedRoute>} />
           <Route path="employer/interviews" element={<ProtectedRoute userType="employer"><EmployerInterviews /></ProtectedRoute>} />
           <Route path="employer/candidate/:id" element={<ProtectedRoute userType="employer"><ViewCandidateProfile /></ProtectedRoute>} />
           <Route path="employer/candidates" element={<ProtectedRoute userType="employer"><CandidateSearch /></ProtectedRoute>} />
@@ -78,6 +81,7 @@ function App() {
           
           {/* Common routes */}
           <Route path="jobs" element={<Jobs />} />
+          <Route path="employer/:id" element={<ViewEmployerProfile />} />
           
           {/* Test Routes */}
           <Route path="dummy-profile" element={<DummyCandidateProfile />} />
