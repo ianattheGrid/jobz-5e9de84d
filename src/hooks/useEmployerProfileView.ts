@@ -87,15 +87,21 @@ export const useEmployerProfileView = ({
           if (!previewMode) {
             const { data: { session } } = await supabase.auth.getSession();
             if (session) {
-              const { data: matchData } = await supabase
+              const { data: matchData, error: matchError } = await supabase
                 .from('applications')
                 .select('id')
                 .eq('candidate_id', session.user.id)
                 .eq('status', 'matched')
                 .eq('employer_id', employerId)
                 .limit(1);
-                
-              setHasMatch(matchData && matchData.length > 0);
+              
+              if (matchError) {
+                console.error('Error checking match:', matchError);
+              } else {
+                // Explicitly check if matchData exists and has length
+                const hasMatchResult = matchData !== null && matchData.length > 0;
+                setHasMatch(hasMatchResult);
+              }
             }
           }
         }
