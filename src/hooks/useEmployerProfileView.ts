@@ -87,25 +87,23 @@ export const useEmployerProfileView = ({
           if (!previewMode) {
             const { data: { session } } = await supabase.auth.getSession();
             if (session) {
-              // Define explicit type for the match data
-              interface MatchRecord {
-                id: number;
-              }
-              
-              const { data: matchData, error: matchError } = await supabase
+              // Use a simpler approach to check for matches
+              let matchQuery = supabase
                 .from('applications')
                 .select('id')
                 .eq('candidate_id', session.user.id)
                 .eq('status', 'matched')
                 .eq('employer_id', employerId)
-                .limit(1) as { data: MatchRecord[] | null, error: any };
+                .limit(1);
+                
+              // Execute the query
+              const { data: matchData, error: matchError } = await matchQuery;
               
               if (matchError) {
                 console.error('Error checking match:', matchError);
               } else {
-                // Explicitly check if matchData exists and has length
-                const hasMatchResult = matchData !== null && matchData.length > 0;
-                setHasMatch(hasMatchResult);
+                // Simple check if there's a match
+                setHasMatch(Array.isArray(matchData) && matchData.length > 0);
               }
             }
           }
