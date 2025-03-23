@@ -41,6 +41,7 @@ export const useEmployerProfileView = ({
         
         if (error) throw error;
         if (data) {
+          // Explicitly cast the data to EmployerProfile type
           setProfile(data as EmployerProfile);
           
           // Fetch gallery images
@@ -51,6 +52,7 @@ export const useEmployerProfileView = ({
             
           if (galleryError) throw galleryError;
           if (galleryData) {
+            // Explicitly cast gallery data to CompanyGalleryImage[] type
             setGalleryImages(galleryData as CompanyGalleryImage[]);
           }
           
