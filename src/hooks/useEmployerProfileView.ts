@@ -37,28 +37,21 @@ export const useEmployerProfileView = ({
       return;
     }
 
-    const loadData = async () => {
+    const loadProfileData = async () => {
       try {
         setLoading(true);
         
-        // If in preview mode, we only need to fetch profile and gallery
-        if (previewMode) {
-          const profileData = await fetchEmployerProfile(employerId);
-          const imagesData = await fetchGalleryImages(employerId);
-          
-          setProfile(profileData);
-          setGalleryImages(imagesData);
-          setHasMatch(true); // Always true in preview mode
-        } else {
-          // For normal mode, fetch everything including match status
-          const [profileData, imagesData, matchStatus] = await Promise.all([
-            fetchEmployerProfile(employerId),
-            fetchGalleryImages(employerId),
-            checkEmployerMatch(employerId)
-          ]);
-          
-          setProfile(profileData);
-          setGalleryImages(imagesData);
+        // Fetch profile data
+        const profileData = await fetchEmployerProfile(employerId);
+        setProfile(profileData);
+        
+        // Fetch gallery images
+        const imagesData = await fetchGalleryImages(employerId);
+        setGalleryImages(imagesData);
+        
+        // Check match status if not in preview mode
+        if (!previewMode) {
+          const matchStatus = await checkEmployerMatch(employerId);
           setHasMatch(matchStatus);
         }
       } catch (error) {
@@ -73,7 +66,7 @@ export const useEmployerProfileView = ({
       }
     };
 
-    loadData();
+    loadProfileData();
   }, [employerId, previewMode, toast]);
 
   return { loading, profile, galleryImages, hasMatch };
