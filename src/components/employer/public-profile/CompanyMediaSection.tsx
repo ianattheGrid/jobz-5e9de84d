@@ -1,10 +1,9 @@
-
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2, Image, Film } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { CompanyGalleryImage } from "@/types/employer";
+import type { CompanyGalleryImage } from "@/types/employer";
 
 interface CompanyMediaSectionProps {
   employerId: string;

@@ -12,6 +12,8 @@ export interface EmployerProfile {
   company_description?: string | null;
   office_amenities?: string | null;
   nearby_amenities?: string | null;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface CompanyGalleryImage {

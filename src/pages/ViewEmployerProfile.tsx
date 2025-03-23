@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -11,8 +10,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { EmployerJobsList } from "@/components/employer/public-profile/EmployerJobsList";
 import { CompanyMediaSection } from "@/components/employer/public-profile/CompanyMediaSection";
 import { CompanyCultureSection } from "@/components/employer/public-profile/CompanyCultureSection";
-import { EmployerProfile, CompanyGalleryImage } from "@/types/employer";
 import { companySizeOptions } from "@/config/company-size";
+import type { EmployerProfile, CompanyGalleryImage } from "@/types/employer";
 
 interface ViewEmployerProfileProps {
   previewMode?: boolean;
@@ -43,7 +42,7 @@ const ViewEmployerProfile = ({ previewMode = false, employerId: propEmployerId }
         
         if (error) throw error;
         if (data) {
-          setProfile(data);
+          setProfile(data as EmployerProfile);
           
           // Fetch gallery images
           const { data: galleryData, error: galleryError } = await supabase
@@ -53,7 +52,7 @@ const ViewEmployerProfile = ({ previewMode = false, employerId: propEmployerId }
             
           if (galleryError) throw galleryError;
           if (galleryData) {
-            setGalleryImages(galleryData);
+            setGalleryImages(galleryData as CompanyGalleryImage[]);
           }
           
           // Check if there's a match with this employer (if not in preview mode)
@@ -156,7 +155,6 @@ const ViewEmployerProfile = ({ previewMode = false, employerId: propEmployerId }
       )}
       
       <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-        {/* Header with company logo and basic info */}
         <div className="relative">
           <div className="h-40 bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500"></div>
           <div className="absolute -bottom-16 left-8 ring-4 ring-white rounded-lg overflow-hidden">
@@ -174,7 +172,6 @@ const ViewEmployerProfile = ({ previewMode = false, employerId: propEmployerId }
           </div>
         </div>
         
-        {/* Company details */}
         <div className="pt-20 px-8 pb-8">
           <h1 className="text-3xl font-bold text-gray-900">{profile.company_name}</h1>
           
@@ -207,7 +204,6 @@ const ViewEmployerProfile = ({ previewMode = false, employerId: propEmployerId }
             </div>
           </div>
           
-          {/* Tabs for different sections */}
           <div className="mt-8">
             <Tabs defaultValue="about" className="w-full">
               <TabsList className="grid w-full grid-cols-3">
