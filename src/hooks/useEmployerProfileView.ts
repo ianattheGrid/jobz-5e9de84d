@@ -29,11 +29,14 @@ export const useEmployerProfileView = ({
   const [hasMatch, setHasMatch] = useState(previewMode);
   
   useEffect(() => {
-    async function fetchEmployerProfile() {
+    if (!employerId) {
+      setLoading(false);
+      return;
+    }
+
+    // Declare all functions outside the main fetch flow to avoid deep type instantiation
+    const fetchProfile = async () => {
       try {
-        if (!employerId) return;
-        
-        // Fetch employer profile
         const { data, error } = await supabase
           .from('employer_profiles')
           .select('*')
@@ -41,61 +44,110 @@ export const useEmployerProfileView = ({
           .single();
         
         if (error) throw error;
+        return data;
+      } catch (error) {
+        console.error('Error fetching employer profile:', error);
+        return null;
+      }
+    };
+
+    const fetchGalleryImages = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('company_gallery')
+          .select('*')
+          .eq('employer_id', employerId);
         
-        if (data) {
-          // Cast data to EmployerProfile type before setting state
-          const typedProfile: EmployerProfile = {
-            id: data.id,
-            company_name: data.company_name,
-            company_website: data.company_website,
-            company_logo_url: data.company_logo_url,
-            profile_picture_url: data.profile_picture_url,
-            full_name: data.full_name,
-            job_title: data.job_title,
-            company_size: data.company_size,
-            is_sme: data.is_sme,
-            company_description: data.company_description,
-            office_amenities: data.office_amenities,
-            nearby_amenities: data.nearby_amenities,
-            created_at: data.created_at,
-            updated_at: data.updated_at
-          };
+        if (error) throw error;
+        return data || [];
+      } catch (error) {
+        console.error('Error fetching gallery images:', error);
+        return [];
+      }
+    };
+
+    const checkMatchStatus = async (userId: string) => {
+      try {
+        // Simple query with no chaining to avoid type inference issues
+        const { data, error } = await supabase
+          .from('applications')
+          .select('id')
+          .eq('applicant_id', userId)
+          .eq('employer_id', employerId)
+          .eq('status', 'matched');
+        
+        if (error) {
+          console.error('Error checking match status:', error);
+          return false;
+        }
+        
+        // Simple existence check
+        return Boolean(data && data.length > 0);
+      } catch (error) {
+        console.error('Error in match status check:', error);
+        return false;
+      }
+    };
+
+    // Main function to coordinate all data fetching
+    const loadAllData = async () => {
+      try {
+        setLoading(true);
+        
+        // Fetch profile
+        const profileData = await fetchProfile();
+        
+        if (!profileData) {
+          setLoading(false);
+          return;
+        }
+        
+        // Create typed profile object
+        const typedProfile: EmployerProfile = {
+          id: profileData.id,
+          company_name: profileData.company_name,
+          company_website: profileData.company_website,
+          company_logo_url: profileData.company_logo_url,
+          profile_picture_url: profileData.profile_picture_url,
+          full_name: profileData.full_name,
+          job_title: profileData.job_title,
+          company_size: profileData.company_size,
+          is_sme: profileData.is_sme,
+          company_description: profileData.company_description,
+          office_amenities: profileData.office_amenities,
+          nearby_amenities: profileData.nearby_amenities,
+          created_at: profileData.created_at,
+          updated_at: profileData.updated_at
+        };
+        
+        setProfile(typedProfile);
+        
+        // Fetch gallery images
+        const galleryData = await fetchGalleryImages();
+        
+        if (galleryData.length > 0) {
+          const typedGalleryImages: CompanyGalleryImage[] = galleryData.map(item => ({
+            id: item.id,
+            employer_id: item.employer_id,
+            image_url: item.image_url,
+            created_at: item.created_at
+          }));
           
-          setProfile(typedProfile);
+          setGalleryImages(typedGalleryImages);
+        }
+        
+        // Check for match if not in preview mode
+        if (!previewMode) {
+          const { data } = await supabase.auth.getSession();
+          const session = data.session;
           
-          // Fetch gallery images
-          const galleryResponse = await supabase
-            .from('company_gallery')
-            .select('*')
-            .eq('employer_id', employerId);
-            
-          if (galleryResponse.error) throw galleryResponse.error;
-          
-          if (galleryResponse.data) {
-            // Convert each item to CompanyGalleryImage type
-            const typedGalleryImages: CompanyGalleryImage[] = galleryResponse.data.map(item => ({
-              id: item.id,
-              employer_id: item.employer_id,
-              image_url: item.image_url,
-              created_at: item.created_at
-            }));
-            
-            setGalleryImages(typedGalleryImages);
-          }
-          
-          // Check if there's a match with this employer (if not in preview mode)
-          if (!previewMode) {
-            const sessionResponse = await supabase.auth.getSession();
-            const session = sessionResponse.data.session;
-            
-            if (session) {
-              // Manual query approach to avoid complex type inference
-              await checkMatchStatus(session.user.id, employerId);
-            }
+          if (session) {
+            const hasMatch = await checkMatchStatus(session.user.id);
+            setHasMatch(hasMatch);
           }
         }
-      } catch (error: any) {
-        console.error('Error fetching employer profile:', error);
+      } catch (error) {
+        console.error('Error loading data:', error);
         toast({
           variant: "destructive",
           title: "Error",
@@ -104,35 +156,10 @@ export const useEmployerProfileView = ({
       } finally {
         setLoading(false);
       }
-    }
-    
-    // Helper function that uses a different approach to check for matches
-    async function checkMatchStatus(userId: string, empId: string) {
-      try {
-        // Using raw SQL as string literal to avoid TypeScript complexity
-        const matchResponse = await supabase
-          .from('applications')
-          .select()
-          .eq('applicant_id', userId)
-          .eq('employer_id', empId)
-          .eq('status', 'matched')
-          .limit(1);
-          
-        if (matchResponse.error) {
-          console.error('Error checking match status:', matchResponse.error);
-          setHasMatch(false);
-          return;
-        }
-        
-        const matchData = matchResponse.data;
-        setHasMatch(matchData && matchData.length > 0);
-      } catch (err) {
-        console.error('Error in match status check:', err);
-        setHasMatch(false);
-      }
-    }
-    
-    fetchEmployerProfile();
+    };
+
+    // Start the data loading process
+    loadAllData();
   }, [employerId, toast, previewMode, navigate]);
   
   return { loading, profile, galleryImages, hasMatch };
