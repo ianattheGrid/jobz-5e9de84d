@@ -51,8 +51,8 @@ export const EmployerProfileHeader = ({ profile }: EmployerProfileHeaderProps) =
           )}
           
           {profile.company_size && (
-            <div className="flex items-center gap-2 text-gray-600">
-              <Users className="h-4 w-4" />
+            <div className="flex items-center gap-2 text-gray-800">
+              <Users className="h-4 w-4 text-gray-600" />
               {getCompanySizeLabel(profile.company_size)}
             </div>
           )}
