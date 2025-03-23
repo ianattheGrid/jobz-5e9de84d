@@ -33,6 +33,7 @@ export const useEmployerProfileView = ({
       try {
         if (!employerId) return;
         
+        // Fetch employer profile
         const { data, error } = await supabase
           .from('employer_profiles')
           .select('*')
@@ -40,9 +41,27 @@ export const useEmployerProfileView = ({
           .single();
         
         if (error) throw error;
+        
         if (data) {
-          // Explicitly cast the data to EmployerProfile type
-          setProfile(data as EmployerProfile);
+          // Cast data to EmployerProfile type before setting state
+          const typedProfile: EmployerProfile = {
+            id: data.id,
+            company_name: data.company_name,
+            company_website: data.company_website,
+            company_logo_url: data.company_logo_url,
+            profile_picture_url: data.profile_picture_url,
+            full_name: data.full_name,
+            job_title: data.job_title,
+            company_size: data.company_size,
+            is_sme: data.is_sme,
+            company_description: data.company_description,
+            office_amenities: data.office_amenities,
+            nearby_amenities: data.nearby_amenities,
+            created_at: data.created_at,
+            updated_at: data.updated_at
+          };
+          
+          setProfile(typedProfile);
           
           // Fetch gallery images
           const { data: galleryData, error: galleryError } = await supabase
@@ -51,9 +70,17 @@ export const useEmployerProfileView = ({
             .eq('employer_id', employerId);
             
           if (galleryError) throw galleryError;
+          
           if (galleryData) {
-            // Explicitly cast gallery data to CompanyGalleryImage[] type
-            setGalleryImages(galleryData as CompanyGalleryImage[]);
+            // Convert each item in galleryData to CompanyGalleryImage type
+            const typedGalleryImages: CompanyGalleryImage[] = galleryData.map(item => ({
+              id: item.id,
+              employer_id: item.employer_id,
+              image_url: item.image_url,
+              created_at: item.created_at
+            }));
+            
+            setGalleryImages(typedGalleryImages);
           }
           
           // Check if there's a match with this employer (if not in preview mode)
@@ -85,7 +112,7 @@ export const useEmployerProfileView = ({
     };
     
     fetchEmployerProfile();
-  }, [employerId, toast, previewMode]);
+  }, [employerId, toast, previewMode, navigate]);
   
   return { loading, profile, galleryImages, hasMatch };
 };
