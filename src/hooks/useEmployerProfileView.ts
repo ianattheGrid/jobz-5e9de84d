@@ -1,6 +1,5 @@
 
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import type { EmployerProfile, CompanyGalleryImage } from "@/types/employer";
@@ -22,74 +21,63 @@ export const useEmployerProfileView = ({
   previewMode = false
 }: UseEmployerProfileViewProps): UseEmployerProfileViewResult => {
   const { toast } = useToast();
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean>(true);
   const [profile, setProfile] = useState<EmployerProfile | null>(null);
   const [galleryImages, setGalleryImages] = useState<CompanyGalleryImage[]>([]);
-  const [hasMatch, setHasMatch] = useState(previewMode);
+  const [hasMatch, setHasMatch] = useState<boolean>(previewMode);
 
   useEffect(() => {
-    // If no employerId is provided, return early
-    if (!employerId) {
-      setLoading(false);
-      return;
-    }
+    const fetchData = async () => {
+      // If no employerId is provided, return early
+      if (!employerId) {
+        setLoading(false);
+        return;
+      }
 
-    // Main function to load all data
-    const loadData = async () => {
       try {
         setLoading(true);
         
         // Fetch employer profile
-        const { data: profileData, error: profileError } = await supabase
+        const profileResponse = await supabase
           .from('employer_profiles')
           .select('*')
           .eq('id', employerId)
           .single();
           
-        if (profileError) {
-          console.error("Error fetching employer profile:", profileError);
-          toast({
-            variant: "destructive",
-            title: "Error",
-            description: "Failed to load employer profile",
-          });
-          setLoading(false);
-          return;
+        if (profileResponse.error) {
+          throw new Error(profileResponse.error.message);
         }
+
+        const profileData = profileResponse.data;
         
         // Fetch gallery images
-        const { data: galleryData, error: galleryError } = await supabase
+        const galleryResponse = await supabase
           .from('company_gallery')
           .select('*')
           .eq('employer_id', employerId);
           
-        if (galleryError) {
-          console.error("Error fetching gallery images:", galleryError);
-        }
-        
         // Check for match if not in preview mode
         let matchStatus = previewMode;
         
         if (!previewMode) {
-          const { data: sessionData } = await supabase.auth.getSession();
-          const userId = sessionData?.session?.user?.id;
+          const sessionResponse = await supabase.auth.getSession();
+          const userId = sessionResponse?.data?.session?.user?.id;
           
           if (userId) {
-            const { data: matchData, error: matchError } = await supabase
+            const matchResponse = await supabase
               .from('applications')
               .select('id')
               .eq('applicant_id', userId)
               .eq('employer_id', employerId)
               .eq('status', 'matched');
               
-            if (!matchError && matchData && matchData.length > 0) {
+            if (!matchResponse.error && matchResponse.data && matchResponse.data.length > 0) {
               matchStatus = true;
             }
           }
         }
         
-        // Format profile data if it exists
+        // Format and set profile data
         if (profileData) {
           setProfile({
             id: profileData.id,
@@ -109,20 +97,21 @@ export const useEmployerProfileView = ({
           });
         }
         
-        // Format gallery images if they exist
-        if (galleryData) {
-          const formattedGalleryImages = galleryData.map(item => ({
-            id: item.id,
-            employer_id: item.employer_id,
-            image_url: item.image_url,
-            created_at: item.created_at
-          }));
-          setGalleryImages(formattedGalleryImages);
+        // Format and set gallery images
+        if (galleryResponse.data) {
+          setGalleryImages(
+            galleryResponse.data.map(item => ({
+              id: item.id,
+              employer_id: item.employer_id,
+              image_url: item.image_url,
+              created_at: item.created_at
+            }))
+          );
         }
         
         setHasMatch(matchStatus);
-      } catch (err) {
-        console.error("Error in loadData:", err);
+      } catch (error) {
+        console.error("Error fetching employer profile data:", error);
         toast({
           variant: "destructive",
           title: "Error",
@@ -133,9 +122,8 @@ export const useEmployerProfileView = ({
       }
     };
 
-    // Load all data
-    loadData();
-  }, [employerId, toast, navigate, previewMode]);
+    fetchData();
+  }, [employerId, previewMode, toast]);
 
   return { loading, profile, galleryImages, hasMatch };
 };
