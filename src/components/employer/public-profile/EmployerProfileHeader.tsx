@@ -38,14 +38,14 @@ export const EmployerProfileHeader = ({ profile }: EmployerProfileHeaderProps) =
         <h1 className="text-3xl font-bold text-gray-900">{profile.company_name}</h1>
         
         {profile.company_size && (
-          <div className="mt-1 mb-4">
+          <div className="mt-1">
             <span className="text-black font-medium">
               {getCompanySizeLabel(profile.company_size)}
             </span>
           </div>
         )}
         
-        <div className="mt-4 flex flex-wrap gap-y-2 gap-x-6">
+        <div className="mt-6 flex flex-wrap gap-y-2 gap-x-6">
           {profile.company_website && (
             <a 
               href={profile.company_website} 
