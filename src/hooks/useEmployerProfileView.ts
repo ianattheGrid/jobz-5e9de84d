@@ -88,35 +88,9 @@ export const useEmployerProfileView = ({
             const { data: { session } } = await supabase.auth.getSession();
             
             if (session) {
-              try {
-                // Simple SQL-like query to avoid TypeScript type inference issues
-                const matchQuery = supabase
-                  .from('applications')
-                  .select('id')
-                  .eq('applicant_id', session.user.id)
-                  .eq('status', 'matched')
-                  .eq('employer_id', employerId)
-                  .limit(1);
-                
-                // Execute the query and handle the result manually
-                matchQuery
-                  .then(response => {
-                    if (response.error) {
-                      console.error('Error checking match status:', response.error);
-                      setHasMatch(false);
-                    } else {
-                      // Simple check if we have any results
-                      setHasMatch(response.data && response.data.length > 0);
-                    }
-                  })
-                  .catch(error => {
-                    console.error('Error in match query:', error);
-                    setHasMatch(false);
-                  });
-              } catch (error) {
-                console.error('Error checking match status:', error);
-                setHasMatch(false);
-              }
+              // Completely restructured approach to check for matches
+              // Using a separate function to handle the match check
+              checkForMatch(session.user.id, employerId);
             }
           }
         }
@@ -129,6 +103,31 @@ export const useEmployerProfileView = ({
         });
       } finally {
         setLoading(false);
+      }
+    };
+    
+    // Helper function to check for match without complex type inference
+    const checkForMatch = async (userId: string, empId: string) => {
+      try {
+        const { data, error } = await supabase
+          .from('applications')
+          .select('id')
+          .eq('applicant_id', userId)
+          .eq('status', 'matched')
+          .eq('employer_id', empId)
+          .limit(1);
+        
+        if (error) {
+          console.error('Error checking match status:', error);
+          setHasMatch(false);
+          return;
+        }
+        
+        // Simple array length check
+        setHasMatch(Array.isArray(data) && data.length > 0);
+      } catch (error) {
+        console.error('Error in match check:', error);
+        setHasMatch(false);
       }
     };
     
