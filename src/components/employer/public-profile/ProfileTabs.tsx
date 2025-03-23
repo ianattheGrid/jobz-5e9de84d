@@ -20,15 +20,15 @@ export const ProfileTabs = ({ profile, galleryImages }: ProfileTabsProps) => {
           <TabsTrigger value="jobs">Current Openings</TabsTrigger>
         </TabsList>
         
-        <TabsContent value="about" className="mt-6">
+        <TabsContent value="about" className="mt-6 bg-white p-6 rounded-md border border-gray-100 shadow-sm">
           <AboutTabContent profile={profile} />
         </TabsContent>
         
-        <TabsContent value="media" className="mt-6">
+        <TabsContent value="media" className="mt-6 bg-white p-6 rounded-md border border-gray-100 shadow-sm">
           <CompanyMediaSection employerId={profile.id} galleryImages={galleryImages} />
         </TabsContent>
         
-        <TabsContent value="jobs" className="mt-6">
+        <TabsContent value="jobs" className="mt-6 bg-white p-6 rounded-md border border-gray-100 shadow-sm">
           <EmployerJobsList employerId={profile.id} />
         </TabsContent>
       </Tabs>

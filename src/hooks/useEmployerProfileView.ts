@@ -17,6 +17,11 @@ interface UseEmployerProfileViewResult {
   hasMatch: boolean;
 }
 
+// Define a simple type for match checking results
+interface ApplicationMatch {
+  id: string;
+}
+
 export const useEmployerProfileView = ({ 
   employerId, 
   previewMode = false 
@@ -88,8 +93,8 @@ export const useEmployerProfileView = ({
             const { data: { session } } = await supabase.auth.getSession();
             if (session) {
               try {
-                // Simply fetch the raw data without complex type annotations
-                const { data: matchResult, error: matchError } = await supabase
+                // Simple query without complex type inference
+                const result = await supabase
                   .from('applications')
                   .select('id')
                   .eq('candidate_id', session.user.id)
@@ -97,14 +102,10 @@ export const useEmployerProfileView = ({
                   .eq('employer_id', employerId)
                   .limit(1);
                 
-                if (matchError) {
-                  console.error('Error checking match:', matchError);
-                } else {
-                  // Check if we have any matches
-                  setHasMatch(matchResult !== null && matchResult.length > 0);
-                }
-              } catch (matchCheckError) {
-                console.error('Error in match checking process:', matchCheckError);
+                // Check if there are any matches in a simple way
+                setHasMatch(result.data !== null && result.data.length > 0);
+              } catch (error) {
+                console.error('Error checking match status:', error);
               }
             }
           }
