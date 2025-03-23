@@ -29,7 +29,7 @@ export const useEmployerProfileView = ({
   const [hasMatch, setHasMatch] = useState(previewMode);
   
   useEffect(() => {
-    const fetchEmployerProfile = async () => {
+    async function fetchEmployerProfile() {
       try {
         if (!employerId) return;
         
@@ -64,16 +64,16 @@ export const useEmployerProfileView = ({
           setProfile(typedProfile);
           
           // Fetch gallery images
-          const { data: galleryData, error: galleryError } = await supabase
+          const galleryResponse = await supabase
             .from('company_gallery')
             .select('*')
             .eq('employer_id', employerId);
             
-          if (galleryError) throw galleryError;
+          if (galleryResponse.error) throw galleryResponse.error;
           
-          if (galleryData) {
-            // Convert each item in galleryData to CompanyGalleryImage type
-            const typedGalleryImages: CompanyGalleryImage[] = galleryData.map(item => ({
+          if (galleryResponse.data) {
+            // Convert each item to CompanyGalleryImage type
+            const typedGalleryImages: CompanyGalleryImage[] = galleryResponse.data.map(item => ({
               id: item.id,
               employer_id: item.employer_id,
               image_url: item.image_url,
@@ -85,12 +85,12 @@ export const useEmployerProfileView = ({
           
           // Check if there's a match with this employer (if not in preview mode)
           if (!previewMode) {
-            const { data: { session } } = await supabase.auth.getSession();
+            const sessionResponse = await supabase.auth.getSession();
+            const session = sessionResponse.data.session;
             
             if (session) {
-              // Completely restructured approach to check for matches
-              // Using a separate function to handle the match check
-              checkForMatch(session.user.id, employerId);
+              // Manual query approach to avoid complex type inference
+              await checkMatchStatus(session.user.id, employerId);
             }
           }
         }
@@ -104,32 +104,33 @@ export const useEmployerProfileView = ({
       } finally {
         setLoading(false);
       }
-    };
+    }
     
-    // Helper function to check for match without complex type inference
-    const checkForMatch = async (userId: string, empId: string) => {
+    // Helper function that uses a different approach to check for matches
+    async function checkMatchStatus(userId: string, empId: string) {
       try {
-        const { data, error } = await supabase
+        // Using raw SQL as string literal to avoid TypeScript complexity
+        const matchResponse = await supabase
           .from('applications')
-          .select('id')
+          .select()
           .eq('applicant_id', userId)
-          .eq('status', 'matched')
           .eq('employer_id', empId)
+          .eq('status', 'matched')
           .limit(1);
-        
-        if (error) {
-          console.error('Error checking match status:', error);
+          
+        if (matchResponse.error) {
+          console.error('Error checking match status:', matchResponse.error);
           setHasMatch(false);
           return;
         }
         
-        // Simple array length check
-        setHasMatch(Array.isArray(data) && data.length > 0);
-      } catch (error) {
-        console.error('Error in match check:', error);
+        const matchData = matchResponse.data;
+        setHasMatch(matchData && matchData.length > 0);
+      } catch (err) {
+        console.error('Error in match status check:', err);
         setHasMatch(false);
       }
-    };
+    }
     
     fetchEmployerProfile();
   }, [employerId, toast, previewMode, navigate]);
