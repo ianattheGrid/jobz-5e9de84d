@@ -304,6 +304,35 @@ export type Database = {
           },
         ]
       }
+      company_gallery: {
+        Row: {
+          created_at: string | null
+          employer_id: string
+          id: string
+          image_url: string
+        }
+        Insert: {
+          created_at?: string | null
+          employer_id: string
+          id?: string
+          image_url: string
+        }
+        Update: {
+          created_at?: string | null
+          employer_id?: string
+          id?: string
+          image_url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "company_gallery_employer_id_fkey"
+            columns: ["employer_id"]
+            isOneToOne: false
+            referencedRelation: "employer_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       employer_names: {
         Row: {
           created_at: string
@@ -330,6 +359,7 @@ export type Database = {
       }
       employer_profiles: {
         Row: {
+          company_description: string | null
           company_logo_url: string | null
           company_name: string
           company_size: number | null
@@ -340,10 +370,13 @@ export type Database = {
           is_sme: boolean | null
           job_title: string
           linkedin_url: string | null
+          nearby_amenities: string | null
+          office_amenities: string | null
           profile_picture_url: string | null
           updated_at: string
         }
         Insert: {
+          company_description?: string | null
           company_logo_url?: string | null
           company_name: string
           company_size?: number | null
@@ -354,10 +387,13 @@ export type Database = {
           is_sme?: boolean | null
           job_title: string
           linkedin_url?: string | null
+          nearby_amenities?: string | null
+          office_amenities?: string | null
           profile_picture_url?: string | null
           updated_at?: string
         }
         Update: {
+          company_description?: string | null
           company_logo_url?: string | null
           company_name?: string
           company_size?: number | null
@@ -368,6 +404,8 @@ export type Database = {
           is_sme?: boolean | null
           job_title?: string
           linkedin_url?: string | null
+          nearby_amenities?: string | null
+          office_amenities?: string | null
           profile_picture_url?: string | null
           updated_at?: string
         }

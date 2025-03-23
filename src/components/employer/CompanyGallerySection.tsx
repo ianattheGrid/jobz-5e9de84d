@@ -5,19 +5,14 @@ import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { X, Upload, Image as ImageIcon } from "lucide-react";
+import { CompanyGalleryImage } from "@/types/employer";
 
 interface CompanyGallerySectionProps {
   employerId: string;
 }
 
-interface GalleryImage {
-  id: string;
-  url: string;
-  created_at: string;
-}
-
 export function CompanyGallerySection({ employerId }: CompanyGallerySectionProps) {
-  const [images, setImages] = useState<GalleryImage[]>([]);
+  const [images, setImages] = useState<CompanyGalleryImage[]>([]);
   const [uploading, setUploading] = useState(false);
   const { toast } = useToast();
   
@@ -151,7 +146,7 @@ export function CompanyGallerySection({ employerId }: CompanyGallerySectionProps
           <Card key={image.id} className="overflow-hidden relative group">
             <div className="aspect-ratio-16/9 w-full h-36 overflow-hidden">
               <img 
-                src={image.url} 
+                src={image.image_url} 
                 alt="Company gallery" 
                 className="w-full h-full object-cover"
               />

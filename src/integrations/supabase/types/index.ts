@@ -1,8 +1,10 @@
+
 import { Json } from "./common";
 import { Job } from "./jobs";
 import { CandidateProfile, EmployerProfile, RecruiterProfile, VirtualRecruiterProfile } from "./profiles";
 import { Application, Interview } from "./applications";
 import { RecruiterMessage, RecruiterNotification, VRCandidateMessage } from "./messages";
+import { CompanyGalleryImage } from "@/types/employer";
 
 export interface Database {
   public: {
@@ -21,6 +23,11 @@ export interface Database {
         Row: EmployerProfile;
         Insert: Partial<EmployerProfile>;
         Update: Partial<EmployerProfile>;
+      };
+      company_gallery: {
+        Row: CompanyGalleryImage;
+        Insert: Partial<CompanyGalleryImage>;
+        Update: Partial<CompanyGalleryImage>;
       };
       interviews: {
         Row: Interview;

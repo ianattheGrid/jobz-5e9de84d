@@ -19,7 +19,7 @@ const ViewEmployerProfile = () => {
   const { toast } = useToast();
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState<EmployerProfile | null>(null);
-  const [galleryImages, setGalleryImages] = useState<any[]>([]);
+  const [galleryImages, setGalleryImages] = useState<CompanyGalleryImage[]>([]);
   
   useEffect(() => {
     const fetchEmployerProfile = async () => {
