@@ -87,23 +87,24 @@ export const useEmployerProfileView = ({
           if (!previewMode) {
             const { data: { session } } = await supabase.auth.getSession();
             if (session) {
-              // Use a simpler approach to check for matches
-              let matchQuery = supabase
-                .from('applications')
-                .select('id')
-                .eq('candidate_id', session.user.id)
-                .eq('status', 'matched')
-                .eq('employer_id', employerId)
-                .limit(1);
+              try {
+                // Simply fetch the raw data without complex type annotations
+                const { data: matchResult, error: matchError } = await supabase
+                  .from('applications')
+                  .select('id')
+                  .eq('candidate_id', session.user.id)
+                  .eq('status', 'matched')
+                  .eq('employer_id', employerId)
+                  .limit(1);
                 
-              // Execute the query
-              const { data: matchData, error: matchError } = await matchQuery;
-              
-              if (matchError) {
-                console.error('Error checking match:', matchError);
-              } else {
-                // Simple check if there's a match
-                setHasMatch(Array.isArray(matchData) && matchData.length > 0);
+                if (matchError) {
+                  console.error('Error checking match:', matchError);
+                } else {
+                  // Check if we have any matches
+                  setHasMatch(matchResult !== null && matchResult.length > 0);
+                }
+              } catch (matchCheckError) {
+                console.error('Error in match checking process:', matchCheckError);
               }
             }
           }
