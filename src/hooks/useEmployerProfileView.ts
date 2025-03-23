@@ -93,17 +93,20 @@ export const useEmployerProfileView = ({
             const { data: { session } } = await supabase.auth.getSession();
             if (session) {
               try {
-                // Simple query without complex type inference
-                const result = await supabase
+                // Use a simple SQL query approach instead of the complex builder
+                const { data: matchResults, error: matchError } = await supabase
                   .from('applications')
                   .select('id')
                   .eq('candidate_id', session.user.id)
                   .eq('status', 'matched')
-                  .eq('employer_id', employerId)
-                  .limit(1);
+                  .eq('employer_id', employerId);
                 
-                // Check if there are any matches in a simple way
-                setHasMatch(result.data !== null && result.data.length > 0);
+                if (matchError) {
+                  console.error('Error checking match status:', matchError);
+                } else {
+                  // Simple check if the array has any items
+                  setHasMatch(Array.isArray(matchResults) && matchResults.length > 0);
+                }
               } catch (error) {
                 console.error('Error checking match status:', error);
               }
