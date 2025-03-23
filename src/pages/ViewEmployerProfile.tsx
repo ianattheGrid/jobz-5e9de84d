@@ -11,7 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { EmployerJobsList } from "@/components/employer/public-profile/EmployerJobsList";
 import { CompanyMediaSection } from "@/components/employer/public-profile/CompanyMediaSection";
 import { CompanyCultureSection } from "@/components/employer/public-profile/CompanyCultureSection";
-import { EmployerProfile } from "@/types/employer";
+import { EmployerProfile, CompanyGalleryImage } from "@/types/employer";
 import { companySizeOptions } from "@/config/company-size";
 
 const ViewEmployerProfile = () => {
