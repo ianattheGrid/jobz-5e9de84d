@@ -25,8 +25,8 @@ const ViewEmployerProfile = ({ previewMode = false, employerId: propEmployerId }
   
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
-        <Loader2 className="h-8 w-8 animate-spin" />
+      <div className="flex justify-center items-center min-h-screen bg-white">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
       </div>
     );
   }
@@ -40,26 +40,28 @@ const ViewEmployerProfile = ({ previewMode = false, employerId: propEmployerId }
   }
   
   return (
-    <div className="container mx-auto py-10 px-4">
-      <div className="flex justify-start mb-6">
-        {previewMode ? (
-          <Button variant="outline" className="flex items-center gap-2" onClick={() => navigate("/employer/profile")}>
-            <ArrowLeft className="h-4 w-4" /> Back to Profile
-          </Button>
-        ) : (
-          <Link to="/jobs">
-            <Button variant="outline" className="flex items-center gap-2">
-              <ArrowLeft className="h-4 w-4" /> Back to Jobs
+    <div className="bg-white min-h-screen">
+      <div className="container mx-auto py-10 px-4">
+        <div className="flex justify-start mb-6">
+          {previewMode ? (
+            <Button variant="outline" className="flex items-center gap-2 bg-white text-gray-700" onClick={() => navigate("/employer/profile")}>
+              <ArrowLeft className="h-4 w-4" /> Back to Profile
             </Button>
-          </Link>
-        )}
-      </div>
-      
-      <PreviewBanner isVisible={previewMode} />
-      
-      <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-        <EmployerProfileHeader profile={profile} />
-        <ProfileTabs profile={profile} galleryImages={galleryImages} />
+          ) : (
+            <Link to="/jobs">
+              <Button variant="outline" className="flex items-center gap-2 bg-white text-gray-700">
+                <ArrowLeft className="h-4 w-4" /> Back to Jobs
+              </Button>
+            </Link>
+          )}
+        </div>
+        
+        <PreviewBanner isVisible={previewMode} />
+        
+        <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+          <EmployerProfileHeader profile={profile} />
+          <ProfileTabs profile={profile} galleryImages={galleryImages} />
+        </div>
       </div>
     </div>
   );

@@ -10,9 +10,9 @@ interface AboutTabContentProps {
 export const AboutTabContent = ({ profile }: AboutTabContentProps) => {
   return (
     <div className="space-y-6">
-      <Card>
+      <Card className="bg-white">
         <CardContent className="pt-6">
-          <h3 className="text-xl font-semibold mb-4">About {profile.company_name}</h3>
+          <h3 className="text-xl font-semibold mb-4 text-gray-900">About {profile.company_name}</h3>
           
           <div className="prose max-w-none">
             <p className="text-gray-700">
@@ -23,13 +23,13 @@ export const AboutTabContent = ({ profile }: AboutTabContentProps) => {
       </Card>
       
       {(profile.office_amenities || profile.nearby_amenities) && (
-        <Card>
+        <Card className="bg-white">
           <CardContent className="pt-6">
-            <h3 className="text-xl font-semibold mb-4">Workplace</h3>
+            <h3 className="text-xl font-semibold mb-4 text-gray-900">Workplace</h3>
             
             {profile.office_amenities && (
               <div className="mb-6">
-                <h4 className="flex items-center text-lg font-medium mb-3">
+                <h4 className="flex items-center text-lg font-medium mb-3 text-gray-800">
                   <Coffee className="h-5 w-5 mr-2 text-pink-500" />
                   Office Amenities
                 </h4>
@@ -39,7 +39,7 @@ export const AboutTabContent = ({ profile }: AboutTabContentProps) => {
             
             {profile.nearby_amenities && (
               <div>
-                <h4 className="flex items-center text-lg font-medium mb-3">
+                <h4 className="flex items-center text-lg font-medium mb-3 text-gray-800">
                   <Landmark className="h-5 w-5 mr-2 text-pink-500" />
                   Nearby Amenities
                 </h4>
@@ -50,9 +50,9 @@ export const AboutTabContent = ({ profile }: AboutTabContentProps) => {
         </Card>
       )}
       
-      <Card>
+      <Card className="bg-white">
         <CardContent className="pt-6">
-          <h3 className="text-xl font-semibold mb-4">Contact Information</h3>
+          <h3 className="text-xl font-semibold mb-4 text-gray-900">Contact Information</h3>
           
           <dl className="divide-y divide-gray-100">
             {profile.full_name && (

@@ -26,7 +26,6 @@ export const CompanyMediaSection = ({ employerId, galleryImages = [] }: CompanyM
   useEffect(() => {
     const fetchMedia = async () => {
       try {
-        // Fetch employer profile to get logo
         const { data: profileData } = await supabase
           .from('employer_profiles')
           .select('*')
@@ -38,7 +37,6 @@ export const CompanyMediaSection = ({ employerId, galleryImages = [] }: CompanyM
           
           const mediaItems: MediaItem[] = [];
           
-          // Add logo as a media item if it exists
           if (profileData.company_logo_url) {
             mediaItems.push({
               id: 'logo',
@@ -49,7 +47,6 @@ export const CompanyMediaSection = ({ employerId, galleryImages = [] }: CompanyM
             });
           }
           
-          // Add gallery images
           if (galleryImages && galleryImages.length > 0) {
             galleryImages.forEach((img, index) => {
               mediaItems.push({
@@ -77,14 +74,14 @@ export const CompanyMediaSection = ({ employerId, galleryImages = [] }: CompanyM
   if (loading) {
     return (
       <div className="flex justify-center py-8">
-        <Loader2 className="h-8 w-8 animate-spin" />
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
       </div>
     );
   }
   
   if (media.length === 0) {
     return (
-      <Card>
+      <Card className="bg-white">
         <CardContent className="pt-6">
           <div className="text-center py-8">
             <Image className="h-12 w-12 mx-auto text-gray-400" />
@@ -100,13 +97,13 @@ export const CompanyMediaSection = ({ employerId, galleryImages = [] }: CompanyM
   
   return (
     <div className="space-y-6">
-      <Card>
+      <Card className="bg-white">
         <CardContent className="pt-6">
-          <h3 className="text-xl font-semibold mb-4">Company Media</h3>
+          <h3 className="text-xl font-semibold mb-4 text-gray-900">Company Media</h3>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {media.map((item) => (
-              <Card key={item.id} className="overflow-hidden">
+              <Card key={item.id} className="overflow-hidden bg-white">
                 <div className="relative">
                   {item.type === 'image' ? (
                     <AspectRatio ratio={16 / 9}>
