@@ -93,22 +93,39 @@ export const useEmployerProfileView = ({
             const { data: { session } } = await supabase.auth.getSession();
             if (session) {
               try {
-                // Use a simple SQL query approach instead of the complex builder
-                const { data: matchResults, error: matchError } = await supabase
-                  .from('applications')
-                  .select('id')
-                  .eq('candidate_id', session.user.id)
-                  .eq('status', 'matched')
-                  .eq('employer_id', employerId);
+                // Execute a direct SQL-like query and handle response explicitly
+                const { data, error } = await supabase.rpc(
+                  'check_match_exists',
+                  { 
+                    candidate_id: session.user.id,
+                    employer_id: employerId
+                  }
+                );
                 
-                if (matchError) {
-                  console.error('Error checking match status:', matchError);
+                // If RPC function doesn't exist, fallback to direct query with simplified handling
+                if (error && error.message.includes('does not exist')) {
+                  const { count, error: countError } = await supabase
+                    .from('applications')
+                    .select('*', { count: 'exact', head: true })
+                    .eq('candidate_id', session.user.id)
+                    .eq('status', 'matched')
+                    .eq('employer_id', employerId);
+                  
+                  if (countError) {
+                    console.error('Error checking match count:', countError);
+                  } else {
+                    setHasMatch(count !== null && count > 0);
+                  }
+                } else if (error) {
+                  console.error('Error checking match status:', error);
                 } else {
-                  // Simple check if the array has any items
-                  setHasMatch(Array.isArray(matchResults) && matchResults.length > 0);
+                  // The RPC call would return true/false directly
+                  setHasMatch(!!data);
                 }
               } catch (error) {
                 console.error('Error checking match status:', error);
+                // Default to false on error
+                setHasMatch(false);
               }
             }
           }
