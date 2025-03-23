@@ -36,7 +36,6 @@ const formSchema = z.object({
   nearby_amenities: z.string().max(500, {
     message: "Nearby amenities cannot exceed 500 characters",
   }).optional(),
-  is_sme: z.boolean().optional(),
 });
 
 export type FormValues = z.infer<typeof formSchema>;
@@ -60,7 +59,6 @@ export function ProfileForm({ profile, setProfile, email }: ProfileFormProps) {
       company_description: profile.company_description || "",
       office_amenities: profile.office_amenities || "",
       nearby_amenities: profile.nearby_amenities || "",
-      is_sme: profile.is_sme || false,
     },
   });
 
@@ -77,6 +75,9 @@ export function ProfileForm({ profile, setProfile, email }: ProfileFormProps) {
         return;
       }
 
+      // Calculate SME status based on company size
+      const isSME = values.company_size ? values.company_size <= 499 : false;
+
       const updateData = {
         id: session.user.id,
         company_name: values.company_name,
@@ -87,7 +88,7 @@ export function ProfileForm({ profile, setProfile, email }: ProfileFormProps) {
         company_description: values.company_description,
         office_amenities: values.office_amenities,
         nearby_amenities: values.nearby_amenities,
-        is_sme: values.is_sme,
+        is_sme: isSME, // Automatically set based on company size
       };
 
       const { error } = await supabase

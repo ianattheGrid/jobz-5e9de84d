@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
 import { companySizeOptions } from "@/config/company-size";
 
 interface CompanyDetailsSectionProps {
@@ -49,27 +48,6 @@ export function CompanyDetailsSection({ control }: CompanyDetailsSectionProps) {
               The number of employees at your company
             </FormDescription>
             <FormMessage />
-          </FormItem>
-        )}
-      />
-      
-      <FormField
-        control={control}
-        name="is_sme"
-        render={({ field }) => (
-          <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
-            <div className="space-y-0.5">
-              <FormLabel className="text-gray-900 font-medium">SME Status</FormLabel>
-              <FormDescription>
-                Is your company a Small or Medium-sized Enterprise (less than 500 employees)?
-              </FormDescription>
-            </div>
-            <FormControl>
-              <Switch
-                checked={field.value}
-                onCheckedChange={field.onChange}
-              />
-            </FormControl>
           </FormItem>
         )}
       />

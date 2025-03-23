@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { isFreeEmailProvider, emailMatchesWebsite } from "@/utils/validationUtils";
@@ -39,11 +38,6 @@ export const useSignUpForm = ({ userType, onSubmit }: UseSignUpFormProps) => {
   };
 
   const validateEmployerSignup = () => {
-    if (!isSME) {
-      setError("You must confirm that your company has 499 employees or fewer");
-      return false;
-    }
-
     if (isFreeEmailProvider(email)) {
       setError("Please use your work email address. Personal email providers are not allowed for employer accounts.");
       return false;
