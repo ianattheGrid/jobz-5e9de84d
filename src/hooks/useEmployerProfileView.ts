@@ -89,19 +89,21 @@ export const useEmployerProfileView = ({
             
             if (session) {
               try {
-                // Simplified approach: Just count matches
-                const { count, error: countError } = await supabase
+                // Use a more direct approach that avoids complex type inference
+                const { data: matchData, error: matchError } = await supabase
                   .from('applications')
-                  .select('*', { count: 'exact', head: true })
+                  .select('id')
                   .eq('applicant_id', session.user.id)
                   .eq('status', 'matched')
-                  .eq('employer_id', employerId);
+                  .eq('employer_id', employerId)
+                  .limit(1);
                 
-                if (countError) {
-                  console.error('Error checking match count:', countError);
+                if (matchError) {
+                  console.error('Error checking match status:', matchError);
                   setHasMatch(false);
                 } else {
-                  setHasMatch(count !== null && count > 0);
+                  // Simple array check avoids deep type inference
+                  setHasMatch(Array.isArray(matchData) && matchData.length > 0);
                 }
               } catch (error) {
                 console.error('Error checking match status:', error);
