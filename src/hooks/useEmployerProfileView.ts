@@ -37,36 +37,49 @@ export const useEmployerProfileView = ({
       return;
     }
 
-    const loadProfileData = async () => {
+    // Use an async function inside useEffect
+    const fetchData = async () => {
       setLoading(true);
       
+      // Fetch profile
+      let profileData = null;
       try {
-        // Fetch profile data
-        const profileData = await fetchEmployerProfile(employerId);
+        profileData = await fetchEmployerProfile(employerId);
         setProfile(profileData);
-        
-        // Fetch gallery images
-        const imagesData = await fetchGalleryImages(employerId);
-        setGalleryImages(imagesData);
-        
-        // Check match status if not in preview mode
-        if (!previewMode) {
-          const matchStatus = await checkEmployerMatch(employerId);
-          setHasMatch(matchStatus);
-        }
       } catch (error) {
-        console.error("Error loading employer profile:", error);
+        console.error("Error fetching profile:", error);
         toast({
           variant: "destructive",
           title: "Error",
           description: "Failed to load employer profile",
         });
-      } finally {
-        setLoading(false);
       }
+      
+      // Fetch gallery images
+      try {
+        const imagesData = await fetchGalleryImages(employerId);
+        setGalleryImages(imagesData);
+      } catch (error) {
+        console.error("Error fetching gallery:", error);
+        // Don't show a toast as this is non-critical
+      }
+      
+      // Check match status if not in preview mode
+      if (!previewMode) {
+        try {
+          const matchStatus = await checkEmployerMatch(employerId);
+          setHasMatch(matchStatus);
+        } catch (error) {
+          console.error("Error checking match:", error);
+          // Default to false if there's an error
+          setHasMatch(false);
+        }
+      }
+      
+      setLoading(false);
     };
 
-    loadProfileData();
+    fetchData();
   }, [employerId, previewMode, toast]);
 
   return { loading, profile, galleryImages, hasMatch };

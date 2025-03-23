@@ -48,49 +48,44 @@ export async function fetchGalleryImages(employerId: string): Promise<CompanyGal
 }
 
 /**
- * Checks if there's a match between the current user and the employer
- * This function has been simplified to avoid TypeScript type inference issues
+ * Simple implementation that avoids complex type inference
+ * Simply returns a boolean indicating if a match exists
  */
 export async function checkEmployerMatch(employerId: string): Promise<boolean> {
-  let userId: string | undefined;
+  // Safely get the user ID first
+  let userId = null;
   
   try {
-    // Get user session
-    const { data, error } = await supabase.auth.getSession();
-    
-    if (error) {
-      console.error("Session error:", error);
-      return false;
-    }
-    
-    userId = data.session?.user?.id;
-    
-    if (!userId) {
-      return false;
-    }
-  } catch (err) {
-    console.error("Error getting session:", err);
+    const auth = await supabase.auth.getSession();
+    userId = auth.data?.session?.user?.id;
+  } catch (e) {
+    console.error("Auth error:", e);
     return false;
   }
   
+  // If no user ID, there can't be a match
+  if (!userId) {
+    return false;
+  }
+  
+  // Now check for matches with a separate query 
   try {
-    // Check for matches using the retrieved userId
-    const { data, error } = await supabase
+    const { count, error } = await supabase
       .from('applications')
-      .select('id')
+      .select('*', { count: 'exact', head: true })
       .eq('applicant_id', userId)
       .eq('employer_id', employerId)
       .eq('status', 'matched');
     
     if (error) {
-      console.error("Error checking match status:", error);
+      console.error("Match checking error:", error);
       return false;
     }
     
-    // Return true if we found at least one match
-    return Array.isArray(data) && data.length > 0;
-  } catch (err) {
-    console.error("Error checking for matches:", err);
+    // If count is greater than 0, there is a match
+    return (count || 0) > 0;
+  } catch (e) {
+    console.error("Match query error:", e);
     return false;
   }
 }
