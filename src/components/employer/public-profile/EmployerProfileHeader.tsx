@@ -56,14 +56,6 @@ export const EmployerProfileHeader = ({ profile }: EmployerProfileHeaderProps) =
               {getCompanySizeLabel(profile.company_size)}
             </div>
           )}
-          
-          <div className="flex items-center gap-2">
-            {profile.is_sme ? (
-              <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-100">SME</Badge>
-            ) : (
-              <Badge className="bg-purple-100 text-purple-800 hover:bg-purple-100">Enterprise</Badge>
-            )}
-          </div>
         </div>
       </div>
     </>
