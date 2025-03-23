@@ -1,4 +1,5 @@
 
+import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { useWebPushNotifications } from "@/hooks/useWebPushNotifications";
 
@@ -7,7 +8,8 @@ interface AppLayoutProps {
 }
 
 export const AppLayout = ({ children }: AppLayoutProps) => {
-  useWebPushNotifications(); // Initialize web push notifications
+  // Initialize web push notifications
+  useWebPushNotifications();
 
   return (
     <div className="min-h-screen bg-background">
