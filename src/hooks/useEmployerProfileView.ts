@@ -34,96 +34,130 @@ export const useEmployerProfileView = ({
       return;
     }
 
-    // Define a simple async function to load all data
-    const loadData = async () => {
+    async function fetchEmployerProfile(): Promise<EmployerProfile | null> {
       try {
-        setLoading(true);
-        
-        // Fetch employer profile
-        const { data: profileData, error: profileError } = await supabase
+        const { data, error } = await supabase
           .from('employer_profiles')
           .select('*')
           .eq('id', employerId)
           .single();
         
-        if (profileError) {
-          console.error('Error fetching employer profile:', profileError);
-          toast({
-            variant: "destructive",
-            title: "Error",
-            description: "Failed to load employer profile",
-          });
-          setLoading(false);
-          return;
+        if (error) {
+          console.error('Error fetching employer profile:', error);
+          return null;
         }
-
-        if (profileData) {
-          // Cast to EmployerProfile type
-          const typedProfile: EmployerProfile = {
-            id: profileData.id,
-            company_name: profileData.company_name,
-            company_website: profileData.company_website,
-            company_logo_url: profileData.company_logo_url,
-            profile_picture_url: profileData.profile_picture_url,
-            full_name: profileData.full_name,
-            job_title: profileData.job_title,
-            company_size: profileData.company_size,
-            is_sme: profileData.is_sme,
-            company_description: profileData.company_description,
-            office_amenities: profileData.office_amenities,
-            nearby_amenities: profileData.nearby_amenities,
-            created_at: profileData.created_at,
-            updated_at: profileData.updated_at
+        
+        if (data) {
+          return {
+            id: data.id,
+            company_name: data.company_name,
+            company_website: data.company_website,
+            company_logo_url: data.company_logo_url,
+            profile_picture_url: data.profile_picture_url,
+            full_name: data.full_name,
+            job_title: data.job_title,
+            company_size: data.company_size,
+            is_sme: data.is_sme,
+            company_description: data.company_description,
+            office_amenities: data.office_amenities,
+            nearby_amenities: data.nearby_amenities,
+            created_at: data.created_at,
+            updated_at: data.updated_at
           };
-          
-          setProfile(typedProfile);
         }
+        
+        return null;
+      } catch (error) {
+        console.error('Error in fetchEmployerProfile:', error);
+        return null;
+      }
+    }
 
-        // Fetch gallery images
-        const { data: galleryData, error: galleryError } = await supabase
+    async function fetchGalleryImages(): Promise<CompanyGalleryImage[]> {
+      try {
+        const { data, error } = await supabase
           .from('company_gallery')
           .select('*')
           .eq('employer_id', employerId);
         
-        if (galleryError) {
-          console.error('Error fetching gallery images:', galleryError);
-        } else if (galleryData) {
-          const typedGalleryImages: CompanyGalleryImage[] = galleryData.map(item => ({
+        if (error) {
+          console.error('Error fetching gallery images:', error);
+          return [];
+        }
+        
+        if (data) {
+          return data.map(item => ({
             id: item.id,
             employer_id: item.employer_id,
             image_url: item.image_url,
             created_at: item.created_at
           }));
-          
-          setGalleryImages(typedGalleryImages);
         }
-
-        // Check for match if not in preview mode
-        if (!previewMode) {
-          const { data: sessionData } = await supabase.auth.getSession();
-          const session = sessionData?.session;
-          
-          if (session?.user?.id) {
-            const userId = session.user.id;
-            
-            // Simple query to check for match
-            const { data: matchData, error: matchError } = await supabase
-              .from('applications')
-              .select('id')
-              .eq('applicant_id', userId)
-              .eq('employer_id', employerId)
-              .eq('status', 'matched');
-            
-            if (matchError) {
-              console.error('Error checking match status:', matchError);
-            } else {
-              // If matchData exists and has length, there is a match
-              setHasMatch(matchData && matchData.length > 0);
-            }
-          }
-        }
+        
+        return [];
       } catch (error) {
-        console.error('Error loading data:', error);
+        console.error('Error in fetchGalleryImages:', error);
+        return [];
+      }
+    }
+
+    async function checkForMatch(): Promise<boolean> {
+      if (previewMode) {
+        return true;
+      }
+      
+      try {
+        const { data: sessionData } = await supabase.auth.getSession();
+        if (!sessionData?.session?.user?.id) {
+          return false;
+        }
+        
+        const userId = sessionData.session.user.id;
+        
+        const { data, error } = await supabase
+          .from('applications')
+          .select('id')
+          .eq('applicant_id', userId)
+          .eq('employer_id', employerId)
+          .eq('status', 'matched');
+        
+        if (error) {
+          console.error('Error checking match status:', error);
+          return false;
+        }
+        
+        return Array.isArray(data) && data.length > 0;
+      } catch (error) {
+        console.error('Error in checkForMatch:', error);
+        return false;
+      }
+    }
+
+    async function loadAllData(): Promise<void> {
+      try {
+        setLoading(true);
+        
+        // Run all data fetching in parallel for better performance
+        const [profileData, galleryData, matchResult] = await Promise.all([
+          fetchEmployerProfile(),
+          fetchGalleryImages(),
+          checkForMatch()
+        ]);
+        
+        if (profileData) {
+          setProfile(profileData);
+        } else {
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: "Failed to load employer profile",
+          });
+        }
+        
+        setGalleryImages(galleryData);
+        setHasMatch(matchResult);
+      } catch (err) {
+        console.error('Error in loadAllData:', err);
         toast({
           variant: "destructive",
           title: "Error",
@@ -132,10 +166,9 @@ export const useEmployerProfileView = ({
       } finally {
         setLoading(false);
       }
-    };
+    }
 
-    // Call the load data function
-    loadData();
+    loadAllData();
   }, [employerId, toast, previewMode, navigate]);
   
   return { loading, profile, galleryImages, hasMatch };
