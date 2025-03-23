@@ -23,7 +23,7 @@ export const RestrictedAccessMessage = ({ type }: RestrictedAccessMessageProps) 
           {isNotFound ? "Profile Not Found" : "Access Restricted"}
         </h2>
         
-        <p className="text-gray-600 mb-6">
+        <p className="text-gray-700 mb-6">
           {isNotFound 
             ? "The employer profile you're looking for doesn't exist or may have been removed."
             : "You can only view this employer's details after matching with one of their job positions."}

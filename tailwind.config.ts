@@ -24,7 +24,7 @@ export default {
         input: "#333333",
         ring: "#666666",
         background: "#FFFFFF",
-        foreground: "#121212",
+        foreground: "#333333", // Darker text color for better readability
         primary: {
           DEFAULT: "#FF69B4",
           foreground: "#FFFFFF",
@@ -35,15 +35,15 @@ export default {
         },
         card: {
           DEFAULT: "#FFFFFF",
-          foreground: "#121212",
+          foreground: "#333333", // Darker text color for better readability
         },
         muted: {
           DEFAULT: "#F5F5F5",
-          foreground: "#666666",
+          foreground: "#555555", // Darker muted text color for better readability
         },
         accent: {
           DEFAULT: "#F0F0F0",
-          foreground: "#121212",
+          foreground: "#333333", // Darker text color for better readability
         },
         destructive: {
           DEFAULT: "#FF0000",
@@ -51,7 +51,7 @@ export default {
         },
         popover: {
           DEFAULT: "#FFFFFF",
-          foreground: "#121212",
+          foreground: "#333333", // Darker text color for better readability
         },
       },
       keyframes: {
