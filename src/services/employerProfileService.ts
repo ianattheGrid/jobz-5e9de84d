@@ -48,35 +48,33 @@ export async function fetchGalleryImages(employerId: string): Promise<CompanyGal
 }
 
 /**
- * Completely rewritten to avoid type inference issues
- * Uses a raw SQL query approach to check for matches
+ * Uses a completely different approach with raw SQL to avoid type issues
+ * Simply checks if there's a match between the current user and employer
  */
 export async function checkEmployerMatch(employerId: string): Promise<boolean> {
   try {
-    // Get user session first
-    const { data: sessionData } = await supabase.auth.getSession();
-    const userId = sessionData.session?.user?.id;
+    // Get current user ID
+    const session = await supabase.auth.getSession();
+    const userId = session.data.session?.user?.id;
     
     // If no user ID, there can't be a match
     if (!userId) {
       return false;
     }
     
-    // Using a simplified query with direct count approach
+    // Use a simple SQL query to check for matches
     const { data, error } = await supabase
-      .from('applications')
-      .select('id', { count: 'exact' })
-      .eq('applicant_id', userId)
-      .eq('employer_id', employerId)
-      .eq('status', 'matched');
-      
+      .rpc('check_user_employer_match', {
+        user_id: userId,
+        employer_id: employerId
+      });
+    
     if (error) {
-      console.error("Match checking error:", error);
+      console.error("Error checking match:", error);
       return false;
     }
     
-    // If data.count is greater than 0, there is a match
-    return data.length > 0;
+    return !!data;
   } catch (error) {
     console.error("Error in checkEmployerMatch:", error);
     return false;
