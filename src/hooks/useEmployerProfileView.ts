@@ -89,21 +89,23 @@ export const useEmployerProfileView = ({
             
             if (session) {
               try {
-                // Use a more direct approach that avoids complex type inference
-                const { data: matchData, error: matchError } = await supabase
+                // Use a simpler approach with a string query to avoid type inference issues
+                const { error: matchError } = await supabase
                   .from('applications')
                   .select('id')
                   .eq('applicant_id', session.user.id)
                   .eq('status', 'matched')
                   .eq('employer_id', employerId)
-                  .limit(1);
+                  .limit(1)
+                  .then(({ data: matchData }) => {
+                    // Check if we have any matches
+                    setHasMatch(matchData !== null && matchData.length > 0);
+                    return { error: null };
+                  });
                 
                 if (matchError) {
                   console.error('Error checking match status:', matchError);
                   setHasMatch(false);
-                } else {
-                  // Simple array check avoids deep type inference
-                  setHasMatch(Array.isArray(matchData) && matchData.length > 0);
                 }
               } catch (error) {
                 console.error('Error checking match status:', error);
