@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2, ArrowLeft, Building2, Users, Globe, Mail, Phone, MapPin } from "lucide-react";
+import { Loader2, ArrowLeft, Building2, Users, Globe, Mail, Phone, MapPin, Coffee, Landmark } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
@@ -12,12 +12,14 @@ import { EmployerJobsList } from "@/components/employer/public-profile/EmployerJ
 import { CompanyMediaSection } from "@/components/employer/public-profile/CompanyMediaSection";
 import { CompanyCultureSection } from "@/components/employer/public-profile/CompanyCultureSection";
 import { EmployerProfile } from "@/types/employer";
+import { companySizeOptions } from "@/config/company-size";
 
 const ViewEmployerProfile = () => {
   const { id } = useParams<{ id: string }>();
   const { toast } = useToast();
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState<EmployerProfile | null>(null);
+  const [galleryImages, setGalleryImages] = useState<any[]>([]);
   
   useEffect(() => {
     const fetchEmployerProfile = async () => {
@@ -33,6 +35,17 @@ const ViewEmployerProfile = () => {
         if (error) throw error;
         if (data) {
           setProfile(data);
+          
+          // Fetch gallery images
+          const { data: galleryData, error: galleryError } = await supabase
+            .from('company_gallery')
+            .select('*')
+            .eq('employer_id', id);
+            
+          if (galleryError) throw galleryError;
+          if (galleryData) {
+            setGalleryImages(galleryData);
+          }
         }
       } catch (error: any) {
         console.error('Error fetching employer profile:', error);
@@ -48,6 +61,12 @@ const ViewEmployerProfile = () => {
     
     fetchEmployerProfile();
   }, [id, toast]);
+  
+  const getCompanySizeLabel = (size: number | null | undefined) => {
+    if (!size) return "Unknown";
+    const option = companySizeOptions.find(opt => opt.value === size);
+    return option ? option.label : "Unknown";
+  };
   
   if (loading) {
     return (
@@ -120,7 +139,7 @@ const ViewEmployerProfile = () => {
             {profile.company_size && (
               <div className="flex items-center gap-2 text-gray-600">
                 <Users className="h-4 w-4" />
-                {profile.company_size} employees
+                {getCompanySizeLabel(profile.company_size)}
               </div>
             )}
             
@@ -138,16 +157,94 @@ const ViewEmployerProfile = () => {
             <Tabs defaultValue="about" className="w-full">
               <TabsList className="grid w-full grid-cols-3">
                 <TabsTrigger value="about">About</TabsTrigger>
-                <TabsTrigger value="media">Media</TabsTrigger>
+                <TabsTrigger value="media">Gallery</TabsTrigger>
                 <TabsTrigger value="jobs">Current Openings</TabsTrigger>
               </TabsList>
               
               <TabsContent value="about" className="mt-6">
-                <CompanyCultureSection employerId={profile.id} />
+                <div className="space-y-6">
+                  <Card>
+                    <CardContent className="pt-6">
+                      <h3 className="text-xl font-semibold mb-4">About {profile.company_name}</h3>
+                      
+                      <div className="prose max-w-none">
+                        <p className="text-gray-700">
+                          {profile.company_description || "This company has not provided a detailed description yet."}
+                        </p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                  
+                  {(profile.office_amenities || profile.nearby_amenities) && (
+                    <Card>
+                      <CardContent className="pt-6">
+                        <h3 className="text-xl font-semibold mb-4">Workplace</h3>
+                        
+                        {profile.office_amenities && (
+                          <div className="mb-6">
+                            <h4 className="flex items-center text-lg font-medium mb-3">
+                              <Coffee className="h-5 w-5 mr-2 text-pink-500" />
+                              Office Amenities
+                            </h4>
+                            <p className="text-gray-700">{profile.office_amenities}</p>
+                          </div>
+                        )}
+                        
+                        {profile.nearby_amenities && (
+                          <div>
+                            <h4 className="flex items-center text-lg font-medium mb-3">
+                              <Landmark className="h-5 w-5 mr-2 text-pink-500" />
+                              Nearby Amenities
+                            </h4>
+                            <p className="text-gray-700">{profile.nearby_amenities}</p>
+                          </div>
+                        )}
+                      </CardContent>
+                    </Card>
+                  )}
+                  
+                  <Card>
+                    <CardContent className="pt-6">
+                      <h3 className="text-xl font-semibold mb-4">Contact Information</h3>
+                      
+                      <dl className="divide-y divide-gray-100">
+                        {profile.full_name && (
+                          <div className="px-4 py-3 grid grid-cols-3 gap-4">
+                            <dt className="text-sm font-medium text-gray-500">Contact Person</dt>
+                            <dd className="text-sm text-gray-900 col-span-2">{profile.full_name}</dd>
+                          </div>
+                        )}
+                        
+                        {profile.job_title && (
+                          <div className="px-4 py-3 grid grid-cols-3 gap-4">
+                            <dt className="text-sm font-medium text-gray-500">Role</dt>
+                            <dd className="text-sm text-gray-900 col-span-2">{profile.job_title}</dd>
+                          </div>
+                        )}
+                        
+                        {profile.company_website && (
+                          <div className="px-4 py-3 grid grid-cols-3 gap-4">
+                            <dt className="text-sm font-medium text-gray-500">Website</dt>
+                            <dd className="text-sm text-gray-900 col-span-2">
+                              <a 
+                                href={profile.company_website} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="text-pink-600 hover:underline"
+                              >
+                                {profile.company_website}
+                              </a>
+                            </dd>
+                          </div>
+                        )}
+                      </dl>
+                    </CardContent>
+                  </Card>
+                </div>
               </TabsContent>
               
               <TabsContent value="media" className="mt-6">
-                <CompanyMediaSection employerId={profile.id} />
+                <CompanyMediaSection employerId={profile.id} galleryImages={galleryImages} />
               </TabsContent>
               
               <TabsContent value="jobs" className="mt-6">
@@ -159,6 +256,6 @@ const ViewEmployerProfile = () => {
       </div>
     </div>
   );
-};
+}
 
 export default ViewEmployerProfile;

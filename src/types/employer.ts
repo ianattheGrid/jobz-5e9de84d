@@ -9,4 +9,14 @@ export interface EmployerProfile {
   job_title: string;
   company_size?: number | null;
   is_sme?: boolean | null;
+  company_description?: string | null;
+  office_amenities?: string | null;
+  nearby_amenities?: string | null;
+}
+
+export interface CompanyGalleryImage {
+  id: string;
+  employer_id: string;
+  image_url: string;
+  created_at: string;
 }

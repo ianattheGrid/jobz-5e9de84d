@@ -7,6 +7,7 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 interface CompanyMediaSectionProps {
   employerId: string;
+  galleryImages?: any[];
 }
 
 interface MediaItem {
@@ -17,7 +18,7 @@ interface MediaItem {
   description?: string;
 }
 
-export const CompanyMediaSection = ({ employerId }: CompanyMediaSectionProps) => {
+export const CompanyMediaSection = ({ employerId, galleryImages = [] }: CompanyMediaSectionProps) => {
   const [loading, setLoading] = useState(true);
   const [media, setMedia] = useState<MediaItem[]>([]);
   const [profile, setProfile] = useState<any>(null);
@@ -35,20 +36,33 @@ export const CompanyMediaSection = ({ employerId }: CompanyMediaSectionProps) =>
         if (profileData) {
           setProfile(profileData);
           
+          const mediaItems: MediaItem[] = [];
+          
           // Add logo as a media item if it exists
           if (profileData.company_logo_url) {
-            setMedia([{
+            mediaItems.push({
               id: 'logo',
               type: 'image',
               url: profileData.company_logo_url,
               title: 'Company Logo',
               description: `${profileData.company_name} logo`
-            }]);
+            });
           }
+          
+          // Add gallery images
+          if (galleryImages && galleryImages.length > 0) {
+            galleryImages.forEach((img, index) => {
+              mediaItems.push({
+                id: img.id || `gallery-${index}`,
+                type: 'image',
+                url: img.image_url,
+                title: `Gallery Image ${index + 1}`,
+              });
+            });
+          }
+          
+          setMedia(mediaItems);
         }
-        
-        // In the future, you would fetch additional media from a company_media table
-        // For now, we just use the logo if available
         
       } catch (error) {
         console.error('Error fetching company media:', error);
@@ -58,7 +72,7 @@ export const CompanyMediaSection = ({ employerId }: CompanyMediaSectionProps) =>
     };
     
     fetchMedia();
-  }, [employerId]);
+  }, [employerId, galleryImages]);
   
   if (loading) {
     return (
@@ -107,7 +121,6 @@ export const CompanyMediaSection = ({ employerId }: CompanyMediaSectionProps) =>
                       <div className="w-full h-full flex items-center justify-center bg-gray-100">
                         <Film className="h-8 w-8 text-gray-400" />
                       </div>
-                      {/* Implement video embed once you have actual video content */}
                     </AspectRatio>
                   )}
                 </div>
