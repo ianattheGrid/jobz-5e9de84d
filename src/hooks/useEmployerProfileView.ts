@@ -89,24 +89,30 @@ export const useEmployerProfileView = ({
             
             if (session) {
               try {
-                // Use a simpler approach with a string query to avoid type inference issues
-                const { error: matchError } = await supabase
+                // Simple SQL-like query to avoid TypeScript type inference issues
+                const matchQuery = supabase
                   .from('applications')
                   .select('id')
                   .eq('applicant_id', session.user.id)
                   .eq('status', 'matched')
                   .eq('employer_id', employerId)
-                  .limit(1)
-                  .then(({ data: matchData }) => {
-                    // Check if we have any matches
-                    setHasMatch(matchData !== null && matchData.length > 0);
-                    return { error: null };
-                  });
+                  .limit(1);
                 
-                if (matchError) {
-                  console.error('Error checking match status:', matchError);
-                  setHasMatch(false);
-                }
+                // Execute the query and handle the result manually
+                matchQuery
+                  .then(response => {
+                    if (response.error) {
+                      console.error('Error checking match status:', response.error);
+                      setHasMatch(false);
+                    } else {
+                      // Simple check if we have any results
+                      setHasMatch(response.data && response.data.length > 0);
+                    }
+                  })
+                  .catch(error => {
+                    console.error('Error in match query:', error);
+                    setHasMatch(false);
+                  });
               } catch (error) {
                 console.error('Error checking match status:', error);
                 setHasMatch(false);
