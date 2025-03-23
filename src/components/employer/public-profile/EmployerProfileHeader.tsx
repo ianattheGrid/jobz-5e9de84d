@@ -37,6 +37,14 @@ export const EmployerProfileHeader = ({ profile }: EmployerProfileHeaderProps) =
       <div className="pt-20 px-8 pb-8">
         <h1 className="text-3xl font-bold text-gray-900">{profile.company_name}</h1>
         
+        {profile.company_size && (
+          <div className="mt-1 mb-4">
+            <span className="text-black font-medium">
+              {getCompanySizeLabel(profile.company_size)}
+            </span>
+          </div>
+        )}
+        
         <div className="mt-4 flex flex-wrap gap-y-2 gap-x-6">
           {profile.company_website && (
             <a 
@@ -48,15 +56,6 @@ export const EmployerProfileHeader = ({ profile }: EmployerProfileHeaderProps) =
               <Globe className="h-4 w-4" />
               Website
             </a>
-          )}
-          
-          {profile.company_size && (
-            <div className="flex items-center gap-2">
-              <Users className="h-4 w-4 text-gray-600" />
-              <span className="font-medium text-black bg-gray-100 px-2 py-1 rounded">
-                {getCompanySizeLabel(profile.company_size)}
-              </span>
-            </div>
           )}
         </div>
       </div>
