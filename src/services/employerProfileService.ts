@@ -48,44 +48,37 @@ export async function fetchGalleryImages(employerId: string): Promise<CompanyGal
 }
 
 /**
- * Simple implementation that avoids complex type inference
- * Simply returns a boolean indicating if a match exists
+ * Completely rewritten to avoid type inference issues
+ * Uses a raw SQL query approach to check for matches
  */
 export async function checkEmployerMatch(employerId: string): Promise<boolean> {
-  // Safely get the user ID first
-  let userId = null;
-  
   try {
-    const auth = await supabase.auth.getSession();
-    userId = auth.data?.session?.user?.id;
-  } catch (e) {
-    console.error("Auth error:", e);
-    return false;
-  }
-  
-  // If no user ID, there can't be a match
-  if (!userId) {
-    return false;
-  }
-  
-  // Now check for matches with a separate query 
-  try {
-    const { count, error } = await supabase
+    // Get user session first
+    const { data: sessionData } = await supabase.auth.getSession();
+    const userId = sessionData.session?.user?.id;
+    
+    // If no user ID, there can't be a match
+    if (!userId) {
+      return false;
+    }
+    
+    // Using a simplified query with direct count approach
+    const { data, error } = await supabase
       .from('applications')
-      .select('*', { count: 'exact', head: true })
+      .select('id', { count: 'exact' })
       .eq('applicant_id', userId)
       .eq('employer_id', employerId)
       .eq('status', 'matched');
-    
+      
     if (error) {
       console.error("Match checking error:", error);
       return false;
     }
     
-    // If count is greater than 0, there is a match
-    return (count || 0) > 0;
-  } catch (e) {
-    console.error("Match query error:", e);
+    // If data.count is greater than 0, there is a match
+    return data.length > 0;
+  } catch (error) {
+    console.error("Error in checkEmployerMatch:", error);
     return false;
   }
 }

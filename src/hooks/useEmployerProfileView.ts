@@ -37,50 +37,44 @@ export const useEmployerProfileView = ({
       return;
     }
 
-    // Use an async function inside useEffect
+    // Define async function to fetch all data
     const fetchData = async () => {
       setLoading(true);
       
-      // Fetch profile
-      let profileData = null;
       try {
-        profileData = await fetchEmployerProfile(employerId);
+        // Step 1: Fetch employer profile
+        const profileData = await fetchEmployerProfile(employerId);
         setProfile(profileData);
+        
+        // Step 2: Fetch gallery images
+        const imagesData = await fetchGalleryImages(employerId);
+        setGalleryImages(imagesData || []);
+        
+        // Step 3: Check match status if not in preview mode
+        if (!previewMode) {
+          const matchStatus = await checkEmployerMatch(employerId);
+          setHasMatch(matchStatus);
+        }
       } catch (error) {
-        console.error("Error fetching profile:", error);
+        console.error("Error loading profile data:", error);
         toast({
           variant: "destructive",
           title: "Error",
-          description: "Failed to load employer profile",
+          description: "Failed to load profile data",
         });
+      } finally {
+        setLoading(false);
       }
-      
-      // Fetch gallery images
-      try {
-        const imagesData = await fetchGalleryImages(employerId);
-        setGalleryImages(imagesData);
-      } catch (error) {
-        console.error("Error fetching gallery:", error);
-        // Don't show a toast as this is non-critical
-      }
-      
-      // Check match status if not in preview mode
-      if (!previewMode) {
-        try {
-          const matchStatus = await checkEmployerMatch(employerId);
-          setHasMatch(matchStatus);
-        } catch (error) {
-          console.error("Error checking match:", error);
-          // Default to false if there's an error
-          setHasMatch(false);
-        }
-      }
-      
-      setLoading(false);
     };
 
+    // Call the async function
     fetchData();
   }, [employerId, previewMode, toast]);
 
-  return { loading, profile, galleryImages, hasMatch };
+  return { 
+    loading, 
+    profile, 
+    galleryImages, 
+    hasMatch 
+  };
 };
