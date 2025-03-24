@@ -2,7 +2,7 @@
 /* Platform Features Tab Styles */
 /* Fix for tab triggers to ensure proper hover effect isolation */
 .tab-trigger {
-  @apply text-white py-3 transition-colors relative;
+  @apply text-white transition-colors relative;
   background-color: transparent;
 }
 
@@ -17,9 +17,11 @@
   color: white !important;
 }
 
+/* Properly highlight the active tab */
 .tab-trigger[data-state="active"] {
   background-color: #FF69B4 !important;
   color: white !important;
+  font-weight: 500;
 }
 
 /* Reset any inherited hover states */
@@ -41,4 +43,6 @@
 [role="tablist"] {
   position: relative;
   z-index: 1;
+  overflow: hidden;
+  border-radius: 0.25rem;
 }
