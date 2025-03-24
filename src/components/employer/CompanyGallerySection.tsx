@@ -45,12 +45,12 @@ export function CompanyGallerySection({ employerId }: CompanyGallerySectionProps
       const file = event.target.files[0];
       const fileExt = file.name.split('.').pop();
       const fileName = `${employerId}-${Math.random()}.${fileExt}`;
-      const filePath = `company_gallery/${fileName}`;
+      const filePath = `${fileName}`;
       
       setUploading(true);
       
       // Upload image to Storage
-      const { error: uploadError } = await supabase.storage
+      const { error: uploadError, data: uploadData } = await supabase.storage
         .from('company_images')
         .upload(filePath, file);
         
@@ -111,14 +111,13 @@ export function CompanyGallerySection({ employerId }: CompanyGallerySectionProps
       if (deleteError) throw deleteError;
       
       // Extract file path from URL to delete from storage
-      // This assumes the URL follows the pattern: .../storage/v1/object/public/company_images/filepath
       if (imageData && imageData.image_url) {
         const urlParts = imageData.image_url.split('/');
-        const filePath = urlParts.slice(urlParts.indexOf('company_images') + 1).join('/');
+        const fileName = urlParts[urlParts.length - 1];
         
         await supabase.storage
           .from('company_images')
-          .remove([filePath]);
+          .remove([fileName]);
       }
       
       // Update local state

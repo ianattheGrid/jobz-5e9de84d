@@ -13,13 +13,27 @@ import { CompanyDetailsSection } from "./CompanyDetailsSection";
 import { CompanyGallerySection } from "./CompanyGallerySection";
 import { EmployerProfile } from "@/types/employer";
 
+const urlSchema = z.union([
+  z.string().url().or(z.literal('')),
+  z.string().refine(
+    (value) => {
+      if (!value) return true;
+      try {
+        new URL(value.startsWith('http') ? value : `https://${value}`);
+        return true;
+      } catch {
+        return false;
+      }
+    },
+    { message: "Please enter a valid URL" }
+  )
+]);
+
 const formSchema = z.object({
   company_name: z.string().min(2, {
     message: "Company name must be at least 2 characters.",
   }),
-  company_website: z.string().url({
-    message: "Please enter a valid URL.",
-  }).optional().or(z.literal('')),
+  company_website: urlSchema,
   full_name: z.string().min(2, {
     message: "Name must be at least 2 characters.",
   }),
@@ -75,13 +89,19 @@ export function ProfileForm({ profile, setProfile, email }: ProfileFormProps) {
         return;
       }
 
+      // Format website URL if needed
+      let formattedWebsite = values.company_website;
+      if (formattedWebsite && !formattedWebsite.startsWith('http')) {
+        formattedWebsite = `https://${formattedWebsite}`;
+      }
+
       // Calculate SME status based on company size
       const isSME = values.company_size ? values.company_size <= 499 : false;
 
       const updateData = {
         id: session.user.id,
         company_name: values.company_name,
-        company_website: values.company_website,
+        company_website: formattedWebsite,
         full_name: values.full_name,
         job_title: values.job_title,
         company_size: values.company_size,
