@@ -45,7 +45,7 @@ export const DeleteAccountDialog = () => {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button className="bg-primary hover:bg-primary/90 text-white">Delete Account</Button>
+        <Button variant="default" className="bg-[#FF69B4] hover:bg-[#FF50A8] text-white">Delete Account</Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
@@ -59,7 +59,7 @@ export const DeleteAccountDialog = () => {
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction
             onClick={handleDeleteAccount}
-            className="bg-primary hover:bg-primary/90 text-white"
+            className="bg-[#FF69B4] hover:bg-[#FF50A8] text-white"
           >
             Delete Account
           </AlertDialogAction>
