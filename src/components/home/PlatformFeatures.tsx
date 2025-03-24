@@ -1,33 +1,33 @@
 
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FileText, Coins, Bot, Calculator, User, Target, Users, MapPin, HandCoins, ListCheck, Clock, Building2 } from "lucide-react";
+import { FileText, Coins, Bot, Calculator, User, Target, Users, MapPin, HandCoins, ListCheck, Clock } from "lucide-react";
 import { PRIMARY_COLOR_PATTERN } from "@/styles/colorPatterns";
 
 export const PlatformFeatures = () => {
   return (
     <section className="py-20 container mx-auto px-4">
-      <h2 className={`text-3xl font-bold text-center mb-2 ${PRIMARY_COLOR_PATTERN}`}>
+      <h2 className={`text-3xl font-bold text-center mb-1 ${PRIMARY_COLOR_PATTERN}`}>
         How jobz Works
       </h2>
       
       <Tabs defaultValue="hiring" className="w-full max-w-4xl mx-auto">
-        <TabsList className="grid w-full grid-cols-3 mb-6 bg-black">
+        <TabsList className="grid w-full grid-cols-3 mb-10 bg-black rounded-md overflow-hidden">
           <TabsTrigger 
             value="hiring" 
-            className="tab-trigger text-white py-4"
+            className="tab-trigger py-3 px-4"
           >
             For Employers
           </TabsTrigger>
           <TabsTrigger 
             value="candidates"
-            className="tab-trigger text-white py-4"
+            className="tab-trigger py-3 px-4"
           >
             For Candidates
           </TabsTrigger>
           <TabsTrigger 
             value="recruiters"
-            className="tab-trigger text-white py-4"
+            className="tab-trigger py-3 px-4"
           >
             For Virtual Recruiters
           </TabsTrigger>
