@@ -7,12 +7,12 @@ import { PRIMARY_COLOR_PATTERN } from "@/styles/colorPatterns";
 export const PlatformFeatures = () => {
   return (
     <section className="py-20 container mx-auto px-4">
-      <h2 className={`text-3xl font-bold text-center mb-1 ${PRIMARY_COLOR_PATTERN}`}>
+      <h2 className={`text-3xl font-bold text-center mb-4 ${PRIMARY_COLOR_PATTERN}`}>
         How jobz Works
       </h2>
       
       <Tabs defaultValue="hiring" className="w-full max-w-4xl mx-auto">
-        <TabsList className="grid w-full grid-cols-3 mb-10 bg-black rounded-md overflow-hidden">
+        <TabsList className="grid w-full grid-cols-3 bg-black rounded-md overflow-hidden mb-8">
           <TabsTrigger 
             value="hiring" 
             className="tab-trigger py-3 px-4"
