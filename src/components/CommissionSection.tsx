@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { FormField, FormItem, FormLabel, FormControl } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -76,6 +75,36 @@ const CommissionSection = ({ salary, form }: CommissionSectionProps) => {
 
       {showCommissionStructure && (
         <div className="space-y-4 p-4 bg-white rounded-lg border border-gray-200">
+          <FormField
+            control={form.control}
+            name="actualSalary"
+            render={({ field }) => (
+              <FormItem>
+                <div className="flex items-center gap-2">
+                  <FormLabel className="text-gray-900">Salary for bonus calculation</FormLabel>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <HelpCircle className="h-4 w-4 text-gray-500" />
+                      </TooltipTrigger>
+                      <TooltipContent className="max-w-xs">
+                        <p>This salary figure will be used to calculate approximate bonus amounts for successful candidates and recruiters.</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </div>
+                <FormControl>
+                  <Input 
+                    placeholder="Enter salary for bonus calculation..." 
+                    className="bg-white text-gray-900" 
+                    {...field} 
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           <div className="space-y-2">
             <FormLabel className="text-gray-900">Please select the commission you are prepared to pay (2.5%-14% basic salary)</FormLabel>
             <Slider
@@ -114,7 +143,7 @@ const CommissionSection = ({ salary, form }: CommissionSectionProps) => {
             name="candidateCommission"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-gray-900">Candidate Commission Amount</FormLabel>
+                <FormLabel className="text-gray-900">Approximate Candidate Bonus Amount (circa)</FormLabel>
                 <FormControl>
                   <Input {...field} readOnly className="bg-white text-gray-900" />
                 </FormControl>
@@ -127,7 +156,7 @@ const CommissionSection = ({ salary, form }: CommissionSectionProps) => {
             name="referralCommission"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-gray-900">Referral Commission Amount</FormLabel>
+                <FormLabel className="text-gray-900">Approximate Referral Bonus Amount (circa)</FormLabel>
                 <FormControl>
                   <Input {...field} readOnly className="bg-white text-gray-900" />
                 </FormControl>
