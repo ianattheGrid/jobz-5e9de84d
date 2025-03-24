@@ -85,10 +85,10 @@ const CommissionSection = ({ salary, form }: CommissionSectionProps) => {
                   <FormLabel className="text-gray-900">Salary for bonus calculation</FormLabel>
                   <TooltipProvider>
                     <Tooltip>
-                      <TooltipTrigger>
+                      <TooltipTrigger asChild>
                         <HelpCircle className="h-4 w-4 text-gray-500" />
                       </TooltipTrigger>
-                      <TooltipContent className="max-w-xs">
+                      <TooltipContent side="right" className="max-w-xs">
                         <p>This salary figure will be used to calculate approximate bonus amounts for successful candidates and recruiters.</p>
                       </TooltipContent>
                     </Tooltip>
