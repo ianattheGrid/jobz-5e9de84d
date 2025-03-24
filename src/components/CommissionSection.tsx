@@ -49,8 +49,8 @@ const CommissionSection = ({ salary, form }: CommissionSectionProps) => {
           <FormLabel className="text-gray-900">Would you like to attract candidates and/or use recruiters by offering a bonus?</FormLabel>
           <TooltipProvider>
             <Tooltip>
-              <TooltipTrigger>
-                <HelpCircle className="h-4 w-4 text-gray-500" />
+              <TooltipTrigger asChild>
+                <HelpCircle className="h-4 w-4 text-gray-500 cursor-pointer" />
               </TooltipTrigger>
               <TooltipContent className="max-w-xs">
                 <p>To offer bonuses or use recruiters, you'll need to provide a salary figure for calculation purposes. This helps determine appropriate bonus amounts.</p>
@@ -84,11 +84,11 @@ const CommissionSection = ({ salary, form }: CommissionSectionProps) => {
                 <div className="flex items-center gap-2">
                   <FormLabel className="text-gray-900">Salary for bonus calculation</FormLabel>
                   <TooltipProvider>
-                    <Tooltip>
+                    <Tooltip delayDuration={0}>
                       <TooltipTrigger asChild>
-                        <HelpCircle className="h-4 w-4 text-gray-500" />
+                        <HelpCircle className="h-4 w-4 text-gray-500 cursor-pointer" />
                       </TooltipTrigger>
-                      <TooltipContent side="right" className="max-w-xs">
+                      <TooltipContent side="right" align="start" className="max-w-xs bg-white text-gray-900 p-2 shadow-md border border-gray-100">
                         <p>This salary figure will be used to calculate approximate bonus amounts for successful candidates and recruiters.</p>
                       </TooltipContent>
                     </Tooltip>
