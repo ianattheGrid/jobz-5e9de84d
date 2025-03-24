@@ -1,23 +1,25 @@
 
 /* Platform Features Tab Styles */
-/* Reset all tab styles first */
+/* Reset and set base styles */
 .tab-trigger {
   position: relative;
-  transition: all 0.2s ease;
   color: white !important;
   background-color: transparent !important;
+  font-weight: 500;
+  border: none !important;
+  box-shadow: none !important;
+  transition: all 0.2s ease;
 }
 
 /* Active tab state - strong pink background */
 .tab-trigger[data-state="active"] {
   background-color: #FF69B4 !important;
   color: white !important;
-  font-weight: 500;
 }
 
 /* Inactive tab state */
 .tab-trigger[data-state="inactive"] {
-  background-color: transparent !important;
+  background-color: #000000 !important;
 }
 
 /* Hover effect only for inactive tabs */
@@ -27,29 +29,23 @@
 
 /* Tab list container */
 [role="tablist"] {
+  border-radius: 8px !important;
+  background-color: #000000 !important;
+  padding: 0 !important;
+  margin: 0 !important;
   overflow: hidden;
-  border-radius: 0.25rem;
-  background-color: black !important;
 }
 
-/* Override any Radix UI default hover effects */
-[data-radix-collection-item]:hover {
-  background-color: transparent;
+/* Force styles to override any inherited styles */
+[data-radix-collection-item] {
+  border-radius: 0 !important;
+  margin: 0 !important;
+  padding: 10px 0 !important;
 }
 
-/* Force primary color for active tabs */
-[data-state="active"] {
-  background-color: #FF69B4 !important;
-}
-
-/* Ensure tab styles are properly isolated */
-.tab-trigger:focus-visible {
-  outline: none !important;
-  box-shadow: none !important;
-}
-
-/* Fix for tab content to appear smoothly */
+/* Ensure tab content spacing */
 [role="tabpanel"] {
+  margin-top: 20px !important;
   animation: fadeIn 0.3s ease-in-out;
 }
 

@@ -7,33 +7,33 @@ import { PRIMARY_COLOR_PATTERN } from "@/styles/colorPatterns";
 export const PlatformFeatures = () => {
   return (
     <section className="py-20 container mx-auto px-4">
-      <h2 className={`text-3xl font-bold text-center mb-4 ${PRIMARY_COLOR_PATTERN}`}>
+      <h2 className={`text-3xl font-bold text-center mb-2 ${PRIMARY_COLOR_PATTERN}`}>
         How jobz Works
       </h2>
       
       <Tabs defaultValue="hiring" className="w-full max-w-4xl mx-auto">
-        <TabsList className="grid w-full grid-cols-3 bg-black rounded-md overflow-hidden mb-8">
+        <TabsList className="grid w-full grid-cols-3 rounded-lg overflow-hidden">
           <TabsTrigger 
             value="hiring" 
-            className="tab-trigger py-3 px-4"
+            className="tab-trigger py-3"
           >
             For Employers
           </TabsTrigger>
           <TabsTrigger 
             value="candidates"
-            className="tab-trigger py-3 px-4"
+            className="tab-trigger py-3"
           >
             For Candidates
           </TabsTrigger>
           <TabsTrigger 
             value="recruiters"
-            className="tab-trigger py-3 px-4"
+            className="tab-trigger py-3"
           >
             For Virtual Recruiters
           </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="hiring" className="space-y-8">
+        <TabsContent value="hiring" className="mt-8 space-y-8">
           <div className="grid md:grid-cols-2 gap-6">
             <FeatureCard
               icon={FileText}
@@ -58,7 +58,7 @@ export const PlatformFeatures = () => {
           </div>
         </TabsContent>
 
-        <TabsContent value="candidates" className="space-y-8">
+        <TabsContent value="candidates" className="mt-8 space-y-8">
           <div className="grid md:grid-cols-2 gap-6">
             <FeatureCard
               icon={User}
@@ -83,7 +83,7 @@ export const PlatformFeatures = () => {
           </div>
         </TabsContent>
 
-        <TabsContent value="recruiters" className="space-y-8">
+        <TabsContent value="recruiters" className="mt-8 space-y-8">
           <div className="grid md:grid-cols-2 gap-6">
             <FeatureCard
               icon={MapPin}
