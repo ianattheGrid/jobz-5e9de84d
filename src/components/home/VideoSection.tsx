@@ -9,8 +9,12 @@ export const VideoSection = () => {
   const videoUrl = '<iframe src="https://app.heygen.com/embed/c9624eacca7c49ca8b2dc24db2d8c777" width="600" height="400" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>';
   
   useEffect(() => {
-    // Ensure video is marked as loaded
-    setIsLoading(false);
+    // Ensure video is marked as loaded after component mounts
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+    
+    return () => clearTimeout(timer);
   }, []);
 
   const handleVideoError = () => {
@@ -30,7 +34,7 @@ export const VideoSection = () => {
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row gap-8 items-center">
           <div className="w-full md:w-1/2">
-            <div className="relative mx-auto overflow-hidden rounded-lg">
+            <div className="relative mx-auto overflow-hidden rounded-lg bg-transparent">
               <AspectRatio ratio={16/9}>
                 {isLoading && (
                   <div className="absolute inset-0 flex items-center justify-center bg-transparent z-10">
