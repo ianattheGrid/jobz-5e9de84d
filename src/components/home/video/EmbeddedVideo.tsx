@@ -10,27 +10,48 @@ interface EmbeddedVideoProps {
 export const EmbeddedVideo = ({ videoUrl, onError, onLoaded }: EmbeddedVideoProps) => {
   const [embedUrl, setEmbedUrl] = useState("");
   const [iframeKey, setIframeKey] = useState(Date.now());
+  const [rawHtml, setRawHtml] = useState<string | null>(null);
   
   useEffect(() => {
     console.log("Processing video URL for embedding:", videoUrl);
     
-    // Check if it's an embed code (contains iframe)
-    if (videoUrl.includes('<iframe') && videoUrl.includes('iframe>')) {
+    // HeyGen special handling - use the raw embed code
+    if (videoUrl.includes('<iframe') && videoUrl.includes('heygen.com')) {
+      console.log("Using raw HeyGen iframe embed code");
+      setRawHtml(videoUrl);
+      setEmbedUrl("");
+    } else if (videoUrl.includes('<iframe') && videoUrl.includes('iframe>')) {
       console.log("Detected iframe embed code");
       const src = extractSrcFromEmbedCode(videoUrl);
       console.log("Extracted src:", src);
       setEmbedUrl(src);
+      setRawHtml(null);
     } else {
       // Otherwise, convert the URL to an embed URL
       console.log("Converting URL to embed URL");
       const embedUrl = getEmbedUrl(videoUrl);
       console.log("Converted to embed URL:", embedUrl);
       setEmbedUrl(embedUrl);
+      setRawHtml(null);
     }
     
     // Generate a new key to force iframe refresh
     setIframeKey(Date.now());
   }, [videoUrl]);
+
+  // Special case: render the raw HTML for HeyGen
+  if (rawHtml) {
+    return (
+      <div 
+        className="w-full h-full absolute inset-0"
+        dangerouslySetInnerHTML={{ __html: rawHtml }}
+        onLoad={() => {
+          console.log("Raw HTML iframe loaded successfully");
+          onLoaded();
+        }}
+      />
+    );
+  }
 
   if (!embedUrl) {
     console.log("No embed URL available, returning null");
@@ -52,7 +73,6 @@ export const EmbeddedVideo = ({ videoUrl, onError, onLoaded }: EmbeddedVideoProp
         console.error("Iframe failed to load");
         onError();
       }}
-      sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox allow-presentation"
       referrerPolicy="origin"
     ></iframe>
   );

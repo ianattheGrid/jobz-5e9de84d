@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { validateVideoUrl } from "@/utils/videoUtils";
@@ -16,6 +16,13 @@ export const VideoControls = ({ videoUrl, onVideoUrlChange }: VideoControlsProps
   const [tempUrl, setTempUrl] = useState(videoUrl);
   const [isEmbedCode, setIsEmbedCode] = useState(false);
 
+  // Auto-detect if the current video URL is an embed code
+  useEffect(() => {
+    if (videoUrl.includes('<iframe')) {
+      setIsEmbedCode(true);
+    }
+  }, [videoUrl]);
+
   const handleSaveUrl = () => {
     // Validate URL
     if (!validateVideoUrl(tempUrl)) {
@@ -25,6 +32,15 @@ export const VideoControls = ({ videoUrl, onVideoUrlChange }: VideoControlsProps
         variant: "destructive",
       });
       return;
+    }
+
+    // Special handling for HeyGen URLs
+    if (tempUrl.includes('heygen.com') && !tempUrl.includes('<iframe')) {
+      toast({
+        title: "HeyGen Video",
+        description: "For HeyGen videos, please use the complete iframe embed code from the 'Share' button, not just the URL.",
+        variant: "warning",
+      });
     }
 
     // Check if it's an iframe code

@@ -8,6 +8,13 @@ import { DirectVideo } from "./video/DirectVideo";
 import { EmbeddedVideo } from "./video/EmbeddedVideo";
 import { VideoControls } from "./video/VideoControls";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import { 
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 
 export const VideoSection = () => {
   const [videoUrl, setVideoUrl] = useState("https://www.w3schools.com/html/mov_bbb.mp4");
@@ -15,6 +22,7 @@ export const VideoSection = () => {
   const [isEmbedded, setIsEmbedded] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [attemptCount, setAttemptCount] = useState(0);
+  const [isHeyGenHelp, setIsHeyGenHelp] = useState(false);
 
   // This effect will process the video URL when it changes
   useEffect(() => {
@@ -28,14 +36,25 @@ export const VideoSection = () => {
     // Log for debugging
     console.log("Processing video URL:", url);
     
-    // Check if this is a direct video file or needs to be embedded
-    const shouldEmbed = isEmbeddedVideoUrl(url);
-    console.log("Should this be embedded?", shouldEmbed);
-    setIsEmbedded(shouldEmbed);
+    // Special case for HeyGen videos
+    if (url.includes('heygen.com')) {
+      console.log("HeyGen video detected");
+      setIsEmbedded(true);
+      
+      // For HeyGen links without iframe code, show help dialog
+      if (!url.includes('<iframe')) {
+        setIsHeyGenHelp(true);
+      }
+    } else {
+      // Check if this is a direct video file or needs to be embedded
+      const shouldEmbed = isEmbeddedVideoUrl(url);
+      console.log("Should this be embedded?", shouldEmbed);
+      setIsEmbedded(shouldEmbed);
+    }
     
     // For embedded videos, we add a safety timeout
     // This ensures we don't get stuck in loading state if iframe fails silently
-    if (shouldEmbed) {
+    if (isEmbedded) {
       const timeout = setTimeout(() => {
         if (isLoading) {
           console.log("Embedded video timeout reached, considering loaded");
@@ -51,13 +70,24 @@ export const VideoSection = () => {
     console.error("Video error occurred with URL:", videoUrl);
     setHasError(true);
     setIsLoading(false);
-    toast({
-      title: "Video Error",
-      description: isEmbedded 
-        ? "Unable to load the embedded video. For HeyGen videos, please use the complete iframe embed code from the 'Share' button."
-        : "Unable to load video from the provided URL. Please check the URL and try again.",
-      variant: "destructive",
-    });
+    
+    // Special message for HeyGen videos
+    if (videoUrl.includes('heygen.com')) {
+      toast({
+        title: "HeyGen Video Error",
+        description: "Unable to load HeyGen video. Please use the complete iframe embed code from the 'Share' button, not just the URL.",
+        variant: "destructive",
+      });
+      setIsHeyGenHelp(true);
+    } else {
+      toast({
+        title: "Video Error",
+        description: isEmbedded 
+          ? "Unable to load the embedded video. For videos from services like YouTube or Vimeo, please use their embed code."
+          : "Unable to load video from the provided URL. Please check the URL and try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleVideoLoaded = () => {
@@ -77,6 +107,11 @@ export const VideoSection = () => {
     setIsLoading(true);
     setHasError(false);
     setVideoUrl(newUrl);
+    setIsHeyGenHelp(false);
+  };
+
+  const closeHeyGenHelp = () => {
+    setIsHeyGenHelp(false);
   };
 
   return (
@@ -103,6 +138,12 @@ export const VideoSection = () => {
                   <div className="text-white text-center p-4">
                     <p className="text-xl">Video could not be loaded</p>
                     <p className="text-sm mt-2">Please try a different URL or embed code</p>
+                    
+                    {videoUrl.includes('heygen.com') && !videoUrl.includes('<iframe') && (
+                      <div className="mt-4 bg-primary/20 p-2 rounded text-xs">
+                        For HeyGen videos, you need to use the complete iframe embed code
+                      </div>
+                    )}
                   </div>
                 </div>
               )}
@@ -138,6 +179,35 @@ export const VideoSection = () => {
               </AlertDescription>
             </Alert>
           )}
+          
+          {/* HeyGen Help Dialog */}
+          <Dialog open={isHeyGenHelp} onOpenChange={setIsHeyGenHelp}>
+            <DialogContent className="max-w-md">
+              <DialogHeader>
+                <DialogTitle>How to Embed HeyGen Videos</DialogTitle>
+                <DialogDescription>
+                  Follow these steps to correctly embed a HeyGen video:
+                </DialogDescription>
+              </DialogHeader>
+              <div className="space-y-4">
+                <ol className="list-decimal pl-5 space-y-2 text-sm">
+                  <li>Go to your HeyGen video</li>
+                  <li>Click the <strong>Share</strong> button</li>
+                  <li>Select the <strong>Embed</strong> tab</li>
+                  <li>Click <strong>Copy Code</strong> to copy the entire iframe embed code</li>
+                  <li>Paste the complete code (not just the URL) into the "Embed Code" field</li>
+                </ol>
+                <div className="bg-muted p-3 rounded text-xs overflow-auto">
+                  <pre className="whitespace-pre-wrap">
+                    {'<iframe src="https://app.heygen.com/embed/..." width="600" height="340" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>'}
+                  </pre>
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Note: HeyGen requires the complete iframe code to properly handle cross-origin embedding.
+                </p>
+              </div>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
     </section>

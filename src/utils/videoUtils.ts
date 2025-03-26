@@ -1,3 +1,4 @@
+
 /**
  * Utilities for handling video display and processing
  */
@@ -89,6 +90,12 @@ export const validateVideoUrl = (url: string): boolean => {
  * Extract the src URL from an iframe embed code
  */
 export const extractSrcFromEmbedCode = (embedCode: string): string => {
+  // HeyGen specific handling - don't try to extract, just return
+  if (embedCode.includes('heygen.com')) {
+    console.log("HeyGen embed code detected, returning original code");
+    return ''; // Will use rawHtml instead
+  }
+  
   // Use regex to match src attribute in iframe tag
   const srcMatch = embedCode.match(/src=["'](.*?)["']/i);
   
@@ -113,6 +120,12 @@ export const extractSrcFromEmbedCode = (embedCode: string): string => {
  * Converts regular video service URLs to their embed versions
  */
 export const getEmbedUrl = (url: string): string => {
+  // Special handling for HeyGen
+  if (url.includes('heygen.com')) {
+    console.log("HeyGen URL detected, returning as is for special handling");
+    return url;
+  }
+  
   // If it's already an iframe with src, extract and return that src
   if (url.includes('<iframe') && url.includes('src=')) {
     return extractSrcFromEmbedCode(url);
