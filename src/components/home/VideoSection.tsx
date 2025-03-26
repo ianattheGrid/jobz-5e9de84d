@@ -1,17 +1,41 @@
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { PRIMARY_COLOR_PATTERN } from "@/styles/colorPatterns";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { toast } from "@/hooks/use-toast";
 
 export const VideoSection = () => {
   const [videoUrl, setVideoUrl] = useState("https://www.w3schools.com/html/mov_bbb.mp4");
   const [isEditing, setIsEditing] = useState(false);
   const [tempUrl, setTempUrl] = useState(videoUrl);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    // Update video source when videoUrl changes
+    if (videoRef.current) {
+      videoRef.current.load(); // Reload video element with new source
+    }
+  }, [videoUrl]);
 
   const handleSaveUrl = () => {
+    // Validate URL
+    if (!tempUrl.trim()) {
+      toast({
+        title: "Error",
+        description: "Please enter a valid URL",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setVideoUrl(tempUrl);
     setIsEditing(false);
+    
+    toast({
+      title: "Success",
+      description: "Video URL updated successfully",
+    });
   };
 
   return (
@@ -27,6 +51,7 @@ export const VideoSection = () => {
           
           <div className="relative aspect-video mx-auto shadow-xl rounded-lg overflow-hidden">
             <video 
+              ref={videoRef}
               className="w-full h-full object-cover" 
               controls
               poster="/placeholder.svg"
