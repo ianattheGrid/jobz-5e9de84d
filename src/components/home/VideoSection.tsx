@@ -45,15 +45,19 @@ export const VideoSection = () => {
                   value={tempUrl}
                   onChange={(e) => setTempUrl(e.target.value)}
                 />
-                <div className="flex gap-2">
+                <div className="flex gap-2 mt-2 sm:mt-0">
                   <Button 
                     onClick={handleSaveUrl}
-                    className="bg-primary"
+                    variant="default"
+                    className="px-4 py-2 bg-primary text-white hover:bg-primary/90 z-10 relative"
+                    type="button"
                   >
                     Save
                   </Button>
                   <Button 
-                    variant="outline" 
+                    variant="outline"
+                    type="button"
+                    className="z-10 relative"
                     onClick={() => {
                       setTempUrl(videoUrl);
                       setIsEditing(false);
