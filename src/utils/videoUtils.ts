@@ -143,6 +143,19 @@ export const cleanUpEmbedCode = (embedCode: string): string => {
     }
     return embedCode; // HeyGen iframe with closing tag
   }
+
+  // Special handling for Vimeo
+  if (embedCode.includes('vimeo.com') && !embedCode.includes('<iframe')) {
+    // Convert Vimeo URL to embed code
+    let vimeoId = '';
+    
+    // Extract Vimeo ID from URL
+    const vimeoMatch = embedCode.match(/vimeo\.com\/(?:channels\/(?:\w+\/)?|groups\/(?:[^\/]*)\/videos\/|album\/(?:\d+)\/video\/|)(\d+)(?:$|\/|\?)/);
+    if (vimeoMatch && vimeoMatch[1]) {
+      vimeoId = vimeoMatch[1];
+      return `<iframe src="https://player.vimeo.com/video/${vimeoId}" width="640" height="360" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`;
+    }
+  }
   
   return embedCode;
 };
@@ -212,9 +225,10 @@ export const hasCompleteHeyGenEmbed = (url: string): boolean => {
   if (!url.includes('heygen.com')) return false;
   
   // It's a complete embed code if it has both opening and closing iframe tags
+  // and src attribute with heygen.com in it
   const hasOpeningTag = url.includes('<iframe');
   const hasClosingTag = url.includes('</iframe>');
-  const hasSrcAttribute = url.includes('src=');
+  const hasSrcAttribute = url.includes('src=') && url.includes('heygen.com');
   
   console.log("HeyGen embed check:", { hasOpeningTag, hasClosingTag, hasSrcAttribute });
   

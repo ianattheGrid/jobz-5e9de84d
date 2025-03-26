@@ -16,6 +16,13 @@ export const EmbeddedVideo = ({ videoUrl, onError, onLoaded }: EmbeddedVideoProp
   useEffect(() => {
     console.log("Processing video URL for embedding:", videoUrl);
     
+    // Check for HeyGen complete embed right away to trigger success
+    if (hasCompleteHeyGenEmbed(videoUrl)) {
+      console.log("Complete HeyGen iframe detected immediately");
+      // Trigger onLoaded immediately to close help dialog
+      setTimeout(() => onLoaded(), 100);
+    }
+    
     // First, clean up the embed code if it's an iframe
     const cleanedEmbedCode = cleanUpEmbedCode(videoUrl);
     
@@ -30,7 +37,7 @@ export const EmbeddedVideo = ({ videoUrl, onError, onLoaded }: EmbeddedVideoProp
         // This will help ensure the help dialog closes properly
         setTimeout(() => {
           onLoaded();
-        }, 500);
+        }, 100);
       } else if (cleanedEmbedCode.includes('<iframe')) {
         console.log("Using partial HeyGen iframe embed code");
         setRawHtml(cleanedEmbedCode);

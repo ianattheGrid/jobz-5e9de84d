@@ -2,7 +2,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { validateVideoUrl, cleanUpEmbedCode, hasCompleteHeyGenEmbed } from "@/utils/videoUtils";
+import { validateVideoUrl, cleanUpEmbedCode, hasCompleteHeyGenEmbed, isHeyGenVideo } from "@/utils/videoUtils";
 import { toast } from "@/hooks/use-toast";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -52,8 +52,10 @@ export const VideoControls = ({ videoUrl, onVideoUrlChange }: VideoControlsProps
       return false;
     }
 
-    // Special handling for HeyGen URLs - don't show warning if we have a full iframe
-    if (tempUrl.includes('heygen.com') && !hasCompleteHeyGenEmbed(tempUrl)) {
+    // Only show the HeyGen warning if:
+    // 1. It's a HeyGen URL (not a complete embed code)
+    // 2. It doesn't have a complete iframe tag
+    if (isHeyGenVideo(tempUrl) && !hasCompleteHeyGenEmbed(tempUrl)) {
       toast({
         title: "HeyGen Video",
         description: "For HeyGen videos, please use the complete iframe embed code from the 'Share' button, not just the URL.",
@@ -99,7 +101,7 @@ export const VideoControls = ({ videoUrl, onVideoUrlChange }: VideoControlsProps
               <TabsContent value="url" className="w-full">
                 <Input
                   className="w-full"
-                  placeholder="Enter video URL (e.g., https://example.com/video.mp4)"
+                  placeholder="Enter video URL (YouTube, Vimeo, or MP4 link)"
                   value={inputType === 'url' ? tempUrl : ''}
                   onChange={(e) => setTempUrl(e.target.value)}
                   autoFocus
@@ -109,7 +111,7 @@ export const VideoControls = ({ videoUrl, onVideoUrlChange }: VideoControlsProps
               <TabsContent value="embed" className="w-full">
                 <Textarea
                   className="min-h-[120px] font-mono text-xs"
-                  placeholder='<iframe src="https://app.heygen.com/embed/..." width="600" height="340" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>'
+                  placeholder='<iframe src="https://player.vimeo.com/video/123456789" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>'
                   value={inputType === 'embed' ? tempUrl : ''}
                   onChange={(e) => setTempUrl(e.target.value)}
                   autoFocus
@@ -150,8 +152,8 @@ export const VideoControls = ({ videoUrl, onVideoUrlChange }: VideoControlsProps
         </Button>
       )}
       <p className="mt-4 text-sm text-muted-foreground">
-        Note: For videos from services like HeyGen, YouTube, or Vimeo, you should paste their embed code.
-        Click "Share" on the video and look for the "Embed" option. Direct MP4 links also work.
+        Note: For videos from services like YouTube or Vimeo, you can use their URLs directly or paste embed codes.
+        For HeyGen videos, please paste the complete iframe embed code from the "Share" button.
       </p>
     </div>
   );

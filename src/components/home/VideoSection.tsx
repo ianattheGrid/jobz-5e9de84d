@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/dialog";
 
 export const VideoSection = () => {
+  // Start with a YouTube URL that works well
   const [videoUrl, setVideoUrl] = useState("https://www.youtube.com/watch?v=C0DPdy98e4c");
   const [isLoading, setIsLoading] = useState(true);
   const [isEmbedded, setIsEmbedded] = useState(false);
@@ -205,16 +206,14 @@ export const VideoSection = () => {
             onVideoUrlChange={handleVideoUrlChange}
           />
           
-          {isEmbedded && (
-            <Alert className="mt-4 bg-muted/50 border-primary/20 max-w-2xl mx-auto">
-              <AlertTitle className="text-primary">Using embedded videos</AlertTitle>
-              <AlertDescription className="text-xs">
-                For HeyGen videos specifically, please copy the <strong>entire iframe embed code</strong> from 
-                HeyGen's Share button. Don't just copy the URL. The embed code should start with 
-                "&lt;iframe" and end with "&lt;/iframe&gt;".
-              </AlertDescription>
-            </Alert>
-          )}
+          <Alert className="mt-4 bg-muted/50 border-primary/20 max-w-2xl mx-auto">
+            <AlertTitle className="text-primary">Video Embed Tips</AlertTitle>
+            <AlertDescription className="text-xs">
+              <p className="mb-1">• YouTube & Vimeo: You can use direct URLs or full embed codes</p>
+              <p className="mb-1">• HeyGen: Please copy the <strong>entire iframe embed code</strong> from HeyGen's Share button</p>
+              <p>• Alternatively, upload your video to Vimeo for easier embedding</p>
+            </AlertDescription>
+          </Alert>
           
           {/* HeyGen Help Dialog */}
           <Dialog open={isHeyGenHelp} onOpenChange={setIsHeyGenHelp}>
@@ -240,6 +239,7 @@ export const VideoSection = () => {
                 </div>
                 <p className="text-xs text-muted-foreground">
                   Note: HeyGen requires the complete iframe code to properly handle cross-origin embedding.
+                  Alternatively, you can upload your video to Vimeo for easier embedding.
                 </p>
               </div>
             </DialogContent>
