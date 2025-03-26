@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { PRIMARY_COLOR_PATTERN } from "@/styles/colorPatterns";
 import { toast } from "@/hooks/use-toast";

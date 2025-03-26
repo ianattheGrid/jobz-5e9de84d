@@ -12,7 +12,7 @@ export default function Index() {
       <NavBar />
       <HeroSection />
       <PlatformFeatures />
-      <div className="space-y-2">
+      <div className="space-y-0">
         <VideoSection />
         <CalculatorSection />
       </div>
