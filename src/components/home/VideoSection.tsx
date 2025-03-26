@@ -1,19 +1,16 @@
 
 import { useState, useEffect } from "react";
-import { PRIMARY_COLOR_PATTERN } from "@/styles/colorPatterns";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { EmbeddedVideo } from "./video/EmbeddedVideo";
-import { useAuth } from "@/hooks/useAuth";
 
 export const VideoSection = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [isEmbedded, setIsEmbedded] = useState(true);
   const [hasError, setHasError] = useState(false);
-  const [videoUrl, setVideoUrl] = useState('<iframe src="https://app.heygen.com/embed/c9624eacca7c49ca8b2dc24db2d8c777" width="600" height="400" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>');
-  const { user } = useAuth();
+  const videoUrl = '<iframe src="https://app.heygen.com/embed/c9624eacca7c49ca8b2dc24db2d8c777" width="600" height="400" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>';
   
   useEffect(() => {
-    setIsEmbedded(true);
+    // Ensure video is marked as loaded
+    setIsLoading(false);
   }, []);
 
   const handleVideoError = () => {
