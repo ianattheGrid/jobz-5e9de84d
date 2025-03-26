@@ -6,12 +6,14 @@ import { isEmbeddedVideoUrl } from "@/utils/videoUtils";
 import { DirectVideo } from "./video/DirectVideo";
 import { EmbeddedVideo } from "./video/EmbeddedVideo";
 import { VideoControls } from "./video/VideoControls";
+import { useAuth } from "@/hooks/useAuth";
 
 export const VideoSection = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isEmbedded, setIsEmbedded] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [videoUrl, setVideoUrl] = useState('<iframe src="https://app.heygen.com/embed/c9624eacca7c49ca8b2dc24db2d8c777" width="600" height="400" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>');
+  const { user } = useAuth();
   
   useEffect(() => {
     setIsEmbedded(true);
@@ -34,7 +36,7 @@ export const VideoSection = () => {
       <div className="container mx-auto px-4">
         <div className="max-w-2xl mx-auto">
           <div className="relative mx-auto overflow-hidden rounded-lg shadow-md">
-            <AspectRatio ratio={16/9} className="bg-gray-100">
+            <AspectRatio ratio={16/9}>
               {isLoading && (
                 <div className="absolute inset-0 flex items-center justify-center bg-transparent z-10">
                   <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
@@ -57,10 +59,13 @@ export const VideoSection = () => {
             </AspectRatio>
           </div>
           
-          <VideoControls 
-            videoUrl={videoUrl}
-            onVideoUrlChange={setVideoUrl}
-          />
+          {/* Only show video controls to authenticated users */}
+          {user && (
+            <VideoControls 
+              videoUrl={videoUrl}
+              onVideoUrlChange={setVideoUrl}
+            />
+          )}
         </div>
       </div>
     </section>
