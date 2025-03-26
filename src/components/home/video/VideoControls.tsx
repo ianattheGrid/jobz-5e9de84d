@@ -39,7 +39,7 @@ export const VideoControls = ({ videoUrl, onVideoUrlChange }: VideoControlsProps
       toast({
         title: "HeyGen Video",
         description: "For HeyGen videos, please use the complete iframe embed code from the 'Share' button, not just the URL.",
-        variant: "warning",
+        variant: "default", // Changed from "warning" to "default"
       });
     }
 
