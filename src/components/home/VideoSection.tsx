@@ -4,31 +4,65 @@ import { PRIMARY_COLOR_PATTERN } from "@/styles/colorPatterns";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/hooks/use-toast";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 export const VideoSection = () => {
   const [videoUrl, setVideoUrl] = useState("https://www.w3schools.com/html/mov_bbb.mp4");
   const [isEditing, setIsEditing] = useState(false);
   const [tempUrl, setTempUrl] = useState(videoUrl);
+  const [isLoading, setIsLoading] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
+  // This effect will force a reload of the video element when the URL changes
   useEffect(() => {
-    // Update video source when videoUrl changes
     if (videoRef.current) {
-      videoRef.current.load(); // Reload video element with new source
+      // Reset the video element to ensure it loads the new source
+      videoRef.current.pause();
+      videoRef.current.load();
+      
+      // Try to play the video after it's loaded
+      const playVideo = () => {
+        videoRef.current?.play().catch(error => {
+          console.error("Video playback failed:", error);
+        });
+      };
+
+      videoRef.current.addEventListener("loadeddata", playVideo, { once: true });
+      
+      return () => {
+        videoRef.current?.removeEventListener("loadeddata", playVideo);
+      };
     }
   }, [videoUrl]);
 
+  const validateUrl = (url: string) => {
+    if (!url.trim()) return false;
+    
+    // Basic URL validation
+    try {
+      new URL(url);
+      // Check if URL likely points to a video
+      return url.includes('.mp4') || 
+             url.includes('/videos/') || 
+             url.includes('video') || 
+             url.includes('media');
+    } catch {
+      return false;
+    }
+  };
+
   const handleSaveUrl = () => {
     // Validate URL
-    if (!tempUrl.trim()) {
+    if (!validateUrl(tempUrl)) {
       toast({
         title: "Error",
-        description: "Please enter a valid URL",
+        description: "Please enter a valid video URL",
         variant: "destructive",
       });
       return;
     }
 
+    setIsLoading(true);
     setVideoUrl(tempUrl);
     setIsEditing(false);
     
@@ -36,6 +70,19 @@ export const VideoSection = () => {
       title: "Success",
       description: "Video URL updated successfully",
     });
+  };
+
+  const handleVideoError = () => {
+    toast({
+      title: "Video Error",
+      description: "Unable to load video from the provided URL. Please check the URL and try again.",
+      variant: "destructive",
+    });
+    setIsLoading(false);
+  };
+
+  const handleVideoLoaded = () => {
+    setIsLoading(false);
   };
 
   return (
@@ -49,12 +96,19 @@ export const VideoSection = () => {
             Watch our short explainer video to understand how jobz can transform your hiring experience.
           </p>
           
-          <div className="relative aspect-video mx-auto shadow-xl rounded-lg overflow-hidden">
+          <div className="relative aspect-video mx-auto shadow-xl rounded-lg overflow-hidden bg-black">
+            {isLoading && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black/20 z-10">
+                <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+              </div>
+            )}
             <video 
               ref={videoRef}
-              className="w-full h-full object-cover" 
+              className="w-full h-full object-contain" 
               controls
               poster="/placeholder.svg"
+              onError={handleVideoError}
+              onLoadedData={handleVideoLoaded}
             >
               <source src={videoUrl} type="video/mp4" />
               Your browser does not support the video tag.
