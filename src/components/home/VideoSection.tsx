@@ -5,15 +5,14 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { isEmbeddedVideoUrl } from "@/utils/videoUtils";
 import { DirectVideo } from "./video/DirectVideo";
 import { EmbeddedVideo } from "./video/EmbeddedVideo";
+import { VideoControls } from "./video/VideoControls";
 
 export const VideoSection = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isEmbedded, setIsEmbedded] = useState(true);
   const [hasError, setHasError] = useState(false);
+  const [videoUrl, setVideoUrl] = useState('<iframe src="https://app.heygen.com/embed/c9624eacca7c49ca8b2dc24db2d8c777" width="600" height="400" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>');
   
-  // Use HeyGen embed code
-  const videoUrl = '<iframe src="https://app.heygen.com/embed/c9624eacca7c49ca8b2dc24db2d8c777" width="600" height="400" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>';
-
   useEffect(() => {
     setIsEmbedded(true);
   }, []);
@@ -57,6 +56,11 @@ export const VideoSection = () => {
               />
             </AspectRatio>
           </div>
+          
+          <VideoControls 
+            videoUrl={videoUrl}
+            onVideoUrlChange={setVideoUrl}
+          />
         </div>
       </div>
     </section>
