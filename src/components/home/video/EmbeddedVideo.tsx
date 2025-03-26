@@ -20,11 +20,19 @@ export const EmbeddedVideo = ({ videoUrl, onError, onLoaded }: EmbeddedVideoProp
     if (videoUrl.includes('<iframe') && videoUrl.includes('heygen.com')) {
       if (containerRef.current) {
         try {
-          // Set the innerHTML to the raw iframe HTML
-          containerRef.current.innerHTML = videoUrl;
-          console.log("HeyGen iframe set via innerHTML");
-          // Let the parent know the video has loaded
-          setTimeout(() => onLoaded(), 500);
+          // Clear any previous content first
+          containerRef.current.innerHTML = '';
+          
+          // Set the innerHTML to the raw iframe HTML after a small delay
+          setTimeout(() => {
+            if (containerRef.current) {
+              containerRef.current.innerHTML = videoUrl;
+              console.log("HeyGen iframe set via innerHTML");
+              
+              // Let the parent know the video has loaded after another small delay
+              setTimeout(() => onLoaded(), 800);
+            }
+          }, 200);
         } catch (error) {
           console.error("Error setting HeyGen iframe:", error);
           onError();
@@ -38,7 +46,7 @@ export const EmbeddedVideo = ({ videoUrl, onError, onLoaded }: EmbeddedVideoProp
     return (
       <div 
         ref={containerRef} 
-        className="w-full h-full absolute inset-0"
+        className="w-full h-full absolute inset-0 bg-transparent"
         style={{ maxHeight: "400px" }}
       />
     );
