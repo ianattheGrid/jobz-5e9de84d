@@ -18,8 +18,8 @@ export const VideoSection = () => {
     <section className="py-16 bg-transparent">
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row gap-12 items-center">
-          {/* Video on the left */}
-          <div className="w-full md:w-1/2">
+          {/* Video container */}
+          <div className="w-full">
             <div className="relative mx-auto overflow-hidden rounded-lg shadow-md">
               <AspectRatio ratio={16/9}>
                 <div 
@@ -28,7 +28,7 @@ export const VideoSection = () => {
                 />
               </AspectRatio>
               
-              {/* Simple controls for admin */}
+              {/* Admin controls - only visible to you */}
               <div className="mt-4">
                 {isEditing ? (
                   <div className="flex flex-col gap-2">
@@ -57,21 +57,6 @@ export const VideoSection = () => {
                   </Button>
                 )}
               </div>
-            </div>
-          </div>
-          
-          {/* Content on the right */}
-          <div className="w-full md:w-1/2">
-            <h2 className="text-3xl font-bold mb-4">AI-Powered Recruiting</h2>
-            <p className="text-lg mb-6">
-              Our platform harnesses the power of artificial intelligence to match the right candidates with your open positions. With advanced algorithms and machine learning, we can identify ideal candidates based on skills, experience, and culture fit.
-            </p>
-            <p className="text-lg mb-6">
-              The AI assistant shown in the video demonstrates how our technology can represent your company, engage with candidates, and streamline the recruiting process.
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <Button className="text-white bg-primary hover:bg-primary/90">Learn More</Button>
-              <Button variant="outline">Schedule Demo</Button>
             </div>
           </div>
         </div>
