@@ -1,5 +1,6 @@
+
 import { useState, useEffect } from "react";
-import { extractSrcFromEmbedCode, getEmbedUrl } from "@/utils/videoUtils";
+import { extractSrcFromEmbedCode, getEmbedUrl, cleanUpEmbedCode } from "@/utils/videoUtils";
 
 interface EmbeddedVideoProps {
   videoUrl: string;
@@ -15,21 +16,31 @@ export const EmbeddedVideo = ({ videoUrl, onError, onLoaded }: EmbeddedVideoProp
   useEffect(() => {
     console.log("Processing video URL for embedding:", videoUrl);
     
+    // First, clean up the embed code if it's an iframe
+    const cleanedEmbedCode = cleanUpEmbedCode(videoUrl);
+    
     // HeyGen special handling - use the raw embed code
-    if (videoUrl.includes('<iframe') && videoUrl.includes('heygen.com')) {
+    if (cleanedEmbedCode.includes('<iframe') && cleanedEmbedCode.includes('heygen.com')) {
       console.log("Using raw HeyGen iframe embed code");
-      setRawHtml(videoUrl);
+      setRawHtml(cleanedEmbedCode);
       setEmbedUrl("");
-    } else if (videoUrl.includes('<iframe') && videoUrl.includes('iframe>')) {
+    } else if (cleanedEmbedCode.includes('<iframe') && cleanedEmbedCode.includes('iframe>')) {
       console.log("Detected iframe embed code");
-      const src = extractSrcFromEmbedCode(videoUrl);
+      const src = extractSrcFromEmbedCode(cleanedEmbedCode);
       console.log("Extracted src:", src);
-      setEmbedUrl(src);
-      setRawHtml(null);
+      
+      if (src) {
+        setEmbedUrl(src);
+        setRawHtml(null);
+      } else {
+        // If we couldn't extract src, use raw HTML as fallback
+        setRawHtml(cleanedEmbedCode);
+        setEmbedUrl("");
+      }
     } else {
       // Otherwise, convert the URL to an embed URL
       console.log("Converting URL to embed URL");
-      const embedUrl = getEmbedUrl(videoUrl);
+      const embedUrl = getEmbedUrl(cleanedEmbedCode);
       console.log("Converted to embed URL:", embedUrl);
       setEmbedUrl(embedUrl);
       setRawHtml(null);

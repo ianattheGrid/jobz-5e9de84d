@@ -61,6 +61,11 @@ export const validateVideoUrl = (url: string): boolean => {
   // Check if it's an embed code
   if (url.includes('<iframe') && url.includes('iframe>')) return true;
   
+  // Check if it's a HeyGen partial embed (just the src part)
+  if (url.includes('heygen.com/embed/') && !url.startsWith('http')) {
+    return true;
+  }
+  
   // Basic URL validation
   try {
     new URL(url);
@@ -114,6 +119,30 @@ export const extractSrcFromEmbedCode = (embedCode: string): string => {
   
   console.log("Extracted embed source:", src);
   return src;
+};
+
+/**
+ * Cleans up and standardizes an iframe embed code
+ */
+export const cleanUpEmbedCode = (embedCode: string): string => {
+  // If it's only a URL from HeyGen that contains embed
+  if (embedCode.includes('heygen.com/embed/') && !embedCode.includes('<iframe')) {
+    return `<iframe src="${embedCode}" width="600" height="340" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>`;
+  }
+  
+  // If it's already an iframe, return as is
+  if (embedCode.includes('<iframe') && embedCode.includes('</iframe>')) {
+    return embedCode;
+  }
+  
+  // Handle HeyGen embed code that might be missing closing tag
+  if (embedCode.includes('<iframe') && embedCode.includes('heygen.com')) {
+    if (!embedCode.includes('</iframe>')) {
+      return embedCode + '</iframe>';
+    }
+  }
+  
+  return embedCode;
 };
 
 /**

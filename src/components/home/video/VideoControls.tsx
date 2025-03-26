@@ -1,10 +1,11 @@
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { validateVideoUrl } from "@/utils/videoUtils";
+import { validateVideoUrl, cleanUpEmbedCode } from "@/utils/videoUtils";
 import { toast } from "@/hooks/use-toast";
 import { Textarea } from "@/components/ui/textarea";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface VideoControlsProps {
   videoUrl: string;
@@ -14,16 +15,33 @@ interface VideoControlsProps {
 export const VideoControls = ({ videoUrl, onVideoUrlChange }: VideoControlsProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [tempUrl, setTempUrl] = useState(videoUrl);
-  const [isEmbedCode, setIsEmbedCode] = useState(false);
+  const [inputType, setInputType] = useState<'url' | 'embed'>('url');
+  const [defaultTab, setDefaultTab] = useState<'url' | 'embed'>('url');
 
   // Auto-detect if the current video URL is an embed code
   useEffect(() => {
     if (videoUrl.includes('<iframe')) {
-      setIsEmbedCode(true);
+      setInputType('embed');
+      setDefaultTab('embed');
+    } else {
+      setInputType('url');
+      setDefaultTab('url');
     }
+    
+    setTempUrl(videoUrl);
   }, [videoUrl]);
 
-  const handleSaveUrl = () => {
+  const handleValidation = useCallback(() => {
+    // Check if URL/embed code is empty
+    if (!tempUrl.trim()) {
+      toast({
+        title: "Error",
+        description: "Please enter a video URL or embed code.",
+        variant: "destructive",
+      });
+      return false;
+    }
+
     // Validate URL
     if (!validateVideoUrl(tempUrl)) {
       toast({
@@ -31,7 +49,7 @@ export const VideoControls = ({ videoUrl, onVideoUrlChange }: VideoControlsProps
         description: "Please enter a valid video URL or embed code. For HeyGen videos, use their embed code from the 'Share' button.",
         variant: "destructive",
       });
-      return;
+      return false;
     }
 
     // Special handling for HeyGen URLs
@@ -43,11 +61,18 @@ export const VideoControls = ({ videoUrl, onVideoUrlChange }: VideoControlsProps
       });
     }
 
-    // Check if it's an iframe code
-    const containsIframe = tempUrl.includes('<iframe') && tempUrl.includes('</iframe>');
-    setIsEmbedCode(containsIframe);
+    return true;
+  }, [tempUrl]);
 
-    onVideoUrlChange(tempUrl);
+  const handleSaveUrl = () => {
+    if (!handleValidation()) {
+      return;
+    }
+
+    // Clean up embed code if needed
+    const finalUrl = inputType === 'embed' ? cleanUpEmbedCode(tempUrl) : tempUrl;
+    
+    onVideoUrlChange(finalUrl);
     setIsEditing(false);
     
     toast({
@@ -56,47 +81,41 @@ export const VideoControls = ({ videoUrl, onVideoUrlChange }: VideoControlsProps
     });
   };
 
+  const handleTabChange = (value: string) => {
+    setInputType(value as 'url' | 'embed');
+  };
+
   return (
     <div className="mt-6">
       {isEditing ? (
         <div className="flex flex-col gap-3 justify-center items-center">
           <div className="w-full max-w-md">
-            <div className="flex mb-2">
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                className={!isEmbedCode ? "bg-primary/10" : ""}
-                onClick={() => setIsEmbedCode(false)}
-              >
-                URL
-              </Button>
-              <Button
-                type="button"
-                variant="outline"
-                size="sm" 
-                className={`ml-2 ${isEmbedCode ? "bg-primary/10" : ""}`}
-                onClick={() => setIsEmbedCode(true)}
-              >
-                Embed Code
-              </Button>
-            </div>
-            
-            {isEmbedCode ? (
-              <Textarea
-                className="min-h-[100px] font-mono text-xs"
-                placeholder='<iframe src="https://app.heygen.com/embed/..." width="600" height="340" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>'
-                value={tempUrl}
-                onChange={(e) => setTempUrl(e.target.value)}
-              />
-            ) : (
-              <Input
-                className="w-full"
-                placeholder="Enter video URL (e.g., https://example.com/video.mp4)"
-                value={tempUrl}
-                onChange={(e) => setTempUrl(e.target.value)}
-              />
-            )}
+            <Tabs defaultValue={defaultTab} onValueChange={handleTabChange} className="w-full">
+              <TabsList className="grid w-full grid-cols-2 mb-4">
+                <TabsTrigger value="url">URL</TabsTrigger>
+                <TabsTrigger value="embed">Embed Code</TabsTrigger>
+              </TabsList>
+              
+              <TabsContent value="url" className="w-full">
+                <Input
+                  className="w-full"
+                  placeholder="Enter video URL (e.g., https://example.com/video.mp4)"
+                  value={inputType === 'url' ? tempUrl : ''}
+                  onChange={(e) => setTempUrl(e.target.value)}
+                  autoFocus
+                />
+              </TabsContent>
+              
+              <TabsContent value="embed" className="w-full">
+                <Textarea
+                  className="min-h-[120px] font-mono text-xs"
+                  placeholder='<iframe src="https://app.heygen.com/embed/..." width="600" height="340" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>'
+                  value={inputType === 'embed' ? tempUrl : ''}
+                  onChange={(e) => setTempUrl(e.target.value)}
+                  autoFocus
+                />
+              </TabsContent>
+            </Tabs>
           </div>
           
           <div className="flex gap-2 mt-2">

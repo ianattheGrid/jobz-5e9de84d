@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/dialog";
 
 export const VideoSection = () => {
-  const [videoUrl, setVideoUrl] = useState("https://www.w3schools.com/html/mov_bbb.mp4");
+  const [videoUrl, setVideoUrl] = useState("https://www.youtube.com/watch?v=C0DPdy98e4c"); // Changed to a more reliable demo video
   const [isLoading, setIsLoading] = useState(true);
   const [isEmbedded, setIsEmbedded] = useState(false);
   const [hasError, setHasError] = useState(false);
@@ -60,7 +60,7 @@ export const VideoSection = () => {
           console.log("Embedded video timeout reached, considering loaded");
           setIsLoading(false);
         }
-      }, 5000);
+      }, 7000); // Extended timeout for slower connections
       
       return () => clearTimeout(timeout);
     }
@@ -134,16 +134,24 @@ export const VideoSection = () => {
               )}
               
               {hasError && (
-                <div className="absolute inset-0 flex items-center justify-center bg-black/80 z-10">
-                  <div className="text-white text-center p-4">
-                    <p className="text-xl">Video could not be loaded</p>
-                    <p className="text-sm mt-2">Please try a different URL or embed code</p>
+                <div className="absolute inset-0 flex items-center justify-center bg-black/90 z-10">
+                  <div className="text-white text-center p-6 max-w-md">
+                    <p className="text-xl font-semibold mb-2">Video could not be loaded</p>
+                    <p className="text-sm mb-4">Please try a different URL or embed code</p>
                     
                     {videoUrl.includes('heygen.com') && !videoUrl.includes('<iframe') && (
-                      <div className="mt-4 bg-primary/20 p-2 rounded text-xs">
-                        For HeyGen videos, you need to use the complete iframe embed code
+                      <div className="mt-4 bg-primary/20 p-3 rounded text-xs">
+                        <p className="font-medium">For HeyGen videos:</p>
+                        <p>You need to use the complete iframe embed code from the 'Share' button</p>
                       </div>
                     )}
+                    
+                    <div className="bg-red-600 mt-4 p-3 rounded-md">
+                      <p className="text-white font-medium">Error</p>
+                      <p className="text-white/90 text-xs">
+                        Please enter a valid video URL or embed code. For HeyGen videos, use their embed code from the 'Share' button.
+                      </p>
+                    </div>
                   </div>
                 </div>
               )}
