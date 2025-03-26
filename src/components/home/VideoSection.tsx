@@ -2,10 +2,7 @@
 import { useState, useEffect } from "react";
 import { PRIMARY_COLOR_PATTERN } from "@/styles/colorPatterns";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { isEmbeddedVideoUrl } from "@/utils/videoUtils";
-import { DirectVideo } from "./video/DirectVideo";
 import { EmbeddedVideo } from "./video/EmbeddedVideo";
-import { VideoControls } from "./video/VideoControls";
 import { useAuth } from "@/hooks/useAuth";
 
 export const VideoSection = () => {
@@ -59,14 +56,6 @@ export const VideoSection = () => {
                 />
               </AspectRatio>
             </div>
-            
-            {/* Only show video controls to authenticated users */}
-            {user && (
-              <VideoControls 
-                videoUrl={videoUrl}
-                onVideoUrlChange={setVideoUrl}
-              />
-            )}
           </div>
           
           <div className="w-full md:w-1/2">
