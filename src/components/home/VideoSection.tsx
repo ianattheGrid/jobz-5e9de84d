@@ -34,38 +34,44 @@ export const VideoSection = () => {
   return (
     <section className="py-2 bg-transparent">
       <div className="container mx-auto px-4">
-        <div className="max-w-2xl mx-auto">
-          <div className="relative mx-auto overflow-hidden rounded-lg shadow-md">
-            <AspectRatio ratio={16/9}>
-              {isLoading && (
-                <div className="absolute inset-0 flex items-center justify-center bg-transparent z-10">
-                  <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
-                </div>
-              )}
-              
-              {hasError && (
-                <div className="absolute inset-0 flex items-center justify-center bg-transparent z-10">
-                  <div className="text-white text-center p-6 max-w-md">
-                    <p className="text-xl font-semibold mb-2">Video could not be loaded</p>
+        <div className="flex flex-col md:flex-row gap-8 items-center">
+          <div className="w-full md:w-1/2">
+            <div className="relative mx-auto overflow-hidden rounded-lg">
+              <AspectRatio ratio={16/9}>
+                {isLoading && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-transparent z-10">
+                    <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
                   </div>
-                </div>
-              )}
-              
-              <EmbeddedVideo 
+                )}
+                
+                {hasError && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-transparent z-10">
+                    <div className="text-white text-center p-6 max-w-md">
+                      <p className="text-xl font-semibold mb-2">Video could not be loaded</p>
+                    </div>
+                  </div>
+                )}
+                
+                <EmbeddedVideo 
+                  videoUrl={videoUrl}
+                  onError={handleVideoError}
+                  onLoaded={handleVideoLoaded}
+                />
+              </AspectRatio>
+            </div>
+            
+            {/* Only show video controls to authenticated users */}
+            {user && (
+              <VideoControls 
                 videoUrl={videoUrl}
-                onError={handleVideoError}
-                onLoaded={handleVideoLoaded}
+                onVideoUrlChange={setVideoUrl}
               />
-            </AspectRatio>
+            )}
           </div>
           
-          {/* Only show video controls to authenticated users */}
-          {user && (
-            <VideoControls 
-              videoUrl={videoUrl}
-              onVideoUrlChange={setVideoUrl}
-            />
-          )}
+          <div className="w-full md:w-1/2">
+            {/* Content for the right side will be added later */}
+          </div>
         </div>
       </div>
     </section>
