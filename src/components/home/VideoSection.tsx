@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { PRIMARY_COLOR_PATTERN } from "@/styles/colorPatterns";
 import { toast } from "@/hooks/use-toast";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { isEmbeddedVideoUrl } from "@/utils/videoUtils";
+import { isEmbeddedVideoUrl, hasCompleteHeyGenEmbed } from "@/utils/videoUtils";
 import { DirectVideo } from "./video/DirectVideo";
 import { EmbeddedVideo } from "./video/EmbeddedVideo";
 import { VideoControls } from "./video/VideoControls";
@@ -41,13 +41,13 @@ export const VideoSection = () => {
       console.log("HeyGen video detected");
       setIsEmbedded(true);
       
-      // Only show help dialog for HeyGen links without iframe code
-      // AND only if there's been no successful update yet
-      if (!url.includes('<iframe')) {
-        setIsHeyGenHelp(true);
-      } else {
-        // If we have a complete HeyGen iframe code, make sure to hide the help dialog
+      // Only show help dialog for HeyGen links without complete iframe code
+      if (hasCompleteHeyGenEmbed(url)) {
+        console.log("Complete HeyGen iframe detected, hiding help dialog");
         setIsHeyGenHelp(false);
+      } else {
+        console.log("Incomplete HeyGen URL detected, showing help dialog");
+        setIsHeyGenHelp(true);
       }
     } else {
       // For non-HeyGen videos, always close the help dialog
@@ -104,6 +104,11 @@ export const VideoSection = () => {
     console.log("Video loaded successfully");
     setIsLoading(false);
     setHasError(false);
+    
+    // If we have a HeyGen video that loaded successfully, ensure help dialog is closed
+    if (videoUrl.includes('heygen.com')) {
+      setIsHeyGenHelp(false);
+    }
   };
 
   const handleVideoUrlChange = (newUrl: string) => {
@@ -118,11 +123,17 @@ export const VideoSection = () => {
     setHasError(false);
     setVideoUrl(newUrl);
     
-    // For HeyGen videos, only show help if it doesn't contain iframe code
-    if (newUrl.includes('heygen.com') && !newUrl.includes('<iframe')) {
-      setIsHeyGenHelp(true);
+    // For HeyGen videos, check if it has a complete iframe code
+    if (newUrl.includes('heygen.com')) {
+      if (hasCompleteHeyGenEmbed(newUrl)) {
+        console.log("Complete HeyGen iframe detected on URL change, hiding help dialog");
+        setIsHeyGenHelp(false);
+      } else {
+        console.log("Incomplete HeyGen URL detected on URL change, showing help dialog");
+        setIsHeyGenHelp(true);
+      }
     } else {
-      // For all other cases, including complete HeyGen iframe code, hide the help dialog
+      // For all other cases, hide the help dialog
       setIsHeyGenHelp(false);
     }
   };

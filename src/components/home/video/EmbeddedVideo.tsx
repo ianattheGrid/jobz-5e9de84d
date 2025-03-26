@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { extractSrcFromEmbedCode, getEmbedUrl, cleanUpEmbedCode, isHeyGenVideo } from "@/utils/videoUtils";
+import { extractSrcFromEmbedCode, getEmbedUrl, cleanUpEmbedCode, isHeyGenVideo, hasCompleteHeyGenEmbed } from "@/utils/videoUtils";
 
 interface EmbeddedVideoProps {
   videoUrl: string;
@@ -21,8 +21,18 @@ export const EmbeddedVideo = ({ videoUrl, onError, onLoaded }: EmbeddedVideoProp
     
     // HeyGen special handling - use the raw embed code
     if (isHeyGenVideo(cleanedEmbedCode)) {
-      if (cleanedEmbedCode.includes('<iframe')) {
-        console.log("Using raw HeyGen iframe embed code");
+      if (hasCompleteHeyGenEmbed(cleanedEmbedCode)) {
+        console.log("Using complete HeyGen iframe embed code");
+        setRawHtml(cleanedEmbedCode);
+        setEmbedUrl("");
+        
+        // Since we know this is a complete HeyGen embed, we can trigger onLoaded
+        // This will help ensure the help dialog closes properly
+        setTimeout(() => {
+          onLoaded();
+        }, 500);
+      } else if (cleanedEmbedCode.includes('<iframe')) {
+        console.log("Using partial HeyGen iframe embed code");
         setRawHtml(cleanedEmbedCode);
         setEmbedUrl("");
       } else {
@@ -56,7 +66,7 @@ export const EmbeddedVideo = ({ videoUrl, onError, onLoaded }: EmbeddedVideoProp
     
     // Generate a new key to force iframe refresh
     setIframeKey(Date.now());
-  }, [videoUrl]);
+  }, [videoUrl, onLoaded]);
 
   // Special case: render the raw HTML for HeyGen or other raw HTML embeds
   if (rawHtml) {

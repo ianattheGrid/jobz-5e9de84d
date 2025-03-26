@@ -206,7 +206,17 @@ export const isHeyGenVideo = (url: string): boolean => {
 
 /**
  * Checks if a HeyGen URL has a complete iframe code
+ * This is crucial for determining whether to show the help dialog
  */
 export const hasCompleteHeyGenEmbed = (url: string): boolean => {
-  return url.includes('heygen.com') && url.includes('<iframe') && url.includes('</iframe>');
+  if (!url.includes('heygen.com')) return false;
+  
+  // It's a complete embed code if it has both opening and closing iframe tags
+  const hasOpeningTag = url.includes('<iframe');
+  const hasClosingTag = url.includes('</iframe>');
+  const hasSrcAttribute = url.includes('src=');
+  
+  console.log("HeyGen embed check:", { hasOpeningTag, hasClosingTag, hasSrcAttribute });
+  
+  return hasOpeningTag && hasClosingTag && hasSrcAttribute;
 };

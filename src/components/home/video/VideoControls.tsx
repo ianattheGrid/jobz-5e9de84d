@@ -2,7 +2,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { validateVideoUrl, cleanUpEmbedCode } from "@/utils/videoUtils";
+import { validateVideoUrl, cleanUpEmbedCode, hasCompleteHeyGenEmbed } from "@/utils/videoUtils";
 import { toast } from "@/hooks/use-toast";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -53,7 +53,7 @@ export const VideoControls = ({ videoUrl, onVideoUrlChange }: VideoControlsProps
     }
 
     // Special handling for HeyGen URLs - don't show warning if we have a full iframe
-    if (tempUrl.includes('heygen.com') && !tempUrl.includes('<iframe')) {
+    if (tempUrl.includes('heygen.com') && !hasCompleteHeyGenEmbed(tempUrl)) {
       toast({
         title: "HeyGen Video",
         description: "For HeyGen videos, please use the complete iframe embed code from the 'Share' button, not just the URL.",
