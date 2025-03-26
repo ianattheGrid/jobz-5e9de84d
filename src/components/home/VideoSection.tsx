@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { PRIMARY_COLOR_PATTERN } from "@/styles/colorPatterns";
 import { toast } from "@/hooks/use-toast";
@@ -5,8 +6,6 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { isEmbeddedVideoUrl, hasCompleteHeyGenEmbed } from "@/utils/videoUtils";
 import { DirectVideo } from "./video/DirectVideo";
 import { EmbeddedVideo } from "./video/EmbeddedVideo";
-import { VideoControls } from "./video/VideoControls";
-import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { 
   Dialog,
   DialogContent,
@@ -128,7 +127,7 @@ export const VideoSection = () => {
   };
 
   return (
-    <section className="py-16 bg-muted/10">
+    <section className="py-16 bg-transparent">
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className={`text-3xl font-bold mb-6 ${PRIMARY_COLOR_PATTERN}`}>
@@ -138,33 +137,19 @@ export const VideoSection = () => {
             Watch our short explainer video to understand how jobz can transform your hiring experience.
           </p>
           
-          <div className="relative mx-auto shadow-xl rounded-lg overflow-hidden">
+          <div className="relative mx-auto overflow-hidden">
             <AspectRatio ratio={16/9} className="bg-transparent">
               {isLoading && (
-                <div className="absolute inset-0 flex items-center justify-center bg-black/20 z-10">
+                <div className="absolute inset-0 flex items-center justify-center bg-transparent z-10">
                   <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
                 </div>
               )}
               
               {hasError && (
-                <div className="absolute inset-0 flex items-center justify-center bg-black/90 z-10">
+                <div className="absolute inset-0 flex items-center justify-center bg-transparent z-10">
                   <div className="text-white text-center p-6 max-w-md">
                     <p className="text-xl font-semibold mb-2">Video could not be loaded</p>
                     <p className="text-sm mb-4">Please try a different URL or embed code</p>
-                    
-                    {videoUrl.includes('heygen.com') && !videoUrl.includes('<iframe') && (
-                      <div className="mt-4 bg-primary/20 p-3 rounded text-xs">
-                        <p className="font-medium">For HeyGen videos:</p>
-                        <p>You need to use the complete iframe embed code from the 'Share' button</p>
-                      </div>
-                    )}
-                    
-                    <div className="bg-red-600 mt-4 p-3 rounded-md">
-                      <p className="text-white font-medium">Error</p>
-                      <p className="text-white/90 text-xs">
-                        Please enter a valid video URL or embed code. For HeyGen videos, use their embed code from the 'Share' button.
-                      </p>
-                    </div>
                   </div>
                 </div>
               )}
@@ -184,20 +169,6 @@ export const VideoSection = () => {
               )}
             </AspectRatio>
           </div>
-          
-          <VideoControls 
-            videoUrl={videoUrl}
-            onVideoUrlChange={handleVideoUrlChange}
-          />
-          
-          <Alert className="mt-4 bg-muted/50 border-primary/20 max-w-2xl mx-auto">
-            <AlertTitle className="text-primary">Video Embed Tips</AlertTitle>
-            <AlertDescription className="text-xs">
-              <p className="mb-1">• YouTube & Vimeo: You can use direct URLs or full embed codes</p>
-              <p className="mb-1">• HeyGen: Please copy the <strong>entire iframe embed code</strong> from HeyGen's Share button</p>
-              <p>• Alternatively, upload your video to Vimeo for easier embedding</p>
-            </AlertDescription>
-          </Alert>
           
           <Dialog open={isHeyGenHelp} onOpenChange={setIsHeyGenHelp}>
             <DialogContent className="max-w-md">
