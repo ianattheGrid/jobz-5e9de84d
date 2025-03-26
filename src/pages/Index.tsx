@@ -13,8 +13,8 @@ export default function Index() {
       <HeroSection />
       <PlatformFeatures />
       <div className="space-y-0">
-        <VideoSection />
         <CalculatorSection />
+        <VideoSection />
       </div>
       <FAQSection />
     </div>
