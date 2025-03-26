@@ -19,11 +19,19 @@ export const EmbeddedVideo = ({ videoUrl, onError, onLoaded }: EmbeddedVideoProp
     // Handle HeyGen videos that come as full iframe HTML
     if (videoUrl.includes('<iframe') && videoUrl.includes('heygen.com')) {
       if (containerRef.current) {
-        containerRef.current.innerHTML = videoUrl;
-        onLoaded();
+        try {
+          // Set the innerHTML to the raw iframe HTML
+          containerRef.current.innerHTML = videoUrl;
+          console.log("HeyGen iframe set via innerHTML");
+          // Let the parent know the video has loaded
+          setTimeout(() => onLoaded(), 500);
+        } catch (error) {
+          console.error("Error setting HeyGen iframe:", error);
+          onError();
+        }
       }
     }
-  }, [videoUrl, onLoaded]);
+  }, [videoUrl, onLoaded, onError]);
 
   // For HeyGen videos, we'll render the raw HTML
   if (videoUrl.includes('<iframe') && videoUrl.includes('heygen.com')) {

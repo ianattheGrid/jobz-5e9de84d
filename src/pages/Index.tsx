@@ -12,10 +12,10 @@ export default function Index() {
       <NavBar />
       <HeroSection />
       <PlatformFeatures />
-      <div className="space-y-8">
-        <VideoSection />
-        <CalculatorSection />
-      </div>
+      <VideoSection />
+      {/* Add a spacer div to create more space between sections */}
+      <div className="h-16"></div>
+      <CalculatorSection />
       <FAQSection />
     </div>
   );
