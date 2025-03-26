@@ -11,8 +11,8 @@ export const VideoSection = () => {
   const [isEmbedded, setIsEmbedded] = useState(true);
   const [hasError, setHasError] = useState(false);
   
-  // Use a fixed embedded YouTube URL that's known to work
-  const videoUrl = "https://www.youtube.com/embed/C0DPdy98e4c";
+  // Use HeyGen embed code
+  const videoUrl = '<iframe src="https://app.heygen.com/embed/c9624eacca7c49ca8b2dc24db2d8c777" width="600" height="400" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>';
 
   useEffect(() => {
     setIsEmbedded(true);
@@ -31,18 +31,11 @@ export const VideoSection = () => {
   };
 
   return (
-    <section className="py-4 bg-transparent">
+    <section className="py-2 bg-transparent">
       <div className="container mx-auto px-4">
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className={`text-3xl font-bold mb-4 ${PRIMARY_COLOR_PATTERN}`}>
-            See How It Works
-          </h2>
-          <p className="text-foreground mb-6">
-            Watch our short explainer video to understand how jobz can transform your hiring experience.
-          </p>
-          
-          <div className="relative mx-auto overflow-hidden">
-            <AspectRatio ratio={16/9} className="bg-transparent">
+        <div className="max-w-2xl mx-auto">
+          <div className="relative mx-auto overflow-hidden rounded-lg shadow-md">
+            <AspectRatio ratio={16/9} className="bg-gray-100">
               {isLoading && (
                 <div className="absolute inset-0 flex items-center justify-center bg-transparent z-10">
                   <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
