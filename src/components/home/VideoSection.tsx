@@ -1,20 +1,16 @@
-
-import { useEffect, useRef, useState } from "react";
+import { useState, useEffect } from "react";
 import { PRIMARY_COLOR_PATTERN } from "@/styles/colorPatterns";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { toast } from "@/hooks/use-toast";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { extractDomain } from "@/utils/validationUtils";
+import { isEmbeddedVideoUrl } from "@/utils/videoUtils";
+import { DirectVideo } from "./video/DirectVideo";
+import { EmbeddedVideo } from "./video/EmbeddedVideo";
+import { VideoControls } from "./video/VideoControls";
 
 export const VideoSection = () => {
   const [videoUrl, setVideoUrl] = useState("https://www.w3schools.com/html/mov_bbb.mp4");
-  const [isEditing, setIsEditing] = useState(false);
-  const [tempUrl, setTempUrl] = useState(videoUrl);
   const [isLoading, setIsLoading] = useState(false);
-  const [videoFormat, setVideoFormat] = useState("video/mp4");
   const [isEmbedded, setIsEmbedded] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
 
   // This effect will process the video URL when it changes
   useEffect(() => {
@@ -25,125 +21,19 @@ export const VideoSection = () => {
     setIsLoading(true);
     
     // Check if this is a direct video file or needs to be embedded
-    const domain = extractDomain(url);
-    const isHeyGenOrServiceUrl = 
-      domain.includes('heygen') || 
-      domain.includes('vimeo') || 
-      domain.includes('youtube') || 
-      domain.includes('loom');
+    const shouldEmbed = isEmbeddedVideoUrl(url);
+    setIsEmbedded(shouldEmbed);
     
-    // If it's a service URL but doesn't end with a video extension, treat as embedded
-    const isVideoFile = 
-      url.endsWith('.mp4') || 
-      url.endsWith('.webm') || 
-      url.endsWith('.mov') || 
-      url.endsWith('.ogg');
-    
-    setIsEmbedded(isHeyGenOrServiceUrl && !isVideoFile);
-    
-    // For direct video files, handle with the video element
-    if (!isEmbedded) {
-      const format = detectVideoFormat(url);
-      setVideoFormat(format);
-      
-      // For direct video files, let the video element handle it
-      if (videoRef.current) {
-        videoRef.current.pause();
-        videoRef.current.load();
-        
-        // Try to play the video after it's loaded
-        const playVideo = () => {
-          videoRef.current?.play().catch(error => {
-            console.error("Video playback failed:", error);
-          });
-        };
-
-        videoRef.current.addEventListener("loadeddata", playVideo, { once: true });
-        return () => {
-          videoRef.current?.removeEventListener("loadeddata", playVideo);
-        };
-      }
-    } else {
-      // For embedded videos, we can remove the loading state sooner
-      setIsLoading(false);
+    // For embedded videos, we can sometimes remove the loading state sooner
+    if (shouldEmbed) {
+      // For some embedded videos, the loading state might be handled by the iframe itself
+      // We'll still keep a fallback timeout to ensure we don't get stuck loading
+      setTimeout(() => {
+        if (isLoading) {
+          setIsLoading(false);
+        }
+      }, 5000);
     }
-  };
-
-  const detectVideoFormat = (url: string): string => {
-    if (url.includes('.mp4')) return 'video/mp4';
-    if (url.includes('.webm')) return 'video/webm';
-    if (url.includes('.ogg')) return 'video/ogg';
-    if (url.includes('.mov')) return 'video/quicktime';
-    
-    // Default to MP4 for unknown formats
-    return 'video/mp4';
-  };
-
-  const validateUrl = (url: string) => {
-    if (!url.trim()) return false;
-    
-    // Basic URL validation
-    try {
-      const urlObj = new URL(url);
-      const domain = extractDomain(url);
-      
-      // Check for HeyGen and other video services
-      if (domain.includes('heygen')) {
-        // For HeyGen, provide specific guidance
-        toast({
-          title: "HeyGen Video Detected",
-          description: "HeyGen videos often have CORS restrictions. You can use their embed code or download the video and host it elsewhere.",
-          variant: "default",
-        });
-        
-        // HeyGen URLs can be valid, so don't reject them
-        return true;
-      } else if (
-        domain.includes('vimeo') || 
-        domain.includes('youtube') || 
-        domain.includes('loom')
-      ) {
-        // For other video services, give general guidance
-        toast({
-          title: "Video Service Detected",
-          description: "For best results, use the embed URL or iframe code from the service.",
-          variant: "default",
-        });
-        return true;
-      }
-      
-      // Check if URL likely points to a video
-      return url.includes('.mp4') || 
-             url.includes('.webm') || 
-             url.includes('.mov') || 
-             url.includes('.ogg') || 
-             url.includes('/videos/') || 
-             url.includes('video') || 
-             url.includes('media');
-    } catch {
-      return false;
-    }
-  };
-
-  const handleSaveUrl = () => {
-    // Validate URL
-    if (!validateUrl(tempUrl)) {
-      toast({
-        title: "Error",
-        description: "Please enter a valid video URL. For HeyGen videos, you may need to use their embed code or download the video.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    setIsLoading(true);
-    setVideoUrl(tempUrl);
-    setIsEditing(false);
-    
-    toast({
-      title: "Success",
-      description: "Video URL updated successfully",
-    });
   };
 
   const handleVideoError = () => {
@@ -159,26 +49,9 @@ export const VideoSection = () => {
     setIsLoading(false);
   };
 
-  // Helper function to create an embedded iframe with proper URL
-  const getEmbedUrl = (url: string) => {
-    const domain = extractDomain(url);
-    
-    // Handle different video services
-    if (domain.includes('youtube')) {
-      // Convert YouTube watch URLs to embed URLs
-      const ytMatch = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/);
-      return ytMatch ? `https://www.youtube.com/embed/${ytMatch[1]}` : url;
-    } else if (domain.includes('vimeo')) {
-      // Convert Vimeo URLs to embed URLs
-      const vimeoMatch = url.match(/vimeo\.com\/(?:channels\/(?:\w+\/)?|groups\/(?:[^\/]*)\/videos\/|album\/(?:\d+)\/video\/|)(\d+)(?:$|\/|\?)/);
-      return vimeoMatch ? `https://player.vimeo.com/video/${vimeoMatch[1]}` : url;
-    } else if (domain.includes('heygen')) {
-      // For HeyGen, we'll just use the URL as is if it already contains embed
-      return url.includes('embed') ? url : url;
-    }
-    
-    // Default case, just use the URL as is
-    return url;
+  const handleVideoUrlChange = (newUrl: string) => {
+    setIsLoading(true);
+    setVideoUrl(newUrl);
   };
 
   return (
@@ -201,76 +74,25 @@ export const VideoSection = () => {
               )}
               
               {isEmbedded ? (
-                <iframe 
-                  src={getEmbedUrl(videoUrl)}
-                  className="w-full h-full absolute inset-0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                  allowFullScreen
-                  onLoad={handleVideoLoaded}
+                <EmbeddedVideo 
+                  videoUrl={videoUrl}
                   onError={handleVideoError}
-                ></iframe>
+                  onLoaded={handleVideoLoaded}
+                />
               ) : (
-                <video 
-                  ref={videoRef}
-                  className="w-full h-full object-contain" 
-                  controls
-                  poster="/placeholder.svg"
+                <DirectVideo 
+                  videoUrl={videoUrl}
                   onError={handleVideoError}
-                  onLoadedData={handleVideoLoaded}
-                  playsInline
-                >
-                  <source src={videoUrl} type={videoFormat} />
-                  Your browser does not support the video tag.
-                </video>
+                  onLoaded={handleVideoLoaded}
+                />
               )}
             </AspectRatio>
           </div>
           
-          <div className="mt-6">
-            {isEditing ? (
-              <div className="flex flex-col sm:flex-row gap-2 justify-center items-center">
-                <Input
-                  className="max-w-md"
-                  placeholder="Enter video URL or embed code"
-                  value={tempUrl}
-                  onChange={(e) => setTempUrl(e.target.value)}
-                />
-                <div className="flex gap-2 mt-2 sm:mt-0">
-                  <Button 
-                    onClick={handleSaveUrl}
-                    variant="default"
-                    className="px-4 py-2 bg-primary text-white hover:bg-primary/90 z-10 relative"
-                    type="button"
-                  >
-                    Save
-                  </Button>
-                  <Button 
-                    variant="outline"
-                    type="button"
-                    className="z-10 relative"
-                    onClick={() => {
-                      setTempUrl(videoUrl);
-                      setIsEditing(false);
-                    }}
-                  >
-                    Cancel
-                  </Button>
-                </div>
-              </div>
-            ) : (
-              <Button 
-                variant="outline" 
-                onClick={() => setIsEditing(true)}
-                className="text-sm"
-              >
-                Change Video URL
-              </Button>
-            )}
-            <p className="mt-4 text-sm text-muted-foreground">
-              Note: For videos from services like HeyGen, YouTube, or Vimeo, you may need to use their embed code
-              due to cross-origin restrictions. Direct MP4 links also work.
-            </p>
-          </div>
+          <VideoControls 
+            videoUrl={videoUrl}
+            onVideoUrlChange={handleVideoUrlChange}
+          />
         </div>
       </div>
     </section>
