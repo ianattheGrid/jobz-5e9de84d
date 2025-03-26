@@ -19,13 +19,13 @@ export const VideoSection = () => {
               controls
               poster="/placeholder.svg"
             >
-              <source src="/explainer-video.mp4" type="video/mp4" />
+              <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4" />
               Your browser does not support the video tag.
             </video>
           </div>
           
           <p className="mt-6 text-sm text-muted-foreground">
-            Note: You'll need to upload your HeyGen video to the public folder as "explainer-video.mp4"
+            Note: You'll need to upload a HeyGen video to replace this placeholder.
           </p>
         </div>
       </div>
