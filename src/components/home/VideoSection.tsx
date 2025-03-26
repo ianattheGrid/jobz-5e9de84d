@@ -7,57 +7,73 @@ import { isEmbeddedVideoUrl } from "@/utils/videoUtils";
 import { DirectVideo } from "./video/DirectVideo";
 import { EmbeddedVideo } from "./video/EmbeddedVideo";
 import { VideoControls } from "./video/VideoControls";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 
 export const VideoSection = () => {
   const [videoUrl, setVideoUrl] = useState("https://www.w3schools.com/html/mov_bbb.mp4");
   const [isLoading, setIsLoading] = useState(true);
   const [isEmbedded, setIsEmbedded] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const [attemptCount, setAttemptCount] = useState(0);
 
   // This effect will process the video URL when it changes
   useEffect(() => {
     processVideoUrl(videoUrl);
-  }, [videoUrl]);
+  }, [videoUrl, attemptCount]);
 
   const processVideoUrl = (url: string) => {
     setIsLoading(true);
     setHasError(false);
     
+    // Log for debugging
+    console.log("Processing video URL:", url);
+    
     // Check if this is a direct video file or needs to be embedded
     const shouldEmbed = isEmbeddedVideoUrl(url);
+    console.log("Should this be embedded?", shouldEmbed);
     setIsEmbedded(shouldEmbed);
     
     // For embedded videos, we add a safety timeout
     // This ensures we don't get stuck in loading state if iframe fails silently
     if (shouldEmbed) {
-      setTimeout(() => {
+      const timeout = setTimeout(() => {
         if (isLoading) {
+          console.log("Embedded video timeout reached, considering loaded");
           setIsLoading(false);
         }
       }, 5000);
+      
+      return () => clearTimeout(timeout);
     }
   };
 
   const handleVideoError = () => {
+    console.error("Video error occurred with URL:", videoUrl);
     setHasError(true);
     setIsLoading(false);
     toast({
       title: "Video Error",
-      description: "Unable to load video from the provided URL. For embedded videos from services like HeyGen, use the iframe embed code from their 'Share' button.",
+      description: isEmbedded 
+        ? "Unable to load the embedded video. For HeyGen videos, please use the complete iframe embed code from the 'Share' button."
+        : "Unable to load video from the provided URL. Please check the URL and try again.",
       variant: "destructive",
     });
   };
 
   const handleVideoLoaded = () => {
+    console.log("Video loaded successfully");
     setIsLoading(false);
     setHasError(false);
   };
 
   const handleVideoUrlChange = (newUrl: string) => {
     if (newUrl === videoUrl) {
-      return; // No change needed
+      // If the URL is the same, force a retry by incrementing attempt count
+      setAttemptCount(prev => prev + 1);
+      return;
     }
     
+    console.log("Changing video URL to:", newUrl);
     setIsLoading(true);
     setHasError(false);
     setVideoUrl(newUrl);
@@ -111,6 +127,17 @@ export const VideoSection = () => {
             videoUrl={videoUrl}
             onVideoUrlChange={handleVideoUrlChange}
           />
+          
+          {isEmbedded && (
+            <Alert className="mt-4 bg-muted/50 border-primary/20 max-w-2xl mx-auto">
+              <AlertTitle className="text-primary">Using embedded videos</AlertTitle>
+              <AlertDescription className="text-xs">
+                For HeyGen videos specifically, please copy the <strong>entire iframe embed code</strong> from 
+                HeyGen's Share button. Don't just copy the URL. The embed code should start with 
+                "&lt;iframe" and end with "&lt;/iframe&gt;".
+              </AlertDescription>
+            </Alert>
+          )}
         </div>
       </div>
     </section>

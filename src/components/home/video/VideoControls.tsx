@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { validateVideoUrl } from "@/utils/videoUtils";
 import { toast } from "@/hooks/use-toast";
+import { Textarea } from "@/components/ui/textarea";
 
 interface VideoControlsProps {
   videoUrl: string;
@@ -13,6 +14,7 @@ interface VideoControlsProps {
 export const VideoControls = ({ videoUrl, onVideoUrlChange }: VideoControlsProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [tempUrl, setTempUrl] = useState(videoUrl);
+  const [isEmbedCode, setIsEmbedCode] = useState(false);
 
   const handleSaveUrl = () => {
     // Validate URL
@@ -24,6 +26,10 @@ export const VideoControls = ({ videoUrl, onVideoUrlChange }: VideoControlsProps
       });
       return;
     }
+
+    // Check if it's an iframe code
+    const containsIframe = tempUrl.includes('<iframe') && tempUrl.includes('</iframe>');
+    setIsEmbedCode(containsIframe);
 
     onVideoUrlChange(tempUrl);
     setIsEditing(false);
@@ -37,14 +43,47 @@ export const VideoControls = ({ videoUrl, onVideoUrlChange }: VideoControlsProps
   return (
     <div className="mt-6">
       {isEditing ? (
-        <div className="flex flex-col sm:flex-row gap-2 justify-center items-center">
-          <Input
-            className="max-w-md"
-            placeholder="Enter video URL or iframe embed code"
-            value={tempUrl}
-            onChange={(e) => setTempUrl(e.target.value)}
-          />
-          <div className="flex gap-2 mt-2 sm:mt-0">
+        <div className="flex flex-col gap-3 justify-center items-center">
+          <div className="w-full max-w-md">
+            <div className="flex mb-2">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className={!isEmbedCode ? "bg-primary/10" : ""}
+                onClick={() => setIsEmbedCode(false)}
+              >
+                URL
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm" 
+                className={`ml-2 ${isEmbedCode ? "bg-primary/10" : ""}`}
+                onClick={() => setIsEmbedCode(true)}
+              >
+                Embed Code
+              </Button>
+            </div>
+            
+            {isEmbedCode ? (
+              <Textarea
+                className="min-h-[100px] font-mono text-xs"
+                placeholder='<iframe src="https://app.heygen.com/embed/..." width="600" height="340" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>'
+                value={tempUrl}
+                onChange={(e) => setTempUrl(e.target.value)}
+              />
+            ) : (
+              <Input
+                className="w-full"
+                placeholder="Enter video URL (e.g., https://example.com/video.mp4)"
+                value={tempUrl}
+                onChange={(e) => setTempUrl(e.target.value)}
+              />
+            )}
+          </div>
+          
+          <div className="flex gap-2 mt-2">
             <Button 
               onClick={handleSaveUrl}
               variant="default"
