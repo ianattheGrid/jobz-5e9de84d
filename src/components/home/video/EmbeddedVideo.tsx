@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { extractSrcFromEmbedCode, getEmbedUrl, cleanUpEmbedCode } from "@/utils/videoUtils";
+import { extractSrcFromEmbedCode, getEmbedUrl, cleanUpEmbedCode, isHeyGenVideo } from "@/utils/videoUtils";
 
 interface EmbeddedVideoProps {
   videoUrl: string;
@@ -20,10 +20,18 @@ export const EmbeddedVideo = ({ videoUrl, onError, onLoaded }: EmbeddedVideoProp
     const cleanedEmbedCode = cleanUpEmbedCode(videoUrl);
     
     // HeyGen special handling - use the raw embed code
-    if (cleanedEmbedCode.includes('<iframe') && cleanedEmbedCode.includes('heygen.com')) {
-      console.log("Using raw HeyGen iframe embed code");
-      setRawHtml(cleanedEmbedCode);
-      setEmbedUrl("");
+    if (isHeyGenVideo(cleanedEmbedCode)) {
+      if (cleanedEmbedCode.includes('<iframe')) {
+        console.log("Using raw HeyGen iframe embed code");
+        setRawHtml(cleanedEmbedCode);
+        setEmbedUrl("");
+      } else {
+        // Try to create a standard iframe for HeyGen URL
+        console.log("Creating standard iframe for HeyGen URL");
+        const heyGenEmbed = `<iframe src="${cleanedEmbedCode}" width="600" height="340" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>`;
+        setRawHtml(heyGenEmbed);
+        setEmbedUrl("");
+      }
     } else if (cleanedEmbedCode.includes('<iframe') && cleanedEmbedCode.includes('iframe>')) {
       console.log("Detected iframe embed code");
       const src = extractSrcFromEmbedCode(cleanedEmbedCode);
@@ -50,7 +58,7 @@ export const EmbeddedVideo = ({ videoUrl, onError, onLoaded }: EmbeddedVideoProp
     setIframeKey(Date.now());
   }, [videoUrl]);
 
-  // Special case: render the raw HTML for HeyGen
+  // Special case: render the raw HTML for HeyGen or other raw HTML embeds
   if (rawHtml) {
     return (
       <div 

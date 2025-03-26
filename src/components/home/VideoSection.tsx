@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/dialog";
 
 export const VideoSection = () => {
-  const [videoUrl, setVideoUrl] = useState("https://www.youtube.com/watch?v=C0DPdy98e4c"); // Changed to a more reliable demo video
+  const [videoUrl, setVideoUrl] = useState("https://www.youtube.com/watch?v=C0DPdy98e4c");
   const [isLoading, setIsLoading] = useState(true);
   const [isEmbedded, setIsEmbedded] = useState(false);
   const [hasError, setHasError] = useState(false);
@@ -41,11 +41,18 @@ export const VideoSection = () => {
       console.log("HeyGen video detected");
       setIsEmbedded(true);
       
-      // For HeyGen links without iframe code, show help dialog
+      // Only show help dialog for HeyGen links without iframe code
+      // AND only if there's been no successful update yet
       if (!url.includes('<iframe')) {
         setIsHeyGenHelp(true);
+      } else {
+        // If we have a complete HeyGen iframe code, make sure to hide the help dialog
+        setIsHeyGenHelp(false);
       }
     } else {
+      // For non-HeyGen videos, always close the help dialog
+      setIsHeyGenHelp(false);
+      
       // Check if this is a direct video file or needs to be embedded
       const shouldEmbed = isEmbeddedVideoUrl(url);
       console.log("Should this be embedded?", shouldEmbed);
@@ -78,7 +85,10 @@ export const VideoSection = () => {
         description: "Unable to load HeyGen video. Please use the complete iframe embed code from the 'Share' button, not just the URL.",
         variant: "destructive",
       });
-      setIsHeyGenHelp(true);
+      // Only show the help dialog if it's not already showing
+      if (!isHeyGenHelp) {
+        setIsHeyGenHelp(true);
+      }
     } else {
       toast({
         title: "Video Error",
@@ -107,7 +117,14 @@ export const VideoSection = () => {
     setIsLoading(true);
     setHasError(false);
     setVideoUrl(newUrl);
-    setIsHeyGenHelp(false);
+    
+    // For HeyGen videos, only show help if it doesn't contain iframe code
+    if (newUrl.includes('heygen.com') && !newUrl.includes('<iframe')) {
+      setIsHeyGenHelp(true);
+    } else {
+      // For all other cases, including complete HeyGen iframe code, hide the help dialog
+      setIsHeyGenHelp(false);
+    }
   };
 
   const closeHeyGenHelp = () => {

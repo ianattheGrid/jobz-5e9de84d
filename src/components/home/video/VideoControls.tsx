@@ -52,12 +52,12 @@ export const VideoControls = ({ videoUrl, onVideoUrlChange }: VideoControlsProps
       return false;
     }
 
-    // Special handling for HeyGen URLs
+    // Special handling for HeyGen URLs - don't show warning if we have a full iframe
     if (tempUrl.includes('heygen.com') && !tempUrl.includes('<iframe')) {
       toast({
         title: "HeyGen Video",
         description: "For HeyGen videos, please use the complete iframe embed code from the 'Share' button, not just the URL.",
-        variant: "default", // Changed from "warning" to "default"
+        variant: "default",
       });
     }
 

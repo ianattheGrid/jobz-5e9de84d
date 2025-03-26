@@ -95,9 +95,10 @@ export const validateVideoUrl = (url: string): boolean => {
  * Extract the src URL from an iframe embed code
  */
 export const extractSrcFromEmbedCode = (embedCode: string): string => {
-  // HeyGen specific handling - don't try to extract, just return
+  // HeyGen specific handling - don't try to extract, just return empty
+  // to trigger the raw HTML rendering approach for HeyGen
   if (embedCode.includes('heygen.com')) {
-    console.log("HeyGen embed code detected, returning original code");
+    console.log("HeyGen embed code detected, using raw HTML approach");
     return ''; // Will use rawHtml instead
   }
   
@@ -140,6 +141,7 @@ export const cleanUpEmbedCode = (embedCode: string): string => {
     if (!embedCode.includes('</iframe>')) {
       return embedCode + '</iframe>';
     }
+    return embedCode; // HeyGen iframe with closing tag
   }
   
   return embedCode;
@@ -193,4 +195,18 @@ export const getEmbedUrl = (url: string): string => {
     console.error("Error processing URL:", error);
     return url;
   }
+};
+
+/**
+ * Checks if a URL or embed code is specifically for HeyGen
+ */
+export const isHeyGenVideo = (url: string): boolean => {
+  return url.includes('heygen.com');
+};
+
+/**
+ * Checks if a HeyGen URL has a complete iframe code
+ */
+export const hasCompleteHeyGenEmbed = (url: string): boolean => {
+  return url.includes('heygen.com') && url.includes('<iframe') && url.includes('</iframe>');
 };
