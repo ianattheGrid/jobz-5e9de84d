@@ -12,8 +12,10 @@ export default function Index() {
       <NavBar />
       <HeroSection />
       <PlatformFeatures />
-      <VideoSection />
-      <CalculatorSection />
+      <div className="space-y-2">
+        <VideoSection />
+        <CalculatorSection />
+      </div>
       <FAQSection />
     </div>
   );

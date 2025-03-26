@@ -127,13 +127,13 @@ export const VideoSection = () => {
   };
 
   return (
-    <section className="py-16 bg-transparent">
+    <section className="py-8 bg-transparent">
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className={`text-3xl font-bold mb-6 ${PRIMARY_COLOR_PATTERN}`}>
+          <h2 className={`text-3xl font-bold mb-4 ${PRIMARY_COLOR_PATTERN}`}>
             See How It Works
           </h2>
-          <p className="text-foreground mb-8">
+          <p className="text-foreground mb-6">
             Watch our short explainer video to understand how jobz can transform your hiring experience.
           </p>
           
