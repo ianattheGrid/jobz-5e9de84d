@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { PRIMARY_COLOR_PATTERN } from "@/styles/colorPatterns";
 import { toast } from "@/hooks/use-toast";
@@ -17,7 +16,6 @@ import {
 } from "@/components/ui/dialog";
 
 export const VideoSection = () => {
-  // Start with a YouTube URL that works well
   const [videoUrl, setVideoUrl] = useState("https://www.youtube.com/watch?v=C0DPdy98e4c");
   const [isLoading, setIsLoading] = useState(true);
   const [isEmbedded, setIsEmbedded] = useState(false);
@@ -25,7 +23,6 @@ export const VideoSection = () => {
   const [attemptCount, setAttemptCount] = useState(0);
   const [isHeyGenHelp, setIsHeyGenHelp] = useState(false);
 
-  // This effect will process the video URL when it changes
   useEffect(() => {
     processVideoUrl(videoUrl);
   }, [videoUrl, attemptCount]);
@@ -34,15 +31,12 @@ export const VideoSection = () => {
     setIsLoading(true);
     setHasError(false);
     
-    // Log for debugging
     console.log("Processing video URL:", url);
     
-    // Special case for HeyGen videos
     if (url.includes('heygen.com')) {
       console.log("HeyGen video detected");
       setIsEmbedded(true);
       
-      // Only show help dialog for HeyGen links without complete iframe code
       if (hasCompleteHeyGenEmbed(url)) {
         console.log("Complete HeyGen iframe detected, hiding help dialog");
         setIsHeyGenHelp(false);
@@ -51,24 +45,20 @@ export const VideoSection = () => {
         setIsHeyGenHelp(true);
       }
     } else {
-      // For non-HeyGen videos, always close the help dialog
       setIsHeyGenHelp(false);
       
-      // Check if this is a direct video file or needs to be embedded
       const shouldEmbed = isEmbeddedVideoUrl(url);
       console.log("Should this be embedded?", shouldEmbed);
       setIsEmbedded(shouldEmbed);
     }
     
-    // For embedded videos, we add a safety timeout
-    // This ensures we don't get stuck in loading state if iframe fails silently
     if (isEmbedded) {
       const timeout = setTimeout(() => {
         if (isLoading) {
           console.log("Embedded video timeout reached, considering loaded");
           setIsLoading(false);
         }
-      }, 7000); // Extended timeout for slower connections
+      }, 7000);
       
       return () => clearTimeout(timeout);
     }
@@ -79,14 +69,12 @@ export const VideoSection = () => {
     setHasError(true);
     setIsLoading(false);
     
-    // Special message for HeyGen videos
     if (videoUrl.includes('heygen.com')) {
       toast({
         title: "HeyGen Video Error",
         description: "Unable to load HeyGen video. Please use the complete iframe embed code from the 'Share' button, not just the URL.",
         variant: "destructive",
       });
-      // Only show the help dialog if it's not already showing
       if (!isHeyGenHelp) {
         setIsHeyGenHelp(true);
       }
@@ -106,7 +94,6 @@ export const VideoSection = () => {
     setIsLoading(false);
     setHasError(false);
     
-    // If we have a HeyGen video that loaded successfully, ensure help dialog is closed
     if (videoUrl.includes('heygen.com')) {
       setIsHeyGenHelp(false);
     }
@@ -114,7 +101,6 @@ export const VideoSection = () => {
 
   const handleVideoUrlChange = (newUrl: string) => {
     if (newUrl === videoUrl) {
-      // If the URL is the same, force a retry by incrementing attempt count
       setAttemptCount(prev => prev + 1);
       return;
     }
@@ -124,7 +110,6 @@ export const VideoSection = () => {
     setHasError(false);
     setVideoUrl(newUrl);
     
-    // For HeyGen videos, check if it has a complete iframe code
     if (newUrl.includes('heygen.com')) {
       if (hasCompleteHeyGenEmbed(newUrl)) {
         console.log("Complete HeyGen iframe detected on URL change, hiding help dialog");
@@ -134,7 +119,6 @@ export const VideoSection = () => {
         setIsHeyGenHelp(true);
       }
     } else {
-      // For all other cases, hide the help dialog
       setIsHeyGenHelp(false);
     }
   };
@@ -144,7 +128,7 @@ export const VideoSection = () => {
   };
 
   return (
-    <section className="py-16 bg-muted/50">
+    <section className="py-16 bg-muted/10">
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className={`text-3xl font-bold mb-6 ${PRIMARY_COLOR_PATTERN}`}>
@@ -154,8 +138,8 @@ export const VideoSection = () => {
             Watch our short explainer video to understand how jobz can transform your hiring experience.
           </p>
           
-          <div className="relative mx-auto shadow-xl rounded-lg overflow-hidden bg-black">
-            <AspectRatio ratio={16/9} className="bg-black">
+          <div className="relative mx-auto shadow-xl rounded-lg overflow-hidden">
+            <AspectRatio ratio={16/9} className="bg-transparent">
               {isLoading && (
                 <div className="absolute inset-0 flex items-center justify-center bg-black/20 z-10">
                   <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
@@ -215,7 +199,6 @@ export const VideoSection = () => {
             </AlertDescription>
           </Alert>
           
-          {/* HeyGen Help Dialog */}
           <Dialog open={isHeyGenHelp} onOpenChange={setIsHeyGenHelp}>
             <DialogContent className="max-w-md">
               <DialogHeader>
