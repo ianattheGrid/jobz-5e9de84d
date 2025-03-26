@@ -1,6 +1,5 @@
-
-import { useState } from "react";
-import { getEmbedUrl } from "@/utils/videoUtils";
+import { useState, useEffect } from "react";
+import { extractSrcFromEmbedCode, getEmbedUrl } from "@/utils/videoUtils";
 
 interface EmbeddedVideoProps {
   videoUrl: string;
@@ -9,7 +8,22 @@ interface EmbeddedVideoProps {
 }
 
 export const EmbeddedVideo = ({ videoUrl, onError, onLoaded }: EmbeddedVideoProps) => {
-  const [embedUrl] = useState(() => getEmbedUrl(videoUrl));
+  const [embedUrl, setEmbedUrl] = useState("");
+  
+  useEffect(() => {
+    // Check if it's an embed code (contains iframe)
+    if (videoUrl.includes('<iframe') && videoUrl.includes('iframe>')) {
+      const src = extractSrcFromEmbedCode(videoUrl);
+      setEmbedUrl(src);
+    } else {
+      // Otherwise, convert the URL to an embed URL
+      setEmbedUrl(getEmbedUrl(videoUrl));
+    }
+  }, [videoUrl]);
+
+  if (!embedUrl) {
+    return null;
+  }
 
   return (
     <iframe 
@@ -20,6 +34,7 @@ export const EmbeddedVideo = ({ videoUrl, onError, onLoaded }: EmbeddedVideoProp
       onLoad={onLoaded}
       onError={onError}
       sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox allow-presentation"
+      referrerPolicy="origin"
     ></iframe>
   );
 };

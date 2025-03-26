@@ -25,11 +25,8 @@ export const DirectVideo = ({ videoUrl, onError, onLoaded }: DirectVideoProps) =
       const playVideo = () => {
         videoRef.current?.play().catch(error => {
           console.error("Video playback failed:", error);
-          toast({
-            title: "Playback Issue",
-            description: "Video loaded but couldn't autoplay. You can click play manually.",
-            variant: "default",
-          });
+          // Don't show toast for autoplay failures - this is expected on many browsers
+          // Just let the user click play manually
         });
       };
 
@@ -49,6 +46,7 @@ export const DirectVideo = ({ videoUrl, onError, onLoaded }: DirectVideoProps) =
       onError={onError}
       onLoadedData={onLoaded}
       playsInline
+      crossOrigin="anonymous" // Try to handle CORS issues gracefully
     >
       <source src={videoUrl} type={videoFormat} />
       Your browser does not support the video tag.

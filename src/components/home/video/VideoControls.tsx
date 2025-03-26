@@ -19,7 +19,7 @@ export const VideoControls = ({ videoUrl, onVideoUrlChange }: VideoControlsProps
     if (!validateVideoUrl(tempUrl)) {
       toast({
         title: "Error",
-        description: "Please enter a valid video URL. For HeyGen videos, you may need to use their embed code or download the video.",
+        description: "Please enter a valid video URL or embed code. For HeyGen videos, use their embed code from the 'Share' button.",
         variant: "destructive",
       });
       return;
@@ -40,7 +40,7 @@ export const VideoControls = ({ videoUrl, onVideoUrlChange }: VideoControlsProps
         <div className="flex flex-col sm:flex-row gap-2 justify-center items-center">
           <Input
             className="max-w-md"
-            placeholder="Enter video URL or embed code"
+            placeholder="Enter video URL or iframe embed code"
             value={tempUrl}
             onChange={(e) => setTempUrl(e.target.value)}
           />
@@ -76,8 +76,8 @@ export const VideoControls = ({ videoUrl, onVideoUrlChange }: VideoControlsProps
         </Button>
       )}
       <p className="mt-4 text-sm text-muted-foreground">
-        Note: For videos from services like HeyGen, YouTube, or Vimeo, you may need to use their embed code
-        due to cross-origin restrictions. Direct MP4 links also work.
+        Note: For videos from services like HeyGen, YouTube, or Vimeo, you should paste their embed code.
+        Click "Share" on the video and look for the "Embed" option. Direct MP4 links also work.
       </p>
     </div>
   );

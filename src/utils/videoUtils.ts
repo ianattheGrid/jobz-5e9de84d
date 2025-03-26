@@ -23,6 +23,9 @@ export const detectVideoFormat = (url: string): string => {
  * rather than a direct video file
  */
 export const isEmbeddedVideoUrl = (url: string): boolean => {
+  // Check if it's an embed code (contains iframe)
+  if (url.includes('<iframe') || url.includes('iframe>')) return true;
+  
   // Check domain for common video services
   const domain = extractDomain(url);
   
@@ -50,6 +53,9 @@ export const isEmbeddedVideoUrl = (url: string): boolean => {
 export const validateVideoUrl = (url: string): boolean => {
   if (!url.trim()) return false;
   
+  // Check if it's an embed code
+  if (url.includes('<iframe') && url.includes('iframe>')) return true;
+  
   // Basic URL validation
   try {
     new URL(url);
@@ -70,14 +76,28 @@ export const validateVideoUrl = (url: string): boolean => {
     
     return isVideoService || isVideoFile || url.includes('/videos/') || url.includes('video') || url.includes('media');
   } catch {
-    return false;
+    // If it's not a valid URL, check if it's potentially an embed code
+    return url.includes('iframe') && url.includes('src=');
   }
+};
+
+/**
+ * Extract the src URL from an iframe embed code
+ */
+export const extractSrcFromEmbedCode = (embedCode: string): string => {
+  const srcMatch = embedCode.match(/src=["'](.*?)["']/);
+  return srcMatch ? srcMatch[1] : '';
 };
 
 /**
  * Converts regular video service URLs to their embed versions
  */
 export const getEmbedUrl = (url: string): string => {
+  // Check if it's already an embed code
+  if (url.includes('<iframe') && url.includes('iframe>')) {
+    return extractSrcFromEmbedCode(url);
+  }
+  
   const domain = extractDomain(url);
   
   // Handle different video services
@@ -106,4 +126,3 @@ export const getEmbedUrl = (url: string): string => {
   // Default case, just use the URL as is
   return url;
 };
-
