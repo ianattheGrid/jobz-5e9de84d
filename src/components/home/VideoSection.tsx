@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
@@ -20,43 +19,13 @@ export const VideoSection = () => {
         <div className="flex flex-col md:flex-row gap-12 items-start">
           {/* Video on the left */}
           <div className="w-full md:w-1/2">
-            <div className="relative mx-auto overflow-hidden rounded-lg shadow-md">
+            <div className="relative mx-auto overflow-hidden rounded-lg">
               <AspectRatio ratio={16/9}>
                 <div 
                   className="w-full h-full absolute inset-0 bg-gray-100 rounded-lg"
                   dangerouslySetInnerHTML={{ __html: videoUrl }}
                 />
               </AspectRatio>
-              
-              {/* Admin controls - only visible to you */}
-              <div className="mt-4">
-                {isEditing ? (
-                  <div className="flex flex-col gap-2">
-                    <Input
-                      className="w-full"
-                      placeholder="Paste iframe embed code here"
-                      value={tempUrl}
-                      onChange={(e) => setTempUrl(e.target.value)}
-                    />
-                    <div className="flex gap-2">
-                      <Button onClick={handleSaveUrl}>Save</Button>
-                      <Button 
-                        variant="outline" 
-                        onClick={() => {
-                          setTempUrl(videoUrl);
-                          setIsEditing(false);
-                        }}
-                      >
-                        Cancel
-                      </Button>
-                    </div>
-                  </div>
-                ) : (
-                  <Button variant="outline" onClick={() => setIsEditing(true)}>
-                    Change Video
-                  </Button>
-                )}
-              </div>
             </div>
           </div>
           
