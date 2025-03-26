@@ -13,34 +13,61 @@ export const VideoSection = () => {
   const [tempUrl, setTempUrl] = useState(videoUrl);
   const [isLoading, setIsLoading] = useState(false);
   const [videoFormat, setVideoFormat] = useState("video/mp4");
+  const [isEmbedded, setIsEmbedded] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // This effect will force a reload of the video element when the URL changes
+  // This effect will process the video URL when it changes
   useEffect(() => {
-    if (videoRef.current) {
-      // Reset the video element to ensure it loads the new source
-      videoRef.current.pause();
-      
-      // Determine video format based on URL
-      const format = detectVideoFormat(videoUrl);
+    processVideoUrl(videoUrl);
+  }, [videoUrl]);
+
+  const processVideoUrl = (url: string) => {
+    setIsLoading(true);
+    
+    // Check if this is a direct video file or needs to be embedded
+    const domain = extractDomain(url);
+    const isHeyGenOrServiceUrl = 
+      domain.includes('heygen') || 
+      domain.includes('vimeo') || 
+      domain.includes('youtube') || 
+      domain.includes('loom');
+    
+    // If it's a service URL but doesn't end with a video extension, treat as embedded
+    const isVideoFile = 
+      url.endsWith('.mp4') || 
+      url.endsWith('.webm') || 
+      url.endsWith('.mov') || 
+      url.endsWith('.ogg');
+    
+    setIsEmbedded(isHeyGenOrServiceUrl && !isVideoFile);
+    
+    // For direct video files, handle with the video element
+    if (!isEmbedded) {
+      const format = detectVideoFormat(url);
       setVideoFormat(format);
       
-      videoRef.current.load();
-      
-      // Try to play the video after it's loaded
-      const playVideo = () => {
-        videoRef.current?.play().catch(error => {
-          console.error("Video playback failed:", error);
-        });
-      };
+      // For direct video files, let the video element handle it
+      if (videoRef.current) {
+        videoRef.current.pause();
+        videoRef.current.load();
+        
+        // Try to play the video after it's loaded
+        const playVideo = () => {
+          videoRef.current?.play().catch(error => {
+            console.error("Video playback failed:", error);
+          });
+        };
 
-      videoRef.current.addEventListener("loadeddata", playVideo, { once: true });
-      
-      return () => {
-        videoRef.current?.removeEventListener("loadeddata", playVideo);
-      };
+        videoRef.current.addEventListener("loadeddata", playVideo, { once: true });
+        return () => {
+          videoRef.current?.removeEventListener("loadeddata", playVideo);
+        };
+      }
+    } else {
+      // For embedded videos, we can remove the loading state sooner
+      setIsLoading(false);
     }
-  }, [videoUrl]);
+  };
 
   const detectVideoFormat = (url: string): string => {
     if (url.includes('.mp4')) return 'video/mp4';
@@ -60,20 +87,29 @@ export const VideoSection = () => {
       const urlObj = new URL(url);
       const domain = extractDomain(url);
       
-      // Check for known video hosts
-      if (
-        domain.includes('heygen') || 
+      // Check for HeyGen and other video services
+      if (domain.includes('heygen')) {
+        // For HeyGen, provide specific guidance
+        toast({
+          title: "HeyGen Video Detected",
+          description: "HeyGen videos often have CORS restrictions. You can use their embed code or download the video and host it elsewhere.",
+          variant: "default",
+        });
+        
+        // HeyGen URLs can be valid, so don't reject them
+        return true;
+      } else if (
         domain.includes('vimeo') || 
         domain.includes('youtube') || 
         domain.includes('loom')
       ) {
-        // Known video hosting services
-        // Note: These may require embed links rather than direct video links
+        // For other video services, give general guidance
         toast({
           title: "Video Service Detected",
-          description: "Please use a direct MP4 video link. For HeyGen, download the video or get a direct link to the MP4 file.",
+          description: "For best results, use the embed URL or iframe code from the service.",
           variant: "default",
         });
+        return true;
       }
       
       // Check if URL likely points to a video
@@ -94,7 +130,7 @@ export const VideoSection = () => {
     if (!validateUrl(tempUrl)) {
       toast({
         title: "Error",
-        description: "Please enter a valid video URL. For HeyGen videos, use the direct download link to the MP4 file.",
+        description: "Please enter a valid video URL. For HeyGen videos, you may need to use their embed code or download the video.",
         variant: "destructive",
       });
       return;
@@ -113,7 +149,7 @@ export const VideoSection = () => {
   const handleVideoError = () => {
     toast({
       title: "Video Error",
-      description: "Unable to load video from the provided URL. This may be due to CORS restrictions or the URL not being a direct video link. Please download the video and host it elsewhere, or use a direct MP4 link.",
+      description: "Unable to load video from the provided URL. This may be due to CORS restrictions or the URL not being a direct video link. For HeyGen videos, try using the embed code or download the video.",
       variant: "destructive",
     });
     setIsLoading(false);
@@ -121,6 +157,28 @@ export const VideoSection = () => {
 
   const handleVideoLoaded = () => {
     setIsLoading(false);
+  };
+
+  // Helper function to create an embedded iframe with proper URL
+  const getEmbedUrl = (url: string) => {
+    const domain = extractDomain(url);
+    
+    // Handle different video services
+    if (domain.includes('youtube')) {
+      // Convert YouTube watch URLs to embed URLs
+      const ytMatch = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/);
+      return ytMatch ? `https://www.youtube.com/embed/${ytMatch[1]}` : url;
+    } else if (domain.includes('vimeo')) {
+      // Convert Vimeo URLs to embed URLs
+      const vimeoMatch = url.match(/vimeo\.com\/(?:channels\/(?:\w+\/)?|groups\/(?:[^\/]*)\/videos\/|album\/(?:\d+)\/video\/|)(\d+)(?:$|\/|\?)/);
+      return vimeoMatch ? `https://player.vimeo.com/video/${vimeoMatch[1]}` : url;
+    } else if (domain.includes('heygen')) {
+      // For HeyGen, we'll just use the URL as is if it already contains embed
+      return url.includes('embed') ? url : url;
+    }
+    
+    // Default case, just use the URL as is
+    return url;
   };
 
   return (
@@ -134,24 +192,38 @@ export const VideoSection = () => {
             Watch our short explainer video to understand how jobz can transform your hiring experience.
           </p>
           
-          <div className="relative aspect-video mx-auto shadow-xl rounded-lg overflow-hidden bg-black">
-            {isLoading && (
-              <div className="absolute inset-0 flex items-center justify-center bg-black/20 z-10">
-                <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
-              </div>
-            )}
-            <video 
-              ref={videoRef}
-              className="w-full h-full object-contain" 
-              controls
-              poster="/placeholder.svg"
-              onError={handleVideoError}
-              onLoadedData={handleVideoLoaded}
-              playsInline
-            >
-              <source src={videoUrl} type={videoFormat} />
-              Your browser does not support the video tag.
-            </video>
+          <div className="relative mx-auto shadow-xl rounded-lg overflow-hidden bg-black">
+            <AspectRatio ratio={16/9} className="bg-black">
+              {isLoading && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black/20 z-10">
+                  <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+                </div>
+              )}
+              
+              {isEmbedded ? (
+                <iframe 
+                  src={getEmbedUrl(videoUrl)}
+                  className="w-full h-full absolute inset-0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                  allowFullScreen
+                  onLoad={handleVideoLoaded}
+                  onError={handleVideoError}
+                ></iframe>
+              ) : (
+                <video 
+                  ref={videoRef}
+                  className="w-full h-full object-contain" 
+                  controls
+                  poster="/placeholder.svg"
+                  onError={handleVideoError}
+                  onLoadedData={handleVideoLoaded}
+                  playsInline
+                >
+                  <source src={videoUrl} type={videoFormat} />
+                  Your browser does not support the video tag.
+                </video>
+              )}
+            </AspectRatio>
           </div>
           
           <div className="mt-6">
@@ -159,7 +231,7 @@ export const VideoSection = () => {
               <div className="flex flex-col sm:flex-row gap-2 justify-center items-center">
                 <Input
                   className="max-w-md"
-                  placeholder="Enter video URL (MP4 format)"
+                  placeholder="Enter video URL or embed code"
                   value={tempUrl}
                   onChange={(e) => setTempUrl(e.target.value)}
                 />
@@ -195,7 +267,8 @@ export const VideoSection = () => {
               </Button>
             )}
             <p className="mt-4 text-sm text-muted-foreground">
-              Note: Enter a direct link to an MP4 video file. For HeyGen videos, you may need to download the video first and host it elsewhere due to cross-origin restrictions.
+              Note: For videos from services like HeyGen, YouTube, or Vimeo, you may need to use their embed code
+              due to cross-origin restrictions. Direct MP4 links also work.
             </p>
           </div>
         </div>
