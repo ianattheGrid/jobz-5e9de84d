@@ -5,12 +5,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/hooks/use-toast";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { extractDomain } from "@/utils/validationUtils";
 
 export const VideoSection = () => {
   const [videoUrl, setVideoUrl] = useState("https://www.w3schools.com/html/mov_bbb.mp4");
   const [isEditing, setIsEditing] = useState(false);
   const [tempUrl, setTempUrl] = useState(videoUrl);
   const [isLoading, setIsLoading] = useState(false);
+  const [videoFormat, setVideoFormat] = useState("video/mp4");
   const videoRef = useRef<HTMLVideoElement>(null);
 
   // This effect will force a reload of the video element when the URL changes
@@ -18,6 +20,11 @@ export const VideoSection = () => {
     if (videoRef.current) {
       // Reset the video element to ensure it loads the new source
       videoRef.current.pause();
+      
+      // Determine video format based on URL
+      const format = detectVideoFormat(videoUrl);
+      setVideoFormat(format);
+      
       videoRef.current.load();
       
       // Try to play the video after it's loaded
@@ -35,14 +42,45 @@ export const VideoSection = () => {
     }
   }, [videoUrl]);
 
+  const detectVideoFormat = (url: string): string => {
+    if (url.includes('.mp4')) return 'video/mp4';
+    if (url.includes('.webm')) return 'video/webm';
+    if (url.includes('.ogg')) return 'video/ogg';
+    if (url.includes('.mov')) return 'video/quicktime';
+    
+    // Default to MP4 for unknown formats
+    return 'video/mp4';
+  };
+
   const validateUrl = (url: string) => {
     if (!url.trim()) return false;
     
     // Basic URL validation
     try {
-      new URL(url);
+      const urlObj = new URL(url);
+      const domain = extractDomain(url);
+      
+      // Check for known video hosts
+      if (
+        domain.includes('heygen') || 
+        domain.includes('vimeo') || 
+        domain.includes('youtube') || 
+        domain.includes('loom')
+      ) {
+        // Known video hosting services
+        // Note: These may require embed links rather than direct video links
+        toast({
+          title: "Video Service Detected",
+          description: "Please use a direct MP4 video link. For HeyGen, download the video or get a direct link to the MP4 file.",
+          variant: "default",
+        });
+      }
+      
       // Check if URL likely points to a video
       return url.includes('.mp4') || 
+             url.includes('.webm') || 
+             url.includes('.mov') || 
+             url.includes('.ogg') || 
              url.includes('/videos/') || 
              url.includes('video') || 
              url.includes('media');
@@ -56,7 +94,7 @@ export const VideoSection = () => {
     if (!validateUrl(tempUrl)) {
       toast({
         title: "Error",
-        description: "Please enter a valid video URL",
+        description: "Please enter a valid video URL. For HeyGen videos, use the direct download link to the MP4 file.",
         variant: "destructive",
       });
       return;
@@ -75,7 +113,7 @@ export const VideoSection = () => {
   const handleVideoError = () => {
     toast({
       title: "Video Error",
-      description: "Unable to load video from the provided URL. Please check the URL and try again.",
+      description: "Unable to load video from the provided URL. This may be due to CORS restrictions or the URL not being a direct video link. Please download the video and host it elsewhere, or use a direct MP4 link.",
       variant: "destructive",
     });
     setIsLoading(false);
@@ -109,8 +147,9 @@ export const VideoSection = () => {
               poster="/placeholder.svg"
               onError={handleVideoError}
               onLoadedData={handleVideoLoaded}
+              playsInline
             >
-              <source src={videoUrl} type="video/mp4" />
+              <source src={videoUrl} type={videoFormat} />
               Your browser does not support the video tag.
             </video>
           </div>
@@ -156,7 +195,7 @@ export const VideoSection = () => {
               </Button>
             )}
             <p className="mt-4 text-sm text-muted-foreground">
-              Note: Enter a direct link to an MP4 video file, such as one from HeyGen or another video hosting service.
+              Note: Enter a direct link to an MP4 video file. For HeyGen videos, you may need to download the video first and host it elsewhere due to cross-origin restrictions.
             </p>
           </div>
         </div>
