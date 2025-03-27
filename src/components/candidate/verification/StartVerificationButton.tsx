@@ -1,5 +1,6 @@
 
 import { Button } from "@/components/ui/button";
+import { Shield } from "lucide-react";
 
 type StartVerificationButtonProps = {
   loading: boolean;
@@ -8,12 +9,13 @@ type StartVerificationButtonProps = {
 
 export const StartVerificationButton = ({ loading, onClick }: StartVerificationButtonProps) => {
   return (
-    <Button
-      onClick={onClick}
+    <Button 
+      onClick={onClick} 
       disabled={loading}
-      className="w-full sm:w-auto bg-[#FF69B4] hover:bg-[#FF50A8] text-white"
+      className="bg-[#FF69B4] hover:bg-[#FF50A8] text-white"
     >
-      {loading ? "Starting Verification..." : "Start Verification"}
+      <Shield className="w-4 h-4 mr-2" />
+      {loading ? "Starting..." : "Start Verification"}
     </Button>
   );
 };

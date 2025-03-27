@@ -1,3 +1,4 @@
+
 import { CandidateForm } from "@/components/candidate/CandidateForm";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -7,6 +8,7 @@ import { LayoutDashboard } from "lucide-react";
 import { FileUploadSection } from "@/components/candidate/FileUploadSection";
 import { PreviewButton } from "@/components/candidate/PreviewButton";
 import { initializeStorage } from "@/integrations/supabase/storage";
+import { VerificationSection } from "@/components/candidate/VerificationSection";
 
 export default function CandidateProfile() {
   const { toast } = useToast();
@@ -137,6 +139,8 @@ export default function CandidateProfile() {
                   onUploadComplete={handleFileUploadComplete}
                 />
               </div>
+              
+              <VerificationSection />
             </div>
           )}
         </div>
