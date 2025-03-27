@@ -12,7 +12,7 @@ const InterviewsHeader = () => {
       <h1 className="text-3xl font-bold text-gray-900">My Interviews</h1>
       <Button
         onClick={() => navigate('/candidate/dashboard')}
-        className="text-white"
+        className="bg-[#FF69B4] hover:bg-[#FF50A8] text-white"
         variant="default"
       >
         <LayoutDashboard className="w-4 h-4 mr-2" />

@@ -43,7 +43,7 @@ import { ProtectedRoute } from './components/auth/ProtectedRoute';
 // Test only
 import DummyCandidateProfile from './pages/DummyCandidateProfile';
 
-function App() {
+const App = () => {
   return (
     <BrowserRouter>
       <Routes>
@@ -91,6 +91,6 @@ function App() {
       <Toaster />
     </BrowserRouter>
   );
-}
+};
 
 export default App;
