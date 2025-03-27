@@ -1,5 +1,4 @@
-
-import { PoundSterling, MapPin, Building2, Clock, BriefcaseIcon, ListChecks, Hash } from "lucide-react";
+import { PoundSterling, MapPin, Building2, Clock, BriefcaseIcon, ListChecks } from "lucide-react";
 import { formatSalary } from "./utils";
 import { JobCardFrontProps } from "./types";
 import { formatDistanceToNow } from "date-fns";
@@ -32,16 +31,6 @@ const JobCardFront = ({ job, showEmployerDetails = false, onFlip }: JobCardFront
             {showEmployerDetails ? job.company : "Company details hidden until match"}
           </p>
         </div>
-        
-        {/* Reference Code */}
-        {job.reference_code && (
-          <div className="flex items-center gap-2 mt-2">
-            <Hash className="h-4 w-4 text-primary" />
-            <p className="text-sm font-medium text-primary">
-              Ref: {job.reference_code}
-            </p>
-          </div>
-        )}
       </div>
 
       {/* Key Details Section */}

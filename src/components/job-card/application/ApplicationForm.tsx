@@ -10,7 +10,6 @@ interface ApplicationFormProps {
   setCoverLetter: (value: string) => void;
   setResumeFile: (file: File | null) => void;
   coverLetter: string;
-  referenceCode?: string;
 }
 
 const ApplicationForm = ({ 
@@ -18,23 +17,10 @@ const ApplicationForm = ({
   onCancel, 
   setCoverLetter, 
   setResumeFile,
-  coverLetter,
-  referenceCode
+  coverLetter 
 }: ApplicationFormProps) => {
   return (
     <form onSubmit={onSubmit} onClick={(e) => e.stopPropagation()} className="space-y-4">
-      {referenceCode && (
-        <div className="p-3 bg-primary/10 rounded-md">
-          <p className="text-sm font-medium text-primary flex items-center">
-            <span className="mr-1">Reference Code:</span>
-            {referenceCode}
-          </p>
-          <p className="text-xs text-muted-foreground mt-1">
-            Please include this reference code in any communications about this position.
-          </p>
-        </div>
-      )}
-      
       <div>
         <label className="block text-sm font-medium mb-1 text-red-800">Resume (Optional)</label>
         <Input

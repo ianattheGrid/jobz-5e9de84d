@@ -27,5 +27,4 @@ export interface Job {
   match_threshold: number;
   required_skills: string[] | null;
   min_years_in_title: number;
-  reference_code: string;
 }

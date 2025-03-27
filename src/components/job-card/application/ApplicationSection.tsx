@@ -12,7 +12,6 @@ interface ApplicationSectionProps {
   setResumeFile: (file: File | null) => void;
   isApplying: boolean;
   setIsApplying: (value: boolean) => void;
-  referenceCode?: string;
 }
 
 const ApplicationSection = ({
@@ -25,7 +24,6 @@ const ApplicationSection = ({
   setResumeFile,
   isApplying,
   setIsApplying,
-  referenceCode
 }: ApplicationSectionProps) => {
   return (
     <div className="mt-6">
@@ -44,7 +42,6 @@ const ApplicationSection = ({
           setCoverLetter={setCoverLetter}
           setResumeFile={setResumeFile}
           coverLetter={coverLetter}
-          referenceCode={referenceCode}
         />
       )}
     </div>

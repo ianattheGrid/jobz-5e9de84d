@@ -1,8 +1,7 @@
-
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2, Briefcase, MapPin, CircleDollarSign, Hash } from "lucide-react";
+import { Loader2, Briefcase, MapPin, CircleDollarSign } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -23,7 +22,6 @@ interface Job {
   created_at: string;
   candidate_commission: number | null;
   required_skills: string[];
-  reference_code: string;
 }
 
 export const EmployerJobsList = ({ employerId }: EmployerJobsListProps) => {
@@ -90,12 +88,6 @@ export const EmployerJobsList = ({ employerId }: EmployerJobsListProps) => {
                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
                   <div>
                     <h4 className="font-semibold text-lg text-gray-900">{job.title}</h4>
-                    {job.reference_code && (
-                      <div className="flex items-center mt-1 text-primary">
-                        <Hash className="h-4 w-4 mr-1" />
-                        <span className="text-sm font-medium">Ref: {job.reference_code}</span>
-                      </div>
-                    )}
                     <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-2 text-sm text-gray-600">
                       <div className="flex items-center gap-1">
                         <MapPin className="h-4 w-4 text-gray-400" />

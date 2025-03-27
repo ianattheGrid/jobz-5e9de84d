@@ -14,18 +14,18 @@ const NavigationLinks = () => {
   const { user } = useAuth();
 
   return (
-    <div className="flex items-center justify-between w-full">
+    <div className="flex items-center gap-4">
       <nav className="flex items-center space-x-6">
         <Link 
           to="/" 
-          className="text-foreground hover:text-foreground/80 flex items-center gap-2"
+          className="text-white hover:text-white/80 flex items-center gap-2"
         >
           <Home className="h-4 w-4" />
           <span>Home</span>
         </Link>
         <Link 
           to="/jobs" 
-          className="text-foreground hover:text-foreground/80 flex items-center gap-2"
+          className="text-white hover:text-white/80 flex items-center gap-2"
         >
           <Briefcase className="h-4 w-4" />
           <span>Job Board</span>
@@ -104,4 +104,3 @@ const NavigationLinks = () => {
 };
 
 export default NavigationLinks;
-
