@@ -14,7 +14,7 @@ const NavigationLinks = () => {
   const { user } = useAuth();
 
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center justify-between w-full">
       <nav className="flex items-center space-x-6">
         <Link 
           to="/" 
