@@ -2,12 +2,11 @@
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 export const VideoSection = () => {
-  // Replace YOUR_VIDEO_ID with your actual Vimeo video ID
-  // Example: if your Vimeo URL is https://vimeo.com/123456789, use 123456789
-  const videoId = "123456789"; // ← Replace this number with your actual video ID
+  // Using the Vimeo video ID from the user's embed code
+  const videoId = "1069924968"; // Extracted from the user's Vimeo embed code
   
   // Complete iframe embed code
-  const videoEmbed = `<iframe src="https://player.vimeo.com/video/${videoId}" width="100%" height="100%" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`;
+  const videoEmbed = `<iframe src="https://player.vimeo.com/video/${videoId}?h=57c269d6d1&badge=0&autopause=0&player_id=0&app_id=58479" width="100%" height="100%" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" allowfullscreen title="jobz"></iframe>`;
   
   return (
     <section className="py-16 bg-transparent">
