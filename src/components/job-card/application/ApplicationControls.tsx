@@ -1,4 +1,5 @@
 
+import { useState } from "react";
 import { Job } from "@/integrations/supabase/types/jobs";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";

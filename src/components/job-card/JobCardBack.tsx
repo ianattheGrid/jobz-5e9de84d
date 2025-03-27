@@ -84,7 +84,7 @@ const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
 
   return (
     <div 
-      className="h-full p-6 bg-white text-gray-900 overflow-y-auto rounded-lg border border-gray-200"
+      className="h-full p-6 bg-[#2A2A2A] text-foreground overflow-y-auto rounded-lg"
       onClick={(e) => {
         e.stopPropagation();
         onClose();
@@ -98,7 +98,7 @@ const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
           }}
           className="absolute top-0 right-0 p-2 rounded-full hover:bg-accent/10 transition-colors"
         >
-          <X className="h-5 w-5 text-gray-900" />
+          <X className="h-5 w-5" />
         </button>
 
         {job.candidate_commission && (
