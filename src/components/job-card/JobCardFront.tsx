@@ -1,3 +1,4 @@
+
 import { PoundSterling, MapPin, Building2, Clock, BriefcaseIcon, ListChecks } from "lucide-react";
 import { formatSalary } from "./utils";
 import { JobCardFrontProps } from "./types";
@@ -6,6 +7,7 @@ import { PRIMARY_COLOR_PATTERN } from "@/styles/colorPatterns";
 
 const JobCardFront = ({ job, showEmployerDetails = false, onFlip }: JobCardFrontProps) => {
   const hasBonus = !!job.candidate_commission;
+  const vacancyRef = `VAC-${job.id.toString().padStart(5, '0')}`;
 
   return (
     <div 
@@ -18,9 +20,14 @@ const JobCardFront = ({ job, showEmployerDetails = false, onFlip }: JobCardFront
       {/* Header Section */}
       <div className="mb-4">
         <div className="flex justify-between items-start gap-4">
-          <h3 className={`text-xl font-semibold ${PRIMARY_COLOR_PATTERN}`}>
-            {job.title}
-          </h3>
+          <div>
+            <h3 className={`text-xl font-semibold ${PRIMARY_COLOR_PATTERN}`}>
+              {job.title}
+            </h3>
+            <span className="text-xs text-muted-foreground">
+              Ref: {vacancyRef}
+            </span>
+          </div>
           <span className="px-2 py-1 text-xs font-medium bg-primary text-white rounded-full whitespace-nowrap flex-shrink-0">
             {job.type}
           </span>

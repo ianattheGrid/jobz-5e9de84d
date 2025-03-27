@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -83,63 +84,67 @@ export const EmployerJobsList = ({ employerId }: EmployerJobsListProps) => {
           <h3 className="text-xl font-semibold mb-4 text-gray-900">Current Openings ({jobs.length})</h3>
           
           <div className="space-y-4">
-            {jobs.map((job) => (
-              <div key={job.id} className="border rounded-lg p-4 bg-white">
-                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
-                  <div>
-                    <h4 className="font-semibold text-lg text-gray-900">{job.title}</h4>
-                    <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-2 text-sm text-gray-600">
-                      <div className="flex items-center gap-1">
-                        <MapPin className="h-4 w-4 text-gray-400" />
-                        {job.location}
+            {jobs.map((job) => {
+              const vacancyRef = `VAC-${job.id.toString().padStart(5, '0')}`;
+              return (
+                <div key={job.id} className="border rounded-lg p-4 bg-white">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
+                    <div>
+                      <h4 className="font-semibold text-lg text-gray-900">{job.title}</h4>
+                      <div className="text-xs text-gray-500 mb-2">Ref: {vacancyRef}</div>
+                      <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-2 text-sm text-gray-600">
+                        <div className="flex items-center gap-1">
+                          <MapPin className="h-4 w-4 text-gray-400" />
+                          {job.location}
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <CircleDollarSign className="h-4 w-4 text-gray-400" />
+                          £{job.salary_min.toLocaleString()} - £{job.salary_max.toLocaleString()}
+                        </div>
+                        <Badge variant="outline" className="border-pink-500 text-pink-500">
+                          {job.type}
+                        </Badge>
                       </div>
-                      <div className="flex items-center gap-1">
-                        <CircleDollarSign className="h-4 w-4 text-gray-400" />
-                        £{job.salary_min.toLocaleString()} - £{job.salary_max.toLocaleString()}
-                      </div>
-                      <Badge variant="outline" className="border-pink-500 text-pink-500">
-                        {job.type}
-                      </Badge>
                     </div>
+                    
+                    <Link to={`/jobs`} state={{ selectedJob: job.id }}>
+                      <Button size="sm" className="whitespace-nowrap bg-primary hover:bg-primary/90 text-white">
+                        View Details
+                      </Button>
+                    </Link>
                   </div>
                   
-                  <Link to={`/jobs`} state={{ selectedJob: job.id }}>
-                    <Button size="sm" className="whitespace-nowrap bg-primary hover:bg-primary/90 text-white">
-                      View Details
-                    </Button>
-                  </Link>
+                  <Separator className="my-3" />
+                  
+                  <p className="text-gray-600 text-sm line-clamp-2 mb-3">
+                    {job.description}
+                  </p>
+                  
+                  {job.required_skills && job.required_skills.length > 0 && (
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      {job.required_skills.slice(0, 5).map((skill, index) => (
+                        <Badge key={index} variant="secondary" className="bg-gray-100 text-gray-800">
+                          {skill}
+                        </Badge>
+                      ))}
+                      {job.required_skills.length > 5 && (
+                        <Badge variant="secondary" className="bg-gray-100 text-gray-800">
+                          +{job.required_skills.length - 5} more
+                        </Badge>
+                      )}
+                    </div>
+                  )}
+                  
+                  {job.candidate_commission !== null && (
+                    <div className="mt-3">
+                      <Badge className="bg-green-100 text-green-800">
+                        You're Hired Bonus Available
+                      </Badge>
+                    </div>
+                  )}
                 </div>
-                
-                <Separator className="my-3" />
-                
-                <p className="text-gray-600 text-sm line-clamp-2 mb-3">
-                  {job.description}
-                </p>
-                
-                {job.required_skills && job.required_skills.length > 0 && (
-                  <div className="flex flex-wrap gap-2 mt-2">
-                    {job.required_skills.slice(0, 5).map((skill, index) => (
-                      <Badge key={index} variant="secondary" className="bg-gray-100 text-gray-800">
-                        {skill}
-                      </Badge>
-                    ))}
-                    {job.required_skills.length > 5 && (
-                      <Badge variant="secondary" className="bg-gray-100 text-gray-800">
-                        +{job.required_skills.length - 5} more
-                      </Badge>
-                    )}
-                  </div>
-                )}
-                
-                {job.candidate_commission !== null && (
-                  <div className="mt-3">
-                    <Badge className="bg-green-100 text-green-800">
-                      You're Hired Bonus Available
-                    </Badge>
-                  </div>
-                )}
-              </div>
-            ))}
+              );
+            })}
           </div>
         </CardContent>
       </Card>
