@@ -1,10 +1,13 @@
 
-import { useState } from "react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 export const VideoSection = () => {
-  // You can replace this with your own Vimeo embed code
-  const [videoUrl, setVideoUrl] = useState('<iframe src="https://player.vimeo.com/video/YOUR_VIDEO_ID" width="100%" height="100%" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>');
+  // Replace YOUR_VIDEO_ID with your actual Vimeo video ID
+  // Example: if your Vimeo URL is https://vimeo.com/123456789, use 123456789
+  const videoId = "YOUR_VIDEO_ID";
+  
+  // Complete iframe embed code
+  const videoEmbed = `<iframe src="https://player.vimeo.com/video/${videoId}" width="100%" height="100%" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`;
   
   return (
     <section className="py-16 bg-transparent">
@@ -16,7 +19,7 @@ export const VideoSection = () => {
               <AspectRatio ratio={16/9}>
                 <div 
                   className="w-full h-full absolute inset-0 bg-gray-100 rounded-lg"
-                  dangerouslySetInnerHTML={{ __html: videoUrl }}
+                  dangerouslySetInnerHTML={{ __html: videoEmbed }}
                 />
               </AspectRatio>
             </div>
