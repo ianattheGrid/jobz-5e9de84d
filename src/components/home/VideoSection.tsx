@@ -24,14 +24,17 @@ export const VideoSection = () => {
             </div>
           </div>
           
-          {/* Content on the right - placeholder for your custom content */}
+          {/* Updated content on the right */}
           <div className="w-full md:w-1/2">
-            <h2 className="text-3xl font-bold mb-4">AI Digital Experts</h2>
+            <h2 className="text-3xl font-bold mb-4">No more middlemen</h2>
             <p className="text-lg mb-6">
-              Add your custom content here. This area is designed for you to add your own text explaining the video or providing additional information about your services.
+              Thanks to AI, the hiring world is about to change dramatically. The traditional recruitment 
+              process with expensive third-party agencies is becoming obsolete.
             </p>
             <p className="text-lg mb-6">
-              You can provide this content later, and it will appear in this section alongside the video.
+              Watch theGrid's video to see the contrast between the old recruiting world and 
+              the new AI-powered direct hiring approach that connects employers and candidates 
+              without intermediaries.
             </p>
           </div>
         </div>
