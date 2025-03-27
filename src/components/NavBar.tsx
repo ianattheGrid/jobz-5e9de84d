@@ -33,21 +33,32 @@ const NavBar = () => {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background border-b border-border h-16">
       <div className="container mx-auto px-4 h-full">
-        <div className="grid grid-cols-3 items-center h-full">
-          <div className="flex items-center">
-            <Link to="/" className="text-xl font-bold text-white mr-20">
+        <div className="flex justify-between items-center h-full">
+          <div className="flex items-center gap-12">
+            <Link to="/" className="text-xl font-bold text-white">
               jobz
             </Link>
             <div className="hidden md:block">
-              <NavigationLinks />
+              <nav className="flex items-center space-x-6">
+                <Link 
+                  to="/" 
+                  className="text-black hover:text-black/80 flex items-center gap-2"
+                >
+                  <Home className="h-4 w-4" />
+                  <span>Home</span>
+                </Link>
+                <Link 
+                  to="/jobs" 
+                  className="text-black hover:text-black/80 flex items-center gap-2"
+                >
+                  <Briefcase className="h-4 w-4" />
+                  <span>Job Board</span>
+                </Link>
+              </nav>
             </div>
           </div>
           
-          <div className="col-span-1 flex justify-center">
-            {/* Center content if needed */}
-          </div>
-          
-          <div className="flex justify-end">
+          <div className="flex items-center">
             <div className="hidden md:flex items-center gap-4">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -120,7 +131,7 @@ const NavBar = () => {
 };
 
 import { Button } from "@/components/ui/button";
-import { LogIn, UserPlus } from "lucide-react";
+import { LogIn, UserPlus, Home, Briefcase } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 export default NavBar;
