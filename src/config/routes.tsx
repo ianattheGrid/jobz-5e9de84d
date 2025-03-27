@@ -1,4 +1,3 @@
-
 import { Navigate } from "react-router-dom";
 import Index from "@/pages/Index";
 import Jobs from "@/pages/Jobs";
@@ -71,6 +70,10 @@ export const routes = [
   {
     path: "/candidate/applications",
     element: <CandidateApplications />
+  },
+  {
+    path: "/candidate/account",
+    element: <CandidateAccountSettings />
   },
   {
     path: "/candidate/settings",

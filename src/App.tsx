@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
 import './App.css';
@@ -60,6 +59,7 @@ function App() {
           <Route path="candidate/applications" element={<ProtectedRoute userType="candidate"><CandidateApplications /></ProtectedRoute>} />
           <Route path="candidate/interviews" element={<ProtectedRoute userType="candidate"><CandidateInterviews /></ProtectedRoute>} />
           <Route path="candidate/account" element={<ProtectedRoute userType="candidate"><CandidateAccountSettings /></ProtectedRoute>} />
+          <Route path="candidate/settings" element={<ProtectedRoute userType="candidate"><CandidateAccountSettings /></ProtectedRoute>} />
           
           {/* Employer routes */}
           <Route path="employer/signin" element={<EmployerSignIn />} />
