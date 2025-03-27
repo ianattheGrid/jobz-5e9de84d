@@ -239,6 +239,8 @@ export type Database = {
           created_at: string | null
           id: string
           updated_at: string | null
+          verification_document_url: string | null
+          verification_service: string | null
           verification_status: string
           verified_at: string | null
         }
@@ -247,6 +249,8 @@ export type Database = {
           created_at?: string | null
           id?: string
           updated_at?: string | null
+          verification_document_url?: string | null
+          verification_service?: string | null
           verification_status?: string
           verified_at?: string | null
         }
@@ -255,6 +259,8 @@ export type Database = {
           created_at?: string | null
           id?: string
           updated_at?: string | null
+          verification_document_url?: string | null
+          verification_service?: string | null
           verification_status?: string
           verified_at?: string | null
         }
