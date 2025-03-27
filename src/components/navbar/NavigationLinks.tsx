@@ -18,14 +18,14 @@ const NavigationLinks = () => {
       <nav className="flex items-center space-x-6">
         <Link 
           to="/" 
-          className="text-white hover:text-white/80 flex items-center gap-2"
+          className="text-black hover:text-black/80 flex items-center gap-2"
         >
           <Home className="h-4 w-4" />
           <span>Home</span>
         </Link>
         <Link 
           to="/jobs" 
-          className="text-white hover:text-white/80 flex items-center gap-2"
+          className="text-black hover:text-black/80 flex items-center gap-2"
         >
           <Briefcase className="h-4 w-4" />
           <span>Job Board</span>
