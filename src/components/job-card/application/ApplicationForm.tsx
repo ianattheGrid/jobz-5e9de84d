@@ -1,5 +1,4 @@
 
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -32,28 +31,28 @@ const ApplicationForm = ({
               Reference Code: {referenceCode}
             </p>
           </div>
-          <p className="text-xs text-muted-foreground mt-1">
+          <p className="text-xs text-gray-600 mt-1">
             Please include this reference code in any communications about this position.
           </p>
         </div>
       )}
       
       <div>
-        <label className="block text-sm font-medium mb-1 text-foreground">Resume (Optional)</label>
+        <label className="block text-sm font-medium mb-1 text-gray-900">Resume (Optional)</label>
         <Input
           type="file"
           accept=".pdf,.doc,.docx"
           onChange={(e) => setResumeFile(e.target.files?.[0] || null)}
-          className="bg-white text-foreground"
+          className="bg-white text-gray-900"
         />
       </div>
       <div>
-        <label className="block text-sm font-medium mb-1 text-foreground">Cover Letter</label>
+        <label className="block text-sm font-medium mb-1 text-gray-900">Cover Letter</label>
         <Textarea
           value={coverLetter}
           onChange={(e) => setCoverLetter(e.target.value)}
           placeholder="Write your cover letter..."
-          className="h-32 bg-white text-foreground"
+          className="h-32 bg-white text-gray-900"
         />
       </div>
       <div className="flex space-x-2">

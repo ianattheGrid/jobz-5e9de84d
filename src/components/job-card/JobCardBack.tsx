@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { X, Hash } from "lucide-react";
+import { X } from "lucide-react";
 import { Job } from "@/integrations/supabase/types/jobs";
 import JobDetails from "./details/JobDetails";
 import CommissionDetails from "./details/CommissionDetails";
@@ -84,7 +84,7 @@ const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
 
   return (
     <div 
-      className="h-full p-6 bg-card text-foreground overflow-y-auto rounded-lg border border-border"
+      className="h-full p-6 bg-white text-gray-900 overflow-y-auto rounded-lg border border-gray-200"
       onClick={(e) => {
         e.stopPropagation();
         onClose();
@@ -98,23 +98,8 @@ const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
           }}
           className="absolute top-0 right-0 p-2 rounded-full hover:bg-accent/10 transition-colors"
         >
-          <X className="h-5 w-5" />
+          <X className="h-5 w-5 text-gray-900" />
         </button>
-
-        {/* Reference Code (prominent placement) */}
-        {job.reference_code && (
-          <div className="mb-4 p-3 bg-primary/10 rounded-md border border-primary/20">
-            <div className="flex items-center gap-2">
-              <Hash className="h-5 w-5 text-primary" />
-              <p className="text-base font-medium text-primary">
-                Reference Code: {job.reference_code}
-              </p>
-            </div>
-            <p className="text-xs text-muted-foreground mt-1">
-              Please include this reference code in any communications about this position.
-            </p>
-          </div>
-        )}
 
         {job.candidate_commission && (
           <CommissionDetails candidateCommission={job.candidate_commission} />
