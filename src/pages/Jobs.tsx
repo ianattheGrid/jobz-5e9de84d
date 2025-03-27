@@ -1,4 +1,3 @@
-
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Job } from "@/integrations/supabase/types/jobs";
@@ -50,7 +49,6 @@ const Jobs = () => {
 
         if (searchFilters.location && searchFilters.location.length > 0) {
           if (searchFilters.location.length === bristolPostcodes.length) {
-            // All locations selected, no need to filter
           } else {
             query = query.in('location', searchFilters.location);
           }
