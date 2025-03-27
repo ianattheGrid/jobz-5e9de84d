@@ -91,7 +91,7 @@ const Jobs = () => {
       <div className="container mx-auto py-8 px-4 bg-background min-h-screen">
         <div className="mb-8">
           <div className="flex justify-between items-start">
-            <JobsHeader userType={userType} jobCount={jobs?.length || 0} />
+            <JobsHeader userType={userType} />
             {userType === 'candidate' && (
               <Button
                 onClick={() => navigate('/candidate/dashboard')}
