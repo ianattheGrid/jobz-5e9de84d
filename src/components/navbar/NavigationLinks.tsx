@@ -14,7 +14,7 @@ const NavigationLinks = () => {
   const { user } = useAuth();
 
   return (
-    <div className="flex items-center gap-4">
+    <>
       <nav className="flex items-center space-x-6">
         <Link 
           to="/" 
@@ -32,7 +32,7 @@ const NavigationLinks = () => {
         </Link>
       </nav>
       
-      <div className="flex items-center gap-4 ml-auto">
+      <div className="flex items-center gap-4">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button 
@@ -99,7 +99,7 @@ const NavigationLinks = () => {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-    </div>
+    </>
   );
 };
 
