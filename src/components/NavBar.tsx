@@ -35,12 +35,12 @@ const NavBar = () => {
       <div className="container mx-auto px-4 h-full">
         <div className="flex justify-between items-center h-full">
           <div className="flex items-center gap-8">
-            <MobileNav isAuthenticated={isAuthenticated} userType={userType} />
-            <Link to="/" className="text-xl font-bold text-white">
+            <Link to="/" className="text-xl font-bold text-white mr-4">
               jobz
             </Link>
+            <NavigationLinks />
           </div>
-          <NavigationLinks />
+          <MobileNav isAuthenticated={isAuthenticated} userType={userType} />
         </div>
       </div>
     </header>
