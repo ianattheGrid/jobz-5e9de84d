@@ -38,9 +38,13 @@ export const VerificationSection = () => {
         .from('candidate_verifications')
         .select('verification_status, verification_service')
         .eq('candidate_id', session.user.id)
-        .single();
+        .maybeSingle();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error loading verification status:', error);
+        return;
+      }
+
       if (data) {
         setVerificationStatus(data.verification_status);
         if (data.verification_service) {

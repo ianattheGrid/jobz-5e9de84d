@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { TestScenarioButton } from "@/components/dashboard/TestScenarioButton";
 import { VerificationSection } from "@/components/candidate/VerificationSection";
+import { initializeStorage } from "@/integrations/supabase/storage";
 
 const CandidateDashboard = () => {
   const navigate = useNavigate();
@@ -23,6 +24,9 @@ const CandidateDashboard = () => {
   const [fullName, setFullName] = useState<string | null>(null);
 
   useEffect(() => {
+    // Initialize storage buckets
+    initializeStorage().catch(console.error);
+    
     checkUser();
   }, []);
 

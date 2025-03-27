@@ -1,4 +1,3 @@
-
 import { CandidateForm } from "@/components/candidate/CandidateForm";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -7,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { LayoutDashboard } from "lucide-react";
 import { FileUploadSection } from "@/components/candidate/FileUploadSection";
 import { PreviewButton } from "@/components/candidate/PreviewButton";
+import { initializeStorage } from "@/integrations/supabase/storage";
 
 export default function CandidateProfile() {
   const { toast } = useToast();
@@ -37,6 +37,9 @@ export default function CandidateProfile() {
   };
 
   useEffect(() => {
+    // Initialize storage buckets
+    initializeStorage().catch(console.error);
+    
     const checkAuth = async () => {
       try {
         const { data: { session } } = await supabase.auth.getSession();
