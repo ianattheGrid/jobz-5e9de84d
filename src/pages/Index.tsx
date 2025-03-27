@@ -14,7 +14,7 @@ export default function Index() {
       <PlatformFeatures />
       <VideoSection />
       {/* Reduced spacer div to create less space between sections */}
-      <div className="h-16"></div>
+      <div className="h-8"></div>
       <CalculatorSection />
       <FAQSection />
     </div>

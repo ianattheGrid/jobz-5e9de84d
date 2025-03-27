@@ -1,18 +1,12 @@
+
 import { useState } from "react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 export const VideoSection = () => {
-  const [videoUrl, setVideoUrl] = useState('<iframe src="https://app.heygen.com/embed/c9624eacca7c49ca8b2dc24db2d8c777" width="100%" height="100%" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>');
-  const [isEditing, setIsEditing] = useState(false);
-  const [tempUrl, setTempUrl] = useState(videoUrl);
+  // Updated to a Vimeo embed code which is more reliable
+  const [videoUrl, setVideoUrl] = useState('<iframe src="https://player.vimeo.com/video/76979871" width="100%" height="100%" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>');
   
-  const handleSaveUrl = () => {
-    setVideoUrl(tempUrl);
-    setIsEditing(false);
-  };
-
   return (
     <section className="py-16 bg-transparent">
       <div className="container mx-auto px-4">
