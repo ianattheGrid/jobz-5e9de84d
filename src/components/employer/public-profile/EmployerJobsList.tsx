@@ -7,23 +7,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { Job } from "@/integrations/supabase/types/jobs";
 
 interface EmployerJobsListProps {
   employerId: string;
-}
-
-interface Job {
-  id: number;
-  title: string;
-  description: string;
-  location: string;
-  type: string;
-  salary_min: number;
-  salary_max: number;
-  created_at: string;
-  candidate_commission: number | null;
-  required_skills: string[];
-  reference_code: string;
 }
 
 export const EmployerJobsList = ({ employerId }: EmployerJobsListProps) => {
@@ -42,7 +29,15 @@ export const EmployerJobsList = ({ employerId }: EmployerJobsListProps) => {
         if (error) throw error;
         
         if (data) {
-          setJobs(data);
+          // Transform the data to include reference_code if missing
+          const transformedData: Job[] = data.map((job: any) => ({
+            ...job,
+            match_threshold: job.match_threshold || 60,
+            required_skills: job.required_skills || null,
+            reference_code: job.reference_code || `JOB-${job.id.toString().padStart(6, '0')}`
+          }));
+          
+          setJobs(transformedData);
         }
       } catch (error) {
         console.error('Error fetching employer jobs:', error);

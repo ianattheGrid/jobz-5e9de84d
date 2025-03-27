@@ -1,3 +1,4 @@
+
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Job } from "@/integrations/supabase/types/jobs";
@@ -71,9 +72,10 @@ const Jobs = () => {
       }
       
       const transformedData: Job[] = data.map(job => ({
-        ...job as Omit<Job, 'match_threshold' | 'required_skills'>,
+        ...job as any,
         match_threshold: (job as any).match_threshold || 60,
-        required_skills: (job as any).required_skills || null
+        required_skills: (job as any).required_skills || null,
+        reference_code: (job as any).reference_code || `JOB-${job.id.toString().padStart(6, '0')}`
       }));
       
       return transformedData;
