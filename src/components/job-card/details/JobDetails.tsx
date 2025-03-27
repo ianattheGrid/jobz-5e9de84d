@@ -1,6 +1,8 @@
+
+import { Hash, MapPin, PoundSterling, Clock, Briefcase, Calendar, User, Landmark, Award } from "lucide-react";
 import { Job } from "@/integrations/supabase/types/jobs";
-import { formatBenefits } from "../utils";
-import { GraduationCap, Clock, ListChecks, Briefcase, Target, Building2 } from "lucide-react";
+import { formatSalary } from "../utils";
+import { format } from "date-fns";
 
 interface JobDetailsProps {
   job: Job;
@@ -8,57 +10,99 @@ interface JobDetailsProps {
 
 const JobDetails = ({ job }: JobDetailsProps) => {
   return (
-    <div className="space-y-6 bg-white p-6 rounded-lg">
-      {/* Full Description */}
-      <div className="text-sm">
-        <h4 className="font-semibold text-lg mb-3 text-gray-900">About This Role</h4>
-        <div className="space-y-4 text-gray-700">
-          <p className="whitespace-pre-line leading-relaxed">
-            {job.description}
-            {'\n\n'}
-            We are seeking a talented and motivated professional to join our growing team. In this role, you will have the opportunity to:
-            {'\n\n'}
-            • Lead and deliver high-impact projects from conception to completion
-            • Collaborate with cross-functional teams to drive innovation
-            • Identify and implement process improvements
-            • Mentor and support junior team members
-            • Contribute to strategic planning and decision-making
-            {'\n\n'}
-            What makes you stand out:
-            {'\n\n'}
-            • A track record of successful project delivery
-            • Strong analytical and problem-solving capabilities
-            • Excellence in both written and verbal communication
-            • Ability to thrive in a fast-paced environment
-            • Passion for innovation and continuous improvement
-            {'\n\n'}
-            This is an excellent opportunity for a driven professional looking to make a significant impact while working with cutting-edge technologies and methodologies.
-          </p>
-          
-          <div className="flex items-center gap-2 mt-4 text-primary">
-            <Building2 className="h-5 w-5" />
-            <span className="font-medium">Work Area: {job.work_area}</span>
+    <div className="space-y-6">
+      <div>
+        <h2 className="text-xl font-bold mb-1">{job.title}</h2>
+        <div className="space-y-2">
+          <div className="flex items-start gap-2">
+            <Landmark className="h-4 w-4 mt-0.5 text-white" />
+            <span className="text-white">{job.company}</span>
           </div>
-          
-          {job.specialization && (
-            <div className="flex items-center gap-2 text-primary">
-              <Target className="h-5 w-5" />
-              <span className="font-medium">Specialization: {job.specialization}</span>
+          <div className="flex items-start gap-2">
+            <MapPin className="h-4 w-4 mt-0.5 text-white" />
+            <span className="text-white">{job.location}</span>
+          </div>
+          {job.reference_code && (
+            <div className="flex items-start gap-2">
+              <Hash className="h-4 w-4 mt-0.5 text-white" />
+              <span className="text-white font-medium">Reference: {job.reference_code}</span>
             </div>
           )}
         </div>
       </div>
 
-      {/* Required Skills */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="space-y-1">
+          <div className="flex items-center gap-2">
+            <PoundSterling className="h-4 w-4 text-white" />
+            <span className="text-sm text-white">
+              £{job.salary_min.toLocaleString()} - £{job.salary_max.toLocaleString()}
+            </span>
+          </div>
+          
+          <div className="flex items-center gap-2">
+            <Briefcase className="h-4 w-4 text-white" />
+            <span className="text-sm text-white">{job.type}</span>
+          </div>
+        </div>
+        
+        <div className="space-y-1">
+          <div className="flex items-center gap-2">
+            <Calendar className="h-4 w-4 text-white" />
+            <span className="text-sm text-white">
+              {job.holiday_entitlement} days holiday
+            </span>
+          </div>
+          
+          <div className="flex items-center gap-2">
+            <Clock className="h-4 w-4 text-white" />
+            <span className="text-sm text-white">
+              Posted {format(new Date(job.created_at), 'dd MMM yyyy')}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {(job.min_years_experience > 0 || job.min_years_in_title > 0) && (
+        <div className="space-y-2">
+          <h3 className="text-sm font-semibold text-white">Experience Requirements</h3>
+          {job.min_years_experience > 0 && (
+            <div className="flex items-center gap-2">
+              <User className="h-4 w-4 text-white" />
+              <span className="text-sm text-white">
+                Minimum {job.min_years_experience} years of general experience
+              </span>
+            </div>
+          )}
+          {job.min_years_in_title > 0 && (
+            <div className="flex items-center gap-2">
+              <Award className="h-4 w-4 text-white" />
+              <span className="text-sm text-white">
+                Minimum {job.min_years_in_title} years in similar role
+              </span>
+            </div>
+          )}
+        </div>
+      )}
+
+      <div>
+        <h3 className="text-sm font-semibold text-white mb-2">Job Description</h3>
+        <p className="text-sm text-white whitespace-pre-line">{job.description}</p>
+      </div>
+
+      {job.company_benefits && (
+        <div>
+          <h3 className="text-sm font-semibold text-white mb-2">Company Benefits</h3>
+          <p className="text-sm text-white whitespace-pre-line">{job.company_benefits}</p>
+        </div>
+      )}
+
       {job.required_skills && job.required_skills.length > 0 && (
         <div>
-          <h4 className="font-semibold mb-3 text-gray-900 flex items-center gap-2">
-            <ListChecks className="h-5 w-5 text-primary" />
-            Required Skills
-          </h4>
+          <h3 className="text-sm font-semibold text-white mb-2">Required Skills</h3>
           <div className="flex flex-wrap gap-2">
             {job.required_skills.map((skill, index) => (
-              <span key={index} className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">
+              <span key={index} className="px-2 py-1 text-xs bg-white/10 text-white rounded-full">
                 {skill}
               </span>
             ))}
@@ -66,56 +110,18 @@ const JobDetails = ({ job }: JobDetailsProps) => {
         </div>
       )}
 
-      {/* Qualifications */}
-      {job.required_qualifications && (
+      {job.required_qualifications && job.required_qualifications.length > 0 && (
         <div>
-          <h4 className="font-semibold mb-3 text-gray-900 flex items-center gap-2">
-            <GraduationCap className="h-5 w-5 text-primary" />
-            Required Qualifications
-          </h4>
-          <ul className="list-disc pl-5 text-sm text-gray-700 space-y-2">
+          <h3 className="text-sm font-semibold text-white mb-2">Required Qualifications</h3>
+          <div className="flex flex-wrap gap-2">
             {job.required_qualifications.map((qual, index) => (
-              <li key={index}>{qual}</li>
+              <span key={index} className="px-2 py-1 text-xs bg-white/10 text-white rounded-full">
+                {qual}
+              </span>
             ))}
-            {job.citizenship_essential && (
-              <li>{job.required_citizenship || 'Must have right to work in the UK'}</li>
-            )}
-          </ul>
-          
-          {job.min_years_experience > 0 && (
-            <div className="mt-3 text-sm text-gray-700">
-              <p>Minimum {job.min_years_experience} years of relevant experience required</p>
-              <p className="mt-2">The successful candidate should demonstrate:</p>
-              <ul className="list-disc pl-5 mt-2 space-y-1">
-                <li>Strong problem-solving abilities</li>
-                <li>Excellent communication skills</li>
-                <li>Ability to work independently and in teams</li>
-                <li>Strong attention to detail</li>
-              </ul>
-            </div>
-          )}
+          </div>
         </div>
       )}
-
-      {/* Benefits & Perks */}
-      <div>
-        <h4 className="font-semibold mb-3 text-gray-900 flex items-center gap-2">
-          <Briefcase className="h-5 w-5 text-primary" />
-          Benefits & Perks
-        </h4>
-        <ul className="text-sm text-gray-700 space-y-2">
-          <li className="flex items-center gap-2">
-            <Clock className="h-4 w-4 text-primary" />
-            {job.holiday_entitlement || 25} days annual leave
-          </li>
-          {formatBenefits(job.company_benefits).map((benefit, index) => (
-            <li key={index} className="flex items-center gap-2">
-              <span className="w-1 h-1 bg-primary rounded-full" />
-              {benefit}
-            </li>
-          ))}
-        </ul>
-      </div>
     </div>
   );
 };

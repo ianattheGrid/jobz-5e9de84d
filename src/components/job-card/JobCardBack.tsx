@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { X } from "lucide-react";
 import { Job } from "@/integrations/supabase/types/jobs";
@@ -125,6 +126,7 @@ const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
                 onStartApply={async () => Promise.resolve()}
                 isApplying={isApplying}
                 setIsApplying={setIsApplying}
+                referenceCode={job.reference_code}
               />
             ) : (
               <ApplicationControls 

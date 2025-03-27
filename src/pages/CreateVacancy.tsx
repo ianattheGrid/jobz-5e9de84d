@@ -1,3 +1,4 @@
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useToast } from "@/components/ui/use-toast";
@@ -67,6 +68,16 @@ export default function CreateVacancy() {
     checkAuth();
   }, [navigate, toast]);
 
+  // Function to generate a reference code
+  const generateReferenceCode = () => {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let result = '';
+    for (let i = 0; i < 6; i++) {
+      result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return `JOB-${result}`;
+  };
+
   const onSubmit = async (values: VacancyFormValues) => {
     try {
       const { data: { session } } = await supabase.auth.getSession();
@@ -82,6 +93,7 @@ export default function CreateVacancy() {
 
       const [minSalary, maxSalary] = values.salary.split("-").map(s => parseInt(s.trim()));
       const holidayDays = parseInt(values.holidayEntitlement);
+      const referenceCode = generateReferenceCode();
 
       const { error } = await supabase.from('jobs').insert({
         title: values.title,
@@ -108,7 +120,8 @@ export default function CreateVacancy() {
         specialization: values.specialization || "Other",
         match_threshold: values.matchThreshold,
         required_skills: [],
-        required_qualifications: []
+        required_qualifications: [],
+        reference_code: referenceCode
       });
 
       if (error) throw error;
