@@ -44,7 +44,7 @@ const CandidateApplications = () => {
           </div>
           <Button
             onClick={() => navigate('/candidate/dashboard')}
-            className="text-white"
+            className="bg-[#FF69B4] hover:bg-[#FF50A8] text-white"
             variant="default"
           >
             <LayoutDashboard className="w-4 h-4 mr-2" />

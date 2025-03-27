@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
@@ -50,7 +51,7 @@ const CandidateAccountSettings = () => {
           <h1 className="text-3xl font-bold mb-8 text-gray-900">Account Settings</h1>
           <Button
             onClick={() => navigate('/candidate/dashboard')}
-            className="text-white"
+            className="bg-[#FF69B4] hover:bg-[#FF50A8] text-white"
             variant="default"
           >
             <LayoutDashboard className="w-4 h-4 mr-2" />
