@@ -1,11 +1,10 @@
 
 import { useState } from "react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { Input } from "@/components/ui/input";
 
 export const VideoSection = () => {
-  // Updated to a Vimeo embed code which is more reliable
-  const [videoUrl, setVideoUrl] = useState('<iframe src="https://player.vimeo.com/video/76979871" width="100%" height="100%" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>');
+  // You can replace this with your own Vimeo embed code
+  const [videoUrl, setVideoUrl] = useState('<iframe src="https://player.vimeo.com/video/YOUR_VIDEO_ID" width="100%" height="100%" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>');
   
   return (
     <section className="py-16 bg-transparent">
