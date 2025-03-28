@@ -1,4 +1,3 @@
-
 import { useVRDashboard } from "@/hooks/useVRDashboard";
 import { DashboardLoading } from "@/components/vr/dashboard/DashboardLoading";
 import { DashboardError } from "@/components/vr/dashboard/DashboardError";
@@ -9,21 +8,19 @@ import { InactiveAccountWarning } from "@/components/vr/dashboard/InactiveAccoun
 import { ReferralInvite } from "@/components/vr/ReferralInvite";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Users, UserPlus, BarChart3 } from "lucide-react";
 
 const VirtualRecruiterDashboard = () => {
   const { loading, error, profile, stats } = useVRDashboard();
 
-  // Return loading state while profile loads
   if (loading) {
     return <DashboardLoading />;
   }
 
-  // Return error component if there's an error
   if (error) {
     return <DashboardError error={error} />;
   }
 
-  // Return blank page with error message if profile is null
   if (!profile) {
     return (
       <div className="container mx-auto py-8">
@@ -41,10 +38,8 @@ const VirtualRecruiterDashboard = () => {
       <div className="space-y-8">
         {!profile.is_active && <InactiveAccountWarning />}
         
-        {/* Menu at the top */}
         <DashboardMenu />
         
-        {/* Stats in the second row */}
         <div className="grid gap-6 md:grid-cols-3">
           <Card>
             <CardContent className="p-6">
@@ -89,7 +84,6 @@ const VirtualRecruiterDashboard = () => {
           </Card>
         </div>
         
-        {/* Invite a Candidate Card */}
         <Card>
           <CardHeader>
             <CardTitle>Invite a Candidate</CardTitle>
@@ -100,7 +94,6 @@ const VirtualRecruiterDashboard = () => {
           </CardContent>
         </Card>
         
-        {/* Referrals Card */}
         <Card>
           <CardHeader>
             <CardTitle>Referrals</CardTitle>
