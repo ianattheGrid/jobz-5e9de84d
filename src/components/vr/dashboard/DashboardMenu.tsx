@@ -3,11 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { 
   UserPlus, 
-  Users, 
   BarChart3, 
-  Mail,
-  UserCircle,
-  CreditCard,
   FileText
 } from "lucide-react";
 
@@ -22,36 +18,6 @@ export const DashboardMenu = () => {
       description: "Refer new candidates to jobs"
     },
     {
-      title: "My Referrals",
-      icon: <Users className="h-6 w-6" />,
-      path: "/vr/referrals",
-      description: "View your candidate referrals"
-    },
-    {
-      title: "Performance",
-      icon: <BarChart3 className="h-6 w-6" />,
-      path: "/vr/performance",
-      description: "Check your performance metrics"
-    },
-    {
-      title: "Messages",
-      icon: <Mail className="h-6 w-6" />,
-      path: "/vr/messages",
-      description: "Candidate and system messages"
-    },
-    {
-      title: "Profile Settings",
-      icon: <UserCircle className="h-6 w-6" />,
-      path: "/vr/profile",
-      description: "Update your profile information"
-    },
-    {
-      title: "Payment Details",
-      icon: <CreditCard className="h-6 w-6" />,
-      path: "/vr/payments",
-      description: "Manage your payment information"
-    },
-    {
       title: "Recommendations",
       icon: <FileText className="h-6 w-6" />,
       path: "/vr/recommendations",
@@ -61,7 +27,7 @@ export const DashboardMenu = () => {
 
   return (
     <div className="flex flex-wrap justify-center gap-4 mb-8">
-      {menuItems.slice(0, 4).map((item, index) => (
+      {menuItems.map((item, index) => (
         <div key={index} className="text-center">
           <Button
             variant="outline"
