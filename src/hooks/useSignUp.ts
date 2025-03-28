@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 
 const createEmployerProfile = async (userId: string, companyName: string, fullName: string, companyWebsite: string, companySize: number) => {
   const { error } = await supabase
@@ -59,6 +59,25 @@ const createVRProfile = async (userId: string, fullName: string, email: string) 
   }
 };
 
+const createUserRole = async (userId: string, role: string) => {
+  try {
+    const { error } = await supabase
+      .from('user_roles')
+      .insert({
+        user_id: userId,
+        role: role
+      });
+
+    if (error) {
+      console.error('Error creating user role:', error);
+      throw error;
+    }
+  } catch (err) {
+    console.error('Exception creating user role:', err);
+    throw err;
+  }
+};
+
 export const useSignUp = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -109,9 +128,14 @@ export const useSignUp = () => {
         throw new Error('No user data returned');
       }
 
-      console.log(`User created successfully. Creating ${userType} profile...`);
-
+      console.log(`User created successfully. Creating user role...`);
+      
+      // Create user role first
       try {
+        await createUserRole(data.user.id, userType);
+        console.log(`User role created. Creating ${userType} profile...`);
+        
+        // Then create profile based on user type
         if (userType === 'employer') {
           await createEmployerProfile(data.user.id, companyName, fullName, companyWebsite, companySize);
         } else if (userType === 'candidate') {
@@ -135,13 +159,25 @@ export const useSignUp = () => {
         });
         
         navigate(`/${userType}/dashboard`);
-      } catch (profileError: any) {
-        console.error('Profile creation error:', profileError);
+      } catch (setupError: any) {
+        console.error('Setup error:', setupError);
         toast({
           variant: "destructive",
           title: "Error",
-          description: "Account created but profile setup failed. Please contact support.",
+          description: "Account created but setup failed. Please contact support or try signing in.",
         });
+        
+        // Try to sign in anyway since the account was created
+        try {
+          await supabase.auth.signInWithPassword({
+            email,
+            password
+          });
+          navigate(`/${userType}/dashboard`);
+        } catch (signInErr) {
+          console.error('Failed to sign in after setup error:', signInErr);
+          navigate(`/${userType}/signin`);
+        }
       }
     } catch (error: any) {
       console.error('Sign up error:', error);

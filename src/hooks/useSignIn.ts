@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 
 export const useSignIn = () => {
   const [loading, setLoading] = useState(false);
@@ -12,7 +12,7 @@ export const useSignIn = () => {
   const handleSignIn = async (email: string, password: string, intendedUserType?: string) => {
     try {
       setLoading(true);
-      console.log('Starting sign in process for:', email); 
+      console.log('Starting sign in process for:', email, 'as', intendedUserType || 'any user type'); 
 
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
@@ -56,7 +56,7 @@ export const useSignIn = () => {
         console.error('No user role found for user:', data.user.id);
         toast({
           variant: "destructive",
-          title: "Error",
+          title: "Account Error",
           description: "User role not found. Please contact support.",
         });
         return;
@@ -67,6 +67,10 @@ export const useSignIn = () => {
       // If there's an intended user type, verify it matches
       if (intendedUserType && userRole.role !== intendedUserType) {
         console.error('Role mismatch:', { intended: intendedUserType, actual: userRole.role });
+        
+        // Sign the user out since they tried to access the wrong portal
+        await supabase.auth.signOut();
+        
         toast({
           variant: "destructive",
           title: "Access Denied",
@@ -75,38 +79,23 @@ export const useSignIn = () => {
         return;
       }
 
-      // Check if the profile exists for the user type
-      if (userRole.role === 'vr') {
-        const { data: vrProfile, error: profileError } = await supabase
-          .from('virtual_recruiter_profiles')
-          .select('*')
+      // Verify that the profile exists for the respective user type
+      const profileTable = 
+        userRole.role === 'employer' ? 'employer_profiles' :
+        userRole.role === 'candidate' ? 'candidate_profiles' :
+        userRole.role === 'vr' ? 'virtual_recruiter_profiles' : null;
+        
+      if (profileTable) {
+        const { data: profile, error: profileError } = await supabase
+          .from(profileTable)
+          .select('id')
           .eq('id', data.user.id)
           .maybeSingle();
 
-        if (profileError || !vrProfile) {
-          console.error('VR profile not found:', profileError);
-          
-          // Try to create a profile using a service role client or function
-          try {
-            // Redirect to dashboard anyway and let the profile be created there if needed
-            console.log('VR profile not found - redirecting to dashboard where it will be handled');
-            
-            toast({
-              title: "Welcome back!",
-              description: "Successfully signed in.",
-            });
-            
-            navigate(`/${userRole.role}/dashboard`, { replace: true });
-            return;
-          } catch (err) {
-            console.error('Error during profile recovery:', err);
-            toast({
-              variant: "destructive",
-              title: "Profile Error",
-              description: "Your profile could not be found or created. Please contact support.",
-            });
-            return;
-          }
+        if (profileError) {
+          console.error(`Error fetching ${userRole.role} profile:`, profileError);
+        } else if (!profile) {
+          console.warn(`No ${userRole.role} profile found for user ${data.user.id}, it will be created at dashboard`);
         }
       }
 
@@ -114,12 +103,12 @@ export const useSignIn = () => {
       const redirectPath = `/${userRole.role}/dashboard`;
       console.log('Redirecting to:', redirectPath);
       
-      navigate(redirectPath, { replace: true });
-
       toast({
         title: "Welcome back!",
         description: "Successfully signed in.",
       });
+      
+      navigate(redirectPath, { replace: true });
       
     } catch (error: any) {
       console.error('Sign in error:', error);

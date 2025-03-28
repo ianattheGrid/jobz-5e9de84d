@@ -1,6 +1,7 @@
 
 import { Link } from "react-router-dom";
-import { Menu } from "lucide-react";
+import { Menu, LogOut } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 import {
   Sheet,
   SheetContent,
@@ -16,6 +17,14 @@ interface MobileNavProps {
 }
 
 const MobileNav = ({ isAuthenticated, userType }: MobileNavProps) => {
+  const handleSignOut = async () => {
+    try {
+      await supabase.auth.signOut();
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
+  };
+
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -35,7 +44,7 @@ const MobileNav = ({ isAuthenticated, userType }: MobileNavProps) => {
             Job Board
           </Link>
 
-          {!isAuthenticated && (
+          {!isAuthenticated ? (
             <>
               <div className="h-px bg-border my-2" />
               <Link to="/employer/signin" className="text-lg text-muted-foreground hover:text-primary transition-colors">
@@ -58,23 +67,42 @@ const MobileNav = ({ isAuthenticated, userType }: MobileNavProps) => {
                 Virtual Recruiter Sign Up
               </Link>
             </>
-          )}
-
-          {isAuthenticated && userType === 'employer' && (
+          ) : (
             <>
               <div className="h-px bg-border my-2" />
-              <Link to="/employer/dashboard" className="text-lg text-muted-foreground hover:text-primary transition-colors">
-                Dashboard
-              </Link>
-            </>
-          )}
-
-          {isAuthenticated && userType === 'candidate' && (
-            <>
+              {userType && (
+                <Link to={`/${userType}/dashboard`} className="text-lg text-muted-foreground hover:text-primary transition-colors">
+                  Dashboard
+                </Link>
+              )}
+              {userType && (
+                <Link to={`/${userType}/profile`} className="text-lg text-muted-foreground hover:text-primary transition-colors">
+                  Profile
+                </Link>
+              )}
+              {userType === 'employer' && (
+                <Link to="/employer/manage-jobs" className="text-lg text-muted-foreground hover:text-primary transition-colors">
+                  Manage Jobs
+                </Link>
+              )}
+              {userType === 'candidate' && (
+                <Link to="/candidate/applications" className="text-lg text-muted-foreground hover:text-primary transition-colors">
+                  My Applications
+                </Link>
+              )}
+              {userType === 'vr' && (
+                <Link to="/vr/recommendations" className="text-lg text-muted-foreground hover:text-primary transition-colors">
+                  Recommendations
+                </Link>
+              )}
               <div className="h-px bg-border my-2" />
-              <Link to="/candidate/dashboard" className="text-lg text-muted-foreground hover:text-primary transition-colors">
-                Dashboard
-              </Link>
+              <button 
+                onClick={handleSignOut}
+                className="text-lg text-muted-foreground hover:text-primary transition-colors flex items-center gap-2"
+              >
+                <LogOut className="h-5 w-5" />
+                Sign Out
+              </button>
             </>
           )}
         </nav>
