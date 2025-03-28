@@ -1,23 +1,15 @@
-
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { UserPlus } from "lucide-react";
 
 export const DashboardMenu = () => {
   const navigate = useNavigate();
   
-  const menuItems = [
-    {
-      title: "Refer Candidates",
-      icon: <UserPlus className="h-6 w-6" />,
-      path: "/vr/recommendations",
-      description: "Refer new candidates to jobs"
-    }
-  ];
+  // Empty menu items array
+  const menuItems = [];
 
   return (
     <div className="flex flex-wrap justify-center gap-4 mb-8">
-      {menuItems.map((item, index) => (
+      {menuItems.map((item: any, index: number) => (
         <div key={index} className="text-center">
           <Button
             variant="outline"
