@@ -4,6 +4,7 @@ import { useSignUp } from "@/hooks/useSignUp";
 import NavBar from "@/components/NavBar";
 import { PRIMARY_COLOR_PATTERN } from "@/styles/colorPatterns";
 import { useState } from "react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const VirtualRecruiterSignUp = () => {
   const { signUp, loading } = useSignUp();
@@ -29,9 +30,9 @@ const VirtualRecruiterSignUp = () => {
             Sign Up as Virtual Recruiter
           </h1>
           {error && (
-            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
-              {error}
-            </div>
+            <Alert variant="destructive" className="mb-4">
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
           )}
           <div className="bg-white rounded-lg shadow-lg p-6 border border-gray-200">
             <SignUpForm 
