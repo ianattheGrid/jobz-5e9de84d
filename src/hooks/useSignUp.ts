@@ -37,18 +37,25 @@ const createCandidateProfile = async (userId: string, fullName: string, email: s
 };
 
 const createVRProfile = async (userId: string, fullName: string, email: string) => {
-  const { error } = await supabase
-    .from('virtual_recruiter_profiles')
-    .insert({
-      id: userId,
-      full_name: fullName,
-      email: email,
-      location: '',
-      vr_number: 'VR' + Math.floor(10000 + Math.random() * 90000),
-      bank_account_verified: false
-    });
+  try {
+    const { error } = await supabase
+      .from('virtual_recruiter_profiles')
+      .insert({
+        id: userId,
+        full_name: fullName,
+        email: email,
+        location: '',
+        bank_account_verified: false
+      });
 
-  if (error) throw error;
+    if (error) {
+      console.error('Error creating VR profile:', error);
+      throw error;
+    }
+  } catch (err) {
+    console.error('Exception creating VR profile:', err);
+    throw err;
+  }
 };
 
 export const useSignUp = () => {
@@ -68,6 +75,7 @@ export const useSignUp = () => {
   ) => {
     try {
       setLoading(true);
+      console.log(`Starting sign up for ${email} as ${userType}`);
 
       const { data, error } = await supabase.auth.signUp({
         email,
@@ -100,6 +108,8 @@ export const useSignUp = () => {
         throw new Error('No user data returned');
       }
 
+      console.log(`User created successfully. Creating ${userType} profile...`);
+
       try {
         if (userType === 'employer') {
           await createEmployerProfile(data.user.id, companyName, fullName, companyWebsite, companySize);
@@ -108,6 +118,8 @@ export const useSignUp = () => {
         } else if (userType === 'vr') {
           await createVRProfile(data.user.id, fullName, email);
         }
+        
+        console.log(`${userType} profile created. Attempting to sign in...`);
         
         const { error: signInError } = await supabase.auth.signInWithPassword({
           email,
@@ -131,6 +143,7 @@ export const useSignUp = () => {
         });
       }
     } catch (error: any) {
+      console.error('Sign up error:', error);
       toast({
         variant: "destructive",
         title: "Error",

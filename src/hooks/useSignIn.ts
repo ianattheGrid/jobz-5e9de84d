@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from "@/components/ui/use-toast";
 
 export const useSignIn = () => {
   const [loading, setLoading] = useState(false);
@@ -73,6 +73,52 @@ export const useSignIn = () => {
           description: `This login is for ${intendedUserType} accounts only. Please use the correct login page.`,
         });
         return;
+      }
+
+      // Check if the profile exists for the user type
+      if (userRole.role === 'vr') {
+        const { data: vrProfile, error: profileError } = await supabase
+          .from('virtual_recruiter_profiles')
+          .select('*')
+          .eq('id', data.user.id)
+          .maybeSingle();
+
+        if (profileError || !vrProfile) {
+          console.error('VR profile not found:', profileError);
+          
+          // Try to create a profile based on user metadata
+          try {
+            const { error: createError } = await supabase
+              .from('virtual_recruiter_profiles')
+              .insert({
+                id: data.user.id,
+                full_name: data.user.user_metadata.full_name || 'New User',
+                email: data.user.email || '',
+                location: '',
+                bank_account_verified: false
+              });
+              
+            if (createError) {
+              console.error('Failed to create VR profile on login:', createError);
+              toast({
+                variant: "destructive",
+                title: "Profile Error",
+                description: "Your profile could not be found or created. Please contact support.",
+              });
+              return;
+            }
+            
+            console.log('Created missing VR profile during sign in');
+          } catch (err) {
+            console.error('Error during profile recovery:', err);
+            toast({
+              variant: "destructive",
+              title: "Profile Error",
+              description: "Your profile could not be found or created. Please contact support.",
+            });
+            return;
+          }
+        }
       }
 
       // Redirect based on the role from the database
