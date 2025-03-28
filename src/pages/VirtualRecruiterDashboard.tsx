@@ -6,7 +6,6 @@ import { DashboardMenu } from "@/components/vr/dashboard/DashboardMenu";
 import { ReferralsList } from "@/components/vr/ReferralsList";
 import { DashboardStats } from "@/components/vr/dashboard/DashboardStats";
 import { InactiveAccountWarning } from "@/components/vr/dashboard/InactiveAccountWarning";
-import { ReferralInvite } from "@/components/vr/ReferralInvite";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Users, UserPlus, BarChart3, FileText } from "lucide-react";
@@ -107,7 +106,7 @@ const VirtualRecruiterDashboard = () => {
                     </div>
                     <p className="text-sm text-gray-600 mb-4">Recommend a candidate for a specific job vacancy with the commission rate set by the job posting.</p>
                     <Button 
-                      className="w-full" 
+                      className="w-full bg-[#FF69B4] hover:bg-[#FF50A8] text-white" 
                       onClick={() => navigate('/vr/recommendations')}
                     >
                       Recommend for a Job
@@ -123,7 +122,7 @@ const VirtualRecruiterDashboard = () => {
                     </div>
                     <p className="text-sm text-gray-600 mb-4">Add a candidate to our talent pool. You'll receive 2.5% of first year's salary if hired.</p>
                     <Button 
-                      className="w-full" 
+                      className="w-full bg-[#FF69B4] hover:bg-[#FF50A8] text-white" 
                       onClick={() => navigate('/vr/recommendations')}
                     >
                       Add to Talent Pool
@@ -132,16 +131,6 @@ const VirtualRecruiterDashboard = () => {
                 </div>
               </div>
             </div>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardHeader>
-            <CardTitle>Invite a Candidate</CardTitle>
-            <CardDescription>Refer a new candidate to the platform</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ReferralInvite />
           </CardContent>
         </Card>
         
