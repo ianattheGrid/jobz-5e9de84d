@@ -31,7 +31,13 @@ const NavBar = () => {
   }, []);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background border-b border-border h-16" style={{ borderBottom: '1px solid #333333' }}>
+    <header 
+      className="fixed top-0 left-0 right-0 z-50 bg-background h-16" 
+      style={{ 
+        borderBottom: '2px solid #333333',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
+      }}
+    >
       <div className="container mx-auto px-4 h-full">
         <div className="flex justify-between items-center h-full">
           <div className="flex items-center gap-12">
