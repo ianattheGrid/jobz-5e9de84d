@@ -83,6 +83,69 @@ export type Database = {
           },
         ]
       }
+      bonus_payments: {
+        Row: {
+          candidate_commission: number
+          candidate_id: string
+          confirmed_at: string | null
+          created_at: string | null
+          employer_id: string
+          id: string
+          job_id: number
+          payment_due_date: string
+          payment_status: string
+          recommendation_id: number | null
+          start_date: string
+          updated_at: string | null
+          vr_commission: number | null
+        }
+        Insert: {
+          candidate_commission: number
+          candidate_id: string
+          confirmed_at?: string | null
+          created_at?: string | null
+          employer_id: string
+          id?: string
+          job_id: number
+          payment_due_date: string
+          payment_status?: string
+          recommendation_id?: number | null
+          start_date: string
+          updated_at?: string | null
+          vr_commission?: number | null
+        }
+        Update: {
+          candidate_commission?: number
+          candidate_id?: string
+          confirmed_at?: string | null
+          created_at?: string | null
+          employer_id?: string
+          id?: string
+          job_id?: number
+          payment_due_date?: string
+          payment_status?: string
+          recommendation_id?: number | null
+          start_date?: string
+          updated_at?: string | null
+          vr_commission?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bonus_payments_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bonus_payments_recommendation_id_fkey"
+            columns: ["recommendation_id"]
+            isOneToOne: false
+            referencedRelation: "candidate_recommendations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       candidate_profiles: {
         Row: {
           additional_skills: string | null
