@@ -61,7 +61,7 @@ export const useBonusPayment = (applicationId: number) => {
         // Check if there's a VR recommendation for this candidate
         const { data: recommendationData, error: recommendationError } = await supabase
           .from('candidate_recommendations')
-          .select('id, commission_percentage')
+          .select('id')
           .eq('candidate_email', candidateData.email)
           .eq('job_id', applicationData.job_id)
           .maybeSingle();
@@ -89,9 +89,11 @@ export const useBonusPayment = (applicationId: number) => {
         let candidateCommission = totalCommission;
         let vrCommission = 0;
         
-        if (recommendationData && recommendationData.commission_percentage) {
-          // If there's a VR, split the commission based on the percentage
-          vrCommission = totalCommission * (recommendationData.commission_percentage / 100);
+        // We're not using commission_percentage since it might not exist in the table
+        // If there's a recommendation, we'll use a default split of 70/30
+        if (recommendationData) {
+          // If there's a VR, split the commission (70% candidate, 30% VR by default)
+          vrCommission = totalCommission * 0.3;
           candidateCommission = totalCommission - vrCommission;
         }
         
@@ -101,7 +103,7 @@ export const useBonusPayment = (applicationId: number) => {
           candidateEmail: candidateData.email,
           candidateCommission: candidateCommission,
           vrCommission: vrCommission > 0 ? vrCommission : undefined,
-          recommendationId: recommendationData?.id,
+          recommendationId: recommendationData ? recommendationData.id : undefined,
           status: existingPayment ? existingPayment.payment_status : 'not_started',
           startDate: existingPayment?.start_date ? new Date(existingPayment.start_date) : undefined,
           paymentDueDate: existingPayment?.payment_due_date ? new Date(existingPayment.payment_due_date) : undefined
