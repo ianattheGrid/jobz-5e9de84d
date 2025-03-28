@@ -37,25 +37,47 @@ export const BonusPaymentsSection = ({ employerId }: { employerId: string }) => 
             candidate_commission,
             vr_commission,
             payment_status,
-            jobs!inner(title),
-            candidate_profiles!inner(email)
+            jobs(title),
+            candidate_id
           `)
           .eq('employer_id', employerId)
           .order('payment_due_date', { ascending: true });
           
         if (error) throw error;
         
-        // Transform data to match our component needs
-        const formattedPayments = data.map(item => ({
-          id: item.id,
-          candidate_email: item.candidate_profiles.email,
-          job_title: item.jobs.title,
-          start_date: item.start_date,
-          payment_due_date: item.payment_due_date,
-          candidate_commission: item.candidate_commission,
-          vr_commission: item.vr_commission,
-          payment_status: item.payment_status
-        }));
+        // Get candidate emails
+        const formattedPayments: BonusPayment[] = [];
+        
+        if (data && data.length > 0) {
+          // Get all candidate emails in one query
+          const candidateIds = data.map(item => item.candidate_id);
+          const { data: candidateData, error: candidateError } = await supabase
+            .from('candidate_profiles')
+            .select('id, email')
+            .in('id', candidateIds);
+            
+          if (candidateError) throw candidateError;
+          
+          // Create a map of candidateId -> email
+          const emailMap = new Map();
+          if (candidateData) {
+            candidateData.forEach(candidate => {
+              emailMap.set(candidate.id, candidate.email);
+            });
+          }
+          
+          // Transform data to match our component needs
+          formattedPayments.push(...data.map(item => ({
+            id: item.id,
+            candidate_email: emailMap.get(item.candidate_id) || 'Unknown',
+            job_title: item.jobs?.title || 'Unknown Job',
+            start_date: item.start_date,
+            payment_due_date: item.payment_due_date,
+            candidate_commission: item.candidate_commission,
+            vr_commission: item.vr_commission,
+            payment_status: item.payment_status
+          })));
+        }
         
         setPayments(formattedPayments);
       } catch (error: any) {

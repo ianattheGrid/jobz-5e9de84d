@@ -74,7 +74,7 @@ export interface Database {
           job_id: number | null;
           recommendation_type: 'general' | 'job_specific';
           commission_percentage: number;
-          status: 'pending' | 'approved' | 'rejected' | 'hired';
+          status: 'pending' | 'approved' | 'rejected' | 'hired' | 'paid';
           notes: string | null;
         };
         Insert: Partial<{
@@ -86,7 +86,7 @@ export interface Database {
           job_id: number | null;
           recommendation_type: 'general' | 'job_specific';
           commission_percentage: number;
-          status: 'pending' | 'approved' | 'rejected' | 'hired';
+          status: 'pending' | 'approved' | 'rejected' | 'hired' | 'paid';
           notes: string | null;
         }>;
         Update: Partial<{
@@ -98,8 +98,55 @@ export interface Database {
           job_id: number | null;
           recommendation_type: 'general' | 'job_specific';
           commission_percentage: number;
-          status: 'pending' | 'approved' | 'rejected' | 'hired';
+          status: 'pending' | 'approved' | 'rejected' | 'hired' | 'paid';
           notes: string | null;
+        }>;
+      };
+      bonus_payments: {
+        Row: {
+          id: string;
+          job_id: number;
+          candidate_id: string;
+          employer_id: string;
+          recommendation_id: number | null;
+          candidate_commission: number;
+          vr_commission: number | null;
+          start_date: string;
+          payment_due_date: string;
+          payment_status: 'pending' | 'paid' | 'overdue';
+          confirmed_at: string | null;
+          created_at: string | null;
+          updated_at: string | null;
+        };
+        Insert: Partial<{
+          id: string;
+          job_id: number;
+          candidate_id: string;
+          employer_id: string;
+          recommendation_id: number | null;
+          candidate_commission: number;
+          vr_commission: number | null;
+          start_date: string;
+          payment_due_date: string;
+          payment_status: 'pending' | 'paid' | 'overdue';
+          confirmed_at: string | null;
+          created_at: string | null;
+          updated_at: string | null;
+        }>;
+        Update: Partial<{
+          id: string;
+          job_id: number;
+          candidate_id: string;
+          employer_id: string;
+          recommendation_id: number | null;
+          candidate_commission: number;
+          vr_commission: number | null;
+          start_date: string;
+          payment_due_date: string;
+          payment_status: 'pending' | 'paid' | 'overdue';
+          confirmed_at: string | null;
+          created_at: string | null;
+          updated_at: string | null;
         }>;
       };
     };

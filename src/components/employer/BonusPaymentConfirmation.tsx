@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -85,18 +84,20 @@ export const BonusPaymentConfirmation = ({
       const paymentDueDate = calculatePaymentDueDate(startDate);
       
       // Create bonus payment record
-      const { error } = await supabase.from('bonus_payments').insert({
-        job_id: jobId,
-        candidate_id: candidateId,
-        employer_id: employerId,
-        recommendation_id: recommendationId || null,
-        candidate_commission: candidateCommission,
-        vr_commission: vrCommission || null,
-        start_date: startDate.toISOString(),
-        payment_due_date: paymentDueDate.toISOString(),
-        payment_status: 'pending',
-        confirmed_at: new Date().toISOString()
-      });
+      const { error } = await supabase
+        .from('bonus_payments')
+        .insert({
+          job_id: jobId,
+          candidate_id: candidateId,
+          employer_id: employerId,
+          recommendation_id: recommendationId || null,
+          candidate_commission: candidateCommission,
+          vr_commission: vrCommission || null,
+          start_date: startDate.toISOString(),
+          payment_due_date: paymentDueDate.toISOString(),
+          payment_status: 'pending',
+          confirmed_at: new Date().toISOString()
+        });
 
       if (error) throw error;
       
