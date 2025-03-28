@@ -59,20 +59,30 @@ export const useBonusPayment = (applicationId: number) => {
         if (candidateError) throw candidateError;
         
         // Check if there's a VR recommendation for this candidate
-        const { data: recommendationData } = await supabase
+        const { data: recommendationData, error: recommendationError } = await supabase
           .from('candidate_recommendations')
           .select('id, commission_percentage')
           .eq('candidate_email', candidateData.email)
           .eq('job_id', applicationData.job_id)
           .maybeSingle();
         
+        if (recommendationError) {
+          console.error('Error fetching recommendation:', recommendationError);
+          // Continue without recommendation data
+        }
+        
         // Check if a bonus payment record already exists
-        const { data: existingPayment } = await supabase
+        const { data: existingPayment, error: paymentError } = await supabase
           .from('bonus_payments')
           .select('*')
           .eq('job_id', applicationData.job_id)
           .eq('candidate_id', applicationData.applicant_id)
           .maybeSingle();
+        
+        if (paymentError) {
+          console.error('Error fetching existing payment:', paymentError);
+          // Continue without payment data
+        }
           
         // Calculate candidate and VR commissions
         const totalCommission = applicationData.jobs.candidate_commission;
