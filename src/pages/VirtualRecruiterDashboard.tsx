@@ -6,6 +6,7 @@ import { DashboardMenu } from "@/components/vr/dashboard/DashboardMenu";
 import { ReferralsList } from "@/components/vr/ReferralsList";
 import { DashboardStats } from "@/components/vr/dashboard/DashboardStats";
 import { InactiveAccountWarning } from "@/components/vr/dashboard/InactiveAccountWarning";
+import { ReferralInvite } from "@/components/vr/ReferralInvite";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
@@ -52,6 +53,16 @@ const VirtualRecruiterDashboard = () => {
             successfulPlacements={stats.successfulPlacements}
             pendingRecommendations={stats.pendingRecommendations}
           />
+          
+          <Card>
+            <CardHeader>
+              <CardTitle>Invite a Candidate</CardTitle>
+              <CardDescription>Refer a new candidate to the platform</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ReferralInvite />
+            </CardContent>
+          </Card>
           
           <Card>
             <CardHeader>

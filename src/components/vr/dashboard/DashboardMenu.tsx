@@ -2,12 +2,12 @@
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { 
-  Briefcase, 
-  Building2, 
-  Search, 
-  Calendar, 
+  UserPlus, 
+  Users, 
+  BarChart3, 
+  Mail,
   UserCircle,
-  MessageSquare
+  CreditCard
 } from "lucide-react";
 
 export const DashboardMenu = () => {
@@ -15,40 +15,40 @@ export const DashboardMenu = () => {
   
   const menuItems = [
     {
-      title: "Post New Job",
-      icon: <Briefcase className="h-6 w-6" />,
-      path: "/employer/create-vacancy",
-      description: "Create a new job posting"
+      title: "Refer Candidates",
+      icon: <UserPlus className="h-6 w-6" />,
+      path: "/vr/recommendations",
+      description: "Refer new candidates to jobs"
     },
     {
-      title: "Manage Jobs",
-      icon: <Building2 className="h-6 w-6" />,
-      path: "/employer/manage-jobs",
-      description: "View and edit your job listings"
+      title: "My Referrals",
+      icon: <Users className="h-6 w-6" />,
+      path: "/vr/referrals",
+      description: "View your candidate referrals"
     },
     {
-      title: "Search Candidates",
-      icon: <Search className="h-6 w-6" />,
-      path: "/employer/candidate-search",
-      description: "Find potential candidates"
+      title: "Performance",
+      icon: <BarChart3 className="h-6 w-6" />,
+      path: "/vr/performance",
+      description: "Check your performance metrics"
     },
     {
-      title: "View Interviews",
-      icon: <Calendar className="h-6 w-6" />,
-      path: "/employer/interviews",
-      description: "Manage scheduled interviews"
+      title: "Messages",
+      icon: <Mail className="h-6 w-6" />,
+      path: "/vr/messages",
+      description: "Candidate and system messages"
     },
     {
       title: "Profile Settings",
       icon: <UserCircle className="h-6 w-6" />,
-      path: "/employer/profile",
-      description: "Update your company profile"
+      path: "/vr/profile",
+      description: "Update your profile information"
     },
     {
-      title: "Contact Us",
-      icon: <MessageSquare className="h-6 w-6" />,
-      path: "/employer/contact",
-      description: "Get in touch with our support team"
+      title: "Payment Details",
+      icon: <CreditCard className="h-6 w-6" />,
+      path: "/vr/payments",
+      description: "Manage your payment information"
     }
   ];
 
