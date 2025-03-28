@@ -2,7 +2,7 @@
 import { Slider } from "@/components/ui/slider";
 import { useMatchThresholdSettings } from "@/hooks/useMatchThresholdSettings";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { CheckCircle2, Info } from "lucide-react";
 import {
@@ -17,9 +17,15 @@ interface MatchThresholdEditorProps {
 }
 
 export const MatchThresholdEditor = ({ jobId }: MatchThresholdEditorProps) => {
-  const { threshold, updating, updateThreshold } = useMatchThresholdSettings(jobId);
-  const [value, setValue] = useState<number[]>([threshold]);
+  const { threshold, loading, updating, updateThreshold } = useMatchThresholdSettings(jobId);
+  const [value, setValue] = useState<number[]>([60]);
   const [changed, setChanged] = useState(false);
+
+  useEffect(() => {
+    if (!loading && threshold) {
+      setValue([threshold]);
+    }
+  }, [threshold, loading]);
 
   const handleChange = (newValue: number[]) => {
     setValue(newValue);
@@ -32,6 +38,18 @@ export const MatchThresholdEditor = ({ jobId }: MatchThresholdEditorProps) => {
       setChanged(false);
     }
   };
+
+  if (loading) {
+    return (
+      <Card>
+        <CardContent className="p-6">
+          <div className="flex items-center justify-center h-24">
+            <div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent"></div>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card>

@@ -571,6 +571,7 @@ export type Database = {
           holiday_entitlement: number | null
           id: number
           location: string
+          match_threshold: number | null
           min_years_experience: number | null
           min_years_in_title: number | null
           qualification_essential: boolean | null
@@ -599,6 +600,7 @@ export type Database = {
           holiday_entitlement?: number | null
           id?: number
           location: string
+          match_threshold?: number | null
           min_years_experience?: number | null
           min_years_in_title?: number | null
           qualification_essential?: boolean | null
@@ -627,6 +629,7 @@ export type Database = {
           holiday_entitlement?: number | null
           id?: number
           location?: string
+          match_threshold?: number | null
           min_years_experience?: number | null
           min_years_in_title?: number | null
           qualification_essential?: boolean | null

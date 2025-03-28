@@ -21,7 +21,7 @@ export const useMatchThresholdSettings = (jobId: number) => {
 
         if (error) throw error;
         
-        if (data && data.match_threshold) {
+        if (data && data.match_threshold !== null) {
           setThreshold(data.match_threshold);
         }
       } catch (error: any) {
