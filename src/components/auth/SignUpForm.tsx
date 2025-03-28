@@ -12,9 +12,16 @@ interface SignUpFormProps {
   loading: boolean;
   userType: 'candidate' | 'employer' | 'vr';
   showCompanyField?: boolean;
+  hideJobTitle?: boolean;
 }
 
-export const SignUpForm = ({ onSubmit, loading, userType, showCompanyField = false }: SignUpFormProps) => {
+export const SignUpForm = ({ 
+  onSubmit, 
+  loading, 
+  userType, 
+  showCompanyField = false,
+  hideJobTitle = false 
+}: SignUpFormProps) => {
   const { formState, handleSubmit } = useSignUpForm({ userType, onSubmit });
 
   const getSignInLink = () => {
@@ -44,6 +51,7 @@ export const SignUpForm = ({ onSubmit, loading, userType, showCompanyField = fal
         jobTitle={formState.jobTitle}
         setJobTitle={formState.setJobTitle}
         userType={userType}
+        hideJobTitle={hideJobTitle}
       />
 
       {userType === 'employer' && (

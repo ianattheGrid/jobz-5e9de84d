@@ -11,6 +11,7 @@ interface CommonFieldsProps {
   jobTitle: string;
   setJobTitle: (value: string) => void;
   userType: string;
+  hideJobTitle?: boolean;
 }
 
 export const CommonFields = ({
@@ -22,7 +23,8 @@ export const CommonFields = ({
   setFullName,
   jobTitle,
   setJobTitle,
-  userType
+  userType,
+  hideJobTitle = false
 }: CommonFieldsProps) => (
   <>
     <FormField
@@ -44,13 +46,15 @@ export const CommonFields = ({
       required
     />
 
-    <FormField
-      id="jobTitle"
-      label="Job Title"
-      value={jobTitle}
-      onChange={(e) => setJobTitle(e.target.value)}
-      placeholder="Enter your job title"
-    />
+    {!hideJobTitle && (
+      <FormField
+        id="jobTitle"
+        label="Job Title"
+        value={jobTitle}
+        onChange={(e) => setJobTitle(e.target.value)}
+        placeholder="Enter your job title"
+      />
+    )}
 
     <FormField
       id="password"

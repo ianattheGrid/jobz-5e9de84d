@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -30,6 +31,21 @@ const createCandidateProfile = async (userId: string, fullName: string, email: s
       min_salary: 0,
       max_salary: 0,
       years_experience: 0
+    });
+
+  if (error) throw error;
+};
+
+const createVRProfile = async (userId: string, fullName: string, email: string) => {
+  const { error } = await supabase
+    .from('virtual_recruiter_profiles')
+    .insert({
+      id: userId,
+      full_name: fullName,
+      email: email,
+      location: '',
+      vr_number: 'VR' + Math.floor(10000 + Math.random() * 90000),
+      bank_account_verified: false
     });
 
   if (error) throw error;
@@ -84,26 +100,36 @@ export const useSignUp = () => {
         throw new Error('No user data returned');
       }
 
-      if (userType === 'employer') {
-        await createEmployerProfile(data.user.id, companyName, fullName, companyWebsite, companySize);
-      } else if (userType === 'candidate') {
-        await createCandidateProfile(data.user.id, fullName, email);
+      try {
+        if (userType === 'employer') {
+          await createEmployerProfile(data.user.id, companyName, fullName, companyWebsite, companySize);
+        } else if (userType === 'candidate') {
+          await createCandidateProfile(data.user.id, fullName, email);
+        } else if (userType === 'vr') {
+          await createVRProfile(data.user.id, fullName, email);
+        }
+        
+        const { error: signInError } = await supabase.auth.signInWithPassword({
+          email,
+          password
+        });
+
+        if (signInError) throw signInError;
+
+        toast({
+          title: "Success!",
+          description: "Account created successfully. Welcome!",
+        });
+        
+        navigate(`/${userType}/dashboard`);
+      } catch (profileError: any) {
+        console.error('Profile creation error:', profileError);
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Account created but profile setup failed. Please contact support.",
+        });
       }
-
-      const { error: signInError } = await supabase.auth.signInWithPassword({
-        email,
-        password
-      });
-
-      if (signInError) throw signInError;
-
-      toast({
-        title: "Success!",
-        description: "Account created successfully. Welcome!",
-      });
-      
-      navigate(`/${userType}/dashboard`);
-      
     } catch (error: any) {
       toast({
         variant: "destructive",

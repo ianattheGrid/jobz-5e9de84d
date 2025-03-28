@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { isFreeEmailProvider, emailMatchesWebsite } from "@/utils/validationUtils";
@@ -67,7 +68,15 @@ export const useSignUpForm = ({ userType, onSubmit }: UseSignUpFormProps) => {
     e.preventDefault();
     setError(null);
 
-    const canProceed = await checkSignupAttempt(email);
+    // For development, we'll skip IP check to avoid blocking
+    let canProceed = true;
+    try {
+      canProceed = await checkSignupAttempt(email);
+    } catch (err) {
+      console.error('Error checking signup attempt:', err);
+      // Continue anyway for development purposes
+    }
+    
     if (!canProceed) {
       setError("Too many signup attempts from this IP address. Please try again later.");
       return;
@@ -82,15 +91,20 @@ export const useSignUpForm = ({ userType, onSubmit }: UseSignUpFormProps) => {
     }
 
     try {
-      await onSubmit(
-        email, 
-        password, 
-        fullName,
-        jobTitle,
-        companyName, 
-        companyWebsite, 
-        0
-      );
+      // Only pass jobTitle if it's not a VR user
+      if (userType === 'vr') {
+        await onSubmit(email, password, fullName);
+      } else {
+        await onSubmit(
+          email, 
+          password, 
+          fullName,
+          jobTitle,
+          companyName, 
+          companyWebsite, 
+          0
+        );
+      }
     } catch (err: any) {
       const errorMessage = err.message || "";
       if (

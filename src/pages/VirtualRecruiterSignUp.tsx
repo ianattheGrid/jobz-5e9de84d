@@ -8,7 +8,7 @@ const VirtualRecruiterSignUp = () => {
   const { signUp, loading } = useSignUp();
 
   const handleSubmit = async (email: string, password: string, fullName: string) => {
-    await signUp(email, password, 'vr', fullName, '');
+    await signUp(email, password, 'vr', fullName);
   };
 
   return (
@@ -25,6 +25,7 @@ const VirtualRecruiterSignUp = () => {
               loading={loading} 
               userType="vr"
               showCompanyField={false} 
+              hideJobTitle={true}
             />
           </div>
         </div>
