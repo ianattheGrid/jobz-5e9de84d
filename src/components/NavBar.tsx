@@ -135,3 +135,4 @@ import { LogIn, UserPlus, Home, Briefcase } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 export default NavBar;
+
