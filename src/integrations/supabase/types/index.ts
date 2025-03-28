@@ -64,6 +64,44 @@ export interface Database {
         Insert: Partial<VRCandidateMessage>;
         Update: Partial<VRCandidateMessage>;
       };
+      candidate_recommendations: {
+        Row: {
+          id: number;
+          created_at: string;
+          vr_id: string;
+          candidate_email: string;
+          candidate_phone: string | null;
+          job_id: number | null;
+          recommendation_type: 'general' | 'job_specific';
+          commission_percentage: number;
+          status: 'pending' | 'approved' | 'rejected' | 'hired';
+          notes: string | null;
+        };
+        Insert: Partial<{
+          id: number;
+          created_at: string;
+          vr_id: string;
+          candidate_email: string;
+          candidate_phone: string | null;
+          job_id: number | null;
+          recommendation_type: 'general' | 'job_specific';
+          commission_percentage: number;
+          status: 'pending' | 'approved' | 'rejected' | 'hired';
+          notes: string | null;
+        }>;
+        Update: Partial<{
+          id: number;
+          created_at: string;
+          vr_id: string;
+          candidate_email: string;
+          candidate_phone: string | null;
+          job_id: number | null;
+          recommendation_type: 'general' | 'job_specific';
+          commission_percentage: number;
+          status: 'pending' | 'approved' | 'rejected' | 'hired';
+          notes: string | null;
+        }>;
+      };
     };
     Views: {
       [_ in never]: never;

@@ -157,6 +157,6 @@ const VirtualRecruiterDashboard = () => {
       </div>
     </div>
   );
-};
+}
 
 export default VirtualRecruiterDashboard;
