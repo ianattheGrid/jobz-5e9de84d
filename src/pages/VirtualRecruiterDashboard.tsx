@@ -1,3 +1,4 @@
+
 import { useVRDashboard } from "@/hooks/useVRDashboard";
 import { DashboardLoading } from "@/components/vr/dashboard/DashboardLoading";
 import { DashboardError } from "@/components/vr/dashboard/DashboardError";
@@ -8,10 +9,13 @@ import { InactiveAccountWarning } from "@/components/vr/dashboard/InactiveAccoun
 import { ReferralInvite } from "@/components/vr/ReferralInvite";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Users, UserPlus, BarChart3 } from "lucide-react";
+import { Users, UserPlus, BarChart3, FileText } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 const VirtualRecruiterDashboard = () => {
   const { loading, error, profile, stats } = useVRDashboard();
+  const navigate = useNavigate();
 
   if (loading) {
     return <DashboardLoading />;
@@ -83,6 +87,53 @@ const VirtualRecruiterDashboard = () => {
             </CardContent>
           </Card>
         </div>
+        
+        <Card>
+          <CardHeader>
+            <CardTitle>Recommend Candidates</CardTitle>
+            <CardDescription>Submit a new candidate recommendation</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="bg-gray-50 p-4 rounded-lg">
+                <h3 className="text-lg font-medium mb-2">Two ways to recommend candidates</h3>
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div className="p-4 border rounded-lg bg-white">
+                    <div className="flex items-center mb-2">
+                      <div className="h-8 w-8 rounded-full bg-red-50 flex items-center justify-center mr-3">
+                        <FileText className="h-4 w-4 text-red-800" />
+                      </div>
+                      <h4 className="font-medium">Job-Specific Recommendation</h4>
+                    </div>
+                    <p className="text-sm text-gray-600 mb-4">Recommend a candidate for a specific job vacancy with the commission rate set by the job posting.</p>
+                    <Button 
+                      className="w-full" 
+                      onClick={() => navigate('/vr/recommendations')}
+                    >
+                      Recommend for a Job
+                    </Button>
+                  </div>
+                  
+                  <div className="p-4 border rounded-lg bg-white">
+                    <div className="flex items-center mb-2">
+                      <div className="h-8 w-8 rounded-full bg-blue-50 flex items-center justify-center mr-3">
+                        <UserPlus className="h-4 w-4 text-blue-600" />
+                      </div>
+                      <h4 className="font-medium">General Recommendation</h4>
+                    </div>
+                    <p className="text-sm text-gray-600 mb-4">Add a candidate to our talent pool. You'll receive 2.5% of first year's salary if hired.</p>
+                    <Button 
+                      className="w-full" 
+                      onClick={() => navigate('/vr/recommendations')}
+                    >
+                      Add to Talent Pool
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
         
         <Card>
           <CardHeader>

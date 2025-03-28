@@ -7,7 +7,8 @@ import {
   BarChart3, 
   Mail,
   UserCircle,
-  CreditCard
+  CreditCard,
+  FileText
 } from "lucide-react";
 
 export const DashboardMenu = () => {
@@ -49,12 +50,18 @@ export const DashboardMenu = () => {
       icon: <CreditCard className="h-6 w-6" />,
       path: "/vr/payments",
       description: "Manage your payment information"
+    },
+    {
+      title: "Recommendations",
+      icon: <FileText className="h-6 w-6" />,
+      path: "/vr/recommendations",
+      description: "Submit candidate recommendations"
     }
   ];
 
   return (
     <div className="flex flex-wrap justify-center gap-4 mb-8">
-      {menuItems.slice(0, 3).map((item, index) => (
+      {menuItems.slice(0, 4).map((item, index) => (
         <div key={index} className="text-center">
           <Button
             variant="outline"
