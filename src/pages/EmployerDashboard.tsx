@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import NavBar from "@/components/NavBar";
 import BonusNegotiations from "@/components/employer/BonusNegotiations";
+import { BonusPaymentsSection } from "@/components/employer/BonusPaymentsSection";
 import { Briefcase, Building2, Search, Calendar, UserCircle, MessageSquare } from "lucide-react";
 
 const EmployerDashboard = () => {
@@ -86,37 +87,44 @@ const EmployerDashboard = () => {
     }
   };
 
-  const menuItems = [{
-    title: "Post New Job",
-    icon: <Briefcase className="h-6 w-6" />,
-    path: "/employer/create-vacancy",
-    description: "Create a new job posting"
-  }, {
-    title: "Manage Jobs",
-    icon: <Building2 className="h-6 w-6" />,
-    path: "/employer/manage-jobs",
-    description: "View and edit your job listings"
-  }, {
-    title: "Search Candidates",
-    icon: <Search className="h-6 w-6" />,
-    path: "/employer/candidate-search",
-    description: "Find potential candidates"
-  }, {
-    title: "View Interviews",
-    icon: <Calendar className="h-6 w-6" />,
-    path: "/employer/interviews",
-    description: "Manage scheduled interviews"
-  }, {
-    title: "Profile Settings",
-    icon: <UserCircle className="h-6 w-6" />,
-    path: "/employer/profile",
-    description: "Update your company profile"
-  }, {
-    title: "Contact Us",
-    icon: <MessageSquare className="h-6 w-6" />,
-    path: "#",
-    description: "Get in touch with our support team"
-  }];
+  const menuItems = [
+    {
+      title: "Post New Job",
+      icon: <Briefcase className="h-6 w-6" />,
+      path: "/employer/create-vacancy",
+      description: "Create a new job posting"
+    },
+    {
+      title: "Manage Jobs",
+      icon: <Building2 className="h-6 w-6" />,
+      path: "/employer/manage-jobs",
+      description: "View and edit your job listings"
+    },
+    {
+      title: "Search Candidates",
+      icon: <Search className="h-6 w-6" />,
+      path: "/employer/candidate-search",
+      description: "Find potential candidates"
+    },
+    {
+      title: "View Interviews",
+      icon: <Calendar className="h-6 w-6" />,
+      path: "/employer/interviews",
+      description: "Manage scheduled interviews"
+    },
+    {
+      title: "Profile Settings",
+      icon: <UserCircle className="h-6 w-6" />,
+      path: "/employer/profile",
+      description: "Update your company profile"
+    },
+    {
+      title: "Contact Us",
+      icon: <MessageSquare className="h-6 w-6" />,
+      path: "#",
+      description: "Get in touch with our support team"
+    }
+  ];
 
   return <div className="min-h-screen bg-background">
       <NavBar />
@@ -136,9 +144,12 @@ const EmployerDashboard = () => {
             </Button>)}
         </div>
 
-        {showBonus && userId && <div className="mt-8">
+        {showBonus && userId && (
+          <div className="mt-8 space-y-8">
             <BonusNegotiations employerId={userId} />
-          </div>}
+            <BonusPaymentsSection employerId={userId} />
+          </div>
+        )}
       </div>
     </div>;
 };

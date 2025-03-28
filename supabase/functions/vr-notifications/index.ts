@@ -17,7 +17,7 @@ Deno.serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     )
 
-    const { event_type, candidate_email, job_title, vr_id, recommendation_id } = await req.json()
+    const { event_type, candidate_email, job_title, vr_id, recommendation_id, start_date, bonus_amount } = await req.json()
 
     if (!event_type || !candidate_email || !vr_id) {
       throw new Error('Missing required parameters')
@@ -47,6 +47,16 @@ Deno.serve(async (req) => {
       case 'job_started':
         title = 'Candidate Started Job'
         message = `Your candidate (${candidate_email}) has started their new position`
+        if (start_date) {
+          message += ` on ${start_date}`
+        }
+        if (bonus_amount) {
+          message += `. Your commission payment of £${bonus_amount} will be processed within 30 days of employer payment.`
+        }
+        break
+      case 'bonus_paid':
+        title = 'Bonus Payment Processed'
+        message = `Your commission payment of £${bonus_amount} for candidate ${candidate_email} has been processed`
         break
       default:
         title = 'Candidate Update'
@@ -54,7 +64,7 @@ Deno.serve(async (req) => {
     }
 
     // Add job title if provided (without revealing employer)
-    if (job_title) {
+    if (job_title && event_type !== 'bonus_paid') {
       message += ` as a ${job_title}`
     }
 
@@ -90,6 +100,9 @@ Deno.serve(async (req) => {
           break
         case 'job_started':
           new_status = 'hired'
+          break
+        case 'bonus_paid':
+          new_status = 'paid'
           break
       }
       

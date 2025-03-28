@@ -1,7 +1,9 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
+import { BonusPaymentModal } from "../../BonusPaymentModal";
 
 interface EmployerNegotiationCardProps {
   negotiation: {
@@ -10,12 +12,14 @@ interface EmployerNegotiationCardProps {
     initial_commission: number;
     current_commission: number;
     status: string;
+    application_id?: number;
   };
   onUpdateOffer: (negotiationId: number, newAmount: number) => void;
 }
 
 const EmployerNegotiationCard = ({ negotiation, onUpdateOffer }: EmployerNegotiationCardProps) => {
   const [newBonus, setNewBonus] = useState<string>("");
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
 
   return (
     <Card>
@@ -38,7 +42,7 @@ const EmployerNegotiationCard = ({ negotiation, onUpdateOffer }: EmployerNegotia
             </p>
           </div>
 
-          {negotiation.status !== 'accepted' && (
+          {negotiation.status !== 'accepted' ? (
             <div className="flex items-center space-x-2">
               <Input
                 type="number"
@@ -60,7 +64,25 @@ const EmployerNegotiationCard = ({ negotiation, onUpdateOffer }: EmployerNegotia
                 Update Offer
               </Button>
             </div>
-          )}
+          ) : negotiation.application_id ? (
+            <div className="pt-2">
+              <Button 
+                variant="default" 
+                className="w-full"
+                onClick={() => setShowPaymentModal(true)}
+              >
+                Confirm Hire & Start Date
+              </Button>
+              
+              {showPaymentModal && negotiation.application_id && (
+                <BonusPaymentModal 
+                  applicationId={negotiation.application_id}
+                  isOpen={showPaymentModal}
+                  onClose={() => setShowPaymentModal(false)}
+                />
+              )}
+            </div>
+          ) : null}
         </div>
       </CardContent>
     </Card>
