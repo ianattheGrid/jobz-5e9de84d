@@ -62,15 +62,15 @@ export const useVRDashboard = () => {
             // Insert profile with required fields
             const { data: newProfile, error: createError } = await supabase
               .from('virtual_recruiter_profiles')
-              .insert([{  // Use array notation for insert
+              .insert({
                 id: session.user.id,
                 full_name: session.user.user_metadata.full_name || 'New User',
                 email: session.user.email || '',
                 location: 'Not specified',
                 bank_account_verified: false,
                 is_active: true
-              }] as any)  // Type assertion needed because vr_number is DB generated
-              .select('*')
+              })
+              .select()
               .single();
             
             if (createError) {
