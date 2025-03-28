@@ -6,10 +6,10 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client"; 
 import { useNavigate } from "react-router-dom";
-import DashboardMenu from "@/components/vr/dashboard/DashboardMenu";
-import ReferralsList from "@/components/vr/ReferralsList";
-import DashboardStats from "@/components/vr/dashboard/DashboardStats";
-import InactiveAccountWarning from "@/components/vr/dashboard/InactiveAccountWarning";
+import { DashboardMenu } from "@/components/vr/dashboard/DashboardMenu";
+import { ReferralsList } from "@/components/vr/ReferralsList";
+import { DashboardStats } from "@/components/vr/dashboard/DashboardStats";
+import { InactiveAccountWarning } from "@/components/vr/dashboard/InactiveAccountWarning";
 
 const VirtualRecruiterDashboard = () => {
   const [loading, setLoading] = useState(true);
@@ -59,14 +59,17 @@ const VirtualRecruiterDashboard = () => {
               return;
             }
             
-            // Create profile record
-            const { data: newProfile, error: createError } = await supabase.rpc('create_vr_profile', {
-              user_id: session.user.id,
-              user_full_name: session.user.user_metadata.full_name || 'New User',
-              user_email: session.user.email || ''
-            });
+            // Call our custom RPC function instead of direct insert
+            const { data: success, error: createError } = await supabase.rpc(
+              'create_vr_profile',
+              {
+                user_id: session.user.id,
+                user_full_name: session.user.user_metadata.full_name || 'New User',
+                user_email: session.user.email || ''
+              }
+            );
             
-            if (createError) {
+            if (createError || !success) {
               console.error('Error creating VR profile:', createError);
               setError('Failed to create your profile. Please contact support.');
               setLoading(false);

@@ -48,3 +48,4 @@ GRANT EXECUTE ON FUNCTION public.create_vr_profile TO authenticated;
 -- Add comment for clarity
 COMMENT ON FUNCTION public.create_vr_profile IS 
 'Creates a Virtual Recruiter profile with proper permissions, bypassing RLS';
+
