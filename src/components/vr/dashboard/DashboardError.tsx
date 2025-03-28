@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 
 interface DashboardErrorProps {
   error: string;
@@ -10,6 +11,11 @@ interface DashboardErrorProps {
 
 export const DashboardError = ({ error }: DashboardErrorProps) => {
   const navigate = useNavigate();
+  
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    navigate('/vr/signin');
+  };
   
   return (
     <div className="container mx-auto py-8">
@@ -30,10 +36,10 @@ export const DashboardError = ({ error }: DashboardErrorProps) => {
           </ol>
           <div className="flex space-x-4">
             <Button 
-              onClick={() => navigate('/vr/signin')} 
+              onClick={handleSignOut} 
               variant="outline"
             >
-              Back to Sign In
+              Sign Out
             </Button>
             <Button 
               onClick={() => window.location.reload()} 

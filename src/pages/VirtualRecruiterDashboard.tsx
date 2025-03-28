@@ -7,16 +7,32 @@ import { ReferralsList } from "@/components/vr/ReferralsList";
 import { DashboardStats } from "@/components/vr/dashboard/DashboardStats";
 import { InactiveAccountWarning } from "@/components/vr/dashboard/InactiveAccountWarning";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const VirtualRecruiterDashboard = () => {
   const { loading, error, profile, stats } = useVRDashboard();
 
+  // Return loading state while profile loads
   if (loading) {
     return <DashboardLoading />;
   }
 
+  // Return error component if there's an error
   if (error) {
     return <DashboardError error={error} />;
+  }
+
+  // Return blank page with error message if profile is null
+  if (!profile) {
+    return (
+      <div className="container mx-auto py-8">
+        <Alert variant="destructive">
+          <AlertDescription>
+            Failed to load or create your profile. Please try signing out and back in, or contact support.
+          </AlertDescription>
+        </Alert>
+      </div>
+    );
   }
 
   return (
