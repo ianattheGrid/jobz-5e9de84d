@@ -59,31 +59,29 @@ const VirtualRecruiterDashboard = () => {
               return;
             }
             
-            // Call our custom RPC function instead of direct insert
-            const { data: success, error: createError } = await supabase.rpc(
-              'create_vr_profile',
-              {
-                user_id: session.user.id,
-                user_full_name: session.user.user_metadata.full_name || 'New User',
-                user_email: session.user.email || ''
-              }
-            );
+            // Insert profile directly instead of using RPC function
+            // since TypeScript doesn't know about our custom RPC function
+            const { data: newProfile, error: createError } = await supabase
+              .from('virtual_recruiter_profiles')
+              .insert({
+                id: session.user.id,
+                full_name: session.user.user_metadata.full_name || 'New User',
+                email: session.user.email || '',
+                location: 'Not specified', // Default location
+                bank_account_verified: false,
+                is_active: true
+              })
+              .select('*')
+              .single();
             
-            if (createError || !success) {
+            if (createError || !newProfile) {
               console.error('Error creating VR profile:', createError);
               setError('Failed to create your profile. Please contact support.');
               setLoading(false);
               return;
             }
             
-            // Fetch the newly created profile
-            const { data: createdProfile } = await supabase
-              .from('virtual_recruiter_profiles')
-              .select('*')
-              .eq('id', session.user.id)
-              .maybeSingle();
-              
-            setProfile(createdProfile);
+            setProfile(newProfile);
             
             toast({
               title: "Profile Created",
@@ -107,6 +105,11 @@ const VirtualRecruiterDashboard = () => {
 
     loadUserAndProfile();
   }, [navigate, toast]);
+
+  // Calculate stats from profile data
+  const totalReferrals = profile?.recommendations_count || 0;
+  const successfulPlacements = profile?.successful_placements || 0; 
+  const pendingRecommendations = totalReferrals - successfulPlacements;
 
   if (loading) {
     return (
@@ -167,14 +170,18 @@ const VirtualRecruiterDashboard = () => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Menu Column */}
         <div className="lg:col-span-3">
-          <DashboardMenu profile={profile} />
+          <DashboardMenu />
         </div>
 
         {/* Main Content Column */}
         <div className="lg:col-span-9 space-y-6">
           {!profile.is_active && <InactiveAccountWarning />}
           
-          <DashboardStats profile={profile} />
+          <DashboardStats 
+            totalReferrals={totalReferrals}
+            successfulPlacements={successfulPlacements}
+            pendingRecommendations={pendingRecommendations}
+          />
           
           <Card>
             <CardHeader>
@@ -182,7 +189,7 @@ const VirtualRecruiterDashboard = () => {
               <CardDescription>Candidates you have referred to the platform</CardDescription>
             </CardHeader>
             <CardContent>
-              <ReferralsList vrId={profile.id} />
+              <ReferralsList />
             </CardContent>
           </Card>
         </div>
