@@ -38,42 +38,78 @@ const VirtualRecruiterDashboard = () => {
 
   return (
     <div className="container mx-auto py-8">
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Menu Column */}
-        <div className="lg:col-span-3">
-          <DashboardMenu />
-        </div>
-
-        {/* Main Content Column */}
-        <div className="lg:col-span-9 space-y-6">
-          {!profile.is_active && <InactiveAccountWarning />}
-          
-          <DashboardStats 
-            totalReferrals={stats.totalReferrals}
-            successfulPlacements={stats.successfulPlacements}
-            pendingRecommendations={stats.pendingRecommendations}
-          />
-          
+      <div className="space-y-8">
+        {!profile.is_active && <InactiveAccountWarning />}
+        
+        {/* Menu at the top */}
+        <DashboardMenu />
+        
+        {/* Stats in the second row */}
+        <div className="grid gap-6 md:grid-cols-3">
           <Card>
-            <CardHeader>
-              <CardTitle>Invite a Candidate</CardTitle>
-              <CardDescription>Refer a new candidate to the platform</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ReferralInvite />
+            <CardContent className="p-6">
+              <div className="flex justify-between items-center">
+                <div>
+                  <h3 className="font-medium text-muted-foreground mb-1">Total Referrals</h3>
+                  <p className="text-3xl font-bold">{stats.totalReferrals}</p>
+                </div>
+                <div className="h-10 w-10 rounded-full bg-red-50 flex items-center justify-center">
+                  <Users className="h-5 w-5 text-red-800" />
+                </div>
+              </div>
             </CardContent>
           </Card>
           
           <Card>
-            <CardHeader>
-              <CardTitle>Referrals</CardTitle>
-              <CardDescription>Candidates you have referred to the platform</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ReferralsList />
+            <CardContent className="p-6">
+              <div className="flex justify-between items-center">
+                <div>
+                  <h3 className="font-medium text-muted-foreground mb-1">Successful Placements</h3>
+                  <p className="text-3xl font-bold">{stats.successfulPlacements}</p>
+                </div>
+                <div className="h-10 w-10 rounded-full bg-green-50 flex items-center justify-center">
+                  <UserPlus className="h-5 w-5 text-green-600" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex justify-between items-center">
+                <div>
+                  <h3 className="font-medium text-muted-foreground mb-1">Pending Recommendations</h3>
+                  <p className="text-3xl font-bold">{stats.pendingRecommendations}</p>
+                </div>
+                <div className="h-10 w-10 rounded-full bg-blue-50 flex items-center justify-center">
+                  <BarChart3 className="h-5 w-5 text-blue-600" />
+                </div>
+              </div>
             </CardContent>
           </Card>
         </div>
+        
+        {/* Invite a Candidate Card */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Invite a Candidate</CardTitle>
+            <CardDescription>Refer a new candidate to the platform</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ReferralInvite />
+          </CardContent>
+        </Card>
+        
+        {/* Referrals Card */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Referrals</CardTitle>
+            <CardDescription>Candidates you have referred to the platform</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ReferralsList />
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

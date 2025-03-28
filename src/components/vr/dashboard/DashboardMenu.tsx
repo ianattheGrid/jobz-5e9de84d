@@ -53,23 +53,23 @@ export const DashboardMenu = () => {
   ];
 
   return (
-    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-      {menuItems.map((item, index) => (
-        <Button
-          key={index}
-          variant="outline"
-          className="h-auto p-6 flex flex-col items-center gap-4 bg-white hover:bg-red-50 transition-all duration-200 border border-gray-200 rounded-lg shadow-sm hover:shadow-md"
-          onClick={() => {
-            console.log('Navigating to:', item.path);
-            navigate(item.path);
-          }}
-        >
-          <div className="text-red-800">{item.icon}</div>
-          <div className="text-center">
-            <h3 className="font-semibold text-lg mb-2 text-red-800">{item.title}</h3>
-            <p className="text-sm text-gray-600">{item.description}</p>
-          </div>
-        </Button>
+    <div className="flex flex-wrap justify-center gap-4 mb-8">
+      {menuItems.slice(0, 3).map((item, index) => (
+        <div key={index} className="text-center">
+          <Button
+            variant="outline"
+            className="flex flex-col items-center p-6 h-28 w-28 rounded-md hover:bg-red-50 transition-all duration-200 border border-gray-200"
+            onClick={() => {
+              console.log('Navigating to:', item.path);
+              navigate(item.path);
+            }}
+          >
+            <div className="text-red-800 mb-2">{item.icon}</div>
+            <div className="text-center">
+              <p className="text-sm text-red-800 font-medium">{item.title}</p>
+            </div>
+          </Button>
+        </div>
       ))}
     </div>
   );
