@@ -8,9 +8,10 @@ import { DashboardStats } from "@/components/vr/dashboard/DashboardStats";
 import { InactiveAccountWarning } from "@/components/vr/dashboard/InactiveAccountWarning";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Users, UserPlus, BarChart3, FileText } from "lucide-react";
+import { Users, UserPlus, BarChart3, FileText, Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { CandidateUpdates } from "@/components/vr/CandidateUpdates";
 
 const VirtualRecruiterDashboard = () => {
   const { loading, error, profile, stats } = useVRDashboard();
@@ -131,6 +132,19 @@ const VirtualRecruiterDashboard = () => {
                 </div>
               </div>
             </div>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardHeader>
+            <div className="flex items-center gap-2">
+              <Bell className="h-5 w-5 text-primary" />
+              <CardTitle>Candidate Updates</CardTitle>
+            </div>
+            <CardDescription>Track the progress of your recommended candidates</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <CandidateUpdates />
           </CardContent>
         </Card>
         

@@ -5,11 +5,34 @@ import type { z } from "zod";
 import { useSalaryFilter } from "./search/useSalaryFilter";
 import { useSignupDateFilter } from "./search/useSignupDateFilter";
 import { useSearchState } from "./search/useSearchState";
+import { useAuth } from "@/hooks/useAuth";
+import { useEffect, useState } from "react";
 
 export const useCandidateSearch = () => {
   const { buildSalaryQuery } = useSalaryFilter();
   const { buildSignupDateQuery } = useSignupDateFilter();
   const { candidates, handleSearchError, handleSearchSuccess } = useSearchState();
+  const { user } = useAuth();
+  const [employerCompany, setEmployerCompany] = useState<string | null>(null);
+
+  // Get current employer's company name
+  useEffect(() => {
+    if (user) {
+      const getEmployerCompany = async () => {
+        const { data } = await supabase
+          .from('employer_profiles')
+          .select('company_name')
+          .eq('id', user.id)
+          .maybeSingle();
+        
+        if (data) {
+          setEmployerCompany(data.company_name);
+        }
+      };
+      
+      getEmployerCompany();
+    }
+  }, [user]);
 
   const searchCandidates = async (values: z.infer<typeof searchFormSchema>) => {
     try {
@@ -41,6 +64,12 @@ export const useCandidateSearch = () => {
 
       if (values.signupPeriod) {
         query = buildSignupDateQuery(query, values.signupPeriod);
+      }
+      
+      // Filter out candidates from employer's own company
+      if (employerCompany) {
+        // Use RPC to handle the company name variations
+        query = query.not('current_employer', 'ilike', `%${employerCompany}%`);
       }
 
       const { data: candidateProfiles, error } = await query;
