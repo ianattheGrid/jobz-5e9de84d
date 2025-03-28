@@ -1,157 +1,188 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
-import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Mail, Settings } from "lucide-react";
-import { DashboardStats } from "@/components/vr/dashboard/DashboardStats";
-import { DashboardMenu } from "@/components/vr/dashboard/DashboardMenu";
-import { InactiveAccountWarning } from "@/components/vr/dashboard/InactiveAccountWarning";
-import { ReferralsList } from "@/components/vr/ReferralsList";
-import { ReferralInvite } from "@/components/vr/ReferralInvite";
 
-interface DashboardStats {
-  totalReferrals: number;
-  successfulPlacements: number;
-  pendingRecommendations: number;
-  isActive: boolean;
-}
+import { useEffect, useState } from "react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client"; 
+import { useNavigate } from "react-router-dom";
+import DashboardMenu from "@/components/vr/dashboard/DashboardMenu";
+import ReferralsList from "@/components/vr/ReferralsList";
+import DashboardStats from "@/components/vr/dashboard/DashboardStats";
+import InactiveAccountWarning from "@/components/vr/dashboard/InactiveAccountWarning";
 
 const VirtualRecruiterDashboard = () => {
-  const navigate = useNavigate();
-  const { toast } = useToast();
   const [loading, setLoading] = useState(true);
-  const [stats, setStats] = useState<DashboardStats>({
-    totalReferrals: 0,
-    successfulPlacements: 0,
-    pendingRecommendations: 0,
-    isActive: true
-  });
+  const [profile, setProfile] = useState<any>(null);
+  const [error, setError] = useState<string | null>(null);
+  const { toast } = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    checkUser();
-    loadDashboardStats();
-  }, []);
+    const loadUserAndProfile = async () => {
+      try {
+        // Check if user is authenticated
+        const { data: { session } } = await supabase.auth.getSession();
+        
+        if (!session) {
+          navigate('/vr/signin');
+          return;
+        }
 
-  const checkUser = async () => {
-    try {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session || session.user.user_metadata.user_type !== 'vr') {
-        navigate('/vr/signin');
-        return;
+        // Check for existing profile
+        const { data: existingProfile, error: profileError } = await supabase
+          .from('virtual_recruiter_profiles')
+          .select('*')
+          .eq('id', session.user.id)
+          .maybeSingle();
+
+        if (profileError) {
+          console.error('Error fetching VR profile:', profileError);
+          setError('Failed to load your profile information. Please try again later.');
+        }
+
+        // If profile doesn't exist, create it
+        if (!existingProfile) {
+          try {
+            console.log('Creating missing VR profile for user:', session.user.id);
+            
+            // Get user's role to verify they should have VR access
+            const { data: roleData } = await supabase
+              .from('user_roles')
+              .select('role')
+              .eq('user_id', session.user.id)
+              .maybeSingle();
+              
+            if (!roleData || roleData.role !== 'vr') {
+              setError('You do not have Virtual Recruiter permissions. Please contact support.');
+              setLoading(false);
+              return;
+            }
+            
+            // Create profile record
+            const { data: newProfile, error: createError } = await supabase.rpc('create_vr_profile', {
+              user_id: session.user.id,
+              user_full_name: session.user.user_metadata.full_name || 'New User',
+              user_email: session.user.email || ''
+            });
+            
+            if (createError) {
+              console.error('Error creating VR profile:', createError);
+              setError('Failed to create your profile. Please contact support.');
+              setLoading(false);
+              return;
+            }
+            
+            // Fetch the newly created profile
+            const { data: createdProfile } = await supabase
+              .from('virtual_recruiter_profiles')
+              .select('*')
+              .eq('id', session.user.id)
+              .maybeSingle();
+              
+            setProfile(createdProfile);
+            
+            toast({
+              title: "Profile Created",
+              description: "Your Virtual Recruiter profile has been created successfully."
+            });
+          } catch (err) {
+            console.error('Error in profile creation:', err);
+            setError('Failed to create your profile. Please contact support.');
+          }
+        } else {
+          setProfile(existingProfile);
+        }
+
+        setLoading(false);
+      } catch (err) {
+        console.error('Dashboard loading error:', err);
+        setError('An unexpected error occurred. Please try again later.');
+        setLoading(false);
       }
-    } catch (error) {
-      console.error('Error:', error);
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "An error occurred while checking authentication",
-      });
-    }
-  };
+    };
 
-  const loadDashboardStats = async () => {
-    try {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) return;
-
-      const { data: profile, error } = await supabase
-        .from('virtual_recruiter_profiles')
-        .select('recommendations_count, successful_placements, is_active')
-        .eq('id', session.user.id)
-        .maybeSingle();
-
-      if (error) throw error;
-
-      if (!profile) {
-        toast({
-          variant: "destructive",
-          title: "Profile Not Found",
-          description: "Your VR profile could not be found. Please contact support.",
-        });
-        navigate('/vr/signin');
-        return;
-      }
-
-      const { count: pendingRecommendations } = await supabase
-        .from('candidate_recommendations')
-        .select('*', { count: 'exact', head: true })
-        .eq('vr_id', session.user.id)
-        .eq('status', 'pending');
-
-      setStats({
-        totalReferrals: profile.recommendations_count || 0,
-        successfulPlacements: profile.successful_placements || 0,
-        pendingRecommendations: pendingRecommendations || 0,
-        isActive: profile.is_active ?? true
-      });
-    } catch (error) {
-      console.error('Error loading stats:', error);
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Failed to load dashboard statistics",
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
+    loadUserAndProfile();
+  }, [navigate, toast]);
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      <div className="container mx-auto py-8">
+        <Card className="w-full">
+          <CardHeader>
+            <CardTitle>Virtual Recruiter Dashboard</CardTitle>
+            <CardDescription>Loading your dashboard...</CardDescription>
+          </CardHeader>
+          <CardContent className="flex justify-center p-6">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#FF69B4]"></div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="container mx-auto py-8">
+        <Alert variant="destructive" className="mb-6">
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+        <Card>
+          <CardHeader>
+            <CardTitle>Virtual Recruiter Dashboard</CardTitle>
+            <CardDescription>We encountered an issue with your account</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p className="mb-4">Please try the following:</p>
+            <ol className="list-decimal pl-5 space-y-2 mb-6">
+              <li>Refresh the page and try again</li>
+              <li>Sign out and sign back in</li>
+              <li>Contact support if the issue persists</li>
+            </ol>
+            <div className="flex space-x-4">
+              <Button 
+                onClick={() => navigate('/vr/signin')} 
+                variant="outline"
+              >
+                Back to Sign In
+              </Button>
+              <Button 
+                onClick={() => window.location.reload()} 
+                className="bg-[#FF69B4] hover:bg-[#FF50A8] text-white"
+              >
+                Refresh Page
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto py-8 px-4">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-bold">Virtual Recruiter Dashboard</h1>
-        <div className="flex gap-4">
-          <Button
-            onClick={() => navigate('/vr/recommendations')}
-            className="bg-primary hover:bg-primary-dark text-white"
-          >
-            <Mail className="mr-2 h-4 w-4" />
-            View Recommendations
-          </Button>
-          <Button
-            variant="outline"
-            onClick={() => navigate('#')}
-          >
-            <Settings className="mr-2 h-4 w-4" />
-            Settings
-          </Button>
+    <div className="container mx-auto py-8">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        {/* Menu Column */}
+        <div className="lg:col-span-3">
+          <DashboardMenu profile={profile} />
         </div>
-      </div>
 
-      {!stats.isActive && <InactiveAccountWarning />}
-      
-      <DashboardStats {...stats} />
-      
-      <DashboardMenu />
-
-      <div className="grid gap-8 md:grid-cols-2 mt-8">
-        <Card>
-          <CardHeader>
-            <CardTitle>Invite Candidates</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ReferralInvite />
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardHeader>
-            <CardTitle>Recent Referrals</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ReferralsList />
-          </CardContent>
-        </Card>
+        {/* Main Content Column */}
+        <div className="lg:col-span-9 space-y-6">
+          {!profile.is_active && <InactiveAccountWarning />}
+          
+          <DashboardStats profile={profile} />
+          
+          <Card>
+            <CardHeader>
+              <CardTitle>Referrals</CardTitle>
+              <CardDescription>Candidates you have referred to the platform</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ReferralsList vrId={profile.id} />
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );
