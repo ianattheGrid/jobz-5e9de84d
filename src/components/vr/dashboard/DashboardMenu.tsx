@@ -1,11 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { 
-  UserPlus, 
-  BarChart3, 
-  FileText
-} from "lucide-react";
+import { UserPlus } from "lucide-react";
 
 export const DashboardMenu = () => {
   const navigate = useNavigate();
@@ -16,12 +12,6 @@ export const DashboardMenu = () => {
       icon: <UserPlus className="h-6 w-6" />,
       path: "/vr/recommendations",
       description: "Refer new candidates to jobs"
-    },
-    {
-      title: "Recommendations",
-      icon: <FileText className="h-6 w-6" />,
-      path: "/vr/recommendations",
-      description: "Submit candidate recommendations"
     }
   ];
 
