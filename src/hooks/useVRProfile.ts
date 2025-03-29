@@ -18,25 +18,36 @@ export const useVRProfile = () => {
   const { toast } = useToast();
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState<VRProfile | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const loadProfile = async () => {
       try {
+        setLoading(true);
+        setError(null);
+        
         const { data: { session } } = await supabase.auth.getSession();
         
         if (!session) {
+          console.log('No active session found, redirecting to login');
           navigate('/vr/signin');
           return;
         }
 
         // Get user role to verify VR access
-        const { data: userRole } = await supabase
+        const { data: userRole, error: roleError } = await supabase
           .from('user_roles')
           .select('role')
           .eq('user_id', session.user.id)
           .single();
           
+        if (roleError) {
+          console.error('Error fetching user role:', roleError);
+          throw new Error('Failed to verify your account type');
+        }
+          
         if (!userRole || userRole.role !== 'vr') {
+          console.error('User is not a VR:', userRole?.role);
           toast({
             variant: "destructive",
             title: "Access Error",
@@ -46,13 +57,26 @@ export const useVRProfile = () => {
           return;
         }
 
+        // Fetch VR profile
         const { data, error } = await supabase
           .from('virtual_recruiter_profiles')
           .select('*')
           .eq('id', session.user.id)
           .single();
 
-        if (error) throw error;
+        if (error) {
+          console.error('Error fetching VR profile:', error);
+          if (error.code === 'PGRST116') {
+            // Profile not found
+            toast({
+              variant: "destructive",
+              title: "Profile Not Found",
+              description: "Your Virtual Recruiter profile hasn't been set up correctly."
+            });
+          } else {
+            throw error;
+          }
+        }
 
         if (data) {
           setProfile({
@@ -66,6 +90,7 @@ export const useVRProfile = () => {
         }
       } catch (error: any) {
         console.error('Error loading profile:', error);
+        setError(error.message || "Failed to load profile");
         toast({
           variant: "destructive",
           title: "Error",
@@ -81,6 +106,7 @@ export const useVRProfile = () => {
 
   const updateProfile = async (values: Partial<VRProfile>) => {
     try {
+      setLoading(true);
       const { data: { session } } = await supabase.auth.getSession();
       
       if (!session) {
@@ -121,8 +147,10 @@ export const useVRProfile = () => {
         title: "Error",
         description: error.message || "Failed to update profile",
       });
+    } finally {
+      setLoading(false);
     }
   };
 
-  return { profile, loading, updateProfile };
+  return { profile, loading, error, updateProfile };
 };

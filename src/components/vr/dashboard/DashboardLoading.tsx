@@ -1,5 +1,6 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { CircleNotch } from "lucide-react";
 
 export const DashboardLoading = () => {
   return (
@@ -9,8 +10,9 @@ export const DashboardLoading = () => {
           <CardTitle>Virtual Recruiter Dashboard</CardTitle>
           <CardDescription>Loading your dashboard...</CardDescription>
         </CardHeader>
-        <CardContent className="flex justify-center p-6">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#FF69B4]"></div>
+        <CardContent className="flex flex-col items-center justify-center p-12">
+          <CircleNotch className="h-12 w-12 animate-spin text-primary" />
+          <p className="mt-4 text-gray-600">Please wait while we load your data...</p>
         </CardContent>
       </Card>
     </div>

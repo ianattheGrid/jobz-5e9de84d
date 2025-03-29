@@ -1,11 +1,12 @@
 
+import { CircleNotch } from "lucide-react";
+
 export const LoadingState = () => {
   return (
-    <div className="min-h-screen bg-[#121212]">
-      <div className="container max-w-7xl mx-auto px-4 py-8">
-        <div className="flex items-center justify-center h-32">
-          <p className="text-white">Loading...</p>
-        </div>
+    <div className="w-full py-12">
+      <div className="flex flex-col items-center justify-center">
+        <CircleNotch className="h-12 w-12 animate-spin text-primary" />
+        <p className="mt-4 text-gray-600">Loading candidates...</p>
       </div>
     </div>
   );

@@ -1,3 +1,4 @@
+
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Job } from "@/integrations/supabase/types/jobs";
@@ -49,6 +50,7 @@ const Jobs = () => {
 
         if (searchFilters.location && searchFilters.location.length > 0) {
           if (searchFilters.location.length === bristolPostcodes.length) {
+            // If all locations are selected, don't filter by location
           } else {
             query = query.in('location', searchFilters.location);
           }
@@ -73,11 +75,16 @@ const Jobs = () => {
       const transformedData: Job[] = data.map(job => ({
         ...job as Omit<Job, 'match_threshold' | 'required_skills'>,
         match_threshold: (job as any).match_threshold || 60,
-        required_skills: (job as any).required_skills || null
+        required_skills: (job as any).required_skills || []
       }));
       
       return transformedData;
-    }
+    },
+    // Set a longer staleTime to prevent immediate refetching
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    // Set a retry policy for network errors
+    retry: 2,
+    retryDelay: 1000,
   });
 
   const handleSearch = (filters: JobSearchSchema) => {
@@ -105,11 +112,19 @@ const Jobs = () => {
           </div>
         </div>
         <JobSearch onSearch={handleSearch} />
+        
         {isLoading ? (
           <LoadingSpinner />
         ) : error ? (
-          <div className="text-center text-red-500">
-            Failed to load jobs. Please try again later.
+          <div className="text-center text-red-500 mt-8">
+            <p>Failed to load jobs. Please try again later.</p>
+            <Button 
+              onClick={() => window.location.reload()} 
+              variant="outline" 
+              className="mt-4"
+            >
+              Retry
+            </Button>
           </div>
         ) : !jobs || jobs.length === 0 ? (
           <EmptyJobsList userType={userType} />

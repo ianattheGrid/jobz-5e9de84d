@@ -1,10 +1,11 @@
 
-import React from 'react';
+import { CircleNotch } from "lucide-react";
 
 const LoadingSpinner = () => {
   return (
-    <div className="flex justify-center">
-      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+    <div className="flex flex-col items-center justify-center py-8">
+      <CircleNotch className="h-10 w-10 animate-spin text-primary" />
+      <p className="mt-3 text-gray-600">Loading interviews...</p>
     </div>
   );
 };

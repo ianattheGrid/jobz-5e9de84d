@@ -19,17 +19,56 @@ export const useAuth = () => {
   });
 
   useEffect(() => {
-    // Get initial session
-    const initAuth = async () => {
+    const setupAuth = async () => {
       try {
-        // Set up auth state listener FIRST
+        // Check for existing session first
+        const { data: { session } } = await supabase.auth.getSession();
+        
+        if (session?.user) {
+          console.log('Found existing session:', session.user.email);
+          try {
+            // Fetch user role from database
+            const { data: roleData } = await supabase
+              .from('user_roles')
+              .select('role')
+              .eq('user_id', session.user.id)
+              .maybeSingle();
+            
+            const userType = roleData?.role as 'employer' | 'candidate' | 'vr' | null;
+            
+            setAuthState({
+              user: session.user,
+              session,
+              userType,
+              loading: false
+            });
+          } catch (error) {
+            console.error('Error fetching existing user role:', error);
+            setAuthState({
+              user: session.user,
+              session,
+              userType: null,
+              loading: false
+            });
+          }
+        } else {
+          // No session found, user is not logged in
+          setAuthState({
+            user: null,
+            session: null,
+            userType: null,
+            loading: false
+          });
+        }
+
+        // Set up auth state listener for changes
         const { data: { subscription } } = supabase.auth.onAuthStateChange(
           async (event, session) => {
             console.log('Auth state changed:', event);
             
             if (session?.user) {
-              // Fetch user role from database when signed in
               try {
+                // Fetch user role from database when signed in
                 const { data: roleData } = await supabase
                   .from('user_roles')
                   .select('role')
@@ -65,35 +104,9 @@ export const useAuth = () => {
           }
         );
 
-        // THEN check for existing session
-        const { data: { session } } = await supabase.auth.getSession();
-        
-        if (session?.user) {
-          // Fetch user role from database
-          const { data: roleData } = await supabase
-            .from('user_roles')
-            .select('role')
-            .eq('user_id', session.user.id)
-            .maybeSingle();
-          
-          const userType = roleData?.role as 'employer' | 'candidate' | 'vr' | null;
-          
-          setAuthState({
-            user: session.user,
-            session,
-            userType,
-            loading: false
-          });
-        } else {
-          setAuthState({
-            user: null,
-            session: null,
-            userType: null,
-            loading: false
-          });
-        }
-
-        return () => subscription.unsubscribe();
+        return () => {
+          subscription.unsubscribe();
+        };
       } catch (error) {
         console.error('Auth initialization error:', error);
         setAuthState({
@@ -105,7 +118,7 @@ export const useAuth = () => {
       }
     };
 
-    initAuth();
+    setupAuth();
   }, []);
 
   return authState;
