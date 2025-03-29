@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { 
   Accordion, 
@@ -7,7 +6,7 @@ import {
   AccordionTrigger 
 } from "@/components/ui/accordion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { HelpCircle, Users, Briefcase, UserPlus } from "lucide-react";
+import { HelpCircle, UserPlus } from "lucide-react";
 import { PRIMARY_COLOR_PATTERN } from "@/styles/colorPatterns";
 
 export const FAQSection = () => {
@@ -31,14 +30,12 @@ export const FAQSection = () => {
                 value="employers" 
                 className="tab-trigger py-3"
               >
-                <Briefcase className="mr-2 h-4 w-4" />
                 Employers
               </TabsTrigger>
               <TabsTrigger 
                 value="candidates"
                 className="tab-trigger py-3"
               >
-                <Users className="mr-2 h-4 w-4" />
                 Candidates
               </TabsTrigger>
               <TabsTrigger 
@@ -142,4 +139,3 @@ export const FAQSection = () => {
     </section>
   );
 };
-
