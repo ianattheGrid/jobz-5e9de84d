@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -23,8 +24,25 @@ export const useVRProfile = () => {
       try {
         const { data: { session } } = await supabase.auth.getSession();
         
-        if (!session || session.user.user_metadata.user_type !== 'vr') {
+        if (!session) {
           navigate('/vr/signin');
+          return;
+        }
+
+        // Get user role to verify VR access
+        const { data: userRole } = await supabase
+          .from('user_roles')
+          .select('role')
+          .eq('user_id', session.user.id)
+          .single();
+          
+        if (!userRole || userRole.role !== 'vr') {
+          toast({
+            variant: "destructive",
+            title: "Access Error",
+            description: "You do not have Virtual Recruiter access."
+          });
+          navigate('/');
           return;
         }
 

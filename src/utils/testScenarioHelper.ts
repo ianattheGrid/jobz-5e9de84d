@@ -98,15 +98,14 @@ export const setupTestScenario = async () => {
       role: 'vr'
     });
 
-    // Create VR profile
-    await supabase.from('virtual_recruiter_profiles').insert({
-      id: vrData.user?.id,
-      full_name: 'Test Recruiter',
-      email: 'test.vr@example.com',
-      location: 'London',
-      is_active: true,
-      bank_account_verified: false
+    // Create VR profile using RPC function
+    const { error: vrProfileError } = await supabase.rpc('create_vr_profile', {
+      user_id: vrData.user?.id,
+      user_full_name: 'Test Recruiter',
+      user_email: 'test.vr@example.com'
     });
+    
+    if (vrProfileError) throw vrProfileError;
 
     // 4. Create a detailed test job posting that should match well
     const { data: jobData, error: jobError } = await supabase.from('jobs').insert({
