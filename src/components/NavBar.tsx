@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -37,8 +36,8 @@ const NavBar = () => {
       <div className="container mx-auto px-4 h-full">
         <div className="flex justify-between items-center h-full">
           <div className="flex items-center gap-12">
-            <Link to="/" className="text-xl font-bold text-white">
-              jobz
+            <Link to="/" className="text-2xl font-bold flex items-center">
+              <span className="text-primary font-bold tracking-tight">jobz</span>
             </Link>
             <div className="hidden md:block">
               <nav className="flex items-center space-x-6">
