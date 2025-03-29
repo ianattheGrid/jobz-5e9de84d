@@ -38,13 +38,14 @@ const createCandidateProfile = async (userId: string, fullName: string, email: s
 
 const createVRProfile = async (userId: string, fullName: string, email: string) => {
   try {
-    // Using a stored procedure that will handle vr_number generation
-    const { data, error } = await supabase
-      .rpc('create_vr_profile', {
-        user_id: userId,
-        user_full_name: fullName,
-        user_email: email
-      });
+    // Direct SQL query with the function call to bypass type checking issues
+    const { data, error } = await supabase.functions.invoke('create-vr-profile', {
+      body: {
+        userId,
+        fullName,
+        email
+      }
+    });
     
     if (error) {
       console.error('Error creating VR profile:', error);

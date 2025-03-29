@@ -98,14 +98,14 @@ export const setupTestScenario = async () => {
       role: 'vr'
     });
 
-    // Create VR profile using RPC function
-    const { error: vrProfileError } = await supabase.rpc('create_vr_profile', {
-      user_id: vrData.user?.id,
-      user_full_name: 'Test Recruiter',
-      user_email: 'test.vr@example.com'
+    // Create VR profile - using direct function call with edge function
+    await supabase.functions.invoke('create-vr-profile', {
+      body: { 
+        userId: vrData.user?.id,
+        fullName: 'Test Recruiter',
+        email: 'test.vr@example.com'
+      }
     });
-    
-    if (vrProfileError) throw vrProfileError;
 
     // 4. Create a detailed test job posting that should match well
     const { data: jobData, error: jobError } = await supabase.from('jobs').insert({
