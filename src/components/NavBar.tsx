@@ -3,42 +3,20 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import MobileNav from "./navbar/MobileNav";
-import NavigationLinks from "./navbar/NavigationLinks";
 import { Button } from "@/components/ui/button";
 import { LogIn, UserPlus, Home as HomeIcon, Briefcase, LogOut, User } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import { useAuth } from "@/hooks/useAuth";
 
 const NavBar = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userType, setUserType] = useState<string | null>(null);
+  const { user, userType, loading } = useAuth();
   const [userName, setUserName] = useState<string | null>(null);
 
   useEffect(() => {
-    const checkAuth = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      setIsAuthenticated(!!session);
-      if (session?.user.user_metadata.user_type) {
-        setUserType(session.user.user_metadata.user_type);
-      }
-      if (session?.user.user_metadata.full_name) {
-        setUserName(session.user.user_metadata.full_name);
-      }
-    };
-
-    checkAuth();
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setIsAuthenticated(!!session);
-      if (session?.user.user_metadata.user_type) {
-        setUserType(session.user.user_metadata.user_type);
-      }
-      if (session?.user.user_metadata.full_name) {
-        setUserName(session.user.user_metadata.full_name);
-      }
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
+    if (user?.user_metadata?.full_name) {
+      setUserName(user.user_metadata.full_name);
+    }
+  }, [user]);
 
   const handleSignOut = async () => {
     try {
@@ -83,7 +61,7 @@ const NavBar = () => {
           </div>
           
           <div className="flex items-center">
-            {isAuthenticated ? (
+            {!loading && user ? (
               <div className="hidden md:flex items-center gap-4">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -184,7 +162,7 @@ const NavBar = () => {
                 </DropdownMenu>
               </div>
             )}
-            <MobileNav isAuthenticated={isAuthenticated} userType={userType} />
+            <MobileNav isAuthenticated={!!user} userType={userType} />
           </div>
         </div>
       </div>

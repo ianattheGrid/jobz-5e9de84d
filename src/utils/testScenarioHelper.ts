@@ -17,6 +17,12 @@ export const setupTestScenario = async () => {
     
     if (employerError) throw employerError;
 
+    // Create user role for employer
+    await supabase.from('user_roles').insert({
+      user_id: employerData.user?.id,
+      role: 'employer'
+    });
+
     // Create detailed employer profile
     await supabase.from('employer_profiles').insert({
       id: employerData.user?.id,
@@ -24,7 +30,9 @@ export const setupTestScenario = async () => {
       full_name: 'Test Employer',
       job_title: 'HR Director',
       company_website: 'https://techsolutions.example.com',
-      linkedin_url: 'https://linkedin.com/company/techsolutions'
+      linkedin_url: 'https://linkedin.com/company/techsolutions',
+      company_size: 150,
+      is_sme: true
     });
 
     // 2. Create test candidate account with matching skills
@@ -40,6 +48,12 @@ export const setupTestScenario = async () => {
     });
 
     if (candidateError) throw candidateError;
+
+    // Create user role for candidate
+    await supabase.from('user_roles').insert({
+      user_id: candidateData.user?.id,
+      role: 'candidate'
+    });
 
     // Create candidate profile matching job requirements
     await supabase.from('candidate_profiles').insert({
@@ -64,7 +78,37 @@ export const setupTestScenario = async () => {
       itSpecialization: 'Frontend Development'
     });
 
-    // 3. Create a detailed test job posting that should match well
+    // 3. Create a Virtual Recruiter account
+    const { data: vrData, error: vrError } = await supabase.auth.signUp({
+      email: 'test.vr@example.com',
+      password: 'testpass123',
+      options: {
+        data: {
+          user_type: 'vr',
+          full_name: 'Test Recruiter',
+        }
+      }
+    });
+
+    if (vrError) throw vrError;
+
+    // Create user role for VR
+    await supabase.from('user_roles').insert({
+      user_id: vrData.user?.id,
+      role: 'vr'
+    });
+
+    // Create VR profile
+    await supabase.from('virtual_recruiter_profiles').insert({
+      id: vrData.user?.id,
+      full_name: 'Test Recruiter',
+      email: 'test.vr@example.com',
+      location: 'London',
+      is_active: true,
+      bank_account_verified: false
+    });
+
+    // 4. Create a detailed test job posting that should match well
     const { data: jobData, error: jobError } = await supabase.from('jobs').insert({
       employer_id: employerData.user?.id,
       title: 'Senior Frontend Developer',
@@ -95,42 +139,28 @@ export const setupTestScenario = async () => {
 
     if (jobError) throw jobError;
 
-    // Calculate and log the match score
-    const { data: profile } = await supabase
-      .from('candidate_profiles')
-      .select('*')
-      .eq('id', candidateData.user?.id)
-      .single();
+    // Create a candidate recommendation from VR
+    await supabase.from('candidate_recommendations').insert({
+      vr_id: vrData.user?.id,
+      candidate_email: 'test.candidate@example.com',
+      job_id: jobData?.id,
+      status: 'pending',
+      recommendation_type: 'job_specific',
+      commission_percentage: 5
+    });
 
-    if (profile && jobData) {
-      const { useMatchScore } = await import('../components/job-card/hooks/useMatchScore');
-      const matchScoreHook = useMatchScore({
-        ...profile,
-        workArea: profile.workArea || null,
-        itSpecialization: profile.itSpecialization || null
-      }, jobData);
-      const score = await matchScoreHook.calculateTotalScore();
-      
-      console.log('\n=== Match Score Analysis ===');
-      console.log(`Total Match Score: ${(Number(score) * 100).toFixed(1)}%`);
-      console.log('Profile:', {
-        title: profile.job_title,
-        experience: profile.years_experience,
-        location: profile.location,
-        skills: profile.required_skills
-      });
-      console.log('Job:', {
-        title: jobData.title,
-        minExperience: jobData.min_years_experience,
-        location: jobData.location,
-        requiredSkills: jobData.required_skills
-      });
-    }
+    console.log('Test scenario created successfully with the following accounts:');
+    console.log('Employer: test.employer@example.com / testpass123');
+    console.log('Candidate: test.candidate@example.com / testpass123');
+    console.log('VR: test.vr@example.com / testpass123');
+    console.log('Job ID:', jobData?.id);
 
     return {
       employerEmail: 'test.employer@example.com',
       candidateEmail: 'test.candidate@example.com',
-      password: 'testpass123'
+      vrEmail: 'test.vr@example.com',
+      password: 'testpass123',
+      jobId: jobData?.id
     };
 
   } catch (error) {

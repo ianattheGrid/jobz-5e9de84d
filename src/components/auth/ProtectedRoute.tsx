@@ -36,7 +36,27 @@ export const ProtectedRoute = ({ children, userType }: ProtectedRouteProps) => {
           return;
         }
 
-        const currentUserType = session.user.user_metadata.user_type?.toLowerCase();
+        // Fetch the user's role from the database
+        const { data: userRoleData, error: roleError } = await supabase
+          .from('user_roles')
+          .select('role')
+          .eq('user_id', session.user.id)
+          .maybeSingle();
+
+        if (roleError || !userRoleData) {
+          console.error('Error fetching user role:', roleError);
+          toast({
+            variant: "destructive",
+            title: "Authentication Error",
+            description: "Could not verify your access privileges. Please try signing in again.",
+          });
+          
+          await supabase.auth.signOut();
+          navigate(`/${userType}/signin`);
+          return;
+        }
+
+        const currentUserType = userRoleData.role;
         
         if (currentUserType !== userType) {
           console.log(`User type mismatch: expected ${userType}, got ${currentUserType}`);
@@ -49,6 +69,35 @@ export const ProtectedRoute = ({ children, userType }: ProtectedRouteProps) => {
           // Redirect to home page on type mismatch
           navigate('/');
           return;
+        }
+        
+        // Check if the user has a profile for this user type
+        const profileTable = 
+          userType === 'employer' ? 'employer_profiles' :
+          userType === 'candidate' ? 'candidate_profiles' :
+          userType === 'vr' ? 'virtual_recruiter_profiles' : null;
+          
+        if (profileTable) {
+          const { data: profile, error: profileError } = await supabase
+            .from(profileTable)
+            .select('id')
+            .eq('id', session.user.id)
+            .maybeSingle();
+  
+          if (profileError) {
+            console.error(`Error fetching ${userType} profile:`, profileError);
+          } else if (!profile && !window.location.pathname.includes('/profile')) {
+            // If no profile exists and not already on the profile page, redirect to profile page
+            console.log(`No ${userType} profile found, redirecting to profile page`);
+            
+            toast({
+              title: "Profile Required",
+              description: "Please complete your profile to continue.",
+            });
+            
+            navigate(`/${userType}/profile`);
+            return;
+          }
         }
         
         // If we get here, the user is authorized

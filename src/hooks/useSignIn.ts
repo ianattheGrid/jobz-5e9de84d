@@ -95,7 +95,17 @@ export const useSignIn = () => {
         if (profileError) {
           console.error(`Error fetching ${userRole.role} profile:`, profileError);
         } else if (!profile) {
-          console.warn(`No ${userRole.role} profile found for user ${data.user.id}, it will be created at dashboard`);
+          console.warn(`No ${userRole.role} profile found for user ${data.user.id}, redirecting to create profile`);
+          
+          // Redirect to profile creation based on role
+          navigate(`/${userRole.role}/profile`, { replace: true });
+          
+          toast({
+            title: "Welcome!",
+            description: "Please complete your profile to continue.",
+          });
+          
+          return;
         }
       }
 
