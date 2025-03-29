@@ -17,19 +17,19 @@ export const PlatformFeatures = () => {
             value="hiring" 
             className="tab-trigger py-3"
           >
-            For Employers
+            Employers
           </TabsTrigger>
           <TabsTrigger 
             value="candidates"
             className="tab-trigger py-3"
           >
-            For Candidates
+            Candidates
           </TabsTrigger>
           <TabsTrigger 
             value="recruiters"
             className="tab-trigger py-3"
           >
-            For Virtual Recruiters
+            Virtual Recruiters
           </TabsTrigger>
         </TabsList>
 
@@ -131,3 +131,4 @@ const FeatureCard = ({
     </Card>
   );
 };
+

@@ -32,21 +32,21 @@ export const FAQSection = () => {
                 className="tab-trigger py-3"
               >
                 <Briefcase className="mr-2 h-4 w-4" />
-                For Employers
+                Employers
               </TabsTrigger>
               <TabsTrigger 
                 value="candidates"
                 className="tab-trigger py-3"
               >
                 <Users className="mr-2 h-4 w-4" />
-                For Candidates
+                Candidates
               </TabsTrigger>
               <TabsTrigger 
                 value="recruiters"
                 className="tab-trigger py-3"
               >
                 <UserPlus className="mr-2 h-4 w-4" />
-                For Virtual Recruiters
+                Virtual Recruiters
               </TabsTrigger>
             </TabsList>
 
@@ -142,3 +142,4 @@ export const FAQSection = () => {
     </section>
   );
 };
+
