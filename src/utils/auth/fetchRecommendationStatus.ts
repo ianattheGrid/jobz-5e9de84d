@@ -17,11 +17,7 @@ export const fetchRecommendationStatus = async (candidateEmail: string): Promise
     // Query to get the most recent recommendation for the candidate
     const { data, error } = await supabase
       .from('candidate_recommendations')
-      .select(`
-        created_at, 
-        vr_id,
-        virtual_recruiter_profiles!vr_id(full_name)
-      `)
+      .select('created_at, vr_id')
       .eq('candidate_email', candidateEmail)
       .order('created_at', { ascending: false })
       .limit(1)
@@ -48,8 +44,21 @@ export const fetchRecommendationStatus = async (candidateEmail: string): Promise
     const now = new Date();
     const isExpired = now > expirationDate;
 
-    // Safely access the recruiter's name
-    const recruiterName = data.virtual_recruiter_profiles?.full_name || null;
+    // Fetch the recruiter's name in a separate query
+    let recruiterName = null;
+    if (data.vr_id) {
+      const { data: recruiterData, error: recruiterError } = await supabase
+        .from('virtual_recruiter_profiles')
+        .select('full_name')
+        .eq('id', data.vr_id)
+        .single();
+      
+      if (recruiterError) {
+        console.error('Error fetching recruiter details:', recruiterError);
+      } else if (recruiterData) {
+        recruiterName = recruiterData.full_name;
+      }
+    }
 
     return {
       exists: true,
