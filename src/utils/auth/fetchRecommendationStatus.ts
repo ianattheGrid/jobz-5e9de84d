@@ -6,6 +6,7 @@ export type RecommendationStatus = {
   isExpired: boolean;
   recommendedBy: string | null;
   recommendationDate: string | null;
+  isRegistered: boolean;
 };
 
 /**
@@ -14,6 +15,18 @@ export type RecommendationStatus = {
  */
 export const fetchRecommendationStatus = async (candidateEmail: string): Promise<RecommendationStatus> => {
   try {
+    // First, check if the candidate is already registered
+    const { data: candidateData, error: candidateError } = await supabase
+      .from('candidate_profiles')
+      .select('id')
+      .eq('email', candidateEmail)
+      .maybeSingle();
+
+    if (candidateError) {
+      console.error('Error checking candidate registration:', candidateError);
+      throw candidateError;
+    }
+
     // Query to get the most recent recommendation for the candidate
     const { data, error } = await supabase
       .from('candidate_recommendations')
@@ -33,7 +46,8 @@ export const fetchRecommendationStatus = async (candidateEmail: string): Promise
         exists: false,
         isExpired: false,
         recommendedBy: null,
-        recommendationDate: null
+        recommendationDate: null,
+        isRegistered: !!candidateData
       };
     }
 
@@ -64,7 +78,8 @@ export const fetchRecommendationStatus = async (candidateEmail: string): Promise
       exists: true,
       isExpired,
       recommendedBy: recruiterName,
-      recommendationDate: data.created_at
+      recommendationDate: data.created_at,
+      isRegistered: !!candidateData
     };
   } catch (error) {
     console.error('Error in fetchRecommendationStatus:', error);
@@ -72,7 +87,8 @@ export const fetchRecommendationStatus = async (candidateEmail: string): Promise
       exists: false,
       isExpired: false,
       recommendedBy: null,
-      recommendationDate: null
+      recommendationDate: null,
+      isRegistered: false
     };
   }
 };
