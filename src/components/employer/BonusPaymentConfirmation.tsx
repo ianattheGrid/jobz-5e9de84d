@@ -4,28 +4,15 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { CalendarIcon, CheckCircle2, Info } from "lucide-react";
-import { Calendar } from "@/components/ui/calendar";
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import {
-  Alert,
-  AlertDescription,
-  AlertTitle,
-} from "@/components/ui/alert";
+import { Info } from "lucide-react";
+import { TooltipProvider, Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { format } from "date-fns";
-import { cn } from "@/lib/utils";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+
+import { DateSelector } from "./bonus-payment/DateSelector";
+import { PaymentSummary } from "./bonus-payment/PaymentSummary";
+import { PaymentTermsCheckbox } from "./bonus-payment/PaymentTermsCheckbox";
+import { CompletedPayment } from "./bonus-payment/CompletedPayment";
+import { VRCommissionAlert } from "./bonus-payment/VRCommissionAlert";
 
 interface BonusPaymentConfirmationProps {
   jobId: number;
@@ -161,19 +148,7 @@ export const BonusPaymentConfirmation = ({
   };
 
   if (isCompleted) {
-    return (
-      <Card className="border-green-100">
-        <CardContent className="pt-6">
-          <div className="flex flex-col items-center justify-center text-center space-y-2">
-            <CheckCircle2 className="h-12 w-12 text-green-500" />
-            <h3 className="text-lg font-medium">Bonus payment confirmed</h3>
-            <p className="text-sm text-muted-foreground">
-              We'll process the bonuses once payment is received.
-            </p>
-          </div>
-        </CardContent>
-      </Card>
-    );
+    return <CompletedPayment />;
   }
 
   return (
@@ -201,81 +176,25 @@ export const BonusPaymentConfirmation = ({
       </CardHeader>
       <CardContent className="space-y-4">
         {showVrCommissionNotice && (
-          <Alert variant="default" className="bg-amber-50 border-amber-200">
-            <Info className="h-4 w-4 text-amber-600" />
-            <AlertTitle className="text-amber-800">VR Commission Notice</AlertTitle>
-            <AlertDescription className="text-amber-700">
-              This candidate was recommended by a Virtual Recruiter. A standard commission of 
-              £{vrCommission.toLocaleString()} will apply as part of the bonus payment.
-            </AlertDescription>
-          </Alert>
+          <VRCommissionAlert vrCommission={vrCommission || 0} />
         )}
 
-        <div className="space-y-2">
-          <label className="text-sm font-medium">Candidate Start Date</label>
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button
-                variant="outline"
-                className={cn(
-                  "w-full justify-start text-left font-normal",
-                  !startDate && "text-muted-foreground"
-                )}
-              >
-                <CalendarIcon className="mr-2 h-4 w-4" />
-                {startDate ? format(startDate, "PPP") : "Select start date"}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0">
-              <Calendar
-                mode="single"
-                selected={startDate}
-                onSelect={setStartDate}
-                initialFocus
-              />
-            </PopoverContent>
-          </Popover>
-        </div>
+        <DateSelector
+          date={startDate}
+          onDateChange={setStartDate}
+          label="Candidate Start Date"
+          placeholder="Select start date"
+        />
 
-        <div className="space-y-2">
-          <div className="text-sm font-medium">Payment Summary</div>
-          <div className="rounded-md border p-4 space-y-2">
-            <div className="flex justify-between text-sm">
-              <span>Candidate Bonus:</span>
-              <span className="font-medium">£{candidateCommission.toLocaleString()}</span>
-            </div>
-            {vrCommission && vrCommission > 0 && (
-              <div className="flex justify-between text-sm">
-                <span>Recruiter Bonus:</span>
-                <span className="font-medium">£{vrCommission.toLocaleString()}</span>
-              </div>
-            )}
-            <div className="border-t pt-2 mt-2 flex justify-between font-medium">
-              <span>Total Due:</span>
-              <span>£{(candidateCommission + (vrCommission || 0)).toLocaleString()}</span>
-            </div>
-          </div>
-        </div>
+        <PaymentSummary
+          candidateCommission={candidateCommission}
+          vrCommission={vrCommission}
+        />
 
-        <div className="flex items-start space-x-2 pt-2">
-          <Checkbox 
-            id="terms" 
-            checked={termsAgreed}
-            onCheckedChange={(checked) => setTermsAgreed(checked as boolean)} 
-          />
-          <div className="grid gap-1.5 leading-none">
-            <label
-              htmlFor="terms"
-              className="text-sm font-medium leading-none cursor-pointer"
-            >
-              Payment Terms
-            </label>
-            <p className="text-sm text-muted-foreground">
-              I agree to pay the total amount within 30 days of the candidate's start date. 
-              I understand that bonuses will be distributed after payment is received.
-            </p>
-          </div>
-        </div>
+        <PaymentTermsCheckbox
+          checked={termsAgreed}
+          onCheckedChange={setTermsAgreed}
+        />
       </CardContent>
       <CardFooter>
         <Button 
