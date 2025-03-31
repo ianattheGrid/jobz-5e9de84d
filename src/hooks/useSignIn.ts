@@ -1,8 +1,11 @@
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { signInWithEmail } from "@/utils/auth/signInWithEmail";
+import { fetchUserRole } from "@/utils/auth/fetchUserRole";
+import { fetchUserProfile } from "@/utils/auth/fetchUserProfile";
+import { signOut } from "@/utils/auth/signOut";
 
 export const useSignIn = () => {
   const [loading, setLoading] = useState(false);
@@ -14,10 +17,8 @@ export const useSignIn = () => {
       setLoading(true);
       console.log('Starting sign in process for:', email, 'as', intendedUserType || 'any user type'); 
 
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
+      // Authenticate the user
+      const { data, error } = await signInWithEmail(email, password);
 
       if (error) {
         console.error('Sign in error:', error);
@@ -35,22 +36,8 @@ export const useSignIn = () => {
 
       console.log('Successfully signed in, fetching user role');
 
-      // Get the user's role from the user_roles table
-      const { data: userRole, error: roleError } = await supabase
-        .from('user_roles')
-        .select('role')
-        .eq('user_id', data.user.id)
-        .maybeSingle();
-
-      if (roleError) {
-        console.error('Error fetching user role:', roleError);
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description: "Could not verify user role. Please try again.",
-        });
-        return;
-      }
+      // Get the user's role
+      const userRole = await fetchUserRole(data.user.id);
 
       if (!userRole) {
         console.error('No user role found for user:', data.user.id);
@@ -69,7 +56,7 @@ export const useSignIn = () => {
         console.error('Role mismatch:', { intended: intendedUserType, actual: userRole.role });
         
         // Sign the user out since they tried to access the wrong portal
-        await supabase.auth.signOut();
+        await signOut();
         
         toast({
           variant: "destructive",
@@ -79,34 +66,21 @@ export const useSignIn = () => {
         return;
       }
 
-      // Verify that the profile exists for the respective user type
-      const profileTable = 
-        userRole.role === 'employer' ? 'employer_profiles' :
-        userRole.role === 'candidate' ? 'candidate_profiles' :
-        userRole.role === 'vr' ? 'virtual_recruiter_profiles' : null;
+      // Verify that the profile exists
+      const profile = await fetchUserProfile(data.user.id, userRole.role);
+      
+      if (!profile) {
+        console.warn(`No ${userRole.role} profile found for user ${data.user.id}, redirecting to create profile`);
         
-      if (profileTable) {
-        const { data: profile, error: profileError } = await supabase
-          .from(profileTable)
-          .select('id')
-          .eq('id', data.user.id)
-          .maybeSingle();
-
-        if (profileError) {
-          console.error(`Error fetching ${userRole.role} profile:`, profileError);
-        } else if (!profile) {
-          console.warn(`No ${userRole.role} profile found for user ${data.user.id}, redirecting to create profile`);
-          
-          // Redirect to profile creation based on role
-          navigate(`/${userRole.role}/profile`, { replace: true });
-          
-          toast({
-            title: "Welcome!",
-            description: "Please complete your profile to continue.",
-          });
-          
-          return;
-        }
+        // Redirect to profile creation based on role
+        navigate(`/${userRole.role}/profile`, { replace: true });
+        
+        toast({
+          title: "Welcome!",
+          description: "Please complete your profile to continue.",
+        });
+        
+        return;
       }
 
       // Redirect based on the role from the database
