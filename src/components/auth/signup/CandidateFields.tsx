@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { InfoCircledIcon } from "@radix-ui/react-icons";
+import { Info } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface CandidateFieldsProps {
@@ -21,7 +21,7 @@ export const CandidateFields = ({ linkedinUrl, setLinkedinUrl, referralCode = ""
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <InfoCircledIcon className="h-4 w-4 text-muted-foreground" />
+                <Info className="h-4 w-4 text-muted-foreground" />
               </TooltipTrigger>
               <TooltipContent>
                 <p className="max-w-xs">Adding your LinkedIn profile helps employers verify your experience.</p>
@@ -45,7 +45,7 @@ export const CandidateFields = ({ linkedinUrl, setLinkedinUrl, referralCode = ""
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <InfoCircledIcon className="h-4 w-4 text-muted-foreground" />
+                  <Info className="h-4 w-4 text-muted-foreground" />
                 </TooltipTrigger>
                 <TooltipContent>
                   <p className="max-w-xs">If you were referred by a Virtual Recruiter, please enter their referral code.</p>

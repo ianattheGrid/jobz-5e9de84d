@@ -99,7 +99,7 @@ export const useSignUp = () => {
 
       // Extract referral code if passed in jobTitle parameter (temporary solution)
       let referralCode: string | undefined;
-      let actualJobTitle = jobTitle;
+      let actualJobTitle = jobTitle || '';
       
       if (userType === 'candidate' && typeof jobTitle === 'object' && jobTitle !== null && 'referralCode' in jobTitle) {
         referralCode = (jobTitle as any).referralCode;
