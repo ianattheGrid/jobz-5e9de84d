@@ -5,7 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { fetchRecommendationStatus, RecommendationStatus } from "@/utils/auth/fetchRecommendationStatus";
 import { format } from "date-fns";
-import { AlertTriangle, CheckCircle, Info } from "lucide-react";
+import { AlertTriangle, CheckCircle, Info, UserCheck } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
 
 export function RecommendationCheck() {
   const [email, setEmail] = useState("");
@@ -26,6 +27,15 @@ export function RecommendationCheck() {
     try {
       const recommendationStatus = await fetchRecommendationStatus(email);
       setStatus(recommendationStatus);
+      
+      // Show a toast notification if the candidate is already registered
+      if (recommendationStatus.isRegistered) {
+        toast({
+          title: "Candidate already registered",
+          description: "This candidate has already created an account on the platform.",
+          variant: "default",
+        });
+      }
     } catch (err: any) {
       setError(err.message || "Failed to check recommendation status");
     } finally {
@@ -35,6 +45,23 @@ export function RecommendationCheck() {
 
   const renderStatusMessage = () => {
     if (!status) return null;
+
+    // If the candidate is already registered
+    if (status.isRegistered) {
+      return (
+        <Alert className="bg-blue-50 border-blue-200">
+          <UserCheck className="h-5 w-5 text-blue-600" />
+          <AlertTitle>Candidate already registered</AlertTitle>
+          <AlertDescription>
+            This candidate has already created an account on the platform. 
+            {status.exists && !status.isExpired 
+              ? " They were recommended by " + (status.recommendedBy || "another Virtual Recruiter") + 
+                " on " + (status.recommendationDate ? format(new Date(status.recommendationDate), "PPP") : "an unknown date") + "."
+              : " They have not been recommended yet or their recommendation has expired."}
+          </AlertDescription>
+        </Alert>
+      );
+    }
 
     if (!status.exists) {
       return (
