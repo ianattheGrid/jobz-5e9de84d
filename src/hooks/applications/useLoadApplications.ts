@@ -92,38 +92,45 @@ export const useLoadApplications = () => {
   // Helper function to fetch VR recommendation for a candidate
   const fetchVRRecommendation = async (candidateEmail: string): Promise<VRRecommendation | null> => {
     try {
-      const { data, error } = await supabase
+      // First get recommendation data
+      const { data: recommendationData, error: recommendationError } = await supabase
         .from('candidate_recommendations')
         .select(`
           id, 
           created_at, 
           status,
-          virtual_recruiter_profiles:vr_id (
-            id, 
-            full_name, 
-            vr_number
-          )
+          vr_id
         `)
         .eq('candidate_email', candidateEmail)
         .order('created_at', { ascending: false })
         .limit(1)
         .maybeSingle();
 
-      if (error) {
-        console.error('Error fetching VR recommendation:', error);
+      if (recommendationError || !recommendationData) {
+        console.error('Error fetching recommendation:', recommendationError);
+        return null;
+      }
+
+      // Then fetch VR profile data separately
+      const { data: vrData, error: vrError } = await supabase
+        .from('virtual_recruiter_profiles')
+        .select('id, full_name, vr_number')
+        .eq('id', recommendationData.vr_id)
+        .single();
+
+      if (vrError || !vrData) {
+        console.error('Error fetching VR profile:', vrError);
         return null;
       }
       
-      if (!data) return null;
-      
       return {
-        id: data.id,
-        recommendationDate: data.created_at,
-        status: data.status,
+        id: recommendationData.id,
+        recommendationDate: recommendationData.created_at,
+        status: recommendationData.status,
         vr: {
-          id: data.virtual_recruiter_profiles.id,
-          name: data.virtual_recruiter_profiles.full_name,
-          vrNumber: data.virtual_recruiter_profiles.vr_number
+          id: vrData.id,
+          name: vrData.full_name,
+          vrNumber: vrData.vr_number
         }
       };
     } catch (error) {
