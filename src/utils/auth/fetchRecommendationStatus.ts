@@ -20,9 +20,7 @@ export const fetchRecommendationStatus = async (candidateEmail: string): Promise
       .select(`
         created_at, 
         vr_id,
-        virtual_recruiter_profiles (
-          full_name
-        )
+        virtual_recruiter_profiles!vr_id(full_name)
       `)
       .eq('candidate_email', candidateEmail)
       .order('created_at', { ascending: false })
