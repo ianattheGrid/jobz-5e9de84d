@@ -28,6 +28,7 @@ interface BonusPaymentConfirmationProps {
   candidateCommission: number;
   vrCommission?: number;
   recommendationId?: number;
+  vrId?: string;
   onComplete?: () => void;
 }
 
@@ -38,6 +39,7 @@ export const BonusPaymentConfirmation = ({
   candidateCommission,
   vrCommission,
   recommendationId,
+  vrId,
   onComplete
 }: BonusPaymentConfirmationProps) => {
   const [startDate, setStartDate] = useState<Date | undefined>(undefined);
@@ -74,7 +76,6 @@ export const BonusPaymentConfirmation = ({
     try {
       setIsSubmitting(true);
       
-      // Get current user to confirm employer ID
       const { data: sessionData } = await supabase.auth.getSession();
       if (!sessionData.session) {
         throw new Error("You must be signed in");
@@ -83,7 +84,6 @@ export const BonusPaymentConfirmation = ({
       const employerId = sessionData.session.user.id;
       const paymentDueDate = calculatePaymentDueDate(startDate);
       
-      // Create bonus payment record
       const { error } = await supabase
         .from('bonus_payments')
         .insert({
@@ -91,6 +91,7 @@ export const BonusPaymentConfirmation = ({
           candidate_id: candidateId,
           employer_id: employerId,
           recommendation_id: recommendationId || null,
+          vr_id: vrId || null,
           candidate_commission: candidateCommission,
           vr_commission: vrCommission || null,
           start_date: startDate.toISOString(),
@@ -101,19 +102,31 @@ export const BonusPaymentConfirmation = ({
 
       if (error) throw error;
       
-      // Update application status to 'hired'
       await supabase
         .from('applications')
         .update({ status: 'hired' })
         .eq('job_id', jobId)
         .eq('applicant_id', candidateId);
       
-      // If this came from a VR recommendation, update its status
       if (recommendationId) {
         await supabase
           .from('candidate_recommendations')
           .update({ status: 'hired' })
           .eq('id', recommendationId);
+      } else if (vrId && !recommendationId) {
+        try {
+          await supabase
+            .from('candidate_recommendations')
+            .insert({
+              vr_id: vrId,
+              candidate_email: candidateEmail,
+              job_id: jobId,
+              status: 'hired',
+              recommendation_type: 'general'
+            });
+        } catch (recError) {
+          console.error('Error creating recommendation record:', recError);
+        }
       }
       
       toast({

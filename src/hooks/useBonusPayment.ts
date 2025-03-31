@@ -10,6 +10,7 @@ interface BonusPaymentData {
   candidateCommission: number;
   vrCommission?: number;
   recommendationId?: number;
+  vrId?: string;
   status: string;
   startDate?: Date;
   paymentDueDate?: Date;
@@ -61,7 +62,7 @@ export const useBonusPayment = (applicationId: number) => {
         // Check if there's a VR recommendation for this candidate
         const { data: recommendationData, error: recommendationError } = await supabase
           .from('candidate_recommendations')
-          .select('id')
+          .select('id, vr_id')
           .eq('candidate_email', candidateData.email)
           .eq('job_id', applicationData.job_id)
           .maybeSingle();
@@ -69,6 +70,36 @@ export const useBonusPayment = (applicationId: number) => {
         if (recommendationError) {
           console.error('Error fetching recommendation:', recommendationError);
           // Continue without recommendation data
+        }
+        
+        // If no job-specific recommendation found, check for a general recommendation
+        let vrData = recommendationData ? 
+          { recommendationId: recommendationData.id, vrId: recommendationData.vr_id } : 
+          null;
+          
+        if (!vrData) {
+          const { data: generalRec } = await supabase
+            .from('candidate_recommendations')
+            .select('id, vr_id')
+            .eq('candidate_email', candidateData.email)
+            .is('job_id', null)
+            .maybeSingle();
+            
+          if (generalRec) {
+            vrData = { recommendationId: generalRec.id, vrId: generalRec.vr_id };
+          } else {
+            // Check vr_referrals as a last resort
+            const { data: referral } = await supabase
+              .from('vr_referrals')
+              .select('vr_id')
+              .eq('candidate_email', candidateData.email)
+              .eq('status', 'completed')
+              .maybeSingle();
+              
+            if (referral) {
+              vrData = { vrId: referral.vr_id, recommendationId: undefined };
+            }
+          }
         }
         
         // Check if a bonus payment record already exists
@@ -91,7 +122,7 @@ export const useBonusPayment = (applicationId: number) => {
         
         // We're not using commission_percentage since it might not exist in the table
         // If there's a recommendation, we'll use a default split of 70/30
-        if (recommendationData) {
+        if (vrData) {
           // If there's a VR, split the commission (70% candidate, 30% VR by default)
           vrCommission = totalCommission * 0.3;
           candidateCommission = totalCommission - vrCommission;
@@ -103,7 +134,8 @@ export const useBonusPayment = (applicationId: number) => {
           candidateEmail: candidateData.email,
           candidateCommission: candidateCommission,
           vrCommission: vrCommission > 0 ? vrCommission : undefined,
-          recommendationId: recommendationData ? recommendationData.id : undefined,
+          recommendationId: vrData?.recommendationId,
+          vrId: vrData?.vrId,
           status: existingPayment ? existingPayment.payment_status : 'not_started',
           startDate: existingPayment?.start_date ? new Date(existingPayment.start_date) : undefined,
           paymentDueDate: existingPayment?.payment_due_date ? new Date(existingPayment.payment_due_date) : undefined

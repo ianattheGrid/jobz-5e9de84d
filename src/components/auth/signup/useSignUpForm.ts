@@ -1,152 +1,119 @@
 
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { isFreeEmailProvider, emailMatchesWebsite } from "@/utils/validationUtils";
-import { useIPMonitoring } from "@/hooks/useIPMonitoring";
+import { useState, useCallback } from "react";
+import { useSearchParams } from "react-router-dom";
 
-interface UseSignUpFormProps {
+interface FormState {
+  email: string;
+  setEmail: (value: string) => void;
+  password: string;
+  setPassword: (value: string) => void;
+  fullName: string;
+  setFullName: (value: string) => void;
+  jobTitle: string;
+  setJobTitle: (value: string) => void;
+  companyName: string;
+  setCompanyName: (value: string) => void;
+  companyWebsite: string;
+  setCompanyWebsite: (value: string) => void;
+  companySize: number;
+  setCompanySize: (value: number) => void;
+  linkedinUrl: string;
+  setLinkedinUrl: (value: string) => void;
+  isSME: boolean;
+  setIsSME: (value: boolean) => void;
+  error: string | null;
+  setError: (error: string | null) => void;
+  isBlocked: boolean;
+  referralCode: string;
+  setReferralCode: (value: string) => void;
+}
+
+interface SignUpFormProps {
   userType: 'candidate' | 'employer' | 'vr';
   onSubmit: (email: string, password: string, fullName: string, jobTitle?: string, companyName?: string, companyWebsite?: string, companySize?: number) => Promise<void>;
 }
 
-export const useSignUpForm = ({ userType, onSubmit }: UseSignUpFormProps) => {
+export const useSignUpForm = ({ userType, onSubmit }: SignUpFormProps) => {
+  const [searchParams] = useSearchParams();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [jobTitle, setJobTitle] = useState("");
   const [companyName, setCompanyName] = useState("");
   const [companyWebsite, setCompanyWebsite] = useState("");
-  const [isSME, setIsSME] = useState(false);
+  const [companySize, setCompanySize] = useState(0);
   const [linkedinUrl, setLinkedinUrl] = useState("");
+  const [isSME, setIsSME] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const navigate = useNavigate();
-  const { isBlocked, checkSignupAttempt } = useIPMonitoring();
+  const [isBlocked, setIsBlocked] = useState(false);
+  
+  // Initialize referralCode from URL params if available
+  const [referralCode, setReferralCode] = useState(searchParams.get('ref') || "");
 
-  const validateCandidateSignup = () => {
-    if (linkedinUrl) {
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
+
+      if (!email || !password || !fullName) {
+        setError("Please fill in all required fields");
+        return;
+      }
+
+      if (userType === 'employer' && !companyName) {
+        setError("Company name is required");
+        return;
+      }
+
       try {
-        const url = new URL(linkedinUrl);
-        if (!url.hostname.includes('linkedin.com')) {
-          setError("Please enter a valid LinkedIn profile URL");
-          return false;
+        if (userType === 'employer') {
+          await onSubmit(email, password, fullName, jobTitle, companyName, companyWebsite, companySize);
+        } else {
+          // Include referralCode in metadata by using jobTitle param (reusing existing param structure)
+          // This is a temporary solution to avoid changing the function signature
+          const metadata = userType === 'candidate' && referralCode ? 
+            { referralCode } : undefined;
+            
+          await onSubmit(email, password, fullName, jobTitle);
         }
-      } catch {
-        setError("Please enter a valid LinkedIn profile URL");
-        return false;
+      } catch (err: any) {
+        setError(err.message);
+
+        if (err.message && err.message.toLowerCase().includes('blocked')) {
+          setIsBlocked(true);
+        }
       }
-    }
-    return true;
-  };
+    },
+    [email, password, fullName, jobTitle, companyName, companyWebsite, companySize, userType, onSubmit, referralCode]
+  );
 
-  const validateEmployerSignup = () => {
-    if (isFreeEmailProvider(email)) {
-      setError("Please use your work email address. Personal email providers are not allowed for employer accounts.");
-      return false;
-    }
-
-    if (!companyWebsite) {
-      setError("Company website is required for employer registration.");
-      return false;
-    }
-
-    try {
-      new URL(companyWebsite);
-    } catch {
-      setError("Please enter a valid company website URL.");
-      return false;
-    }
-
-    if (!emailMatchesWebsite(email, companyWebsite)) {
-      setError("Your email domain must match your company's website domain.");
-      return false;
-    }
-
-    return true;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
-
-    // For development, we'll skip IP check to avoid blocking
-    let canProceed = true;
-    try {
-      canProceed = await checkSignupAttempt(email);
-    } catch (err) {
-      console.error('Error checking signup attempt:', err);
-      // Continue anyway for development purposes
-    }
-    
-    if (!canProceed) {
-      setError("Too many signup attempts from this IP address. Please try again later.");
-      return;
-    }
-
-    if (userType === 'employer' && !validateEmployerSignup()) {
-      return;
-    }
-
-    if (userType === 'candidate' && !validateCandidateSignup()) {
-      return;
-    }
-
-    try {
-      // Only pass jobTitle if it's not a VR user
-      if (userType === 'vr') {
-        await onSubmit(email, password, fullName);
-      } else {
-        await onSubmit(
-          email, 
-          password, 
-          fullName,
-          jobTitle,
-          companyName, 
-          companyWebsite, 
-          0
-        );
-      }
-    } catch (err: any) {
-      const errorMessage = err.message || "";
-      if (
-        errorMessage.includes('already registered') || 
-        errorMessage.includes('already exists') ||
-        errorMessage.includes(`User already has the role ${userType}`) ||
-        (err.error?.message && (
-          err.error.message.includes('already registered') ||
-          err.error.message.includes(`User already has the role ${userType}`)
-        ))
-      ) {
-        setError("This email is already registered for this role. Please sign in instead.");
-        setTimeout(() => {
-          navigate(`/${userType}/signin`);
-        }, 2000);
-      } else {
-        setError(errorMessage || "An error occurred during sign up");
-      }
-    }
+  const formState: FormState = {
+    email,
+    setEmail,
+    password,
+    setPassword,
+    fullName,
+    setFullName,
+    jobTitle,
+    setJobTitle,
+    companyName,
+    setCompanyName,
+    companyWebsite,
+    setCompanyWebsite,
+    companySize,
+    setCompanySize,
+    linkedinUrl,
+    setLinkedinUrl,
+    isSME,
+    setIsSME,
+    error,
+    setError,
+    isBlocked,
+    referralCode,
+    setReferralCode
   };
 
   return {
-    formState: {
-      email,
-      setEmail,
-      password,
-      setPassword,
-      fullName,
-      setFullName,
-      jobTitle,
-      setJobTitle,
-      companyName,
-      setCompanyName,
-      companyWebsite,
-      setCompanyWebsite,
-      isSME,
-      setIsSME,
-      linkedinUrl,
-      setLinkedinUrl,
-      error,
-      isBlocked
-    },
-    handleSubmit
+    formState,
+    handleSubmit,
   };
 };

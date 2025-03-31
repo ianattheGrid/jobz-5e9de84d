@@ -97,6 +97,15 @@ export const useSignUp = () => {
       setLoading(true);
       console.log(`Starting sign up for ${email} as ${userType}`);
 
+      // Extract referral code if passed in jobTitle parameter (temporary solution)
+      let referralCode: string | undefined;
+      let actualJobTitle = jobTitle;
+      
+      if (userType === 'candidate' && typeof jobTitle === 'object' && jobTitle !== null && 'referralCode' in jobTitle) {
+        referralCode = (jobTitle as any).referralCode;
+        actualJobTitle = '';
+      }
+
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
@@ -104,6 +113,7 @@ export const useSignUp = () => {
           data: {
             user_type: userType,
             full_name: fullName,
+            referral_code: referralCode,
           },
         },
       });
@@ -140,6 +150,24 @@ export const useSignUp = () => {
           await createEmployerProfile(data.user.id, companyName, fullName, companyWebsite, companySize);
         } else if (userType === 'candidate') {
           await createCandidateProfile(data.user.id, fullName, email);
+          
+          // If there's a referral code, manually link it to the user
+          if (referralCode) {
+            console.log(`Referral code provided: ${referralCode}. Updating vr_referrals...`);
+            const { error: refError } = await supabase
+              .from('vr_referrals')
+              .update({
+                status: 'completed',
+                signed_up_at: new Date().toISOString(),
+                candidate_id: data.user.id
+              })
+              .eq('referral_code', referralCode)
+              .eq('candidate_email', email);
+              
+            if (refError) {
+              console.error('Error updating referral:', refError);
+            }
+          }
         } else if (userType === 'vr') {
           await createVRProfile(data.user.id, fullName, email);
         }

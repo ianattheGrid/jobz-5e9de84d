@@ -1,11 +1,12 @@
 
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { EmployerFields } from "./signup/EmployerFields";
 import { CandidateFields } from "./signup/CandidateFields";
 import { SignUpError } from "./signup/SignUpError";
 import { CommonFields } from "./signup/CommonFields";
 import { useSignUpForm } from "./signup/useSignUpForm";
+import { useEffect } from "react";
 
 interface SignUpFormProps {
   onSubmit: (email: string, password: string, fullName: string, jobTitle?: string, companyName?: string, companyWebsite?: string, companySize?: number) => Promise<void>;
@@ -23,6 +24,15 @@ export const SignUpForm = ({
   hideJobTitle = false 
 }: SignUpFormProps) => {
   const { formState, handleSubmit } = useSignUpForm({ userType, onSubmit });
+  const [searchParams] = useSearchParams();
+  
+  // Auto-fill referral code from URL params
+  useEffect(() => {
+    const refCode = searchParams.get('ref');
+    if (refCode && userType === 'candidate') {
+      formState.setReferralCode(refCode);
+    }
+  }, [searchParams, userType]);
 
   const getSignInLink = () => {
     switch(userType) {
@@ -66,10 +76,14 @@ export const SignUpForm = ({
       )}
 
       {userType === 'candidate' && (
-        <CandidateFields
-          linkedinUrl={formState.linkedinUrl}
-          setLinkedinUrl={formState.setLinkedinUrl}
-        />
+        <>
+          <CandidateFields
+            linkedinUrl={formState.linkedinUrl}
+            setLinkedinUrl={formState.setLinkedinUrl}
+            referralCode={formState.referralCode}
+            setReferralCode={formState.setReferralCode}
+          />
+        </>
       )}
 
       <Button className="w-full bg-[#FF69B4] hover:bg-[#FF50A8] text-white" type="submit" disabled={loading}>
