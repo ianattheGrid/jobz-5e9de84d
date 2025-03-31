@@ -5,11 +5,12 @@ import { ArrowLeft } from "lucide-react";
 import { LoadingState } from "@/components/candidate-search/LoadingState";
 import { useCandidateProfileData } from "@/hooks/useCandidateProfileData";
 import ProfileDetails from "@/components/candidate-profile/ProfileDetails";
+import { VRRecommendationBadge } from "@/components/recommendations/VRRecommendationBadge";
 
 function ViewCandidateProfile() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { profile, loading } = useCandidateProfileData(id);
+  const { profile, loading, vrRecommendation } = useCandidateProfileData(id);
 
   if (loading) {
     return <LoadingState />;
@@ -41,6 +42,8 @@ function ViewCandidateProfile() {
         Back to Search
       </Button>
 
+      {vrRecommendation && <VRRecommendationBadge recommendation={vrRecommendation} className="mb-6" />}
+      
       <ProfileDetails profile={profile} />
     </div>
   );

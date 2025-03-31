@@ -1,8 +1,10 @@
+
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { ApplicationWithDetails } from "@/types/applications";
 import { Database } from "@/integrations/supabase/types";
+import { VRRecommendation } from "@/types/recommendations";
 
 type ApplicationResponse = Database['public']['Tables']['applications']['Row'] & {
   jobs: {
@@ -12,6 +14,7 @@ type ApplicationResponse = Database['public']['Tables']['applications']['Row'] &
   candidate_profiles: {
     job_title: string;
     years_experience: number;
+    email?: string;
   } | null;
 };
 
@@ -34,7 +37,8 @@ export const useLoadApplications = () => {
         ),
         candidate_profiles!applications_applicant_id_fkey (
           job_title,
-          years_experience
+          years_experience,
+          email
         )
       `)
       .eq('jobs.employer_id', session.user.id)
@@ -54,22 +58,78 @@ export const useLoadApplications = () => {
 
     if (!data) return;
 
-    const validApplications = data
-      .filter(app => app.candidate_profiles !== null)
-      .map(app => ({
-        id: app.id,
-        jobs: {
-          title: app.jobs?.title || '',
-          employer_id: app.jobs?.employer_id || ''
-        },
-        candidate_profiles: app.candidate_profiles ? {
-          job_title: app.candidate_profiles.job_title,
-          years_experience: app.candidate_profiles.years_experience
-        } : null
-      }));
+    // Filter out applications without candidate profiles
+    const validApplications = data.filter(app => app.candidate_profiles !== null);
+    
+    // Prepare array for enhanced applications
+    let enhancedApplications: ApplicationWithDetails[] = validApplications.map(app => ({
+      id: app.id,
+      jobs: {
+        title: app.jobs?.title || '',
+        employer_id: app.jobs?.employer_id || ''
+      },
+      candidate_profiles: app.candidate_profiles ? {
+        job_title: app.candidate_profiles.job_title,
+        years_experience: app.candidate_profiles.years_experience
+      } : null
+    }));
+    
+    // Fetch VR recommendations for each candidate
+    for (let i = 0; i < validApplications.length; i++) {
+      const app = validApplications[i];
+      if (app.candidate_profiles?.email) {
+        const recommendation = await fetchVRRecommendation(app.candidate_profiles.email);
+        if (recommendation) {
+          enhancedApplications[i].vrRecommendation = recommendation;
+        }
+      }
+    }
 
-    setApplications(validApplications);
-    setUnreadCount(validApplications.length);
+    setApplications(enhancedApplications);
+    setUnreadCount(enhancedApplications.length);
+  };
+  
+  // Helper function to fetch VR recommendation for a candidate
+  const fetchVRRecommendation = async (candidateEmail: string): Promise<VRRecommendation | null> => {
+    try {
+      const { data, error } = await supabase
+        .from('candidate_recommendations')
+        .select(`
+          id, 
+          created_at, 
+          status,
+          virtual_recruiter_profiles:vr_id (
+            id, 
+            full_name, 
+            vr_number
+          )
+        `)
+        .eq('candidate_email', candidateEmail)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+      if (error) {
+        console.error('Error fetching VR recommendation:', error);
+        return null;
+      }
+      
+      if (!data) return null;
+      
+      return {
+        id: data.id,
+        recommendationDate: data.created_at,
+        status: data.status,
+        vr: {
+          id: data.virtual_recruiter_profiles.id,
+          name: data.virtual_recruiter_profiles.full_name,
+          vrNumber: data.virtual_recruiter_profiles.vr_number
+        }
+      };
+    } catch (error) {
+      console.error('Error in fetchVRRecommendation:', error);
+      return null;
+    }
   };
 
   return { applications, unreadCount, loadApplications };

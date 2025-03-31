@@ -4,10 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { CandidateProfile } from "@/integrations/supabase/types/profiles";
+import { VRRecommendation } from "@/types/recommendations";
 
 export const useCandidateProfileData = (id: string | undefined) => {
   const [profile, setProfile] = useState<CandidateProfile | null>(null);
   const [loading, setLoading] = useState(true);
+  const [vrRecommendation, setVrRecommendation] = useState<VRRecommendation | null>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -80,6 +82,9 @@ export const useCandidateProfileData = (id: string | undefined) => {
             itSpecialization: data.itSpecialization || null
           };
           setProfile(validProfile);
+          
+          // After getting the profile, check for VR recommendation
+          await fetchVRRecommendation(data.email);
         }
       } catch (error: any) {
         toast({
@@ -91,9 +96,49 @@ export const useCandidateProfileData = (id: string | undefined) => {
         setLoading(false);
       }
     };
+    
+    // Helper function to fetch VR recommendation for the candidate
+    const fetchVRRecommendation = async (candidateEmail: string) => {
+      try {
+        const { data, error } = await supabase
+          .from('candidate_recommendations')
+          .select(`
+            id, 
+            created_at, 
+            status,
+            virtual_recruiter_profiles:vr_id (
+              id, 
+              full_name, 
+              vr_number
+            )
+          `)
+          .eq('candidate_email', candidateEmail)
+          .order('created_at', { ascending: false })
+          .limit(1)
+          .maybeSingle();
+
+        if (error) throw error;
+        
+        if (data) {
+          const recommendation: VRRecommendation = {
+            id: data.id,
+            recommendationDate: data.created_at,
+            status: data.status,
+            vr: {
+              id: data.virtual_recruiter_profiles.id,
+              name: data.virtual_recruiter_profiles.full_name,
+              vrNumber: data.virtual_recruiter_profiles.vr_number
+            }
+          };
+          setVrRecommendation(recommendation);
+        }
+      } catch (error) {
+        console.error('Error fetching VR recommendation:', error);
+      }
+    };
 
     fetchProfile();
   }, [id, toast]);
 
-  return { profile, loading };
+  return { profile, loading, vrRecommendation };
 };
