@@ -14,13 +14,20 @@ export type RecommendationStatus = {
  */
 export const fetchRecommendationStatus = async (candidateEmail: string): Promise<RecommendationStatus> => {
   try {
+    // Query to get the most recent recommendation for the candidate
     const { data, error } = await supabase
       .from('candidate_recommendations')
-      .select('created_at, vr_id, virtual_recruiter_profiles(full_name)')
+      .select(`
+        created_at, 
+        vr_id,
+        virtual_recruiter_profiles:vr_id (
+          full_name
+        )
+      `)
       .eq('candidate_email', candidateEmail)
       .order('created_at', { ascending: false })
       .limit(1)
-      .maybeSingle();
+      .single();
 
     if (error) {
       console.error('Error fetching recommendation status:', error);
@@ -43,10 +50,13 @@ export const fetchRecommendationStatus = async (candidateEmail: string): Promise
     const now = new Date();
     const isExpired = now > expirationDate;
 
+    // Safely access the recruiter's name
+    const recruiterName = data.virtual_recruiter_profiles?.full_name || null;
+
     return {
       exists: true,
       isExpired,
-      recommendedBy: data.virtual_recruiter_profiles?.full_name || null,
+      recommendedBy: recruiterName,
       recommendationDate: data.created_at
     };
   } catch (error) {
