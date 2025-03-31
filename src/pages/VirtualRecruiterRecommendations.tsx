@@ -1,11 +1,16 @@
 
 import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { RecommendationForms } from "@/components/recommendations/RecommendationForms";
 import { ChevronLeft } from "lucide-react";
 
 const VirtualRecruiterRecommendations = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  
+  // Extract the type parameter from the URL query string
+  const queryParams = new URLSearchParams(location.search);
+  const recommendationType = queryParams.get('type');
   
   return (
     <div className="container mx-auto py-8">
@@ -19,7 +24,7 @@ const VirtualRecruiterRecommendations = () => {
           Back to Dashboard
         </Button>
       </div>
-      <RecommendationForms />
+      <RecommendationForms defaultTab={recommendationType === 'job' ? 'job-specific' : 'general'} />
     </div>
   );
 };

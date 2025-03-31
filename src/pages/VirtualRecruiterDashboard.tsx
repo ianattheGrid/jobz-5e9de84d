@@ -1,3 +1,4 @@
+
 import { useVRDashboard } from "@/hooks/useVRDashboard";
 import { DashboardLoading } from "@/components/vr/dashboard/DashboardLoading";
 import { DashboardError } from "@/components/vr/dashboard/DashboardError";
@@ -110,7 +111,7 @@ const VirtualRecruiterDashboard = () => {
                     <p className="text-sm text-gray-600 mb-4">Recommend a candidate for a specific job vacancy with the commission rate set by the job posting.</p>
                     <Button 
                       className="w-full bg-[#FF69B4] hover:bg-[#FF50A8] text-white" 
-                      onClick={() => navigate('/vr/recommendations')}
+                      onClick={() => navigate('/vr/recommendations?type=job')}
                     >
                       Recommend for a Job
                     </Button>
@@ -126,7 +127,7 @@ const VirtualRecruiterDashboard = () => {
                     <p className="text-sm text-gray-600 mb-4">Add a candidate to our talent pool. You'll receive 2.5% of first year's salary if hired.</p>
                     <Button 
                       className="w-full bg-[#FF69B4] hover:bg-[#FF50A8] text-white" 
-                      onClick={() => navigate('/vr/recommendations')}
+                      onClick={() => navigate('/vr/recommendations?type=general')}
                     >
                       Add to Talent Pool
                     </Button>

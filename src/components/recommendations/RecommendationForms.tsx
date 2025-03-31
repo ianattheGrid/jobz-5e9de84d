@@ -6,12 +6,16 @@ import { JobSpecificRecommendationForm } from "./forms/JobSpecificRecommendation
 import { RecommendationInfoCard } from "./RecommendationInfoCards";
 import { RecommendationCheck } from "./forms/RecommendationCheck";
 
-export function RecommendationForms() {
+interface RecommendationFormsProps {
+  defaultTab?: 'general' | 'job-specific';
+}
+
+export function RecommendationForms({ defaultTab = 'general' }: RecommendationFormsProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   return (
     <div className="w-full max-w-2xl mx-auto p-6">
-      <Tabs defaultValue="general" className="w-full space-y-6">
+      <Tabs defaultValue={defaultTab} className="w-full space-y-6">
         <div className="text-center mb-6">
           <h2 className="text-2xl font-bold mb-4">Submit a Recommendation</h2>
           <p className="text-gray-600">Choose the type of recommendation you want to submit:</p>
