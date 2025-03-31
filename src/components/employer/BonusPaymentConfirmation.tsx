@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -12,6 +13,11 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from "@/components/ui/alert";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import {
@@ -29,6 +35,7 @@ interface BonusPaymentConfirmationProps {
   vrCommission?: number;
   recommendationId?: number;
   vrId?: string;
+  vrRecommended?: boolean;
   onComplete?: () => void;
 }
 
@@ -40,6 +47,7 @@ export const BonusPaymentConfirmation = ({
   vrCommission,
   recommendationId,
   vrId,
+  vrRecommended = false,
   onComplete
 }: BonusPaymentConfirmationProps) => {
   const [startDate, setStartDate] = useState<Date | undefined>(undefined);
@@ -54,6 +62,9 @@ export const BonusPaymentConfirmation = ({
     return dueDate;
   };
 
+  // Shows VR commission notice when a VR is getting commission that wasn't initially configured
+  const showVrCommissionNotice = vrRecommended && vrCommission && vrCommission > 0;
+  
   const handleSubmit = async () => {
     if (!startDate) {
       toast({
@@ -189,6 +200,17 @@ export const BonusPaymentConfirmation = ({
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
+        {showVrCommissionNotice && (
+          <Alert variant="default" className="bg-amber-50 border-amber-200">
+            <Info className="h-4 w-4 text-amber-600" />
+            <AlertTitle className="text-amber-800">VR Commission Notice</AlertTitle>
+            <AlertDescription className="text-amber-700">
+              This candidate was recommended by a Virtual Recruiter. A standard commission of 
+              £{vrCommission.toLocaleString()} will apply as part of the bonus payment.
+            </AlertDescription>
+          </Alert>
+        )}
+
         <div className="space-y-2">
           <label className="text-sm font-medium">Candidate Start Date</label>
           <Popover>

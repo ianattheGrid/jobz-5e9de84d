@@ -52,6 +52,7 @@ export const BonusPaymentModal = ({
               vrCommission={bonusData.vrCommission}
               recommendationId={bonusData.recommendationId}
               vrId={bonusData.vrId}
+              vrRecommended={bonusData.vrRecommended}
               onComplete={handleComplete}
             />
           )}

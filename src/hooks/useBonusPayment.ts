@@ -14,6 +14,7 @@ interface BonusPaymentData {
   status: string;
   startDate?: Date;
   paymentDueDate?: Date;
+  vrRecommended: boolean;
 }
 
 export const useBonusPayment = (applicationId: number) => {
@@ -43,12 +44,6 @@ export const useBonusPayment = (applicationId: number) => {
           .single();
           
         if (applicationError) throw applicationError;
-        
-        if (!applicationData || !applicationData.jobs.candidate_commission) {
-          // No bonus configured for this job
-          setLoading(false);
-          return;
-        }
         
         // Get candidate email
         const { data: candidateData, error: candidateError } = await supabase
@@ -119,16 +114,40 @@ export const useBonusPayment = (applicationId: number) => {
         }
           
         // Calculate candidate and VR commissions
-        const totalCommission = applicationData.jobs.candidate_commission;
+        const hasJobCommission = applicationData.jobs.candidate_commission !== null && 
+                                applicationData.jobs.candidate_commission > 0;
+        
+        // Default values
+        let totalCommission = hasJobCommission ? applicationData.jobs.candidate_commission : 0;
         let candidateCommission = totalCommission;
         let vrCommission = 0;
         
-        if (vrData) {
-          // If there's a VR, split the commission (70% candidate, 30% VR by default)
-          // For job-specific recommendations, the job's commission rate applies
-          // For general recommendations or referrals, a standard 30% goes to the VR
-          vrCommission = totalCommission * 0.3; // Standard 30% split
-          candidateCommission = totalCommission - vrCommission;
+        // If VR recommendation exists but job doesn't have commission specified
+        // Apply the minimum 2.5% of salary rule for VR
+        if (vrData && !hasJobCommission) {
+          // Get job details to calculate default commission based on salary
+          const { data: jobData } = await supabase
+            .from('jobs')
+            .select('salary_min, salary_max')
+            .eq('id', applicationData.job_id)
+            .single();
+            
+          if (jobData) {
+            // Calculate average salary to estimate commission (2.5% of avg salary)
+            const avgSalary = (jobData.salary_min + jobData.salary_max) / 2;
+            const defaultCommission = Math.round(avgSalary * 0.025); // 2.5% default VR commission
+            
+            // Set values
+            totalCommission = defaultCommission;
+            vrCommission = defaultCommission;
+            candidateCommission = 0; // No candidate commission in this case
+          }
+        } 
+        // If there's both a VR recommendation and job has commission configured
+        else if (vrData && hasJobCommission) {
+          // Standard 70/30 split for now
+          vrCommission = totalCommission * 0.3; // 30% to VR
+          candidateCommission = totalCommission - vrCommission; // 70% to candidate
         }
         
         setBonusData({
@@ -141,7 +160,8 @@ export const useBonusPayment = (applicationId: number) => {
           vrId: vrData?.vrId,
           status: existingPayment ? existingPayment.payment_status : 'not_started',
           startDate: existingPayment?.start_date ? new Date(existingPayment.start_date) : undefined,
-          paymentDueDate: existingPayment?.payment_due_date ? new Date(existingPayment.payment_due_date) : undefined
+          paymentDueDate: existingPayment?.payment_due_date ? new Date(existingPayment.payment_due_date) : undefined,
+          vrRecommended: vrData !== null
         });
       } catch (error: any) {
         console.error('Error fetching bonus data:', error);
