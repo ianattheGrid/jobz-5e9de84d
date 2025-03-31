@@ -2,7 +2,6 @@
 import { Button } from "@/components/ui/button";
 import { ApplicationWithDetails } from "@/types/applications";
 import { UserCheck } from "lucide-react";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface ApplicationCardProps {
   application: ApplicationWithDetails;
@@ -18,19 +17,10 @@ const ApplicationCard = ({ application, onAccept, onReject }: ApplicationCardPro
           {application.jobs.title}
         </p>
         {application.vrRecommendation && (
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div className="flex items-center text-xs text-pink-600 font-medium">
-                  <UserCheck className="h-3.5 w-3.5 mr-1" />
-                  <span>VR Recommended</span>
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Recommended by {application.vrRecommendation.vr.name} ({application.vrRecommendation.vr.vrNumber})</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <div className="flex items-center text-xs text-pink-600 font-medium">
+            <UserCheck className="h-3.5 w-3.5 mr-1" />
+            <span>VR Recommended</span>
+          </div>
         )}
       </div>
       <p className="text-sm text-muted-foreground">

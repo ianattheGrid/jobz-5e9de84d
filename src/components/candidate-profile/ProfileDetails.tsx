@@ -1,13 +1,13 @@
-
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Briefcase, MapPin, User, GraduationCap, Calendar, LinkedinIcon } from "lucide-react";
+import { Briefcase, MapPin, User, GraduationCap, Calendar, LinkedinIcon, UserCheck } from "lucide-react";
 import type { CandidateProfile } from "@/integrations/supabase/types/profiles";
 import LocationSection from "./sections/LocationSection";
 import ExperienceSection from "./sections/ExperienceSection";
 import QualificationsSection from "./sections/QualificationsSection";
 import SkillsSection from "./sections/SkillsSection";
+import { useCandidateProfileData } from "@/hooks/useCandidateProfileData";
 
 interface ProfileDetailsProps {
   profile: CandidateProfile;
@@ -25,6 +25,9 @@ const ProfileDetails = ({ profile }: ProfileDetailsProps) => {
       .substring(0, 2);
   };
 
+  // Get VR recommendation status from the hook
+  const { vrRecommendation } = useCandidateProfileData(profile.id);
+
   return (
     <div className="space-y-6">
       {/* Profile Header */}
@@ -40,7 +43,15 @@ const ProfileDetails = ({ profile }: ProfileDetailsProps) => {
             </Avatar>
             
             <div className="pt-2 sm:pb-4 flex-1 mt-4">
-              <h1 className="text-2xl font-bold text-gray-900">{profile.full_name || "Anonymous Candidate"}</h1>
+              <div className="flex items-center gap-2">
+                <h1 className="text-2xl font-bold text-gray-900">{profile.full_name || "Anonymous Candidate"}</h1>
+                {vrRecommendation && (
+                  <Badge variant="secondary" className="bg-pink-100 text-pink-800 flex items-center gap-1">
+                    <UserCheck className="h-3 w-3" />
+                    VR Recommended
+                  </Badge>
+                )}
+              </div>
               <h2 className="text-xl text-gray-700">{profile.job_title || "Job Title Not Specified"}</h2>
               <div className="flex items-center text-gray-600 gap-2 mt-1">
                 <MapPin className="h-4 w-4" />
