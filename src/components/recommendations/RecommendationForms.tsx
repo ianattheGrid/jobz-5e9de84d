@@ -8,36 +8,46 @@ import { RecommendationCheck } from "./forms/RecommendationCheck";
 
 interface RecommendationFormsProps {
   defaultTab?: 'general' | 'job-specific';
+  hideTabSelection?: boolean;
 }
 
-export function RecommendationForms({ defaultTab = 'general' }: RecommendationFormsProps) {
+export function RecommendationForms({ defaultTab = 'general', hideTabSelection = false }: RecommendationFormsProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [activeTab, setActiveTab] = useState<'general' | 'job-specific'>(defaultTab);
 
   return (
     <div className="w-full max-w-2xl mx-auto p-6">
-      <Tabs defaultValue={defaultTab} className="w-full space-y-6">
+      <Tabs 
+        value={activeTab} 
+        onValueChange={(value) => setActiveTab(value as 'general' | 'job-specific')}
+        className="w-full space-y-6"
+      >
         <div className="text-center mb-6">
           <h2 className="text-2xl font-bold mb-4">Submit a Recommendation</h2>
-          <p className="text-gray-600">Choose the type of recommendation you want to submit:</p>
+          {!hideTabSelection && (
+            <p className="text-gray-600">Choose the type of recommendation you want to submit:</p>
+          )}
         </div>
         
         {/* Add the RecommendationCheck component at the top */}
         <RecommendationCheck />
         
-        <TabsList className="grid w-full grid-cols-2 mb-6">
-          <TabsTrigger 
-            value="general" 
-            className="data-[state=active]:bg-[#ea384c] data-[state=active]:text-white"
-          >
-            General Recommendation
-          </TabsTrigger>
-          <TabsTrigger 
-            value="job-specific"
-            className="data-[state=active]:bg-[#ea384c] data-[state=active]:text-white"
-          >
-            Job-Specific Recommendation
-          </TabsTrigger>
-        </TabsList>
+        {!hideTabSelection && (
+          <TabsList className="grid w-full grid-cols-2 mb-6">
+            <TabsTrigger 
+              value="general" 
+              className="data-[state=active]:bg-[#ea384c] data-[state=active]:text-white"
+            >
+              General Recommendation
+            </TabsTrigger>
+            <TabsTrigger 
+              value="job-specific"
+              className="data-[state=active]:bg-[#ea384c] data-[state=active]:text-white"
+            >
+              Job-Specific Recommendation
+            </TabsTrigger>
+          </TabsList>
+        )}
 
         <TabsContent value="general">
           <RecommendationInfoCard 

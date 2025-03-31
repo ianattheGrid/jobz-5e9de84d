@@ -24,7 +24,10 @@ const VirtualRecruiterRecommendations = () => {
           Back to Dashboard
         </Button>
       </div>
-      <RecommendationForms defaultTab={recommendationType === 'job' ? 'job-specific' : 'general'} />
+      <RecommendationForms 
+        defaultTab={recommendationType === 'job' ? 'job-specific' : 'general'} 
+        hideTabSelection={!!recommendationType} // Hide tab selection if a type is specified
+      />
     </div>
   );
 };
