@@ -59,45 +59,49 @@ export const useBonusPayment = (applicationId: number) => {
           
         if (candidateError) throw candidateError;
         
-        // Check if there's a VR recommendation for this candidate
-        const { data: recommendationData, error: recommendationError } = await supabase
+        // First check for job-specific recommendation
+        const { data: jobSpecificRec, error: jobSpecificError } = await supabase
           .from('candidate_recommendations')
           .select('id, vr_id')
           .eq('candidate_email', candidateData.email)
           .eq('job_id', applicationData.job_id)
           .maybeSingle();
         
-        if (recommendationError) {
-          console.error('Error fetching recommendation:', recommendationError);
-          // Continue without recommendation data
+        if (jobSpecificError) {
+          console.error('Error fetching job-specific recommendation:', jobSpecificError);
         }
         
-        // If no job-specific recommendation found, check for a general recommendation
-        let vrData = recommendationData ? 
-          { recommendationId: recommendationData.id, vrId: recommendationData.vr_id } : 
+        let vrData = jobSpecificRec ? 
+          { recommendationId: jobSpecificRec.id, vrId: jobSpecificRec.vr_id } : 
           null;
           
+        // If no job-specific recommendation, find the first/earliest recommendation for this candidate
         if (!vrData) {
-          const { data: generalRec } = await supabase
+          const { data: earliestRec } = await supabase
             .from('candidate_recommendations')
             .select('id, vr_id')
             .eq('candidate_email', candidateData.email)
-            .is('job_id', null)
+            .order('created_at', { ascending: true })
+            .limit(1)
             .maybeSingle();
             
-          if (generalRec) {
-            vrData = { recommendationId: generalRec.id, vrId: generalRec.vr_id };
+          if (earliestRec) {
+            vrData = { recommendationId: earliestRec.id, vrId: earliestRec.vr_id };
+            console.log('Found earliest recommendation:', vrData);
           } else {
-            // Check vr_referrals as a last resort
+            // As last resort, check vr_referrals
             const { data: referral } = await supabase
               .from('vr_referrals')
               .select('vr_id')
               .eq('candidate_email', candidateData.email)
               .eq('status', 'completed')
+              .order('created_at', { ascending: true })
+              .limit(1)
               .maybeSingle();
               
             if (referral) {
               vrData = { vrId: referral.vr_id, recommendationId: undefined };
+              console.log('Found referral:', vrData);
             }
           }
         }
@@ -112,7 +116,6 @@ export const useBonusPayment = (applicationId: number) => {
         
         if (paymentError) {
           console.error('Error fetching existing payment:', paymentError);
-          // Continue without payment data
         }
           
         // Calculate candidate and VR commissions
@@ -120,11 +123,11 @@ export const useBonusPayment = (applicationId: number) => {
         let candidateCommission = totalCommission;
         let vrCommission = 0;
         
-        // We're not using commission_percentage since it might not exist in the table
-        // If there's a recommendation, we'll use a default split of 70/30
         if (vrData) {
           // If there's a VR, split the commission (70% candidate, 30% VR by default)
-          vrCommission = totalCommission * 0.3;
+          // For job-specific recommendations, the job's commission rate applies
+          // For general recommendations or referrals, a standard 30% goes to the VR
+          vrCommission = totalCommission * 0.3; // Standard 30% split
           candidateCommission = totalCommission - vrCommission;
         }
         
