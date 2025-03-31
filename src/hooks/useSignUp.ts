@@ -3,80 +3,14 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-
-const createEmployerProfile = async (userId: string, companyName: string, fullName: string, companyWebsite: string, companySize: number) => {
-  const { error } = await supabase
-    .from('employer_profiles')
-    .insert({
-      id: userId,
-      company_name: companyName,
-      full_name: fullName,
-      company_website: companyWebsite,
-      company_size: companySize,
-      is_sme: true,
-      job_title: 'Not specified'
-    });
-
-  if (error) throw error;
-};
-
-const createCandidateProfile = async (userId: string, fullName: string, email: string) => {
-  const { error } = await supabase
-    .from('candidate_profiles')
-    .insert({
-      id: userId,
-      full_name: fullName,
-      email: email,
-      job_title: 'Not specified',
-      min_salary: 0,
-      max_salary: 0,
-      years_experience: 0
-    });
-
-  if (error) throw error;
-};
-
-const createVRProfile = async (userId: string, fullName: string, email: string) => {
-  try {
-    // Direct SQL query with the function call to bypass type checking issues
-    const { data, error } = await supabase.functions.invoke('create-vr-profile', {
-      body: {
-        userId,
-        fullName,
-        email
-      }
-    });
-    
-    if (error) {
-      console.error('Error creating VR profile:', error);
-      throw error;
-    }
-    
-    return data;
-  } catch (err) {
-    console.error('Exception creating VR profile:', err);
-    throw err;
-  }
-};
-
-const createUserRole = async (userId: string, role: string) => {
-  try {
-    const { error } = await supabase
-      .from('user_roles')
-      .insert({
-        user_id: userId,
-        role: role
-      });
-
-    if (error) {
-      console.error('Error creating user role:', error);
-      throw error;
-    }
-  } catch (err) {
-    console.error('Exception creating user role:', err);
-    throw err;
-  }
-};
+import { 
+  createEmployerProfile, 
+  createCandidateProfile, 
+  createVRProfile, 
+  createUserRole 
+} from "@/utils/profile-creation";
+import { processReferralCode } from "@/utils/referral/processReferralCode";
+import { signUpWithEmail } from "@/utils/auth/signUpWithEmail";
 
 export const useSignUp = () => {
   const [loading, setLoading] = useState(false);
@@ -88,7 +22,7 @@ export const useSignUp = () => {
     password: string, 
     userType: string, 
     fullName: string,
-    jobTitle: string = '',
+    jobTitle: string | Record<string, any> = '',
     companyName: string = '', 
     companyWebsite: string = '',
     companySize: number = 0
@@ -99,23 +33,20 @@ export const useSignUp = () => {
 
       // Extract referral code if passed in jobTitle parameter (temporary solution)
       let referralCode: string | undefined;
-      let actualJobTitle = jobTitle || '';
+      let actualJobTitle = '';
       
       if (userType === 'candidate' && typeof jobTitle === 'object' && jobTitle !== null && 'referralCode' in jobTitle) {
         referralCode = (jobTitle as any).referralCode;
-        actualJobTitle = '';
+      } else if (jobTitle && typeof jobTitle === 'string') {
+        actualJobTitle = jobTitle;
       }
 
-      const { data, error } = await supabase.auth.signUp({
+      const { data, error } = await signUpWithEmail({
         email,
         password,
-        options: {
-          data: {
-            user_type: userType,
-            full_name: fullName,
-            referral_code: referralCode,
-          },
-        },
+        userType,
+        fullName,
+        referralCode
       });
 
       if (error) {
@@ -140,33 +71,20 @@ export const useSignUp = () => {
 
       console.log(`User created successfully. Creating user role...`);
       
-      // Create user role first
+      // Create user role first, then create profile
       try {
         await createUserRole(data.user.id, userType);
         console.log(`User role created. Creating ${userType} profile...`);
         
-        // Then create profile based on user type
+        // Create profile based on user type
         if (userType === 'employer') {
           await createEmployerProfile(data.user.id, companyName, fullName, companyWebsite, companySize);
         } else if (userType === 'candidate') {
           await createCandidateProfile(data.user.id, fullName, email);
           
-          // If there's a referral code, manually link it to the user
+          // If there's a referral code, process it
           if (referralCode) {
-            console.log(`Referral code provided: ${referralCode}. Updating vr_referrals...`);
-            const { error: refError } = await supabase
-              .from('vr_referrals')
-              .update({
-                status: 'completed',
-                signed_up_at: new Date().toISOString(),
-                candidate_id: data.user.id
-              })
-              .eq('referral_code', referralCode)
-              .eq('candidate_email', email);
-              
-            if (refError) {
-              console.error('Error updating referral:', refError);
-            }
+            await processReferralCode(referralCode, data.user.id, email);
           }
         } else if (userType === 'vr') {
           await createVRProfile(data.user.id, fullName, email);
@@ -174,12 +92,8 @@ export const useSignUp = () => {
         
         console.log(`${userType} profile created. Attempting to sign in...`);
         
-        const { error: signInError } = await supabase.auth.signInWithPassword({
-          email,
-          password
-        });
-
-        if (signInError) throw signInError;
+        // Auto sign in after successful account creation
+        await signInNewUser(email, password);
 
         toast({
           title: "Success!",
@@ -188,24 +102,7 @@ export const useSignUp = () => {
         
         navigate(`/${userType}/dashboard`);
       } catch (setupError: any) {
-        console.error('Setup error:', setupError);
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description: "Account created but setup failed. Please contact support or try signing in.",
-        });
-        
-        // Try to sign in anyway since the account was created
-        try {
-          await supabase.auth.signInWithPassword({
-            email,
-            password
-          });
-          navigate(`/${userType}/dashboard`);
-        } catch (signInErr) {
-          console.error('Failed to sign in after setup error:', signInErr);
-          navigate(`/${userType}/signin`);
-        }
+        handleSetupError(setupError, email, password, userType);
       }
     } catch (error: any) {
       console.error('Sign up error:', error);
@@ -216,6 +113,36 @@ export const useSignUp = () => {
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const signInNewUser = async (email: string, password: string) => {
+    const { error: signInError } = await supabase.auth.signInWithPassword({
+      email,
+      password
+    });
+
+    if (signInError) throw signInError;
+  };
+
+  const handleSetupError = async (setupError: any, email: string, password: string, userType: string) => {
+    console.error('Setup error:', setupError);
+    toast({
+      variant: "destructive",
+      title: "Error",
+      description: "Account created but setup failed. Please contact support or try signing in.",
+    });
+    
+    // Try to sign in anyway since the account was created
+    try {
+      await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
+      navigate(`/${userType}/dashboard`);
+    } catch (signInErr) {
+      console.error('Failed to sign in after setup error:', signInErr);
+      navigate(`/${userType}/signin`);
     }
   };
 
