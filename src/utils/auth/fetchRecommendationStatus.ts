@@ -20,14 +20,14 @@ export const fetchRecommendationStatus = async (candidateEmail: string): Promise
       .select(`
         created_at, 
         vr_id,
-        virtual_recruiter_profiles:vr_id (
+        virtual_recruiter_profiles (
           full_name
         )
       `)
       .eq('candidate_email', candidateEmail)
       .order('created_at', { ascending: false })
       .limit(1)
-      .single();
+      .maybeSingle();
 
     if (error) {
       console.error('Error fetching recommendation status:', error);
