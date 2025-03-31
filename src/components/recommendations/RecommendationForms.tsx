@@ -4,6 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { GeneralRecommendationForm } from "./forms/GeneralRecommendationForm";
 import { JobSpecificRecommendationForm } from "./forms/JobSpecificRecommendationForm";
 import { RecommendationInfoCard } from "./RecommendationInfoCards";
+import { RecommendationCheck } from "./forms/RecommendationCheck";
 
 export function RecommendationForms() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -15,6 +16,9 @@ export function RecommendationForms() {
           <h2 className="text-2xl font-bold mb-4">Submit a Recommendation</h2>
           <p className="text-gray-600">Choose the type of recommendation you want to submit:</p>
         </div>
+        
+        {/* Add the RecommendationCheck component at the top */}
+        <RecommendationCheck />
         
         <TabsList className="grid w-full grid-cols-2 mb-6">
           <TabsTrigger 
@@ -35,7 +39,7 @@ export function RecommendationForms() {
           <RecommendationInfoCard 
             title="About General Recommendations"
             description="Use this form to recommend a candidate for our talent pool. You will receive a commission 
-            of 2.5% of the candidate's first year salary if they are hired by any employer."
+            of 2.5% of the candidate's first year salary if they are hired by any employer within 6 months of your recommendation."
           />
           <GeneralRecommendationForm 
             isSubmitting={isSubmitting} 
@@ -47,7 +51,7 @@ export function RecommendationForms() {
           <RecommendationInfoCard 
             title="About Job-Specific Recommendations"
             description="Recommend a candidate for a specific job vacancy. Commission rates are set by the job 
-            posting and will be displayed when you select a job."
+            posting and will be displayed when you select a job. Recommendations are valid for 6 months."
           />
           <JobSpecificRecommendationForm 
             isSubmitting={isSubmitting} 

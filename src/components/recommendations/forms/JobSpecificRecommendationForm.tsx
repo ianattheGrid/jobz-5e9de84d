@@ -11,6 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { recommendationFormSchema } from "../recommendationFormSchema";
+import { fetchRecommendationStatus } from "@/utils/auth/fetchRecommendationStatus";
 
 interface Job {
   id: number;
@@ -89,6 +90,17 @@ export function JobSpecificRecommendationForm({
         toast({
           title: "Authentication required",
           description: "Please sign in to submit recommendations",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Check if candidate is already recommended and recommendation is valid
+      const status = await fetchRecommendationStatus(data.candidate_email);
+      if (status.exists && !status.isExpired) {
+        toast({
+          title: "Already Recommended",
+          description: `This candidate was already recommended by ${status.recommendedBy || "another Virtual Recruiter"}. Recommendations are valid for 6 months.`,
           variant: "destructive",
         });
         return;

@@ -1,4 +1,3 @@
-
 import { useVRDashboard } from "@/hooks/useVRDashboard";
 import { DashboardLoading } from "@/components/vr/dashboard/DashboardLoading";
 import { DashboardError } from "@/components/vr/dashboard/DashboardError";
@@ -12,6 +11,7 @@ import { Users, UserPlus, BarChart3, FileText, Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { CandidateUpdates } from "@/components/vr/CandidateUpdates";
+import { RecommendationExpiryCard } from "@/components/vr/dashboard/RecommendationExpiryCard";
 
 const VirtualRecruiterDashboard = () => {
   const { loading, error, profile, stats } = useVRDashboard();
@@ -43,6 +43,8 @@ const VirtualRecruiterDashboard = () => {
         {!profile.is_active && <InactiveAccountWarning />}
         
         <DashboardMenu />
+        
+        <RecommendationExpiryCard />
         
         <div className="grid gap-6 md:grid-cols-3">
           <Card>
