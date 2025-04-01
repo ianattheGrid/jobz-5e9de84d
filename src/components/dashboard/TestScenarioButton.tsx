@@ -34,7 +34,7 @@ export const TestScenarioButton = () => {
     } catch (error: any) {
       toast({
         title: "Error",
-        description: error.message,
+        description: error.message || "Failed to create test scenario",
         variant: "destructive",
       });
     } finally {

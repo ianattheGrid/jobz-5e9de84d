@@ -3,10 +3,25 @@ import { supabase } from "@/integrations/supabase/client";
 
 export const setupTestScenario = async () => {
   try {
+    // Generate unique email addresses with timestamps to avoid collisions
+    const timestamp = new Date().getTime();
+    const employerEmail = `test.employer${timestamp}@example.com`;
+    const candidateEmail = `test.candidate${timestamp}@example.com`;
+    const vrCandidateEmail = `vr.candidate${timestamp}@example.com`;
+    const vrEmail = `test.vr${timestamp}@example.com`;
+    const password = 'testpass123';
+    
+    console.log("Creating test accounts with unique emails:", {
+      employer: employerEmail,
+      candidate: candidateEmail,
+      vrCandidate: vrCandidateEmail,
+      vr: vrEmail
+    });
+
     // 1. Create test employer account with comprehensive profile
     const { data: employerData, error: employerError } = await supabase.auth.signUp({
-      email: 'test.employer@example.com',
-      password: 'testpass123',
+      email: employerEmail,
+      password: password,
       options: {
         data: {
           user_type: 'employer',
@@ -38,8 +53,8 @@ export const setupTestScenario = async () => {
 
     // 2. Create test direct candidate account
     const { data: candidateData, error: candidateError } = await supabase.auth.signUp({
-      email: 'test.candidate@example.com',
-      password: 'testpass123',
+      email: candidateEmail,
+      password: password,
       options: {
         data: {
           user_type: 'candidate',
@@ -59,7 +74,7 @@ export const setupTestScenario = async () => {
     // Create candidate profile
     await supabase.from('candidate_profiles').insert({
       id: candidateData.user?.id,
-      email: 'test.candidate@example.com',
+      email: candidateEmail,
       full_name: 'Direct Applicant',
       job_title: 'Frontend Developer',
       years_experience: 5,
@@ -73,8 +88,8 @@ export const setupTestScenario = async () => {
 
     // 3. Create test VR candidate account (to be recommended by VR)
     const { data: vrCandidateData, error: vrCandidateError } = await supabase.auth.signUp({
-      email: 'vr.candidate@example.com',
-      password: 'testpass123',
+      email: vrCandidateEmail,
+      password: password,
       options: {
         data: {
           user_type: 'candidate',
@@ -94,7 +109,7 @@ export const setupTestScenario = async () => {
     // Create VR candidate profile
     await supabase.from('candidate_profiles').insert({
       id: vrCandidateData.user?.id,
-      email: 'vr.candidate@example.com',
+      email: vrCandidateEmail,
       full_name: 'VR Recommended Candidate',
       job_title: 'Frontend Developer',
       years_experience: 6,
@@ -108,8 +123,8 @@ export const setupTestScenario = async () => {
     
     // 4. Create a Virtual Recruiter account
     const { data: vrData, error: vrError } = await supabase.auth.signUp({
-      email: 'test.vr@example.com',
-      password: 'testpass123',
+      email: vrEmail,
+      password: password,
       options: {
         data: {
           user_type: 'vr',
@@ -131,7 +146,7 @@ export const setupTestScenario = async () => {
       id: vrData.user?.id,
       vr_number: 'VR-12345',
       full_name: 'Test Recruiter',
-      email: 'test.vr@example.com',
+      email: vrEmail,
       location: 'Bristol',
       is_active: true
     });
@@ -170,7 +185,7 @@ export const setupTestScenario = async () => {
     // 7. Create VR recommendation for VR candidate
     const { data: recommendationData, error: recommendationError } = await supabase.from('candidate_recommendations').insert({
       vr_id: vrData.user?.id,
-      candidate_email: 'vr.candidate@example.com',
+      candidate_email: vrCandidateEmail,
       job_id: jobData?.id,
       status: 'pending',
       recommendation_type: 'job_specific',
@@ -215,19 +230,19 @@ export const setupTestScenario = async () => {
     });
 
     console.log('Test scenario created successfully with the following accounts:');
-    console.log('Employer: test.employer@example.com / testpass123');
-    console.log('Direct Candidate: test.candidate@example.com / testpass123');
-    console.log('VR Candidate: vr.candidate@example.com / testpass123');
-    console.log('VR: test.vr@example.com / testpass123');
+    console.log('Employer:', employerEmail, '/ password:', password);
+    console.log('Direct Candidate:', candidateEmail, '/ password:', password);
+    console.log('VR Candidate:', vrCandidateEmail, '/ password:', password);
+    console.log('VR:', vrEmail, '/ password:', password);
     console.log('Job ID:', jobData?.id);
     console.log('Recommendation ID:', recommendationData?.id);
 
     return {
-      employerEmail: 'test.employer@example.com',
-      candidateEmail: 'test.candidate@example.com',
-      vrCandidateEmail: 'vr.candidate@example.com',
-      vrEmail: 'test.vr@example.com',
-      password: 'testpass123',
+      employerEmail,
+      candidateEmail,
+      vrCandidateEmail,
+      vrEmail,
+      password,
       jobId: jobData?.id,
       recommendationId: recommendationData?.id
     };
