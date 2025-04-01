@@ -15,7 +15,7 @@ export const TestScenarioButton = () => {
       const credentials = await setupTestScenario();
       
       toast({
-        title: "Test Scenario Created",
+        title: "Enhanced Test Scenario Created",
         description: (
           <div className="mt-2 space-y-2 text-sm">
             <p className="font-bold">Test accounts created with password: {credentials.password}</p>
@@ -25,11 +25,17 @@ export const TestScenarioButton = () => {
               <p><strong>VR Recommended Candidate:</strong> {credentials.vrCandidateEmail}</p>
               <p><strong>Virtual Recruiter:</strong> {credentials.vrEmail}</p>
             </div>
-            <p>A job posting, application, and recommendation have been created.</p>
-            <p>Interview slots have been scheduled for both candidates.</p>
+            <p>Complete workflow scenario created with:</p>
+            <ul className="list-disc pl-5">
+              <li>Job posting with 6% commission (£2,400)</li>
+              <li>Direct application and VR recommendation</li>
+              <li>Interview slots that were rejected, rescheduled, and accepted</li>
+              <li>Job offer to VR candidate</li>
+              <li>Commission setup (60% VR / 40% candidate)</li>
+            </ul>
           </div>
         ),
-        duration: 20000,
+        duration: 30000,
       });
     } catch (error: any) {
       console.error("Test scenario creation error:", error);
@@ -51,7 +57,7 @@ export const TestScenarioButton = () => {
     >
       {isLoading ? (
         <>
-          <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Creating Test Scenario...
+          <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Creating Enhanced Test Scenario...
         </>
       ) : (
         "Create Test Scenario"
