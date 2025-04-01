@@ -8,6 +8,7 @@ import { validateMessage } from "./messages/MessageValidation";
 import { Button } from "@/components/ui/button";
 import { AlertCircle, CheckCircle, Eye } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { RecruiterMessage, IdentityReveal } from "@/integrations/supabase/types";
 
 interface Message {
   id: number;
@@ -75,9 +76,10 @@ const ApplicationMessages = ({ applicationId, currentUserId }: ApplicationMessag
 
     setApplication(data);
     
-    // Check if identities have been revealed
+    // Check if identities have been revealed by querying our identity_reveals table
+    // Use type casting to inform TypeScript this is a valid table operation
     const { data: revealData } = await supabase
-      .from('identity_reveals')
+      .from('identity_reveals' as any)
       .select('*')
       .eq('application_id', applicationId)
       .maybeSingle();
@@ -142,9 +144,9 @@ const ApplicationMessages = ({ applicationId, currentUserId }: ApplicationMessag
 
   const handleRevealIdentity = async () => {
     try {
-      // Insert a record for identity reveal
+      // Insert a record for identity reveal using type casting to work around TypeScript limitations
       const { error } = await supabase
-        .from('identity_reveals')
+        .from('identity_reveals' as any)
         .insert({
           application_id: applicationId,
           revealed_by: currentUserId,
