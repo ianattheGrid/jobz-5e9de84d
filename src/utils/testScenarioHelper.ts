@@ -1,5 +1,7 @@
 
 import { supabase } from "@/integrations/supabase/client";
+import { createVRProfile } from "@/utils/profile-creation/createVRProfile";
+import { Json } from "@/integrations/supabase/types";
 
 export const setupTestScenario = async () => {
   try {
@@ -169,14 +171,12 @@ export const setupTestScenario = async () => {
       role: 'vr'
     });
 
-    // Create VR profile
-    await supabase.from('virtual_recruiter_profiles').insert({
-      id: vrData.user.id,
-      full_name: 'Test Recruiter',
-      email: vrEmail,
-      location: 'Bristol',
-      is_active: true
-    });
+    // Use the createVRProfile function to create the VR profile with proper vr_number generation
+    const vrProfileResult = await createVRProfile(vrData.user.id, 'Test Recruiter', vrEmail);
+    if (!vrProfileResult) {
+      console.error("Error creating VR profile");
+      throw new Error("Failed to create VR profile");
+    }
 
     // 5. Create a test job with £40,000 salary and 6% commission (60% VR, 40% candidate)
     const { data: jobData, error: jobError } = await supabase.from('jobs').insert({
