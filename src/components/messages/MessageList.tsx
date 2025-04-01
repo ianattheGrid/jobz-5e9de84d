@@ -13,10 +13,9 @@ interface Message {
 interface MessageListProps {
   messages: Message[];
   currentUserId: string;
-  identityRevealed?: boolean;
 }
 
-const MessageList = ({ messages, currentUserId, identityRevealed = false }: MessageListProps) => {
+const MessageList = ({ messages, currentUserId }: MessageListProps) => {
   return (
     <div className="h-96 overflow-y-auto space-y-4 p-4 border rounded-lg">
       {messages.length === 0 && (
