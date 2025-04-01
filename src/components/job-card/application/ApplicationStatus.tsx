@@ -60,6 +60,12 @@ const ApplicationStatus = ({ status, onAccept, onChat }: ApplicationStatusProps)
         <p className="text-sm">
           Great news! The employer has accepted your application and would like to proceed with the interview process.
         </p>
+        <div className="p-4 bg-blue-50 rounded-md border border-blue-200">
+          <p className="text-sm text-blue-700">
+            <strong>Privacy Note:</strong> Accepting will enable a chat where you can discuss next steps. 
+            Full details about the employer will be revealed only after initial communication.
+          </p>
+        </div>
         <Button 
           onClick={handleAccept}
           className="w-full bg-green-600 hover:bg-green-700"
