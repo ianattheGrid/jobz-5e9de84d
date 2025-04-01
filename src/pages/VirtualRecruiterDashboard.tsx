@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { CandidateUpdates } from "@/components/vr/CandidateUpdates";
 import { RecommendationExpiryCard } from "@/components/vr/dashboard/RecommendationExpiryCard";
+import { SessionTimeoutHandler } from "@/components/auth/SessionTimeoutHandler";
 
 const VirtualRecruiterDashboard = () => {
   const { loading, error, profile, stats } = useVRDashboard();
@@ -40,6 +41,9 @@ const VirtualRecruiterDashboard = () => {
 
   return (
     <div className="container mx-auto py-8">
+      {/* Add the session timeout handler */}
+      <SessionTimeoutHandler />
+      
       <div className="space-y-8">
         {!profile.is_active && <InactiveAccountWarning />}
         

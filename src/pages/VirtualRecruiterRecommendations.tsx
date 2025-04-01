@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useNavigate, useLocation } from "react-router-dom";
 import { RecommendationForms } from "@/components/recommendations/RecommendationForms";
 import { ChevronLeft } from "lucide-react";
+import { SessionTimeoutHandler } from "@/components/auth/SessionTimeoutHandler";
 
 const VirtualRecruiterRecommendations = () => {
   const navigate = useNavigate();
@@ -14,6 +15,9 @@ const VirtualRecruiterRecommendations = () => {
   
   return (
     <div className="container mx-auto py-8">
+      {/* Add the session timeout handler */}
+      <SessionTimeoutHandler />
+      
       <div className="mb-6">
         <Button 
           variant="outline" 
