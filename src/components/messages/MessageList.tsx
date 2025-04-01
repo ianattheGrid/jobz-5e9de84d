@@ -1,21 +1,14 @@
 
+import React from "react";
 import { AlertTriangle } from "lucide-react";
-
-interface Message {
-  id: number;
-  message_text: string;
-  created_at: string;
-  is_flagged: boolean;
-  sender_id: string;
-  is_system_message?: boolean;
-}
+import { RecruiterMessage } from "@/integrations/supabase/types/messages";
 
 interface MessageListProps {
-  messages: Message[];
+  messages: RecruiterMessage[];
   currentUserId: string;
 }
 
-const MessageList = ({ messages, currentUserId }: MessageListProps) => {
+const MessageList: React.FC<MessageListProps> = ({ messages, currentUserId }) => {
   return (
     <div className="h-96 overflow-y-auto space-y-4 p-4 border rounded-lg">
       {messages.length === 0 && (

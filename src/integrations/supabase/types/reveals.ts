@@ -1,5 +1,5 @@
 
-// This is now just a placeholder interface since we're simplifying the workflow
+// This is just a placeholder interface since we've simplified the workflow
 export interface IdentityReveal {
   id: number;
   application_id: number;
