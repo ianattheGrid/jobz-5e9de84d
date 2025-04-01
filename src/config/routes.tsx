@@ -1,3 +1,4 @@
+
 import { Navigate } from "react-router-dom";
 import Index from "@/pages/Index";
 import Jobs from "@/pages/Jobs";
@@ -18,6 +19,7 @@ import VirtualRecruiterSignUp from "@/pages/VirtualRecruiterSignUp";
 import VirtualRecruiterSignIn from "@/pages/VirtualRecruiterSignIn";
 import VirtualRecruiterDashboard from "@/pages/VirtualRecruiterDashboard";
 import VirtualRecruiterRecommendations from "@/pages/VirtualRecruiterRecommendations";
+import VirtualRecruiterProfile from "@/pages/VirtualRecruiterProfile";
 import CandidateSearch from "@/pages/CandidateSearch";
 import ViewCandidateProfile from "@/pages/ViewCandidateProfile";
 import ViewEmployerProfile from "@/pages/ViewEmployerProfile";
@@ -138,6 +140,10 @@ export const routes = [
   {
     path: "/vr/recommendations",
     element: <VirtualRecruiterRecommendations />
+  },
+  {
+    path: "/vr/profile",
+    element: <VirtualRecruiterProfile />
   },
   {
     path: "*",

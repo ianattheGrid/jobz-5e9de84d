@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
 import './App.css';
@@ -30,6 +31,7 @@ import VirtualRecruiterSignIn from './pages/VirtualRecruiterSignIn';
 import VirtualRecruiterSignUp from './pages/VirtualRecruiterSignUp';
 import VirtualRecruiterDashboard from './pages/VirtualRecruiterDashboard';
 import VirtualRecruiterRecommendations from './pages/VirtualRecruiterRecommendations';
+import VirtualRecruiterProfile from './pages/VirtualRecruiterProfile';
 
 // Common routes
 import Jobs from './pages/Jobs';
@@ -39,6 +41,7 @@ import CandidateSearch from './pages/CandidateSearch';
 
 // Protected route wrapper
 import { ProtectedRoute } from './components/auth/ProtectedRoute';
+import { ProtectedRouteWithTimeout } from './components/auth/ProtectedRouteWithTimeout';
 
 // Test only
 import DummyCandidateProfile from './pages/DummyCandidateProfile';
@@ -53,32 +56,33 @@ const App = () => {
           {/* Candidate routes */}
           <Route path="candidate/signin" element={<CandidateSignIn />} />
           <Route path="candidate/signup" element={<CandidateSignUp />} />
-          <Route path="candidate/dashboard" element={<ProtectedRoute userType="candidate"><CandidateDashboard /></ProtectedRoute>} />
-          <Route path="candidate/profile" element={<ProtectedRoute userType="candidate"><CandidateProfile /></ProtectedRoute>} />
-          <Route path="candidate/profile/preview" element={<ProtectedRoute userType="candidate"><PreviewCandidateProfile /></ProtectedRoute>} />
-          <Route path="candidate/applications" element={<ProtectedRoute userType="candidate"><CandidateApplications /></ProtectedRoute>} />
-          <Route path="candidate/interviews" element={<ProtectedRoute userType="candidate"><CandidateInterviews /></ProtectedRoute>} />
-          <Route path="candidate/account" element={<ProtectedRoute userType="candidate"><CandidateAccountSettings /></ProtectedRoute>} />
-          <Route path="candidate/settings" element={<ProtectedRoute userType="candidate"><CandidateAccountSettings /></ProtectedRoute>} />
+          <Route path="candidate/dashboard" element={<ProtectedRouteWithTimeout userType="candidate"><CandidateDashboard /></ProtectedRouteWithTimeout>} />
+          <Route path="candidate/profile" element={<ProtectedRouteWithTimeout userType="candidate"><CandidateProfile /></ProtectedRouteWithTimeout>} />
+          <Route path="candidate/profile/preview" element={<ProtectedRouteWithTimeout userType="candidate"><PreviewCandidateProfile /></ProtectedRouteWithTimeout>} />
+          <Route path="candidate/applications" element={<ProtectedRouteWithTimeout userType="candidate"><CandidateApplications /></ProtectedRouteWithTimeout>} />
+          <Route path="candidate/interviews" element={<ProtectedRouteWithTimeout userType="candidate"><CandidateInterviews /></ProtectedRouteWithTimeout>} />
+          <Route path="candidate/account" element={<ProtectedRouteWithTimeout userType="candidate"><CandidateAccountSettings /></ProtectedRouteWithTimeout>} />
+          <Route path="candidate/settings" element={<ProtectedRouteWithTimeout userType="candidate"><CandidateAccountSettings /></ProtectedRouteWithTimeout>} />
           
           {/* Employer routes */}
           <Route path="employer/signin" element={<EmployerSignIn />} />
           <Route path="employer/signup" element={<EmployerSignUp />} />
-          <Route path="employer/dashboard" element={<ProtectedRoute userType="employer"><EmployerDashboard /></ProtectedRoute>} />
-          <Route path="employer/create-vacancy" element={<ProtectedRoute userType="employer"><CreateVacancy /></ProtectedRoute>} />
-          <Route path="employer/manage-jobs" element={<ProtectedRoute userType="employer"><ManageJobs /></ProtectedRoute>} />
-          <Route path="employer/profile" element={<ProtectedRoute userType="employer"><EmployerProfile /></ProtectedRoute>} />
-          <Route path="employer/profile/preview" element={<ProtectedRoute userType="employer"><PreviewEmployerProfile /></ProtectedRoute>} />
-          <Route path="employer/interviews" element={<ProtectedRoute userType="employer"><EmployerInterviews /></ProtectedRoute>} />
-          <Route path="employer/candidate/:id" element={<ProtectedRoute userType="employer"><ViewCandidateProfile /></ProtectedRoute>} />
-          <Route path="employer/candidates" element={<ProtectedRoute userType="employer"><CandidateSearch /></ProtectedRoute>} />
-          <Route path="employer/candidate-search" element={<ProtectedRoute userType="employer"><CandidateSearch /></ProtectedRoute>} />
+          <Route path="employer/dashboard" element={<ProtectedRouteWithTimeout userType="employer"><EmployerDashboard /></ProtectedRouteWithTimeout>} />
+          <Route path="employer/create-vacancy" element={<ProtectedRouteWithTimeout userType="employer"><CreateVacancy /></ProtectedRouteWithTimeout>} />
+          <Route path="employer/manage-jobs" element={<ProtectedRouteWithTimeout userType="employer"><ManageJobs /></ProtectedRouteWithTimeout>} />
+          <Route path="employer/profile" element={<ProtectedRouteWithTimeout userType="employer"><EmployerProfile /></ProtectedRouteWithTimeout>} />
+          <Route path="employer/profile/preview" element={<ProtectedRouteWithTimeout userType="employer"><PreviewEmployerProfile /></ProtectedRouteWithTimeout>} />
+          <Route path="employer/interviews" element={<ProtectedRouteWithTimeout userType="employer"><EmployerInterviews /></ProtectedRouteWithTimeout>} />
+          <Route path="employer/candidate/:id" element={<ProtectedRouteWithTimeout userType="employer"><ViewCandidateProfile /></ProtectedRouteWithTimeout>} />
+          <Route path="employer/candidates" element={<ProtectedRouteWithTimeout userType="employer"><CandidateSearch /></ProtectedRouteWithTimeout>} />
+          <Route path="employer/candidate-search" element={<ProtectedRouteWithTimeout userType="employer"><CandidateSearch /></ProtectedRouteWithTimeout>} />
           
           {/* Virtual Recruiter routes */}
           <Route path="vr/signin" element={<VirtualRecruiterSignIn />} />
           <Route path="vr/signup" element={<VirtualRecruiterSignUp />} />
-          <Route path="vr/dashboard" element={<ProtectedRoute userType="vr"><VirtualRecruiterDashboard /></ProtectedRoute>} />
-          <Route path="vr/recommendations" element={<ProtectedRoute userType="vr"><VirtualRecruiterRecommendations /></ProtectedRoute>} />
+          <Route path="vr/dashboard" element={<ProtectedRouteWithTimeout userType="vr"><VirtualRecruiterDashboard /></ProtectedRouteWithTimeout>} />
+          <Route path="vr/recommendations" element={<ProtectedRouteWithTimeout userType="vr"><VirtualRecruiterRecommendations /></ProtectedRouteWithTimeout>} />
+          <Route path="vr/profile" element={<ProtectedRouteWithTimeout userType="vr"><VirtualRecruiterProfile /></ProtectedRouteWithTimeout>} />
           
           {/* Common routes */}
           <Route path="jobs" element={<Jobs />} />
