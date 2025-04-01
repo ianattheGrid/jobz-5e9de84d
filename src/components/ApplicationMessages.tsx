@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -8,7 +7,8 @@ import { validateMessage } from "./messages/MessageValidation";
 import { Button } from "@/components/ui/button";
 import { AlertCircle, CheckCircle, Eye } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { RecruiterMessage, IdentityReveal } from "@/integrations/supabase/types";
+import { RecruiterMessage } from "@/integrations/supabase/types/messages";
+import { IdentityReveal } from "@/integrations/supabase/types/reveals";
 
 interface Message {
   id: number;
@@ -76,8 +76,6 @@ const ApplicationMessages = ({ applicationId, currentUserId }: ApplicationMessag
 
     setApplication(data);
     
-    // Check if identities have been revealed by querying our identity_reveals table
-    // Use type casting to inform TypeScript this is a valid table operation
     const { data: revealData } = await supabase
       .from('identity_reveals' as any)
       .select('*')
@@ -86,9 +84,7 @@ const ApplicationMessages = ({ applicationId, currentUserId }: ApplicationMessag
       
     setIdentityRevealed(!!revealData);
 
-    // Load partner info based on user role
     if (data.applicant_id === currentUserId) {
-      // Current user is the candidate, load employer info
       const { data: employerData, error: employerError } = await supabase
         .from('employer_profiles')
         .select('full_name, company_name')
@@ -99,7 +95,6 @@ const ApplicationMessages = ({ applicationId, currentUserId }: ApplicationMessag
         setPartnerInfo(employerData);
       }
     } else {
-      // Current user is the employer, load candidate info
       setPartnerInfo(data.candidate_profiles);
     }
   };
@@ -144,7 +139,6 @@ const ApplicationMessages = ({ applicationId, currentUserId }: ApplicationMessag
 
   const handleRevealIdentity = async () => {
     try {
-      // Insert a record for identity reveal using type casting to work around TypeScript limitations
       const { error } = await supabase
         .from('identity_reveals' as any)
         .insert({
@@ -158,7 +152,6 @@ const ApplicationMessages = ({ applicationId, currentUserId }: ApplicationMessag
       setIdentityRevealed(true);
       setShowRevealDialog(false);
       
-      // Notify the other party with a system message
       const isEmployer = application?.applicant_id !== currentUserId;
       const revealMessage = isEmployer 
         ? "The employer has revealed their identity. You can now see their complete details."
@@ -229,7 +222,6 @@ const ApplicationMessages = ({ applicationId, currentUserId }: ApplicationMessag
       
       <MessageInput onSendMessage={handleSendMessage} loading={loading} />
       
-      {/* Identity reveal confirmation dialog */}
       <Dialog open={showRevealDialog} onOpenChange={setShowRevealDialog}>
         <DialogContent>
           <DialogHeader>
