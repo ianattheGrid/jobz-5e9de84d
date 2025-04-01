@@ -87,8 +87,8 @@ const ApplicationStatus = ({ status, onAccept, onChat }: ApplicationStatusProps)
         <Button 
           onClick={onChat}
           className="w-full bg-blue-600 hover:bg-blue-700"
-          leftIcon={<MessageSquare className="mr-2 h-4 w-4" />}
         >
+          <MessageSquare className="mr-2 h-4 w-4" />
           Start Chat
         </Button>
       </div>
