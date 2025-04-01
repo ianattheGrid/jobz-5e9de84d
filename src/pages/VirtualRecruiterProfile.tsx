@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useVRProfile } from "@/hooks/useVRProfile";
@@ -61,7 +62,7 @@ export default function VirtualRecruiterProfile() {
       <div className="container mx-auto py-10 px-4">
         <div className="mb-6">
           <Button
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 bg-[#FF69B4] hover:bg-[#FF50A8] text-white"
             onClick={() => navigate("/vr/dashboard")}
           >
             <ChevronLeft className="h-4 w-4" />
