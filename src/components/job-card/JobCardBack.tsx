@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { X } from "lucide-react";
 import { Job } from "@/integrations/supabase/types/jobs";
@@ -9,6 +10,8 @@ import ApplicationControls from "./application/ApplicationControls";
 import { useApplication } from "./hooks/useApplication";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { MatchWarningContent } from "./match/MatchWarningContent";
 
 interface JobCardBackProps {
   job: Job;
@@ -16,69 +19,44 @@ interface JobCardBackProps {
 }
 
 const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
-  const [resumeFile, setResumeFile] = useState<File | null>(null);
-  const [coverLetter, setCoverLetter] = useState("");
-  const [isApplying, setIsApplying] = useState(false);
-  
-  const { application, handleAccept } = useApplication(job);
   const { toast } = useToast();
+  const {
+    isApplying,
+    setIsApplying,
+    coverLetter,
+    setCoverLetter,
+    resumeFile,
+    setResumeFile,
+    handleStartApply,
+    handleSubmitApplication,
+    matchWarningOpen,
+    setMatchWarningOpen,
+    matchWarningInfo,
+    handleProceedWithApplication
+  } = useApplication(job.id, job.employer_id || '');
 
-  const handleSubmitApplication = async (e: React.FormEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    try {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) return;
-
-      let resumeUrl = null;
-
-      if (resumeFile) {
-        const fileExt = resumeFile.name.split('.').pop();
-        const fileName = `${session.user.id}/${Date.now()}.${fileExt}`;
-
-        const { error: uploadError } = await supabase.storage
-          .from('cvs')
-          .upload(fileName, resumeFile);
-
-        if (uploadError) throw uploadError;
-
-        const { data: urlData } = supabase.storage
-          .from('cvs')
-          .getPublicUrl(fileName);
-          
-        resumeUrl = urlData.publicUrl;
-      }
-
-      const { error: applicationError } = await supabase
-        .from('applications')
-        .insert({
-          job_id: job.id,
-          applicant_id: session.user.id,
-          resume_url: resumeUrl,
-          cover_letter: coverLetter,
-          employer_accepted: false,
-          candidate_accepted: false,
-        });
-
-      if (applicationError) throw applicationError;
-
-      toast({
-        title: "Success",
-        description: "Your application has been submitted",
-      });
-
-      setIsApplying(false);
-      setResumeFile(null);
-      setCoverLetter("");
-      onClose();
-    } catch (error: any) {
-      toast({
-        title: "Error",
-        description: error.message || "Failed to submit application",
-        variant: "destructive",
-      });
-    }
+  // Check for existing application
+  const [application, setApplication] = useState<any>(null);
+  
+  // Handle accepting an application
+  const handleAccept = async () => {
+    if (!application) return;
+    
+    const { error } = await supabase
+      .from('applications')
+      .update({ candidate_accepted: true })
+      .eq('id', application.id);
+      
+    if (error) throw error;
+    
+    // Refresh application data
+    const { data } = await supabase
+      .from('applications')
+      .select('*')
+      .eq('id', application.id)
+      .single();
+      
+    setApplication(data);
   };
 
   return (
@@ -122,7 +100,7 @@ const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
                 setResumeFile={setResumeFile}
                 setCoverLetter={setCoverLetter}
                 coverLetter={coverLetter}
-                onStartApply={async () => Promise.resolve()}
+                onStartApply={handleStartApply}
                 isApplying={isApplying}
                 setIsApplying={setIsApplying}
               />
@@ -135,6 +113,19 @@ const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
           )}
         </div>
       </div>
+      
+      {/* Match warning dialog */}
+      <Dialog open={matchWarningOpen} onOpenChange={setMatchWarningOpen}>
+        <DialogContent className="sm:max-w-md">
+          {matchWarningInfo && (
+            <MatchWarningContent 
+              matchWarningInfo={matchWarningInfo} 
+              onCancel={() => setMatchWarningOpen(false)} 
+              onProceed={handleProceedWithApplication} 
+            />
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
