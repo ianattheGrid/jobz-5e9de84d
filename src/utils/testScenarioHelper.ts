@@ -233,8 +233,6 @@ const createVRRecommendation = async (vrId: string, candidateEmail: string, jobI
     candidate_email: candidateEmail,
     job_id: jobId,
     status: 'pending',
-    recommendation_type: 'job_specific',
-    commission_percentage: 60, // 60% of the commission goes to the VR
     notes: 'Strong candidate with excellent React skills'
   }).select().single();
 
@@ -346,7 +344,7 @@ const rescheduleInterviewSlots = async (directSlotId: string, vrSlotId: string) 
   // Get candidate suggested times
   const { data: directSlot, error: directFetchError } = await supabase
     .from('interview_slots')
-    .select('candidate_suggested_times')
+    .select('candidate_suggested_times, job_id, candidate_id, employer_id')
     .eq('id', directSlotId)
     .single();
   
@@ -357,7 +355,7 @@ const rescheduleInterviewSlots = async (directSlotId: string, vrSlotId: string) 
 
   const { data: vrSlot, error: vrFetchError } = await supabase
     .from('interview_slots')
-    .select('candidate_suggested_times')
+    .select('candidate_suggested_times, job_id, candidate_id, employer_id')
     .eq('id', vrSlotId)
     .single();
   
@@ -406,7 +404,7 @@ const acceptInterviewSlots = async (directSlotId: string, vrSlotId: string) => {
   // Get rescheduled times
   const { data: directSlot, error: directFetchError } = await supabase
     .from('interview_slots')
-    .select('proposed_times')
+    .select('proposed_times, job_id, candidate_id, employer_id')
     .eq('id', directSlotId)
     .single();
   
@@ -417,7 +415,7 @@ const acceptInterviewSlots = async (directSlotId: string, vrSlotId: string) => {
 
   const { data: vrSlot, error: vrFetchError } = await supabase
     .from('interview_slots')
-    .select('proposed_times')
+    .select('proposed_times, job_id, candidate_id, employer_id')
     .eq('id', vrSlotId)
     .single();
   
@@ -455,28 +453,34 @@ const acceptInterviewSlots = async (directSlotId: string, vrSlotId: string) => {
   }
 
   // Create actual interview records
-  const { data: interviews, error: interviewError } = await Promise.all([
-    supabase.from('interviews').insert({
-      job_id: directSlot.job_id,
-      candidate_id: directSlot.candidate_id,
-      employer_id: directSlot.employer_id,
-      interviewer_name: 'Jane Smith',
-      scheduled_at: directSlot.proposed_times[0],
-      status: 'scheduled'
-    }),
-    supabase.from('interviews').insert({
-      job_id: vrSlot.job_id,
-      candidate_id: vrSlot.candidate_id,
-      employer_id: vrSlot.employer_id,
-      interviewer_name: 'John Doe',
-      scheduled_at: vrSlot.proposed_times[0],
-      status: 'scheduled'
-    })
-  ]);
+  const directInterviewPromise = supabase.from('interviews').insert({
+    job_id: directSlot.job_id,
+    candidate_id: directSlot.candidate_id,
+    employer_id: directSlot.employer_id,
+    interviewer_name: 'Jane Smith',
+    scheduled_at: directSlot.proposed_times[0],
+    status: 'scheduled'
+  });
+
+  const vrInterviewPromise = supabase.from('interviews').insert({
+    job_id: vrSlot.job_id,
+    candidate_id: vrSlot.candidate_id,
+    employer_id: vrSlot.employer_id,
+    interviewer_name: 'John Doe',
+    scheduled_at: vrSlot.proposed_times[0],
+    status: 'scheduled'
+  });
+
+  const [directResult, vrResult] = await Promise.all([directInterviewPromise, vrInterviewPromise]);
   
-  if (interviewError) {
-    console.error("Error creating interview records:", interviewError);
-    throw interviewError;
+  if (directResult.error) {
+    console.error("Error creating direct interview record:", directResult.error);
+    throw directResult.error;
+  }
+  
+  if (vrResult.error) {
+    console.error("Error creating VR interview record:", vrResult.error);
+    throw vrResult.error;
   }
 };
 
@@ -569,10 +573,10 @@ const acceptJobOfferAndSetupCommission = async (jobId: number, candidateId: stri
     throw jobError;
   }
   
-  // Get recommendation details
+  // Get recommendation details - Note: commission_percentage doesn't exist in the schema
   const { data: recommendation, error: recError } = await supabase
     .from('candidate_recommendations')
-    .select('vr_id, commission_percentage')
+    .select('vr_id')
     .eq('id', recommendationId)
     .single();
   
@@ -581,9 +585,10 @@ const acceptJobOfferAndSetupCommission = async (jobId: number, candidateId: stri
     throw recError;
   }
   
-  // Calculate commissions
+  // Calculate commissions - Using fixed 60% VR commission since the field doesn't exist
   const totalCommission = job.candidate_commission;
-  const vrCommission = Math.round(totalCommission * (recommendation.commission_percentage / 100));
+  const vrCommissionPercentage = 60; // Hard-coded 60% for VR
+  const vrCommission = Math.round(totalCommission * (vrCommissionPercentage / 100));
   const candidateCommission = totalCommission - vrCommission;
   
   // Update application status to accepted
@@ -621,8 +626,7 @@ const acceptJobOfferAndSetupCommission = async (jobId: number, candidateId: stri
     vr_commission: vrCommission,
     start_date: startDate.toISOString(),
     payment_due_date: paymentDueDate.toISOString(),
-    payment_status: 'pending',
-    confirmed_at: new Date().toISOString()
+    payment_status: 'pending'
   });
   
   if (paymentError) {
@@ -630,33 +634,51 @@ const acceptJobOfferAndSetupCommission = async (jobId: number, candidateId: stri
     throw paymentError;
   }
   
-  // Notify all parties
-  await Promise.all([
-    // Notify candidate
-    supabase.from('push_notifications').insert({
-      user_id: candidateId,
-      type: 'bonus_payment',
-      title: 'Bonus Payment Confirmed',
-      message: `Your £${candidateCommission} hiring bonus has been confirmed. Payment is due in 30 days after you start.`,
-      related_entity_id: jobId.toString()
-    }),
-    // Notify VR
-    supabase.from('push_notifications').insert({
-      user_id: recommendation.vr_id,
-      type: 'vr_commission',
-      title: 'Commission Confirmed',
-      message: `Your £${vrCommission} commission has been confirmed for your recommended candidate. Payment is due in 30 days after the candidate starts.`,
-      related_entity_id: recommendationId.toString()
-    }),
-    // Notify employer
-    supabase.from('push_notifications').insert({
-      user_id: job.employer_id,
-      type: 'payment_due',
-      title: 'Bonus Payment Due',
-      message: `A bonus payment of £${totalCommission} will be due 30 days after the candidate's start date.`,
-      related_entity_id: jobId.toString()
-    })
+  // Notify candidate about commission
+  const candidateNotifyPromise = supabase.from('push_notifications').insert({
+    user_id: candidateId,
+    type: 'bonus_payment',
+    title: 'Bonus Payment Confirmed',
+    message: `Your £${candidateCommission} hiring bonus has been confirmed. Payment is due in 30 days after you start.`,
+    related_entity_id: jobId.toString()
+  });
+  
+  // Notify VR about commission
+  const vrNotifyPromise = supabase.from('push_notifications').insert({
+    user_id: recommendation.vr_id,
+    type: 'vr_commission',
+    title: 'Commission Confirmed',
+    message: `Your £${vrCommission} commission has been confirmed for your recommended candidate. Payment is due in 30 days after the candidate starts.`,
+    related_entity_id: recommendationId.toString()
+  });
+  
+  // Notify employer about payment due
+  const employerNotifyPromise = supabase.from('push_notifications').insert({
+    user_id: job.employer_id,
+    type: 'payment_due',
+    title: 'Bonus Payment Due',
+    message: `A bonus payment of £${totalCommission} will be due 30 days after the candidate's start date.`,
+    related_entity_id: jobId.toString()
+  });
+  
+  // Wait for all notifications to be sent
+  const [candidateNotifyResult, vrNotifyResult, employerNotifyResult] = await Promise.all([
+    candidateNotifyPromise, 
+    vrNotifyPromise, 
+    employerNotifyPromise
   ]);
+  
+  if (candidateNotifyResult.error) {
+    console.error("Error notifying candidate:", candidateNotifyResult.error);
+  }
+  
+  if (vrNotifyResult.error) {
+    console.error("Error notifying VR:", vrNotifyResult.error);
+  }
+  
+  if (employerNotifyResult.error) {
+    console.error("Error notifying employer:", employerNotifyResult.error);
+  }
 };
 
 /**
