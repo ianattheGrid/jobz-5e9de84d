@@ -14,6 +14,37 @@ export const useApplication = (jobId: number, employerId: string) => {
   const [resumeFile, setResumeFile] = useState<File | null>(null);
   const [matchWarningOpen, setMatchWarningOpen] = useState(false);
   const [matchWarningInfo, setMatchWarningInfo] = useState<any>(null);
+  const [application, setApplication] = useState<any>(null);
+  const [applicationLoading, setApplicationLoading] = useState(true);
+
+  // Check for existing application when component mounts
+  useEffect(() => {
+    const checkExistingApplication = async () => {
+      if (!user) {
+        setApplicationLoading(false);
+        return;
+      }
+      
+      try {
+        setApplicationLoading(true);
+        const { data: existingApp, error } = await supabase
+          .from('applications')
+          .select('*')
+          .eq('job_id', jobId)
+          .eq('applicant_id', user.id)
+          .maybeSingle();
+          
+        if (error) throw error;
+        setApplication(existingApp);
+      } catch (error) {
+        console.error("Error checking existing application:", error);
+      } finally {
+        setApplicationLoading(false);
+      }
+    };
+    
+    checkExistingApplication();
+  }, [user, jobId]);
 
   const handleMatchWarning = (matchInfo: any) => {
     setMatchWarningInfo(matchInfo);
@@ -23,6 +54,40 @@ export const useApplication = (jobId: number, employerId: string) => {
   const handleProceedWithApplication = () => {
     setMatchWarningOpen(false);
     setIsApplying(true);
+  };
+
+  const handleAccept = async () => {
+    if (!application) return;
+    
+    try {
+      const { error } = await supabase
+        .from('applications')
+        .update({ candidate_accepted: true })
+        .eq('id', application.id);
+        
+      if (error) throw error;
+      
+      // Refresh application data
+      const { data } = await supabase
+        .from('applications')
+        .select('*')
+        .eq('id', application.id)
+        .single();
+        
+      setApplication(data);
+      
+      toast({
+        title: "Application accepted",
+        description: "You've accepted this job match. You can now proceed with the interview process.",
+        variant: "default",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to accept application",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleStartApply = async (e: React.MouseEvent) => {
@@ -107,8 +172,10 @@ export const useApplication = (jobId: number, employerId: string) => {
       // Calculate minimum allowed score with 10% leeway
       const minimumAllowedScore = Math.max(0, job.match_threshold - 10);
       
-      // Check if score is too low (outside the 10% leeway)
+      // Convert score to percentage for display
       const scorePercentage = Math.round(totalScore * 100);
+      
+      // Check if score is too low (outside the 10% leeway)
       const isTooLowScore = scorePercentage < minimumAllowedScore;
       
       // Show warning if essential criteria not met or score is too low
@@ -158,7 +225,7 @@ export const useApplication = (jobId: number, employerId: string) => {
       }
 
       // Insert application
-      const { error } = await supabase.from('applications').insert({
+      const { data, error } = await supabase.from('applications').insert({
         job_id: jobId,
         applicant_id: user.id,
         cover_letter: coverLetter,
@@ -166,13 +233,17 @@ export const useApplication = (jobId: number, employerId: string) => {
         status: 'pending',
         employer_accepted: false,
         candidate_accepted: false,
-      });
+      }).select().single();
 
       if (error) throw error;
 
+      // Set the new application in state
+      setApplication(data);
+      
       toast({
         title: "Application Submitted",
-        description: "Your application has been submitted successfully!",
+        description: "Your application has been submitted successfully! You'll be notified when the employer responds.",
+        variant: "default",
       });
 
       setIsApplying(false);
@@ -200,6 +271,9 @@ export const useApplication = (jobId: number, employerId: string) => {
     matchWarningOpen,
     setMatchWarningOpen,
     matchWarningInfo,
-    handleProceedWithApplication
+    handleProceedWithApplication,
+    application,
+    applicationLoading,
+    handleAccept
   };
 };

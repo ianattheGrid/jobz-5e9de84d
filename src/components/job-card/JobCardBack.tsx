@@ -1,17 +1,15 @@
 
-import { useState } from "react";
 import { X } from "lucide-react";
 import { Job } from "@/integrations/supabase/types/jobs";
 import JobDetails from "./details/JobDetails";
 import CommissionDetails from "./details/CommissionDetails";
 import ApplicationSection from "./application/ApplicationSection";
 import ApplicationStatus from "./application/ApplicationStatus";
-import ApplicationControls from "./application/ApplicationControls";
 import { useApplication } from "./hooks/useApplication";
 import { useToast } from "@/components/ui/use-toast";
-import { supabase } from "@/integrations/supabase/client";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { MatchWarningContent } from "./match/MatchWarningContent";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface JobCardBackProps {
   job: Job;
@@ -32,40 +30,16 @@ const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
     matchWarningOpen,
     setMatchWarningOpen,
     matchWarningInfo,
-    handleProceedWithApplication
+    handleProceedWithApplication,
+    application,
+    applicationLoading,
+    handleAccept
   } = useApplication(job.id, job.employer_id || '');
-
-  // Check for existing application
-  const [application, setApplication] = useState<any>(null);
-  
-  // Handle accepting an application
-  const handleAccept = async () => {
-    if (!application) return;
-    
-    const { error } = await supabase
-      .from('applications')
-      .update({ candidate_accepted: true })
-      .eq('id', application.id);
-      
-    if (error) throw error;
-    
-    // Refresh application data
-    const { data } = await supabase
-      .from('applications')
-      .select('*')
-      .eq('id', application.id)
-      .single();
-      
-    setApplication(data);
-  };
 
   return (
     <div 
       className="h-full p-6 bg-[#2A2A2A] text-foreground overflow-y-auto rounded-lg"
-      onClick={(e) => {
-        e.stopPropagation();
-        onClose();
-      }}
+      onClick={(e) => e.stopPropagation()}
     >
       <div className="relative p-4">
         <button
@@ -85,7 +59,12 @@ const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
         <JobDetails job={job} />
         
         <div className="mt-8">
-          {application ? (
+          {applicationLoading ? (
+            <div className="space-y-2">
+              <Skeleton className="h-8 w-full" />
+              <Skeleton className="h-4 w-3/4" />
+            </div>
+          ) : application ? (
             <ApplicationStatus 
               status={application}
               onAccept={handleAccept}
@@ -105,8 +84,15 @@ const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
                 setIsApplying={setIsApplying}
               />
             ) : (
-              <ApplicationControls 
-                job={job}
+              <ApplicationSection
+                jobId={job.id}
+                employerId={job.employer_id || ''}
+                onSubmit={handleSubmitApplication}
+                setResumeFile={setResumeFile}
+                setCoverLetter={setCoverLetter}
+                coverLetter={coverLetter}
+                onStartApply={handleStartApply}
+                isApplying={isApplying}
                 setIsApplying={setIsApplying}
               />
             )
