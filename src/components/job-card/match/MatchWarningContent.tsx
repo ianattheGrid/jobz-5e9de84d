@@ -21,6 +21,12 @@ export const MatchWarningContent = ({ matchWarningInfo, onCancel, onProceed }: M
   const scorePercentage = Math.round(totalScore * 100);
   const isLowScore = scorePercentage < matchThreshold;
   
+  // Calculate the minimum allowed score (10% leeway)
+  const minimumAllowedScore = Math.max(0, matchThreshold - 10);
+  
+  // Check if score is too low (outside the 10% leeway)
+  const isTooLowScore = scorePercentage < minimumAllowedScore;
+  
   return (
     <>
       <DialogHeader>
@@ -29,6 +35,11 @@ export const MatchWarningContent = ({ matchWarningInfo, onCancel, onProceed }: M
             <>
               <XCircle className="h-6 w-6 text-red-500" />
               Essential Criteria Not Met
+            </>
+          ) : isTooLowScore ? (
+            <>
+              <XCircle className="h-6 w-6 text-red-500" />
+              Match Score Too Low
             </>
           ) : isLowScore ? (
             <>
@@ -45,9 +56,11 @@ export const MatchWarningContent = ({ matchWarningInfo, onCancel, onProceed }: M
         <DialogDescription className="text-base pt-2">
           {isEssentialMismatch ? 
             "Your profile doesn't meet some essential criteria for this role:" :
-            isLowScore ? 
-              `Your match score (${scorePercentage}%) is below the employer's threshold of ${matchThreshold}%.` :
-              "You meet the basic requirements for this role, but there are some areas where your profile doesn't perfectly match:"}
+            isTooLowScore ? 
+              `Your match score (${scorePercentage}%) is significantly below the employer's threshold of ${matchThreshold}%.` :
+              isLowScore ? 
+                `Your match score (${scorePercentage}%) is below the employer's threshold of ${matchThreshold}%, but within the 10% leeway allowed.` :
+                "You meet the basic requirements for this role, but there are some areas where your profile doesn't perfectly match:"}
         </DialogDescription>
       </DialogHeader>
       
@@ -65,7 +78,8 @@ export const MatchWarningContent = ({ matchWarningInfo, onCancel, onProceed }: M
         <div className="flex justify-between items-center">
           <span className="text-sm font-medium">Your Match Score:</span>
           <span className={`text-sm font-bold ${
-            scorePercentage >= matchThreshold ? "text-green-600" : "text-red-600"
+            scorePercentage >= matchThreshold ? "text-green-600" : 
+            scorePercentage >= minimumAllowedScore ? "text-amber-600" : "text-red-600"
           }`}>
             {scorePercentage}%
           </span>
@@ -73,22 +87,27 @@ export const MatchWarningContent = ({ matchWarningInfo, onCancel, onProceed }: M
         <div className="w-full bg-gray-200 rounded-full h-2.5 mt-2">
           <div 
             className={`h-2.5 rounded-full ${
-              scorePercentage >= matchThreshold ? "bg-green-600" : "bg-red-600"
+              scorePercentage >= matchThreshold ? "bg-green-600" : 
+              scorePercentage >= minimumAllowedScore ? "bg-amber-600" : "bg-red-600"
             }`} 
             style={{ width: `${scorePercentage}%` }}
           ></div>
         </div>
         <div className="flex justify-between text-xs text-muted-foreground mt-1">
           <span>0%</span>
-          <span>Employer threshold: {matchThreshold}%</span>
+          <span>Min: {minimumAllowedScore}%</span>
+          <span>Required: {matchThreshold}%</span>
           <span>100%</span>
         </div>
       </div>
       
-      {isEssentialMismatch ? (
+      {isEssentialMismatch || isTooLowScore ? (
         <DialogFooter className="flex-col sm:flex-col gap-2">
           <p className="text-sm text-muted-foreground mb-2">
-            This employer requires all essential criteria to be met. Please update your profile or search for roles that better match your qualifications.
+            {isEssentialMismatch 
+              ? "This employer requires all essential criteria to be met. Please update your profile or search for roles that better match your qualifications."
+              : `Your match score is more than 10% below the required threshold. This employer requires at least ${minimumAllowedScore}% match score to apply.`
+            }
           </p>
           <Button onClick={onCancel} className="w-full">
             Back to Job Search
@@ -101,7 +120,6 @@ export const MatchWarningContent = ({ matchWarningInfo, onCancel, onProceed }: M
           </Button>
           <Button 
             onClick={onProceed}
-            disabled={isEssentialMismatch}
             variant={isLowScore ? "outline" : "default"}
             className={!isLowScore ? "bg-green-600 hover:bg-green-700" : ""}
           >
