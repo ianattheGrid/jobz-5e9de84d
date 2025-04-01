@@ -11,6 +11,7 @@ export const setupTestScenario = async () => {
         data: {
           user_type: 'employer',
           full_name: 'Test Employer',
+          company_name: 'Tech Solutions Ltd'
         }
       }
     });
@@ -35,7 +36,7 @@ export const setupTestScenario = async () => {
       is_sme: true
     });
 
-    // 2. Create test candidate account with matching skills
+    // 2. Create test direct candidate account
     const { data: candidateData, error: candidateError } = await supabase.auth.signUp({
       email: 'test.candidate@example.com',
       password: 'testpass123',
@@ -49,36 +50,63 @@ export const setupTestScenario = async () => {
 
     if (candidateError) throw candidateError;
 
-    // Create user role for candidate
+    // Create user role for direct candidate
     await supabase.from('user_roles').insert({
       user_id: candidateData.user?.id,
       role: 'candidate'
     });
 
-    // Create candidate profile matching job requirements
+    // Create candidate profile
     await supabase.from('candidate_profiles').insert({
       id: candidateData.user?.id,
       email: 'test.candidate@example.com',
-      full_name: 'Test Developer',
-      job_title: 'Senior Frontend Developer',
-      years_experience: 6,
-      min_salary: 65000,
-      max_salary: 85000,
+      full_name: 'Direct Applicant',
+      job_title: 'Frontend Developer',
+      years_experience: 5,
+      min_salary: 35000,
+      max_salary: 45000,
       location: ['Bristol'],
-      required_skills: ['React', 'TypeScript', 'Node.js', 'AWS', 'GraphQL'],
-      additional_skills: 'Jest, CI/CD, Docker',
-      work_eligibility: 'UK citizens only',
-      years_in_current_title: 4,
-      current_employer: 'Previous Tech Corp',
-      desired_job_title: 'Senior Frontend Developer',
-      required_qualifications: ['BSc Computer Science'],
-      availability: 'Immediate',
-      preferred_work_type: 'hybrid',
+      required_skills: ['React', 'JavaScript', 'CSS'],
       workArea: 'IT',
       itSpecialization: 'Frontend Development'
     });
 
-    // 3. Create a Virtual Recruiter account
+    // 3. Create test VR candidate account (to be recommended by VR)
+    const { data: vrCandidateData, error: vrCandidateError } = await supabase.auth.signUp({
+      email: 'vr.candidate@example.com',
+      password: 'testpass123',
+      options: {
+        data: {
+          user_type: 'candidate',
+          full_name: 'VR Recommended Candidate',
+        }
+      }
+    });
+
+    if (vrCandidateError) throw vrCandidateError;
+
+    // Create user role for VR candidate
+    await supabase.from('user_roles').insert({
+      user_id: vrCandidateData.user?.id,
+      role: 'candidate'
+    });
+
+    // Create VR candidate profile
+    await supabase.from('candidate_profiles').insert({
+      id: vrCandidateData.user?.id,
+      email: 'vr.candidate@example.com',
+      full_name: 'VR Recommended Candidate',
+      job_title: 'Frontend Developer',
+      years_experience: 6,
+      min_salary: 38000,
+      max_salary: 45000,
+      location: ['Bristol'],
+      required_skills: ['React', 'TypeScript', 'CSS', 'UI/UX'],
+      workArea: 'IT',
+      itSpecialization: 'Frontend Development'
+    });
+    
+    // 4. Create a Virtual Recruiter account
     const { data: vrData, error: vrError } = await supabase.auth.signUp({
       email: 'test.vr@example.com',
       password: 'testpass123',
@@ -98,68 +126,110 @@ export const setupTestScenario = async () => {
       role: 'vr'
     });
 
-    // Create VR profile - using direct function call with edge function
-    await supabase.functions.invoke('create-vr-profile', {
-      body: { 
-        userId: vrData.user?.id,
-        fullName: 'Test Recruiter',
-        email: 'test.vr@example.com'
-      }
+    // Create VR profile
+    await supabase.from('virtual_recruiter_profiles').insert({
+      id: vrData.user?.id,
+      vr_number: 'VR-12345',
+      full_name: 'Test Recruiter',
+      email: 'test.vr@example.com',
+      location: 'Bristol',
+      is_active: true
     });
 
-    // 4. Create a detailed test job posting that should match well
+    // 5. Create a test job with £40,000 salary and 6% commission (60% VR, 40% candidate)
     const { data: jobData, error: jobError } = await supabase.from('jobs').insert({
       employer_id: employerData.user?.id,
-      title: 'Senior Frontend Developer',
+      title: 'Frontend Developer',
       company: 'Tech Solutions Ltd',
-      description: 'We are seeking an experienced Frontend Developer with strong React and TypeScript skills...',
+      description: 'We are looking for a skilled Frontend Developer with React experience to join our team...',
       location: 'Bristol',
-      salary_min: 60000,
-      salary_max: 90000,
+      salary_min: 38000,
+      salary_max: 42000,
       type: 'Full-time',
-      work_area: 'Frontend Development',
-      specialization: 'Frontend',
-      required_skills: ['React', 'TypeScript', 'Node.js'],
-      required_qualifications: ['BSc'],
+      work_area: 'IT',
+      specialization: 'Frontend Development',
+      required_skills: ['React', 'JavaScript', 'TypeScript', 'CSS'],
       holiday_entitlement: 25,
-      company_benefits: 'Health insurance, Remote working, Learning budget',
-      candidate_commission: 5000,
-      title_essential: true,
-      years_experience_essential: true,
-      min_years_experience: 5,
-      salary_essential: true,
-      skills_essential: true,
-      qualification_essential: false,
-      citizenship_essential: true,
-      required_citizenship: 'UK citizens only',
-      min_years_in_title: 3,
+      company_benefits: 'Health insurance, flexible working, annual bonus',
+      candidate_commission: 2400, // 6% of £40,000 = £2,400
       match_threshold: 70
     }).select().single();
 
     if (jobError) throw jobError;
 
-    // Create a candidate recommendation from VR
-    await supabase.from('candidate_recommendations').insert({
+    // 6. Create direct application from candidate
+    const { error: applicationError } = await supabase.from('applications').insert({
+      job_id: jobData?.id,
+      applicant_id: candidateData.user?.id,
+      status: 'pending',
+      profile_visibility_enabled: true
+    });
+
+    if (applicationError) throw applicationError;
+
+    // 7. Create VR recommendation for VR candidate
+    const { data: recommendationData, error: recommendationError } = await supabase.from('candidate_recommendations').insert({
       vr_id: vrData.user?.id,
-      candidate_email: 'test.candidate@example.com',
+      candidate_email: 'vr.candidate@example.com',
       job_id: jobData?.id,
       status: 'pending',
       recommendation_type: 'job_specific',
-      commission_percentage: 5
+      commission_percentage: 60, // 60% of the commission goes to the VR
+      notes: 'Strong candidate with excellent React skills'
+    }).select().single();
+
+    if (recommendationError) throw recommendationError;
+
+    // 8. Create interview slots for both candidates (will be rejected later)
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    
+    const dayAfterTomorrow = new Date();
+    dayAfterTomorrow.setDate(dayAfterTomorrow.getDate() + 2);
+    
+    const nextWeek = new Date();
+    nextWeek.setDate(nextWeek.getDate() + 7);
+    
+    // For direct candidate
+    await supabase.from('interview_slots').insert({
+      employer_id: employerData.user?.id,
+      candidate_id: candidateData.user?.id,
+      job_id: jobData?.id,
+      proposed_times: [
+        tomorrow.toISOString(),
+        dayAfterTomorrow.toISOString()
+      ],
+      status: 'pending'
+    });
+
+    // For VR recommended candidate
+    await supabase.from('interview_slots').insert({
+      employer_id: employerData.user?.id,
+      candidate_id: vrCandidateData.user?.id,
+      job_id: jobData?.id,
+      proposed_times: [
+        tomorrow.toISOString(),
+        nextWeek.toISOString()
+      ],
+      status: 'pending'
     });
 
     console.log('Test scenario created successfully with the following accounts:');
     console.log('Employer: test.employer@example.com / testpass123');
-    console.log('Candidate: test.candidate@example.com / testpass123');
+    console.log('Direct Candidate: test.candidate@example.com / testpass123');
+    console.log('VR Candidate: vr.candidate@example.com / testpass123');
     console.log('VR: test.vr@example.com / testpass123');
     console.log('Job ID:', jobData?.id);
+    console.log('Recommendation ID:', recommendationData?.id);
 
     return {
       employerEmail: 'test.employer@example.com',
       candidateEmail: 'test.candidate@example.com',
+      vrCandidateEmail: 'vr.candidate@example.com',
       vrEmail: 'test.vr@example.com',
       password: 'testpass123',
-      jobId: jobData?.id
+      jobId: jobData?.id,
+      recommendationId: recommendationData?.id
     };
 
   } catch (error) {
