@@ -1,10 +1,10 @@
-
 import { Json } from "./common";
 import { Job } from "./jobs";
 import { CandidateProfile, EmployerProfile, RecruiterProfile, VirtualRecruiterProfile } from "./profiles";
 import { Application, Interview } from "./applications";
 import { RecruiterMessage, RecruiterNotification, VRCandidateMessage } from "./messages";
 import { CompanyGalleryImage } from "@/types/employer";
+import { IdentityReveal } from "./reveals";
 
 export interface Database {
   public: {
@@ -63,6 +63,11 @@ export interface Database {
         Row: VRCandidateMessage;
         Insert: Partial<VRCandidateMessage>;
         Update: Partial<VRCandidateMessage>;
+      };
+      identity_reveals: {
+        Row: IdentityReveal;
+        Insert: Partial<IdentityReveal>;
+        Update: Partial<IdentityReveal>;
       };
       candidate_recommendations: {
         Row: {
@@ -194,3 +199,4 @@ export type { Job } from "./jobs";
 export type { CandidateProfile, EmployerProfile, RecruiterProfile, VirtualRecruiterProfile } from "./profiles";
 export type { Application, Interview } from "./applications";
 export type { RecruiterMessage, RecruiterNotification, VRCandidateMessage } from "./messages";
+export type { IdentityReveal } from "./reveals";

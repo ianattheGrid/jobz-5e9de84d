@@ -15,6 +15,7 @@ interface Message {
   created_at: string;
   is_flagged: boolean;
   sender_id: string;
+  is_system_message?: boolean;
 }
 
 interface ApplicationMessagesProps {
@@ -144,13 +145,11 @@ const ApplicationMessages = ({ applicationId, currentUserId }: ApplicationMessag
       // Insert a record for identity reveal
       const { error } = await supabase
         .from('identity_reveals')
-        .insert([
-          {
-            application_id: applicationId,
-            revealed_by: currentUserId,
-            revealed_at: new Date().toISOString()
-          }
-        ]);
+        .insert({
+          application_id: applicationId,
+          revealed_by: currentUserId,
+          revealed_at: new Date().toISOString()
+        });
 
       if (error) throw error;
 
@@ -165,14 +164,12 @@ const ApplicationMessages = ({ applicationId, currentUserId }: ApplicationMessag
         
       await supabase
         .from('recruiter_messages')
-        .insert([
-          {
-            application_id: applicationId,
-            sender_id: currentUserId,
-            message_text: revealMessage,
-            is_system_message: true
-          }
-        ]);
+        .insert({
+          application_id: applicationId,
+          sender_id: currentUserId,
+          message_text: revealMessage,
+          is_system_message: true
+        });
       
       loadMessages();
       
