@@ -31,17 +31,24 @@ export const setupTestScenario = async () => {
       }
     });
     
-    if (employerError) throw employerError;
+    if (employerError) {
+      console.error("Error creating employer account:", employerError);
+      throw employerError;
+    }
+    
+    if (!employerData.user?.id) {
+      throw new Error("Failed to create employer account: No user ID returned");
+    }
 
     // Create user role for employer
     await supabase.from('user_roles').insert({
-      user_id: employerData.user?.id,
+      user_id: employerData.user.id,
       role: 'employer'
     });
 
     // Create detailed employer profile
     await supabase.from('employer_profiles').insert({
-      id: employerData.user?.id,
+      id: employerData.user.id,
       company_name: 'Tech Solutions Ltd',
       full_name: 'Test Employer',
       job_title: 'HR Director',
@@ -63,17 +70,24 @@ export const setupTestScenario = async () => {
       }
     });
 
-    if (candidateError) throw candidateError;
+    if (candidateError) {
+      console.error("Error creating candidate account:", candidateError);
+      throw candidateError;
+    }
+    
+    if (!candidateData.user?.id) {
+      throw new Error("Failed to create candidate account: No user ID returned");
+    }
 
     // Create user role for direct candidate
     await supabase.from('user_roles').insert({
-      user_id: candidateData.user?.id,
+      user_id: candidateData.user.id,
       role: 'candidate'
     });
 
     // Create candidate profile
     await supabase.from('candidate_profiles').insert({
-      id: candidateData.user?.id,
+      id: candidateData.user.id,
       email: candidateEmail,
       full_name: 'Direct Applicant',
       job_title: 'Frontend Developer',
@@ -98,17 +112,24 @@ export const setupTestScenario = async () => {
       }
     });
 
-    if (vrCandidateError) throw vrCandidateError;
+    if (vrCandidateError) {
+      console.error("Error creating VR candidate account:", vrCandidateError);
+      throw vrCandidateError;
+    }
+    
+    if (!vrCandidateData.user?.id) {
+      throw new Error("Failed to create VR candidate account: No user ID returned");
+    }
 
     // Create user role for VR candidate
     await supabase.from('user_roles').insert({
-      user_id: vrCandidateData.user?.id,
+      user_id: vrCandidateData.user.id,
       role: 'candidate'
     });
 
     // Create VR candidate profile
     await supabase.from('candidate_profiles').insert({
-      id: vrCandidateData.user?.id,
+      id: vrCandidateData.user.id,
       email: vrCandidateEmail,
       full_name: 'VR Recommended Candidate',
       job_title: 'Frontend Developer',
@@ -133,18 +154,24 @@ export const setupTestScenario = async () => {
       }
     });
 
-    if (vrError) throw vrError;
+    if (vrError) {
+      console.error("Error creating VR account:", vrError);
+      throw vrError;
+    }
+    
+    if (!vrData.user?.id) {
+      throw new Error("Failed to create VR account: No user ID returned");
+    }
 
     // Create user role for VR
     await supabase.from('user_roles').insert({
-      user_id: vrData.user?.id,
+      user_id: vrData.user.id,
       role: 'vr'
     });
 
     // Create VR profile
     await supabase.from('virtual_recruiter_profiles').insert({
-      id: vrData.user?.id,
-      vr_number: 'VR-12345',
+      id: vrData.user.id,
       full_name: 'Test Recruiter',
       email: vrEmail,
       location: 'Bristol',
@@ -153,7 +180,7 @@ export const setupTestScenario = async () => {
 
     // 5. Create a test job with £40,000 salary and 6% commission (60% VR, 40% candidate)
     const { data: jobData, error: jobError } = await supabase.from('jobs').insert({
-      employer_id: employerData.user?.id,
+      employer_id: employerData.user.id,
       title: 'Frontend Developer',
       company: 'Tech Solutions Ltd',
       description: 'We are looking for a skilled Frontend Developer with React experience to join our team...',
@@ -170,32 +197,49 @@ export const setupTestScenario = async () => {
       match_threshold: 70
     }).select().single();
 
-    if (jobError) throw jobError;
+    if (jobError) {
+      console.error("Error creating job:", jobError);
+      throw jobError;
+    }
+    
+    if (!jobData) {
+      throw new Error("Failed to create job: No job data returned");
+    }
 
     // 6. Create direct application from candidate
     const { error: applicationError } = await supabase.from('applications').insert({
-      job_id: jobData?.id,
-      applicant_id: candidateData.user?.id,
+      job_id: jobData.id,
+      applicant_id: candidateData.user.id,
       status: 'pending',
       profile_visibility_enabled: true
     });
 
-    if (applicationError) throw applicationError;
+    if (applicationError) {
+      console.error("Error creating application:", applicationError);
+      throw applicationError;
+    }
 
     // 7. Create VR recommendation for VR candidate
     const { data: recommendationData, error: recommendationError } = await supabase.from('candidate_recommendations').insert({
-      vr_id: vrData.user?.id,
+      vr_id: vrData.user.id,
       candidate_email: vrCandidateEmail,
-      job_id: jobData?.id,
+      job_id: jobData.id,
       status: 'pending',
       recommendation_type: 'job_specific',
       commission_percentage: 60, // 60% of the commission goes to the VR
       notes: 'Strong candidate with excellent React skills'
     }).select().single();
 
-    if (recommendationError) throw recommendationError;
+    if (recommendationError) {
+      console.error("Error creating recommendation:", recommendationError);
+      throw recommendationError;
+    }
+    
+    if (!recommendationData) {
+      throw new Error("Failed to create recommendation: No data returned");
+    }
 
-    // 8. Create interview slots for both candidates (will be rejected later)
+    // 8. Create interview slots for both candidates
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
     
@@ -206,36 +250,46 @@ export const setupTestScenario = async () => {
     nextWeek.setDate(nextWeek.getDate() + 7);
     
     // For direct candidate
-    await supabase.from('interview_slots').insert({
-      employer_id: employerData.user?.id,
-      candidate_id: candidateData.user?.id,
-      job_id: jobData?.id,
+    const { error: directSlotError } = await supabase.from('interview_slots').insert({
+      employer_id: employerData.user.id,
+      candidate_id: candidateData.user.id,
+      job_id: jobData.id,
       proposed_times: [
         tomorrow.toISOString(),
         dayAfterTomorrow.toISOString()
       ],
       status: 'pending'
     });
+    
+    if (directSlotError) {
+      console.error("Error creating interview slot for direct candidate:", directSlotError);
+      throw directSlotError;
+    }
 
     // For VR recommended candidate
-    await supabase.from('interview_slots').insert({
-      employer_id: employerData.user?.id,
-      candidate_id: vrCandidateData.user?.id,
-      job_id: jobData?.id,
+    const { error: vrSlotError } = await supabase.from('interview_slots').insert({
+      employer_id: employerData.user.id,
+      candidate_id: vrCandidateData.user.id,
+      job_id: jobData.id,
       proposed_times: [
         tomorrow.toISOString(),
         nextWeek.toISOString()
       ],
       status: 'pending'
     });
+    
+    if (vrSlotError) {
+      console.error("Error creating interview slot for VR candidate:", vrSlotError);
+      throw vrSlotError;
+    }
 
     console.log('Test scenario created successfully with the following accounts:');
     console.log('Employer:', employerEmail, '/ password:', password);
     console.log('Direct Candidate:', candidateEmail, '/ password:', password);
     console.log('VR Candidate:', vrCandidateEmail, '/ password:', password);
     console.log('VR:', vrEmail, '/ password:', password);
-    console.log('Job ID:', jobData?.id);
-    console.log('Recommendation ID:', recommendationData?.id);
+    console.log('Job ID:', jobData.id);
+    console.log('Recommendation ID:', recommendationData.id);
 
     return {
       employerEmail,
@@ -243,8 +297,8 @@ export const setupTestScenario = async () => {
       vrCandidateEmail,
       vrEmail,
       password,
-      jobId: jobData?.id,
-      recommendationId: recommendationData?.id
+      jobId: jobData.id,
+      recommendationId: recommendationData.id
     };
 
   } catch (error) {

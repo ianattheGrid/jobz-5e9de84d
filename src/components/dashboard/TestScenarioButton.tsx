@@ -32,6 +32,7 @@ export const TestScenarioButton = () => {
         duration: 20000,
       });
     } catch (error: any) {
+      console.error("Test scenario creation error:", error);
       toast({
         title: "Error",
         description: error.message || "Failed to create test scenario",
