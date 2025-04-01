@@ -45,7 +45,7 @@ export const TestScenarioButton = () => {
   return (
     <Button 
       onClick={handleSetupTest}
-      className="bg-secondary hover:bg-secondary/90"
+      className="bg-[#FF69B4] hover:bg-[#FF50A8] text-white"
       disabled={isLoading}
     >
       {isLoading ? (
