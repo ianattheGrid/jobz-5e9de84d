@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -11,6 +10,8 @@ interface VRProfile {
   vr_number: string;
   bank_account_verified: boolean;
   national_insurance_number: string | null;
+  successful_placements: number | null;
+  recommendations_count: number | null;
 }
 
 export const useVRProfile = () => {
@@ -86,6 +87,8 @@ export const useVRProfile = () => {
             vr_number: data.vr_number || "",
             bank_account_verified: data.bank_account_verified || false,
             national_insurance_number: data.national_insurance_number,
+            successful_placements: data.successful_placements || null,
+            recommendations_count: data.recommendations_count || null,
           });
         }
       } catch (error: any) {
