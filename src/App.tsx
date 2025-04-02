@@ -32,6 +32,7 @@ import VirtualRecruiterSignUp from './pages/VirtualRecruiterSignUp';
 import VirtualRecruiterDashboard from './pages/VirtualRecruiterDashboard';
 import VirtualRecruiterRecommendations from './pages/VirtualRecruiterRecommendations';
 import VirtualRecruiterProfile from './pages/VirtualRecruiterProfile';
+import PreviewVRProfile from './pages/PreviewVRProfile';
 
 // Common routes
 import Jobs from './pages/Jobs';
@@ -74,7 +75,7 @@ const App = () => {
           <Route path="employer/create-vacancy" element={<ProtectedRouteWithTimeout userType="employer"><CreateVacancy /></ProtectedRouteWithTimeout>} />
           <Route path="employer/manage-jobs" element={<ProtectedRouteWithTimeout userType="employer"><ManageJobs /></ProtectedRouteWithTimeout>} />
           <Route path="employer/profile" element={<ProtectedRouteWithTimeout userType="employer"><EmployerProfile /></ProtectedRouteWithTimeout>} />
-          <Route path="employer/profile/preview" element={<ProtectedRoute userType="employer"><PreviewEmployerProfile /></ProtectedRoute>} />
+          <Route path="employer/profile/preview" element={<PreviewEmployerProfile />} />
           <Route path="employer/interviews" element={<ProtectedRouteWithTimeout userType="employer"><EmployerInterviews /></ProtectedRouteWithTimeout>} />
           <Route path="employer/candidate/:id" element={<ProtectedRouteWithTimeout userType="employer"><ViewCandidateProfile /></ProtectedRouteWithTimeout>} />
           <Route path="employer/candidates" element={<ProtectedRouteWithTimeout userType="employer"><CandidateSearch /></ProtectedRouteWithTimeout>} />
@@ -86,6 +87,7 @@ const App = () => {
           <Route path="vr/dashboard" element={<ProtectedRouteWithTimeout userType="vr"><VirtualRecruiterDashboard /></ProtectedRouteWithTimeout>} />
           <Route path="vr/recommendations" element={<ProtectedRouteWithTimeout userType="vr"><VirtualRecruiterRecommendations /></ProtectedRouteWithTimeout>} />
           <Route path="vr/profile" element={<ProtectedRouteWithTimeout userType="vr"><VirtualRecruiterProfile /></ProtectedRouteWithTimeout>} />
+          <Route path="vr/profile/preview" element={<PreviewVRProfile />} />
           
           {/* Common routes */}
           <Route path="jobs" element={<Jobs />} />

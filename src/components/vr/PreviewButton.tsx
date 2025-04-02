@@ -24,18 +24,18 @@ export const PreviewButton = () => {
         return;
       }
 
-      // Check if this is an employer user
-      if (session.user.user_metadata.user_type !== 'employer') {
+      // Check if this is a VR user
+      if (session.user.user_metadata.user_type !== 'vr') {
         toast({
           variant: "destructive",
           title: "Access denied",
-          description: "Only employers can preview their profiles.",
+          description: "Only Virtual Recruiters can preview their profiles.",
         });
         return;
       }
 
       // Navigate to the preview page in the same tab
-      navigate('/employer/profile/preview');
+      navigate('/vr/profile/preview');
     } catch (error) {
       console.error("Error handling preview:", error);
       toast({

@@ -12,6 +12,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { ProfileCard } from "@/components/shared/ProfileCard";
 import { ProtectedRouteWithTimeout } from "@/components/auth/ProtectedRouteWithTimeout";
+import { PreviewButton } from "@/components/vr/PreviewButton";
 
 const formSchema = z.object({
   full_name: z.string().min(2, { message: "Full name must be at least 2 characters" }),
@@ -60,7 +61,7 @@ export default function VirtualRecruiterProfile() {
   return (
     <ProtectedRouteWithTimeout userType="vr">
       <div className="container mx-auto py-10 px-4">
-        <div className="mb-6">
+        <div className="mb-6 flex justify-between items-center">
           <Button
             className="flex items-center gap-2 bg-[#FF69B4] hover:bg-[#FF50A8] text-white"
             onClick={() => navigate("/vr/dashboard")}
@@ -68,6 +69,8 @@ export default function VirtualRecruiterProfile() {
             <ChevronLeft className="h-4 w-4" />
             Back to Dashboard
           </Button>
+          
+          <PreviewButton />
         </div>
 
         <div className="max-w-4xl mx-auto">

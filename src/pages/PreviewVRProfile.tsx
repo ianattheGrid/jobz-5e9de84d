@@ -1,16 +1,15 @@
 
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useEmployerProfile } from "@/hooks/useEmployerProfile";
-import ViewEmployerProfile from "./ViewEmployerProfile";
+import { useVRProfile } from "@/hooks/useVRProfile";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { LoadingState } from "@/components/candidate-search/LoadingState";
+import { Loader2, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
+import { ProfileCard } from "@/components/shared/ProfileCard";
 
-export default function PreviewEmployerProfile() {
-  const { profile, loading: profileLoading } = useEmployerProfile();
+export default function PreviewVRProfile() {
+  const { profile, loading: profileLoading } = useVRProfile();
   const navigate = useNavigate();
   const { toast } = useToast();
   const [loading, setLoading] = useState(true);
@@ -29,22 +28,16 @@ export default function PreviewEmployerProfile() {
             title: "Access Denied",
             description: "You must be logged in to view your profile preview.",
           });
-          navigate('/employer/signin');
+          navigate('/vr/signin');
           return;
         }
 
-        // Check if user is an employer
-        const { data: userRole } = await supabase
-          .from('user_roles')
-          .select('role')
-          .eq('user_id', session.user.id)
-          .maybeSingle();
-          
-        if (!userRole || userRole.role !== 'employer') {
+        // Check if user is a VR
+        if (session.user.user_metadata.user_type !== 'vr') {
           toast({
             variant: "destructive",
             title: "Access Denied",
-            description: "Only employers can access this page.",
+            description: "Only Virtual Recruiters can access this page.",
           });
           navigate('/');
           return;
@@ -58,7 +51,7 @@ export default function PreviewEmployerProfile() {
           title: "Error",
           description: "An error occurred while checking your access permissions.",
         });
-        navigate('/employer/signin');
+        navigate('/vr/signin');
       } finally {
         setLoading(false);
       }
@@ -67,22 +60,15 @@ export default function PreviewEmployerProfile() {
     checkAuth();
   }, [navigate, toast]);
   
-  // Redirect if profile is not found
-  useEffect(() => {
-    if (!profileLoading && !profile.id && authorized) {
-      toast({
-        title: "Profile Needed",
-        description: "Please complete your profile first to preview it.",
-      });
-      navigate("/employer/profile");
-    }
-  }, [profileLoading, profile, navigate, toast, authorized]);
-
   if (loading || profileLoading) {
-    return <LoadingState />;
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
   }
 
-  if (!authorized || !profile.id) {
+  if (!authorized || !profile) {
     return null;
   }
 
@@ -91,12 +77,30 @@ export default function PreviewEmployerProfile() {
       <Button 
         variant="outline" 
         className="mb-6 flex items-center gap-2 bg-white text-gray-700"
-        onClick={() => navigate("/employer/profile")}
+        onClick={() => navigate("/vr/profile")}
       >
         <ArrowLeft className="h-4 w-4" /> Back to Profile
       </Button>
+
+      <div className="bg-pink-100 border-l-4 border-pink-500 p-4 mb-6">
+        <p className="text-pink-700 font-medium">Preview Mode</p>
+        <p className="text-sm text-pink-600">This is how your profile appears to others on the platform.</p>
+      </div>
       
-      <ViewEmployerProfile previewMode={true} employerId={profile.id} />
+      <div className="max-w-4xl mx-auto">
+        {profile && (
+          <ProfileCard
+            fullName={profile.full_name}
+            title="Virtual Recruiter"
+            additionalInfo={[
+              { label: "VR Number", value: profile.vr_number || "Not assigned" },
+              { label: "Location", value: profile.location || "Not specified" },
+              { label: "Successful Placements", value: profile.successful_placements?.toString() || "0" },
+              { label: "Recommendations", value: profile.recommendations_count?.toString() || "0" },
+            ]}
+          />
+        )}
+      </div>
     </div>
   );
-}
+};
