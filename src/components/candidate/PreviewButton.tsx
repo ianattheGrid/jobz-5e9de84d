@@ -4,9 +4,8 @@ import { Eye } from "lucide-react";
 
 export const PreviewButton = () => {
   const handleClick = () => {
-    // Use plain JavaScript navigation to avoid any React Router issues
-    const previewUrl = '/candidate/profile/preview';
-    window.location.href = previewUrl;
+    // Directly navigate to the preview page without any complex routing
+    window.open('/candidate/profile/preview', '_blank');
   };
 
   return (

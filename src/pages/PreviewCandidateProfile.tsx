@@ -14,65 +14,69 @@ function PreviewCandidateProfile() {
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState<CandidateProfile | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
 
   useEffect(() => {
-    async function fetchProfile() {
+    async function checkSession() {
       try {
         setLoading(true);
         
         // Get current session
-        const { data: { session } } = await supabase.auth.getSession();
+        const { data } = await supabase.auth.getSession();
+        const session = data.session;
         
         if (!session) {
-          setError("Please sign in to view your profile preview");
+          // No authentication required to view preview
+          // Just display a message asking to sign in
+          setError("Sign in to view your profile preview");
+          setLoading(false);
           return;
         }
 
-        // Check user role
-        const { data: roleData } = await supabase
-          .from('user_roles')
-          .select('role')
-          .eq('user_id', session.user.id)
-          .single();
+        setUserId(session.user.id);
         
-        // Only allow candidates to view their preview
-        if (!roleData || roleData.role !== 'candidate') {
-          setError("Only candidates can view their profile preview");
-          return;
-        }
-
-        // Fetch the candidate's profile data
+        // Fetch the candidate profile data
         const { data: profileData, error: profileError } = await supabase
           .from('candidate_profiles')
           .select('*')
           .eq('id', session.user.id)
-          .single();
+          .maybeSingle();
 
         if (profileError) {
           console.error("Error fetching profile:", profileError);
           setError("Could not load profile data");
+          setLoading(false);
           return;
         }
 
         if (!profileData) {
           setError("Please complete your profile first");
+          setLoading(false);
           return;
         }
 
         // Set profile data
         setProfile(profileData as unknown as CandidateProfile);
-        setError(null);
+        setLoading(false);
         
       } catch (err) {
-        console.error("Error fetching profile:", err);
+        console.error("Error in preview:", err);
         setError("An unexpected error occurred");
-      } finally {
         setLoading(false);
       }
     }
 
-    fetchProfile();
+    checkSession();
   }, []);
+
+  // Handle go back button
+  const handleGoBack = () => {
+    if (userId) {
+      navigate('/candidate/profile');
+    } else {
+      navigate('/');
+    }
+  };
 
   // Show loading state
   if (loading) {
@@ -93,19 +97,21 @@ function PreviewCandidateProfile() {
         
         <Button 
           variant="outline"
-          onClick={() => navigate(-1)}
+          onClick={handleGoBack}
           className="mr-4"
         >
           Go Back
         </Button>
         
-        <Button 
-          variant="default"
-          onClick={() => navigate('/candidate/signin')}
-          className="bg-pink-600 hover:bg-pink-700"
-        >
-          Sign in as Candidate
-        </Button>
+        {!userId && (
+          <Button 
+            variant="default"
+            onClick={() => navigate('/candidate/signin')}
+            className="bg-pink-600 hover:bg-pink-700"
+          >
+            Sign in as Candidate
+          </Button>
+        )}
       </div>
     );
   }
@@ -115,11 +121,11 @@ function PreviewCandidateProfile() {
     <div className="container mx-auto px-4 py-8 max-w-5xl bg-gray-50">
       <Button
         variant="outline"
-        onClick={() => navigate('/candidate/profile')}
+        onClick={handleGoBack}
         className="mb-6 flex items-center gap-2 bg-white"
       >
         <ArrowLeft className="h-4 w-4" />
-        Back to Profile
+        {userId ? "Back to Profile" : "Back to Home"}
       </Button>
 
       <div className="bg-pink-100 border-l-4 border-pink-500 p-4 mb-6">
