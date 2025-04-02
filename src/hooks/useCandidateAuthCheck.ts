@@ -15,6 +15,7 @@ export const useCandidateAuthCheck = () => {
       const { data: { session } } = await supabase.auth.getSession();
       
       if (!session) {
+        console.log("No session found in useCandidateAuthCheck, redirecting to candidate sign-in");
         toast({
           title: "Authentication required",
           description: "Please sign in to access this page",
@@ -31,6 +32,7 @@ export const useCandidateAuthCheck = () => {
         .single();
 
       if (!userRole || userRole.role !== "candidate") {
+        console.log("User is not a candidate, redirecting to home");
         toast({
           title: "Access denied",
           description: "You must be a candidate to access this page",

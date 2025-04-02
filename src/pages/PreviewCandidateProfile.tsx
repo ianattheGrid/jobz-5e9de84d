@@ -24,6 +24,7 @@ function PreviewCandidateProfile() {
         const { data: { session } } = await supabase.auth.getSession();
         
         if (!session) {
+          console.log("No session found, redirecting to candidate sign-in");
           toast({
             variant: "destructive",
             title: "Access Denied",
@@ -41,6 +42,7 @@ function PreviewCandidateProfile() {
           .maybeSingle();
           
         if (!userRole || userRole.role !== 'candidate') {
+          console.log("User is not a candidate, redirecting to home");
           toast({
             variant: "destructive",
             title: "Access Denied",
@@ -116,6 +118,7 @@ function PreviewCandidateProfile() {
           title: "Error",
           description: "Failed to load your profile. Please try again later.",
         });
+        navigate('/candidate/signin');
       } finally {
         setLoading(false);
       }
