@@ -8,7 +8,6 @@ import ProfileDetails from "@/components/candidate-profile/ProfileDetails";
 import { CandidateProfile } from "@/integrations/supabase/types/profiles";
 import { useToast } from "@/components/ui/use-toast";
 import { signOut } from "@/utils/auth/signOut";
-import { fetchUserRole } from "@/utils/auth/fetchUserRole";
 
 function PreviewCandidateProfile() {
   const navigate = useNavigate();
@@ -32,25 +31,29 @@ function PreviewCandidateProfile() {
           return;
         }
 
-        // Get the user's role
-        try {
-          const userRoleData = await fetchUserRole(session.user.id);
-          
-          if (!userRoleData || userRoleData.role !== 'candidate') {
-            console.log("User is not a candidate:", userRoleData?.role);
-            setUserRole(userRoleData?.role || null);
-            setAuthStatus('wrong-role');
-            return;
-          }
-          
-          setUserRole('candidate');
-        } catch (roleError) {
+        // Get the user's role directly from the database
+        const { data: userRoleData, error: roleError } = await supabase
+          .from('user_roles')
+          .select('role')
+          .eq('user_id', session.user.id)
+          .single();
+        
+        if (roleError || !userRoleData) {
           console.error('Error fetching user role:', roleError);
           setAuthStatus('unauthenticated');
           return;
         }
+          
+        if (userRoleData.role !== 'candidate') {
+          console.log("User is not a candidate:", userRoleData.role);
+          setUserRole(userRoleData.role);
+          setAuthStatus('wrong-role');
+          return;
+        }
+          
+        setUserRole('candidate');
 
-        // Fetch the candidate's profile data (only if they're a candidate)
+        // Fetch the candidate's profile data
         const { data, error } = await supabase
           .from('candidate_profiles')
           .select('*')
