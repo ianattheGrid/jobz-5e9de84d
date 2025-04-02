@@ -1,4 +1,3 @@
-
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Job } from "@/integrations/supabase/types/jobs";
@@ -80,9 +79,7 @@ const Jobs = () => {
       
       return transformedData;
     },
-    // Set a longer staleTime to prevent immediate refetching
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    // Set a retry policy for network errors
+    staleTime: 5 * 60 * 1000,
     retry: 2,
     retryDelay: 1000,
   });
@@ -102,8 +99,7 @@ const Jobs = () => {
             {userType === 'candidate' && (
               <Button
                 onClick={() => navigate('/candidate/dashboard')}
-                className="text-white mt-12"
-                variant="default"
+                className="bg-[#FF69B4] hover:bg-[#FF50A8] text-white mt-12"
               >
                 <LayoutDashboard className="w-4 h-4 mr-2" />
                 Dashboard
