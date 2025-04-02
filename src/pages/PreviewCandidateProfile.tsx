@@ -33,7 +33,13 @@ function PreviewCandidateProfile() {
       }
 
       // Check if user is a candidate
-      if (session.user.user_metadata.user_type !== 'candidate') {
+      const { data: userRole } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', session.user.id)
+        .maybeSingle();
+        
+      if (!userRole || userRole.role !== 'candidate') {
         toast({
           variant: "destructive",
           title: "Access Denied",
