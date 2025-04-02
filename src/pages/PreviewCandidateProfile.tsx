@@ -8,134 +8,111 @@ import { supabase } from "@/integrations/supabase/client";
 import ProfileDetails from "@/components/candidate-profile/ProfileDetails";
 import { CandidateProfile } from "@/integrations/supabase/types/profiles";
 import { useToast } from "@/components/ui/use-toast";
+import { useCandidateAuthCheck } from "@/hooks/useCandidateAuthCheck";
 
 function PreviewCandidateProfile() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState<CandidateProfile | null>(null);
   const { toast } = useToast();
+  
+  // Use the candidate auth check hook to ensure the user is a candidate
+  const { loading: authLoading } = useCandidateAuthCheck();
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        setLoading(true);
-        
-        // Get current session
-        const { data: { session } } = await supabase.auth.getSession();
-        
-        if (!session) {
-          console.log("No session found, redirecting to candidate sign-in");
-          toast({
-            title: "Authentication required",
-            description: "Please sign in to view your profile preview",
-            variant: "destructive",
-          });
-          navigate('/candidate/signin');
-          return;
-        }
+    // Only fetch profile data if auth check is complete and successful
+    if (!authLoading) {
+      const fetchProfile = async () => {
+        try {
+          setLoading(true);
+          
+          // Get current session
+          const { data: { session } } = await supabase.auth.getSession();
+          
+          if (!session) {
+            console.error("No session found in profile fetch");
+            return;
+          }
 
-        // Check if user is a candidate
-        const { data: userRole, error: roleError } = await supabase
-          .from('user_roles')
-          .select('role')
-          .eq('user_id', session.user.id)
-          .maybeSingle();
+          // Fetch the candidate's profile data
+          const { data, error } = await supabase
+            .from('candidate_profiles')
+            .select('*')
+            .eq('id', session.user.id)
+            .single();
 
-        if (roleError) {
-          console.error("Error fetching user role:", roleError);
-          throw new Error("Failed to verify user type");
-        }
+          if (error) {
+            console.error('Error fetching profile:', error);
+            throw error;
+          }
 
-        if (!userRole || userRole.role !== 'candidate') {
-          console.log("User is not a candidate, redirecting to candidate sign-in");
-          toast({
-            title: "Access denied",
-            description: "Only candidates can view their profile preview. Please sign in with your candidate account.",
-            variant: "destructive",
-          });
-          // Explicitly sign out the current user before redirecting
-          await supabase.auth.signOut();
-          navigate('/candidate/signin');
-          return;
-        }
-
-        // Fetch the candidate's profile data
-        const { data, error } = await supabase
-          .from('candidate_profiles')
-          .select('*')
-          .eq('id', session.user.id)
-          .single();
-
-        if (error) {
-          console.error('Error fetching profile:', error);
-          throw error;
-        }
-
-        if (data) {
-          console.log("Fetched profile data:", data);
-          const candidateProfile: CandidateProfile = {
-            id: data.id,
-            email: data.email,
-            job_title: data.job_title,
-            years_experience: data.years_experience,
-            location: data.location || [],
-            min_salary: data.min_salary,
-            max_salary: data.max_salary,
-            required_qualifications: data.required_qualifications || [],
-            required_skills: data.required_skills || null,
-            security_clearance: data.security_clearance,
-            commission_percentage: data.commission_percentage,
-            created_at: data.created_at,
-            updated_at: data.updated_at,
-            signup_date: data.signup_date,
-            work_eligibility: data.work_eligibility,
-            preferred_work_type: data.preferred_work_type,
-            availability: data.availability,
-            additional_skills: data.additional_skills,
-            address: data.address,
-            ai_synopsis: data.ai_synopsis,
-            ai_synopsis_last_updated: data.ai_synopsis_last_updated,
-            ai_synopsis_status: data.ai_synopsis_status,
-            current_employer: data.current_employer,
-            cv_url: data.cv_url,
-            full_name: data.full_name,
-            phone_number: data.phone_number,
-            profile_picture_url: data.profile_picture_url,
-            travel_radius: data.travel_radius,
-            work_preferences: data.work_preferences,
-            desired_job_title: data.desired_job_title,
-            home_postcode: data.home_postcode,
-            linkedin_url: data.linkedin_url,
-            years_in_current_title: data.years_in_current_title || null,
-            workArea: data.workArea || null,
-            itSpecialization: data.itSpecialization || null
-          };
-          setProfile(candidateProfile);
-        } else {
+          if (data) {
+            console.log("Fetched profile data:", data);
+            const candidateProfile: CandidateProfile = {
+              id: data.id,
+              email: data.email,
+              job_title: data.job_title,
+              years_experience: data.years_experience,
+              location: data.location || [],
+              min_salary: data.min_salary,
+              max_salary: data.max_salary,
+              required_qualifications: data.required_qualifications || [],
+              required_skills: data.required_skills || null,
+              security_clearance: data.security_clearance,
+              commission_percentage: data.commission_percentage,
+              created_at: data.created_at,
+              updated_at: data.updated_at,
+              signup_date: data.signup_date,
+              work_eligibility: data.work_eligibility,
+              preferred_work_type: data.preferred_work_type,
+              availability: data.availability,
+              additional_skills: data.additional_skills,
+              address: data.address,
+              ai_synopsis: data.ai_synopsis,
+              ai_synopsis_last_updated: data.ai_synopsis_last_updated,
+              ai_synopsis_status: data.ai_synopsis_status,
+              current_employer: data.current_employer,
+              cv_url: data.cv_url,
+              full_name: data.full_name,
+              phone_number: data.phone_number,
+              profile_picture_url: data.profile_picture_url,
+              travel_radius: data.travel_radius,
+              work_preferences: data.work_preferences,
+              desired_job_title: data.desired_job_title,
+              home_postcode: data.home_postcode,
+              linkedin_url: data.linkedin_url,
+              years_in_current_title: data.years_in_current_title || null,
+              workArea: data.workArea || null,
+              itSpecialization: data.itSpecialization || null
+            };
+            setProfile(candidateProfile);
+          } else {
+            toast({
+              variant: "destructive",
+              title: "Profile Not Found",
+              description: "Please complete your profile first.",
+            });
+            navigate('/candidate/profile');
+          }
+        } catch (error) {
+          console.error('Error:', error);
           toast({
             variant: "destructive",
-            title: "Profile Not Found",
-            description: "Please complete your profile first.",
+            title: "Error",
+            description: "Failed to load your profile. Please try again later.",
           });
           navigate('/candidate/profile');
+        } finally {
+          setLoading(false);
         }
-      } catch (error) {
-        console.error('Error:', error);
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description: "Failed to load your profile. Please try again later.",
-        });
-        navigate('/candidate/profile');
-      } finally {
-        setLoading(false);
-      }
-    };
+      };
 
-    fetchProfile();
-  }, [navigate, toast]);
+      fetchProfile();
+    }
+  }, [navigate, toast, authLoading]);
 
-  if (loading) {
+  // Show loading while either auth check or profile fetch is in progress
+  if (authLoading || loading) {
     return <LoadingState />;
   }
 

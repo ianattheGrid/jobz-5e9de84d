@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
 import './App.css';
@@ -58,7 +57,7 @@ const App = () => {
           <Route path="candidate/signup" element={<CandidateSignUp />} />
           <Route path="candidate/dashboard" element={<ProtectedRouteWithTimeout userType="candidate"><CandidateDashboard /></ProtectedRouteWithTimeout>} />
           <Route path="candidate/profile" element={<ProtectedRouteWithTimeout userType="candidate"><CandidateProfile /></ProtectedRouteWithTimeout>} />
-          <Route path="candidate/profile/preview" element={<PreviewCandidateProfile />} />  {/* Direct component without wrapper */}
+          <Route path="candidate/profile/preview" element={<ProtectedRouteWithTimeout userType="candidate"><PreviewCandidateProfile /></ProtectedRouteWithTimeout>} />  
           <Route path="candidate/applications" element={<ProtectedRouteWithTimeout userType="candidate"><CandidateApplications /></ProtectedRouteWithTimeout>} />
           <Route path="candidate/interviews" element={<ProtectedRouteWithTimeout userType="candidate"><CandidateInterviews /></ProtectedRouteWithTimeout>} />
           <Route path="candidate/account" element={<ProtectedRouteWithTimeout userType="candidate"><CandidateAccountSettings /></ProtectedRouteWithTimeout>} />
