@@ -39,7 +39,7 @@ export const PreviewButton = ({ onPreviewClick }: PreviewButtonProps) => {
       // Use the callback to show the profile preview in the current page
       onPreviewClick();
 
-      // Also open the preview page in a new tab with the user ID for direct access
+      // Also open the preview page in a new tab with the user ID
       const previewUrl = `/candidate/profile/preview?id=${session.user.id}`;
       window.open(previewUrl, '_blank');
 

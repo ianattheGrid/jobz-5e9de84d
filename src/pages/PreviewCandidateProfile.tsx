@@ -6,12 +6,10 @@ import { ArrowLeft, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import ProfileDetails from "@/components/candidate-profile/ProfileDetails";
 import { CandidateProfile } from "@/integrations/supabase/types/profiles";
-import { useToast } from "@/hooks/use-toast";
 
 function PreviewCandidateProfile() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { toast } = useToast();
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState<CandidateProfile | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -28,42 +26,37 @@ function PreviewCandidateProfile() {
         
         console.log("Preview page - Loading profile with ID:", candidateId);
         
-        // First try to load profile from the ID parameter
-        if (candidateId) {
-          console.log("Attempting to load profile with candidateId:", candidateId);
-          
-          const { data: profileData, error: profileError } = await supabase
-            .from('candidate_profiles')
-            .select('*')
-            .eq('id', candidateId)
-            .maybeSingle();
-
-          if (profileError) {
-            console.error("Error fetching profile by ID:", profileError);
-            setError("Could not load profile data");
-            setLoading(false);
-            return;
-          }
-
-          if (profileData) {
-            console.log("Profile found by ID:", profileData.id, profileData.full_name);
-            setProfile(profileData as unknown as CandidateProfile);
-            setLoading(false);
-            return;
-          } else {
-            console.log("No profile found with ID:", candidateId);
-            setError("Profile not found");
-            setLoading(false);
-            return;
-          }
-        } else {
-          // No ID parameter was provided
+        if (!candidateId) {
           setError("No profile ID was provided");
           setLoading(false);
+          return;
+        }
+        
+        // Fetch profile directly from database without authentication check
+        const { data: profileData, error: profileError } = await supabase
+          .from('candidate_profiles')
+          .select('*')
+          .eq('id', candidateId)
+          .maybeSingle();
+
+        if (profileError) {
+          console.error("Error fetching profile by ID:", profileError);
+          setError("Could not load profile data");
+          setLoading(false);
+          return;
+        }
+
+        if (profileData) {
+          console.log("Profile found by ID:", profileData);
+          setProfile(profileData as unknown as CandidateProfile);
+        } else {
+          console.log("No profile found with ID:", candidateId);
+          setError("Profile not found");
         }
       } catch (err) {
         console.error("Error in preview:", err);
         setError("An unexpected error occurred");
+      } finally {
         setLoading(false);
       }
     }
