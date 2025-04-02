@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -10,32 +10,53 @@ import { useToast } from "@/hooks/use-toast";
 
 function PreviewCandidateProfile() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState<CandidateProfile | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [userId, setUserId] = useState<string | null>(null);
+  
+  // Extract the user ID from query parameters if available
+  const queryParams = new URLSearchParams(location.search);
+  const candidateId = queryParams.get('id');
 
   useEffect(() => {
-    async function checkSession() {
+    async function loadProfileData() {
       try {
         setLoading(true);
         
-        // Get current session
+        // First try to load profile from the ID parameter
+        if (candidateId) {
+          const { data: profileData, error: profileError } = await supabase
+            .from('candidate_profiles')
+            .select('*')
+            .eq('id', candidateId)
+            .maybeSingle();
+
+          if (profileError) {
+            console.error("Error fetching profile:", profileError);
+            setError("Could not load profile data");
+            setLoading(false);
+            return;
+          }
+
+          if (profileData) {
+            setProfile(profileData as unknown as CandidateProfile);
+            setLoading(false);
+            return;
+          }
+        }
+        
+        // If no ID parameter or no profile found, try the current session
         const { data } = await supabase.auth.getSession();
         const session = data.session;
         
         if (!session) {
-          // No authentication required to view preview
-          // Just display a message asking to sign in
-          setError("Sign in to view your profile preview");
+          setError("Sign in as a candidate to view your profile preview");
           setLoading(false);
           return;
         }
 
-        setUserId(session.user.id);
-        
-        // Fetch the candidate profile data
         const { data: profileData, error: profileError } = await supabase
           .from('candidate_profiles')
           .select('*')
@@ -66,15 +87,16 @@ function PreviewCandidateProfile() {
       }
     }
 
-    checkSession();
-  }, []);
+    loadProfileData();
+  }, [candidateId]);
 
   // Handle go back button
   const handleGoBack = () => {
-    if (userId) {
-      navigate('/candidate/profile');
+    // If we came from the candidate profile page, go back there
+    if (document.referrer.includes('/candidate/profile')) {
+      window.close(); // Close the preview tab
     } else {
-      navigate('/');
+      navigate('/candidate/profile'); // Navigate to the profile page
     }
   };
 
@@ -103,7 +125,7 @@ function PreviewCandidateProfile() {
           Go Back
         </Button>
         
-        {!userId && (
+        {!candidateId && (
           <Button 
             variant="default"
             onClick={() => navigate('/candidate/signin')}
@@ -125,7 +147,7 @@ function PreviewCandidateProfile() {
         className="mb-6 flex items-center gap-2 bg-white"
       >
         <ArrowLeft className="h-4 w-4" />
-        {userId ? "Back to Profile" : "Back to Home"}
+        Back to Profile
       </Button>
 
       <div className="bg-pink-100 border-l-4 border-pink-500 p-4 mb-6">
