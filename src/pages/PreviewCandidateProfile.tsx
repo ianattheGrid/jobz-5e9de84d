@@ -6,15 +6,17 @@ import { ArrowLeft, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import ProfileDetails from "@/components/candidate-profile/ProfileDetails";
 import { CandidateProfile } from "@/integrations/supabase/types/profiles";
+import { useToast } from "@/hooks/use-toast";
 
 function PreviewCandidateProfile() {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState<CandidateProfile | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchProfile = async () => {
+    async function fetchProfile() {
       try {
         setLoading(true);
         
@@ -26,7 +28,20 @@ function PreviewCandidateProfile() {
           return;
         }
 
-        // Fetch profile data directly
+        // Check user role
+        const { data: roleData } = await supabase
+          .from('user_roles')
+          .select('role')
+          .eq('user_id', session.user.id)
+          .single();
+        
+        // Only allow candidates to view their preview
+        if (!roleData || roleData.role !== 'candidate') {
+          setError("Only candidates can view their profile preview");
+          return;
+        }
+
+        // Fetch the candidate's profile data
         const { data: profileData, error: profileError } = await supabase
           .from('candidate_profiles')
           .select('*')
@@ -44,15 +59,17 @@ function PreviewCandidateProfile() {
           return;
         }
 
+        // Set profile data
         setProfile(profileData as unknown as CandidateProfile);
         setError(null);
+        
       } catch (err) {
-        console.error("Error:", err);
+        console.error("Error fetching profile:", err);
         setError("An unexpected error occurred");
       } finally {
         setLoading(false);
       }
-    };
+    }
 
     fetchProfile();
   }, []);
