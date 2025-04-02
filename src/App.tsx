@@ -58,7 +58,7 @@ const App = () => {
           <Route path="candidate/signup" element={<CandidateSignUp />} />
           <Route path="candidate/dashboard" element={<ProtectedRouteWithTimeout userType="candidate"><CandidateDashboard /></ProtectedRouteWithTimeout>} />
           <Route path="candidate/profile" element={<ProtectedRouteWithTimeout userType="candidate"><CandidateProfile /></ProtectedRouteWithTimeout>} />
-          <Route path="candidate/profile/preview" element={<PreviewCandidateProfile />} />  {/* No Protected Route wrapper here */}
+          <Route path="candidate/profile/preview" element={<PreviewCandidateProfile />} />  {/* No Protection - handles auth internally */}
           <Route path="candidate/applications" element={<ProtectedRouteWithTimeout userType="candidate"><CandidateApplications /></ProtectedRouteWithTimeout>} />
           <Route path="candidate/interviews" element={<ProtectedRouteWithTimeout userType="candidate"><CandidateInterviews /></ProtectedRouteWithTimeout>} />
           <Route path="candidate/account" element={<ProtectedRouteWithTimeout userType="candidate"><CandidateAccountSettings /></ProtectedRouteWithTimeout>} />
