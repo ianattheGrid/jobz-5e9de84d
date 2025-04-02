@@ -2,7 +2,6 @@
 import { Button } from "@/components/ui/button";
 import { Eye } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 
 interface PreviewButtonProps {
@@ -10,7 +9,6 @@ interface PreviewButtonProps {
 }
 
 export const PreviewButton = ({ onPreviewClick }: PreviewButtonProps) => {
-  const navigate = useNavigate();
   const { toast } = useToast();
 
   const handlePreview = async () => {
@@ -38,10 +36,10 @@ export const PreviewButton = ({ onPreviewClick }: PreviewButtonProps) => {
         return;
       }
 
-      // Use the callback to show the profile preview
+      // Use the callback to show the profile preview in the current page
       onPreviewClick();
 
-      // Open the preview page in a new tab with the user ID
+      // Also open the preview page in a new tab with the user ID for direct access
       const previewUrl = `/candidate/profile/preview?id=${session.user.id}`;
       window.open(previewUrl, '_blank');
 

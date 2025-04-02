@@ -59,7 +59,7 @@ const App = () => {
           <Route path="candidate/dashboard" element={<ProtectedRouteWithTimeout userType="candidate"><CandidateDashboard /></ProtectedRouteWithTimeout>} />
           <Route path="candidate/profile" element={<ProtectedRouteWithTimeout userType="candidate"><CandidateProfile /></ProtectedRouteWithTimeout>} />
           
-          {/* Make this route completely public - no protection */}
+          {/* Make the preview route completely public and accessible to everyone */}
           <Route path="candidate/profile/preview" element={<PreviewCandidateProfile />} />
           
           <Route path="candidate/applications" element={<ProtectedRouteWithTimeout userType="candidate"><CandidateApplications /></ProtectedRouteWithTimeout>} />
