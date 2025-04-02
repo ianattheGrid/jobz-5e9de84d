@@ -8,12 +8,14 @@ import ProfileDetails from "@/components/candidate-profile/ProfileDetails";
 import { CandidateProfile } from "@/integrations/supabase/types/profiles";
 import { useToast } from "@/components/ui/use-toast";
 import { signOut } from "@/utils/auth/signOut";
+import { fetchUserRole } from "@/utils/auth/fetchUserRole";
 
 function PreviewCandidateProfile() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState<CandidateProfile | null>(null);
-  const [authError, setAuthError] = useState<string | null>(null);
+  const [authStatus, setAuthStatus] = useState<'loading' | 'authenticated' | 'unauthenticated' | 'wrong-role'>('loading');
+  const [userRole, setUserRole] = useState<string | null>(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -26,34 +28,29 @@ function PreviewCandidateProfile() {
         
         if (!session) {
           console.log("No session found in profile preview");
-          setAuthError("Please sign in to view your profile preview");
+          setAuthStatus('unauthenticated');
           return;
         }
 
-        // Get the user's role specifically
-        const { data: userRole, error: roleError } = await supabase
-          .from('user_roles')
-          .select('role')
-          .eq('user_id', session.user.id)
-          .single();
-
-        if (roleError || !userRole) {
-          console.error('Error fetching role:', roleError);
-          setAuthError("Could not verify your account type. Please sign in again.");
-          return;
-        }
-
-        // Only allow candidate users to access this page
-        if (userRole.role !== 'candidate') {
-          console.log('User is not a candidate:', userRole.role);
-          setAuthError("This page is only accessible to candidate accounts");
+        // Get the user's role
+        try {
+          const userRoleData = await fetchUserRole(session.user.id);
           
-          // We don't sign out automatically here to avoid disrupting their experience
-          // They may want to navigate elsewhere with their current account
+          if (!userRoleData || userRoleData.role !== 'candidate') {
+            console.log("User is not a candidate:", userRoleData?.role);
+            setUserRole(userRoleData?.role || null);
+            setAuthStatus('wrong-role');
+            return;
+          }
+          
+          setUserRole('candidate');
+        } catch (roleError) {
+          console.error('Error fetching user role:', roleError);
+          setAuthStatus('unauthenticated');
           return;
         }
 
-        // Fetch the candidate's profile data
+        // Fetch the candidate's profile data (only if they're a candidate)
         const { data, error } = await supabase
           .from('candidate_profiles')
           .select('*')
@@ -62,16 +59,26 @@ function PreviewCandidateProfile() {
 
         if (error) {
           console.error('Error fetching profile:', error);
-          setAuthError("Could not load your profile data. Please try again.");
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: "Could not load your profile data. Please try again later.",
+          });
+          setAuthStatus('authenticated'); // They're authenticated but we couldn't load profile
           return;
         }
 
         if (!data) {
-          setAuthError("Profile not found. Please complete your profile first.");
+          toast({
+            variant: "destructive",
+            title: "Profile Not Found",
+            description: "Please complete your profile first.",
+          });
+          setAuthStatus('authenticated'); // They're authenticated but no profile exists
           return;
         }
         
-        console.log("Fetched profile data:", data);
+        console.log("Fetched candidate profile data:", data);
         
         // Transform the data to match CandidateProfile type
         const candidateProfile: CandidateProfile = {
@@ -113,11 +120,15 @@ function PreviewCandidateProfile() {
         };
         
         setProfile(candidateProfile);
-        setAuthError(null);
-
+        setAuthStatus('authenticated');
       } catch (error) {
         console.error('Unexpected error:', error);
-        setAuthError("An unexpected error occurred. Please try again later.");
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "An unexpected error occurred. Please try again later.",
+        });
+        setAuthStatus('unauthenticated');
       } finally {
         setLoading(false);
       }
@@ -131,6 +142,10 @@ function PreviewCandidateProfile() {
     navigate('/candidate/signin');
   };
 
+  const handleSignIn = () => {
+    navigate('/candidate/signin');
+  };
+
   // Show loading state
   if (loading) {
     return (
@@ -141,13 +156,33 @@ function PreviewCandidateProfile() {
     );
   }
 
-  // Show auth error
-  if (authError) {
+  // Show unauthenticated state
+  if (authStatus === 'unauthenticated') {
     return (
       <div className="container mx-auto px-4 py-8 flex flex-col items-center justify-center min-h-[60vh]">
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6 max-w-xl w-full">
           <p className="font-bold">Access Denied</p>
-          <p>{authError}</p>
+          <p>You need to be signed in as a candidate to view your profile preview.</p>
+        </div>
+        
+        <Button 
+          onClick={handleSignIn}
+          variant="default" 
+          className="bg-pink-600 hover:bg-pink-700 text-white"
+        >
+          Sign in as Candidate
+        </Button>
+      </div>
+    );
+  }
+
+  // Show wrong role state
+  if (authStatus === 'wrong-role') {
+    return (
+      <div className="container mx-auto px-4 py-8 flex flex-col items-center justify-center min-h-[60vh]">
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6 max-w-xl w-full">
+          <p className="font-bold">Access Denied</p>
+          <p>This page is only for candidate accounts. You are currently signed in as: {userRole || 'unknown role'}.</p>
         </div>
         
         <div className="flex flex-col sm:flex-row gap-4">
@@ -170,19 +205,30 @@ function PreviewCandidateProfile() {
     );
   }
 
-  // Show empty profile state
-  if (!profile) {
+  // Show empty profile state (authenticated but no profile)
+  if (authStatus === 'authenticated' && !profile) {
     return (
       <div className="container mx-auto px-4 py-8 bg-white">
-        <p className="text-gray-500">Profile not found. Please complete your profile first.</p>
-        <Button onClick={() => navigate('/candidate/profile')} className="mt-4 bg-pink-600 hover:bg-pink-700">
-          Go to Profile
+        <Button
+          variant="outline"
+          onClick={() => navigate('/candidate/dashboard')}
+          className="mb-6 flex items-center gap-2 bg-white"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Back to Dashboard
         </Button>
+        
+        <div className="text-center py-12">
+          <p className="text-gray-600 mb-4">You need to complete your profile first before previewing it.</p>
+          <Button onClick={() => navigate('/candidate/profile')} className="bg-pink-600 hover:bg-pink-700">
+            Complete Your Profile
+          </Button>
+        </div>
       </div>
     );
   }
 
-  // Show profile preview
+  // Show profile preview (authenticated with profile)
   return (
     <div className="container mx-auto px-4 py-8 max-w-5xl bg-gray-50 min-h-screen">
       <Button
@@ -199,7 +245,7 @@ function PreviewCandidateProfile() {
         <p className="text-sm text-pink-600">This is how your profile appears to employers after they request to view your details.</p>
       </div>
 
-      <ProfileDetails profile={profile} />
+      {profile && <ProfileDetails profile={profile} />}
     </div>
   );
 }
