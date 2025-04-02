@@ -39,8 +39,11 @@ export const PreviewButton = ({ onPreviewClick }: PreviewButtonProps) => {
       // Use the callback to show the profile preview in the current page
       onPreviewClick();
 
-      // Open the preview in a new tab
-      const previewUrl = `/candidate/profile/preview?id=${session.user.id}`;
+      // Get candidate ID for the URL
+      const candidateId = session.user.id;
+      
+      // Open the preview in a new tab with the correct parameter format
+      const previewUrl = `/candidate/profile/preview?id=${candidateId}`;
       window.open(previewUrl, '_blank');
     } catch (error) {
       console.error("Error handling preview:", error);

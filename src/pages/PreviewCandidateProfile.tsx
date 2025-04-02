@@ -37,7 +37,7 @@ function PreviewCandidateProfile() {
           .from('candidate_profiles')
           .select('*')
           .eq('id', candidateId)
-          .maybeSingle();
+          .single();
 
         if (profileError) {
           console.error("Error fetching profile by ID:", profileError);
