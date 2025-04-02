@@ -37,7 +37,7 @@ function PreviewCandidateProfile() {
           .from('candidate_profiles')
           .select('*')
           .eq('id', candidateId)
-          .single();
+          .maybeSingle();
 
         if (profileError) {
           console.error("Error fetching profile by ID:", profileError);
@@ -66,12 +66,7 @@ function PreviewCandidateProfile() {
 
   // Handle go back button
   const handleGoBack = () => {
-    if (window.opener) {
-      // If opened in new tab/window, close it
-      window.close();
-    } else {
-      navigate(-1); // Navigate back to previous page
-    }
+    navigate(-1); // Navigate back to previous page
   };
 
   // Show loading state
