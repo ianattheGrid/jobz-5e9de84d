@@ -52,6 +52,7 @@ function PreviewCandidateProfile() {
         const session = data.session;
         
         if (!session) {
+          // Check if we're being accessed directly
           setError("Sign in as a candidate to view your profile preview");
           setLoading(false);
           return;
@@ -92,12 +93,7 @@ function PreviewCandidateProfile() {
 
   // Handle go back button
   const handleGoBack = () => {
-    // If we came from the candidate profile page, go back there
-    if (document.referrer.includes('/candidate/profile')) {
-      window.close(); // Close the preview tab
-    } else {
-      navigate('/candidate/profile'); // Navigate to the profile page
-    }
+    navigate('/candidate/profile'); // Always navigate to profile page
   };
 
   // Show loading state

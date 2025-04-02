@@ -4,11 +4,14 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { LayoutDashboard } from "lucide-react";
+import { LayoutDashboard, ArrowLeft } from "lucide-react";
 import { FileUploadSection } from "@/components/candidate/FileUploadSection";
 import { PreviewButton } from "@/components/candidate/PreviewButton";
 import { initializeStorage } from "@/integrations/supabase/storage";
 import { VerificationSection } from "@/components/candidate/VerificationSection";
+import { Button } from "@/components/ui/button";
+import ProfileDetails from "@/components/candidate-profile/ProfileDetails";
+import { CandidateProfile as ProfileType } from "@/integrations/supabase/types/profiles";
 
 export default function CandidateProfile() {
   const { toast } = useToast();
@@ -17,13 +20,15 @@ export default function CandidateProfile() {
   const [userId, setUserId] = useState<string | null>(null);
   const [profilePicture, setProfilePicture] = useState<string | null>(null);
   const [cvUrl, setCvUrl] = useState<string | null>(null);
+  const [showPreview, setShowPreview] = useState(false);
+  const [profileData, setProfileData] = useState<ProfileType | null>(null);
 
   // Function to fetch profile data
   const fetchProfileData = async (userId: string) => {
     try {
       const { data: profile, error } = await supabase
         .from('candidate_profiles')
-        .select('profile_picture_url, cv_url')
+        .select('*')
         .eq('id', userId)
         .single();
 
@@ -32,6 +37,7 @@ export default function CandidateProfile() {
       if (profile) {
         setProfilePicture(profile.profile_picture_url);
         setCvUrl(profile.cv_url);
+        setProfileData(profile as unknown as ProfileType);
       }
     } catch (error) {
       console.error("Error fetching profile data:", error);
@@ -97,10 +103,39 @@ export default function CandidateProfile() {
     }
   };
 
+  // Toggle preview mode
+  const togglePreview = () => {
+    setShowPreview(prev => !prev);
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen bg-white">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
+  if (showPreview && profileData) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <div className="container mx-auto px-4 py-10">
+          <Button
+            variant="outline"
+            onClick={togglePreview}
+            className="mb-6 flex items-center gap-2 bg-white"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back to Editing
+          </Button>
+
+          <div className="bg-pink-100 border-l-4 border-pink-500 p-4 mb-6">
+            <p className="text-pink-700 font-medium">Preview Mode</p>
+            <p className="text-sm text-pink-600">This is how your profile appears to employers after they request to view your details.</p>
+          </div>
+
+          {profileData && <ProfileDetails profile={profileData} />}
+        </div>
       </div>
     );
   }
@@ -116,7 +151,7 @@ export default function CandidateProfile() {
             </p>
           </div>
           <div className="flex space-x-2">
-            <PreviewButton />
+            <PreviewButton onPreviewClick={togglePreview} />
             <button
               onClick={() => navigate('/candidate/dashboard')}
               className="inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium text-white bg-[#FF69B4] hover:bg-[#FF50A8]"
