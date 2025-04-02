@@ -24,9 +24,14 @@ function PreviewCandidateProfile() {
     async function loadProfileData() {
       try {
         setLoading(true);
+        setError(null);
+        
+        console.log("Preview page - Loading profile with ID:", candidateId);
         
         // First try to load profile from the ID parameter
         if (candidateId) {
+          console.log("Attempting to load profile with candidateId:", candidateId);
+          
           const { data: profileData, error: profileError } = await supabase
             .from('candidate_profiles')
             .select('*')
@@ -34,16 +39,19 @@ function PreviewCandidateProfile() {
             .maybeSingle();
 
           if (profileError) {
-            console.error("Error fetching profile:", profileError);
+            console.error("Error fetching profile by ID:", profileError);
             setError("Could not load profile data");
             setLoading(false);
             return;
           }
 
           if (profileData) {
+            console.log("Profile found by ID:", profileData.id, profileData.full_name);
             setProfile(profileData as unknown as CandidateProfile);
             setLoading(false);
             return;
+          } else {
+            console.log("No profile found with ID:", candidateId);
           }
         }
         
@@ -52,8 +60,19 @@ function PreviewCandidateProfile() {
         const session = data.session;
         
         if (!session) {
+          console.log("No active session found");
           // Check if we're being accessed directly
           setError("Sign in as a candidate to view your profile preview");
+          setLoading(false);
+          return;
+        }
+
+        console.log("Loading profile for authenticated user:", session.user.id);
+        
+        // Verify this is actually a candidate user
+        if (session.user.user_metadata.user_type !== 'candidate') {
+          console.log("User is not a candidate:", session.user.user_metadata.user_type);
+          setError("Only candidates can view their profile previews");
           setLoading(false);
           return;
         }
@@ -65,19 +84,21 @@ function PreviewCandidateProfile() {
           .maybeSingle();
 
         if (profileError) {
-          console.error("Error fetching profile:", profileError);
+          console.error("Error fetching profile for session user:", profileError);
           setError("Could not load profile data");
           setLoading(false);
           return;
         }
 
         if (!profileData) {
+          console.log("No profile found for session user");
           setError("Please complete your profile first");
           setLoading(false);
           return;
         }
 
         // Set profile data
+        console.log("Profile found for session user:", profileData.id, profileData.full_name);
         setProfile(profileData as unknown as CandidateProfile);
         setLoading(false);
         
@@ -93,7 +114,12 @@ function PreviewCandidateProfile() {
 
   // Handle go back button
   const handleGoBack = () => {
-    navigate('/candidate/profile'); // Always navigate to profile page
+    if (window.opener) {
+      // If opened in new tab/window, close it
+      window.close();
+    } else {
+      navigate('/candidate/profile'); // Navigate back to profile page
+    }
   };
 
   // Show loading state
