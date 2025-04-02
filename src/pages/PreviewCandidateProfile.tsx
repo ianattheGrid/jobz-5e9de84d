@@ -15,7 +15,6 @@ function PreviewCandidateProfile() {
   const [profile, setProfile] = useState<CandidateProfile | null>(null);
   const { toast } = useToast();
 
-  // Function to fetch profile data
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -26,6 +25,11 @@ function PreviewCandidateProfile() {
         
         if (!session) {
           console.log("No session found, redirecting to candidate sign-in");
+          toast({
+            title: "Authentication required",
+            description: "Please sign in to view your profile preview",
+            variant: "destructive",
+          });
           navigate('/candidate/signin');
           return;
         }
@@ -43,13 +47,15 @@ function PreviewCandidateProfile() {
         }
 
         if (!userRole || userRole.role !== 'candidate') {
-          console.log("User is not a candidate, redirecting to home");
+          console.log("User is not a candidate, redirecting to candidate sign-in");
           toast({
             title: "Access denied",
-            description: "Only candidates can view their profile preview.",
+            description: "Only candidates can view their profile preview. Please sign in with your candidate account.",
             variant: "destructive",
           });
-          navigate('/');
+          // Explicitly sign out the current user before redirecting
+          await supabase.auth.signOut();
+          navigate('/candidate/signin');
           return;
         }
 
@@ -120,7 +126,7 @@ function PreviewCandidateProfile() {
           title: "Error",
           description: "Failed to load your profile. Please try again later.",
         });
-        navigate('/candidate/signin');
+        navigate('/candidate/profile');
       } finally {
         setLoading(false);
       }
