@@ -32,7 +32,7 @@ function PreviewCandidateProfile() {
           return;
         }
         
-        // Fetch profile directly from database without authentication check
+        // Get the profile data using the ID parameter (without authentication)
         const { data: profileData, error: profileError } = await supabase
           .from('candidate_profiles')
           .select('*')
@@ -48,7 +48,7 @@ function PreviewCandidateProfile() {
 
         if (profileData) {
           console.log("Profile found by ID:", profileData);
-          setProfile(profileData as unknown as CandidateProfile);
+          setProfile(profileData as CandidateProfile);
         } else {
           console.log("No profile found with ID:", candidateId);
           setError("Profile not found");

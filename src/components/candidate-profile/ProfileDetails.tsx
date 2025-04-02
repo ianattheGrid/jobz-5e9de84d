@@ -1,19 +1,21 @@
+
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Briefcase, MapPin, User, GraduationCap, Calendar, LinkedinIcon, UserCheck } from "lucide-react";
+import { Briefcase, MapPin, LinkedinIcon } from "lucide-react";
 import type { CandidateProfile } from "@/integrations/supabase/types/profiles";
 import LocationSection from "./sections/LocationSection";
 import ExperienceSection from "./sections/ExperienceSection";
 import QualificationsSection from "./sections/QualificationsSection";
 import SkillsSection from "./sections/SkillsSection";
-import { useCandidateProfileData } from "@/hooks/useCandidateProfileData";
 
 interface ProfileDetailsProps {
   profile: CandidateProfile;
+  showVRRecommendation?: boolean;
+  vrRecommendation?: any;
 }
 
-const ProfileDetails = ({ profile }: ProfileDetailsProps) => {
+const ProfileDetails = ({ profile, showVRRecommendation = false, vrRecommendation = null }: ProfileDetailsProps) => {
   // Get initials for the avatar fallback
   const getInitials = (name: string | null) => {
     if (!name) return "";
@@ -24,9 +26,6 @@ const ProfileDetails = ({ profile }: ProfileDetailsProps) => {
       .toUpperCase()
       .substring(0, 2);
   };
-
-  // Get VR recommendation status from the hook
-  const { vrRecommendation } = useCandidateProfileData(profile.id);
 
   return (
     <div className="space-y-6">
@@ -45,9 +44,13 @@ const ProfileDetails = ({ profile }: ProfileDetailsProps) => {
             <div className="pt-2 sm:pb-4 flex-1 mt-4">
               <div className="flex items-center gap-2">
                 <h1 className="text-2xl font-bold text-gray-900">{profile.full_name || "Anonymous Candidate"}</h1>
-                {vrRecommendation && (
+                {showVRRecommendation && vrRecommendation && (
                   <Badge variant="secondary" className="bg-pink-100 text-pink-800 flex items-center gap-1">
-                    <UserCheck className="h-3 w-3" />
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="9" cy="7" r="4"></circle>
+                      <polyline points="16 11 18 13 22 9"></polyline>
+                    </svg>
                     VR Recommended
                   </Badge>
                 )}
@@ -102,7 +105,12 @@ const ProfileDetails = ({ profile }: ProfileDetailsProps) => {
                     <h4 className="font-medium text-gray-900">{profile.job_title || "No Job Title"}</h4>
                     <p className="text-gray-700">{profile.current_employer}</p>
                     <div className="flex items-center text-gray-600 text-sm mt-1">
-                      <Calendar className="h-3 w-3 mr-1" />
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                      </svg>
                       <span>
                         {profile.years_in_current_title !== null && profile.years_in_current_title !== undefined 
                           ? `${profile.years_in_current_title} year${profile.years_in_current_title !== 1 ? 's' : ''} in current role` 
