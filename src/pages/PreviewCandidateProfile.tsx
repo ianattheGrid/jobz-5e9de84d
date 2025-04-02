@@ -8,19 +8,19 @@ import { supabase } from "@/integrations/supabase/client";
 import ProfileDetails from "@/components/candidate-profile/ProfileDetails";
 import { CandidateProfile } from "@/integrations/supabase/types/profiles";
 import { useToast } from "@/components/ui/use-toast";
-import { useCandidateAuthCheck } from "@/hooks/useCandidateAuthCheck";
 
 function PreviewCandidateProfile() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState<CandidateProfile | null>(null);
   const { toast } = useToast();
-  const { loading: authLoading } = useCandidateAuthCheck();
 
   // Function to fetch profile data
   useEffect(() => {
     const fetchProfile = async () => {
       try {
+        setLoading(true);
+        
         // Get current session
         const { data: { session } } = await supabase.auth.getSession();
         
@@ -30,7 +30,30 @@ function PreviewCandidateProfile() {
           return;
         }
 
-        // Fetch the candidate's profile with fresh data
+        // Check if user is a candidate
+        const { data: userRole, error: roleError } = await supabase
+          .from('user_roles')
+          .select('role')
+          .eq('user_id', session.user.id)
+          .maybeSingle();
+
+        if (roleError) {
+          console.error("Error fetching user role:", roleError);
+          throw new Error("Failed to verify user type");
+        }
+
+        if (!userRole || userRole.role !== 'candidate') {
+          console.log("User is not a candidate, redirecting to home");
+          toast({
+            title: "Access denied",
+            description: "Only candidates can view their profile preview.",
+            variant: "destructive",
+          });
+          navigate('/');
+          return;
+        }
+
+        // Fetch the candidate's profile data
         const { data, error } = await supabase
           .from('candidate_profiles')
           .select('*')
@@ -91,7 +114,7 @@ function PreviewCandidateProfile() {
           navigate('/candidate/profile');
         }
       } catch (error) {
-        console.error('Error fetching profile:', error);
+        console.error('Error:', error);
         toast({
           variant: "destructive",
           title: "Error",
@@ -103,12 +126,10 @@ function PreviewCandidateProfile() {
       }
     };
 
-    if (!authLoading) {
-      fetchProfile();
-    }
-  }, [navigate, toast, authLoading]);
+    fetchProfile();
+  }, [navigate, toast]);
 
-  if (loading || authLoading) {
+  if (loading) {
     return <LoadingState />;
   }
 
