@@ -14,7 +14,7 @@ function PreviewCandidateProfile() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchProfileData = async () => {
+    const fetchProfile = async () => {
       try {
         setLoading(true);
         
@@ -22,52 +22,40 @@ function PreviewCandidateProfile() {
         const { data: { session } } = await supabase.auth.getSession();
         
         if (!session) {
-          setError("Please sign in as a candidate to view your profile preview");
+          setError("Please sign in to view your profile preview");
           return;
         }
 
-        // Check if user is a candidate
-        const { data: userRole, error: roleError } = await supabase
-          .from('user_roles')
-          .select('role')
-          .eq('user_id', session.user.id)
-          .single();
-        
-        if (roleError || !userRole) {
-          setError("Could not verify your account type");
-          return;
-        }
-        
-        if (userRole.role !== 'candidate') {
-          setError("This page is only for candidate accounts");
-          return;
-        }
-
-        // Fetch profile data
+        // Fetch profile data directly
         const { data: profileData, error: profileError } = await supabase
           .from('candidate_profiles')
           .select('*')
           .eq('id', session.user.id)
           .single();
 
-        if (profileError || !profileData) {
-          setError("Could not find your profile data. Please complete your profile first.");
+        if (profileError) {
+          console.error("Error fetching profile:", profileError);
+          setError("Could not load profile data");
           return;
         }
 
-        // Transform data to match CandidateProfile type
+        if (!profileData) {
+          setError("Please complete your profile first");
+          return;
+        }
+
         setProfile(profileData as unknown as CandidateProfile);
         setError(null);
       } catch (err) {
-        console.error("Error fetching profile:", err);
+        console.error("Error:", err);
         setError("An unexpected error occurred");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchProfileData();
-  }, [navigate]);
+    fetchProfile();
+  }, []);
 
   // Show loading state
   if (loading) {
@@ -86,22 +74,21 @@ function PreviewCandidateProfile() {
           <p className="text-red-700 font-medium">{error}</p>
         </div>
         
-        <div className="flex gap-4">
-          <Button 
-            variant="default"
-            onClick={() => navigate('/candidate/signin')}
-            className="bg-pink-600 hover:bg-pink-700"
-          >
-            Sign in as Candidate
-          </Button>
-          
-          <Button 
-            variant="outline"
-            onClick={() => navigate(-1)}
-          >
-            Go Back
-          </Button>
-        </div>
+        <Button 
+          variant="outline"
+          onClick={() => navigate(-1)}
+          className="mr-4"
+        >
+          Go Back
+        </Button>
+        
+        <Button 
+          variant="default"
+          onClick={() => navigate('/candidate/signin')}
+          className="bg-pink-600 hover:bg-pink-700"
+        >
+          Sign in as Candidate
+        </Button>
       </div>
     );
   }
