@@ -1,3 +1,4 @@
+
 import { Job } from "@/integrations/supabase/types/jobs";
 import { CandidateProfile } from "@/integrations/supabase/types/profiles";
 
@@ -16,10 +17,25 @@ export const validateEssentialCriteria = (
   if (job.title_essential && candidateProfile.job_title) {
     const jobTitleLower = job.title.toLowerCase();
     
-    // Handle job_title as either string or array
-    const candidateTitles = Array.isArray(candidateProfile.job_title)
-      ? candidateProfile.job_title.map(title => title.toLowerCase())
-      : [candidateProfile.job_title.toLowerCase()];
+    // Process candidate job titles correctly whether string or array
+    let candidateTitles: string[] = [];
+    
+    if (typeof candidateProfile.job_title === 'string') {
+      try {
+        // Try to parse as JSON first (for array stored as string)
+        const parsedTitles = JSON.parse(candidateProfile.job_title);
+        if (Array.isArray(parsedTitles)) {
+          candidateTitles = parsedTitles.map(title => String(title).toLowerCase());
+        } else {
+          candidateTitles = [candidateProfile.job_title.toLowerCase()];
+        }
+      } catch (e) {
+        // If parsing fails, treat as regular string
+        candidateTitles = [candidateProfile.job_title.toLowerCase()];
+      }
+    } else if (Array.isArray(candidateProfile.job_title)) {
+      candidateTitles = candidateProfile.job_title.map(title => String(title).toLowerCase());
+    }
     
     // Check if any of the candidate's job titles match the required title
     if (!candidateTitles.includes(jobTitleLower)) {

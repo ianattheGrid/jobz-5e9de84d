@@ -33,10 +33,18 @@ export function MultiSelect({
   };
 
   const availableOptions = options.filter(
-    (option) => 
-      !selected.includes(option.value) &&
-      (typeof option.label === 'string' && 
-       option.label.toLowerCase().includes(searchValue.toLowerCase()))
+    (option) => {
+      // First check if the option is already selected
+      if (selected.includes(option.value)) return false;
+      
+      // Make sure option.label is a string before calling toLowerCase
+      if (!option.label || typeof option.label !== 'string') return false;
+      
+      // Only filter by search if there's a search value
+      if (!searchValue) return true;
+      
+      return option.label.toLowerCase().includes(searchValue.toLowerCase());
+    }
   );
 
   const handleClickOutside = React.useCallback((event: MouseEvent) => {

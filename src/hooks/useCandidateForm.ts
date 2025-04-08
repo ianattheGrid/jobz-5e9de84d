@@ -92,9 +92,24 @@ export const useCandidateForm = () => {
       
       // Handle job_title field properly
       let jobTitles: string[] = [];
-      // If the job_title is a string, convert it to an array
-      if (typeof profile.job_title === 'string' && profile.job_title) {
-        jobTitles = [profile.job_title];
+      
+      // If job_title is a string, try to parse it as JSON first
+      if (typeof profile.job_title === 'string') {
+        try {
+          // Try to parse it as JSON (which is how we store arrays in the DB)
+          const parsed = JSON.parse(profile.job_title);
+          if (Array.isArray(parsed)) {
+            jobTitles = parsed;
+          } else if (parsed) {
+            // If it's a single value but not an array
+            jobTitles = [String(parsed)];
+          }
+        } catch (e) {
+          // If parsing fails, treat it as a regular string
+          if (profile.job_title) {
+            jobTitles = [profile.job_title];
+          }
+        }
       }
       // If it's already an array, use it
       else if (Array.isArray(profile.job_title)) {

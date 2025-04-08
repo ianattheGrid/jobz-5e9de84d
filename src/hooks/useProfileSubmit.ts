@@ -49,12 +49,6 @@ export const useProfileSubmit = (toast: ToastFunction) => {
         jobTitles = [];
       }
 
-      // Convert array to string if needed for database compatibility
-      // If we have multiple job titles, join them with a delimiter that can be split later
-      const jobTitleForDB = Array.isArray(jobTitles) && jobTitles.length > 0 
-        ? jobTitles // Keep as array for database - our profile type supports this
-        : null;
-
       // Prepare profile data with correct types
       const profileData = {
         id: session.user.id,
@@ -64,7 +58,8 @@ export const useProfileSubmit = (toast: ToastFunction) => {
         address: cleanStringValue(values.address),
         home_postcode: cleanStringValue(values.home_postcode),
         location: Array.isArray(values.location) ? values.location : [],
-        job_title: jobTitleForDB,
+        // Need to convert job_title to a string for database compatibility
+        job_title: JSON.stringify(jobTitles),
         years_experience: cleanNumberValue(values.years_experience),
         min_salary: cleanNumberValue(values.min_salary),
         max_salary: cleanNumberValue(values.max_salary),
