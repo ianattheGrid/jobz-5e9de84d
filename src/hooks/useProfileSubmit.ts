@@ -1,3 +1,4 @@
+
 import { toast } from "@/components/ui/use-toast";
 import { CandidateFormValues } from "@/components/candidate/candidateFormSchema";
 import { supabase } from "@/integrations/supabase/client";
@@ -37,11 +38,14 @@ export const useProfileSubmit = (toast: ToastFunction) => {
         return isNaN(num) ? defaultValue : num;
       };
 
-      // Process job_title field - either keep array or convert string to array
+      // Process job_title field - ensure it's an array
       let jobTitles = values.job_title;
-      if (typeof jobTitles === 'string') {
-        jobTitles = jobTitles ? [jobTitles] : [];
-      } else if (!Array.isArray(jobTitles)) {
+      // If not an array but has a value, convert to array
+      if (!Array.isArray(jobTitles) && jobTitles) {
+        jobTitles = [jobTitles];
+      }
+      // If falsy value, use empty array
+      if (!jobTitles) {
         jobTitles = [];
       }
 

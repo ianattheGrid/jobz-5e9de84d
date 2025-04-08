@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { CandidateProfile } from "@/integrations/supabase/types/profiles";
 import { calculateSkillsMatchScore } from "../utils/skillsMatching";
@@ -7,21 +6,37 @@ import { supabase } from "@/integrations/supabase/client";
 export const useMatchScore = (profile: CandidateProfile, job: any) => {
   const titleMatch = () => {
     if (!profile.job_title || !job.title) return 0;
-    const profileTitle = profile.job_title.toLowerCase();
+    
+    // Handle job_title as either string or array
+    const profileTitles = Array.isArray(profile.job_title) 
+      ? profile.job_title.map(title => title.toLowerCase()) 
+      : [profile.job_title.toLowerCase()];
+    
     const jobTitle = job.title.toLowerCase();
     
-    if (profileTitle === jobTitle) return 1;
-    if (profileTitle.includes(jobTitle) || jobTitle.includes(profileTitle)) return 0.8;
+    // Check if any title is an exact match
+    if (profileTitles.includes(jobTitle)) return 1;
+    
+    // Check for partial matches
+    if (profileTitles.some(title => title.includes(jobTitle) || jobTitle.includes(title))) return 0.8;
+    
     return 0;
   };
 
   const specializationMatch = () => {
     if (!profile.job_title || !job.specialization) return 0;
-    const profileTitle = profile.job_title.toLowerCase();
+    
+    // Handle job_title as either string or array
+    const profileTitles = Array.isArray(profile.job_title) 
+      ? profile.job_title.map(title => title.toLowerCase()) 
+      : [profile.job_title.toLowerCase()];
+    
     const spec = job.specialization.toLowerCase();
     
-    if (profileTitle.includes(spec)) return 1;
-    if (spec.includes(profileTitle)) return 0.8;
+    // Check if any title includes the specialization
+    if (profileTitles.some(title => title.includes(spec))) return 1;
+    if (profileTitles.some(title => spec.includes(title))) return 0.8;
+    
     return 0;
   };
 

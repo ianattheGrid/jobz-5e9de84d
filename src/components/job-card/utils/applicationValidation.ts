@@ -13,8 +13,18 @@ export const validateEssentialCriteria = (
   const failedCriteria: string[] = [];
 
   // Check job title match if essential
-  if (job.title_essential && job.title.toLowerCase() !== candidateProfile.job_title.toLowerCase()) {
-    failedCriteria.push("Job title does not match the required title");
+  if (job.title_essential && candidateProfile.job_title) {
+    const jobTitleLower = job.title.toLowerCase();
+    
+    // Handle job_title as either string or array
+    const candidateTitles = Array.isArray(candidateProfile.job_title)
+      ? candidateProfile.job_title.map(title => title.toLowerCase())
+      : [candidateProfile.job_title.toLowerCase()];
+    
+    // Check if any of the candidate's job titles match the required title
+    if (!candidateTitles.includes(jobTitleLower)) {
+      failedCriteria.push("Job title does not match the required title");
+    }
   }
 
   // Check years of experience if essential, with 1 year flexibility

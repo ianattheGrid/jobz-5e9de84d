@@ -91,14 +91,14 @@ export const useCandidateForm = () => {
       console.log("Loading profile data:", profile);
       
       // Handle job_title field properly
-      let jobTitles = profile.job_title;
+      let jobTitles: string[] = [];
       // If the job_title is a string, convert it to an array
       if (typeof profile.job_title === 'string' && profile.job_title) {
         jobTitles = [profile.job_title];
       }
-      // If it's null or undefined, use an empty array
-      if (!profile.job_title) {
-        jobTitles = [];
+      // If it's already an array, use it
+      else if (Array.isArray(profile.job_title)) {
+        jobTitles = profile.job_title;
       }
       
       // Prepare form data with nullish coalescing to ensure proper value types
