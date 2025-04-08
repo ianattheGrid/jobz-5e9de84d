@@ -50,7 +50,9 @@ function PreviewCandidateProfile() {
           console.log("Profile found by ID:", profileData);
           const validProfile: CandidateProfile = {
             ...profileData as any,
-            title_experience: profileData.title_experience || null
+            title_experience: profileData.title_experience || null,
+            required_qualifications: profileData.required_qualifications || [],
+            location: profileData.location || []
           };
           setProfile(validProfile);
         } else {
@@ -121,6 +123,6 @@ function PreviewCandidateProfile() {
       {profile && <ProfileDetails profile={profile} />}
     </div>
   );
-}
+};
 
 export default PreviewCandidateProfile;
