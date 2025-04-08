@@ -28,6 +28,12 @@ export function MultiSelect({
   const containerRef = React.useRef<HTMLDivElement>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
 
+  // Debug logging
+  React.useEffect(() => {
+    console.log("MultiSelect options:", options);
+    console.log("MultiSelect selected:", selected);
+  }, [options, selected]);
+
   const handleRemoveItem = (valueToRemove: string) => {
     onChange(selected.filter((value) => value !== valueToRemove));
   };
@@ -114,18 +120,24 @@ export function MultiSelect({
         <ChevronDown className="absolute right-3 top-3 h-4 w-4 opacity-50" />
       </div>
       
-      {isOpen && availableOptions.length > 0 && (
+      {isOpen && (
         <div className="absolute w-full z-50 top-[calc(100%+4px)] rounded-md border border-input bg-white shadow-md">
           <div className="max-h-[200px] overflow-auto py-1">
-            {availableOptions.map((option) => (
-              <div
-                key={option.value}
-                className="px-3 py-2 text-sm cursor-pointer hover:bg-gray-100"
-                onClick={() => handleSelectOption(option)}
-              >
-                {option.label}
+            {availableOptions.length > 0 ? (
+              availableOptions.map((option) => (
+                <div
+                  key={option.value}
+                  className="px-3 py-2 text-sm cursor-pointer hover:bg-gray-100"
+                  onClick={() => handleSelectOption(option)}
+                >
+                  {option.label}
+                </div>
+              ))
+            ) : (
+              <div className="px-3 py-2 text-sm text-gray-500">
+                {options.length > 0 ? "No matching options" : "No options available"}
               </div>
-            ))}
+            )}
           </div>
         </div>
       )}

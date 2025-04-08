@@ -46,6 +46,7 @@ export const useWorkAreaHandler = (control: Control<any>) => {
   const yearsInCurrentTitle = useWatch({ control, name: 'years_in_current_title' });
   
   console.log("Current form values:", { workArea, itSpecialization, jobTitle, yearsInCurrentTitle });
+  console.log("Current available titles:", availableTitles);
 
   // Initialize based on existing values
   useEffect(() => {
@@ -56,9 +57,7 @@ export const useWorkAreaHandler = (control: Control<any>) => {
       // If we also have a specialization, set it up
       if (itSpecialization) {
         console.log("Initializing with specialization:", itSpecialization);
-        setTimeout(() => {
-          handleSpecialisationChange(itSpecialization);
-        }, 0);
+        handleSpecialisationChange(itSpecialization);
       }
     }
   }, []);
@@ -67,6 +66,7 @@ export const useWorkAreaHandler = (control: Control<any>) => {
   useEffect(() => {
     if (itSpecialization && workArea === "IT") {
       const titles = getTitlesForITSpecialisation(itSpecialization);
+      console.log(`Setting available titles for IT:${itSpecialization}:`, titles);
       setAvailableTitles(titles);
       setSelectedSpecialisation(itSpecialization);
     }

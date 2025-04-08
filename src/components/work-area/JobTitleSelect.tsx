@@ -18,6 +18,9 @@ const JobTitleSelect = ({ control, titles, name }: JobTitleSelectProps) => {
     // Filter out empty titles and remove duplicates
     if (titles && titles.length > 0) {
       setFilteredTitles([...new Set(titles.filter(title => !!title))]);
+    } else {
+      console.log("No titles provided to JobTitleSelect:", titles);
+      setFilteredTitles([]);
     }
   }, [titles]);
 
@@ -26,6 +29,9 @@ const JobTitleSelect = ({ control, titles, name }: JobTitleSelectProps) => {
       control={control}
       name={name}
       render={({ field }) => {
+        // Debug current field value
+        console.log(`JobTitleSelect field value for ${name}:`, field.value);
+        
         // Convert single string value to array if needed
         const currentValues = Array.isArray(field.value) 
           ? field.value 
@@ -38,6 +44,8 @@ const JobTitleSelect = ({ control, titles, name }: JobTitleSelectProps) => {
           value: title,
           label: title
         }));
+
+        console.log("JobTitleSelect options:", options);
         
         return (
           <FormItem>

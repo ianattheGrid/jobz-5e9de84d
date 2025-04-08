@@ -67,7 +67,7 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
         <>
           <JobTitleSelect
             control={control}
-            titles={availableTitles.length > 0 ? availableTitles : (jobTitle ? [jobTitle] : [])}
+            titles={availableTitles}
             name="job_title"
           />
           <TitleExperienceSelect

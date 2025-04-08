@@ -2,6 +2,8 @@
 import { itRoles } from "../../constants/it-roles";
 
 export const getTitlesForITSpecialisation = (specialisation: string): string[] => {
+  console.log(`Getting titles for IT specialisation: ${specialisation}`);
+  
   const {
     softwareDevTitles,
     itSupportTitles,
@@ -15,28 +17,44 @@ export const getTitlesForITSpecialisation = (specialisation: string): string[] =
     specializedITTitles
   } = itRoles;
 
+  let titles: string[] = [];
+
   switch (specialisation) {
     case "Software Development and Programming":
-      return softwareDevTitles;
+      titles = softwareDevTitles;
+      break;
     case "IT Support and Operations":
-      return itSupportTitles;
+      titles = itSupportTitles;
+      break;
     case "Networking and Infrastructure":
-      return networkingTitles;
+      titles = networkingTitles;
+      break;
     case "Cybersecurity":
-      return cybersecurityTitles;
+      titles = cybersecurityTitles;
+      break;
     case "Data and Analytics":
-      return dataAnalyticsTitles;
+      titles = dataAnalyticsTitles;
+      break;
     case "Cloud Computing":
-      return cloudComputingTitles;
+      titles = cloudComputingTitles;
+      break;
     case "Artificial Intelligence and Machine Learning":
-      return aiTitles;
+      titles = aiTitles;
+      break;
     case "Testing and Quality Assurance":
-      return testingTitles;
+      titles = testingTitles;
+      break;
     case "IT Management":
-      return itManagementTitles;
+      titles = itManagementTitles;
+      break;
     case "Specialised IT Roles":
-      return specializedITTitles;
+      titles = specializedITTitles;
+      break;
     default:
-      return [];
+      titles = [];
+      break;
   }
+
+  console.log(`Found ${titles.length} titles for ${specialisation}:`, titles);
+  return titles;
 };
