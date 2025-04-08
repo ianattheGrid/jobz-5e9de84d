@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -14,7 +13,6 @@ function PreviewCandidateProfile() {
   const [profile, setProfile] = useState<CandidateProfile | null>(null);
   const [error, setError] = useState<string | null>(null);
   
-  // Extract the user ID from query parameters
   const queryParams = new URLSearchParams(location.search);
   const candidateId = queryParams.get('id');
 
@@ -32,7 +30,6 @@ function PreviewCandidateProfile() {
           return;
         }
         
-        // Get the profile data using the ID parameter (without authentication)
         const { data: profileData, error: profileError } = await supabase
           .from('candidate_profiles')
           .select('*')
@@ -70,12 +67,10 @@ function PreviewCandidateProfile() {
     loadProfileData();
   }, [candidateId]);
 
-  // Handle go back button
   const handleGoBack = () => {
-    navigate(-1); // Navigate back to previous page
+    navigate(-1);
   };
 
-  // Show loading state
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -84,7 +79,6 @@ function PreviewCandidateProfile() {
     );
   }
 
-  // Show error state
   if (error) {
     return (
       <div className="container mx-auto px-4 py-8 max-w-4xl">
@@ -103,7 +97,6 @@ function PreviewCandidateProfile() {
     );
   }
 
-  // Show profile preview
   return (
     <div className="container mx-auto px-4 py-8 max-w-5xl bg-gray-50">
       <Button
