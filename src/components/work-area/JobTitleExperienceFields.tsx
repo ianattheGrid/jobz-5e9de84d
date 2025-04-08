@@ -50,7 +50,9 @@ const JobTitleExperienceFields = ({ control, jobTitles }: JobTitleExperienceFiel
                         <SelectContent>
                           {YEARS_OPTIONS.map((years) => (
                             <SelectItem key={years} value={String(years)}>
-                              {years === 20 ? "20+ years" : `${years} ${years === 1 ? "year" : "years"}`}
+                              {years === 10 ? "10+ years" : 
+                               years === 20 ? "20+ years" : 
+                               `${years} ${years === 1 ? "year" : "years"}`}
                             </SelectItem>
                           ))}
                         </SelectContent>
