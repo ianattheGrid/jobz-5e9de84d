@@ -48,7 +48,11 @@ function PreviewCandidateProfile() {
 
         if (profileData) {
           console.log("Profile found by ID:", profileData);
-          setProfile(profileData as CandidateProfile);
+          const validProfile: CandidateProfile = {
+            ...profileData as any,
+            title_experience: profileData.title_experience || null
+          };
+          setProfile(validProfile);
         } else {
           console.log("No profile found with ID:", candidateId);
           setError("Profile not found");

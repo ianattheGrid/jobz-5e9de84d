@@ -110,6 +110,7 @@ describe('Job Matching Algorithm', () => {
       home_postcode: null,
       linkedin_url: null,
       years_in_current_title: 4,
+      title_experience: null,
       workArea: "IT",
       itSpecialization: "React"
     };

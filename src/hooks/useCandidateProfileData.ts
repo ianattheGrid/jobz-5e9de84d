@@ -78,6 +78,7 @@ export const useCandidateProfileData = (id: string | undefined) => {
             home_postcode: data.home_postcode,
             linkedin_url: data.linkedin_url,
             years_in_current_title: data.years_in_current_title || null,
+            title_experience: data.title_experience || null,
             workArea: data.workArea || null,
             itSpecialization: data.itSpecialization || null
           };

@@ -162,11 +162,17 @@ export const useApplication = (jobId: number, employerId: string) => {
         return;
       }
 
+      // Add the missing title_experience field to the profile
+      const validProfile = {
+        ...profile,
+        title_experience: profile.title_experience || null
+      };
+
       // Validate essential criteria
-      const { isValid: meetsEssentialCriteria, failedCriteria } = validateEssentialCriteria(job, profile);
+      const { isValid: meetsEssentialCriteria, failedCriteria } = validateEssentialCriteria(job, validProfile);
       
       // Calculate match score
-      const { calculateTotalScore } = useMatchScore(profile, job);
+      const { calculateTotalScore } = useMatchScore(validProfile, job);
       const totalScore = await calculateTotalScore();
       
       // Calculate minimum allowed score with 10% leeway
