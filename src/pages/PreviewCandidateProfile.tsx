@@ -123,6 +123,6 @@ function PreviewCandidateProfile() {
       {profile && <ProfileDetails profile={profile} />}
     </div>
   );
-};
+}
 
 export default PreviewCandidateProfile;

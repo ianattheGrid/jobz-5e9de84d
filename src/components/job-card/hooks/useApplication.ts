@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -17,7 +16,6 @@ export const useApplication = (jobId: number, employerId: string) => {
   const [application, setApplication] = useState<any>(null);
   const [applicationLoading, setApplicationLoading] = useState(true);
 
-  // Check for existing application when component mounts
   useEffect(() => {
     const checkExistingApplication = async () => {
       if (!user) {
@@ -67,7 +65,6 @@ export const useApplication = (jobId: number, employerId: string) => {
         
       if (error) throw error;
       
-      // Refresh application data
       const { data } = await supabase
         .from('applications')
         .select('*')
@@ -103,7 +100,6 @@ export const useApplication = (jobId: number, employerId: string) => {
     }
 
     try {
-      // Get the candidate profile
       const { data: profile, error: profileError } = await supabase
         .from('candidate_profiles')
         .select('*')
@@ -119,7 +115,6 @@ export const useApplication = (jobId: number, employerId: string) => {
         return;
       }
 
-      // Get the job details
       const { data: job, error: jobError } = await supabase
         .from('jobs')
         .select('*')
@@ -135,7 +130,6 @@ export const useApplication = (jobId: number, employerId: string) => {
         return;
       }
 
-      // Check for existing applications
       const { data: existingApplication } = await supabase
         .from('applications')
         .select('id, status')
@@ -152,7 +146,6 @@ export const useApplication = (jobId: number, employerId: string) => {
         return;
       }
 
-      // Check if candidate works for the employer
       if (profile.current_employer?.toLowerCase() === job.company.toLowerCase()) {
         toast({
           variant: "destructive",
@@ -162,29 +155,24 @@ export const useApplication = (jobId: number, employerId: string) => {
         return;
       }
 
-      // Create a properly typed profile with all required fields
       const validProfile = {
         ...profile,
-        title_experience: profile.title_experience || null
+        title_experience: profile.title_experience || null,
+        location: profile.location || [],
+        required_qualifications: profile.required_qualifications || []
       };
 
-      // Validate essential criteria
       const { isValid: meetsEssentialCriteria, failedCriteria } = validateEssentialCriteria(job, validProfile);
       
-      // Calculate match score
       const { calculateTotalScore } = useMatchScore(validProfile, job);
       const totalScore = await calculateTotalScore();
       
-      // Calculate minimum allowed score with 10% leeway
       const minimumAllowedScore = Math.max(0, job.match_threshold - 10);
       
-      // Convert score to percentage for display
       const scorePercentage = Math.round(totalScore * 100);
       
-      // Check if score is too low (outside the 10% leeway)
       const isTooLowScore = scorePercentage < minimumAllowedScore;
       
-      // Show warning if essential criteria not met or score is too low
       if (!meetsEssentialCriteria || scorePercentage < job.match_threshold || isTooLowScore) {
         handleMatchWarning({
           isEssentialMismatch: !meetsEssentialCriteria,
@@ -193,12 +181,10 @@ export const useApplication = (jobId: number, employerId: string) => {
           matchThreshold: job.match_threshold,
         });
         
-        // Block application completely if essential criteria not met or score is too low (outside leeway)
         if (!meetsEssentialCriteria || isTooLowScore) {
           return;
         }
       } else {
-        // No issues, proceed with application
         setIsApplying(true);
       }
     } catch (error: any) {
@@ -215,7 +201,6 @@ export const useApplication = (jobId: number, employerId: string) => {
     if (!user) return;
     
     try {
-      // Process resume upload if provided
       let resumeUrl = null;
       if (resumeFile) {
         const filePath = `resumes/${user.id}/${jobId}/${resumeFile.name}`;
@@ -230,7 +215,6 @@ export const useApplication = (jobId: number, employerId: string) => {
         resumeUrl = filePath;
       }
 
-      // Insert application
       const { data, error } = await supabase.from('applications').insert({
         job_id: jobId,
         applicant_id: user.id,
@@ -243,7 +227,6 @@ export const useApplication = (jobId: number, employerId: string) => {
 
       if (error) throw error;
 
-      // Set the new application in state
       setApplication(data);
       
       toast({

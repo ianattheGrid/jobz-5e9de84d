@@ -1,4 +1,3 @@
-
 import { searchFormSchema } from "@/components/candidate-search/searchFormSchema";
 import { supabase } from "@/integrations/supabase/client";
 import type { z } from "zod";
@@ -15,7 +14,6 @@ export const useCandidateSearch = () => {
   const { user } = useAuth();
   const [employerCompany, setEmployerCompany] = useState<string | null>(null);
 
-  // Get current employer's company name
   useEffect(() => {
     if (user) {
       const getEmployerCompany = async () => {
@@ -66,9 +64,7 @@ export const useCandidateSearch = () => {
         query = buildSignupDateQuery(query, values.signupPeriod);
       }
       
-      // Filter out candidates from employer's own company
       if (employerCompany) {
-        // Use RPC to handle the company name variations
         query = query.not('current_employer', 'ilike', `%${employerCompany}%`);
       }
 
