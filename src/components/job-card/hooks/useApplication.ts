@@ -162,7 +162,7 @@ export const useApplication = (jobId: number, employerId: string) => {
         return;
       }
 
-      // Add the missing title_experience field to the profile
+      // Create a properly typed profile with all required fields
       const validProfile = {
         ...profile,
         title_experience: profile.title_experience || null

@@ -121,7 +121,7 @@ export const useCandidateForm = () => {
       let titleExperience = {};
       if (profile.title_experience) {
         try {
-          titleExperience = JSON.parse(profile.title_experience as string);
+          titleExperience = JSON.parse(profile.title_experience);
         } catch (e) {
           console.error("Error parsing title experience data:", e);
           titleExperience = {};

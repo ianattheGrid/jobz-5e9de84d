@@ -23,6 +23,7 @@ export const useProfileCheck = () => {
       return null;
     }
 
+    // Create a properly typed profile object with all required fields
     const profile: CandidateProfile = {
       id: profileData.id,
       email: profileData.email,
