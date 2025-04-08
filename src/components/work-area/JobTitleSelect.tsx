@@ -27,7 +27,11 @@ const JobTitleSelect = ({ control, titles, name }: JobTitleSelectProps) => {
       name={name}
       render={({ field }) => {
         // Convert single string value to array if needed
-        const currentValues = Array.isArray(field.value) ? field.value : field.value ? [field.value] : [];
+        const currentValues = Array.isArray(field.value) 
+          ? field.value 
+          : field.value 
+            ? [field.value] 
+            : [];
         
         // Create options for MultiSelect
         const options = filteredTitles.map(title => ({

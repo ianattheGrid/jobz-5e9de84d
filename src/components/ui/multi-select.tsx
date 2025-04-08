@@ -35,7 +35,8 @@ export function MultiSelect({
   const availableOptions = options.filter(
     (option) => 
       !selected.includes(option.value) &&
-      option.label.toLowerCase().includes(searchValue.toLowerCase())
+      (typeof option.label === 'string' && 
+       option.label.toLowerCase().includes(searchValue.toLowerCase()))
   );
 
   const handleClickOutside = React.useCallback((event: MouseEvent) => {
