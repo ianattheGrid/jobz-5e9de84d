@@ -1,5 +1,4 @@
 
-
 export interface CandidateProfile {
   id: string;
   email: string;
@@ -79,4 +78,3 @@ export interface VirtualRecruiterProfile {
   created_at: string;
   national_insurance_number: string | null;
 }
-
