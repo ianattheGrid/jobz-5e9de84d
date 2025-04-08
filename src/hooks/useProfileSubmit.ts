@@ -1,4 +1,3 @@
-
 import { toast } from "@/components/ui/use-toast";
 import { CandidateFormValues } from "@/components/candidate/candidateFormSchema";
 import { supabase } from "@/integrations/supabase/client";
@@ -38,6 +37,14 @@ export const useProfileSubmit = (toast: ToastFunction) => {
         return isNaN(num) ? defaultValue : num;
       };
 
+      // Process job_title field - either keep array or convert string to array
+      let jobTitles = values.job_title;
+      if (typeof jobTitles === 'string') {
+        jobTitles = jobTitles ? [jobTitles] : [];
+      } else if (!Array.isArray(jobTitles)) {
+        jobTitles = [];
+      }
+
       // Prepare profile data with correct types
       const profileData = {
         id: session.user.id,
@@ -47,7 +54,7 @@ export const useProfileSubmit = (toast: ToastFunction) => {
         address: cleanStringValue(values.address),
         home_postcode: cleanStringValue(values.home_postcode),
         location: Array.isArray(values.location) ? values.location : [],
-        job_title: cleanStringValue(values.job_title || ''),
+        job_title: jobTitles,
         years_experience: cleanNumberValue(values.years_experience),
         min_salary: cleanNumberValue(values.min_salary),
         max_salary: cleanNumberValue(values.max_salary),

@@ -25,7 +25,7 @@ export const useCandidateForm = () => {
     home_postcode: "",
     location: [],
     workArea: "",
-    job_title: "",
+    job_title: [],
     itSpecialization: "",
     min_salary: 0,
     max_salary: 0,
@@ -90,6 +90,17 @@ export const useCandidateForm = () => {
     try {
       console.log("Loading profile data:", profile);
       
+      // Handle job_title field properly
+      let jobTitles = profile.job_title;
+      // If the job_title is a string, convert it to an array
+      if (typeof profile.job_title === 'string' && profile.job_title) {
+        jobTitles = [profile.job_title];
+      }
+      // If it's null or undefined, use an empty array
+      if (!profile.job_title) {
+        jobTitles = [];
+      }
+      
       // Prepare form data with nullish coalescing to ensure proper value types
       const formData: CandidateFormValues = {
         full_name: profile.full_name ?? "",
@@ -99,7 +110,7 @@ export const useCandidateForm = () => {
         home_postcode: profile.home_postcode ?? "",
         location: Array.isArray(profile.location) ? profile.location : [],
         workArea: profile.workArea ?? "",
-        job_title: profile.job_title ?? "",
+        job_title: jobTitles,
         itSpecialization: profile.itSpecialization ?? "",
         min_salary: typeof profile.min_salary === 'number' ? profile.min_salary : 0,
         max_salary: typeof profile.max_salary === 'number' ? profile.max_salary : 0,

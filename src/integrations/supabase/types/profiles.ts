@@ -2,7 +2,7 @@
 export interface CandidateProfile {
   id: string;
   email: string;
-  job_title: string;
+  job_title: string[] | string | null;
   years_experience: number;
   location: string[];
   min_salary: number;

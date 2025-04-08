@@ -1,8 +1,8 @@
 
-import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { FormField, FormItem, FormLabel, FormControl, FormMessage, FormDescription } from "@/components/ui/form";
 import { Control } from "react-hook-form";
 import { useEffect, useState } from "react";
+import { MultiSelect } from "@/components/ui/multi-select";
 
 interface JobTitleSelectProps {
   control: Control<any>;
@@ -26,33 +26,34 @@ const JobTitleSelect = ({ control, titles, name }: JobTitleSelectProps) => {
       control={control}
       name={name}
       render={({ field }) => {
-        // Make sure we have a valid value and that it is set in the field
-        const validValue = field.value || "";
+        // Convert single string value to array if needed
+        const currentValues = Array.isArray(field.value) ? field.value : field.value ? [field.value] : [];
+        
+        // Create options for MultiSelect
+        const options = filteredTitles.map(title => ({
+          value: title,
+          label: title
+        }));
         
         return (
           <FormItem>
-            <FormLabel>Job Title</FormLabel>
+            <FormLabel>Job Titles</FormLabel>
+            <FormDescription>
+              Select multiple job titles that match your experience. This helps employers find you for suitable positions.
+            </FormDescription>
             <FormControl>
-              <Select 
-                onValueChange={field.onChange} 
-                value={validValue}
-                defaultValue={validValue}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select job title" />
-                </SelectTrigger>
-                <SelectContent>
-                  {filteredTitles.length > 0 ? (
-                    filteredTitles.map((title) => (
-                      <SelectItem key={title} value={title}>
-                        {title}
-                      </SelectItem>
-                    ))
-                  ) : (
-                    <SelectItem value="">No job titles available</SelectItem>
-                  )}
-                </SelectContent>
-              </Select>
+              {filteredTitles.length > 0 ? (
+                <MultiSelect
+                  options={options}
+                  selected={currentValues}
+                  onChange={(values) => field.onChange(values)}
+                  placeholder="Select job titles"
+                />
+              ) : (
+                <div className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-muted-foreground">
+                  No job titles available
+                </div>
+              )}
             </FormControl>
             <FormMessage />
           </FormItem>
