@@ -197,57 +197,6 @@ export const useApplication = (jobId: number, employerId: string) => {
     }
   };
 
-  const handleSubmitApplication = async () => {
-    if (!user) return;
-    
-    try {
-      let resumeUrl = null;
-      if (resumeFile) {
-        const filePath = `resumes/${user.id}/${jobId}/${resumeFile.name}`;
-        const { error: uploadError } = await supabase.storage
-          .from('candidate-files')
-          .upload(filePath, resumeFile);
-
-        if (uploadError) {
-          throw new Error(`Resume upload failed: ${uploadError.message}`);
-        }
-
-        resumeUrl = filePath;
-      }
-
-      const { data, error } = await supabase.from('applications').insert({
-        job_id: jobId,
-        applicant_id: user.id,
-        cover_letter: coverLetter,
-        resume_url: resumeUrl,
-        status: 'pending',
-        employer_accepted: false,
-        candidate_accepted: false,
-      }).select().single();
-
-      if (error) throw error;
-
-      setApplication(data);
-      
-      toast({
-        title: "Application Submitted",
-        description: "Your application has been submitted successfully! You'll be notified when the employer responds.",
-        variant: "default",
-      });
-
-      setIsApplying(false);
-      setCoverLetter("");
-      setResumeFile(null);
-    } catch (error: any) {
-      console.error("Application error:", error);
-      toast({
-        variant: "destructive",
-        title: "Application Failed",
-        description: error.message || "Failed to submit application",
-      });
-    }
-  };
-
   return {
     isApplying,
     setIsApplying, 
@@ -256,7 +205,56 @@ export const useApplication = (jobId: number, employerId: string) => {
     resumeFile,
     setResumeFile,
     handleStartApply,
-    handleSubmitApplication,
+    handleSubmitApplication: async () => {
+      if (!user) return;
+      
+      try {
+        let resumeUrl = null;
+        if (resumeFile) {
+          const filePath = `resumes/${user.id}/${jobId}/${resumeFile.name}`;
+          const { error: uploadError } = await supabase.storage
+            .from('candidate-files')
+            .upload(filePath, resumeFile);
+  
+          if (uploadError) {
+            throw new Error(`Resume upload failed: ${uploadError.message}`);
+          }
+  
+          resumeUrl = filePath;
+        }
+  
+        const { data, error } = await supabase.from('applications').insert({
+          job_id: jobId,
+          applicant_id: user.id,
+          cover_letter: coverLetter,
+          resume_url: resumeUrl,
+          status: 'pending',
+          employer_accepted: false,
+          candidate_accepted: false,
+        }).select().single();
+  
+        if (error) throw error;
+  
+        setApplication(data);
+        
+        toast({
+          title: "Application Submitted",
+          description: "Your application has been submitted successfully! You'll be notified when the employer responds.",
+          variant: "default",
+        });
+  
+        setIsApplying(false);
+        setCoverLetter("");
+        setResumeFile(null);
+      } catch (error: any) {
+        console.error("Application error:", error);
+        toast({
+          variant: "destructive",
+          title: "Application Failed",
+          description: error.message || "Failed to submit application",
+        });
+      }
+    },
     matchWarningOpen,
     setMatchWarningOpen,
     matchWarningInfo,

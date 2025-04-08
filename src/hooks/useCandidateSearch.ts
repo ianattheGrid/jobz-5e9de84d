@@ -1,3 +1,4 @@
+
 import { searchFormSchema } from "@/components/candidate-search/searchFormSchema";
 import { supabase } from "@/integrations/supabase/client";
 import type { z } from "zod";
