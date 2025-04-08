@@ -22,11 +22,32 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
     handleSpecialisationChange
   } = useWorkAreaHandler(control);
 
-  // Watch job_title field to know when we have a valid title
+  // Watch job_title and workArea fields
   const jobTitle = useWatch({ 
     control,
     name: 'job_title'
   });
+  
+  const workArea = useWatch({
+    control,
+    name: 'workArea'
+  });
+  
+  const itSpecialization = useWatch({
+    control,
+    name: 'itSpecialization'
+  });
+  
+  // Debug logged data
+  useEffect(() => {
+    console.log("WorkAreaField data:", { 
+      jobTitle, 
+      workArea, 
+      itSpecialization, 
+      showSpecializations, 
+      availableTitles
+    });
+  }, [jobTitle, workArea, itSpecialization, showSpecializations, availableTitles]);
 
   return (
     <div className="space-y-4">
@@ -41,12 +62,12 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
         onSpecialisationChange={handleSpecialisationChange}
       />
 
-      {/* Show job title either when we have specialization + titles OR when we already have a job title */}
-      {((selectedSpecialisation && availableTitles.length > 0) || jobTitle) && (
+      {/* Always show job title if we have a work area selected */}
+      {workArea && (
         <>
           <JobTitleSelect
             control={control}
-            titles={availableTitles.length > 0 ? availableTitles : [jobTitle]}
+            titles={availableTitles.length > 0 ? availableTitles : (jobTitle ? [jobTitle] : [])}
             name="job_title"
           />
           <TitleExperienceSelect

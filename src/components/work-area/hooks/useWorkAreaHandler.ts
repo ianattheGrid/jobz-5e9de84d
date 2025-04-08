@@ -15,6 +15,7 @@ import {
   getTitlesForPharmaSpecialisation,
   getTitlesForPublicSectorSpecialisation
 } from "../utils/titles";
+import { itRoles } from "../constants/it-roles";
 
 export const useWorkAreaHandler = (control: Control<any>) => {
   const [showOtherInput, setShowOtherInput] = useState(false);
@@ -62,6 +63,41 @@ export const useWorkAreaHandler = (control: Control<any>) => {
     }
   }, []);
 
+  // Effect to populate titles when specialization is selected
+  useEffect(() => {
+    if (itSpecialization && workArea === "IT") {
+      const titles = getTitlesForITSpecialisation(itSpecialization);
+      setAvailableTitles(titles);
+      setSelectedSpecialisation(itSpecialization);
+    }
+  }, [itSpecialization, workArea]);
+
+  // Effect to ensure job title is in available titles for IT roles
+  useEffect(() => {
+    if (workArea === "IT" && itSpecialization && jobTitle) {
+      // Get titles for this specialization
+      const titles = getTitlesForITSpecialisation(itSpecialization);
+      
+      // If the job title isn't in the list but we have a valid one, add it
+      if (jobTitle && !titles.includes(jobTitle)) {
+        // Find if the job title exists in any IT specialization
+        let titleFound = false;
+        
+        // Check all IT role categories
+        Object.values(itRoles).forEach(titleArray => {
+          if (titleArray.includes(jobTitle)) {
+            titleFound = true;
+          }
+        });
+        
+        // If it's a valid IT title, add it to available titles
+        if (titleFound) {
+          setAvailableTitles([...titles, jobTitle]);
+        }
+      }
+    }
+  }, [workArea, itSpecialization, jobTitle]);
+
   const handleWorkAreaChange = (value: string) => {
     console.log("handleWorkAreaChange called with:", value);
     
@@ -86,7 +122,7 @@ export const useWorkAreaHandler = (control: Control<any>) => {
     setShowOtherInput(false);
     setShowSpecializations(resetState);
     
-    // Don't reset these if we already have values
+    // Don't reset these if we already have values and the work area hasn't changed
     if (value !== workArea) {
       setSelectedSpecialisation("");
       setAvailableTitles([]);

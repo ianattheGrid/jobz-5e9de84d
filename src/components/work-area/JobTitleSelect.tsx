@@ -26,10 +26,8 @@ const JobTitleSelect = ({ control, titles, name }: JobTitleSelectProps) => {
       control={control}
       name={name}
       render={({ field }) => {
-        // Make sure we have a valid value
-        const validValue = field.value && filteredTitles.length > 0 
-          ? (filteredTitles.includes(field.value) ? field.value : filteredTitles[0])
-          : "";
+        // Make sure we have a valid value and that it is set in the field
+        const validValue = field.value || "";
         
         return (
           <FormItem>
@@ -38,16 +36,21 @@ const JobTitleSelect = ({ control, titles, name }: JobTitleSelectProps) => {
               <Select 
                 onValueChange={field.onChange} 
                 value={validValue}
+                defaultValue={validValue}
               >
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Select job title" />
                 </SelectTrigger>
                 <SelectContent>
-                  {filteredTitles.map((title) => (
-                    <SelectItem key={title} value={title}>
-                      {title}
-                    </SelectItem>
-                  ))}
+                  {filteredTitles.length > 0 ? (
+                    filteredTitles.map((title) => (
+                      <SelectItem key={title} value={title}>
+                        {title}
+                      </SelectItem>
+                    ))
+                  ) : (
+                    <SelectItem value="">No job titles available</SelectItem>
+                  )}
                 </SelectContent>
               </Select>
             </FormControl>

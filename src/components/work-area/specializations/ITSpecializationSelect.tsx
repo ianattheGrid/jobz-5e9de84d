@@ -14,33 +14,38 @@ const ITSpecializationSelect = ({ control, onSpecializationChange }: ITSpecializ
     <FormField
       control={control}
       name="itSpecialization"
-      render={({ field }) => (
-        <FormItem>
-          <FormLabel>IT Specialization</FormLabel>
-          <FormControl>
-            <Select 
-              onValueChange={(value) => {
-                field.onChange(value);
-                onSpecializationChange(value);
-              }}
-              defaultValue={field.value}
-              value={field.value || ""}
-            >
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select your IT specialization" />
-              </SelectTrigger>
-              <SelectContent>
-                {itSpecializations.map((specialization) => (
-                  <SelectItem key={specialization} value={specialization}>
-                    {specialization}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      )}
+      render={({ field }) => {
+        // Ensure we always have a valid value
+        const currentValue = field.value || "";
+        
+        return (
+          <FormItem>
+            <FormLabel>IT Specialization</FormLabel>
+            <FormControl>
+              <Select 
+                onValueChange={(value) => {
+                  field.onChange(value);
+                  onSpecializationChange(value);
+                }}
+                value={currentValue}
+                defaultValue={currentValue}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select your IT specialization" />
+                </SelectTrigger>
+                <SelectContent>
+                  {itSpecializations.map((specialization) => (
+                    <SelectItem key={specialization} value={specialization}>
+                      {specialization}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        );
+      }}
     />
   );
 };
