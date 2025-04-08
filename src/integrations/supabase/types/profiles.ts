@@ -33,6 +33,7 @@ export interface CandidateProfile {
   home_postcode: string | null;
   linkedin_url: string | null;
   years_in_current_title: number | null;
+  title_experience: string | null;
   workArea: string | null;
   itSpecialization: string | null;
 }

@@ -33,6 +33,8 @@ export const useCandidateForm = () => {
     security_clearance: undefined,
     work_eligibility: "UK citizens only",
     years_experience: 0,
+    years_in_current_title: 0,
+    titleExperience: {},
     commission_percentage: null,
     open_to_commission: false,
     additional_skills: "",
@@ -42,7 +44,6 @@ export const useCandidateForm = () => {
     job_seeking_reasons: [],
     other_job_seeking_reason: "",
     linkedin_url: "",
-    years_in_current_title: 0,
   };
 
   // Initialize form with default values
@@ -97,7 +98,7 @@ export const useCandidateForm = () => {
       if (typeof profile.job_title === 'string') {
         try {
           // Try to parse it as JSON (which is how we store arrays in the DB)
-          const parsed = JSON.parse(profile.job_title);
+          const parsed = JSON.parse(profile.job_title as string);
           if (Array.isArray(parsed)) {
             jobTitles = parsed;
           } else if (parsed) {
@@ -107,13 +108,24 @@ export const useCandidateForm = () => {
         } catch (e) {
           // If parsing fails, treat it as a regular string
           if (profile.job_title) {
-            jobTitles = [profile.job_title];
+            jobTitles = [profile.job_title as string];
           }
         }
       }
       // If it's already an array, use it
       else if (Array.isArray(profile.job_title)) {
         jobTitles = profile.job_title;
+      }
+      
+      // Parse title experience data
+      let titleExperience = {};
+      if (profile.title_experience) {
+        try {
+          titleExperience = JSON.parse(profile.title_experience as string);
+        } catch (e) {
+          console.error("Error parsing title experience data:", e);
+          titleExperience = {};
+        }
       }
       
       // Prepare form data with nullish coalescing to ensure proper value types
@@ -144,6 +156,7 @@ export const useCandidateForm = () => {
         other_job_seeking_reason: "",
         linkedin_url: profile.linkedin_url ?? "",
         years_in_current_title: typeof profile.years_in_current_title === 'number' ? profile.years_in_current_title : 0,
+        titleExperience: titleExperience,
       };
 
       console.log("Setting form data:", formData);

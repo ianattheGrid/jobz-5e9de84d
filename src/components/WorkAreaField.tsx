@@ -6,7 +6,7 @@ import { useWorkAreaHandler } from "./work-area/hooks/useWorkAreaHandler";
 import { SpecializationSelects } from "./work-area/components/SpecializationSelects";
 import JobTitleSelect from "./work-area/JobTitleSelect";
 import OtherFields from "./work-area/fields/OtherFields";
-import TitleExperienceSelect from "./work-area/TitleExperienceSelect";
+import JobTitleExperienceFields from "./work-area/JobTitleExperienceFields";
 
 interface WorkAreaFieldProps {
   control: Control<any>;
@@ -70,11 +70,14 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
             titles={availableTitles}
             name="job_title"
           />
-          <TitleExperienceSelect
-            control={control}
-            name="years_in_current_title"
-            label="Years of experience in this job title"
-          />
+          
+          {/* Replace single experience field with multi-title experience fields */}
+          {Array.isArray(jobTitle) && jobTitle.length > 0 && (
+            <JobTitleExperienceFields
+              control={control}
+              jobTitles={jobTitle}
+            />
+          )}
         </>
       )}
 
