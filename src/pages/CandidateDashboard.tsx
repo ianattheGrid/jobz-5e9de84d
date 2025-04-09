@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -13,7 +12,6 @@ import {
   Mail,
   Calendar
 } from "lucide-react";
-import { TestScenarioButton } from "@/components/dashboard/TestScenarioButton";
 import { VerificationSection } from "@/components/candidate/VerificationSection";
 import { initializeStorage } from "@/integrations/supabase/storage";
 
@@ -138,10 +136,6 @@ const CandidateDashboard = () => {
     <div className="min-h-screen bg-white">
       <NavBar />
       <div className="container mx-auto py-8 px-4">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold">Candidate Dashboard</h1>
-          <TestScenarioButton />
-        </div>
         <h1 className="text-3xl font-bold mb-2 text-gray-900">
           Welcome{fullName ? `, ${fullName}` : ''}
         </h1>
