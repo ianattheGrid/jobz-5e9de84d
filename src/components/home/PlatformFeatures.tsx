@@ -1,4 +1,5 @@
 
+import React from 'react';
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FileText, Coins, Bot, Calculator, User, Target, Users, MapPin, HandCoins, ListCheck, Clock } from "lucide-react";
@@ -12,23 +13,14 @@ export const PlatformFeatures = () => {
       </h2>
       
       <Tabs defaultValue="hiring" className="w-full max-w-4xl mx-auto">
-        <TabsList className="grid w-full grid-cols-3 rounded-lg overflow-hidden bg-white border border-black">
-          <TabsTrigger 
-            value="hiring" 
-            className="text-black hover:bg-pink-100 data-[state=active]:bg-pink-500 data-[state=active]:text-black"
-          >
+        <TabsList className="grid w-full grid-cols-3">
+          <TabsTrigger value="hiring" style={{ color: 'black' }}>
             Employers
           </TabsTrigger>
-          <TabsTrigger 
-            value="candidates"
-            className="text-black hover:bg-pink-100 data-[state=active]:bg-pink-500 data-[state=active]:text-black"
-          >
+          <TabsTrigger value="candidates" style={{ color: 'black' }}>
             Candidates
           </TabsTrigger>
-          <TabsTrigger 
-            value="recruiters"
-            className="text-black hover:bg-pink-100 data-[state=active]:bg-pink-500 data-[state=active]:text-black"
-          >
+          <TabsTrigger value="recruiters" style={{ color: 'black' }}>
             Virtual Recruiters
           </TabsTrigger>
         </TabsList>

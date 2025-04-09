@@ -1,50 +1,21 @@
 
-/* Platform Features Tab Styles */
-.tab-trigger {
-  position: relative;
+/* Simple tab styles */
+[role="tab"] {
   color: black !important;
-  background-color: transparent !important;
-  font-weight: 500;
-  border: none !important;
-  box-shadow: none !important;
-  transition: all 0.2s ease;
+  transition: background-color 0.2s ease;
 }
 
-/* Active tab state */
-.tab-trigger[data-state="active"] {
-  background-color: black !important;
-  color: white !important;
+[role="tab"]:hover {
+  background-color: rgba(255, 105, 180, 0.2) !important;
 }
 
-/* Hover effect only for inactive tabs */
-.tab-trigger[data-state="inactive"]:hover {
-  background-color: rgba(0, 0, 0, 0.1) !important;
+[role="tab"][data-state="active"] {
+  background-color: #FF69B4 !important;
+  color: black !important;
 }
 
-/* Tab list container */
 [role="tablist"] {
-  border-radius: 8px !important;
   background-color: white !important;
-  border: 1px solid black !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  overflow: hidden;
-}
-
-/* Force styles to override any inherited styles */
-[data-radix-collection-item] {
-  border-radius: 0 !important;
-  margin: 0 !important;
-  padding: 10px 0 !important;
-}
-
-/* Ensure tab content spacing */
-[role="tabpanel"] {
-  margin-top: 20px !important;
-  animation: fadeIn 0.3s ease-in-out;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 0.5rem !important;
 }
