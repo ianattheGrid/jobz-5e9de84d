@@ -58,7 +58,7 @@ export const useProfileCheck = () => {
       home_postcode: profileData.home_postcode,
       linkedin_url: profileData.linkedin_url,
       years_in_current_title: profileData.years_in_current_title || null,
-      title_experience: profileData.title_experience || null,
+      title_experience: null, // Set a default value since it's not in the database schema
       workArea: profileData.workArea || null,
       itSpecialization: profileData.itSpecialization || null
     };

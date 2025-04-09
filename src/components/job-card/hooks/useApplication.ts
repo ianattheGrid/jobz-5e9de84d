@@ -155,9 +155,11 @@ export const useApplication = (jobId: number, employerId: string) => {
         return;
       }
 
+      // Explicitly including title_experience property
+      // Add title_experience at mapping time rather than trying to access it from profile
       const validProfile = {
         ...profile,
-        title_experience: profile.title_experience || null,
+        title_experience: null, // Set default value since it's not in the database schema
         location: profile.location || [],
         required_qualifications: profile.required_qualifications || []
       };

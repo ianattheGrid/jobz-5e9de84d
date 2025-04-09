@@ -48,7 +48,7 @@ function PreviewCandidateProfile() {
           console.log("Profile found by ID:", profileData);
           const validProfile: CandidateProfile = {
             ...profileData as any,
-            title_experience: profileData.title_experience || null,
+            title_experience: null, // Setting default since this field is not in the database schema
             required_qualifications: profileData.required_qualifications || [],
             location: profileData.location || []
           };

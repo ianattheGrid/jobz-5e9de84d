@@ -6,9 +6,8 @@ import { candidateFormSchema, type CandidateFormValues } from "@/components/cand
 import { useProfileData } from "@/hooks/useProfileData";
 import { useProfileSubmit } from "@/hooks/useProfileSubmit";
 import { useEffect, useState } from "react";
-import type { Database } from "@/integrations/supabase/types";
-
-type CandidateProfile = Database['public']['Tables']['candidate_profiles']['Row'];
+// Import the CandidateProfile directly to ensure we're using the right type
+import { CandidateProfile } from "@/integrations/supabase/types/profiles";
 
 export const useCandidateForm = () => {
   const { toast } = useToast();
