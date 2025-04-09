@@ -13,19 +13,19 @@ export const PlatformFeatures = () => {
       </h2>
       
       <Tabs defaultValue="hiring" className="w-full max-w-4xl mx-auto">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="hiring" style={{ color: 'black' }}>
+        <TabsList className="grid w-full grid-cols-3 bg-white radix-tablist">
+          <TabsTrigger className="text-black radix-tab" value="hiring">
             Employers
           </TabsTrigger>
-          <TabsTrigger value="candidates" style={{ color: 'black' }}>
+          <TabsTrigger className="text-black radix-tab" value="candidates">
             Candidates
           </TabsTrigger>
-          <TabsTrigger value="recruiters" style={{ color: 'black' }}>
+          <TabsTrigger className="text-black radix-tab" value="recruiters">
             Virtual Recruiters
           </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="hiring" className="mt-8 space-y-8">
+        <TabsContent value="hiring" className="mt-8 space-y-8 radix-tabpanel">
           <div className="grid md:grid-cols-2 gap-6">
             <FeatureCard
               icon={FileText}
@@ -50,7 +50,7 @@ export const PlatformFeatures = () => {
           </div>
         </TabsContent>
 
-        <TabsContent value="candidates" className="mt-8 space-y-8">
+        <TabsContent value="candidates" className="mt-8 space-y-8 radix-tabpanel">
           <div className="grid md:grid-cols-2 gap-6">
             <FeatureCard
               icon={User}
@@ -75,7 +75,7 @@ export const PlatformFeatures = () => {
           </div>
         </TabsContent>
 
-        <TabsContent value="recruiters" className="mt-8 space-y-8">
+        <TabsContent value="recruiters" className="mt-8 space-y-8 radix-tabpanel">
           <div className="grid md:grid-cols-2 gap-6">
             <FeatureCard
               icon={MapPin}

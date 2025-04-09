@@ -1,21 +1,43 @@
 
-/* Simple tab styles */
-[role="tab"] {
+/* Platform Features Tab Styles with high specificity */
+.radix-tab {
   color: black !important;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.15s ease-in-out !important;
+  position: relative !important;
 }
 
-[role="tab"]:hover {
-  background-color: rgba(255, 105, 180, 0.2) !important;
+/* Immediate hover effect with proper pink color */
+.radix-tab:hover {
+  background-color: #FF69B4 !important;
+  opacity: 0.7 !important;
 }
 
-[role="tab"][data-state="active"] {
+/* Active tab with full pink */
+.radix-tab[data-state="active"] {
   background-color: #FF69B4 !important;
   color: black !important;
+  opacity: 1 !important;
 }
 
-[role="tablist"] {
+/* Override any conflicting styles */
+.radix-tab:not(.radix-tab[data-state="active"]):not(:hover) {
+  background-color: transparent !important;
+}
+
+/* TabsList container styling */
+.radix-tablist {
   background-color: white !important;
   border: 1px solid #e2e8f0 !important;
   border-radius: 0.5rem !important;
+  overflow: hidden !important;
+}
+
+/* Animation for tab content */
+.radix-tabpanel {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }

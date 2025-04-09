@@ -232,46 +232,4 @@ a {
   border: none !important;
 }
 
-/* Platform Features Tab Styles */
-/* Fix for tab triggers to ensure proper hover effect isolation */
-.tab-trigger {
-  @apply text-white py-3 transition-colors relative;
-  background-color: transparent;
-}
-
-/* Override Radix UI's default styles */
-[data-radix-collection-item]:hover {
-  background-color: transparent !important;
-}
-
-/* Ensure hover only affects the exact element being hovered */
-.tab-trigger:hover {
-  background-color: #FF69B4 !important;
-  color: white !important;
-}
-
-.tab-trigger[data-state="active"] {
-  background-color: #FF69B4 !important;
-  color: white !important;
-}
-
-/* Reset any inherited hover states */
-.tab-trigger:not(:hover) {
-  background-color: transparent !important;
-}
-
-/* Force text color to white for all tab triggers regardless of state */
-.tab-trigger {
-  color: white !important;
-}
-
-/* Make sure only the active tab stays highlighted */
-.tab-trigger[data-state="inactive"]:not(:hover) {
-  background-color: transparent !important;
-}
-
-/* Additional fixes for the TabsList container to ensure proper isolation */
-[role="tablist"] {
-  position: relative;
-  z-index: 1;
-}
+/* We've moved platform features tab styles to tabs.css */
