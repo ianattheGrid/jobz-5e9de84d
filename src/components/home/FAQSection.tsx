@@ -6,7 +6,7 @@ import {
   AccordionTrigger 
 } from "@/components/ui/accordion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { HelpCircle, UserPlus } from "lucide-react";
+import { HelpCircle } from "lucide-react";
 import { PRIMARY_COLOR_PATTERN } from "@/styles/colorPatterns";
 
 export const FAQSection = () => {
@@ -25,29 +25,28 @@ export const FAQSection = () => {
           </div>
 
           <Tabs defaultValue="employers" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 rounded-lg overflow-hidden mb-8">
+            <TabsList className="grid w-full grid-cols-3 rounded-lg overflow-hidden mb-8 radix-tablist">
               <TabsTrigger 
                 value="employers" 
-                className="tab-trigger py-3"
+                className="tab-trigger py-3 radix-tab"
               >
                 Employers
               </TabsTrigger>
               <TabsTrigger 
                 value="candidates"
-                className="tab-trigger py-3"
+                className="tab-trigger py-3 radix-tab"
               >
                 Candidates
               </TabsTrigger>
               <TabsTrigger 
                 value="recruiters"
-                className="tab-trigger py-3"
+                className="tab-trigger py-3 radix-tab"
               >
-                <UserPlus className="mr-2 h-4 w-4" />
                 Virtual Recruiters
               </TabsTrigger>
             </TabsList>
 
-            <TabsContent value="employers" className="mt-2">
+            <TabsContent value="employers" className="mt-2 radix-tabpanel">
               <Accordion type="single" collapsible className="w-full">
                 <AccordionItem value="item-1">
                   <AccordionTrigger className="text-left">
@@ -76,7 +75,7 @@ export const FAQSection = () => {
               </Accordion>
             </TabsContent>
 
-            <TabsContent value="candidates" className="mt-2">
+            <TabsContent value="candidates" className="mt-2 radix-tabpanel">
               <Accordion type="single" collapsible className="w-full">
                 <AccordionItem value="item-1">
                   <AccordionTrigger className="text-left">
@@ -105,7 +104,7 @@ export const FAQSection = () => {
               </Accordion>
             </TabsContent>
 
-            <TabsContent value="recruiters" className="mt-2">
+            <TabsContent value="recruiters" className="mt-2 radix-tabpanel">
               <Accordion type="single" collapsible className="w-full">
                 <AccordionItem value="item-1">
                   <AccordionTrigger className="text-left">
