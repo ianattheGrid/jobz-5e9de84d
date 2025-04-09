@@ -77,8 +77,7 @@ export const useProfileSubmit = (toast: ToastFunction) => {
         work_preferences: cleanStringValue(values.work_preferences),
         current_employer: cleanStringValue(values.current_employer),
         linkedin_url: cleanStringValue(values.linkedin_url),
-        // Store the title experience data as JSON string
-        title_experience: JSON.stringify(titleExperienceData),
+        // Don't include title_experience as it doesn't exist in the database schema
         // Keep years_in_current_title for backward compatibility
         years_in_current_title: cleanNumberValue(values.years_in_current_title),
         workArea: cleanStringValue(values.workArea),
