@@ -1,9 +1,8 @@
 
 /* Platform Features Tab Styles */
-/* Reset and set base styles */
 .tab-trigger {
   position: relative;
-  color: white !important;
+  color: black !important;
   background-color: transparent !important;
   font-weight: 500;
   border: none !important;
@@ -11,26 +10,22 @@
   transition: all 0.2s ease;
 }
 
-/* Active tab state - strong pink background */
+/* Active tab state */
 .tab-trigger[data-state="active"] {
-  background-color: #FF69B4 !important;
+  background-color: black !important;
   color: white !important;
-}
-
-/* Inactive tab state */
-.tab-trigger[data-state="inactive"] {
-  background-color: #000000 !important;
 }
 
 /* Hover effect only for inactive tabs */
 .tab-trigger[data-state="inactive"]:hover {
-  background-color: rgba(255, 105, 180, 0.7) !important;
+  background-color: rgba(0, 0, 0, 0.1) !important;
 }
 
 /* Tab list container */
 [role="tablist"] {
   border-radius: 8px !important;
-  background-color: #000000 !important;
+  background-color: white !important;
+  border: 1px solid black !important;
   padding: 0 !important;
   margin: 0 !important;
   overflow: hidden;
