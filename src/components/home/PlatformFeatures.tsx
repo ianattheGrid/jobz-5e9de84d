@@ -1,4 +1,3 @@
-
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FileText, Coins, Bot, Calculator, User, Target, Users, MapPin, HandCoins, ListCheck, Clock } from "lucide-react";
@@ -12,7 +11,7 @@ export const PlatformFeatures = () => {
       </h2>
       
       <Tabs defaultValue="hiring" className="w-full max-w-4xl mx-auto">
-        <TabsList className="grid w-full grid-cols-3 rounded-lg overflow-hidden">
+        <TabsList className="grid w-full grid-cols-3 rounded-lg overflow-hidden bg-white border border-black">
           <TabsTrigger 
             value="hiring" 
             className="tab-trigger py-3"
@@ -131,4 +130,3 @@ const FeatureCard = ({
     </Card>
   );
 };
-
