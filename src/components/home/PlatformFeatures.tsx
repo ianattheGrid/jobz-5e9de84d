@@ -1,3 +1,4 @@
+
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FileText, Coins, Bot, Calculator, User, Target, Users, MapPin, HandCoins, ListCheck, Clock } from "lucide-react";
@@ -14,19 +15,19 @@ export const PlatformFeatures = () => {
         <TabsList className="grid w-full grid-cols-3 rounded-lg overflow-hidden bg-white border border-black">
           <TabsTrigger 
             value="hiring" 
-            className="tab-trigger py-3"
+            className="tab-trigger py-3 text-black"
           >
             Employers
           </TabsTrigger>
           <TabsTrigger 
             value="candidates"
-            className="tab-trigger py-3"
+            className="tab-trigger py-3 text-black"
           >
             Candidates
           </TabsTrigger>
           <TabsTrigger 
             value="recruiters"
-            className="tab-trigger py-3"
+            className="tab-trigger py-3 text-black"
           >
             Virtual Recruiters
           </TabsTrigger>
