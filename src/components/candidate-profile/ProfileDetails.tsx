@@ -8,6 +8,7 @@ import LocationSection from "./sections/LocationSection";
 import ExperienceSection from "./sections/ExperienceSection";
 import QualificationsSection from "./sections/QualificationsSection";
 import SkillsSection from "./sections/SkillsSection";
+import JobTitlesSection from "./sections/JobTitlesSection";
 
 interface ProfileDetailsProps {
   profile: CandidateProfile;
@@ -55,7 +56,29 @@ const ProfileDetails = ({ profile, showVRRecommendation = false, vrRecommendatio
                   </Badge>
                 )}
               </div>
-              <h2 className="text-xl text-gray-700">{profile.job_title || "Job Title Not Specified"}</h2>
+              <h2 className="text-xl text-gray-700">
+                {(() => {
+                  // Handle job_title which might be a string, an array, or a JSON string
+                  if (!profile.job_title) return "Job Title Not Specified";
+                  
+                  try {
+                    // If it's a JSON string, parse it
+                    if (typeof profile.job_title === 'string' && profile.job_title.startsWith('[')) {
+                      const titles = JSON.parse(profile.job_title);
+                      return Array.isArray(titles) ? titles.join(", ") : profile.job_title;
+                    }
+                    // If it's already an array
+                    else if (Array.isArray(profile.job_title)) {
+                      return profile.job_title.join(", ");
+                    }
+                    // If it's just a string
+                    return profile.job_title;
+                  } catch (e) {
+                    // If JSON parsing fails, return as is
+                    return profile.job_title;
+                  }
+                })()}
+              </h2>
               <div className="flex items-center text-gray-600 gap-2 mt-1">
                 <MapPin className="h-4 w-4" />
                 <span>{profile.location?.join(", ") || "Location not specified"}</span>
@@ -102,7 +125,27 @@ const ProfileDetails = ({ profile, showVRRecommendation = false, vrRecommendatio
                     <Briefcase className="h-5 w-5 text-pink-500" />
                   </div>
                   <div>
-                    <h4 className="font-medium text-gray-900">{profile.job_title || "No Job Title"}</h4>
+                    <h4 className="font-medium text-gray-900">{(() => {
+                      // Handle job_title which might be a string, an array, or a JSON string
+                      if (!profile.job_title) return "No Job Title";
+                      
+                      try {
+                        // If it's a JSON string, parse it
+                        if (typeof profile.job_title === 'string' && profile.job_title.startsWith('[')) {
+                          const titles = JSON.parse(profile.job_title);
+                          return Array.isArray(titles) ? titles[0] : profile.job_title;
+                        }
+                        // If it's already an array
+                        else if (Array.isArray(profile.job_title)) {
+                          return profile.job_title[0];
+                        }
+                        // If it's just a string
+                        return profile.job_title;
+                      } catch (e) {
+                        // If JSON parsing fails, return as is
+                        return profile.job_title;
+                      }
+                    })()}</h4>
                     <p className="text-gray-700">{profile.current_employer}</p>
                     <div className="flex items-center text-gray-600 text-sm mt-1">
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -124,6 +167,7 @@ const ProfileDetails = ({ profile, showVRRecommendation = false, vrRecommendatio
 
             <div className="space-y-4">
               <ExperienceSection profile={profile} />
+              <JobTitlesSection profile={profile} />
             </div>
           </div>
         </CardContent>

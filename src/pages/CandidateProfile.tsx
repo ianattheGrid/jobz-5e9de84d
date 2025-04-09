@@ -141,8 +141,8 @@ export default function CandidateProfile() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
-      <div className="container mx-auto px-4 py-10">
+    <div className="min-h-screen bg-white overflow-auto">
+      <div className="container mx-auto px-4 py-10 pb-20">
         <div className="flex justify-between items-center mb-6">
           <div>
             <h1 className="text-2xl font-bold text-gray-900">Update Your Profile</h1>

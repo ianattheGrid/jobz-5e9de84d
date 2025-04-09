@@ -15,7 +15,27 @@ const ExperienceSection = ({ profile }: ExperienceSectionProps) => {
             <GraduationCap className="h-4 w-4 text-pink-600" />
             <span className="font-medium text-gray-900">Professional Experience</span>
           </div>
-          <p className="text-gray-700">{profile.years_in_current_title || profile.years_experience} years in {profile.job_title || profile.workArea || "current field"}</p>
+          <p className="text-gray-700">{profile.years_in_current_title || profile.years_experience} years in {(() => {
+            // Handle job_title which might be a string, an array, or a JSON string
+            if (!profile.job_title) return profile.workArea || "current field";
+            
+            try {
+              // If it's a JSON string, parse it
+              if (typeof profile.job_title === 'string' && profile.job_title.startsWith('[')) {
+                const titles = JSON.parse(profile.job_title);
+                return Array.isArray(titles) ? titles[0] : profile.job_title;
+              }
+              // If it's already an array
+              else if (Array.isArray(profile.job_title)) {
+                return profile.job_title[0];
+              }
+              // If it's just a string
+              return profile.job_title;
+            } catch (e) {
+              // If JSON parsing fails, return as is
+              return profile.job_title;
+            }
+          })() || profile.workArea || "current field"}</p>
           
           {profile.itSpecialization && (
             <p className="text-gray-700">Specialization: {profile.itSpecialization}</p>
