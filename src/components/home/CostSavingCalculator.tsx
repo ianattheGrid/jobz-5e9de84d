@@ -74,22 +74,34 @@ export const CostSavingCalculator: FC = () => {
   const calculateResults = (values: CalculatorFormValues) => {
     const { dailyRate, contractLength, feeType, feePercentage, contractorsCount } = values;
     
-    const workingDays = contractLength * 5;
-    const months = Math.ceil(contractLength / 4.33);
+    // Calculate working days (average 4 weeks per month, 5 days per week)
+    // Maximum 52 weeks per year
+    const daysPerWeek = 5;
+    const workingDays = Math.min(contractLength, 52) * daysPerWeek;
     
+    // Calculate months for our platform fee
+    const months = Math.ceil(Math.min(contractLength, 52) / 4);
+    
+    // Calculate agency cost
     let totalCostWithAgency = 0;
     
     if (feeType === "markup") {
-      totalCostWithAgency = (dailyRate + (dailyRate * (feePercentage / 100))) * workingDays;
+      // Markup: Add percentage to daily rate
+      const rateWithMarkup = dailyRate + (dailyRate * (feePercentage / 100));
+      totalCostWithAgency = rateWithMarkup * workingDays;
     } else {
+      // Margin: Calculate from margin percentage
       totalCostWithAgency = (dailyRate / (1 - (feePercentage / 100))) * workingDays;
     }
     
-    // Our platform cost is the contractor's daily rate (paid directly) plus our fixed monthly fee
+    // Our platform cost has two components:
+    // 1. Contractor's daily rate paid directly to contractor
     const contractorCost = dailyRate * workingDays;
+    // 2. Fixed platform fee of £100 per month
     const platformFee = 100 * months;
     const totalCostWithUs = contractorCost + platformFee;
     
+    // Calculate savings
     const costSavings = totalCostWithAgency - totalCostWithUs;
     const totalSavings = costSavings * contractorsCount;
     
@@ -291,8 +303,11 @@ export const CostSavingCalculator: FC = () => {
                 </p>
                 <p className="text-xs text-muted-foreground mt-2">
                   {formValues.feeType === "markup" 
-                    ? `(${formatCurrency(formValues.dailyRate)} + ${formValues.feePercentage}% markup) × ${results.workingDays} days` 
-                    : `${formatCurrency(formValues.dailyRate)} ÷ (1-${formValues.feePercentage}%) × ${results.workingDays} days`}
+                    ? `(${formatCurrency(formValues.dailyRate)} + ${formValues.feePercentage}% markup) × ${results.workingDays} working days` 
+                    : `${formatCurrency(formValues.dailyRate)} ÷ (1-${formValues.feePercentage}%) × ${results.workingDays} working days`}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  Based on {Math.min(Number(formValues.contractLength), 52)} weeks at {formValues.feeType === "markup" ? "markup" : "margin"} rate
                 </p>
               </div>
             </Card>
@@ -304,8 +319,11 @@ export const CostSavingCalculator: FC = () => {
                   {formatCurrency(results.totalCostWithUs)}
                 </p>
                 <p className="text-xs text-muted-foreground mt-2">
-                  Contractor cost ({formatCurrency(formValues.dailyRate)} × {results.workingDays} days) + 
+                  Contractor cost ({formatCurrency(formValues.dailyRate)} × {results.workingDays} working days) + 
                   Platform fee (£100 × {results.months} months)
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  Based on direct payment to contractor plus our £100 monthly fee
                 </p>
               </div>
             </Card>
