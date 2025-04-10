@@ -4,7 +4,6 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Slider } from "@/components/ui/slider";
 import { 
   Form,
@@ -161,30 +160,10 @@ export const CostSavingCalculator = () => {
           <div>
             <h2 className={`text-2xl font-bold ${PRIMARY_COLOR_PATTERN}`}>Cost Saving Calculator</h2>
             <p className="text-muted-foreground">
-              See how much you could save with our fixed-fee service compared to traditional recruiters
+              Calculate potential savings by using our fixed-fee contractor recruitment service
             </p>
           </div>
         </div>
-
-        <Tabs defaultValue="employer" className="w-full mb-6">
-          <TabsList className="grid w-full grid-cols-2 mb-6">
-            <TabsTrigger value="employer">For Employers</TabsTrigger>
-            <TabsTrigger value="contractor">For Contractors</TabsTrigger>
-          </TabsList>
-          <TabsContent value="employer" className="space-y-4">
-            <p>
-              Calculate how much your business can save by using our fixed-fee service 
-              (£100 per month) instead of traditional recruitment agencies that charge 
-              percentage-based fees.
-            </p>
-          </TabsContent>
-          <TabsContent value="contractor" className="space-y-4">
-            <p>
-              Help your clients understand how much they can save by hiring you through 
-              our platform, making you more attractive as a contractor.
-            </p>
-          </TabsContent>
-        </Tabs>
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
