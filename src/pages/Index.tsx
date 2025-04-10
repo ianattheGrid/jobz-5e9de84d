@@ -18,8 +18,8 @@ export default function Index() {
       <div className="h-4"></div>
       <CalculatorSection />
       <FAQSection />
-      <ContractorCalculatorSection />
       <ContractorRecruitmentSection />
+      <ContractorCalculatorSection />
     </div>
   );
 }
