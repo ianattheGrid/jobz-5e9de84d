@@ -1,3 +1,4 @@
+
 import React, { FC, useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -25,7 +26,7 @@ import {
 } from "@/components/ui/tooltip";
 import { PRIMARY_COLOR_PATTERN } from "@/styles/colorPatterns";
 
-// Define the schema and type at the top of the file
+// Define the schema
 const calculatorSchema = z.object({
   dailyRate: z.string()
     .refine(val => !isNaN(Number(val)), "Daily rate must be a number")
@@ -38,11 +39,27 @@ const calculatorSchema = z.object({
     .refine(val => val >= 1, "Contract must be at least 1 week")
     .refine(val => val <= 52, "Contract cannot exceed 52 weeks"),
   feeType: z.enum(["markup", "margin"]),
-  feePercentage: z.coerce.number().min(1, "Percentage must be at least 1%").max(50, "Percentage cannot exceed 50%"),
-  contractorsCount: z.coerce.number().min(1, "Must have at least 1 contractor").max(100, "Cannot exceed 100 contractors").default(1),
+  feePercentage: z.coerce.number()
+    .min(1, "Percentage must be at least 1%")
+    .max(50, "Percentage cannot exceed 50%"),
+  contractorsCount: z.string()
+    .refine(val => !isNaN(Number(val)), "Number of contractors must be a number")
+    .transform(val => Number(val))
+    .refine(val => val >= 1, "Must have at least 1 contractor")
+    .refine(val => val <= 100, "Cannot exceed 100 contractors"),
 });
 
-type CalculatorFormValues = z.infer<typeof calculatorSchema>;
+// Form input values type
+interface FormInputValues {
+  dailyRate: string;
+  contractLength: string;
+  feeType: "markup" | "margin";
+  feePercentage: number;
+  contractorsCount: string;
+}
+
+// Transformed values after validation
+type CalculatorValues = z.infer<typeof calculatorSchema>;
 
 export const CostSavingCalculator: FC = () => {
   const [results, setResults] = useState({
@@ -54,14 +71,14 @@ export const CostSavingCalculator: FC = () => {
     months: 0,
   });
 
-  const form = useForm<CalculatorFormValues>({
+  const form = useForm<FormInputValues>({
     resolver: zodResolver(calculatorSchema),
     defaultValues: {
-      dailyRate: 500,
-      contractLength: 12,
+      dailyRate: "500",
+      contractLength: "12",
       feeType: "markup",
       feePercentage: 20,
-      contractorsCount: 1,
+      contractorsCount: "1",
     },
   });
 
@@ -71,8 +88,13 @@ export const CostSavingCalculator: FC = () => {
     calculateResults(formValues);
   }, [formValues]);
 
-  const calculateResults = (values: CalculatorFormValues) => {
-    const { dailyRate, contractLength, feeType, feePercentage, contractorsCount } = values;
+  const calculateResults = (values: FormInputValues) => {
+    // Convert string inputs to numbers
+    const dailyRate = Number(values.dailyRate) || 0;
+    const contractLength = Number(values.contractLength) || 0;
+    const feePercentage = values.feePercentage;
+    const contractorsCount = Number(values.contractorsCount) || 1;
+    const { feeType } = values;
     
     // Calculate working days (average 4 weeks per month, 5 days per week)
     // Maximum 52 weeks per year
@@ -124,7 +146,7 @@ export const CostSavingCalculator: FC = () => {
     }).format(amount);
   };
 
-  const onSubmit = (data: CalculatorFormValues) => {
+  const onSubmit = (data: FormInputValues) => {
     calculateResults(data);
   };
 
@@ -133,11 +155,11 @@ export const CostSavingCalculator: FC = () => {
     const headers = ["Metric", "Value"];
     csvRows.push(headers.join(","));
 
-    csvRows.push(["Daily Rate", formValues.dailyRate.toString()]);
-    csvRows.push(["Contract Length (weeks)", formValues.contractLength.toString()]);
+    csvRows.push(["Daily Rate", formValues.dailyRate]);
+    csvRows.push(["Contract Length (weeks)", formValues.contractLength]);
     csvRows.push(["Fee Type", formValues.feeType]);
     csvRows.push(["Fee Percentage", formValues.feePercentage.toString()]);
-    csvRows.push(["Number of Contractors", formValues.contractorsCount.toString()]);
+    csvRows.push(["Number of Contractors", formValues.contractorsCount]);
     csvRows.push(["Total Cost with Agency", formatCurrency(results.totalCostWithAgency)]);
     csvRows.push(["Total Cost with Us", formatCurrency(results.totalCostWithUs)]);
     csvRows.push(["Cost Savings per Contractor", formatCurrency(results.costSavings)]);
@@ -271,7 +293,7 @@ export const CostSavingCalculator: FC = () => {
                 <FormItem>
                   <FormLabel>Number of Contractors</FormLabel>
                   <FormControl>
-                    <Input placeholder="e.g., 1" type="number" {...field} />
+                    <Input placeholder="e.g., 1" {...field} />
                   </FormControl>
                   <FormDescription>
                     The number of contractors you are recruiting for.
@@ -303,8 +325,8 @@ export const CostSavingCalculator: FC = () => {
                 </p>
                 <p className="text-xs text-muted-foreground mt-2">
                   {formValues.feeType === "markup" 
-                    ? `(${formatCurrency(formValues.dailyRate)} + ${formValues.feePercentage}% markup) × ${results.workingDays} working days` 
-                    : `${formatCurrency(formValues.dailyRate)} ÷ (1-${formValues.feePercentage}%) × ${results.workingDays} working days`}
+                    ? `(${formatCurrency(Number(formValues.dailyRate))} + ${formValues.feePercentage}% markup) × ${results.workingDays} working days` 
+                    : `${formatCurrency(Number(formValues.dailyRate))} ÷ (1-${formValues.feePercentage}%) × ${results.workingDays} working days`}
                 </p>
                 <p className="text-xs text-muted-foreground">
                   Based on {Math.min(Number(formValues.contractLength), 52)} weeks at {formValues.feeType === "markup" ? "markup" : "margin"} rate
@@ -319,7 +341,7 @@ export const CostSavingCalculator: FC = () => {
                   {formatCurrency(results.totalCostWithUs)}
                 </p>
                 <p className="text-xs text-muted-foreground mt-2">
-                  Contractor cost ({formatCurrency(formValues.dailyRate)} × {results.workingDays} working days) + 
+                  Contractor cost ({formatCurrency(Number(formValues.dailyRate))} × {results.workingDays} working days) + 
                   Platform fee (£100 × {results.months} months)
                 </p>
                 <p className="text-xs text-muted-foreground">
@@ -345,7 +367,7 @@ export const CostSavingCalculator: FC = () => {
                 {formatCurrency(results.totalSavings)}
               </p>
               <p className="text-xs text-green-700 dark:text-green-300 mt-2">
-                Savings per contractor × {formValues.contractorsCount} contractor{formValues.contractorsCount > 1 ? 's' : ''}
+                Savings per contractor × {formValues.contractorsCount} contractor{Number(formValues.contractorsCount) > 1 ? 's' : ''}
               </p>
             </div>
           </Card>
@@ -360,4 +382,4 @@ export const CostSavingCalculator: FC = () => {
       </Card>
     </div>
   );
-}
+};
