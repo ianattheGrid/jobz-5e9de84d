@@ -402,6 +402,27 @@ export type Database = {
           },
         ]
       }
+      contractor_recruitment_feedback: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_interested: boolean
+          user_type: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_interested: boolean
+          user_type?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_interested?: boolean
+          user_type?: string | null
+        }
+        Relationships: []
+      }
       employer_names: {
         Row: {
           created_at: string

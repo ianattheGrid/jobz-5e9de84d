@@ -4,7 +4,7 @@ import { Job } from "./jobs";
 import { CandidateProfile, EmployerProfile, RecruiterProfile, VirtualRecruiterProfile } from "./profiles";
 import { Application, Interview } from "./applications";
 import { RecruiterMessage, RecruiterNotification, VRCandidateMessage } from "./messages";
-import { CompanyGalleryImage } from "@/types/employer";
+import { CompanyGalleryImage, ContractorRecruitmentFeedback } from "@/types/employer";
 
 export interface Database {
   public: {
@@ -28,6 +28,11 @@ export interface Database {
         Row: CompanyGalleryImage;
         Insert: Partial<CompanyGalleryImage>;
         Update: Partial<CompanyGalleryImage>;
+      };
+      contractor_recruitment_feedback: {
+        Row: ContractorRecruitmentFeedback;
+        Insert: Partial<ContractorRecruitmentFeedback>;
+        Update: Partial<ContractorRecruitmentFeedback>;
       };
       interviews: {
         Row: Interview;
@@ -194,4 +199,4 @@ export type { Job } from "./jobs";
 export type { CandidateProfile, EmployerProfile, RecruiterProfile, VirtualRecruiterProfile } from "./profiles";
 export type { Application, Interview } from "./applications";
 export type { RecruiterMessage, RecruiterNotification, VRCandidateMessage } from "./messages";
-
+export type { ContractorRecruitmentFeedback } from "@/types/employer";

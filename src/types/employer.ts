@@ -22,3 +22,10 @@ export interface CompanyGalleryImage {
   image_url: string;
   created_at: string;
 }
+
+export interface ContractorRecruitmentFeedback {
+  id: string;
+  is_interested: boolean;
+  user_type?: string;
+  created_at: string;
+}
