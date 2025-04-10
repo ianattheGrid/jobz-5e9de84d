@@ -85,7 +85,10 @@ export const CostSavingCalculator: FC = () => {
       totalCostWithAgency = (dailyRate / (1 - (feePercentage / 100))) * workingDays;
     }
     
-    const totalCostWithUs = (dailyRate * workingDays) + (100 * months);
+    // Our platform cost is the contractor's daily rate (paid directly) plus our fixed monthly fee
+    const contractorCost = dailyRate * workingDays;
+    const platformFee = 100 * months;
+    const totalCostWithUs = contractorCost + platformFee;
     
     const costSavings = totalCostWithAgency - totalCostWithUs;
     const totalSavings = costSavings * contractorsCount;
@@ -286,6 +289,11 @@ export const CostSavingCalculator: FC = () => {
                 <p className="text-2xl font-bold">
                   {formatCurrency(results.totalCostWithAgency)}
                 </p>
+                <p className="text-xs text-muted-foreground mt-2">
+                  {formValues.feeType === "markup" 
+                    ? `(${formatCurrency(formValues.dailyRate)} + ${formValues.feePercentage}% markup) × ${results.workingDays} days` 
+                    : `${formatCurrency(formValues.dailyRate)} ÷ (1-${formValues.feePercentage}%) × ${results.workingDays} days`}
+                </p>
               </div>
             </Card>
 
@@ -294,6 +302,10 @@ export const CostSavingCalculator: FC = () => {
                 <h4 className="text-sm font-bold mb-2">Total Cost with Us</h4>
                 <p className="text-2xl font-bold">
                   {formatCurrency(results.totalCostWithUs)}
+                </p>
+                <p className="text-xs text-muted-foreground mt-2">
+                  Contractor cost ({formatCurrency(formValues.dailyRate)} × {results.workingDays} days) + 
+                  Platform fee (£100 × {results.months} months)
                 </p>
               </div>
             </Card>
@@ -313,6 +325,9 @@ export const CostSavingCalculator: FC = () => {
               <h4 className="text-sm font-bold mb-2">Total Savings</h4>
               <p className="text-2xl font-bold text-green-600 dark:text-green-400">
                 {formatCurrency(results.totalSavings)}
+              </p>
+              <p className="text-xs text-green-700 dark:text-green-300 mt-2">
+                Savings per contractor × {formValues.contractorsCount} contractor{formValues.contractorsCount > 1 ? 's' : ''}
               </p>
             </div>
           </Card>
