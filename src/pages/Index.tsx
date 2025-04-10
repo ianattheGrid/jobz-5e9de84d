@@ -5,6 +5,7 @@ import { PlatformFeatures } from "@/components/home/PlatformFeatures";
 import { VideoSection } from "@/components/home/VideoSection";
 import { CalculatorSection } from "@/components/home/CalculatorSection";
 import { FAQSection } from "@/components/home/FAQSection";
+import { ContractorRecruitmentSection } from "@/components/home/ContractorRecruitmentSection";
 
 export default function Index() {
   return (
@@ -17,6 +18,7 @@ export default function Index() {
       <div className="h-4"></div>
       <CalculatorSection />
       <FAQSection />
+      <ContractorRecruitmentSection />
     </div>
   );
 }
