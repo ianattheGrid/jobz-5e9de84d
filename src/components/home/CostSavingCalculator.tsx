@@ -1,5 +1,4 @@
-
-import { useState, useEffect } from "react";
+import React, { FC, useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -14,8 +13,8 @@ import {
   FormLabel,
   FormMessage
 } from "@/components/ui/form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Download, Calculator, Info } from "lucide-react";
 import {
@@ -26,10 +25,18 @@ import {
 } from "@/components/ui/tooltip";
 import { PRIMARY_COLOR_PATTERN } from "@/styles/colorPatterns";
 
-// Define the form schema with zod
+// Define the schema and type at the top of the file
 const calculatorSchema = z.object({
-  dailyRate: z.coerce.number().min(100, "Daily rate must be at least £100").max(2000, "Daily rate cannot exceed £2000"),
-  contractLength: z.coerce.number().min(1, "Contract must be at least 1 week").max(52, "Contract cannot exceed 52 weeks"),
+  dailyRate: z.string()
+    .refine(val => !isNaN(Number(val)), "Daily rate must be a number")
+    .transform(val => Number(val))
+    .refine(val => val >= 100, "Daily rate must be at least £100")
+    .refine(val => val <= 2000, "Daily rate cannot exceed £2000"),
+  contractLength: z.string()
+    .refine(val => !isNaN(Number(val)), "Contract length must be a number")
+    .transform(val => Number(val))
+    .refine(val => val >= 1, "Contract must be at least 1 week")
+    .refine(val => val <= 52, "Contract cannot exceed 52 weeks"),
   feeType: z.enum(["markup", "margin"]),
   feePercentage: z.coerce.number().min(1, "Percentage must be at least 1%").max(50, "Percentage cannot exceed 50%"),
   contractorsCount: z.coerce.number().min(1, "Must have at least 1 contractor").max(100, "Cannot exceed 100 contractors").default(1),
@@ -37,7 +44,7 @@ const calculatorSchema = z.object({
 
 type CalculatorFormValues = z.infer<typeof calculatorSchema>;
 
-export const CostSavingCalculator = () => {
+export const CostSavingCalculator: FC = () => {
   const [results, setResults] = useState({
     totalCostWithAgency: 0,
     totalCostWithUs: 0,
@@ -47,7 +54,6 @@ export const CostSavingCalculator = () => {
     months: 0,
   });
 
-  // Initialize the form
   const form = useForm<CalculatorFormValues>({
     resolver: zodResolver(calculatorSchema),
     defaultValues: {
@@ -59,39 +65,28 @@ export const CostSavingCalculator = () => {
     },
   });
 
-  // Get form values
   const formValues = form.watch();
 
-  // Calculate results whenever form values change
   useEffect(() => {
     calculateResults(formValues);
   }, [formValues]);
 
-  // Calculate all results based on form inputs
   const calculateResults = (values: CalculatorFormValues) => {
     const { dailyRate, contractLength, feeType, feePercentage, contractorsCount } = values;
     
-    // Calculate working days (5 days per week)
     const workingDays = contractLength * 5;
-    
-    // Calculate months (round up to nearest month)
     const months = Math.ceil(contractLength / 4.33);
     
     let totalCostWithAgency = 0;
     
-    // Calculate cost with agency based on fee type
     if (feeType === "markup") {
-      // Markup calculation: (Daily Rate + (Daily Rate × Markup Percentage)) × Total Working Days
       totalCostWithAgency = (dailyRate + (dailyRate * (feePercentage / 100))) * workingDays;
     } else {
-      // Margin calculation: (Daily Rate / (1 - Margin Percentage)) × Total Working Days
       totalCostWithAgency = (dailyRate / (1 - (feePercentage / 100))) * workingDays;
     }
     
-    // Calculate cost with our platform: (Daily Rate × Total Working Days) + (£100 × Number of Months)
     const totalCostWithUs = (dailyRate * workingDays) + (100 * months);
     
-    // Calculate savings
     const costSavings = totalCostWithAgency - totalCostWithUs;
     const totalSavings = costSavings * contractorsCount;
     
@@ -105,7 +100,6 @@ export const CostSavingCalculator = () => {
     });
   };
 
-  // Format currency
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-GB', { 
       style: 'currency', 
@@ -115,330 +109,222 @@ export const CostSavingCalculator = () => {
     }).format(amount);
   };
 
-  // Handle form submission
   const onSubmit = (data: CalculatorFormValues) => {
     calculateResults(data);
   };
 
-  // Export results as CSV
   const exportCSV = () => {
-    const { totalCostWithAgency, totalCostWithUs, costSavings, totalSavings, workingDays, months } = results;
-    const { dailyRate, contractLength, feeType, feePercentage, contractorsCount } = form.getValues();
-    
-    const csvContent = [
-      'Cost Saving Calculator Results',
-      '',
-      'Inputs:',
-      `Daily Rate,${formatCurrency(dailyRate)}`,
-      `Contract Length,${contractLength} weeks (${workingDays} working days)`,
-      `Agency Fee Type,${feeType.charAt(0).toUpperCase() + feeType.slice(1)}`,
-      `${feeType.charAt(0).toUpperCase() + feeType.slice(1)} Percentage,${feePercentage}%`,
-      `Number of Contractors,${contractorsCount}`,
-      '',
-      'Results:',
-      `Total Cost with Agency,${formatCurrency(totalCostWithAgency)}`,
-      `Total Cost with Platform,${formatCurrency(totalCostWithUs)}`,
-      `Cost Savings per Contractor,${formatCurrency(costSavings)}`,
-      `Total Savings for ${contractorsCount} Contractors,${formatCurrency(totalSavings)}`,
-    ].join('\n');
-    
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.setAttribute('href', url);
-    link.setAttribute('download', 'contractor-savings-calculation.csv');
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    const csvRows = [];
+    const headers = ["Metric", "Value"];
+    csvRows.push(headers.join(","));
+
+    csvRows.push(["Daily Rate", formValues.dailyRate.toString()]);
+    csvRows.push(["Contract Length (weeks)", formValues.contractLength.toString()]);
+    csvRows.push(["Fee Type", formValues.feeType]);
+    csvRows.push(["Fee Percentage", formValues.feePercentage.toString()]);
+    csvRows.push(["Number of Contractors", formValues.contractorsCount.toString()]);
+    csvRows.push(["Total Cost with Agency", formatCurrency(results.totalCostWithAgency)]);
+    csvRows.push(["Total Cost with Us", formatCurrency(results.totalCostWithUs)]);
+    csvRows.push(["Cost Savings per Contractor", formatCurrency(results.costSavings)]);
+    csvRows.push(["Total Savings", formatCurrency(results.totalSavings)]);
+    csvRows.push(["Working Days", results.workingDays.toString()]);
+    csvRows.push(["Contract Length (months)", results.months.toString()]);
+
+    const csvData = csvRows.join("\n");
+    const blob = new Blob([csvData], { type: "text/csv" });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.setAttribute("href", url);
+    a.setAttribute("download", "cost_savings_calculator_results.csv");
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
   };
 
   return (
     <div className="w-full max-w-4xl mx-auto">
       <Card className="shadow-lg p-6 md:p-8 border-t-4 border-t-[#FF69B4]">
-        <div className="flex flex-col sm:flex-row items-center gap-4 mb-6">
-          <Calculator className="h-10 w-10 text-[#FF69B4]" />
-          <div>
-            <h2 className={`text-2xl font-bold ${PRIMARY_COLOR_PATTERN}`}>Cost Saving Calculator</h2>
-            <p className="text-muted-foreground">
-              Calculate potential savings by using our fixed-fee contractor recruitment service
-            </p>
-          </div>
-        </div>
-
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Daily Rate */}
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <FormField
                 control={form.control}
                 name="dailyRate"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="flex items-center">
-                      Contractor's Daily Rate
+                    <FormLabel>
+                      Contractor Daily Rate (£)
                       <TooltipProvider>
                         <Tooltip>
-                          <TooltipTrigger asChild>
-                            <Info className="h-4 w-4 ml-2 text-muted-foreground" />
+                          <TooltipTrigger>
+                            <Info className="inline-block h-4 w-4 ml-1 align-top" />
                           </TooltipTrigger>
                           <TooltipContent>
-                            <p className="w-[200px]">Enter the daily rate paid to the contractor</p>
+                            Enter the average daily rate for your contractors.
                           </TooltipContent>
                         </Tooltip>
                       </TooltipProvider>
                     </FormLabel>
                     <FormControl>
-                      <div className="relative">
-                        <span className="absolute left-3 top-2.5">£</span>
-                        <Input 
-                          type="number" 
-                          className="pl-7" 
-                          {...field} 
-                          onChange={(e) => field.onChange(Number(e.target.value))}
-                        />
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              {/* Contract Length */}
-              <FormField
-                control={form.control}
-                name="contractLength"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="flex items-center">
-                      Contract Length (Weeks)
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <Info className="h-4 w-4 ml-2 text-muted-foreground" />
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p className="w-[200px]">Duration of the contract in weeks (up to 52 weeks)</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    </FormLabel>
-                    <FormControl>
-                      <div className="space-y-2">
-                        <Input 
-                          type="number" 
-                          {...field} 
-                          onChange={(e) => field.onChange(Number(e.target.value))}
-                        />
-                        <p className="text-sm text-muted-foreground">
-                          {results.workingDays} working days • {results.months} months
-                        </p>
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              {/* Fee Type */}
-              <FormField
-                control={form.control}
-                name="feeType"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="flex items-center">
-                      Agency Fee Type
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <Info className="h-4 w-4 ml-2 text-muted-foreground" />
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <div className="w-[250px] space-y-2">
-                              <p><strong>Markup:</strong> A percentage added to the contractor's rate.</p>
-                              <p><strong>Margin:</strong> A percentage of the total charge rate.</p>
-                            </div>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    </FormLabel>
-                    <FormControl>
-                      <div className="flex gap-4">
-                        <Button
-                          type="button"
-                          variant={field.value === "markup" ? "default" : "outline"}
-                          className={field.value === "markup" ? "bg-[#FF69B4] hover:bg-[#FF50A8]" : ""}
-                          onClick={() => form.setValue("feeType", "markup")}
-                        >
-                          Markup
-                        </Button>
-                        <Button
-                          type="button"
-                          variant={field.value === "margin" ? "default" : "outline"}
-                          className={field.value === "margin" ? "bg-[#FF69B4] hover:bg-[#FF50A8]" : ""}
-                          onClick={() => form.setValue("feeType", "margin")}
-                        >
-                          Margin
-                        </Button>
-                      </div>
+                      <Input placeholder="e.g., 500" {...field} />
                     </FormControl>
                     <FormDescription>
-                      {field.value === "markup" 
-                        ? "Markup: A percentage added on top of the contractor's rate" 
-                        : "Margin: A percentage of the total charge rate"}
+                      The average daily rate you pay to your contractors.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
               />
 
-              {/* Fee Percentage */}
+              <FormField
+                control={form.control}
+                name="contractLength"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Contract Length (weeks)
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger>
+                            <Info className="inline-block h-4 w-4 ml-1 align-top" />
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            The average contract length for your contractors.
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    </FormLabel>
+                    <FormControl>
+                      <Input placeholder="e.g., 12" {...field} />
+                    </FormControl>
+                    <FormDescription>
+                      The average contract length for your contractors in weeks.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="feeType"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Agency Fee Type</FormLabel>
+                    <FormControl>
+                      <select
+                        className="flex h-10 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                        {...field}
+                      >
+                        <option value="markup">Markup</option>
+                        <option value="margin">Margin</option>
+                      </select>
+                    </FormControl>
+                    <FormDescription>
+                      Choose the fee type charged by your agency.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
               <FormField
                 control={form.control}
                 name="feePercentage"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="flex items-center">
-                      {form.watch("feeType") === "markup" ? "Markup" : "Margin"} Percentage
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <Info className="h-4 w-4 ml-2 text-muted-foreground" />
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p className="w-[200px]">
-                              The percentage the agency charges as a 
-                              {form.watch("feeType") === "markup" ? " markup" : " margin"}
-                            </p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    </FormLabel>
+                    <FormLabel>Agency Fee (%)</FormLabel>
                     <FormControl>
-                      <div className="space-y-2">
-                        <div className="flex gap-4">
-                          <div className="flex-1">
-                            <Slider
-                              defaultValue={[field.value]}
-                              max={50}
-                              min={1}
-                              step={1}
-                              onValueChange={(vals) => field.onChange(vals[0])}
-                            />
-                          </div>
-                          <div className="w-16 relative">
-                            <Input 
-                              type="number" 
-                              className="pr-6" 
-                              value={field.value} 
-                              onChange={(e) => field.onChange(Number(e.target.value))}
-                            />
-                            <span className="absolute right-3 top-2.5">%</span>
-                          </div>
-                        </div>
-                      </div>
+                      <Input placeholder="e.g., 20" type="number" {...field} />
                     </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              {/* Number of Contractors */}
-              <FormField
-                control={form.control}
-                name="contractorsCount"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="flex items-center">
-                      Number of Contractors
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <Info className="h-4 w-4 ml-2 text-muted-foreground" />
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p className="w-[200px]">How many contractors are you hiring?</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    </FormLabel>
-                    <FormControl>
-                      <Input 
-                        type="number" 
-                        {...field} 
-                        onChange={(e) => field.onChange(Number(e.target.value))}
-                      />
-                    </FormControl>
+                    <FormDescription>
+                      The percentage fee charged by your agency.
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
 
-            {/* Results Section */}
-            <div className="mt-8 p-6 bg-muted/30 rounded-lg">
-              <h3 className="text-xl font-semibold mb-4">Your Savings</h3>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-4">
-                  <div>
-                    <p className="text-sm text-muted-foreground">Cost with Traditional Agency:</p>
-                    <p className="text-2xl font-bold">{formatCurrency(results.totalCostWithAgency)}</p>
-                  </div>
-                  
-                  <div>
-                    <p className="text-sm text-muted-foreground">Cost with Our Platform:</p>
-                    <p className="text-2xl font-bold">{formatCurrency(results.totalCostWithUs)}</p>
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <span>{formatCurrency(formValues.dailyRate * results.workingDays)}</span>
-                      <span>+</span>
-                      <span>{formatCurrency(100 * results.months)} platform fee</span>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="space-y-4">
-                  <div>
-                    <p className="text-sm text-muted-foreground">Savings per Contractor:</p>
-                    <p className="text-2xl font-bold text-green-600">{formatCurrency(results.costSavings)}</p>
-                  </div>
-                  
-                  {formValues.contractorsCount > 1 && (
-                    <div>
-                      <p className="text-sm text-muted-foreground">
-                        Total Savings for {formValues.contractorsCount} Contractors:
-                      </p>
-                      <p className="text-2xl font-bold text-green-600">{formatCurrency(results.totalSavings)}</p>
-                    </div>
-                  )}
-                </div>
-              </div>
-              
-              <div className="mt-6 pt-6 border-t border-border flex flex-col sm:flex-row justify-between items-center gap-4">
-                <p className="text-center sm:text-left text-sm text-muted-foreground">
-                  Save time and money by using our fixed-fee platform for contractor recruitment
-                </p>
-                <div className="flex gap-3">
-                  <Button 
-                    type="button" 
-                    variant="outline" 
-                    onClick={exportCSV}
-                    className="gap-2"
-                  >
-                    <Download className="h-4 w-4" />
-                    Export
-                  </Button>
-                  <Button 
-                    type="button"
-                    className="bg-[#FF69B4] hover:bg-[#FF50A8]"
-                  >
-                    Sign up now to start saving!
-                  </Button>
-                </div>
-              </div>
-            </div>
+            <FormField
+              control={form.control}
+              name="contractorsCount"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Number of Contractors</FormLabel>
+                  <FormControl>
+                    <Input placeholder="e.g., 1" type="number" {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    The number of contractors you are recruiting for.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <Button type="submit" className="w-full">
+              <Calculator className="mr-2 h-4 w-4" />
+              Calculate Savings
+            </Button>
           </form>
         </Form>
+
+        <div className="mt-8 space-y-4">
+          <h3 className={`text-xl font-semibold ${PRIMARY_COLOR_PATTERN}`}>
+            Results
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Card className="bg-muted/50">
+              <div className="p-4">
+                <h4 className="text-sm font-bold mb-2">
+                  Total Cost with Agency
+                </h4>
+                <p className="text-2xl font-bold">
+                  {formatCurrency(results.totalCostWithAgency)}
+                </p>
+              </div>
+            </Card>
+
+            <Card className="bg-muted/50">
+              <div className="p-4">
+                <h4 className="text-sm font-bold mb-2">Total Cost with Us</h4>
+                <p className="text-2xl font-bold">
+                  {formatCurrency(results.totalCostWithUs)}
+                </p>
+              </div>
+            </Card>
+          </div>
+
+          <Card className="bg-green-100 dark:bg-green-900">
+            <div className="p-4">
+              <h4 className="text-sm font-bold mb-2">Cost Savings per Contractor</h4>
+              <p className="text-2xl font-bold text-green-600 dark:text-green-400">
+                {formatCurrency(results.costSavings)}
+              </p>
+            </div>
+          </Card>
+
+          <Card className="bg-green-100 dark:bg-green-900">
+            <div className="p-4">
+              <h4 className="text-sm font-bold mb-2">Total Savings</h4>
+              <p className="text-2xl font-bold text-green-600 dark:text-green-400">
+                {formatCurrency(results.totalSavings)}
+              </p>
+            </div>
+          </Card>
+
+          <div className="flex justify-end">
+            <Button variant="secondary" onClick={exportCSV}>
+              <Download className="mr-2 h-4 w-4" />
+              Export to CSV
+            </Button>
+          </div>
+        </div>
       </Card>
     </div>
   );
-};
+}
