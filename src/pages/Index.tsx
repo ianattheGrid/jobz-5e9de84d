@@ -15,12 +15,11 @@ export default function Index() {
       <HeroSection />
       <PlatformFeatures />
       <VideoSection />
-      {/* Even smaller spacer to reduce space between sections */}
       <div className="h-4"></div>
       <CalculatorSection />
       <FAQSection />
-      <ContractorRecruitmentSection />
       <ContractorCalculatorSection />
+      <ContractorRecruitmentSection />
     </div>
   );
 }
