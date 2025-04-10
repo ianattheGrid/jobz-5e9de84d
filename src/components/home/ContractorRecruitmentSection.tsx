@@ -4,14 +4,34 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { PRIMARY_COLOR_PATTERN } from "@/styles/colorPatterns";
 import { Building2, User, HelpCircle } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 export const ContractorRecruitmentSection = () => {
   const [isInterested, setIsInterested] = useState<boolean | null>(null);
   const [userType, setUserType] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
 
+  const saveFeedback = async (interested: boolean, type?: string) => {
+    try {
+      const { error } = await (supabase.from as any)('contractor_recruitment_feedback').insert({ 
+        is_interested: interested, 
+        user_type: type 
+      });
+
+      if (error) throw error;
+
+      toast.success("Thank you for your feedback!");
+    } catch (error) {
+      console.error("Error saving feedback:", error);
+      toast.error("There was an issue saving your feedback. Please try again.");
+    }
+  };
+
   const handleInterestResponse = (interested: boolean) => {
     setIsInterested(interested);
+    saveFeedback(interested);
+    
     if (!interested) {
       setSubmitted(true);
     }
@@ -19,6 +39,7 @@ export const ContractorRecruitmentSection = () => {
 
   const handleUserTypeSelection = (type: string) => {
     setUserType(type);
+    saveFeedback(true, type);
     setSubmitted(true);
   };
 
