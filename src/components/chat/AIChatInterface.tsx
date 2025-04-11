@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
@@ -69,7 +68,6 @@ const AIChatInterface: React.FC<AIChatInterfaceProps> = ({ userType, onClose }) 
 
       setConversations(data || []);
 
-      // If there are conversations, set the most recent one as active
       if (data && data.length > 0 && !activeConversation) {
         setActiveConversation(data[0].id);
       }
@@ -88,7 +86,6 @@ const AIChatInterface: React.FC<AIChatInterfaceProps> = ({ userType, onClose }) 
 
       if (error) throw error;
 
-      // Ensure we only use messages with valid roles
       const validMessages = (data || []).map(msg => ({
         id: msg.id,
         role: msg.role as 'user' | 'assistant' | 'system',
@@ -170,7 +167,6 @@ const AIChatInterface: React.FC<AIChatInterfaceProps> = ({ userType, onClose }) 
       setMessages([...messages, newMessage]);
       setMessage("");
 
-      // Save message to database
       const { error: insertError } = await supabase
         .from('ai_chat_messages')
         .insert({
@@ -181,7 +177,6 @@ const AIChatInterface: React.FC<AIChatInterfaceProps> = ({ userType, onClose }) 
 
       if (insertError) throw insertError;
 
-      // Call AI function with user message
       const { data, error } = await supabase.functions.invoke('ai-chat', {
         body: {
           messages: [...messages, newMessage].map(m => ({
@@ -195,13 +190,11 @@ const AIChatInterface: React.FC<AIChatInterfaceProps> = ({ userType, onClose }) 
 
       if (error) throw error;
 
-      // Update messages with AI response
       setMessages(prev => [...prev, {
         role: 'assistant',
         content: data.response
       }]);
 
-      // Update conversation title if this is the first message
       if (messages.length === 0) {
         const title = message.length > 30 ? message.substring(0, 30) + '...' : message;
         await supabase
@@ -209,14 +202,12 @@ const AIChatInterface: React.FC<AIChatInterfaceProps> = ({ userType, onClose }) 
           .update({ title })
           .eq('id', activeConversation);
         
-        // Update local conversations list
         setConversations(conversations.map(c => 
           c.id === activeConversation ? { ...c, title } : c
         ));
       }
     } catch (error) {
       console.error('Error sending message:', error);
-      // Show error message in the chat
       setMessages(prev => [...prev, {
         role: 'assistant',
         content: "Sorry, I encountered an error. Please try again later."
@@ -238,7 +229,6 @@ const AIChatInterface: React.FC<AIChatInterfaceProps> = ({ userType, onClose }) 
 
   return (
     <div className="flex h-[600px] gap-4">
-      {/* Conversations sidebar */}
       <div className="w-64 border-r pr-4 flex flex-col h-full">
         <div className="flex justify-between items-center mb-4">
           <h3 className="font-semibold">Conversations</h3>
@@ -293,16 +283,14 @@ const AIChatInterface: React.FC<AIChatInterfaceProps> = ({ userType, onClose }) 
         </div>
       </div>
 
-      {/* Chat area */}
       <div className="flex-1 flex flex-col h-full relative">
         {onClose && (
           <Button
-            variant="ghost"
-            size="icon"
-            className="absolute top-2 right-2 z-10"
+            variant="outline"
+            className="absolute top-2 right-2 z-10 bg-[#D946EF] text-white hover:bg-[#D946EF]/90 hover:text-white rounded-full px-3 py-1"
             onClick={onClose}
           >
-            <X className="h-5 w-5" />
+            Close Chat
           </Button>
         )}
 
@@ -325,7 +313,6 @@ const AIChatInterface: React.FC<AIChatInterfaceProps> = ({ userType, onClose }) 
           </div>
         ) : (
           <>
-            {/* Messages list */}
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
               {messages.length === 0 ? (
                 <div className="text-center text-muted-foreground py-8">
@@ -357,7 +344,6 @@ const AIChatInterface: React.FC<AIChatInterfaceProps> = ({ userType, onClose }) 
               <div ref={messagesEndRef} />
             </div>
 
-            {/* Message input */}
             <div className="p-4 border-t">
               <div className="flex gap-2">
                 <Textarea
