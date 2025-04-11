@@ -3,7 +3,11 @@ import React from "react";
 import AIChatInterface from "./AIChatInterface";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 
-const EmployerChatSection: React.FC = () => {
+interface EmployerChatSectionProps {
+  onClose?: () => void;
+}
+
+const EmployerChatSection: React.FC<EmployerChatSectionProps> = ({ onClose }) => {
   return (
     <Card className="w-full">
       <CardHeader>
@@ -13,7 +17,7 @@ const EmployerChatSection: React.FC = () => {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <AIChatInterface userType="employer" />
+        <AIChatInterface userType="employer" onClose={onClose} />
       </CardContent>
     </Card>
   );

@@ -87,7 +87,7 @@ const VirtualRecruiterDashboard = () => {
           </div>
           
           {showChat && (
-            <VRChatSection />
+            <VRChatSection onClose={() => setShowChat(false)} />
           )}
           
           <RecommendationExpiryCard />

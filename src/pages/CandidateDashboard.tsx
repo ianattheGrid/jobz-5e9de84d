@@ -150,7 +150,7 @@ const CandidateDashboard = () => {
         
         {showChat && (
           <div className="mb-8">
-            <CandidateChatSection />
+            <CandidateChatSection onClose={() => setShowChat(false)} />
           </div>
         )}
 

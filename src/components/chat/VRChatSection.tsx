@@ -3,7 +3,11 @@ import React from "react";
 import AIChatInterface from "./AIChatInterface";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 
-const VRChatSection: React.FC = () => {
+interface VRChatSectionProps {
+  onClose?: () => void;
+}
+
+const VRChatSection: React.FC<VRChatSectionProps> = ({ onClose }) => {
   return (
     <Card className="w-full">
       <CardHeader>
@@ -13,7 +17,7 @@ const VRChatSection: React.FC = () => {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <AIChatInterface userType="vr" />
+        <AIChatInterface userType="vr" onClose={onClose} />
       </CardContent>
     </Card>
   );

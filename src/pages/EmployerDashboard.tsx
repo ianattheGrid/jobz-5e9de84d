@@ -12,9 +12,7 @@ import EmployerChatSection from "@/components/chat/EmployerChatSection";
 
 const EmployerDashboard = () => {
   const navigate = useNavigate();
-  const {
-    toast
-  } = useToast();
+  const { toast } = useToast();
   const [userId, setUserId] = useState<string | null>(null);
   const [companyName, setCompanyName] = useState<string | null>(null);
   const [showBonus, setShowBonus] = useState(false);
@@ -27,11 +25,7 @@ const EmployerDashboard = () => {
 
   const checkUser = async () => {
     try {
-      const {
-        data: {
-          session
-        }
-      } = await supabase.auth.getSession();
+      const { data: { session } } = await supabase.auth.getSession();
       if (!session || session.user.user_metadata.user_type !== 'employer') {
         navigate('/employer/signin');
         return;
@@ -39,16 +33,12 @@ const EmployerDashboard = () => {
       setUserId(session.user.id);
 
       // Fetch employer profile
-      const {
-        data: profile
-      } = await supabase.from('employer_profiles').select('company_name').eq('id', session.user.id).maybeSingle();
+      const { data: profile } = await supabase.from('employer_profiles').select('company_name').eq('id', session.user.id).maybeSingle();
       if (profile) {
         setCompanyName(profile.company_name);
       } else {
         // Create a new profile if none exists
-        const {
-          error: createError
-        } = await supabase.from('employer_profiles').insert([{
+        const { error: createError } = await supabase.from('employer_profiles').insert([{
           id: session.user.id,
           company_name: "",
           full_name: session.user.user_metadata.full_name || "",
@@ -71,17 +61,11 @@ const EmployerDashboard = () => {
 
   const checkBonusEligibility = async () => {
     try {
-      const {
-        data: {
-          session
-        }
-      } = await supabase.auth.getSession();
+      const { data: { session } } = await supabase.auth.getSession();
       if (!session) return;
 
       // Check if employer has created at least one job posting
-      const {
-        data: jobPostings
-      } = await supabase.from('jobs').select('id').eq('employer_id', session.user.id);
+      const { data: jobPostings } = await supabase.from('jobs').select('id').eq('employer_id', session.user.id);
 
       // Only show bonus section if employer has posted jobs
       setShowBonus(jobPostings && jobPostings.length > 0);
@@ -130,7 +114,8 @@ const EmployerDashboard = () => {
     }
   ];
 
-  return <div className="min-h-screen bg-background">
+  return (
+    <div className="min-h-screen bg-background">
       <NavBar />
       <div className="container mx-auto px-4 pt-20">
         <h1 className="text-3xl font-bold mb-2 !text-[#FF69B4]">
@@ -140,24 +125,31 @@ const EmployerDashboard = () => {
         
         {showChat && (
           <div className="mb-8">
-            <EmployerChatSection />
+            <EmployerChatSection onClose={() => setShowChat(false)} />
           </div>
         )}
         
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {menuItems.map((item, index) => <Button key={index} variant="outline" className="h-auto p-6 flex flex-col items-center gap-4 bg-white hover:bg-red-50 transition-all duration-200 border border-gray-200 rounded-lg shadow-sm hover:shadow-md" onClick={() => {
-              if (item.onClick) {
-                item.onClick();
-              } else if (item.path !== "#") {
-                navigate(item.path);
-              }
-            }}>
+          {menuItems.map((item, index) => (
+            <Button 
+              key={index} 
+              variant="outline" 
+              className="h-auto p-6 flex flex-col items-center gap-4 bg-white hover:bg-red-50 transition-all duration-200 border border-gray-200 rounded-lg shadow-sm hover:shadow-md" 
+              onClick={() => {
+                if (item.onClick) {
+                  item.onClick();
+                } else if (item.path !== "#") {
+                  navigate(item.path);
+                }
+              }}
+            >
               <div className="text-primary">{item.icon}</div>
               <div className="text-center">
                 <h3 className="font-semibold text-lg mb-2 text-primary">{item.title}</h3>
                 <p className="text-sm text-gray-600">{item.description}</p>
               </div>
-            </Button>)}
+            </Button>
+          ))}
         </div>
 
         {showBonus && userId && (
@@ -167,7 +159,8 @@ const EmployerDashboard = () => {
           </div>
         )}
       </div>
-    </div>;
+    </div>
+  );
 };
 
 export default EmployerDashboard;

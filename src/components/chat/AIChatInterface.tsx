@@ -5,7 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
-import { Loader2, Send, Plus, Trash2 } from "lucide-react";
+import { Loader2, Send, Plus, Trash2, X } from "lucide-react";
 
 interface Message {
   id?: string;
@@ -22,9 +22,10 @@ interface Conversation {
 
 interface AIChatInterfaceProps {
   userType: 'employer' | 'candidate' | 'vr';
+  onClose?: () => void;
 }
 
-const AIChatInterface: React.FC<AIChatInterfaceProps> = ({ userType }) => {
+const AIChatInterface: React.FC<AIChatInterfaceProps> = ({ userType, onClose }) => {
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -293,7 +294,18 @@ const AIChatInterface: React.FC<AIChatInterfaceProps> = ({ userType }) => {
       </div>
 
       {/* Chat area */}
-      <div className="flex-1 flex flex-col h-full">
+      <div className="flex-1 flex flex-col h-full relative">
+        {onClose && (
+          <Button
+            variant="ghost"
+            size="icon"
+            className="absolute top-2 right-2 z-10"
+            onClick={onClose}
+          >
+            <X className="h-5 w-5" />
+          </Button>
+        )}
+
         {!activeConversation && conversations.length === 0 ? (
           <div className="flex items-center justify-center h-full">
             <Card className="max-w-md p-6 text-center">
