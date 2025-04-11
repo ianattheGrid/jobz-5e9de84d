@@ -8,7 +8,7 @@ import { DashboardStats } from "@/components/vr/dashboard/DashboardStats";
 import { InactiveAccountWarning } from "@/components/vr/dashboard/InactiveAccountWarning";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Users, UserPlus, BarChart3, FileText, Bell } from "lucide-react";
+import { Users, UserPlus, BarChart3, FileText, Bell, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { CandidateUpdates } from "@/components/vr/CandidateUpdates";
@@ -16,10 +16,13 @@ import { RecommendationExpiryCard } from "@/components/vr/dashboard/Recommendati
 import { SessionTimeoutHandler } from "@/components/auth/SessionTimeoutHandler";
 import NavBar from "@/components/NavBar";
 import { TestScenarioButton } from "@/components/dashboard/TestScenarioButton";
+import VRChatSection from "@/components/chat/VRChatSection";
+import { useState } from "react";
 
 const VirtualRecruiterDashboard = () => {
   const { loading, error, profile, stats } = useVRDashboard();
   const navigate = useNavigate();
+  const [showChat, setShowChat] = useState(false);
 
   if (loading) {
     return (
@@ -70,8 +73,22 @@ const VirtualRecruiterDashboard = () => {
           
           <div className="flex justify-between items-center">
             <DashboardMenu />
-            <TestScenarioButton />
+            <div className="flex gap-2">
+              <Button 
+                variant="outline" 
+                onClick={() => setShowChat(!showChat)}
+                className="flex items-center gap-2"
+              >
+                <MessageSquare className="h-4 w-4" />
+                {showChat ? "Hide AI Assistant" : "Show AI Assistant"}
+              </Button>
+              <TestScenarioButton />
+            </div>
           </div>
+          
+          {showChat && (
+            <VRChatSection />
+          )}
           
           <RecommendationExpiryCard />
           

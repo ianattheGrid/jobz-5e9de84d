@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -10,16 +11,19 @@ import {
   Database,
   Settings,
   Mail,
-  Calendar
+  Calendar,
+  MessageSquare
 } from "lucide-react";
 import { VerificationSection } from "@/components/candidate/VerificationSection";
 import { initializeStorage } from "@/integrations/supabase/storage";
+import CandidateChatSection from "@/components/chat/CandidateChatSection";
 
 const CandidateDashboard = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [loading, setLoading] = useState(true);
   const [fullName, setFullName] = useState<string | null>(null);
+  const [showChat, setShowChat] = useState(false);
 
   useEffect(() => {
     // Initialize storage buckets
@@ -125,10 +129,11 @@ const CandidateDashboard = () => {
       description: "Manage your account"
     },
     {
-      title: "Contact AI Support",
-      icon: <Mail className="h-6 w-6" />,
+      title: "AI Assistant",
+      icon: <MessageSquare className="h-6 w-6" />,
       path: "#",
-      description: "Get in touch with our AI support team"
+      description: "Get AI-powered career advice",
+      onClick: () => setShowChat(!showChat)
     }
   ];
 
@@ -143,13 +148,25 @@ const CandidateDashboard = () => {
         
         <VerificationSection />
         
+        {showChat && (
+          <div className="mb-8">
+            <CandidateChatSection />
+          </div>
+        )}
+
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {menuItems.map((item, index) => (
             <Button
               key={index}
               variant="outline"
               className="h-auto p-6 flex flex-col items-center gap-4 bg-white hover:bg-gray-50 transition-all duration-200 border border-gray-200 rounded-lg shadow-sm hover:shadow-md"
-              onClick={() => navigate(item.path)}
+              onClick={() => {
+                if (item.onClick) {
+                  item.onClick();
+                } else if (item.path !== "#") {
+                  navigate(item.path);
+                }
+              }}
             >
               <div className="text-[#FF69B4]">{item.icon}</div>
               <div className="text-center">

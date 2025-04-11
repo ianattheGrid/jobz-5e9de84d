@@ -12,3 +12,6 @@ verify_jwt = false
 
 [functions.parse-cv]
 verify_jwt = false
+
+[functions.ai-chat]
+verify_jwt = false

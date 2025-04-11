@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -7,6 +8,7 @@ import NavBar from "@/components/NavBar";
 import BonusNegotiations from "@/components/employer/BonusNegotiations";
 import { BonusPaymentsSection } from "@/components/employer/BonusPaymentsSection";
 import { Briefcase, Building2, Search, Calendar, UserCircle, MessageSquare } from "lucide-react";
+import EmployerChatSection from "@/components/chat/EmployerChatSection";
 
 const EmployerDashboard = () => {
   const navigate = useNavigate();
@@ -16,6 +18,7 @@ const EmployerDashboard = () => {
   const [userId, setUserId] = useState<string | null>(null);
   const [companyName, setCompanyName] = useState<string | null>(null);
   const [showBonus, setShowBonus] = useState(false);
+  const [showChat, setShowChat] = useState(false);
 
   useEffect(() => {
     checkUser();
@@ -119,10 +122,11 @@ const EmployerDashboard = () => {
       description: "Update your company profile"
     },
     {
-      title: "Contact Us",
+      title: "AI Assistant",
       icon: <MessageSquare className="h-6 w-6" />,
       path: "#",
-      description: "Get in touch with our support team"
+      description: "Get AI-powered recruitment help",
+      onClick: () => setShowChat(!showChat)
     }
   ];
 
@@ -134,8 +138,20 @@ const EmployerDashboard = () => {
         </h1>
         <p className="text-white mb-8">Manage your job postings and candidates</p>
         
+        {showChat && (
+          <div className="mb-8">
+            <EmployerChatSection />
+          </div>
+        )}
+        
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {menuItems.map((item, index) => <Button key={index} variant="outline" className="h-auto p-6 flex flex-col items-center gap-4 bg-white hover:bg-red-50 transition-all duration-200 border border-gray-200 rounded-lg shadow-sm hover:shadow-md" onClick={() => navigate(item.path)}>
+          {menuItems.map((item, index) => <Button key={index} variant="outline" className="h-auto p-6 flex flex-col items-center gap-4 bg-white hover:bg-red-50 transition-all duration-200 border border-gray-200 rounded-lg shadow-sm hover:shadow-md" onClick={() => {
+              if (item.onClick) {
+                item.onClick();
+              } else if (item.path !== "#") {
+                navigate(item.path);
+              }
+            }}>
               <div className="text-primary">{item.icon}</div>
               <div className="text-center">
                 <h3 className="font-semibold text-lg mb-2 text-primary">{item.title}</h3>
