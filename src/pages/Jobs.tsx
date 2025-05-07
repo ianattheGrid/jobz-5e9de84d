@@ -15,6 +15,7 @@ import { bristolPostcodes } from "@/data/bristolPostcodes";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { LayoutDashboard } from "lucide-react";
+import { TestScenarioButton } from "@/components/dashboard/TestScenarioButton";
 
 const Jobs = () => {
   const { user, userType } = useAuth();
@@ -100,15 +101,19 @@ const Jobs = () => {
         <div className="mb-8">
           <div className="flex justify-between items-start">
             <JobsHeader userType={userType} />
-            {userType === 'candidate' && (
-              <Button
-                onClick={() => navigate('/candidate/dashboard')}
-                className="bg-[#FF69B4] hover:bg-[#FF50A8] text-white mt-12"
-              >
-                <LayoutDashboard className="w-4 h-4 mr-2" />
-                Dashboard
-              </Button>
-            )}
+            <div className="flex space-x-4 mt-12">
+              {userType === 'candidate' && (
+                <Button
+                  onClick={() => navigate('/candidate/dashboard')}
+                  className="bg-[#FF69B4] hover:bg-[#FF50A8] text-white"
+                >
+                  <LayoutDashboard className="w-4 h-4 mr-2" />
+                  Dashboard
+                </Button>
+              )}
+              {/* Added test scenario button */}
+              <TestScenarioButton />
+            </div>
           </div>
         </div>
         <JobSearch onSearch={handleSearch} />
