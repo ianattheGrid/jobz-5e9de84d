@@ -1,3 +1,4 @@
+
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Job } from "@/integrations/supabase/types/jobs";
@@ -30,6 +31,7 @@ const Jobs = () => {
         .select('*')
         .order('created_at', { ascending: false });
 
+      // Only filter by employer_id if the user is logged in and is an employer
       if (user && userType === 'employer') {
         query = query.eq('employer_id', user.id);
       }
@@ -67,6 +69,8 @@ const Jobs = () => {
         throw error;
       }
 
+      console.log('Jobs data received:', data?.length || 0);
+      
       if (!data || data.length === 0) {
         return [];
       }
@@ -79,7 +83,7 @@ const Jobs = () => {
       
       return transformedData;
     },
-    staleTime: 5 * 60 * 1000,
+    staleTime: 5 * 60 * 1000, // 5 minutes
     retry: 2,
     retryDelay: 1000,
   });
@@ -114,6 +118,7 @@ const Jobs = () => {
         ) : error ? (
           <div className="text-center text-red-500 mt-8">
             <p>Failed to load jobs. Please try again later.</p>
+            <p className="text-sm mt-2">{(error as Error)?.message || 'Unknown error'}</p>
             <Button 
               onClick={() => window.location.reload()} 
               variant="outline" 
