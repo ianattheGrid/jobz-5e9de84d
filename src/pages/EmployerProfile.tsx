@@ -1,5 +1,5 @@
 
-import { Loader2 } from "lucide-react";
+import { Loader2, Home } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -12,7 +12,7 @@ import { ProfileForm } from "@/components/employer/ProfileForm";
 import { useEmployerProfile } from "@/hooks/useEmployerProfile";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { LayoutDashboard } from "lucide-react";
+import { LayoutDashboard, Home as HomeIcon } from "lucide-react";
 import { PreviewButton } from "@/components/employer/PreviewButton";
 
 export default function EmployerProfile() {
@@ -29,6 +29,15 @@ export default function EmployerProfile() {
   return (
     <div className="container mx-auto py-10 px-4">
       <div className="flex justify-end mb-4 gap-2">
+        <Link to="/">
+          <Button 
+            variant="outline"
+            className="flex items-center gap-2 bg-white text-gray-700"
+          >
+            <HomeIcon className="h-4 w-4" />
+            Home
+          </Button>
+        </Link>
         <PreviewButton />
         <Link to="/employer/dashboard">
           <Button 
