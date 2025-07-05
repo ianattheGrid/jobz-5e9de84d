@@ -23,22 +23,40 @@ export const ProfilePictureUpload = ({
 }: ProfilePictureUploadProps) => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) onUpload(file);
+    console.log('File selected:', file);
+    if (file) {
+      onUpload(file);
+    }
+    // Reset the input value to allow re-uploading the same file
+    e.target.value = '';
   };
   
   return (
     <div className="space-y-4">
       <div className="text-sm font-medium text-gray-900">Profile Picture</div>
       <div className="flex items-center gap-4">
-        <FileUploadButton
-          id="profile-picture-input"
-          uploading={uploadingPicture}
-          success={uploadSuccess}
-          onButtonClick={() => document.getElementById('profile-picture-input')?.click()}
-          label="Upload Picture"
-          accept="image/*"
-          disabled={deletingPicture}
-        />
+        <div className="relative">
+          <input
+            type="file"
+            id="profile-picture-input"
+            accept="image/*"
+            className="hidden"
+            onChange={handleFileChange}
+            disabled={uploadingPicture || deletingPicture}
+          />
+          <FileUploadButton
+            id="profile-picture-input"
+            uploading={uploadingPicture}
+            success={uploadSuccess}
+            onButtonClick={() => {
+              const input = document.getElementById('profile-picture-input') as HTMLInputElement;
+              input?.click();
+            }}
+            label="Upload Picture"
+            accept="image/*"
+            disabled={deletingPicture}
+          />
+        </div>
 
         {currentProfilePicture && (
           <DeleteFileButton
@@ -51,17 +69,9 @@ export const ProfilePictureUpload = ({
         <Avatar className="h-20 w-20">
           <AvatarImage src={currentProfilePicture || undefined} />
           <AvatarFallback className="bg-gray-200 text-gray-500">
-            {/* Add initials or icon here if needed */}
+            <span className="text-sm">No Image</span>
           </AvatarFallback>
         </Avatar>
-        
-        <input
-          type="file"
-          id="profile-picture-input"
-          accept="image/*"
-          className="hidden"
-          onChange={handleFileChange}
-        />
       </div>
     </div>
   );
