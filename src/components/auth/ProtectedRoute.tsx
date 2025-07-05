@@ -86,7 +86,7 @@ export const ProtectedRoute = ({ children, userType }: ProtectedRouteProps) => {
   
           if (profileError) {
             console.error(`Error fetching ${userType} profile:`, profileError);
-          } else if (!profile && !window.location.pathname.includes('/profile')) {
+          } else if (!profile && window.location.pathname !== `/${userType}/profile`) {
             // If no profile exists and not already on the profile page, redirect to profile page
             console.log(`No ${userType} profile found, redirecting to profile page`);
             
