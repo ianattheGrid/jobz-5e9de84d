@@ -50,9 +50,11 @@ export default function CandidateProfile() {
     
     const checkAuth = async () => {
       try {
+        console.log('Starting auth check...');
         const { data: { session } } = await supabase.auth.getSession();
         
         if (!session) {
+          console.log('No session found, redirecting...');
           toast({
             variant: "destructive",
             title: "Access Denied",
@@ -63,7 +65,9 @@ export default function CandidateProfile() {
         }
 
         const userType = session.user.user_metadata.user_type;
+        console.log('User type:', userType);
         if (userType !== 'candidate') {
+          console.log('Not a candidate, redirecting...');
           toast({
             variant: "destructive",
             title: "Access Denied",
@@ -73,19 +77,22 @@ export default function CandidateProfile() {
           return;
         }
 
+        console.log('Auth check passed, setting user ID:', session.user.id);
         setUserId(session.user.id);
 
         // Fetch profile picture and CV URL
         await fetchProfileData(session.user.id);
 
+        console.log('Profile data fetched, setting loading to false');
         setLoading(false);
       } catch (error) {
-        console.error('Error:', error);
+        console.error('Error in auth check:', error);
         toast({
           variant: "destructive",
           title: "Error",
           description: "An error occurred while loading your profile.",
         });
+        setLoading(false); // Always clear loading state on error
       }
     };
 
