@@ -106,30 +106,28 @@ export const createBucketPolicy = async (
  */
 export const initializeStorage = async () => {
   try {
-    // Create verification_documents bucket with enhanced options
-    await createBucketIfNotExists('verification_documents', {
-      isPublic: true,
-      fileSizeLimit: 5 * 1024 * 1024, // 5MB limit for verification docs
-      allowedMimeTypes: ['image/jpeg', 'image/png', 'application/pdf']
-    });
+    // Just check if buckets exist - don't try to create them as that requires admin permissions
+    const { data: buckets, error: listError } = await supabase.storage.listBuckets();
     
-    // Create other buckets as needed
-    // Example: Profile pictures bucket
-    await createBucketIfNotExists('profile_pictures', {
-      isPublic: true, 
-      fileSizeLimit: 2 * 1024 * 1024, // 2MB limit for profile pictures
-      allowedMimeTypes: ['image/jpeg', 'image/png', 'image/webp']
-    });
+    if (listError) {
+      console.log('Storage buckets check failed:', listError);
+      return; // Don't throw error, just log and continue
+    }
     
-    // Example: CVs bucket
-    await createBucketIfNotExists('cvs', {
-      isPublic: true,
-      fileSizeLimit: 10 * 1024 * 1024, // 10MB limit for CVs
-      allowedMimeTypes: ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']
+    const requiredBuckets = ['verification_documents', 'profile_pictures', 'cvs'];
+    const existingBuckets = buckets?.map(bucket => bucket.name) || [];
+    
+    requiredBuckets.forEach(bucketName => {
+      if (existingBuckets.includes(bucketName)) {
+        console.log(`✓ Bucket ${bucketName} is available`);
+      } else {
+        console.log(`⚠ Bucket ${bucketName} not found - may need admin setup`);
+      }
     });
     
   } catch (error) {
-    console.error('Failed to initialize storage buckets:', error);
+    console.log('Storage initialization failed (continuing anyway):', error);
+    // Don't throw - just log and continue so page loading isn't blocked
   }
 };
 
