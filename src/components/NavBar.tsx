@@ -12,13 +12,22 @@ const NavBar = () => {
   const [userName, setUserName] = useState<string | null>(null);
 
   useEffect(() => {
+    console.log('NavBar user data:', {
+      email: user?.email,
+      full_name: user?.user_metadata?.full_name,
+      userType: userType
+    });
+    
     if (user?.user_metadata?.full_name) {
       setUserName(user.user_metadata.full_name);
     }
-  }, [user]);
+  }, [user, userType]);
 
   // Check if this is a test account
-  const isTestAccount = user?.email?.includes('test.employer') || user?.user_metadata?.full_name === 'Test Employer';
+  const isTestAccount = user?.email?.includes('test.employer') || 
+                       user?.email?.includes('test.candidate') || 
+                       user?.email?.includes('test.vr') ||
+                       user?.user_metadata?.full_name === 'Test Employer';
 
   const handleSignOut = async () => {
     try {
