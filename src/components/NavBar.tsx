@@ -17,6 +17,9 @@ const NavBar = () => {
     }
   }, [user]);
 
+  // Check if this is a test account
+  const isTestAccount = user?.email?.includes('test.employer') || user?.user_metadata?.full_name === 'Test Employer';
+
   const handleSignOut = async () => {
     try {
       await supabase.auth.signOut();
@@ -60,7 +63,7 @@ const NavBar = () => {
           </div>
           
           <div className="flex items-center">
-            {!loading && user ? (
+            {!loading && user && !isTestAccount ? (
               <div className="hidden md:flex items-center gap-4">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -161,7 +164,7 @@ const NavBar = () => {
                 </DropdownMenu>
               </div>
             )}
-            <MobileNav isAuthenticated={!!user} userType={userType} />
+            <MobileNav isAuthenticated={!!(user && !isTestAccount)} userType={userType} />
           </div>
         </div>
       </div>
