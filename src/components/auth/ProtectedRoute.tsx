@@ -17,26 +17,27 @@ export const ProtectedRoute = ({ children, userType }: ProtectedRouteProps) => {
   const [authorized, setAuthorized] = useState(false);
 
   useEffect(() => {
+    let isMounted = true;
+    
     const checkAuth = async () => {
       try {
         console.log(`[ProtectedRoute] Starting auth check for ${userType} at ${window.location.pathname}`);
+        
+        if (!isMounted) return;
         setLoading(true);
         
-        // Add a small delay to help with timing issues during screen recording
-        await new Promise(resolve => setTimeout(resolve, 100));
+        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+        console.log(`[ProtectedRoute] Session result:`, { session: !!session, error: sessionError });
         
-        const { data: { session } } = await supabase.auth.getSession();
-        console.log(`[ProtectedRoute] Session check completed:`, !!session);
+        if (!isMounted) return;
+        
+        if (sessionError) {
+          console.error('[ProtectedRoute] Session error:', sessionError);
+          throw sessionError;
+        }
         
         if (!session) {
           console.log('[ProtectedRoute] No session found, redirecting to sign in');
-          toast({
-            variant: "destructive",
-            title: "Access Denied",
-            description: "Please sign in to access this page.",
-          });
-          
-          // Redirect to the appropriate sign-in page based on userType
           navigate(`/${userType}/signin`);
           return;
         }
@@ -49,16 +50,17 @@ export const ProtectedRoute = ({ children, userType }: ProtectedRouteProps) => {
           .eq('user_id', session.user.id)
           .maybeSingle();
 
+        if (!isMounted) return;
+        
         console.log(`[ProtectedRoute] User role fetch result:`, { userRoleData, roleError });
 
-        if (roleError || !userRoleData) {
+        if (roleError) {
           console.error('[ProtectedRoute] Error fetching user role:', roleError);
-          toast({
-            variant: "destructive",
-            title: "Authentication Error",
-            description: "Could not verify your access privileges. Please try signing in again.",
-          });
-          
+          throw roleError;
+        }
+        
+        if (!userRoleData) {
+          console.error('[ProtectedRoute] No user role found');
           await supabase.auth.signOut();
           navigate(`/${userType}/signin`);
           return;
@@ -69,14 +71,17 @@ export const ProtectedRoute = ({ children, userType }: ProtectedRouteProps) => {
         
         if (currentUserType !== userType) {
           console.log(`[ProtectedRoute] User type mismatch - redirecting to home`);
-          toast({
-            variant: "destructive",
-            title: "Access Denied",
-            description: `This page is for ${userType} accounts only. Please sign in with the correct account type.`,
-          });
-          
-          // Redirect to home page on type mismatch
           navigate('/');
+          return;
+        }
+        
+        // For candidate profile page, skip profile existence check
+        if (userType === 'candidate' && window.location.pathname === '/candidate/profile') {
+          console.log(`[ProtectedRoute] Candidate profile page - skipping profile check`);
+          if (isMounted) {
+            setAuthorized(true);
+            setLoading(false);
+          }
           return;
         }
         
@@ -94,6 +99,8 @@ export const ProtectedRoute = ({ children, userType }: ProtectedRouteProps) => {
             .eq('id', session.user.id)
             .maybeSingle();
   
+          if (!isMounted) return;
+          
           console.log(`[ProtectedRoute] Profile check result:`, { profile: !!profile, profileError });
 
           if (profileError) {
@@ -101,12 +108,6 @@ export const ProtectedRoute = ({ children, userType }: ProtectedRouteProps) => {
           } else if (!profile && window.location.pathname !== `/${userType}/profile`) {
             // If no profile exists and not already on the profile page, redirect to profile page
             console.log(`[ProtectedRoute] No ${userType} profile found, redirecting to profile page`);
-            
-            toast({
-              title: "Profile Required",
-              description: "Please complete your profile to continue.",
-            });
-            
             navigate(`/${userType}/profile`);
             return;
           }
@@ -114,23 +115,25 @@ export const ProtectedRoute = ({ children, userType }: ProtectedRouteProps) => {
         
         // If we get here, the user is authorized
         console.log(`[ProtectedRoute] Auth check passed - user authorized`);
-        setAuthorized(true);
+        if (isMounted) {
+          setAuthorized(true);
+          setLoading(false);
+        }
       } catch (error) {
         console.error('[ProtectedRoute] Error checking authentication:', error);
-        toast({
-          variant: "destructive",
-          title: "Authentication Error",
-          description: "There was a problem verifying your credentials. Please try signing in again.",
-        });
-        navigate(`/${userType}/signin`);
-      } finally {
-        console.log(`[ProtectedRoute] Auth check completed, setting loading to false`);
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+          navigate(`/${userType}/signin`);
+        }
       }
     };
 
     checkAuth();
-  }, [navigate, userType, toast]);
+    
+    return () => {
+      isMounted = false;
+    };
+  }, [navigate, userType]);
 
   if (loading) {
     return (
