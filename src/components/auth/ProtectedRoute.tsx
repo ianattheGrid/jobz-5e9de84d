@@ -19,12 +19,17 @@ export const ProtectedRoute = ({ children, userType }: ProtectedRouteProps) => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
+        console.log(`[ProtectedRoute] Starting auth check for ${userType} at ${window.location.pathname}`);
         setLoading(true);
         
+        // Add a small delay to help with timing issues during screen recording
+        await new Promise(resolve => setTimeout(resolve, 100));
+        
         const { data: { session } } = await supabase.auth.getSession();
+        console.log(`[ProtectedRoute] Session check completed:`, !!session);
         
         if (!session) {
-          console.log('No session found, redirecting to sign in');
+          console.log('[ProtectedRoute] No session found, redirecting to sign in');
           toast({
             variant: "destructive",
             title: "Access Denied",
@@ -37,14 +42,17 @@ export const ProtectedRoute = ({ children, userType }: ProtectedRouteProps) => {
         }
 
         // Fetch the user's role from the database
+        console.log(`[ProtectedRoute] Fetching user role for user:`, session.user.id);
         const { data: userRoleData, error: roleError } = await supabase
           .from('user_roles')
           .select('role')
           .eq('user_id', session.user.id)
           .maybeSingle();
 
+        console.log(`[ProtectedRoute] User role fetch result:`, { userRoleData, roleError });
+
         if (roleError || !userRoleData) {
-          console.error('Error fetching user role:', roleError);
+          console.error('[ProtectedRoute] Error fetching user role:', roleError);
           toast({
             variant: "destructive",
             title: "Authentication Error",
@@ -57,9 +65,10 @@ export const ProtectedRoute = ({ children, userType }: ProtectedRouteProps) => {
         }
 
         const currentUserType = userRoleData.role;
+        console.log(`[ProtectedRoute] User type check: expected=${userType}, actual=${currentUserType}`);
         
         if (currentUserType !== userType) {
-          console.log(`User type mismatch: expected ${userType}, got ${currentUserType}`);
+          console.log(`[ProtectedRoute] User type mismatch - redirecting to home`);
           toast({
             variant: "destructive",
             title: "Access Denied",
@@ -78,17 +87,20 @@ export const ProtectedRoute = ({ children, userType }: ProtectedRouteProps) => {
           userType === 'vr' ? 'virtual_recruiter_profiles' : null;
           
         if (profileTable) {
+          console.log(`[ProtectedRoute] Checking profile in ${profileTable}`);
           const { data: profile, error: profileError } = await supabase
             .from(profileTable)
             .select('id')
             .eq('id', session.user.id)
             .maybeSingle();
   
+          console.log(`[ProtectedRoute] Profile check result:`, { profile: !!profile, profileError });
+
           if (profileError) {
-            console.error(`Error fetching ${userType} profile:`, profileError);
+            console.error(`[ProtectedRoute] Error fetching ${userType} profile:`, profileError);
           } else if (!profile && window.location.pathname !== `/${userType}/profile`) {
             // If no profile exists and not already on the profile page, redirect to profile page
-            console.log(`No ${userType} profile found, redirecting to profile page`);
+            console.log(`[ProtectedRoute] No ${userType} profile found, redirecting to profile page`);
             
             toast({
               title: "Profile Required",
@@ -101,9 +113,10 @@ export const ProtectedRoute = ({ children, userType }: ProtectedRouteProps) => {
         }
         
         // If we get here, the user is authorized
+        console.log(`[ProtectedRoute] Auth check passed - user authorized`);
         setAuthorized(true);
       } catch (error) {
-        console.error('Error checking authentication:', error);
+        console.error('[ProtectedRoute] Error checking authentication:', error);
         toast({
           variant: "destructive",
           title: "Authentication Error",
@@ -111,6 +124,7 @@ export const ProtectedRoute = ({ children, userType }: ProtectedRouteProps) => {
         });
         navigate(`/${userType}/signin`);
       } finally {
+        console.log(`[ProtectedRoute] Auth check completed, setting loading to false`);
         setLoading(false);
       }
     };
