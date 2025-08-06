@@ -19,25 +19,25 @@ import {
 
 export default function DemoEmployerProfile() {
   const employer = {
-    name: "TechFlow Industries",
+    name: "Bristol Tech Solutions",
     industry: "Software Development",
-    location: "Seattle, WA",
-    email: "careers@techflow.com",
-    phone: "+1 (555) 987-6543",
-    website: "www.techflow.com",
+    location: "Bristol, UK",
+    email: "careers@bristoltech.co.uk",
+    phone: "+44 117 123 4567",
+    website: "www.bristoltech.co.uk",
     founded: "2018",
     size: "50-200 employees",
-    description: "TechFlow Industries is a fast-growing software company specializing in cloud-native solutions and AI-powered analytics. We're passionate about innovation and building products that make a real difference in our clients' businesses.",
+    description: "Bristol Tech Solutions is a fast-growing software company specializing in cloud-native solutions and AI-powered analytics. We're passionate about innovation and building products that make a real difference in our clients' businesses.",
     culture: "We believe in work-life balance, continuous learning, and collaborative innovation. Our team is diverse, inclusive, and driven by curiosity.",
     benefits: [
-      "Competitive salary + equity",
-      "Health, dental, vision insurance",
-      "401(k) matching",
-      "Unlimited PTO",
-      "Remote work flexibility",
+      "Competitive salary + pension",
+      "Private healthcare",
+      "25 days holiday + bank holidays",
+      "Flexible working hours",
+      "Remote work options",
       "Learning & development budget",
-      "Stock options",
-      "Free meals and snacks"
+      "Company shares scheme",
+      "Free lunch and refreshments"
     ],
     values: [
       "Innovation", "Collaboration", "Integrity", "Growth Mindset", "Customer Focus"
@@ -46,18 +46,18 @@ export default function DemoEmployerProfile() {
       {
         title: "Senior React Developer",
         department: "Engineering",
-        location: "Seattle, WA / Remote",
+        location: "Bristol, UK / Remote",
         type: "Full-time",
         posted: "2 days ago",
-        salary: "$120k - $150k"
+        salary: "£55k - £70k"
       },
       {
         title: "Product Manager",
         department: "Product",
-        location: "Seattle, WA",
+        location: "Bristol, UK",
         type: "Full-time",
         posted: "1 week ago",
-        salary: "$130k - $160k"
+        salary: "£60k - £75k"
       },
       {
         title: "DevOps Engineer",
@@ -65,7 +65,7 @@ export default function DemoEmployerProfile() {
         location: "Remote",
         type: "Full-time",
         posted: "3 days ago",
-        salary: "$110k - $140k"
+        salary: "£50k - £65k"
       }
     ],
     stats: {

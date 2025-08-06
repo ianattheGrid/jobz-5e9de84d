@@ -15,14 +15,15 @@ import {
   Download,
   MessageCircle
 } from "lucide-react";
+import sarahProfileImage from "@/assets/sarah-johnson-profile.jpg";
 
 export default function DemoCandidateProfile() {
   const candidate = {
     name: "Sarah Johnson",
     title: "Senior Frontend Developer",
-    location: "San Francisco, CA",
+    location: "Bristol, UK",
     email: "sarah.johnson@example.com",
-    phone: "+1 (555) 123-4567",
+    phone: "+44 117 456 7890",
     experience: "5+ years",
     availability: "Available immediately",
     summary: "Passionate frontend developer with 5+ years of experience building responsive web applications using React, TypeScript, and modern CSS. Strong advocate for clean code, accessibility, and user-centered design.",
@@ -33,19 +34,19 @@ export default function DemoCandidateProfile() {
     experience_items: [
       {
         title: "Senior Frontend Developer",
-        company: "TechCorp Inc.",
+        company: "TechHub Bristol",
         period: "2022 - Present",
         description: "Lead frontend development for enterprise dashboard application serving 50k+ users. Implemented responsive design system and improved page load times by 40%."
       },
       {
         title: "Frontend Developer",
-        company: "Digital Solutions Ltd.",
+        company: "Digital West Ltd.",
         period: "2020 - 2022",
         description: "Developed customer-facing web applications using React and TypeScript. Collaborated with UX team to implement accessibility standards."
       },
       {
         title: "Junior Web Developer",
-        company: "StartupXYZ",
+        company: "Bristol Startups",
         period: "2019 - 2020",
         description: "Built responsive websites and landing pages. Gained experience with modern frontend frameworks and build tools."
       }
@@ -53,7 +54,7 @@ export default function DemoCandidateProfile() {
     education: [
       {
         degree: "Bachelor of Science in Computer Science",
-        school: "University of California, Berkeley",
+        school: "University of Bristol",
         year: "2019"
       }
     ],
@@ -80,8 +81,12 @@ export default function DemoCandidateProfile() {
           <Card>
             <CardContent className="pt-6">
               <div className="text-center mb-6">
-                <div className="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="text-2xl font-bold text-primary">SJ</span>
+                <div className="w-24 h-24 rounded-full overflow-hidden mx-auto mb-4 border-4 border-primary/10">
+                  <img 
+                    src={sarahProfileImage} 
+                    alt="Sarah Johnson" 
+                    className="w-full h-full object-cover"
+                  />
                 </div>
                 <h1 className="text-2xl font-bold">{candidate.name}</h1>
                 <p className="text-lg text-muted-foreground">{candidate.title}</p>

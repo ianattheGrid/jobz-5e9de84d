@@ -63,21 +63,21 @@ export default function DemoVirtualRecruiterProfile() {
     recentPlacements: [
       {
         role: "Senior React Developer",
-        company: "TechCorp",
+        company: "Bristol Tech Hub",
         timeToHire: "12 days",
-        salary: "$145k"
+        salary: "£65k"
       },
       {
         role: "DevOps Engineer",
-        company: "CloudFlow",
+        company: "West Country Digital",
         timeToHire: "8 days",
-        salary: "$135k"
+        salary: "£58k"
       },
       {
         role: "Product Manager",
-        company: "InnovateLab",
+        company: "InnovateBristol",
         timeToHire: "16 days",
-        salary: "$160k"
+        salary: "£70k"
       }
     ],
     stats: {
