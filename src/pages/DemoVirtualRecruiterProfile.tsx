@@ -1,3 +1,4 @@
+import NavBar from "@/components/NavBar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -88,7 +89,9 @@ export default function DemoVirtualRecruiterProfile() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-6xl">
+    <div className="min-h-screen bg-background">
+      <NavBar />
+      <div className="container mx-auto px-4 py-8 max-w-6xl" style={{ paddingTop: '80px' }}>
       <div className="mb-6 p-4 bg-purple-50 rounded-lg border-l-4 border-purple-400">
         <h2 className="text-lg font-semibold text-purple-800 mb-2">Demo Virtual Recruiter Profile</h2>
         <p className="text-purple-700">
@@ -304,6 +307,7 @@ export default function DemoVirtualRecruiterProfile() {
             </CardContent>
           </Card>
         </div>
+      </div>
       </div>
     </div>
   );

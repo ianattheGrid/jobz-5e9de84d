@@ -1,3 +1,4 @@
+import NavBar from "@/components/NavBar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -63,7 +64,9 @@ export default function DemoCandidateProfile() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-4xl">
+    <div className="min-h-screen bg-background">
+      <NavBar />
+      <div className="container mx-auto px-4 py-8 max-w-4xl" style={{ paddingTop: '80px' }}>
       <div className="mb-6 p-4 bg-blue-50 rounded-lg border-l-4 border-blue-400">
         <h2 className="text-lg font-semibold text-blue-800 mb-2">Demo Candidate Profile</h2>
         <p className="text-blue-700">
@@ -221,6 +224,7 @@ export default function DemoCandidateProfile() {
             </CardContent>
           </Card>
         </div>
+      </div>
       </div>
     </div>
   );
