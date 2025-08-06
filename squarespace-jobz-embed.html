@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>jobz App</title>
-    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <title>jobz</title>
     <style>
         .jobz-app-container {
             max-width: 400px;
@@ -54,21 +53,24 @@
             display: inline-block;
         }
         
-        #qrcode {
+        .qr-code {
+            width: 200px;
+            height: 200px;
             margin: 0 auto;
+            display: block;
         }
         
         .app-button {
             background: #FF69B4;
             color: white;
             border: none;
-            padding: 15px 30px;
+            padding: 12px 24px;
             border-radius: 12px;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            width: 100%;
+            display: inline-block;
             margin-bottom: 15px;
         }
         
@@ -102,6 +104,11 @@
             .qr-container {
                 padding: 15px;
             }
+            
+            .qr-code {
+                width: 180px;
+                height: 180px;
+            }
         }
     </style>
 </head>
@@ -112,17 +119,17 @@
                 <rect width="20" height="14" x="2" y="7" rx="2" ry="2"></rect>
                 <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
             </svg>
-            <h1 class="jobz-title">jobz App</h1>
+            <h1 class="jobz-title">jobz</h1>
         </div>
         
         <p class="jobz-subtitle">Scan to access the jobz mobile app</p>
         
         <div class="qr-container">
-            <div id="qrcode"></div>
+            <img class="qr-code" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://9ac5bdba-14d9-4755-8b5b-61877ed689a8.lovableproject.com?forceHideBadge=true" alt="QR Code for jobz app" />
         </div>
         
-        <button class="app-button" onclick="openJobzApp()">
-            Open jobz App
+        <button class="app-button" onclick="openJobz()">
+            Open jobz
         </button>
         
         <p class="instruction-text">
@@ -132,42 +139,10 @@
     </div>
 
     <script>
-        // Generate QR code for the jobz app
-        const appUrl = 'https://9ac5bdba-14d9-4755-8b5b-61877ed689a8.lovableproject.com?forceHideBadge=true';
-        
-        // Create QR code
-        QRCode.toCanvas(document.getElementById('qrcode'), appUrl, {
-            width: 200,
-            height: 200,
-            margin: 2,
-            color: {
-                dark: '#333333',
-                light: '#FFFFFF'
-            }
-        }, function (error) {
-            if (error) {
-                console.error('Error generating QR code:', error);
-                document.getElementById('qrcode').innerHTML = '<p style="color: #666;">QR code unavailable</p>';
-            }
-        });
-        
-        // Function to open the app
-        function openJobzApp() {
-            window.open(appUrl, '_blank');
+        // Function to open jobz
+        function openJobz() {
+            window.open('https://9ac5bdba-14d9-4755-8b5b-61877ed689a8.lovableproject.com?forceHideBadge=true', '_blank');
         }
-        
-        // Auto-refresh QR code every 30 seconds to ensure it stays active
-        setInterval(function() {
-            QRCode.toCanvas(document.getElementById('qrcode'), appUrl, {
-                width: 200,
-                height: 200,
-                margin: 2,
-                color: {
-                    dark: '#333333',
-                    light: '#FFFFFF'
-                }
-            });
-        }, 30000);
     </script>
 </body>
 </html>
