@@ -4,7 +4,7 @@ import { HeroSection } from "@/components/home/HeroSection";
 import { PlatformFeatures } from "@/components/home/PlatformFeatures";
 import { VideoSection } from "@/components/home/VideoSection";
 import { CalculatorSection } from "@/components/home/CalculatorSection";
-import { FAQSection } from "@/components/home/FAQSection";
+import { QRCodeSection } from "@/components/home/QRCodeSection";
 import { ContractorRecruitmentSection } from "@/components/home/ContractorRecruitmentSection";
 import { ContractorCalculatorSection } from "@/components/home/ContractorCalculatorSection";
 
@@ -17,7 +17,7 @@ export default function Index() {
       <VideoSection />
       <div className="h-4"></div>
       <CalculatorSection />
-      <FAQSection />
+      <QRCodeSection />
       <ContractorRecruitmentSection />
       <ContractorCalculatorSection />
     </div>
