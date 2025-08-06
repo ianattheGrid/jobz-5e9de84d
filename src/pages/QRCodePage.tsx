@@ -54,15 +54,6 @@ export default function QRCodePage() {
                   <p className="text-muted-foreground">Save jobz to your home screen for quick access</p>
                 </div>
               </div>
-              
-              <div className="mt-12">
-                <Button 
-                  onClick={() => window.open(appUrl, '_blank')}
-                  className="bg-primary hover:bg-primary/90 text-white px-8 py-3"
-                >
-                  Open jobz Now
-                </Button>
-              </div>
             </div>
           </div>
         </section>
