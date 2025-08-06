@@ -82,9 +82,14 @@ export default function DemoEmployerProfile() {
       <div className="container mx-auto px-4 py-8 max-w-6xl" style={{ paddingTop: '80px' }}>
       <div className="mb-6 p-4 bg-green-50 rounded-lg border-l-4 border-green-400">
         <h2 className="text-lg font-semibold text-green-800 mb-2">Demo Employer Profile</h2>
-        <p className="text-green-700">
+        <p className="text-green-700 mb-3">
           This is an example of how an employer profile looks on jobz. Real profiles would be created by actual companies.
         </p>
+        <div className="flex gap-2">
+          <Button variant="outline" size="sm" onClick={() => window.location.href = '/swipe/candidates'}>
+            🔥 Try Swipe Interface (Candidates)
+          </Button>
+        </div>
       </div>
 
       {/* Header Section */}

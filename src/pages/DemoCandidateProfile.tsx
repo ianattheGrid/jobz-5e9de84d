@@ -70,9 +70,14 @@ export default function DemoCandidateProfile() {
       <div className="container mx-auto px-4 py-8 max-w-4xl" style={{ paddingTop: '80px' }}>
       <div className="mb-6 p-4 bg-blue-50 rounded-lg border-l-4 border-blue-400">
         <h2 className="text-lg font-semibold text-blue-800 mb-2">Demo Candidate Profile</h2>
-        <p className="text-blue-700">
+        <p className="text-blue-700 mb-3">
           This is an example of how a candidate profile looks on jobz. Real profiles would be created by actual job seekers.
         </p>
+        <div className="flex gap-2">
+          <Button variant="outline" size="sm" onClick={() => window.location.href = '/swipe/employers'}>
+            🔥 Try Swipe Interface (Employers)
+          </Button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

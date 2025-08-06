@@ -55,6 +55,10 @@ import DemoCandidateProfile from './pages/DemoCandidateProfile';
 import DemoEmployerProfile from './pages/DemoEmployerProfile';
 import DemoVirtualRecruiterProfile from './pages/DemoVirtualRecruiterProfile';
 
+// Swipe interfaces
+import SwipeCandidates from './pages/SwipeCandidates';
+import SwipeEmployers from './pages/SwipeEmployers';
+
 const App = () => {
   return (
     <BrowserRouter>
@@ -110,6 +114,10 @@ const App = () => {
           <Route path="demo/candidate" element={<DemoCandidateProfile />} />
           <Route path="demo/employer" element={<DemoEmployerProfile />} />
           <Route path="demo/virtual-recruiter" element={<DemoVirtualRecruiterProfile />} />
+          
+          {/* Swipe Interface Routes */}
+          <Route path="swipe/candidates" element={<ProtectedRouteWithTimeout userType="employer"><SwipeCandidates /></ProtectedRouteWithTimeout>} />
+          <Route path="swipe/employers" element={<ProtectedRouteWithTimeout userType="candidate"><SwipeEmployers /></ProtectedRouteWithTimeout>} />
         </Route>
       </Routes>
       <Toaster />
