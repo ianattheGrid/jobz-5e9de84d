@@ -37,6 +37,7 @@ import PreviewVRProfile from './pages/PreviewVRProfile';
 
 // Common routes
 import Jobs from './pages/Jobs';
+import FAQ from './pages/FAQ';
 import ViewCandidateProfile from './pages/ViewCandidateProfile';
 import ViewEmployerProfile from './pages/ViewEmployerProfile';
 import CandidateSearch from './pages/CandidateSearch';
@@ -92,6 +93,7 @@ const App = () => {
           
           {/* Common routes */}
           <Route path="jobs" element={<Jobs />} />
+          <Route path="faq" element={<FAQ />} />
           <Route path="employer/:id" element={<ViewEmployerProfile />} />
           
           {/* Test Routes */}
