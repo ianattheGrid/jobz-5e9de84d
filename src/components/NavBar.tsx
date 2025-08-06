@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import MobileNav from "./navbar/MobileNav";
 import { Button } from "@/components/ui/button";
-import { LogIn, UserPlus, Home as HomeIcon, Briefcase, LogOut, User, Zap } from "lucide-react";
+import { LogIn, UserPlus, Home as HomeIcon, Briefcase, LogOut, User } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/hooks/useAuth";
 
@@ -49,7 +49,7 @@ const NavBar = () => {
         <div className="flex justify-between items-center h-full">
           <div className="flex items-center gap-12">
             <Link to="/" className="text-2xl font-bold flex items-center gap-2">
-              <Zap className="h-6 w-6 text-primary" />
+              <Briefcase className="h-6 w-6 text-primary" />
               <span className="text-primary font-bold tracking-tight">jobz</span>
             </Link>
             <div className="hidden md:block">
