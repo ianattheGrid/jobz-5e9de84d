@@ -42,15 +42,6 @@ export const QRCodeSection = () => {
                   <span className="text-lg">Receive real-time notifications</span>
                 </div>
               </div>
-              
-              <div className="mt-8">
-                <Button 
-                  onClick={() => window.open('/qr-code', '_blank')}
-                  className="bg-primary hover:bg-primary/90 text-white px-6 py-3"
-                >
-                  Get QR Code
-                </Button>
-              </div>
             </div>
 
             <div className="text-center">
