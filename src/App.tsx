@@ -50,6 +50,11 @@ import { ProtectedRouteWithTimeout } from './components/auth/ProtectedRouteWithT
 // Test only
 import DummyCandidateProfile from './pages/DummyCandidateProfile';
 
+// Demo profiles
+import DemoCandidateProfile from './pages/DemoCandidateProfile';
+import DemoEmployerProfile from './pages/DemoEmployerProfile';
+import DemoVirtualRecruiterProfile from './pages/DemoVirtualRecruiterProfile';
+
 const App = () => {
   return (
     <BrowserRouter>
@@ -100,6 +105,11 @@ const App = () => {
           
           {/* Test Routes */}
           <Route path="dummy-profile" element={<DummyCandidateProfile />} />
+          
+          {/* Demo Profile Routes */}
+          <Route path="demo/candidate" element={<DemoCandidateProfile />} />
+          <Route path="demo/employer" element={<DemoEmployerProfile />} />
+          <Route path="demo/virtual-recruiter" element={<DemoVirtualRecruiterProfile />} />
         </Route>
       </Routes>
       <Toaster />
