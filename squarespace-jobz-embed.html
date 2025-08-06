@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jobz App</title>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <style>
+        .jobz-app-container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 30px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        .jobz-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .jobz-icon {
+            width: 24px;
+            height: 24px;
+            color: #FF69B4;
+        }
+        
+        .jobz-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #FF69B4;
+            margin: 0;
+        }
+        
+        .jobz-subtitle {
+            color: #666;
+            margin-bottom: 25px;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        
+        .qr-container {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            border: 2px solid #f0f0f0;
+            margin-bottom: 25px;
+            display: inline-block;
+        }
+        
+        #qrcode {
+            margin: 0 auto;
+        }
+        
+        .app-button {
+            background: #FF69B4;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+        
+        .app-button:hover {
+            background: #FF50A8;
+            transform: translateY(-2px);
+        }
+        
+        .instruction-text {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-top: 15px;
+        }
+        
+        .highlight-text {
+            color: #FF69B4;
+            font-weight: 600;
+        }
+        
+        @media (max-width: 480px) {
+            .jobz-app-container {
+                padding: 20px;
+                margin: 0 10px;
+            }
+            
+            .jobz-title {
+                font-size: 24px;
+            }
+            
+            .qr-container {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="jobz-app-container">
+        <div class="jobz-header">
+            <svg class="jobz-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="13,2 3,14 12,14 11,22 21,10 12,10 13,2"></polygon>
+            </svg>
+            <h1 class="jobz-title">jobz App</h1>
+        </div>
+        
+        <p class="jobz-subtitle">Scan to access the jobz mobile app</p>
+        
+        <div class="qr-container">
+            <div id="qrcode"></div>
+        </div>
+        
+        <button class="app-button" onclick="openJobzApp()">
+            Open jobz App
+        </button>
+        
+        <p class="instruction-text">
+            Scan the QR code with your phone camera or click the button above to access jobz. 
+            <span class="highlight-text">Add the app to your phone's home screen</span> for quick access to all recruitment features.
+        </p>
+    </div>
+
+    <script>
+        // Generate QR code for the jobz app
+        const appUrl = 'https://9ac5bdba-14d9-4755-8b5b-61877ed689a8.lovableproject.com?forceHideBadge=true';
+        
+        // Create QR code
+        QRCode.toCanvas(document.getElementById('qrcode'), appUrl, {
+            width: 200,
+            height: 200,
+            margin: 2,
+            color: {
+                dark: '#333333',
+                light: '#FFFFFF'
+            }
+        }, function (error) {
+            if (error) {
+                console.error('Error generating QR code:', error);
+                document.getElementById('qrcode').innerHTML = '<p style="color: #666;">QR code unavailable</p>';
+            }
+        });
+        
+        // Function to open the app
+        function openJobzApp() {
+            window.open(appUrl, '_blank');
+        }
+        
+        // Auto-refresh QR code every 30 seconds to ensure it stays active
+        setInterval(function() {
+            QRCode.toCanvas(document.getElementById('qrcode'), appUrl, {
+                width: 200,
+                height: 200,
+                margin: 2,
+                color: {
+                    dark: '#333333',
+                    light: '#FFFFFF'
+                }
+            });
+        }, 30000);
+    </script>
+</body>
+</html>
