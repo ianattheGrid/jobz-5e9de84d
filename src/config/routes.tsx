@@ -27,6 +27,7 @@ import CandidateApplications from "@/pages/CandidateApplications";
 import CandidateAccountSettings from "@/pages/CandidateAccountSettings";
 import CandidateInterviews from "@/pages/CandidateInterviews";
 import PreviewCandidateProfile from "@/pages/PreviewCandidateProfile";
+import FAQ from "@/pages/FAQ";
 
 export const routes = [
   {
@@ -36,6 +37,10 @@ export const routes = [
   {
     path: "/jobs",
     element: <Jobs />
+  },
+  {
+    path: "/faq",
+    element: <FAQ />
   },
   {
     path: "/candidate/dummy-profile",
