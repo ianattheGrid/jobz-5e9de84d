@@ -20,6 +20,7 @@ export interface Application {
 
 export interface ApplicationWithDetails {
   id: number;
+  applicant_id: string;
   jobs: {
     title: string;
     employer_id: string;

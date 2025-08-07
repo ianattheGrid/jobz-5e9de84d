@@ -676,8 +676,15 @@ export type Database = {
           candidate_message: string | null
           candidate_suggested_times: string[] | null
           created_at: string
+          duration_minutes: number | null
+          duration_other: string | null
           employer_id: string
+          employer_notes: string | null
           id: string
+          interview_location: string | null
+          interview_stage: number | null
+          interview_type: string | null
+          interviewer_name: string | null
           job_id: number
           proposed_times: string[]
           selected_time: string | null
@@ -689,8 +696,15 @@ export type Database = {
           candidate_message?: string | null
           candidate_suggested_times?: string[] | null
           created_at?: string
+          duration_minutes?: number | null
+          duration_other?: string | null
           employer_id: string
+          employer_notes?: string | null
           id?: string
+          interview_location?: string | null
+          interview_stage?: number | null
+          interview_type?: string | null
+          interviewer_name?: string | null
           job_id: number
           proposed_times: string[]
           selected_time?: string | null
@@ -702,8 +716,15 @@ export type Database = {
           candidate_message?: string | null
           candidate_suggested_times?: string[] | null
           created_at?: string
+          duration_minutes?: number | null
+          duration_other?: string | null
           employer_id?: string
+          employer_notes?: string | null
           id?: string
+          interview_location?: string | null
+          interview_stage?: number | null
+          interview_type?: string | null
+          interviewer_name?: string | null
           job_id?: number
           proposed_times?: string[]
           selected_time?: string | null
@@ -725,8 +746,13 @@ export type Database = {
           cancellation_reason: string | null
           candidate_id: string
           created_at: string
+          duration_minutes: number | null
+          duration_other: string | null
           employer_id: string
           id: number
+          interview_location: string | null
+          interview_stage: number | null
+          interview_type: string | null
           interviewer_name: string
           job_id: number
           scheduled_at: string
@@ -737,8 +763,13 @@ export type Database = {
           cancellation_reason?: string | null
           candidate_id: string
           created_at?: string
+          duration_minutes?: number | null
+          duration_other?: string | null
           employer_id: string
           id?: number
+          interview_location?: string | null
+          interview_stage?: number | null
+          interview_type?: string | null
           interviewer_name: string
           job_id: number
           scheduled_at: string
@@ -749,8 +780,13 @@ export type Database = {
           cancellation_reason?: string | null
           candidate_id?: string
           created_at?: string
+          duration_minutes?: number | null
+          duration_other?: string | null
           employer_id?: string
           id?: number
+          interview_location?: string | null
+          interview_stage?: number | null
+          interview_type?: string | null
           interviewer_name?: string
           job_id?: number
           scheduled_at?: string

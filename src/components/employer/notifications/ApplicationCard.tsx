@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { ApplicationWithDetails } from "@/types/applications";
 import { UserCheck } from "lucide-react";
 import RejectionDialog from "./RejectionDialog";
+import { ScheduleInterviewDialog } from "../interviews/ScheduleInterviewDialog";
+import { useAuth } from "@/hooks/useAuth";
 
 interface ApplicationCardProps {
   application: ApplicationWithDetails;
@@ -12,7 +14,9 @@ interface ApplicationCardProps {
 }
 
 const ApplicationCard = ({ application, onAccept, onReject }: ApplicationCardProps) => {
+  const { user } = useAuth();
   const [showRejectionDialog, setShowRejectionDialog] = useState(false);
+  const [showScheduleDialog, setShowScheduleDialog] = useState(false);
 
   const handleReject = async (reason: string, notes?: string) => {
     await onReject(application.id, reason, notes);
@@ -48,6 +52,14 @@ const ApplicationCard = ({ application, onAccept, onReject }: ApplicationCardPro
         <Button
           size="sm"
           variant="outline"
+          onClick={() => setShowScheduleDialog(true)}
+          className="bg-blue-600 hover:bg-blue-700 text-white"
+        >
+          Schedule Interview
+        </Button>
+        <Button
+          size="sm"
+          variant="outline"
           onClick={() => setShowRejectionDialog(true)}
         >
           Reject
@@ -61,6 +73,17 @@ const ApplicationCard = ({ application, onAccept, onReject }: ApplicationCardPro
         candidateName={application.candidate_profiles?.job_title}
         jobTitle={application.jobs.title}
       />
+      
+      {user && (
+        <ScheduleInterviewDialog
+          isOpen={showScheduleDialog}
+          onOpenChange={setShowScheduleDialog}
+          applicationId={application.id}
+          candidateId={application.applicant_id}
+          employerId={user.id}
+          jobTitle={application.jobs.title}
+        />
+      )}
     </div>
   );
 };
