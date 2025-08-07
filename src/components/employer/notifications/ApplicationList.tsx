@@ -4,7 +4,7 @@ import ApplicationCard from "./ApplicationCard";
 interface ApplicationListProps {
   applications: ApplicationWithDetails[];
   onAccept: (id: number) => Promise<void>;
-  onReject: (id: number) => Promise<void>;
+  onReject: (id: number, reason: string, notes?: string) => Promise<void>;
 }
 
 const ApplicationList = ({ applications, onAccept, onReject }: ApplicationListProps) => {

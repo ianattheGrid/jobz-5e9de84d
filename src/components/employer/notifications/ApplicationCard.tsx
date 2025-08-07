@@ -1,15 +1,23 @@
 
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ApplicationWithDetails } from "@/types/applications";
 import { UserCheck } from "lucide-react";
+import RejectionDialog from "./RejectionDialog";
 
 interface ApplicationCardProps {
   application: ApplicationWithDetails;
   onAccept: (id: number) => Promise<void>;
-  onReject: (id: number) => Promise<void>;
+  onReject: (id: number, reason: string, notes?: string) => Promise<void>;
 }
 
 const ApplicationCard = ({ application, onAccept, onReject }: ApplicationCardProps) => {
+  const [showRejectionDialog, setShowRejectionDialog] = useState(false);
+
+  const handleReject = async (reason: string, notes?: string) => {
+    await onReject(application.id, reason, notes);
+  };
+
   return (
     <div className="p-3 rounded-lg bg-muted">
       <div className="flex items-center justify-between mb-2">
@@ -40,11 +48,19 @@ const ApplicationCard = ({ application, onAccept, onReject }: ApplicationCardPro
         <Button
           size="sm"
           variant="outline"
-          onClick={() => onReject(application.id)}
+          onClick={() => setShowRejectionDialog(true)}
         >
           Reject
         </Button>
       </div>
+
+      <RejectionDialog
+        isOpen={showRejectionDialog}
+        onClose={() => setShowRejectionDialog(false)}
+        onConfirm={handleReject}
+        candidateName={application.candidate_profiles?.job_title}
+        jobTitle={application.jobs.title}
+      />
     </div>
   );
 };

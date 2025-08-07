@@ -106,6 +106,8 @@ export type Database = {
           match_percentage: number | null
           match_score_breakdown: Json | null
           profile_visibility_enabled: boolean | null
+          rejection_notes: string | null
+          rejection_reason: string | null
           resume_url: string | null
           status: string
           updated_at: string
@@ -124,6 +126,8 @@ export type Database = {
           match_percentage?: number | null
           match_score_breakdown?: Json | null
           profile_visibility_enabled?: boolean | null
+          rejection_notes?: string | null
+          rejection_reason?: string | null
           resume_url?: string | null
           status?: string
           updated_at?: string
@@ -142,6 +146,8 @@ export type Database = {
           match_percentage?: number | null
           match_score_breakdown?: Json | null
           profile_visibility_enabled?: boolean | null
+          rejection_notes?: string | null
+          rejection_reason?: string | null
           resume_url?: string | null
           status?: string
           updated_at?: string

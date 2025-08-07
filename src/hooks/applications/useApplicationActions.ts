@@ -30,12 +30,14 @@ export const useApplicationActions = (onSuccess: () => void) => {
     onSuccess();
   };
 
-  const handleReject = async (applicationId: number) => {
+  const handleReject = async (applicationId: number, reason: string, notes?: string) => {
     const { error } = await supabase
       .from('applications')
       .update({ 
         employer_accepted: false,
-        employer_viewed_at: new Date().toISOString()
+        employer_viewed_at: new Date().toISOString(),
+        rejection_reason: reason,
+        rejection_notes: notes
       })
       .eq('id', applicationId);
 
