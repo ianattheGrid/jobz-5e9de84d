@@ -98,16 +98,16 @@ export const ProfileCard = ({
                   <img src={image} alt={name} className="w-full h-full object-cover" />
                 </div>
               )}
-              <h3 className="text-2xl font-black mb-1 text-white drop-shadow-2xl shadow-black">{name}</h3>
-              <p className="text-gray-100 text-sm mb-2 font-semibold drop-shadow-lg shadow-black">{title}</p>
+              <h3 className="text-2xl font-black mb-1 drop-shadow-2xl shadow-black" style={{ color: '#FFFFFF' }}>{name}</h3>
+              <p className="text-sm mb-2 font-semibold drop-shadow-lg shadow-black" style={{ color: '#FF69B4' }}>{title}</p>
               {company && (
-                <div className="flex items-center justify-center gap-1 text-sm text-gray-300 mb-2">
-                  <Building className="h-3 w-3 text-primary" />
+                <div className="flex items-center justify-center gap-1 text-sm mb-2" style={{ color: '#D1D5DB' }}>
+                  <Building className="h-3 w-3" style={{ color: '#FF69B4' }} />
                   <span>{company}</span>
                 </div>
               )}
-              <div className="flex items-center justify-center gap-1 text-sm text-gray-300">
-                <MapPin className="h-3 w-3 text-primary" />
+              <div className="flex items-center justify-center gap-1 text-sm" style={{ color: '#D1D5DB' }}>
+                <MapPin className="h-3 w-3" style={{ color: '#FF69B4' }} />
                 <span>{location}</span>
               </div>
             </div>
@@ -152,7 +152,7 @@ export const ProfileCard = ({
         <CardContent className="absolute inset-0 w-full h-full p-6 backface-hidden rotate-y-180 bg-gradient-to-br from-gray-900 via-gray-800 to-black">
           <div className="flex flex-col h-full text-white">
             <div className="text-center mb-4">
-              <h3 className="text-2xl font-black mb-2 text-white drop-shadow-2xl shadow-black">{name}</h3>
+              <h3 className="text-2xl font-black mb-2 drop-shadow-2xl shadow-black" style={{ color: '#FFFFFF' }}>{name}</h3>
               <Badge className={`${getTypeColor()} text-white mb-3 border-0 shadow-xl`}>
                 Full Details
               </Badge>
