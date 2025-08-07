@@ -94,19 +94,19 @@ export const ProfileCard = ({
             {/* Profile Image & Basic Info */}
             <div className="text-center mb-4">
               {image && (
-                <div className="w-20 h-20 mx-auto mb-3 rounded-full overflow-hidden bg-gray-700 ring-4 ring-primary/30 shadow-xl">
+                <div className="w-20 h-20 mx-auto mb-3 rounded-full overflow-hidden bg-gray-600 ring-4 ring-primary/50 shadow-2xl shadow-primary/20">
                   <img src={image} alt={name} className="w-full h-full object-cover" />
                 </div>
               )}
-              <h3 className="text-xl font-bold mb-1 text-white">{name}</h3>
-              <p className="text-gray-300 text-sm mb-2 font-medium">{title}</p>
+              <h3 className="text-xl font-bold mb-1 text-white drop-shadow-lg">{name}</h3>
+              <p className="text-gray-200 text-sm mb-2 font-medium drop-shadow">{title}</p>
               {company && (
-                <div className="flex items-center justify-center gap-1 text-sm text-gray-400 mb-2">
+                <div className="flex items-center justify-center gap-1 text-sm text-gray-300 mb-2">
                   <Building className="h-3 w-3 text-primary" />
                   <span>{company}</span>
                 </div>
               )}
-              <div className="flex items-center justify-center gap-1 text-sm text-gray-400">
+              <div className="flex items-center justify-center gap-1 text-sm text-gray-300">
                 <MapPin className="h-3 w-3 text-primary" />
                 <span>{location}</span>
               </div>
@@ -152,14 +152,14 @@ export const ProfileCard = ({
         <CardContent className="absolute inset-0 w-full h-full p-6 backface-hidden rotate-y-180 bg-gradient-to-br from-gray-900 via-gray-800 to-black">
           <div className="flex flex-col h-full text-white">
             <div className="text-center mb-4">
-              <h3 className="text-xl font-bold mb-2 text-white">{name}</h3>
+              <h3 className="text-xl font-bold mb-2 text-white drop-shadow-lg">{name}</h3>
               <Badge className={`${getTypeColor()} text-white mb-3 border-0 shadow-lg`}>
                 Full Details
               </Badge>
             </div>
 
-            <div className="flex-1 overflow-auto mb-4 bg-gray-800/30 rounded-lg p-4">
-              <p className="text-sm text-gray-300 leading-relaxed">
+            <div className="flex-1 overflow-auto mb-4 bg-gray-800/40 rounded-lg p-4 border border-gray-700/50">
+              <p className="text-sm text-gray-200 leading-relaxed">
                 {description}
               </p>
             </div>
@@ -169,13 +169,13 @@ export const ProfileCard = ({
               <div className="mb-4 p-3 bg-gray-800/50 rounded-lg border border-gray-700">
                 <p className="text-sm font-medium mb-2 text-primary">Contact Information:</p>
                 {contactInfo.email && (
-                  <div className="flex items-center gap-2 text-sm text-gray-300 mb-1">
+                  <div className="flex items-center gap-2 text-sm text-gray-200 mb-1">
                     <Mail className="h-3 w-3 text-primary" />
                     <span>{contactInfo.email}</span>
                   </div>
                 )}
                 {contactInfo.phone && (
-                  <div className="flex items-center gap-2 text-sm text-gray-300">
+                  <div className="flex items-center gap-2 text-sm text-gray-200">
                     <Phone className="h-3 w-3 text-primary" />
                     <span>{contactInfo.phone}</span>
                   </div>
