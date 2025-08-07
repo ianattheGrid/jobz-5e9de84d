@@ -1,5 +1,6 @@
 
 export { workAreas } from './work-areas';
+export { industrySectors } from './industry-sectors';
 export { itSpecializations, itRoles } from './it-roles';
 export { customerServiceSpecializations } from './customer-service-roles';
 export { financeRoles } from './finance-roles';

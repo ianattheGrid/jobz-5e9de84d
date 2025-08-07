@@ -3,26 +3,13 @@ import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/comp
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { CandidateFormValues } from "../candidateFormSchema";
+import { industrySectors } from "@/components/work-area/constants";
 
 interface IndustryProfileSectionProps {
   control: Control<CandidateFormValues>;
 }
 
 const IndustryProfileSection = ({ control }: IndustryProfileSectionProps) => {
-  const industryOptions = [
-    "Technology",
-    "Healthcare", 
-    "Finance",
-    "Education",
-    "Manufacturing",
-    "Retail",
-    "Construction",
-    "Real Estate",
-    "Media & Entertainment",
-    "Government & Public Sector",
-    "Non-Profit",
-    "Other"
-  ];
 
   const contractTypes = [
     { value: "permanent", label: "Permanent" },
@@ -63,7 +50,7 @@ const IndustryProfileSection = ({ control }: IndustryProfileSectionProps) => {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {industryOptions.map((industry) => (
+                    {industrySectors.map((industry) => (
                       <SelectItem key={industry} value={industry}>
                         {industry}
                       </SelectItem>

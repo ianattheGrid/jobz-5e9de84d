@@ -4,26 +4,13 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { FormValues } from "./ProfileForm";
+import { industrySectors } from "@/components/work-area/constants";
 
 interface ExpandedCompanySectionProps {
   control: Control<FormValues>;
 }
 
 export const ExpandedCompanySection = ({ control }: ExpandedCompanySectionProps) => {
-  const industryOptions = [
-    "Technology",
-    "Healthcare", 
-    "Finance",
-    "Education",
-    "Manufacturing",
-    "Retail",
-    "Construction",
-    "Real Estate",
-    "Media & Entertainment",
-    "Government & Public Sector",
-    "Non-Profit",
-    "Other"
-  ];
 
   const remoteWorkPolicies = [
     { value: "office_based", label: "Office Based" },
@@ -50,7 +37,7 @@ export const ExpandedCompanySection = ({ control }: ExpandedCompanySectionProps)
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {industryOptions.map((industry) => (
+                  {industrySectors.map((industry) => (
                     <SelectItem key={industry} value={industry}>
                       {industry}
                     </SelectItem>
