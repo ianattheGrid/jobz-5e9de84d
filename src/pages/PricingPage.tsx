@@ -56,12 +56,12 @@ const PricingPage = () => {
           {/* Employer Pricing */}
           <Card className="relative overflow-hidden border-0 shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:-translate-y-2 group">
             {/* Gradient Background */}
-            <div className="absolute inset-0 bg-gradient-to-br from-red-600 via-red-500 to-orange-500"></div>
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700"></div>
             <div className="absolute inset-0 bg-gradient-to-br from-black/30 via-transparent to-black/20"></div>
             
             {/* Badge */}
-            <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
-              <div className="bg-white text-red-600 px-6 py-2 rounded-full text-sm font-bold shadow-lg border-2 border-red-200">
+            <div className="absolute top-2 left-1/2 transform -translate-x-1/2 z-10">
+              <div className="bg-white text-blue-600 px-6 py-2 rounded-full text-sm font-bold shadow-lg border-2 border-blue-200">
                 For Employers
               </div>
             </div>
@@ -81,7 +81,7 @@ const PricingPage = () => {
               {employerFeatures.map((feature, index) => (
                 <div key={index} className="flex items-center gap-3 bg-white/10 rounded-lg p-3 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-300">
                   <div className="flex-shrink-0 w-6 h-6 bg-white rounded-full flex items-center justify-center">
-                    <Check className="h-4 w-4 text-red-600 font-bold" />
+                    <Check className="h-4 w-4 text-blue-600 font-bold" />
                   </div>
                   <span className="font-medium drop-shadow-lg">{feature}</span>
                 </div>
@@ -89,7 +89,7 @@ const PricingPage = () => {
               
               <div className="pt-6">
                 <Link to="/employer/signup">
-                  <Button className="w-full bg-white hover:bg-gray-100 text-red-600 py-4 text-lg font-bold shadow-xl transform hover:scale-105 transition-all duration-300 border-2 border-white/30">
+                  <Button className="w-full bg-white hover:bg-gray-100 text-blue-600 py-4 text-lg font-bold shadow-xl transform hover:scale-105 transition-all duration-300 border-2 border-white/30">
                     🚀 Get Started Now
                   </Button>
                 </Link>
@@ -100,13 +100,13 @@ const PricingPage = () => {
           {/* Candidate Pricing */}
           <Card className="relative overflow-hidden border-0 shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:-translate-y-2 group">
             {/* Gradient Background */}
-            <div className="absolute inset-0 bg-gradient-to-br from-green-600 via-emerald-500 to-teal-500"></div>
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700"></div>
             <div className="absolute inset-0 bg-gradient-to-br from-black/30 via-transparent to-black/20"></div>
             
             {/* Badge */}
-            <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
-              <div className="bg-white text-green-600 px-6 py-2 rounded-full text-sm font-bold shadow-lg border-2 border-green-200">
-                For Job Seekers
+            <div className="absolute top-2 left-1/2 transform -translate-x-1/2 z-10">
+              <div className="bg-white text-blue-600 px-6 py-2 rounded-full text-sm font-bold shadow-lg border-2 border-blue-200">
+                For Candidates
               </div>
             </div>
 
@@ -125,7 +125,7 @@ const PricingPage = () => {
               {candidateFeatures.map((feature, index) => (
                 <div key={index} className="flex items-center gap-3 bg-white/10 rounded-lg p-3 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-300">
                   <div className="flex-shrink-0 w-6 h-6 bg-white rounded-full flex items-center justify-center">
-                    <Check className="h-4 w-4 text-green-600 font-bold" />
+                    <Check className="h-4 w-4 text-blue-600 font-bold" />
                   </div>
                   <span className="font-medium drop-shadow-lg">{feature}</span>
                 </div>
@@ -133,7 +133,7 @@ const PricingPage = () => {
               
               <div className="pt-6">
                 <Link to="/candidate/signup">
-                  <Button className="w-full bg-white hover:bg-gray-100 text-green-600 py-4 text-lg font-bold shadow-xl transform hover:scale-105 transition-all duration-300 border-2 border-white/30">
+                  <Button className="w-full bg-white hover:bg-gray-100 text-blue-600 py-4 text-lg font-bold shadow-xl transform hover:scale-105 transition-all duration-300 border-2 border-white/30">
                     💚 Join Free Today
                   </Button>
                 </Link>
