@@ -30,7 +30,7 @@ export const PlatformFeatures = () => {
             <FeatureCard
               icon={FileText}
               title="Unlimited Job Postings"
-              description="Post as many job vacancies as you need for just £29/month. No hidden fees."
+              description="Post as many job vacancies as you need for just £9/month. No hidden fees."
             />
             <FeatureCard
               icon={Coins}

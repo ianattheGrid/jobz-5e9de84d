@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import MobileNav from "./navbar/MobileNav";
 import { Button } from "@/components/ui/button";
-import { LogIn, UserPlus, Home as HomeIcon, Briefcase, LogOut, User, HelpCircle, QrCode } from "lucide-react";
+import { LogIn, UserPlus, Home as HomeIcon, Briefcase, LogOut, User, HelpCircle, QrCode, DollarSign } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/hooks/useAuth";
 
@@ -68,32 +68,13 @@ const NavBar = () => {
                   <Briefcase className="h-4 w-4" />
                   <span>Job Board</span>
                 </Link>
-                <DropdownMenu>
-                  <DropdownMenuTrigger className="text-black hover:text-black/80 flex items-center gap-2">
-                    <User className="h-4 w-4" />
-                    <span>Demo Profiles</span>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="start" className="w-48 bg-white">
-                    <Link 
-                      to="/demo/candidate"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                    >
-                      Candidate Profile
-                    </Link>
-                    <Link 
-                      to="/demo/employer"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                    >
-                      Employer Profile
-                    </Link>
-                    <Link 
-                      to="/demo/virtual-recruiter"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                    >
-                      Virtual Recruiter
-                    </Link>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                <Link 
+                  to="/pricing" 
+                  className="text-black hover:text-black/80 flex items-center gap-2"
+                >
+                  <DollarSign className="h-4 w-4" />
+                  <span>Pricing</span>
+                </Link>
                 <Link 
                   to="/qr-code" 
                   className="text-black hover:text-black/80 flex items-center gap-2"
