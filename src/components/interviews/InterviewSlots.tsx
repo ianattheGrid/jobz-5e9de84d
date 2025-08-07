@@ -1,10 +1,9 @@
-
 import React from 'react';
 import { format } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { InterviewResponseDialog } from "./InterviewResponseDialog";
-import { TimeSelectionDialog } from "./TimeSelectionDialog";
+import { InterviewResponseDialog } from "./dialogs/InterviewResponseDialog";
+import { TimeSelectionDialog } from "./dialogs/TimeSelectionDialog";
 import { useInterviewUpdates } from "./hooks/useInterviewUpdates";
 import { useInterviewDialogs } from "./hooks/useInterviewDialogs";
 import InterviewTable from "./InterviewTable";

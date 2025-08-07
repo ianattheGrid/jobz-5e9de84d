@@ -3,7 +3,7 @@ import React from 'react';
 import { format } from "date-fns";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { InterviewSlot } from './types';
+import { InterviewSlot } from '../types';
 
 interface TimeSelectionDialogProps {
   isOpen: boolean;
