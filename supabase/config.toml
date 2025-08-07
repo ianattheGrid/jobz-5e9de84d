@@ -15,3 +15,9 @@ verify_jwt = false
 
 [functions.ai-chat]
 verify_jwt = false
+
+[functions.validate-skill]
+verify_jwt = true
+
+[functions.vr-notifications]
+verify_jwt = false

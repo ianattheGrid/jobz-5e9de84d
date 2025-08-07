@@ -857,6 +857,33 @@ export type Database = {
         }
         Relationships: []
       }
+      master_skills: {
+        Row: {
+          created_at: string
+          id: string
+          skill_name: string
+          specialization: string | null
+          updated_at: string
+          work_area: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          skill_name: string
+          specialization?: string | null
+          updated_at?: string
+          work_area: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          skill_name?: string
+          specialization?: string | null
+          updated_at?: string
+          work_area?: string
+        }
+        Relationships: []
+      }
       push_notifications: {
         Row: {
           created_at: string | null
@@ -1026,6 +1053,57 @@ export type Database = {
           ip_address?: string
           is_blocked?: boolean | null
           last_attempt_at?: string | null
+        }
+        Relationships: []
+      }
+      skill_suggestions: {
+        Row: {
+          admin_notes: string | null
+          admin_reviewed_at: string | null
+          admin_reviewed_by: string | null
+          admin_status: string
+          ai_validation_reason: string | null
+          ai_validation_score: number | null
+          ai_validation_status: string
+          created_at: string
+          id: string
+          skill_name: string
+          specialization: string | null
+          suggested_by: string
+          updated_at: string
+          work_area: string
+        }
+        Insert: {
+          admin_notes?: string | null
+          admin_reviewed_at?: string | null
+          admin_reviewed_by?: string | null
+          admin_status?: string
+          ai_validation_reason?: string | null
+          ai_validation_score?: number | null
+          ai_validation_status?: string
+          created_at?: string
+          id?: string
+          skill_name: string
+          specialization?: string | null
+          suggested_by: string
+          updated_at?: string
+          work_area: string
+        }
+        Update: {
+          admin_notes?: string | null
+          admin_reviewed_at?: string | null
+          admin_reviewed_by?: string | null
+          admin_status?: string
+          ai_validation_reason?: string | null
+          ai_validation_score?: number | null
+          ai_validation_status?: string
+          created_at?: string
+          id?: string
+          skill_name?: string
+          specialization?: string | null
+          suggested_by?: string
+          updated_at?: string
+          work_area?: string
         }
         Relationships: []
       }

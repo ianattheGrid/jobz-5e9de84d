@@ -1,27 +1,41 @@
-
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Control } from "react-hook-form";
 import { MultiSelect } from "@/components/ui/multi-select";
 import { useSkills } from "@/hooks/useSkills";
-import SkillSuggestionForm from "@/components/skills/SkillSuggestionForm";
+import SkillSuggestionForm from "./SkillSuggestionForm";
 
-interface ITSkillsFieldProps {
+interface DynamicSkillsSelectProps {
   control: Control<any>;
+  fieldName: string;
+  label: string;
+  workArea: string;
+  specialization?: string;
+  maxSkills?: number;
+  placeholder?: string;
 }
 
-const ITSkillsField = ({ control }: ITSkillsFieldProps) => {
-  const { skills, loading, refetch } = useSkills('IT');
+const DynamicSkillsSelect = ({ 
+  control, 
+  fieldName, 
+  label, 
+  workArea, 
+  specialization,
+  maxSkills = 10,
+  placeholder = "Select skills..." 
+}: DynamicSkillsSelectProps) => {
+  const { skills, loading, refetch } = useSkills(workArea, specialization);
 
   return (
     <FormField
       control={control}
-      name="required_skills"
+      name={fieldName}
       render={({ field }) => (
         <FormItem>
           <div className="flex items-center justify-between">
-            <FormLabel>Required Skills (Select up to 10)</FormLabel>
+            <FormLabel>{label} {maxSkills && `(Select up to ${maxSkills})`}</FormLabel>
             <SkillSuggestionForm 
-              workArea="IT" 
+              workArea={workArea}
+              specialization={specialization}
               onSuggestionSubmitted={refetch}
             />
           </div>
@@ -33,16 +47,16 @@ const ITSkillsField = ({ control }: ITSkillsFieldProps) => {
               }))}
               selected={field.value || []}
               onChange={(values) => {
-                if (values.length <= 10) {
+                if (!maxSkills || values.length <= maxSkills) {
                   field.onChange(values);
                 }
               }}
-              placeholder={loading ? "Loading skills..." : "Select required skills..."}
+              placeholder={loading ? "Loading skills..." : placeholder}
             />
           </FormControl>
-          {field.value?.length >= 10 && (
+          {maxSkills && field.value?.length >= maxSkills && (
             <p className="text-sm text-muted-foreground mt-1">
-              Maximum of 10 skills reached
+              Maximum of {maxSkills} skills reached
             </p>
           )}
           <FormMessage />
@@ -52,4 +66,4 @@ const ITSkillsField = ({ control }: ITSkillsFieldProps) => {
   );
 };
 
-export default ITSkillsField;
+export default DynamicSkillsSelect;
