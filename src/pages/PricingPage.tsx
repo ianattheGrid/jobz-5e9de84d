@@ -54,30 +54,43 @@ const PricingPage = () => {
         {/* Pricing Cards */}
         <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           {/* Employer Pricing */}
-          <Card className="relative border-2 border-red-200 shadow-lg hover:shadow-xl transition-all duration-300">
-            <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-              <div className="bg-red-500 text-white px-6 py-2 rounded-full text-sm font-medium">
+          <Card className="relative overflow-hidden border-0 shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:-translate-y-2 group">
+            {/* Gradient Background */}
+            <div className="absolute inset-0 bg-gradient-to-br from-red-600 via-red-500 to-orange-500"></div>
+            <div className="absolute inset-0 bg-gradient-to-br from-black/30 via-transparent to-black/20"></div>
+            
+            {/* Badge */}
+            <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
+              <div className="bg-white text-red-600 px-6 py-2 rounded-full text-sm font-bold shadow-lg border-2 border-red-200">
                 For Employers
               </div>
             </div>
-            <CardHeader className="text-center pt-8 pb-4">
-              <CardTitle className="text-2xl font-bold text-gray-900">Hiring Company</CardTitle>
+
+            <CardHeader className="relative text-center pt-12 pb-4 text-white">
+              <CardTitle className="text-3xl font-black mb-4 drop-shadow-2xl">Hiring Company</CardTitle>
               <div className="mt-4">
-                <span className="text-5xl font-bold text-red-500">£9</span>
-                <span className="text-gray-600 ml-2">/month</span>
+                <span className="text-6xl font-black drop-shadow-2xl">£9</span>
+                <span className="text-xl ml-2 drop-shadow-lg">/month</span>
+              </div>
+              <div className="mt-2 bg-white/20 rounded-full px-4 py-1 backdrop-blur-sm inline-block">
+                <span className="text-sm font-semibold">✨ Premium Access</span>
               </div>
             </CardHeader>
-            <CardContent className="space-y-4">
+
+            <CardContent className="relative space-y-3 px-6 pb-8 text-white">
               {employerFeatures.map((feature, index) => (
-                <div key={index} className="flex items-center gap-3">
-                  <Check className="h-5 w-5 text-green-500 flex-shrink-0" />
-                  <span className="text-gray-700">{feature}</span>
+                <div key={index} className="flex items-center gap-3 bg-white/10 rounded-lg p-3 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-300">
+                  <div className="flex-shrink-0 w-6 h-6 bg-white rounded-full flex items-center justify-center">
+                    <Check className="h-4 w-4 text-red-600 font-bold" />
+                  </div>
+                  <span className="font-medium drop-shadow-lg">{feature}</span>
                 </div>
               ))}
+              
               <div className="pt-6">
                 <Link to="/employer/signup">
-                  <Button className="w-full bg-red-500 hover:bg-red-600 text-white py-3">
-                    Get Started
+                  <Button className="w-full bg-white hover:bg-gray-100 text-red-600 py-4 text-lg font-bold shadow-xl transform hover:scale-105 transition-all duration-300 border-2 border-white/30">
+                    🚀 Get Started Now
                   </Button>
                 </Link>
               </div>
@@ -85,30 +98,43 @@ const PricingPage = () => {
           </Card>
 
           {/* Candidate Pricing */}
-          <Card className="relative border-2 border-green-200 shadow-lg hover:shadow-xl transition-all duration-300">
-            <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-              <div className="bg-green-500 text-white px-6 py-2 rounded-full text-sm font-medium">
+          <Card className="relative overflow-hidden border-0 shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:-translate-y-2 group">
+            {/* Gradient Background */}
+            <div className="absolute inset-0 bg-gradient-to-br from-green-600 via-emerald-500 to-teal-500"></div>
+            <div className="absolute inset-0 bg-gradient-to-br from-black/30 via-transparent to-black/20"></div>
+            
+            {/* Badge */}
+            <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
+              <div className="bg-white text-green-600 px-6 py-2 rounded-full text-sm font-bold shadow-lg border-2 border-green-200">
                 For Job Seekers
               </div>
             </div>
-            <CardHeader className="text-center pt-8 pb-4">
-              <CardTitle className="text-2xl font-bold text-gray-900">Candidate</CardTitle>
+
+            <CardHeader className="relative text-center pt-12 pb-4 text-white">
+              <CardTitle className="text-3xl font-black mb-4 drop-shadow-2xl">Candidate</CardTitle>
               <div className="mt-4">
-                <span className="text-5xl font-bold text-green-500">£0</span>
-                <span className="text-gray-600 ml-2">forever</span>
+                <span className="text-6xl font-black drop-shadow-2xl">£0</span>
+                <span className="text-xl ml-2 drop-shadow-lg">forever</span>
+              </div>
+              <div className="mt-2 bg-white/20 rounded-full px-4 py-1 backdrop-blur-sm inline-block">
+                <span className="text-sm font-semibold">🎉 Always Free</span>
               </div>
             </CardHeader>
-            <CardContent className="space-y-4">
+
+            <CardContent className="relative space-y-3 px-6 pb-8 text-white">
               {candidateFeatures.map((feature, index) => (
-                <div key={index} className="flex items-center gap-3">
-                  <Check className="h-5 w-5 text-green-500 flex-shrink-0" />
-                  <span className="text-gray-700">{feature}</span>
+                <div key={index} className="flex items-center gap-3 bg-white/10 rounded-lg p-3 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-300">
+                  <div className="flex-shrink-0 w-6 h-6 bg-white rounded-full flex items-center justify-center">
+                    <Check className="h-4 w-4 text-green-600 font-bold" />
+                  </div>
+                  <span className="font-medium drop-shadow-lg">{feature}</span>
                 </div>
               ))}
+              
               <div className="pt-6">
                 <Link to="/candidate/signup">
-                  <Button className="w-full bg-green-500 hover:bg-green-600 text-white py-3">
-                    Join Free
+                  <Button className="w-full bg-white hover:bg-gray-100 text-green-600 py-4 text-lg font-bold shadow-xl transform hover:scale-105 transition-all duration-300 border-2 border-white/30">
+                    💚 Join Free Today
                   </Button>
                 </Link>
               </div>
