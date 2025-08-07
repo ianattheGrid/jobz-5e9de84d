@@ -12,6 +12,12 @@ export interface EmployerProfile {
   company_description?: string | null;
   office_amenities?: string | null;
   nearby_amenities?: string | null;
+  industry_sector?: string | null;
+  company_address?: string | null;
+  company_postcode?: string | null;
+  remote_work_policy?: string | null;
+  company_culture?: string | null;
+  company_values?: string[] | null;
   created_at?: string;
   updated_at?: string;
 }

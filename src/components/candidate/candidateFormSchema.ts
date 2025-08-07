@@ -48,6 +48,21 @@ export const candidateFormSchema = z.object({
   hasQualification: z.boolean().default(false),
   qualificationDetails: z.string().optional(),
   qualifications: z.string().optional(),
+  // New expanded fields
+  industry_sector: z.string().optional(),
+  company_address: z.string().optional(),
+  notice_period: z.string().default("Immediate"),
+  contract_type_preference: z.string().default("permanent"),
+  contact_phone_ok: z.boolean().default(true),
+  contact_email_ok: z.boolean().default(true),
+  contact_linkedin_ok: z.boolean().default(false),
+  skills_experience: z.record(z.string(), z.number()).optional(),
+  education_details: z.array(z.object({
+    institution: z.string(),
+    qualification: z.string(),
+    grade: z.string().optional(),
+    year: z.number().optional(),
+  })).optional(),
 }).refine((data) => data.max_salary >= data.min_salary, {
   message: "Maximum salary must be greater than or equal to minimum salary",
   path: ["max_salary"],

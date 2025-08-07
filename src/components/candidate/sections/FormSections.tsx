@@ -10,6 +10,10 @@ import JobSeekingMotivation from "./JobSeekingMotivation";
 import SkillsSection from "./SkillsSection";
 import WorkEligibilityField from "@/components/job-details/WorkEligibilityField";
 import CommissionPreferences from "./CommissionPreferences";
+import IndustryProfileSection from "./IndustryProfileSection";
+import ContactPreferencesSection from "./ContactPreferencesSection";
+import EducationSection from "./EducationSection";
+import SkillsExperienceSection from "./SkillsExperienceSection";
 
 interface FormSectionsProps {
   control: Control<CandidateFormValues>;
@@ -38,6 +42,18 @@ const FormSections = ({ control }: FormSectionsProps) => {
       </div>
       <div className="text-left">
         <SkillsSection control={control} />
+      </div>
+      <div className="text-left">
+        <SkillsExperienceSection control={control} />
+      </div>
+      <div className="text-left">
+        <IndustryProfileSection control={control} />
+      </div>
+      <div className="text-left">
+        <EducationSection control={control} />
+      </div>
+      <div className="text-left">
+        <ContactPreferencesSection control={control} />
       </div>
       <div className="text-left">
         <WorkEligibilityField control={control} />

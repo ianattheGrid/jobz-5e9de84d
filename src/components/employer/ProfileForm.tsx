@@ -11,6 +11,7 @@ import { ProfileFormFields } from "./ProfileFormFields";
 import { FileUploadSection } from "./FileUploadSection";
 import { CompanyDetailsSection } from "./CompanyDetailsSection";
 import { CompanyGallerySection } from "./CompanyGallerySection";
+import { ExpandedCompanySection } from "./ExpandedCompanySection";
 import { EmployerProfile } from "@/types/employer";
 
 const urlSchema = z.union([
@@ -50,6 +51,14 @@ const formSchema = z.object({
   nearby_amenities: z.string().max(500, {
     message: "Nearby amenities cannot exceed 500 characters",
   }).optional(),
+  industry_sector: z.string().optional(),
+  company_address: z.string().optional(),
+  company_postcode: z.string().optional(),
+  remote_work_policy: z.string().default("office_based"),
+  company_culture: z.string().max(1000, {
+    message: "Company culture cannot exceed 1000 characters",
+  }).optional(),
+  company_values: z.array(z.string()).optional(),
 });
 
 export type FormValues = z.infer<typeof formSchema>;
@@ -73,6 +82,12 @@ export function ProfileForm({ profile, setProfile, email }: ProfileFormProps) {
       company_description: profile.company_description || "",
       office_amenities: profile.office_amenities || "",
       nearby_amenities: profile.nearby_amenities || "",
+      industry_sector: profile.industry_sector || "",
+      company_address: profile.company_address || "",
+      company_postcode: profile.company_postcode || "",
+      remote_work_policy: profile.remote_work_policy || "office_based",
+      company_culture: profile.company_culture || "",
+      company_values: profile.company_values || [],
     },
   });
 
@@ -108,6 +123,12 @@ export function ProfileForm({ profile, setProfile, email }: ProfileFormProps) {
         company_description: values.company_description,
         office_amenities: values.office_amenities,
         nearby_amenities: values.nearby_amenities,
+        industry_sector: values.industry_sector,
+        company_address: values.company_address,
+        company_postcode: values.company_postcode,
+        remote_work_policy: values.remote_work_policy,
+        company_culture: values.company_culture,
+        company_values: values.company_values,
         is_sme: isSME, // Automatically set based on company size
       };
 
@@ -159,6 +180,7 @@ export function ProfileForm({ profile, setProfile, email }: ProfileFormProps) {
           <div className="space-y-8">
             <ProfileFormFields control={form.control} />
             <CompanyDetailsSection control={form.control} />
+            <ExpandedCompanySection control={form.control} />
             <CompanyGallerySection employerId={profile.id} />
             
             <Button 
