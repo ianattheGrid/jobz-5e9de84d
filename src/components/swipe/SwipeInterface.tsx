@@ -2,38 +2,56 @@ import React, { useState } from 'react';
 import { SwipeCard } from './SwipeCard';
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Heart, X, RotateCcw } from "lucide-react";
+import { Heart, X, RotateCcw, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
 
 interface SwipeInterfaceProps {
   data: any[];
   type: 'candidate' | 'employer';
   onMatch: (item: any) => void;
   onPass: (item: any) => void;
+  onPending?: (item: any) => void;
 }
 
 export const SwipeInterface: React.FC<SwipeInterfaceProps> = ({ 
   data, 
   type, 
   onMatch, 
-  onPass 
+  onPass,
+  onPending 
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [matches, setMatches] = useState<any[]>([]);
+  const [pending, setPending] = useState<any[]>([]);
   const [showMatchModal, setShowMatchModal] = useState(false);
   const [lastMatch, setLastMatch] = useState<any>(null);
+  const { toast } = useToast();
 
-  const handleSwipe = (direction: 'left' | 'right') => {
+  const handleSwipe = (action: 'accept' | 'reject' | 'pending') => {
     const currentItem = data[currentIndex];
+    const actionMessages = {
+      accept: `✨ You liked ${currentItem?.name}!`,
+      reject: `👋 Passed on ${currentItem?.name}`,
+      pending: `⏳ ${currentItem?.name} saved for later`
+    };
     
-    if (direction === 'right') {
+    if (action === 'accept') {
       setMatches(prev => [...prev, currentItem]);
       setLastMatch(currentItem);
       setShowMatchModal(true);
       onMatch(currentItem);
+    } else if (action === 'pending') {
+      setPending(prev => [...prev, currentItem]);
+      onPending?.(currentItem);
     } else {
       onPass(currentItem);
     }
+
+    toast({
+      title: actionMessages[action],
+      duration: 2000,
+    });
     
     setCurrentIndex(prev => prev + 1);
   };
@@ -41,6 +59,7 @@ export const SwipeInterface: React.FC<SwipeInterfaceProps> = ({
   const resetStack = () => {
     setCurrentIndex(0);
     setMatches([]);
+    setPending([]);
   };
 
   if (currentIndex >= data.length) {
@@ -56,6 +75,11 @@ export const SwipeInterface: React.FC<SwipeInterfaceProps> = ({
               ? `You matched with ${matches.length} ${type}${matches.length === 1 ? '' : 's'}!`
               : `No matches yet. Don't worry, new ${type}s join every day.`
             }
+            {pending.length > 0 && (
+              <span className="block mt-1">
+                You have {pending.length} saved for later.
+              </span>
+            )}
           </p>
         </div>
         
@@ -67,6 +91,19 @@ export const SwipeInterface: React.FC<SwipeInterfaceProps> = ({
                 {matches.map((match, index) => (
                   <Badge key={index} variant="secondary">
                     {match.name}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          )}
+          
+          {pending.length > 0 && (
+            <div className="text-center">
+              <h3 className="font-semibold mb-2">Saved for Later:</h3>
+              <div className="flex flex-wrap gap-2 justify-center max-w-md">
+                {pending.map((item, index) => (
+                  <Badge key={index} variant="outline" className="border-yellow-400 text-yellow-700">
+                    {item.name}
                   </Badge>
                 ))}
               </div>
@@ -139,15 +176,21 @@ export const SwipeInterface: React.FC<SwipeInterfaceProps> = ({
         </div>
       )}
 
-      {/* Matches counter */}
-      {matches.length > 0 && (
-        <div className="text-center">
-          <Badge variant="secondary" className="text-lg px-4 py-2">
-            <Heart className="h-4 w-4 mr-2" />
+      {/* Counters */}
+      <div className="flex justify-center gap-4">
+        {matches.length > 0 && (
+          <Badge variant="secondary" className="px-3 py-1">
+            <Heart className="h-3 w-3 mr-1" />
             {matches.length} Match{matches.length === 1 ? '' : 'es'}
           </Badge>
-        </div>
-      )}
+        )}
+        {pending.length > 0 && (
+          <Badge variant="outline" className="px-3 py-1 border-yellow-400 text-yellow-700">
+            <Clock className="h-3 w-3 mr-1" />
+            {pending.length} Pending
+          </Badge>
+        )}
+      </div>
     </div>
   );
 };

@@ -2,11 +2,11 @@ import React, { useRef, useState } from 'react';
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { X, Heart, Star, MapPin, Briefcase } from "lucide-react";
+import { X, Heart, Star, MapPin, Briefcase, Clock } from "lucide-react";
 
 interface SwipeCardProps {
   data: any;
-  onSwipe: (direction: 'left' | 'right') => void;
+  onSwipe: (action: 'accept' | 'reject' | 'pending') => void;
   type: 'candidate' | 'employer';
 }
 
@@ -37,8 +37,8 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({ data, onSwipe, type }) => 
     setIsDragging(false);
     
     if (Math.abs(currentX) > 150) {
-      const direction = currentX > 0 ? 'right' : 'left';
-      onSwipe(direction);
+      const action = currentX > 0 ? 'accept' : 'reject';
+      onSwipe(action);
     } else {
       // Snap back
       if (cardRef.current) {
@@ -49,9 +49,8 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({ data, onSwipe, type }) => 
     setCurrentX(0);
   };
 
-  const handleAction = (action: 'pass' | 'like') => {
-    const direction = action === 'like' ? 'right' : 'left';
-    onSwipe(direction);
+  const handleAction = (action: 'reject' | 'pending' | 'accept') => {
+    onSwipe(action);
   };
 
   return (
@@ -87,17 +86,25 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({ data, onSwipe, type }) => 
           <Button
             variant="outline"
             size="lg"
-            className="rounded-full w-16 h-16 border-red-200 hover:bg-red-50"
-            onClick={() => handleAction('pass')}
+            className="rounded-full w-12 h-12 border-red-200 hover:bg-red-50"
+            onClick={() => handleAction('reject')}
           >
-            <X className="h-6 w-6 text-red-500" />
+            <X className="h-5 w-5 text-red-500" />
+          </Button>
+          <Button
+            variant="outline"
+            size="lg"
+            className="rounded-full w-12 h-12 border-yellow-200 hover:bg-yellow-50"
+            onClick={() => handleAction('pending')}
+          >
+            <Clock className="h-5 w-5 text-yellow-500" />
           </Button>
           <Button
             size="lg"
-            className="rounded-full w-16 h-16 bg-primary hover:bg-primary/90"
-            onClick={() => handleAction('like')}
+            className="rounded-full w-12 h-12 bg-primary hover:bg-primary/90"
+            onClick={() => handleAction('accept')}
           >
-            <Heart className="h-6 w-6" />
+            <Heart className="h-5 w-5" />
           </Button>
         </div>
       </Card>

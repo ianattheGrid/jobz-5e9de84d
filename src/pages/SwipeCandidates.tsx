@@ -58,6 +58,11 @@ export default function SwipeCandidates() {
     // Here you would typically track this interaction
   };
 
+  const handlePending = (candidate: any) => {
+    console.log('Saved candidate for later:', candidate.name);
+    // Here you would typically save this to a "maybe" list
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <NavBar />
@@ -65,7 +70,7 @@ export default function SwipeCandidates() {
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold mb-2">Discover Candidates</h1>
           <p className="text-muted-foreground">
-            Swipe right to show interest, left to pass
+            Pass • Maybe • Like - Find your perfect candidate match
           </p>
         </div>
 
@@ -74,6 +79,7 @@ export default function SwipeCandidates() {
           type="candidate"
           onMatch={handleMatch}
           onPass={handlePass}
+          onPending={handlePending}
         />
       </div>
     </div>

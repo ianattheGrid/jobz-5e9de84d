@@ -73,6 +73,11 @@ export default function SwipeEmployers() {
     // Here you would typically track this interaction
   };
 
+  const handlePending = (employer: any) => {
+    console.log('Saved employer for later:', employer.name);
+    // Here you would typically save this to a "maybe" list
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <NavBar />
@@ -80,7 +85,7 @@ export default function SwipeEmployers() {
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold mb-2">Discover Employers</h1>
           <p className="text-muted-foreground">
-            Swipe right to show interest, left to pass
+            Pass • Maybe • Like - Find your perfect employer match
           </p>
         </div>
 
@@ -89,6 +94,7 @@ export default function SwipeEmployers() {
           type="employer"
           onMatch={handleMatch}
           onPass={handlePass}
+          onPending={handlePending}
         />
       </div>
     </div>
