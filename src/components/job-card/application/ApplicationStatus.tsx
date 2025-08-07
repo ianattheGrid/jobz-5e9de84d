@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle2, Clock, MessageSquare, XCircle } from "lucide-react";
+import MatchScoreDisplay from "@/components/candidate/MatchScoreDisplay";
 
 interface ApplicationStatusProps {
   status: {
@@ -10,6 +11,9 @@ interface ApplicationStatusProps {
     employer_accepted: boolean | null;
     candidate_accepted: boolean | null;
     status: string;
+    match_percentage?: number | null;
+    match_score_breakdown?: any;
+    match_explanation?: string | null;
   };
   onAccept: () => Promise<void>;
   onChat: () => void;
@@ -116,6 +120,17 @@ const ApplicationStatus = ({ status, onAccept, onChat }: ApplicationStatusProps)
       <p className="text-sm text-muted-foreground">
         Your application is currently under review. We'll notify you when the employer responds to your application.
       </p>
+      
+      {status.match_percentage && (
+        <div className="mt-4">
+          <MatchScoreDisplay
+            matchPercentage={status.match_percentage}
+            scoreBreakdown={status.match_score_breakdown}
+            matchExplanation={status.match_explanation}
+            compact={true}
+          />
+        </div>
+      )}
     </div>
   );
 };

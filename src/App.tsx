@@ -13,7 +13,7 @@ import CandidateSignUp from './pages/CandidateSignUp';
 import CandidateDashboard from './pages/CandidateDashboard';
 import CandidateProfile from './pages/CandidateProfile';
 import PreviewCandidateProfile from './pages/PreviewCandidateProfile';
-import CandidateApplications from './pages/CandidateApplications';
+import CandidateApplications from './pages/candidate/Applications';
 import CandidateInterviews from './pages/CandidateInterviews';
 import CandidateAccountSettings from './pages/CandidateAccountSettings';
 

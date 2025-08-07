@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useMatchScore } from "./useMatchScore";
 import { validateEssentialCriteria } from "../utils/applicationValidation";
+import { generateMatchExplanation } from "../utils/matchExplanation";
 
 export const useApplication = (jobId: number, employerId: string) => {
   const { user } = useAuth();
@@ -224,6 +225,41 @@ export const useApplication = (jobId: number, employerId: string) => {
   
           resumeUrl = filePath;
         }
+
+        // Get candidate profile and job details for match calculation
+        const { data: profile } = await supabase
+          .from('candidate_profiles')
+          .select('*')
+          .eq('id', user.id)
+          .single();
+
+        const { data: job } = await supabase
+          .from('jobs')
+          .select('*')
+          .eq('id', jobId)
+          .single();
+
+        if (!profile || !job) {
+          throw new Error('Failed to load profile or job data');
+        }
+
+        // Calculate match score
+        const { calculateTotalScore, titleMatch, specializationMatch, locationMatch, experienceMatch, salaryMatch } = useMatchScore(profile, job);
+        const totalScore = await calculateTotalScore();
+        const matchPercentage = Math.round(totalScore * 100);
+
+        // Create detailed score breakdown
+        const scoreBreakdown = {
+          title: Math.round(titleMatch() * 100),
+          specialization: Math.round(specializationMatch() * 100),
+          location: Math.round(locationMatch() * 100),
+          experience: Math.round(experienceMatch() * 100),
+          salary: Math.round(salaryMatch() * 100),
+          total: matchPercentage
+        };
+
+        // Generate match explanation
+        const explanation = generateMatchExplanation(scoreBreakdown, job);
   
         const { data, error } = await supabase.from('applications').insert({
           job_id: jobId,
@@ -233,6 +269,9 @@ export const useApplication = (jobId: number, employerId: string) => {
           status: 'pending',
           employer_accepted: false,
           candidate_accepted: false,
+          match_percentage: matchPercentage,
+          match_score_breakdown: scoreBreakdown,
+          match_explanation: explanation
         }).select().single();
   
         if (error) throw error;
@@ -241,7 +280,7 @@ export const useApplication = (jobId: number, employerId: string) => {
         
         toast({
           title: "Application Submitted",
-          description: "Your application has been submitted successfully! You'll be notified when the employer responds.",
+          description: `Your application has been submitted successfully! Match score: ${matchPercentage}%`,
           variant: "default",
         });
   

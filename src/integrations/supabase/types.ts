@@ -102,6 +102,9 @@ export type Database = {
           employer_viewed_at: string | null
           id: number
           job_id: number
+          match_explanation: string | null
+          match_percentage: number | null
+          match_score_breakdown: Json | null
           profile_visibility_enabled: boolean | null
           resume_url: string | null
           status: string
@@ -117,6 +120,9 @@ export type Database = {
           employer_viewed_at?: string | null
           id?: number
           job_id: number
+          match_explanation?: string | null
+          match_percentage?: number | null
+          match_score_breakdown?: Json | null
           profile_visibility_enabled?: boolean | null
           resume_url?: string | null
           status?: string
@@ -132,6 +138,9 @@ export type Database = {
           employer_viewed_at?: string | null
           id?: number
           job_id?: number
+          match_explanation?: string | null
+          match_percentage?: number | null
+          match_score_breakdown?: Json | null
           profile_visibility_enabled?: boolean | null
           resume_url?: string | null
           status?: string
