@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import NavBar from "@/components/NavBar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -14,7 +15,8 @@ import {
   MessageCircle,
   Clock,
   CheckCircle,
-  Star
+  Star,
+  ArrowLeft
 } from "lucide-react";
 
 export default function DemoVirtualRecruiterProfile() {
@@ -92,6 +94,17 @@ export default function DemoVirtualRecruiterProfile() {
     <div className="min-h-screen bg-background">
       <NavBar />
       <div className="container mx-auto px-4 py-8 max-w-6xl" style={{ paddingTop: '80px' }}>
+      
+      {/* Back to Card Link */}
+      <div className="mb-4">
+        <Link 
+          to="/" 
+          className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          <span className="text-sm">Back to Interactive Cards</span>
+        </Link>
+      </div>
       <div className="mb-6 p-4 bg-purple-50 rounded-lg border-l-4 border-purple-400">
         <h2 className="text-lg font-semibold text-purple-800 mb-2">Demo Virtual Recruiter Profile</h2>
         <p className="text-purple-700">
