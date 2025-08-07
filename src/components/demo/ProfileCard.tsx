@@ -94,12 +94,12 @@ export const ProfileCard = ({
             {/* Profile Image & Basic Info */}
             <div className="text-center mb-4">
               {image && (
-                <div className="w-20 h-20 mx-auto mb-3 rounded-full overflow-hidden bg-gray-600 ring-4 ring-primary/50 shadow-2xl shadow-primary/20">
+                <div className="w-20 h-20 mx-auto mb-3 rounded-full overflow-hidden bg-primary/20 ring-4 ring-primary shadow-2xl shadow-primary/30">
                   <img src={image} alt={name} className="w-full h-full object-cover" />
                 </div>
               )}
-              <h3 className="text-xl font-bold mb-1 text-white drop-shadow-lg">{name}</h3>
-              <p className="text-gray-200 text-sm mb-2 font-medium drop-shadow">{title}</p>
+              <h3 className="text-2xl font-black mb-1 text-white drop-shadow-2xl shadow-black">{name}</h3>
+              <p className="text-gray-100 text-sm mb-2 font-semibold drop-shadow-lg shadow-black">{title}</p>
               {company && (
                 <div className="flex items-center justify-center gap-1 text-sm text-gray-300 mb-2">
                   <Building className="h-3 w-3 text-primary" />
@@ -152,8 +152,8 @@ export const ProfileCard = ({
         <CardContent className="absolute inset-0 w-full h-full p-6 backface-hidden rotate-y-180 bg-gradient-to-br from-gray-900 via-gray-800 to-black">
           <div className="flex flex-col h-full text-white">
             <div className="text-center mb-4">
-              <h3 className="text-xl font-bold mb-2 text-white drop-shadow-lg">{name}</h3>
-              <Badge className={`${getTypeColor()} text-white mb-3 border-0 shadow-lg`}>
+              <h3 className="text-2xl font-black mb-2 text-white drop-shadow-2xl shadow-black">{name}</h3>
+              <Badge className={`${getTypeColor()} text-white mb-3 border-0 shadow-xl`}>
                 Full Details
               </Badge>
             </div>
