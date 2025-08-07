@@ -1,7 +1,7 @@
 import { ProfileCard } from "./ProfileCard";
 import sarahProfileImage from "@/assets/sarah-johnson-profile.jpg";
 import bristolTechImage from "@/assets/bristol-tech-building.jpg";
-import alexAiImage from "@/assets/alex-ai-avatar.jpg";
+import alexImage from "@/assets/alex-recruiter.jpg";
 
 export const DemoCardsSection = () => {
   const candidateData = {
@@ -39,10 +39,10 @@ export const DemoCardsSection = () => {
 
   const vrData = {
     type: "virtual-recruiter" as const,
-    name: "Alex AI",
+    name: "Alex",
     title: "Senior Virtual Recruiter",
     location: "UK-wide",
-    image: alexAiImage,
+    image: alexImage,
     rating: 4.9,
     specialization: "Tech & Engineering Roles",
     description: "Advanced AI recruiter specialized in matching tech talent with innovative companies. Trained on 10,000+ successful placements in software development, data science, and engineering roles. I analyze candidate skills, cultural fit, and career aspirations to make precise matches. My success rate is 85% for placements lasting 12+ months. I provide 24/7 support throughout the recruitment process and ongoing career guidance.",
