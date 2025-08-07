@@ -7,6 +7,11 @@ export type Json =
   | Json[]
 
 export type Database = {
+  // Allows to automatically instanciate createClient with right options
+  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
+  __InternalSupabase: {
+    PostgrestVersion: "12.2.3 (519615d)"
+  }
   public: {
     Tables: {
       admins: {
@@ -214,14 +219,21 @@ export type Database = {
           ai_synopsis_status: string | null
           availability: string | null
           commission_percentage: number | null
+          company_address: string | null
+          contact_email_ok: boolean | null
+          contact_linkedin_ok: boolean | null
+          contact_phone_ok: boolean | null
+          contract_type_preference: string | null
           created_at: string
           current_employer: string | null
           cv_url: string | null
           desired_job_title: string | null
+          education_details: Json | null
           email: string
           full_name: string | null
           home_postcode: string | null
           id: string
+          industry_sector: string | null
           is_currently_employed: boolean | null
           itSpecialization: string | null
           job_title: string
@@ -229,6 +241,7 @@ export type Database = {
           location: string[] | null
           max_salary: number
           min_salary: number
+          notice_period: string | null
           phone_number: string | null
           preferred_work_type: string | null
           profile_picture_url: string | null
@@ -236,6 +249,7 @@ export type Database = {
           required_skills: string[] | null
           security_clearance: string | null
           signup_date: string | null
+          skills_experience: Json | null
           travel_radius: number | null
           updated_at: string
           work_eligibility: string | null
@@ -252,14 +266,21 @@ export type Database = {
           ai_synopsis_status?: string | null
           availability?: string | null
           commission_percentage?: number | null
+          company_address?: string | null
+          contact_email_ok?: boolean | null
+          contact_linkedin_ok?: boolean | null
+          contact_phone_ok?: boolean | null
+          contract_type_preference?: string | null
           created_at?: string
           current_employer?: string | null
           cv_url?: string | null
           desired_job_title?: string | null
+          education_details?: Json | null
           email: string
           full_name?: string | null
           home_postcode?: string | null
           id: string
+          industry_sector?: string | null
           is_currently_employed?: boolean | null
           itSpecialization?: string | null
           job_title: string
@@ -267,6 +288,7 @@ export type Database = {
           location?: string[] | null
           max_salary: number
           min_salary: number
+          notice_period?: string | null
           phone_number?: string | null
           preferred_work_type?: string | null
           profile_picture_url?: string | null
@@ -274,6 +296,7 @@ export type Database = {
           required_skills?: string[] | null
           security_clearance?: string | null
           signup_date?: string | null
+          skills_experience?: Json | null
           travel_radius?: number | null
           updated_at?: string
           work_eligibility?: string | null
@@ -290,14 +313,21 @@ export type Database = {
           ai_synopsis_status?: string | null
           availability?: string | null
           commission_percentage?: number | null
+          company_address?: string | null
+          contact_email_ok?: boolean | null
+          contact_linkedin_ok?: boolean | null
+          contact_phone_ok?: boolean | null
+          contract_type_preference?: string | null
           created_at?: string
           current_employer?: string | null
           cv_url?: string | null
           desired_job_title?: string | null
+          education_details?: Json | null
           email?: string
           full_name?: string | null
           home_postcode?: string | null
           id?: string
+          industry_sector?: string | null
           is_currently_employed?: boolean | null
           itSpecialization?: string | null
           job_title?: string
@@ -305,6 +335,7 @@ export type Database = {
           location?: string[] | null
           max_salary?: number
           min_salary?: number
+          notice_period?: string | null
           phone_number?: string | null
           preferred_work_type?: string | null
           profile_picture_url?: string | null
@@ -312,6 +343,7 @@ export type Database = {
           required_skills?: string[] | null
           security_clearance?: string | null
           signup_date?: string | null
+          skills_experience?: Json | null
           travel_radius?: number | null
           updated_at?: string
           work_eligibility?: string | null
@@ -508,54 +540,72 @@ export type Database = {
       }
       employer_profiles: {
         Row: {
+          company_address: string | null
+          company_culture: string | null
           company_description: string | null
           company_logo_url: string | null
           company_name: string
+          company_postcode: string | null
           company_size: number | null
+          company_values: string[] | null
           company_website: string | null
           created_at: string
           full_name: string
           id: string
+          industry_sector: string | null
           is_sme: boolean | null
           job_title: string
           linkedin_url: string | null
           nearby_amenities: string | null
           office_amenities: string | null
           profile_picture_url: string | null
+          remote_work_policy: string | null
           updated_at: string
         }
         Insert: {
+          company_address?: string | null
+          company_culture?: string | null
           company_description?: string | null
           company_logo_url?: string | null
           company_name: string
+          company_postcode?: string | null
           company_size?: number | null
+          company_values?: string[] | null
           company_website?: string | null
           created_at?: string
           full_name: string
           id: string
+          industry_sector?: string | null
           is_sme?: boolean | null
           job_title: string
           linkedin_url?: string | null
           nearby_amenities?: string | null
           office_amenities?: string | null
           profile_picture_url?: string | null
+          remote_work_policy?: string | null
           updated_at?: string
         }
         Update: {
+          company_address?: string | null
+          company_culture?: string | null
           company_description?: string | null
           company_logo_url?: string | null
           company_name?: string
+          company_postcode?: string | null
           company_size?: number | null
+          company_values?: string[] | null
           company_website?: string | null
           created_at?: string
           full_name?: string
           id?: string
+          industry_sector?: string | null
           is_sme?: boolean | null
           job_title?: string
           linkedin_url?: string | null
           nearby_amenities?: string | null
           office_amenities?: string | null
           profile_picture_url?: string | null
+          remote_work_policy?: string | null
           updated_at?: string
         }
         Relationships: []
@@ -708,16 +758,21 @@ export type Database = {
           citizenship_essential: boolean | null
           company: string
           company_benefits: string | null
+          contract_type: string | null
           created_at: string
           description: string
           employer_id: string | null
           holiday_entitlement: number | null
+          hybrid_work_allowed: boolean | null
           id: number
+          interview_process_description: string | null
           location: string
           match_threshold: number | null
           min_years_experience: number | null
           min_years_in_title: number | null
+          notice_period_required: string | null
           qualification_essential: boolean | null
+          remote_work_allowed: boolean | null
           required_citizenship: string | null
           required_qualifications: string[] | null
           required_skills: string[] | null
@@ -737,16 +792,21 @@ export type Database = {
           citizenship_essential?: boolean | null
           company: string
           company_benefits?: string | null
+          contract_type?: string | null
           created_at?: string
           description: string
           employer_id?: string | null
           holiday_entitlement?: number | null
+          hybrid_work_allowed?: boolean | null
           id?: number
+          interview_process_description?: string | null
           location: string
           match_threshold?: number | null
           min_years_experience?: number | null
           min_years_in_title?: number | null
+          notice_period_required?: string | null
           qualification_essential?: boolean | null
+          remote_work_allowed?: boolean | null
           required_citizenship?: string | null
           required_qualifications?: string[] | null
           required_skills?: string[] | null
@@ -766,16 +826,21 @@ export type Database = {
           citizenship_essential?: boolean | null
           company?: string
           company_benefits?: string | null
+          contract_type?: string | null
           created_at?: string
           description?: string
           employer_id?: string | null
           holiday_entitlement?: number | null
+          hybrid_work_allowed?: boolean | null
           id?: number
+          interview_process_description?: string | null
           location?: string
           match_threshold?: number | null
           min_years_experience?: number | null
           min_years_in_title?: number | null
+          notice_period_required?: string | null
           qualification_essential?: boolean | null
+          remote_work_allowed?: boolean | null
           required_citizenship?: string | null
           required_qualifications?: string[] | null
           required_skills?: string[] | null
@@ -1207,21 +1272,25 @@ export type Database = {
   }
 }
 
-type DefaultSchema = Database[Extract<keyof Database, "public">]
+type DatabaseWithoutInternals = Omit<Database, "__InternalSupabase">
+
+type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, "public">]
 
 export type Tables<
   DefaultSchemaTableNameOrOptions extends
     | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
-    | { schema: keyof Database },
+    | { schema: keyof DatabaseWithoutInternals },
   TableName extends DefaultSchemaTableNameOrOptions extends {
-    schema: keyof Database
+    schema: keyof DatabaseWithoutInternals
   }
-    ? keyof (Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
-        Database[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
+    ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+        DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
     : never = never,
-> = DefaultSchemaTableNameOrOptions extends { schema: keyof Database }
-  ? (Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
-      Database[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+      DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
       Row: infer R
     }
     ? R
@@ -1239,14 +1308,16 @@ export type Tables<
 export type TablesInsert<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
-    | { schema: keyof Database },
+    | { schema: keyof DatabaseWithoutInternals },
   TableName extends DefaultSchemaTableNameOrOptions extends {
-    schema: keyof Database
+    schema: keyof DatabaseWithoutInternals
   }
-    ? keyof Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
     : never = never,
-> = DefaultSchemaTableNameOrOptions extends { schema: keyof Database }
-  ? Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
       Insert: infer I
     }
     ? I
@@ -1262,14 +1333,16 @@ export type TablesInsert<
 export type TablesUpdate<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
-    | { schema: keyof Database },
+    | { schema: keyof DatabaseWithoutInternals },
   TableName extends DefaultSchemaTableNameOrOptions extends {
-    schema: keyof Database
+    schema: keyof DatabaseWithoutInternals
   }
-    ? keyof Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
     : never = never,
-> = DefaultSchemaTableNameOrOptions extends { schema: keyof Database }
-  ? Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
       Update: infer U
     }
     ? U
@@ -1285,14 +1358,16 @@ export type TablesUpdate<
 export type Enums<
   DefaultSchemaEnumNameOrOptions extends
     | keyof DefaultSchema["Enums"]
-    | { schema: keyof Database },
+    | { schema: keyof DatabaseWithoutInternals },
   EnumName extends DefaultSchemaEnumNameOrOptions extends {
-    schema: keyof Database
+    schema: keyof DatabaseWithoutInternals
   }
-    ? keyof Database[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
+    ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
     : never = never,
-> = DefaultSchemaEnumNameOrOptions extends { schema: keyof Database }
-  ? Database[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
+> = DefaultSchemaEnumNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
   : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema["Enums"]
     ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
     : never
@@ -1300,14 +1375,16 @@ export type Enums<
 export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
     | keyof DefaultSchema["CompositeTypes"]
-    | { schema: keyof Database },
+    | { schema: keyof DatabaseWithoutInternals },
   CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
-    schema: keyof Database
+    schema: keyof DatabaseWithoutInternals
   }
-    ? keyof Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
+    ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
     : never = never,
-> = PublicCompositeTypeNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
+> = PublicCompositeTypeNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
   : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
     ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
     : never
