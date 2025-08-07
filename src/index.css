@@ -140,6 +140,16 @@ h1, h2, h3, h4, h5, h6 {
   @apply text-gray-900 !important;
 }
 
+/* Profile card text override */
+.profile-card h1, 
+.profile-card h2, 
+.profile-card h3, 
+.profile-card h4, 
+.profile-card h5, 
+.profile-card h6 {
+  color: #FFFFFF !important;
+}
+
 /* Error messages */
 .error-message {
   @apply text-red-600 !important;
