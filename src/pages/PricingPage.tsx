@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Check, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import NavBar from "@/components/NavBar";
 
 const PricingPage = () => {
   const employerFeatures = [
@@ -25,8 +26,10 @@ const PricingPage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-pink-50 pt-20">
-      <div className="container mx-auto px-4 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-pink-50">
+      <NavBar />
+      <div className="pt-20">
+        <div className="container mx-auto px-4 py-12">
         {/* Beta Testing Notice */}
         <div className="bg-gradient-to-r from-blue-100 to-pink-100 border border-primary/20 rounded-lg p-6 mb-12 text-center">
           <div className="flex items-center justify-center gap-2 mb-2">
@@ -158,6 +161,7 @@ const PricingPage = () => {
                 I'm Job Seeking
               </Button>
             </Link>
+          </div>
           </div>
         </div>
       </div>

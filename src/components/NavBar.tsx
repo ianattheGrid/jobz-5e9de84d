@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import MobileNav from "./navbar/MobileNav";
 import { Button } from "@/components/ui/button";
-import { LogIn, UserPlus, Home as HomeIcon, Briefcase, LogOut, User, HelpCircle, QrCode, DollarSign } from "lucide-react";
+import { LogIn, UserPlus, Home as HomeIcon, Briefcase, LogOut, User, HelpCircle, QrCode, PoundSterling } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/hooks/useAuth";
 
@@ -72,7 +72,7 @@ const NavBar = () => {
                   to="/pricing" 
                   className="text-black hover:text-black/80 flex items-center gap-2"
                 >
-                  <DollarSign className="h-4 w-4" />
+                  <PoundSterling className="h-4 w-4" />
                   <span>Pricing</span>
                 </Link>
                 <Link 
