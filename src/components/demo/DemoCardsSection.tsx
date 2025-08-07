@@ -1,5 +1,7 @@
 import { ProfileCard } from "./ProfileCard";
 import sarahProfileImage from "@/assets/sarah-johnson-profile.jpg";
+import bristolTechImage from "@/assets/bristol-tech-building.jpg";
+import alexAiImage from "@/assets/alex-ai-avatar.jpg";
 
 export const DemoCardsSection = () => {
   const candidateData = {
@@ -24,6 +26,7 @@ export const DemoCardsSection = () => {
     name: "Bristol Tech Solutions",
     title: "Software Development Company",
     location: "Bristol, UK",
+    image: bristolTechImage,
     rating: 4.6,
     specialization: "Full-stack development, cloud solutions",
     description: "Innovative software development company specializing in cutting-edge web applications and cloud solutions. We're a team of 50+ passionate developers, designers, and product managers working with startups and established businesses. Our culture emphasizes work-life balance, continuous learning, and technical excellence. We offer competitive salaries, flexible working arrangements, and opportunities to work on diverse, challenging projects.",
@@ -39,6 +42,7 @@ export const DemoCardsSection = () => {
     name: "Alex AI",
     title: "Senior Virtual Recruiter",
     location: "UK-wide",
+    image: alexAiImage,
     rating: 4.9,
     specialization: "Tech & Engineering Roles",
     description: "Advanced AI recruiter specialized in matching tech talent with innovative companies. Trained on 10,000+ successful placements in software development, data science, and engineering roles. I analyze candidate skills, cultural fit, and career aspirations to make precise matches. My success rate is 85% for placements lasting 12+ months. I provide 24/7 support throughout the recruitment process and ongoing career guidance.",
