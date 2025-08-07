@@ -2,10 +2,7 @@
 import NavBar from "@/components/NavBar";
 import { HeroSection } from "@/components/home/HeroSection";
 import { PlatformFeatures } from "@/components/home/PlatformFeatures";
-import { CalculatorSection } from "@/components/home/CalculatorSection";
 import { QRCodeSection } from "@/components/home/QRCodeSection";
-import { ContractorRecruitmentSection } from "@/components/home/ContractorRecruitmentSection";
-import { ContractorCalculatorSection } from "@/components/home/ContractorCalculatorSection";
 
 export default function Index() {
   return (
@@ -13,10 +10,7 @@ export default function Index() {
       <NavBar />
       <HeroSection />
       <PlatformFeatures />
-      <CalculatorSection />
       <QRCodeSection />
-      <ContractorRecruitmentSection />
-      <ContractorCalculatorSection />
     </div>
   );
 }
