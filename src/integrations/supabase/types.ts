@@ -670,6 +670,50 @@ export type Database = {
         }
         Relationships: []
       }
+      interview_feedback: {
+        Row: {
+          additional_clarifications: string | null
+          candidate_id: string
+          created_at: string
+          general_feedback: string | null
+          id: string
+          interview_id: number
+          overall_sentiment: string
+          updated_at: string
+          wish_explained_better: string | null
+        }
+        Insert: {
+          additional_clarifications?: string | null
+          candidate_id: string
+          created_at?: string
+          general_feedback?: string | null
+          id?: string
+          interview_id: number
+          overall_sentiment: string
+          updated_at?: string
+          wish_explained_better?: string | null
+        }
+        Update: {
+          additional_clarifications?: string | null
+          candidate_id?: string
+          created_at?: string
+          general_feedback?: string | null
+          id?: string
+          interview_id?: number
+          overall_sentiment?: string
+          updated_at?: string
+          wish_explained_better?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "interview_feedback_interview_id_fkey"
+            columns: ["interview_id"]
+            isOneToOne: false
+            referencedRelation: "interviews"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       interview_slots: {
         Row: {
           candidate_id: string

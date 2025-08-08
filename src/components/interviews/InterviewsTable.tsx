@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/tooltip";
 import { InfoIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { InterviewFeedbackButton } from "./InterviewFeedbackButton";
 
 interface Interview {
   id: number | string;
@@ -60,6 +61,7 @@ const InterviewsTable = ({ interviews }: InterviewsTableProps) => {
           <TableHead className="text-gray-900">Time</TableHead>
           <TableHead className="text-gray-900">Interviewer</TableHead>
           <TableHead className="text-gray-900">Status</TableHead>
+          <TableHead className="text-gray-900">Actions</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -95,6 +97,15 @@ const InterviewsTable = ({ interviews }: InterviewsTableProps) => {
                   </TooltipProvider>
                 )}
               </div>
+            </TableCell>
+            <TableCell>
+              <InterviewFeedbackButton 
+                interview={{
+                  id: typeof interview.id === 'string' ? parseInt(interview.id) : interview.id,
+                  job: interview.job,
+                  status: interview.status
+                }} 
+              />
             </TableCell>
           </TableRow>
         ))}
