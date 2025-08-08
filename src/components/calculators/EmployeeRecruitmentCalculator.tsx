@@ -83,7 +83,7 @@ export const EmployeeRecruitmentCalculator = () => {
 
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8">
+    <div className="calculator-dark max-w-4xl mx-auto space-y-8">
       <Card className="bg-gradient-to-br from-slate-800 to-slate-900 border border-pink-500/30 shadow-2xl">
         <CardHeader className="text-center bg-gradient-to-r from-slate-800/90 to-slate-900/90 rounded-t-lg p-8 border-b border-pink-500/20">
           <CardTitle className="flex items-center justify-center gap-3 text-4xl font-bold text-white">

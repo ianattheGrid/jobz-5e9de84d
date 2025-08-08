@@ -260,3 +260,10 @@ a {
 .rotate-y-180 {
   transform: rotateY(180deg);
 }
+
+/* Calculator scoped overrides */
+.calculator-dark label,
+.calculator-dark .form-label,
+.calculator-dark [data-radix-label] {
+  color: hsl(var(--primary-foreground)) !important;
+}
