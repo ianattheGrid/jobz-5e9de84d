@@ -84,17 +84,17 @@ export const EmployeeRecruitmentCalculator = () => {
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">
-      <Card className="bg-gradient-to-br from-primary/10 via-background to-secondary/10 border-primary/20 shadow-lg">
-        <CardHeader className="text-center bg-gradient-to-r from-primary/5 to-primary/10 rounded-t-lg">
-          <CardTitle className="flex items-center justify-center gap-2 text-3xl bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-            <Calculator className="h-7 w-7 text-primary" />
+      <Card className="bg-gradient-to-br from-pink-500/10 via-purple-500/5 to-blue-500/10 border border-pink-500/20 shadow-2xl backdrop-blur-sm">
+        <CardHeader className="text-center bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-blue-500/10 rounded-t-lg p-8">
+          <CardTitle className="flex items-center justify-center gap-3 text-4xl bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600 bg-clip-text text-transparent font-bold">
+            <Calculator className="h-8 w-8 text-pink-600" />
             Employee Recruitment Cost Calculator
           </CardTitle>
-          <p className="text-muted-foreground text-lg">
+          <p className="text-slate-600 text-lg mt-4 max-w-2xl mx-auto">
             Calculate how much you could save using jobz for employee recruitment
           </p>
         </CardHeader>
-        <CardContent className="space-y-8 p-8">
+        <CardContent className="space-y-8 p-8 bg-gradient-to-br from-white/50 to-purple-50/30">
           {/* Salary Input */}
           <div className="space-y-3">
             <Label htmlFor="salary" className="text-base font-medium">Annual Salary (£)</Label>
@@ -159,8 +159,8 @@ export const EmployeeRecruitmentCalculator = () => {
           )}
 
           {/* Months Selection */}
-          <div className="space-y-4 p-6 bg-gradient-to-r from-secondary/5 to-secondary/10 rounded-xl border border-secondary/20">
-            <Label className="text-base font-medium">Months using jobz: {months} month{months !== 1 ? 's' : ''}</Label>
+          <div className="space-y-4 p-6 bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-xl border border-purple-500/20">
+            <Label className="text-base font-medium text-purple-700">Months using jobz: {months} month{months !== 1 ? 's' : ''}</Label>
             <div className="px-4">
               <input
                 type="range"
@@ -169,9 +169,12 @@ export const EmployeeRecruitmentCalculator = () => {
                 step="1"
                 value={months}
                 onChange={(e) => setMonths(parseInt(e.target.value))}
-                className="w-full h-3 bg-secondary/20 rounded-lg appearance-none cursor-pointer slider"
+                className="w-full h-3 bg-purple-200 rounded-lg appearance-none cursor-pointer slider-purple"
+                style={{
+                  background: `linear-gradient(to right, #a855f7 0%, #a855f7 ${((months - 1) / 11) * 100}%, #e5b4f3 ${((months - 1) / 11) * 100}%, #e5b4f3 100%)`
+                }}
               />
-              <div className="flex justify-between text-sm font-medium text-secondary-foreground mt-2">
+              <div className="flex justify-between text-sm font-medium text-purple-600 mt-2">
                 <span>1 month</span>
                 <span>12 months</span>
               </div>
@@ -259,6 +262,27 @@ const sliderStyles = `
   cursor: pointer;
   border: 2px solid white;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.slider-purple::-webkit-slider-thumb {
+  appearance: none;
+  height: 24px;
+  width: 24px;
+  border-radius: 50%;
+  background: #a855f7;
+  cursor: pointer;
+  border: 3px solid white;
+  box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);
+}
+
+.slider-purple::-moz-range-thumb {
+  height: 24px;
+  width: 24px;
+  border-radius: 50%;
+  background: #a855f7;
+  cursor: pointer;
+  border: 3px solid white;
+  box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);
 }
 
 .slider::-webkit-slider-track {
