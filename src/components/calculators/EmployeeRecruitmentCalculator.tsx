@@ -86,9 +86,9 @@ export const EmployeeRecruitmentCalculator = () => {
     <div className="max-w-4xl mx-auto space-y-8">
       <Card className="bg-gradient-to-br from-slate-800 to-slate-900 border border-pink-500/30 shadow-2xl">
         <CardHeader className="text-center bg-gradient-to-r from-slate-800/90 to-slate-900/90 rounded-t-lg p-8 border-b border-pink-500/20">
-          <CardTitle className="flex items-center justify-center gap-3 text-4xl text-white font-bold">
+          <CardTitle className="flex items-center justify-center gap-3 text-4xl font-bold text-white">
             <Calculator className="h-8 w-8 text-pink-500" />
-            Employee Recruitment Cost Calculator
+            <span className="text-white">Employee Recruitment Cost Calculator</span>
           </CardTitle>
           <p className="text-white text-lg font-semibold mt-4 max-w-2xl mx-auto">
             Calculate how much you could save using jobz for employee recruitment
@@ -97,7 +97,7 @@ export const EmployeeRecruitmentCalculator = () => {
         <CardContent className="space-y-8 p-8 bg-gradient-to-br from-slate-800 to-slate-900">
           {/* Salary Input */}
           <div className="space-y-3">
-            <Label htmlFor="salary" className="text-lg font-bold text-white">Annual Salary (£)</Label>
+            <Label htmlFor="salary" className="text-xl font-bold text-white">Annual Salary (£)</Label>
             <Input
               id="salary"
               type="text"
@@ -110,7 +110,7 @@ export const EmployeeRecruitmentCalculator = () => {
 
           {/* Recruitment Type Selection */}
           <div className="space-y-3">
-            <Label className="text-lg font-bold text-white">Current Recruitment Method</Label>
+            <Label className="text-xl font-bold text-white">Current Recruitment Method</Label>
             <Select value={recruitmentType} onValueChange={(value: 'agency' | 'direct') => setRecruitmentType(value)}>
               <SelectTrigger className="h-12 bg-slate-700/50 border-pink-500/30 text-white focus:border-pink-500">
                 <SelectValue placeholder="Select your current recruitment method" className="text-slate-400" />
@@ -163,7 +163,7 @@ export const EmployeeRecruitmentCalculator = () => {
 
           {/* Months Selection */}
           <div className="space-y-4 p-6 bg-slate-700/30 rounded-xl border border-pink-500/30">
-            <Label className="text-lg font-bold text-white">Months using jobz: <span className="text-pink-400">{months} month{months !== 1 ? "s" : ""}</span></Label>
+            <Label className="text-xl font-bold text-white">Months using jobz: <span className="text-pink-400 font-bold">{months} month{months !== 1 ? "s" : ""}</span></Label>
             <div className="px-4">
               <input
                 type="range"
@@ -190,9 +190,9 @@ export const EmployeeRecruitmentCalculator = () => {
       {results && recruitmentType && (
         <Card className="bg-gradient-to-br from-slate-800 to-slate-900 border border-pink-500/30 shadow-2xl">
           <CardHeader className="bg-gradient-to-r from-slate-800/90 to-slate-900/90 rounded-t-lg p-6 border-b border-pink-500/20">
-            <CardTitle className="flex items-center gap-3 text-2xl text-white font-bold">
+            <CardTitle className="flex items-center gap-3 text-3xl font-bold text-white">
               <TrendingDown className="h-6 w-6 text-pink-500" />
-              Your Cost Savings
+              <span className="text-white">Your Cost Savings</span>
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6 p-8 bg-gradient-to-br from-slate-800 to-slate-900">
