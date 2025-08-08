@@ -234,7 +234,7 @@ const sliderStyles = `
   background: hsl(var(--primary));
   cursor: pointer;
   border: 2px solid white;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 .slider::-moz-range-thumb {
@@ -244,7 +244,21 @@ const sliderStyles = `
   background: hsl(var(--primary));
   cursor: pointer;
   border: 2px solid white;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.slider::-webkit-slider-track {
+  appearance: none;
+  height: 12px;
+  border-radius: 6px;
+  background: hsl(var(--primary) / 0.2);
+}
+
+.slider::-moz-range-track {
+  height: 12px;
+  border-radius: 6px;
+  background: hsl(var(--primary) / 0.2);
+  border: none;
 }
 `;
 
