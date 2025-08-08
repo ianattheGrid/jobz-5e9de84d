@@ -125,8 +125,8 @@ export const EmployeeRecruitmentCalculator = () => {
           {/* Agency Fee Percentage (only shown for agency) */}
           {recruitmentType === 'agency' && (
             <div className="space-y-4 p-6 bg-slate-700/30 rounded-xl border border-pink-500/30">
-              <Label className="text-lg font-bold text-white">Agency Fee Percentage: <span className="text-pink-400">{feePercentage}%</span></Label>
-              <div className="px-4">
+              <Label className="text-lg font-bold" style={{ color: 'white' }}>Agency Fee Percentage: <span className="text-pink-400">{feePercentage}%</span></Label>
+              <div className="px-0">
                 <input
                   type="range"
                   min="15"
