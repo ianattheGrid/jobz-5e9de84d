@@ -172,7 +172,7 @@ export const EmployeeRecruitmentCalculator = () => {
                 step="1"
                 value={months}
                 onChange={(e) => setMonths(parseInt(e.target.value))}
-                className="w-full h-3 rounded-lg appearance-none cursor-pointer slider-purple"
+                className="w-full h-3 rounded-lg appearance-none cursor-pointer slider"
                 style={{
                   background: `linear-gradient(to right, #ec4899 0%, #ec4899 ${((months - 1) / 11) * 100}%, #475569 ${((months - 1) / 11) * 100}%, #475569 100%)`
                 }}
