@@ -97,7 +97,7 @@ export const EmployeeRecruitmentCalculator = () => {
         <CardContent className="space-y-8 p-8 bg-gradient-to-br from-slate-800 to-slate-900">
           {/* Salary Input */}
           <div className="space-y-3">
-            <Label htmlFor="salary" className="text-xl font-bold text-white">Annual Salary (£)</Label>
+            <Label htmlFor="salary" className="text-xl font-bold" style={{ color: 'white' }}>Annual Salary (£)</Label>
             <Input
               id="salary"
               type="text"
@@ -110,7 +110,7 @@ export const EmployeeRecruitmentCalculator = () => {
 
           {/* Recruitment Type Selection */}
           <div className="space-y-3">
-            <Label className="text-xl font-bold text-white">Current Recruitment Method</Label>
+            <Label className="text-xl font-bold" style={{ color: 'white' }}>Current Recruitment Method</Label>
             <Select value={recruitmentType} onValueChange={(value: 'agency' | 'direct') => setRecruitmentType(value)}>
               <SelectTrigger className="h-12 bg-slate-700/50 border-pink-500/30 text-white focus:border-pink-500">
                 <SelectValue placeholder="Select your current recruitment method" className="text-slate-400" />
@@ -163,8 +163,8 @@ export const EmployeeRecruitmentCalculator = () => {
 
           {/* Months Selection */}
           <div className="space-y-4 p-6 bg-slate-700/30 rounded-xl border border-pink-500/30">
-            <Label className="text-xl font-bold text-white">Months using jobz: <span className="text-pink-400 font-bold">{months} month{months !== 1 ? "s" : ""}</span></Label>
-            <div className="px-4">
+            <Label className="text-xl font-bold" style={{ color: 'white' }}>Months using jobz: <span className="text-pink-400 font-bold">{months} month{months !== 1 ? "s" : ""}</span></Label>
+            <div className="px-0">
               <input
                 type="range"
                 min="1"
@@ -172,7 +172,7 @@ export const EmployeeRecruitmentCalculator = () => {
                 step="1"
                 value={months}
                 onChange={(e) => setMonths(parseInt(e.target.value))}
-                className="w-full h-3 bg-slate-600 rounded-lg appearance-none cursor-pointer slider-purple"
+                className="w-full h-3 rounded-lg appearance-none cursor-pointer slider-purple"
                 style={{
                   background: `linear-gradient(to right, #ec4899 0%, #ec4899 ${((months - 1) / 11) * 100}%, #475569 ${((months - 1) / 11) * 100}%, #475569 100%)`
                 }}
