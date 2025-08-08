@@ -94,7 +94,7 @@ export const EmployeeRecruitmentCalculator = () => {
             Calculate how much you could save using jobz for employee recruitment
           </p>
         </CardHeader>
-        <CardContent className="space-y-8 p-8 bg-gradient-to-br from-slate-800 to-slate-900">
+        <CardContent className="space-y-8 p-8 bg-gradient-to-br from-slate-800 to-slate-900 text-white">
           {/* Salary Input */}
           <div className="space-y-3">
             <Label htmlFor="salary" className="text-xl font-bold" style={{ color: 'white' }}>Annual Salary (£)</Label>
