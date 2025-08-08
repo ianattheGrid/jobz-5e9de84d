@@ -41,9 +41,21 @@ export const EmployeeRecruitmentCalculator = () => {
   };
 
   const calculateCosts = () => {
-    if (!salary || !recruitmentType) return;
+    if (!salary || !recruitmentType) {
+      console.log('Missing required fields:', { salary, recruitmentType });
+      setResults(null);
+      return;
+    }
 
-    const numericSalary = parseFloat(salary.replace(/[^0-9.]/g, ''));
+    const numericSalary = parseFloat(salary.replace(/[^0-9]/g, ''));
+    console.log('Calculating costs:', { salary, numericSalary, recruitmentType, feePercentage, months });
+    
+    if (isNaN(numericSalary) || numericSalary <= 0) {
+      console.log('Invalid salary value:', numericSalary);
+      setResults(null);
+      return;
+    }
+
     let traditionalCost = 0;
 
     if (recruitmentType === 'agency') {
@@ -54,6 +66,8 @@ export const EmployeeRecruitmentCalculator = () => {
 
     const jobzCost = 9 * months;
     const costSaving = traditionalCost - jobzCost;
+
+    console.log('Calculation results:', { traditionalCost, jobzCost, costSaving });
 
     setResults({
       traditionalCost,
