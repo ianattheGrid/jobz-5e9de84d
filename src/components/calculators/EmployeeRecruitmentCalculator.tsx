@@ -70,35 +70,35 @@ export const EmployeeRecruitmentCalculator = () => {
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">
-      <Card>
-        <CardHeader className="text-center">
-          <CardTitle className="flex items-center justify-center gap-2 text-2xl">
-            <Calculator className="h-6 w-6 text-primary" />
+      <Card className="bg-gradient-to-br from-primary/10 via-background to-secondary/10 border-primary/20 shadow-lg">
+        <CardHeader className="text-center bg-gradient-to-r from-primary/5 to-primary/10 rounded-t-lg">
+          <CardTitle className="flex items-center justify-center gap-2 text-3xl bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+            <Calculator className="h-7 w-7 text-primary" />
             Employee Recruitment Cost Calculator
           </CardTitle>
-          <p className="text-muted-foreground">
+          <p className="text-muted-foreground text-lg">
             Calculate how much you could save using jobz for employee recruitment
           </p>
         </CardHeader>
-        <CardContent className="space-y-6">
+        <CardContent className="space-y-8 p-8">
           {/* Salary Input */}
-          <div className="space-y-2">
-            <Label htmlFor="salary">Annual Salary (£)</Label>
+          <div className="space-y-3">
+            <Label htmlFor="salary" className="text-base font-medium">Annual Salary (£)</Label>
             <Input
               id="salary"
               type="text"
               value={salary}
               onChange={handleSalaryChange}
               placeholder="35,000"
-              className="text-lg"
+              className="text-lg h-12 border-primary/20 focus:border-primary/50 bg-background/50"
             />
           </div>
 
           {/* Recruitment Type Selection */}
-          <div className="space-y-2">
-            <Label>Current Recruitment Method</Label>
+          <div className="space-y-3">
+            <Label className="text-base font-medium">Current Recruitment Method</Label>
             <Select value={recruitmentType} onValueChange={(value: 'agency' | 'direct') => setRecruitmentType(value)}>
-              <SelectTrigger>
+              <SelectTrigger className="h-12 border-primary/20 focus:border-primary/50 bg-background/50">
                 <SelectValue placeholder="Select your current recruitment method" />
               </SelectTrigger>
               <SelectContent>
@@ -110,8 +110,8 @@ export const EmployeeRecruitmentCalculator = () => {
 
           {/* Agency Fee Percentage (only shown for agency) */}
           {recruitmentType === 'agency' && (
-            <div className="space-y-4">
-              <Label>Agency Fee Percentage: {feePercentage}%</Label>
+            <div className="space-y-4 p-6 bg-gradient-to-r from-primary/5 to-primary/10 rounded-xl border border-primary/20">
+              <Label className="text-base font-medium">Agency Fee Percentage: {feePercentage}%</Label>
               <div className="px-4">
                 <input
                   type="range"
@@ -120,9 +120,9 @@ export const EmployeeRecruitmentCalculator = () => {
                   step="1"
                   value={feePercentage}
                   onChange={(e) => setFeePercentage(parseInt(e.target.value))}
-                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
+                  className="w-full h-3 bg-primary/20 rounded-lg appearance-none cursor-pointer slider"
                 />
-                <div className="flex justify-between text-xs text-muted-foreground mt-1">
+                <div className="flex justify-between text-sm font-medium text-primary mt-2">
                   <span>15%</span>
                   <span>30%</span>
                 </div>
@@ -132,12 +132,12 @@ export const EmployeeRecruitmentCalculator = () => {
 
           {/* Direct Hire Cost Display */}
           {recruitmentType === 'direct' && (
-            <div className="p-4 bg-muted/50 rounded-lg">
-              <div className="flex items-center gap-2 mb-2">
-                <PoundSterling className="h-4 w-4 text-primary" />
-                <span className="font-medium">CIPD Average Cost Per Hire</span>
+            <div className="p-6 bg-gradient-to-r from-primary/5 to-primary/10 rounded-xl border border-primary/20">
+              <div className="flex items-center gap-2 mb-3">
+                <PoundSterling className="h-5 w-5 text-primary" />
+                <span className="font-semibold text-primary">CIPD Average Cost Per Hire</span>
               </div>
-              <p className="text-2xl font-bold text-primary">{formatCurrency(6125)}</p>
+              <p className="text-3xl font-bold text-primary mb-2">{formatCurrency(6125)}</p>
               <p className="text-sm text-muted-foreground">
                 According to the Chartered Institute of Personnel and Development
               </p>
@@ -145,8 +145,8 @@ export const EmployeeRecruitmentCalculator = () => {
           )}
 
           {/* Months Selection */}
-           <div className="space-y-4">
-             <Label>Months using jobz: {months} month{months !== 1 ? 's' : ''}</Label>
+          <div className="space-y-4 p-6 bg-gradient-to-r from-secondary/5 to-secondary/10 rounded-xl border border-secondary/20">
+            <Label className="text-base font-medium">Months using jobz: {months} month{months !== 1 ? 's' : ''}</Label>
             <div className="px-4">
               <input
                 type="range"
@@ -155,9 +155,9 @@ export const EmployeeRecruitmentCalculator = () => {
                 step="1"
                 value={months}
                 onChange={(e) => setMonths(parseInt(e.target.value))}
-                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
+                className="w-full h-3 bg-secondary/20 rounded-lg appearance-none cursor-pointer slider"
               />
-              <div className="flex justify-between text-xs text-muted-foreground mt-1">
+              <div className="flex justify-between text-sm font-medium text-secondary-foreground mt-2">
                 <span>1 month</span>
                 <span>12 months</span>
               </div>
@@ -168,56 +168,55 @@ export const EmployeeRecruitmentCalculator = () => {
 
       {/* Results Card */}
       {results && recruitmentType && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <TrendingDown className="h-5 w-5 text-green-600" />
-              Your Cost Savings
+        <Card className="bg-gradient-to-br from-green-500/10 via-background to-emerald-500/10 border-green-500/20 shadow-lg">
+          <CardHeader className="bg-gradient-to-r from-green-500/5 to-emerald-500/10 rounded-t-lg">
+            <CardTitle className="flex items-center gap-3 text-2xl">
+              <TrendingDown className="h-6 w-6 text-green-600" />
+              <span className="bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
+                Your Cost Savings
+              </span>
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="text-center p-4 bg-red-50 rounded-lg border border-red-200">
-                <p className="text-sm text-red-600 font-medium mb-1">
+          <CardContent className="space-y-6 p-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="text-center p-6 bg-gradient-to-br from-red-500/10 to-red-600/20 rounded-xl border border-red-500/20 shadow-md">
+                <p className="text-sm text-red-600 font-semibold mb-2">
                   {recruitmentType === 'agency' ? 'Agency Cost' : 'Direct Hire Cost'}
                 </p>
-                <p className="text-2xl font-bold text-red-700">
+                <p className="text-3xl font-bold text-red-700 mb-2">
                   {formatCurrency(results.traditionalCost)}
                 </p>
                 {recruitmentType === 'agency' && (
-                  <p className="text-xs text-red-600 mt-1">
+                  <p className="text-xs text-red-600/80">
                     {feePercentage}% of £{salary}
                   </p>
                 )}
               </div>
 
-              <div className="text-center p-4 bg-blue-50 rounded-lg border border-blue-200">
-                 <p className="text-sm text-blue-600 font-medium mb-1">
+              <div className="text-center p-6 bg-gradient-to-br from-blue-500/10 to-blue-600/20 rounded-xl border border-blue-500/20 shadow-md">
+                 <p className="text-sm text-blue-600 font-semibold mb-2">
                    jobz Cost ({months} month{months !== 1 ? 's' : ''})
                  </p>
-                <p className="text-2xl font-bold text-blue-700">
+                <p className="text-3xl font-bold text-blue-700 mb-2">
                   {formatCurrency(results.jobzCost)}
                 </p>
-                <p className="text-xs text-blue-600 mt-1">
+                <p className="text-xs text-blue-600/80">
                   £9 per month
                 </p>
               </div>
 
-              <div className="text-center p-4 bg-green-50 rounded-lg border border-green-200">
-                <p className="text-sm text-green-600 font-medium mb-1">
+              <div className="text-center p-6 bg-gradient-to-br from-green-500/10 to-emerald-600/20 rounded-xl border border-green-500/20 shadow-md">
+                <p className="text-sm text-green-600 font-semibold mb-2">
                   Total Savings
                 </p>
-                <p className="text-2xl font-bold text-green-700">
+                <p className="text-3xl font-bold text-green-700 mb-3">
                   {formatCurrency(results.costSaving)}
                 </p>
-                <Badge variant="secondary" className="mt-1 bg-green-100 text-green-800">
+                <Badge className="bg-gradient-to-r from-green-500 to-emerald-500 text-white font-semibold shadow-sm">
                   {Math.round((results.costSaving / results.traditionalCost) * 100)}% saved
                 </Badge>
               </div>
             </div>
-
-            <Separator />
-
           </CardContent>
         </Card>
       )}
