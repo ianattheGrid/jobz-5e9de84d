@@ -40,7 +40,7 @@ import Jobs from './pages/Jobs';
 import FAQ from './pages/FAQ';
 import QRCodePage from './pages/QRCodePage';
 import PricingPage from './pages/PricingPage';
-import CostCalculator from './pages/CostCalculator';
+
 import ViewCandidateProfile from './pages/ViewCandidateProfile';
 import ViewEmployerProfile from './pages/ViewEmployerProfile';
 import CandidateSearch from './pages/CandidateSearch';
@@ -107,7 +107,7 @@ const App = () => {
           <Route path="jobs" element={<Jobs />} />
           <Route path="faq" element={<FAQ />} />
           <Route path="pricing" element={<PricingPage />} />
-          <Route path="cost-calculator" element={<CostCalculator />} />
+          
           <Route path="qr-code" element={<QRCodePage />} />
           <Route path="employer/:id" element={<ViewEmployerProfile />} />
           

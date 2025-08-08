@@ -1,8 +1,5 @@
 import React from 'react';
 import { EmployeeRecruitmentCalculator } from '@/components/calculators/EmployeeRecruitmentCalculator';
-import { Button } from '@/components/ui/button';
-import { ArrowRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
 
 export const CostCalculatorSection = () => {
   return (
@@ -19,15 +16,6 @@ export const CostCalculatorSection = () => {
         </div>
         
         <EmployeeRecruitmentCalculator />
-        
-        <div className="text-center mt-8">
-          <Link to="/cost-calculator">
-            <Button className="inline-flex items-center gap-2">
-              View Full Calculator
-              <ArrowRight className="h-4 w-4" />
-            </Button>
-          </Link>
-        </div>
       </div>
     </section>
   );

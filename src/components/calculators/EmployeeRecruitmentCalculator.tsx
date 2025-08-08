@@ -3,10 +3,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Button } from '@/components/ui/button';
+
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { Calculator, DollarSign, TrendingDown } from 'lucide-react';
+import { Calculator, PoundSterling, TrendingDown } from 'lucide-react';
 
 interface CalculatorResults {
   traditionalCost: number;
@@ -16,10 +16,10 @@ interface CalculatorResults {
 }
 
 export const EmployeeRecruitmentCalculator = () => {
-  const [salary, setSalary] = useState<string>('40000');
+  const [salary, setSalary] = useState<string>('');
   const [recruitmentType, setRecruitmentType] = useState<'agency' | 'direct' | ''>('');
   const [feePercentage, setFeePercentage] = useState<number>(20);
-  const [months, setMonths] = useState<number>(12);
+  const [months, setMonths] = useState<number>(1);
   const [results, setResults] = useState<CalculatorResults | null>(null);
 
   const formatCurrency = (amount: number): string => {
@@ -27,6 +27,17 @@ export const EmployeeRecruitmentCalculator = () => {
       style: 'currency',
       currency: 'GBP'
     }).format(amount);
+  };
+
+  const formatSalaryInput = (value: string): string => {
+    const numericValue = value.replace(/[^0-9]/g, '');
+    if (!numericValue) return '';
+    return parseInt(numericValue).toLocaleString();
+  };
+
+  const handleSalaryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatSalaryInput(e.target.value);
+    setSalary(formatted);
   };
 
   const calculateCosts = () => {
@@ -56,30 +67,6 @@ export const EmployeeRecruitmentCalculator = () => {
     calculateCosts();
   }, [salary, recruitmentType, feePercentage, months]);
 
-  const exportCSV = () => {
-    if (!results) return;
-
-    const csvData = [
-      ['Parameter', 'Value'],
-      ['Annual Salary', formatCurrency(parseFloat(salary.replace(/[^0-9.]/g, '')))],
-      ['Recruitment Type', recruitmentType === 'agency' ? 'Recruitment Agency' : 'Direct Hire'],
-      ...(recruitmentType === 'agency' ? [['Agency Fee %', `${feePercentage}%`]] : []),
-      ['Months Using Jobz', months.toString()],
-      ['', ''],
-      ['Traditional Cost', formatCurrency(results.traditionalCost)],
-      ['Jobz Cost', formatCurrency(results.jobzCost)],
-      ['Total Savings', formatCurrency(results.costSaving)]
-    ];
-
-    const csvContent = csvData.map(row => row.join(',')).join('\n');
-    const blob = new Blob([csvContent], { type: 'text/csv' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'recruitment-cost-savings.csv';
-    a.click();
-    window.URL.revokeObjectURL(url);
-  };
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">
@@ -90,7 +77,7 @@ export const EmployeeRecruitmentCalculator = () => {
             Employee Recruitment Cost Calculator
           </CardTitle>
           <p className="text-muted-foreground">
-            Calculate how much you could save using Jobz for employee recruitment
+            Calculate how much you could save using jobz for employee recruitment
           </p>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -101,8 +88,8 @@ export const EmployeeRecruitmentCalculator = () => {
               id="salary"
               type="text"
               value={salary}
-              onChange={(e) => setSalary(e.target.value)}
-              placeholder="40000"
+              onChange={handleSalaryChange}
+              placeholder="35,000"
               className="text-lg"
             />
           </div>
@@ -147,7 +134,7 @@ export const EmployeeRecruitmentCalculator = () => {
           {recruitmentType === 'direct' && (
             <div className="p-4 bg-muted/50 rounded-lg">
               <div className="flex items-center gap-2 mb-2">
-                <DollarSign className="h-4 w-4 text-primary" />
+                <PoundSterling className="h-4 w-4 text-primary" />
                 <span className="font-medium">CIPD Average Cost Per Hire</span>
               </div>
               <p className="text-2xl font-bold text-primary">{formatCurrency(6125)}</p>
@@ -158,8 +145,8 @@ export const EmployeeRecruitmentCalculator = () => {
           )}
 
           {/* Months Selection */}
-          <div className="space-y-4">
-            <Label>Months using Jobz: {months} month{months !== 1 ? 's' : ''}</Label>
+           <div className="space-y-4">
+             <Label>Months using jobz: {months} month{months !== 1 ? 's' : ''}</Label>
             <div className="px-4">
               <input
                 type="range"
@@ -205,9 +192,9 @@ export const EmployeeRecruitmentCalculator = () => {
               </div>
 
               <div className="text-center p-4 bg-blue-50 rounded-lg border border-blue-200">
-                <p className="text-sm text-blue-600 font-medium mb-1">
-                  Jobz Cost ({months} month{months !== 1 ? 's' : ''})
-                </p>
+                 <p className="text-sm text-blue-600 font-medium mb-1">
+                   jobz Cost ({months} month{months !== 1 ? 's' : ''})
+                 </p>
                 <p className="text-2xl font-bold text-blue-700">
                   {formatCurrency(results.jobzCost)}
                 </p>
@@ -231,12 +218,6 @@ export const EmployeeRecruitmentCalculator = () => {
 
             <Separator />
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button onClick={exportCSV} variant="outline" className="flex items-center gap-2">
-                <Calculator className="h-4 w-4" />
-                Export Results to CSV
-              </Button>
-            </div>
           </CardContent>
         </Card>
       )}
