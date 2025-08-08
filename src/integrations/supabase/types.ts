@@ -529,6 +529,39 @@ export type Database = {
         }
         Relationships: []
       }
+      employer_interview_feedback: {
+        Row: {
+          created_at: string
+          employer_id: string
+          feedback_type: string
+          id: string
+          interview_id: number
+          message: string | null
+          next_interview_times: string[] | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          employer_id: string
+          feedback_type: string
+          id?: string
+          interview_id: number
+          message?: string | null
+          next_interview_times?: string[] | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          employer_id?: string
+          feedback_type?: string
+          id?: string
+          interview_id?: number
+          message?: string | null
+          next_interview_times?: string[] | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       employer_names: {
         Row: {
           created_at: string

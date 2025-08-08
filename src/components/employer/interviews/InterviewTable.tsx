@@ -9,6 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { InterviewFeedbackButton } from './InterviewFeedbackButton';
 
 interface Interview {
   id: number;
@@ -48,6 +49,7 @@ const InterviewTable = ({ interviews }: InterviewTableProps) => {
           <TableHead className="text-red-800">Date</TableHead>
           <TableHead className="text-red-800">Time</TableHead>
           <TableHead className="text-red-800">Status</TableHead>
+          <TableHead className="text-red-800">Actions</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -62,6 +64,9 @@ const InterviewTable = ({ interviews }: InterviewTableProps) => {
               <TableCell>{date}</TableCell>
               <TableCell>{time}</TableCell>
               <TableCell className="capitalize">{interview.status}</TableCell>
+              <TableCell>
+                <InterviewFeedbackButton interview={interview} />
+              </TableCell>
             </TableRow>
           );
         })}
