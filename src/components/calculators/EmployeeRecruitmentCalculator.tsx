@@ -84,48 +84,48 @@ export const EmployeeRecruitmentCalculator = () => {
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">
-      <Card className="bg-gradient-to-br from-pink-500/10 via-purple-500/5 to-blue-500/10 border border-pink-500/20 shadow-2xl backdrop-blur-sm">
-        <CardHeader className="text-center bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-blue-500/10 rounded-t-lg p-8">
-          <CardTitle className="flex items-center justify-center gap-3 text-4xl bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600 bg-clip-text text-transparent font-bold">
-            <Calculator className="h-8 w-8 text-pink-600" />
+      <Card className="bg-gradient-to-br from-slate-800 to-slate-900 border border-pink-500/30 shadow-2xl">
+        <CardHeader className="text-center bg-gradient-to-r from-slate-800/90 to-slate-900/90 rounded-t-lg p-8 border-b border-pink-500/20">
+          <CardTitle className="flex items-center justify-center gap-3 text-4xl text-white font-bold">
+            <Calculator className="h-8 w-8 text-pink-500" />
             Employee Recruitment Cost Calculator
           </CardTitle>
-          <p className="text-slate-600 text-lg mt-4 max-w-2xl mx-auto">
+          <p className="text-slate-300 text-lg mt-4 max-w-2xl mx-auto">
             Calculate how much you could save using jobz for employee recruitment
           </p>
         </CardHeader>
-        <CardContent className="space-y-8 p-8 bg-gradient-to-br from-white/50 to-purple-50/30">
+        <CardContent className="space-y-8 p-8 bg-gradient-to-br from-slate-800 to-slate-900">
           {/* Salary Input */}
           <div className="space-y-3">
-            <Label htmlFor="salary" className="text-base font-medium">Annual Salary (£)</Label>
+            <Label htmlFor="salary" className="text-base font-medium text-white">Annual Salary (£)</Label>
             <Input
               id="salary"
               type="text"
               value={salary}
               onChange={handleSalaryChange}
               placeholder="35,000"
-              className="text-lg h-12 border-primary/20 focus:border-primary/50 bg-background/50"
+              className="text-lg h-12 bg-slate-700/50 border-pink-500/30 text-white placeholder:text-slate-400 focus:border-pink-500"
             />
           </div>
 
           {/* Recruitment Type Selection */}
           <div className="space-y-3">
-            <Label className="text-base font-medium">Current Recruitment Method</Label>
+            <Label className="text-base font-medium text-white">Current Recruitment Method</Label>
             <Select value={recruitmentType} onValueChange={(value: 'agency' | 'direct') => setRecruitmentType(value)}>
-              <SelectTrigger className="h-12 border-primary/20 focus:border-primary/50 bg-background/50">
-                <SelectValue placeholder="Select your current recruitment method" />
+              <SelectTrigger className="h-12 bg-slate-700/50 border-pink-500/30 text-white focus:border-pink-500">
+                <SelectValue placeholder="Select your current recruitment method" className="text-slate-400" />
               </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="agency">Recruitment Agency</SelectItem>
-                <SelectItem value="direct">Direct Hire</SelectItem>
+              <SelectContent className="bg-slate-800 border-pink-500/30">
+                <SelectItem value="agency" className="text-white hover:bg-slate-700">Recruitment Agency</SelectItem>
+                <SelectItem value="direct" className="text-white hover:bg-slate-700">Direct Hire</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           {/* Agency Fee Percentage (only shown for agency) */}
           {recruitmentType === 'agency' && (
-            <div className="space-y-4 p-6 bg-gradient-to-r from-primary/5 to-primary/10 rounded-xl border border-primary/20">
-              <Label className="text-base font-medium">Agency Fee Percentage: {feePercentage}%</Label>
+            <div className="space-y-4 p-6 bg-slate-700/30 rounded-xl border border-pink-500/30">
+              <Label className="text-base font-medium text-white">Agency Fee Percentage: <span className="text-pink-400">{feePercentage}%</span></Label>
               <div className="px-4">
                 <input
                   type="range"
@@ -134,9 +134,12 @@ export const EmployeeRecruitmentCalculator = () => {
                   step="1"
                   value={feePercentage}
                   onChange={(e) => setFeePercentage(parseInt(e.target.value))}
-                  className="w-full h-3 bg-primary/20 rounded-lg appearance-none cursor-pointer slider"
+                  className="w-full h-3 bg-slate-600 rounded-lg appearance-none cursor-pointer slider"
+                  style={{
+                    background: `linear-gradient(to right, #ec4899 0%, #ec4899 ${((feePercentage - 15) / 15) * 100}%, #475569 ${((feePercentage - 15) / 15) * 100}%, #475569 100%)`
+                  }}
                 />
-                <div className="flex justify-between text-sm font-medium text-primary mt-2">
+                <div className="flex justify-between text-sm font-medium text-pink-400 mt-2">
                   <span>15%</span>
                   <span>30%</span>
                 </div>
@@ -146,21 +149,21 @@ export const EmployeeRecruitmentCalculator = () => {
 
           {/* Direct Hire Cost Display */}
           {recruitmentType === 'direct' && (
-            <div className="p-6 bg-gradient-to-r from-primary/5 to-primary/10 rounded-xl border border-primary/20">
+            <div className="p-6 bg-slate-700/30 rounded-xl border border-pink-500/30">
               <div className="flex items-center gap-2 mb-3">
-                <PoundSterling className="h-5 w-5 text-primary" />
-                <span className="font-semibold text-primary">CIPD Average Cost Per Hire</span>
+                <PoundSterling className="h-5 w-5 text-pink-500" />
+                <span className="font-semibold text-white">CIPD Average Cost Per Hire</span>
               </div>
-              <p className="text-3xl font-bold text-primary mb-2">{formatCurrency(6125)}</p>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-3xl font-bold text-pink-400 mb-2">{formatCurrency(6125)}</p>
+              <p className="text-sm text-slate-300">
                 According to the Chartered Institute of Personnel and Development
               </p>
             </div>
           )}
 
           {/* Months Selection */}
-          <div className="space-y-4 p-6 bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-xl border border-purple-500/20">
-            <Label className="text-base font-medium text-purple-700">Months using jobz: {months} month{months !== 1 ? 's' : ''}</Label>
+          <div className="space-y-4 p-6 bg-slate-700/30 rounded-xl border border-pink-500/30">
+            <Label className="text-base font-medium text-white">Months using jobz: <span className="text-pink-400">{months} month{months !== 1 ? 's' : ''}</span></Label>
             <div className="px-4">
               <input
                 type="range"
@@ -169,12 +172,12 @@ export const EmployeeRecruitmentCalculator = () => {
                 step="1"
                 value={months}
                 onChange={(e) => setMonths(parseInt(e.target.value))}
-                className="w-full h-3 bg-purple-200 rounded-lg appearance-none cursor-pointer slider-purple"
+                className="w-full h-3 bg-slate-600 rounded-lg appearance-none cursor-pointer slider-purple"
                 style={{
-                  background: `linear-gradient(to right, #a855f7 0%, #a855f7 ${((months - 1) / 11) * 100}%, #e5b4f3 ${((months - 1) / 11) * 100}%, #e5b4f3 100%)`
+                  background: `linear-gradient(to right, #ec4899 0%, #ec4899 ${((months - 1) / 11) * 100}%, #475569 ${((months - 1) / 11) * 100}%, #475569 100%)`
                 }}
               />
-              <div className="flex justify-between text-sm font-medium text-purple-600 mt-2">
+              <div className="flex justify-between text-sm font-medium text-pink-400 mt-2">
                 <span>1 month</span>
                 <span>12 months</span>
               </div>
@@ -185,51 +188,49 @@ export const EmployeeRecruitmentCalculator = () => {
 
       {/* Results Card */}
       {results && recruitmentType && (
-        <Card className="bg-gradient-to-br from-green-500/10 via-background to-emerald-500/10 border-green-500/20 shadow-lg">
-          <CardHeader className="bg-gradient-to-r from-green-500/5 to-emerald-500/10 rounded-t-lg">
-            <CardTitle className="flex items-center gap-3 text-2xl">
-              <TrendingDown className="h-6 w-6 text-green-600" />
-              <span className="bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
-                Your Cost Savings
-              </span>
+        <Card className="bg-gradient-to-br from-slate-800 to-slate-900 border border-pink-500/30 shadow-2xl">
+          <CardHeader className="bg-gradient-to-r from-slate-800/90 to-slate-900/90 rounded-t-lg p-6 border-b border-pink-500/20">
+            <CardTitle className="flex items-center gap-3 text-2xl text-white">
+              <TrendingDown className="h-6 w-6 text-pink-500" />
+              Your Cost Savings
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-6 p-8">
+          <CardContent className="space-y-6 p-8 bg-gradient-to-br from-slate-800 to-slate-900">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="text-center p-6 bg-gradient-to-br from-red-500/10 to-red-600/20 rounded-xl border border-red-500/20 shadow-md">
-                <p className="text-sm text-red-600 font-semibold mb-2">
+              <div className="text-center p-6 bg-slate-700/30 rounded-xl border border-red-500/30 shadow-lg">
+                <p className="text-sm text-red-400 font-semibold mb-2">
                   {recruitmentType === 'agency' ? 'Agency Cost' : 'Direct Hire Cost'}
                 </p>
-                <p className="text-3xl font-bold text-red-700 mb-2">
+                <p className="text-3xl font-bold text-red-300 mb-2">
                   {formatCurrency(results.traditionalCost)}
                 </p>
                 {recruitmentType === 'agency' && (
-                  <p className="text-xs text-red-600/80">
+                  <p className="text-xs text-red-400/80">
                     {feePercentage}% of £{salary}
                   </p>
                 )}
               </div>
 
-              <div className="text-center p-6 bg-gradient-to-br from-blue-500/10 to-blue-600/20 rounded-xl border border-blue-500/20 shadow-md">
-                 <p className="text-sm text-blue-600 font-semibold mb-2">
+              <div className="text-center p-6 bg-slate-700/30 rounded-xl border border-blue-500/30 shadow-lg">
+                 <p className="text-sm text-blue-400 font-semibold mb-2">
                    jobz Cost ({months} month{months !== 1 ? 's' : ''})
                  </p>
-                <p className="text-3xl font-bold text-blue-700 mb-2">
+                <p className="text-3xl font-bold text-blue-300 mb-2">
                   {formatCurrency(results.jobzCost)}
                 </p>
-                <p className="text-xs text-blue-600/80">
+                <p className="text-xs text-blue-400/80">
                   £9 per month
                 </p>
               </div>
 
-              <div className="text-center p-6 bg-gradient-to-br from-green-500/10 to-emerald-600/20 rounded-xl border border-green-500/20 shadow-md">
-                <p className="text-sm text-green-600 font-semibold mb-2">
+              <div className="text-center p-6 bg-slate-700/30 rounded-xl border border-green-500/30 shadow-lg">
+                <p className="text-sm text-green-400 font-semibold mb-2">
                   Total Savings
                 </p>
-                <p className="text-3xl font-bold text-green-700 mb-3">
+                <p className="text-3xl font-bold text-green-300 mb-3">
                   {formatCurrency(results.costSaving)}
                 </p>
-                <Badge className="bg-gradient-to-r from-green-500 to-emerald-500 text-white font-semibold shadow-sm">
+                <Badge className="bg-gradient-to-r from-pink-500 to-pink-600 text-white font-semibold shadow-sm">
                   {Math.round((results.costSaving / results.traditionalCost) * 100)}% saved
                 </Badge>
               </div>
