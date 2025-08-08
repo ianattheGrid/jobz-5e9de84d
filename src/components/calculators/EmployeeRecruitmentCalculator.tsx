@@ -90,14 +90,14 @@ export const EmployeeRecruitmentCalculator = () => {
             <Calculator className="h-8 w-8 text-pink-500" />
             Employee Recruitment Cost Calculator
           </CardTitle>
-          <p className="text-slate-300 text-lg mt-4 max-w-2xl mx-auto">
+          <p className="text-white text-lg font-semibold mt-4 max-w-2xl mx-auto">
             Calculate how much you could save using jobz for employee recruitment
           </p>
         </CardHeader>
         <CardContent className="space-y-8 p-8 bg-gradient-to-br from-slate-800 to-slate-900">
           {/* Salary Input */}
           <div className="space-y-3">
-            <Label htmlFor="salary" className="text-base font-medium text-white">Annual Salary (£)</Label>
+            <Label htmlFor="salary" className="text-lg font-bold text-white">Annual Salary (£)</Label>
             <Input
               id="salary"
               type="text"
@@ -110,7 +110,7 @@ export const EmployeeRecruitmentCalculator = () => {
 
           {/* Recruitment Type Selection */}
           <div className="space-y-3">
-            <Label className="text-base font-medium text-white">Current Recruitment Method</Label>
+            <Label className="text-lg font-bold text-white">Current Recruitment Method</Label>
             <Select value={recruitmentType} onValueChange={(value: 'agency' | 'direct') => setRecruitmentType(value)}>
               <SelectTrigger className="h-12 bg-slate-700/50 border-pink-500/30 text-white focus:border-pink-500">
                 <SelectValue placeholder="Select your current recruitment method" className="text-slate-400" />
@@ -125,7 +125,7 @@ export const EmployeeRecruitmentCalculator = () => {
           {/* Agency Fee Percentage (only shown for agency) */}
           {recruitmentType === 'agency' && (
             <div className="space-y-4 p-6 bg-slate-700/30 rounded-xl border border-pink-500/30">
-              <Label className="text-base font-medium text-white">Agency Fee Percentage: <span className="text-pink-400">{feePercentage}%</span></Label>
+              <Label className="text-lg font-bold text-white">Agency Fee Percentage: <span className="text-pink-400">{feePercentage}%</span></Label>
               <div className="px-4">
                 <input
                   type="range"
@@ -152,10 +152,10 @@ export const EmployeeRecruitmentCalculator = () => {
             <div className="p-6 bg-slate-700/30 rounded-xl border border-pink-500/30">
               <div className="flex items-center gap-2 mb-3">
                 <PoundSterling className="h-5 w-5 text-pink-500" />
-                <span className="font-semibold text-white">CIPD Average Cost Per Hire</span>
+                <span className="font-bold text-white text-lg">CIPD Average Cost Per Hire</span>
               </div>
               <p className="text-3xl font-bold text-pink-400 mb-2">{formatCurrency(6125)}</p>
-              <p className="text-sm text-slate-300">
+              <p className="text-sm text-white font-semibold">
                 According to the Chartered Institute of Personnel and Development
               </p>
             </div>
@@ -163,7 +163,7 @@ export const EmployeeRecruitmentCalculator = () => {
 
           {/* Months Selection */}
           <div className="space-y-4 p-6 bg-slate-700/30 rounded-xl border border-pink-500/30">
-            <Label className="text-base font-medium text-white">Months using jobz: <span className="text-pink-400">{months} month{months !== 1 ? 's' : ''}</span></Label>
+            <Label className="text-lg font-bold text-white">Months using jobz: <span className="text-pink-400">{months} month{months !== 1 ? "s" : ""}</span></Label>
             <div className="px-4">
               <input
                 type="range"
@@ -190,7 +190,7 @@ export const EmployeeRecruitmentCalculator = () => {
       {results && recruitmentType && (
         <Card className="bg-gradient-to-br from-slate-800 to-slate-900 border border-pink-500/30 shadow-2xl">
           <CardHeader className="bg-gradient-to-r from-slate-800/90 to-slate-900/90 rounded-t-lg p-6 border-b border-pink-500/20">
-            <CardTitle className="flex items-center gap-3 text-2xl text-white">
+            <CardTitle className="flex items-center gap-3 text-2xl text-white font-bold">
               <TrendingDown className="h-6 w-6 text-pink-500" />
               Your Cost Savings
             </CardTitle>
