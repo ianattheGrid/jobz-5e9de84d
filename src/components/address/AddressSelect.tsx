@@ -27,11 +27,11 @@ export const AddressSelect = ({ control, addresses }: AddressSelectProps) => {
             defaultValue={field.value}
           >
             <FormControl>
-              <SelectTrigger>
+              <SelectTrigger className="bg-white text-gray-900">
                 <SelectValue placeholder="Choose your address from the list" />
               </SelectTrigger>
             </FormControl>
-            <SelectContent>
+            <SelectContent className="bg-white text-gray-900 z-50">
               {addresses.map((addr, index) => (
                 <SelectItem key={index} value={addr.address}>
                   {addr.address}

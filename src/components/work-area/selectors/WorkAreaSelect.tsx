@@ -26,10 +26,10 @@ const WorkAreaSelect = ({ control, onWorkAreaChange, defaultValue }: WorkAreaSel
               }}
               defaultValue={defaultValue || field.value}
             >
-              <SelectTrigger className="select-trigger">
-                <SelectValue placeholder="Select your current area of work" className="text-gray-900" />
+              <SelectTrigger className="select-trigger bg-white text-gray-900">
+                <SelectValue placeholder="Select your current area of work" />
               </SelectTrigger>
-              <SelectContent className="select-content">
+              <SelectContent className="select-content bg-white text-gray-900 z-50">
                 {workAreas.map((area) => (
                   <SelectItem 
                     key={area} 

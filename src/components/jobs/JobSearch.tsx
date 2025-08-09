@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Search, X } from "lucide-react";
+import { Search, X, SlidersHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { JobSearchSchema, jobSearchSchema } from "./JobSearchSchema";
@@ -62,17 +62,18 @@ const JobSearch = ({ onSearch }: JobSearchProps) => {
           variant="outline"
           size="sm"
           onClick={handleExpandToggle}
+          aria-label={isExpanded ? 'Hide filters' : 'Show filters'}
           className="border border-gray-200 bg-white text-gray-700 hover:bg-primary hover:text-white hover:border-primary transition-colors"
         >
           {isExpanded ? (
             <>
               <X className="h-4 w-4 mr-1" />
-              Collapse
+              Hide Filters
             </>
           ) : (
             <>
-              <Search className="h-4 w-4 mr-1" />
-              Search
+              <SlidersHorizontal className="h-4 w-4 mr-1" />
+              Show Filters
             </>
           )}
         </Button>
@@ -84,7 +85,7 @@ const JobSearch = ({ onSearch }: JobSearchProps) => {
             <div className="space-y-4">
               <WorkAreaField control={form.control} />
               <div className="space-y-2">
-                <label className="text-gray-900 font-medium text-base">
+                <label className="text-white font-medium text-base">
                   Select Bristol Area
                 </label>
                 <BristolPostcodeSelect control={form.control} />
