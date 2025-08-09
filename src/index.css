@@ -115,9 +115,8 @@ select {
   @apply text-gray-900 bg-white border-gray-200 !important;
 }
 
-/* All form controls and interactive elements */
+/* All form controls and interactive elements (scoped to actual form UIs; avoid clobbering app buttons) */
 .form-control,
-button,
 .select-item,
 .radio-item,
 .checkbox-item {
