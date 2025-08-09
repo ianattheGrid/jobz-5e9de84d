@@ -27,13 +27,13 @@ const CommissionFilterField = ({ control }: CommissionFilterFieldProps) => {
               >
                 <div className="flex items-center space-x-3">
                   <RadioGroupItem value="true" id="show-bonus" />
-                  <label htmlFor="show-bonus" className="font-normal text-sm text-gray-900">
+                  <label htmlFor="show-bonus" className="font-medium text-sm text-primary">
                     Only show jobs with bonus
                   </label>
                 </div>
                 <div className="flex items-center space-x-3">
                   <RadioGroupItem value="false" id="hide-bonus" />
-                  <label htmlFor="hide-bonus" className="font-normal text-sm text-gray-900">
+                  <label htmlFor="hide-bonus" className="font-medium text-sm text-primary">
                     Show all jobs
                   </label>
                 </div>
