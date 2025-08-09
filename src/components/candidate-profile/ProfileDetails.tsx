@@ -32,7 +32,7 @@ const ProfileDetails = ({ profile, showVRRecommendation = false, vrRecommendatio
     <div className="space-y-6">
       {/* Profile Header */}
       <Card className="border-none shadow-md overflow-hidden bg-white">
-        <div className="h-24 bg-gradient-to-r from-pink-500 to-pink-300"></div>
+        <div className="h-24 bg-gradient-to-r from-indigo-900 via-pink-600 to-pink-400"></div>
         <CardContent className="pt-0 relative pb-6 bg-white">
           <div className="flex flex-col sm:flex-row -mt-12 sm:-mt-12 items-start sm:items-end gap-4">
             <Avatar className="h-24 w-24 sm:h-32 sm:w-32 border-4 border-white shadow-lg mt-4">
@@ -98,7 +98,7 @@ const ProfileDetails = ({ profile, showVRRecommendation = false, vrRecommendatio
           </div>
         </CardContent>
       </Card>
-
+ 
       {/* About/Summary */}
       {profile.ai_synopsis && (
         <Card className="shadow-sm border border-gray-200 bg-white">
@@ -109,6 +109,23 @@ const ProfileDetails = ({ profile, showVRRecommendation = false, vrRecommendatio
         </Card>
       )}
 
+      {/* Personality Snapshots */}
+      {Array.isArray((profile as any).personality) && (profile as any).personality.length > 0 && (
+        <Card className="shadow-sm border border-gray-200 bg-white">
+          <CardContent className="pt-6">
+            <h3 className="text-xl font-semibold mb-4 text-gray-900">Personality</h3>
+            <div className="grid gap-3 sm:grid-cols-2">
+              {(profile as any).personality.map((item: any) => (
+                <div key={item.question_key} className="rounded-md border border-pink-200 bg-pink-50 p-4">
+                  <div className="text-xs font-medium text-pink-700">{item.question_label}</div>
+                  <div className="mt-1 text-gray-800">{item.answer}</div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+ 
       {/* Experience */}
       <Card className="shadow-sm border border-gray-200 bg-white">
         <CardContent className="pt-6">

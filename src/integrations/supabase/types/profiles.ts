@@ -36,6 +36,7 @@ export interface CandidateProfile {
   title_experience?: string | null; // Making this optional since it's not in the database
   workArea: string | null;
   itSpecialization: string | null;
+  personality?: any;
 }
 
 export interface EmployerProfile {
