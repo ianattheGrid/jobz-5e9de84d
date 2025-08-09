@@ -290,6 +290,9 @@ a {
 .demo-candidate-dark .text-gray-700 {
   color: hsl(var(--primary-foreground) / 0.85) !important;
 }
+.demo-candidate-dark .text-foreground {
+  color: hsl(var(--primary-foreground)) !important;
+}
 /* Accent links in pink for contrast */
 .demo-candidate-dark a,
 .demo-candidate-dark svg {
@@ -324,6 +327,9 @@ a {
 .demo-employer-dark .text-muted-foreground,
 .demo-employer-dark .text-gray-700 {
   color: hsl(var(--primary-foreground) / 0.85) !important;
+}
+.demo-employer-dark .text-foreground {
+  color: hsl(var(--primary-foreground)) !important;
 }
 .demo-employer-dark a,
 .demo-employer-dark svg {
