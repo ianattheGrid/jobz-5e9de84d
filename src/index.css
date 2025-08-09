@@ -361,9 +361,12 @@ a {
 .job-search-card [class*="bg-background"] {
   background-color: hsl(var(--secondary)) !important;
 }
-.job-search-card .text-foreground,
-.job-search-card .text-muted-foreground {
-  color: hsl(var(--secondary-foreground)) !important;
+.job-search-card .text-foreground {
+  color: hsl(var(--primary-foreground)) !important;
+}
+.job-search-card .text-muted-foreground,
+.job-search-card .form-description {
+  color: hsl(var(--primary-foreground) / 0.85) !important;
 }
 
 /* Ensure any Tailwind bg-white utilities inside the card remain light

@@ -9,7 +9,7 @@ interface WorkLocationFieldsProps {
 }
 
 const WorkLocationFields = ({ control }: WorkLocationFieldsProps) => {
-  const [workLocation, setWorkLocation] = useState("office");
+  const [workLocation, setWorkLocation] = useState<string>("all");
 
   return (
     <>
@@ -18,21 +18,21 @@ const WorkLocationFields = ({ control }: WorkLocationFieldsProps) => {
         name="workLocation"
         render={({ field }) => (
           <FormItem className="space-y-3">
-            <FormLabel>Is this role office based?</FormLabel>
+            <FormLabel>Location</FormLabel>
             <FormControl>
               <RadioGroup
+                value={workLocation}
                 onValueChange={(value) => {
-                  field.onChange(value);
                   setWorkLocation(value);
+                  field.onChange(value === "all" ? undefined : value);
                 }}
-                defaultValue={field.value}
                 className="flex flex-col space-y-1"
               >
                 <FormItem className="flex items-center space-x-3 space-y-0">
                   <FormControl>
                     <RadioGroupItem value="office" />
                   </FormControl>
-                  <FormLabel className="font-normal">Yes</FormLabel>
+                  <FormLabel className="font-normal">Office</FormLabel>
                 </FormItem>
                 <FormItem className="flex items-center space-x-3 space-y-0">
                   <FormControl>
@@ -45,6 +45,12 @@ const WorkLocationFields = ({ control }: WorkLocationFieldsProps) => {
                     <RadioGroupItem value="remote" />
                   </FormControl>
                   <FormLabel className="font-normal">Remote</FormLabel>
+                </FormItem>
+                <FormItem className="flex items-center space-x-3 space-y-0">
+                  <FormControl>
+                    <RadioGroupItem value="all" />
+                  </FormControl>
+                  <FormLabel className="font-normal">All</FormLabel>
                 </FormItem>
               </RadioGroup>
             </FormControl>
@@ -68,7 +74,7 @@ const WorkLocationFields = ({ control }: WorkLocationFieldsProps) => {
                     step={10}
                     onValueChange={(value) => field.onChange(value[0])}
                   />
-                  <div className="flex justify-between text-sm text-gray-500">
+                  <div className="flex justify-between text-sm text-muted-foreground">
                     <span>{100 - (field.value || 50)}% Remote</span>
                     <span>{field.value || 50}% Office</span>
                   </div>

@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { Search, X, SlidersHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { JobSearchSchema, jobSearchSchema } from "./JobSearchSchema";
 import CommissionFilterField from "./CommissionFilterField";
 import WorkAreaField from "@/components/WorkAreaField";
@@ -30,7 +31,7 @@ const JobSearch = ({ onSearch }: JobSearchProps) => {
       min_salary: undefined,
       max_salary: undefined,
       description: "",
-      workLocation: "office",
+      workLocation: undefined,
       holidayEntitlement: undefined,
       companyBenefits: undefined,
     },
@@ -82,6 +83,11 @@ const JobSearch = ({ onSearch }: JobSearchProps) => {
       {isExpanded && (
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <Alert className="bg-indigo-900/60 border-indigo-700 text-white">
+              <AlertDescription>
+                Select your area of work first. We’ll tailor the rest of the filters (titles and more) to your sector.
+              </AlertDescription>
+            </Alert>
             <div className="space-y-4">
               <WorkAreaField control={form.control} />
               <div className="space-y-2">
