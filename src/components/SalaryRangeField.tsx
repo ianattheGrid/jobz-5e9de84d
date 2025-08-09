@@ -48,15 +48,15 @@ const SalaryRangeField = ({ control }: SalaryRangeFieldProps) => {
                 value={field.value?.toString()}
                 onValueChange={(value) => field.onChange(parseInt(value))}
               >
-                <SelectTrigger className="form-select-trigger bg-white">
+                <SelectTrigger className="form-select-trigger bg-white text-gray-900">
                   <SelectValue placeholder="Select minimum salary" />
                 </SelectTrigger>
-                <SelectContent className="form-select-content select-dropdown max-h-[300px]">
+                <SelectContent className="bg-white text-gray-900 z-50 max-h-[300px]">
                   {salaryOptions.map((option) => (
                     <SelectItem 
                       key={option.value} 
                       value={option.value}
-                      className="text-foreground hover:bg-muted"
+                      className="text-gray-900 hover:bg-gray-100"
                     >
                       {option.label}
                     </SelectItem>
@@ -80,15 +80,15 @@ const SalaryRangeField = ({ control }: SalaryRangeFieldProps) => {
                 value={field.value?.toString()}
                 onValueChange={(value) => field.onChange(parseInt(value))}
               >
-                <SelectTrigger className="form-select-trigger bg-white">
+                <SelectTrigger className="form-select-trigger bg-white text-gray-900">
                   <SelectValue placeholder="Select maximum salary" />
                 </SelectTrigger>
-                <SelectContent className="form-select-content select-dropdown max-h-[300px]">
+                <SelectContent className="bg-white text-gray-900 z-50 max-h-[300px]">
                   {salaryOptions.map((option) => (
                     <SelectItem 
                       key={option.value} 
                       value={option.value}
-                      className="text-foreground hover:bg-muted"
+                      className="text-gray-900 hover:bg-gray-100"
                     >
                       {option.label}
                     </SelectItem>

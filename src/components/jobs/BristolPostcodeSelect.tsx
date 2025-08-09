@@ -36,7 +36,7 @@ const BristolPostcodeSelect = ({ control }: BristolPostcodeSelectProps) => {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent 
-                className="w-full min-w-[200px] bg-white max-h-[300px] overflow-y-auto"
+                className="w-full min-w-[200px] bg-white text-gray-900 z-50 max-h-[300px] overflow-y-auto"
                 align="start"
               >
                 <DropdownMenuCheckboxItem

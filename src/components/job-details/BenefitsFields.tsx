@@ -36,11 +36,11 @@ const BenefitsFields = ({ control }: BenefitsFieldsProps) => {
               defaultValue={field.value}
             >
               <FormControl>
-                <SelectTrigger className="bg-white border border-gray-300">
+                <SelectTrigger className="bg-white text-gray-900 border border-gray-300">
                   <SelectValue placeholder="Select holiday entitlement" />
                 </SelectTrigger>
               </FormControl>
-              <SelectContent className="bg-white">
+              <SelectContent className="bg-white text-gray-900 z-50">
                 {HOLIDAY_ENTITLEMENTS.map((days) => (
                   <SelectItem key={days} value={days}>
                     {days}
@@ -67,11 +67,11 @@ const BenefitsFields = ({ control }: BenefitsFieldsProps) => {
               defaultValue={field.value}
             >
               <FormControl>
-                <SelectTrigger className="bg-white border border-gray-300">
+                <SelectTrigger className="bg-white text-gray-900 border border-gray-300">
                   <SelectValue placeholder="Select company benefits" />
                 </SelectTrigger>
               </FormControl>
-              <SelectContent className="bg-white">
+              <SelectContent className="bg-white text-gray-900 z-50">
                 {COMPANY_BENEFITS.map((benefit) => (
                   <SelectItem key={benefit} value={benefit}>
                     {benefit}

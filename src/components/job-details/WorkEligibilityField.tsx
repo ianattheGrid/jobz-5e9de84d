@@ -26,9 +26,9 @@ const WorkEligibilityField = ({ control }: WorkEligibilityFieldProps) => {
           <FormControl>
             <Select onValueChange={field.onChange} defaultValue={field.value}>
               <SelectTrigger className="w-full bg-white text-gray-900 border-gray-300">
-                <SelectValue placeholder="I am a UK citizen" className="text-gray-900" />
+                <SelectValue placeholder="I am a UK citizen" />
               </SelectTrigger>
-              <SelectContent className="bg-white border border-gray-300">
+              <SelectContent className="bg-white text-gray-900 border border-gray-300 z-50">
                 {WORK_ELIGIBILITY_OPTIONS.map((option) => (
                   <SelectItem key={option} value={option} className="text-gray-900 hover:bg-gray-100">
                     {option}

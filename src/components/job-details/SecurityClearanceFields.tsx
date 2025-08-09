@@ -64,10 +64,10 @@ const SecurityClearanceFields = ({ control }: SecurityClearanceFieldsProps) => {
             <FormItem>
               <FormLabel>What level of security clearance?</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <SelectTrigger className="w-full bg-white border border-gray-300">
+                <SelectTrigger className="w-full bg-white text-gray-900 border border-gray-300">
                   <SelectValue placeholder="Select clearance level" />
                 </SelectTrigger>
-                <SelectContent className="bg-white">
+                <SelectContent className="bg-white text-gray-900 z-50">
                   {SECURITY_CLEARANCE_LEVELS.map((level) => (
                     <SelectItem key={level} value={level}>
                       {level}
