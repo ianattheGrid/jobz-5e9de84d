@@ -1,5 +1,4 @@
 
-import { useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { useCandidateGallery } from "@/components/candidate/gallery/useCandidateGallery";
@@ -24,7 +23,7 @@ export default function GalleryCarousel({ candidateId }: GalleryCarouselProps) {
                 <CarouselItem key={img.id}>
                   <div className="w-full h-64 sm:h-80 overflow-hidden rounded-md">
                     <img
-                      src={img.image_url}
+                      src={img.signed_url || img.image_url}
                       alt="Candidate gallery image"
                       className="w-full h-full object-cover"
                       loading="lazy"

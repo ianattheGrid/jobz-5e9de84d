@@ -8,12 +8,19 @@ export interface CandidateGalleryImage {
   candidate_id: string;
   image_url: string;
   created_at: string;
+  signed_url?: string;
 }
 
 export function useCandidateGallery(candidateId: string | null) {
   const [images, setImages] = useState<CandidateGalleryImage[]>([]);
   const [uploading, setUploading] = useState(false);
   const { toast } = useToast();
+
+  const toPath = (fullUrl: string) => {
+    const marker = '/candidate_gallery/';
+    const idx = fullUrl.indexOf(marker);
+    return idx === -1 ? '' : fullUrl.substring(idx + marker.length);
+  };
 
   const loadImages = useCallback(async () => {
     if (!candidateId) return;
@@ -24,7 +31,17 @@ export function useCandidateGallery(candidateId: string | null) {
         .eq('candidate_id', candidateId)
         .order('created_at', { ascending: false });
       if (error) throw error;
-      setImages(data || []);
+
+      const withSigned = await Promise.all((data || []).map(async (img) => {
+        const path = toPath(img.image_url);
+        if (!path) return img;
+        const { data: signed } = await supabase.storage
+          .from('candidate_gallery')
+          .createSignedUrl(path, 60 * 60); // 1 hour
+        return { ...img, signed_url: signed?.signedUrl || img.image_url };
+      }));
+
+      setImages(withSigned);
     } catch (err: any) {
       console.error('Error loading candidate gallery:', err);
     }
@@ -79,10 +96,8 @@ export function useCandidateGallery(candidateId: string | null) {
       if (deleteDbError) throw deleteDbError;
 
       if (img?.image_url) {
-        // Extract path after bucket segment
-        const idx = img.image_url.indexOf('/candidate_gallery/');
-        if (idx !== -1) {
-          const path = img.image_url.substring(idx + '/candidate_gallery/'.length);
+        const path = toPath(img.image_url);
+        if (path) {
           await supabase.storage.from('candidate_gallery').remove([path]);
         }
       }

@@ -23,7 +23,7 @@ export function CandidateGallerySection({ candidateId }: CandidateGallerySection
         {images.map((img) => (
           <Card key={img.id} className="overflow-hidden relative group">
             <div className="w-full h-36 overflow-hidden">
-              <img src={img.image_url} alt="Candidate gallery image" className="w-full h-full object-cover" loading="lazy" />
+              <img src={img.signed_url || img.image_url} alt="Candidate gallery image" className="w-full h-full object-cover" loading="lazy" />
             </div>
             <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
               <Button
