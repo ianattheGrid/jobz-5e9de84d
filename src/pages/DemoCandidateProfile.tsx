@@ -123,6 +123,9 @@ export default function DemoCandidateProfile() {
           <Button variant="outline" size="sm" onClick={() => window.location.href = '/swipe/employers'}>
             🔥 Try Swipe Interface (Employers)
           </Button>
+          <Link to="/preview/candidate-demo">
+            <Button variant="secondary" size="sm">Preview with real components</Button>
+          </Link>
         </div>
       </div>
 

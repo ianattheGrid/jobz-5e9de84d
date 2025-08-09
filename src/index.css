@@ -271,7 +271,8 @@ a {
 .demo-candidate-dark { 
   @apply text-white; 
 }
-.demo-candidate-dark [class*="bg-card"] {
+.demo-candidate-dark [class*="bg-card"],
+.demo-candidate-dark .bg-white {
   @apply bg-indigo-950 border-indigo-900 !important;
 }
 /* Ensure default card text is white for readability on navy */
@@ -286,13 +287,12 @@ a {
 .demo-candidate-dark h6 {
   color: hsl(var(--primary-foreground)) !important;
 }
-.demo-candidate-dark .text-muted-foreground {
+.demo-candidate-dark .text-muted-foreground,
+.demo-candidate-dark .text-gray-700 {
   color: hsl(var(--primary-foreground) / 0.85) !important;
 }
 /* Accent links in pink for contrast */
-.demo-candidate-dark a {
-  color: hsl(var(--primary)) !important;
-}
+.demo-candidate-dark a,
 .demo-candidate-dark svg {
   color: hsl(var(--primary)) !important;
 }
@@ -307,7 +307,8 @@ a {
   @apply text-white; 
 }
 .demo-employer-dark [class*="bg-card"],
-.demo-employer-dark .bg-muted {
+.demo-employer-dark .bg-muted,
+.demo-employer-dark .bg-white {
   @apply bg-indigo-950 border-indigo-900 !important;
 }
 .demo-employer-dark .text-card-foreground {
@@ -321,7 +322,8 @@ a {
 .demo-employer-dark h6 {
   color: hsl(var(--primary-foreground)) !important;
 }
-.demo-employer-dark .text-muted-foreground {
+.demo-employer-dark .text-muted-foreground,
+.demo-employer-dark .text-gray-700 {
   color: hsl(var(--primary-foreground) / 0.85) !important;
 }
 .demo-employer-dark a,

@@ -109,11 +109,14 @@ export default function DemoEmployerProfile() {
         <p className="text-green-700 mb-3">
           This is an example of how an employer profile looks on jobz. Real profiles would be created by actual companies.
         </p>
-        <div className="flex gap-2">
+          <div className="flex gap-2">
           <Button variant="outline" size="sm" onClick={() => window.location.href = '/swipe/candidates'}>
             🔥 Try Swipe Interface (Candidates)
           </Button>
-        </div>
+            <Link to="/preview/employer-demo">
+              <Button variant="secondary" size="sm">Preview with real components</Button>
+            </Link>
+          </div>
       </div>
 
       {/* Hero Section */}
