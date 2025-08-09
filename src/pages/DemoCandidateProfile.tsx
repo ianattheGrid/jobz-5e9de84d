@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import NavBar from "@/components/NavBar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -63,8 +64,40 @@ export default function DemoCandidateProfile() {
     certifications: [
       "AWS Certified Developer Associate",
       "Google Analytics Certified"
+    ],
+    personality: [
+      { label: "Best holiday I’ve taken", answer: "Road-tripping the Scottish Highlands in autumn." },
+      { label: "Favorite book", answer: "Atomic Habits — small wins, big results." },
+      { label: "Best concert I’ve been to", answer: "Coldplay at Wembley — pure energy." },
+      { label: "A small thing that makes my day", answer: "Perfectly brewed flat white." },
+      { label: "My go-to way to learn something new", answer: "Build a tiny project and ship it." },
+      { label: "What teammates can expect from me", answer: "Thoughtful PRs and zero-blame debugging." }
     ]
   };
+
+  useEffect(() => {
+    document.title = "Candidate Profile: Sarah Johnson | jobz";
+    const ensureMeta = (name: string, content: string) => {
+      let el = document.querySelector(`meta[name="${name}"]`) as HTMLMetaElement | null;
+      if (!el) {
+        el = document.createElement('meta');
+        el.name = name;
+        document.head.appendChild(el);
+      }
+      el.setAttribute('content', content);
+    };
+    ensureMeta(
+      'description',
+      "View Sarah Johnson’s profile: Senior Frontend Developer in Bristol, UK — skills, experience, education, and personality snapshots."
+    );
+    let link = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
+    if (!link) {
+      link = document.createElement('link');
+      link.rel = 'canonical';
+      document.head.appendChild(link);
+    }
+    link.href = window.location.origin + '/demo/candidate';
+  }, []);
 
   return (
     <div className="min-h-screen bg-background">
@@ -81,9 +114,9 @@ export default function DemoCandidateProfile() {
           <span className="text-sm">Back to Interactive Cards</span>
         </Link>
       </div>
-      <div className="mb-6 p-4 bg-blue-50 rounded-lg border-l-4 border-blue-400">
-        <h2 className="text-lg font-semibold text-blue-800 mb-2">Demo Candidate Profile</h2>
-        <p className="text-blue-700 mb-3">
+      <div className="mb-6 p-4 bg-pink-50 rounded-lg border-l-4 border-pink-400">
+        <h2 className="text-lg font-semibold text-pink-800 mb-2">Demo Candidate Profile</h2>
+        <p className="text-pink-700 mb-3">
           This is an example of how a candidate profile looks on jobz. Real profiles would be created by actual job seekers.
         </p>
         <div className="flex gap-2">
@@ -177,6 +210,25 @@ export default function DemoCandidateProfile() {
               </p>
             </CardContent>
           </Card>
+
+          {/* Personality */}
+          {candidate.personality && candidate.personality.length > 0 && (
+            <Card>
+              <CardHeader>
+                <CardTitle>Personality</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {candidate.personality.map((item, idx) => (
+                    <div key={idx} className="rounded-md border border-pink-200 bg-pink-50 p-4">
+                      <div className="text-xs font-medium text-pink-700">{item.label}</div>
+                      <div className="mt-1 text-gray-800">{item.answer}</div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
           <Card>
             <CardHeader>
