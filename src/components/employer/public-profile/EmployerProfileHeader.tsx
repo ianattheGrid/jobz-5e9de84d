@@ -22,7 +22,7 @@ export const EmployerProfileHeader = ({ profile }: EmployerProfileHeaderProps) =
   return (
     <>
       <div className="relative">
-        <div className="h-40 bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500"></div>
+        <div className="h-40 rounded-b-xl bg-gradient-to-br from-[#0b1437] via-[#14245a] to-[#1f2d72]"></div>
         <div className="absolute -bottom-16 left-8 ring-4 ring-white rounded-lg overflow-hidden">
           {profile.company_logo_url ? (
             <img 
@@ -43,9 +43,9 @@ export const EmployerProfileHeader = ({ profile }: EmployerProfileHeaderProps) =
         
         {/* Always render the company size section, but with a fallback */}
         <div className="mt-2 mb-4">
-          <div className="inline-flex items-center px-3 py-1 bg-gray-100 rounded-md">
-            <Users className="h-4 w-4 mr-2 text-gray-600" />
-            <span className="text-gray-900 font-medium">
+          <div className="inline-flex items-center px-3 py-1 bg-muted rounded-md">
+            <Users className="h-4 w-4 mr-2 text-muted-foreground" />
+            <span className="text-foreground font-medium">
               {getCompanySizeLabel(profile.company_size)}
             </span>
           </div>
@@ -57,7 +57,7 @@ export const EmployerProfileHeader = ({ profile }: EmployerProfileHeaderProps) =
               href={profile.company_website} 
               target="_blank" 
               rel="noopener noreferrer"
-              className="flex items-center gap-2 text-pink-600 hover:underline"
+              className="flex items-center gap-2 text-primary hover:underline"
             >
               <Globe className="h-4 w-4" />
               Website

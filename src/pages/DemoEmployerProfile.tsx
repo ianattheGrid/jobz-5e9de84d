@@ -122,7 +122,7 @@ export default function DemoEmployerProfile() {
             </div>
           </div>
           <div className="flex-1">
-            <h1 className="text-3xl md:text-4xl font-bold tracking-tight">{employer.name}</h1>
+            <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-white">{employer.name}</h1>
             <p className="text-lg text-white/80 mt-1">{employer.industry}</p>
 
             <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
@@ -174,7 +174,7 @@ export default function DemoEmployerProfile() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left Column */}
         <div className="lg:col-span-2 space-y-6">
-          <Card id="about">
+          <Card id="about" className="bg-muted">
             <CardHeader>
               <CardTitle>About Us</CardTitle>
             </CardHeader>
@@ -212,7 +212,7 @@ export default function DemoEmployerProfile() {
             </CardContent>
           </Card>
 
-          <Card id="roles">
+          <Card id="roles" className="bg-muted">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Briefcase className="h-5 w-5" />
@@ -253,7 +253,7 @@ export default function DemoEmployerProfile() {
 
         {/* Right Column */}
         <div className="space-y-6">
-          <Card id="values">
+          <Card id="values" className="bg-muted">
             <CardHeader>
               <CardTitle>Company Values</CardTitle>
             </CardHeader>
@@ -269,7 +269,7 @@ export default function DemoEmployerProfile() {
             </CardContent>
           </Card>
 
-          <Card id="benefits">
+          <Card id="benefits" className="bg-muted">
             <CardHeader>
               <CardTitle>Benefits & Perks</CardTitle>
             </CardHeader>
@@ -285,7 +285,7 @@ export default function DemoEmployerProfile() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card id="info" className="bg-muted">
             <CardHeader>
               <CardTitle>Company Info</CardTitle>
             </CardHeader>

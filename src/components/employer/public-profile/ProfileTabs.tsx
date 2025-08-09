@@ -14,21 +14,21 @@ export const ProfileTabs = ({ profile, galleryImages }: ProfileTabsProps) => {
   return (
     <div className="mt-8">
       <Tabs defaultValue="about" className="w-full">
-        <TabsList className="grid w-full grid-cols-3 bg-gray-100">
-          <TabsTrigger className="text-gray-800 data-[state=active]:bg-white data-[state=active]:text-primary" value="about">About</TabsTrigger>
-          <TabsTrigger className="text-gray-800 data-[state=active]:bg-white data-[state=active]:text-primary" value="media">Gallery</TabsTrigger>
-          <TabsTrigger className="text-gray-800 data-[state=active]:bg-white data-[state=active]:text-primary" value="jobs">Current Openings</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-3 bg-muted">
+          <TabsTrigger className="text-muted-foreground data-[state=active]:bg-card data-[state=active]:text-primary" value="about">About</TabsTrigger>
+          <TabsTrigger className="text-muted-foreground data-[state=active]:bg-card data-[state=active]:text-primary" value="media">Gallery</TabsTrigger>
+          <TabsTrigger className="text-muted-foreground data-[state=active]:bg-card data-[state=active]:text-primary" value="jobs">Current Openings</TabsTrigger>
         </TabsList>
         
-        <TabsContent value="about" className="mt-6 bg-white p-6 rounded-md border border-gray-100 shadow-sm">
+        <TabsContent value="about" className="mt-6 bg-card p-6 rounded-md border shadow-sm">
           <AboutTabContent profile={profile} />
         </TabsContent>
         
-        <TabsContent value="media" className="mt-6 bg-white p-6 rounded-md border border-gray-100 shadow-sm">
+        <TabsContent value="media" className="mt-6 bg-card p-6 rounded-md border shadow-sm">
           <CompanyMediaSection employerId={profile.id} galleryImages={galleryImages} />
         </TabsContent>
         
-        <TabsContent value="jobs" className="mt-6 bg-white p-6 rounded-md border border-gray-100 shadow-sm">
+        <TabsContent value="jobs" className="mt-6 bg-card p-6 rounded-md border shadow-sm">
           <EmployerJobsList employerId={profile.id} />
         </TabsContent>
       </Tabs>
