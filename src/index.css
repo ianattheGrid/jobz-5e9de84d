@@ -383,3 +383,8 @@ a {
   background-color: hsl(var(--secondary)) !important;
   color: hsl(var(--secondary-foreground)) !important;
 }
+
+/* Bonus filter labels on white surface should use brand color */
+.job-search-card .bonus-label {
+  color: hsl(var(--primary)) !important;
+}
