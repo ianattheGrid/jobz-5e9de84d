@@ -18,6 +18,7 @@ import {
   ExternalLink,
   ArrowLeft
 } from "lucide-react";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 
 export default function DemoEmployerProfile() {
   const employer = {
@@ -74,9 +75,16 @@ export default function DemoEmployerProfile() {
       totalEmployees: 125,
       avgRating: 4.6,
       responseRate: "95%",
-      avgResponseTime: "2 days"
+    avgResponseTime: "2 days"
     }
   };
+  const gallery = [
+    "/placeholder.svg",
+    "/placeholder.svg",
+    "/placeholder.svg",
+    "/placeholder.svg",
+    "/placeholder.svg",
+  ];
 
   return (
     <div className="min-h-screen bg-background">
@@ -105,79 +113,68 @@ export default function DemoEmployerProfile() {
         </div>
       </div>
 
-      {/* Header Section */}
-      <Card className="mb-6">
-        <CardContent className="pt-6">
-          <div className="flex flex-col md:flex-row gap-6">
-            <div className="flex-shrink-0">
-              <div className="w-32 h-32 bg-primary/10 rounded-lg flex items-center justify-center">
-                <Building className="w-16 h-16 text-primary" />
-              </div>
-            </div>
-            <div className="flex-grow">
-              <h1 className="text-3xl font-bold mb-2">{employer.name}</h1>
-              <p className="text-xl text-muted-foreground mb-4">{employer.industry}</p>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                <div className="flex items-center gap-2">
-                  <MapPin className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm">{employer.location}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Users className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm">{employer.size}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Mail className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm">{employer.email}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Globe className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm">{employer.website}</span>
-                </div>
-              </div>
-
-              <div className="flex gap-2">
-                <Button>
-                  <MessageCircle className="h-4 w-4 mr-2" />
-                  Contact Employer
-                </Button>
-                <Button variant="outline">
-                  <ExternalLink className="h-4 w-4 mr-2" />
-                  Visit Website
-                </Button>
-              </div>
-            </div>
-            <div className="flex-shrink-0">
-              <Card>
-                <CardContent className="pt-4">
-                  <div className="text-center space-y-2">
-                    <div className="flex items-center justify-center gap-1">
-                      <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                      <span className="font-semibold">{employer.stats.avgRating}</span>
-                    </div>
-                    <p className="text-xs text-muted-foreground">Company Rating</p>
-                    <Separator />
-                    <div>
-                      <p className="font-semibold">{employer.stats.responseRate}</p>
-                      <p className="text-xs text-muted-foreground">Response Rate</p>
-                    </div>
-                    <div>
-                      <p className="font-semibold">{employer.stats.avgResponseTime}</p>
-                      <p className="text-xs text-muted-foreground">Avg Response</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+      {/* Hero Section */}
+      <div className="mb-6 rounded-2xl bg-gradient-to-br from-[#0b1437] via-[#14245a] to-[#1f2d72] text-white p-6 md:p-8 shadow-xl">
+        <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
+          <div className="flex-shrink-0">
+            <div className="w-28 h-28 md:w-32 md:h-32 rounded-xl bg-white/10 border border-white/15 backdrop-blur flex items-center justify-center shadow-[inset_0_1px_0_rgba(255,255,255,0.2)]">
+              <Building className="w-14 h-14 text-primary" />
             </div>
           </div>
-        </CardContent>
-      </Card>
+          <div className="flex-1">
+            <h1 className="text-3xl md:text-4xl font-bold tracking-tight">{employer.name}</h1>
+            <p className="text-lg text-white/80 mt-1">{employer.industry}</p>
+
+            <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+              <div className="flex items-center gap-2 text-white/85"><MapPin className="h-4 w-4" />{employer.location}</div>
+              <div className="flex items-center gap-2 text-white/85"><Users className="h-4 w-4" />{employer.size}</div>
+              <div className="flex items-center gap-2 text-white/85"><Mail className="h-4 w-4" />{employer.email}</div>
+              <div className="flex items-center gap-2 text-white/85"><Globe className="h-4 w-4" />{employer.website}</div>
+            </div>
+
+            <div className="mt-5 flex flex-wrap gap-3">
+              <Button className="bg-primary text-white hover:bg-primary/90">
+                <MessageCircle className="h-4 w-4 mr-2" /> Contact Employer
+              </Button>
+              <Button variant="outline" className="border-white/30 text-white hover:bg-white/10">
+                <ExternalLink className="h-4 w-4 mr-2" /> Visit Website
+              </Button>
+            </div>
+          </div>
+          <div className="flex flex-col sm:flex-row md:flex-col gap-3 w-full md:w-auto">
+            <div className="hover-scale animate-fade-in rounded-full border border-white/20 px-4 py-2 flex items-center gap-2">
+              <Star className="h-4 w-4 text-yellow-400" /><span className="font-semibold">{employer.stats.avgRating}</span><span className="text-white/70 text-xs">Rating</span>
+            </div>
+            <div className="hover-scale animate-fade-in rounded-full border border-white/20 px-4 py-2 flex items-center gap-2">
+              <span className="font-semibold">{employer.stats.responseRate}</span><span className="text-white/70 text-xs">Response</span>
+            </div>
+            <div className="hover-scale animate-fade-in rounded-full border border-white/20 px-4 py-2 flex items-center gap-2">
+              <span className="font-semibold">{employer.stats.avgResponseTime}</span><span className="text-white/70 text-xs">Avg Reply</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Sticky Section Nav */}
+      <div className="sticky top-16 z-20 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b mb-6">
+        <nav className="flex flex-wrap gap-2 py-2 text-sm">
+          {[
+            { href: '#about', label: 'About' },
+            { href: '#gallery', label: 'Gallery' },
+            { href: '#roles', label: 'Open Roles' },
+            { href: '#values', label: 'Values' },
+            { href: '#benefits', label: 'Benefits' },
+            { href: '#info', label: 'Company Info' },
+          ].map(link => (
+            <a key={link.href} href={link.href} className="px-3 py-1 rounded-full hover:bg-muted/70 transition-colors">{link.label}</a>
+          ))}
+        </nav>
+      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left Column */}
         <div className="lg:col-span-2 space-y-6">
-          <Card>
+          <Card id="about">
             <CardHeader>
               <CardTitle>About Us</CardTitle>
             </CardHeader>
@@ -191,7 +188,31 @@ export default function DemoEmployerProfile() {
             </CardContent>
           </Card>
 
-          <Card>
+          {/* Gallery */}
+          <Card id="gallery" className="bg-[#0b1437] text-white">
+            <CardHeader>
+              <CardTitle>Gallery</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="relative">
+                <Carousel className="px-10">
+                  <CarouselContent>
+                    {gallery.map((src, idx) => (
+                      <CarouselItem key={idx}>
+                        <div className="w-full h-64 sm:h-80 overflow-hidden rounded-md">
+                          <img src={src} alt={`Company gallery ${idx+1}`} className="w-full h-full object-cover" loading="lazy" />
+                        </div>
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                  <CarouselPrevious variant="outline" className="border-primary text-primary hover:bg-primary/10" />
+                  <CarouselNext variant="outline" className="border-primary text-primary hover:bg-primary/10" />
+                </Carousel>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card id="roles">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Briefcase className="h-5 w-5" />
@@ -232,7 +253,7 @@ export default function DemoEmployerProfile() {
 
         {/* Right Column */}
         <div className="space-y-6">
-          <Card>
+          <Card id="values">
             <CardHeader>
               <CardTitle>Company Values</CardTitle>
             </CardHeader>
@@ -248,7 +269,7 @@ export default function DemoEmployerProfile() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card id="benefits">
             <CardHeader>
               <CardTitle>Benefits & Perks</CardTitle>
             </CardHeader>
