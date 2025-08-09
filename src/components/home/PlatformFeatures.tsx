@@ -1,10 +1,12 @@
 
 import React from 'react';
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FileText, Coins, Bot, Calculator, User, Target, Users, MapPin, HandCoins, ListCheck, Clock, Info } from "lucide-react";
 import { PRIMARY_COLOR_PATTERN } from "@/styles/colorPatterns";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 export const PlatformFeatures = () => {
   return (
@@ -59,6 +61,34 @@ export const PlatformFeatures = () => {
         </TooltipProvider>
 
         <TabsContent value="hiring" className="mt-8 space-y-8 radix-tabpanel">
+          <div className="flex justify-end">
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="outline" size="sm" aria-label="How jobz works for employers">How jobz works for Employers</Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>How jobz works for Employers</DialogTitle>
+                  <DialogDescription>
+                    Control the process while expanding your reach for hard-to-fill roles. Pay only when a hire starts.
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="space-y-3 text-foreground">
+                  <ol className="list-decimal pl-5 space-y-2">
+                    <li>Post a role and set your “You’re Hired” bonus.</li>
+                    <li>Connectors anonymously source and recommend candidates from trusted networks.</li>
+                    <li>Review recommendations and request intros when you’re interested.</li>
+                    <li>Hire with confidence; bonuses are released on successful start.</li>
+                  </ol>
+                  <ul className="list-disc pl-5 space-y-1">
+                    <li>We vet and manage all Connectors.</li>
+                    <li>Recommendations remain anonymous until both sides opt in.</li>
+                    <li>Transparent, performance-based cost.</li>
+                  </ul>
+                </div>
+              </DialogContent>
+            </Dialog>
+          </div>
           <div className="grid md:grid-cols-2 gap-6">
             <FeatureCard
               icon={FileText}
@@ -84,6 +114,34 @@ export const PlatformFeatures = () => {
         </TabsContent>
 
         <TabsContent value="candidates" className="mt-8 space-y-8 radix-tabpanel">
+          <div className="flex justify-end">
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="outline" size="sm" aria-label="How jobz works for candidates">How jobz works for Candidates</Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>How jobz works for Candidates</DialogTitle>
+                  <DialogDescription>
+                    Get warm introductions to roles that fit you—your privacy first, and earn a bonus on hire.
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="space-y-3 text-foreground">
+                  <ol className="list-decimal pl-5 space-y-2">
+                    <li>Create your profile and set preferences.</li>
+                    <li>Connectors share relevant opportunities without exposing your identity.</li>
+                    <li>Opt in when you want an introduction; proceed to interview.</li>
+                    <li>If hired, you receive your “You’re Hired” bonus.</li>
+                  </ol>
+                  <ul className="list-disc pl-5 space-y-1">
+                    <li>Your details stay private until you opt in.</li>
+                    <li>Opportunities beyond job boards via trusted networks.</li>
+                    <li>Clear status tracking and transparent bonuses.</li>
+                  </ul>
+                </div>
+              </DialogContent>
+            </Dialog>
+          </div>
           <div className="grid md:grid-cols-2 gap-6">
             <FeatureCard
               icon={User}
@@ -109,6 +167,34 @@ export const PlatformFeatures = () => {
         </TabsContent>
 
         <TabsContent value="recruiters" className="mt-8 space-y-8 radix-tabpanel">
+          <div className="flex justify-end">
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="outline" size="sm" aria-label="What is a Connector?">What is a Connector?</Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>What is a Connector?</DialogTitle>
+                  <DialogDescription>
+                    Vetted individuals who anonymously introduce quality candidates from their networks—paid on successful hires.
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="space-y-3 text-foreground">
+                  <ol className="list-decimal pl-5 space-y-2">
+                    <li>Browse open roles and the talent pool.</li>
+                    <li>Recommend candidates anonymously with context.</li>
+                    <li>We handle intros and admin; you stay anonymous by default.</li>
+                    <li>Earn your commission when a recommended candidate is hired.</li>
+                  </ol>
+                  <ul className="list-disc pl-5 space-y-1">
+                    <li>Work from anywhere, choose your effort.</li>
+                    <li>We vet, verify, and monitor performance.</li>
+                    <li>Transparent commissions, paid on success.</li>
+                  </ul>
+                </div>
+              </DialogContent>
+            </Dialog>
+          </div>
           <div className="grid md:grid-cols-2 gap-6">
             <FeatureCard
               icon={MapPin}
