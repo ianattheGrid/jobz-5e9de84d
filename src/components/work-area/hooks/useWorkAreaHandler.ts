@@ -15,6 +15,7 @@ import {
   getTitlesForPharmaSpecialisation,
   getTitlesForPublicSectorSpecialisation
 } from "../utils/titles";
+import { getTitlesForSalesSpecialisation } from "../utils/titles/sales-titles";
 import { itRoles } from "../constants/it-roles";
 
 export const useWorkAreaHandler = (control: Control<any>) => {
@@ -209,6 +210,8 @@ export const useWorkAreaHandler = (control: Control<any>) => {
       titles = getTitlesForRDSpecialisation(specialisation);
     } else if (showSpec.qa) {
       titles = getTitlesForQASpecialisation(specialisation);
+    } else if (showSpec.sales) {
+      titles = getTitlesForSalesSpecialisation(specialisation);
     } else if (showSpec.marketing) {
       titles = getTitlesForMarketingSpecialisation(specialisation);
     }
