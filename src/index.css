@@ -335,3 +335,48 @@ a {
 .demo-employer-dark svg {
   color: hsl(var(--primary)) !important;
 }
+
+/* Light surface utilities to avoid dark theme overrides */
+.select-surface {
+  background-color: hsl(var(--secondary)) !important; /* typically white */
+  color: hsl(var(--secondary-foreground)) !important; /* typically black */
+  border-color: hsl(var(--border)) !important;
+}
+.select-menu {
+  background-color: hsl(var(--secondary)) !important;
+  color: hsl(var(--secondary-foreground)) !important;
+  border-color: hsl(var(--border)) !important;
+  z-index: 50 !important;
+}
+
+/* Job search card: force readable labels and inputs */
+.job-search-card label,
+.job-search-card .form-label,
+.job-search-card [data-radix-label] {
+  color: hsl(var(--primary-foreground)) !important; /* white */
+}
+
+/* Inputs that use bg-background/text-foreground inside the card should be light */
+.job-search-card .bg-background,
+.job-search-card [class*="bg-background"] {
+  background-color: hsl(var(--secondary)) !important;
+}
+.job-search-card .text-foreground,
+.job-search-card .text-muted-foreground {
+  color: hsl(var(--secondary-foreground)) !important;
+}
+
+/* Ensure any Tailwind bg-white utilities inside the card remain light
+   (overrides the .demo-employer-dark .bg-white rule) */
+.job-search-card .bg-white {
+  background-color: hsl(var(--secondary)) !important;
+  color: hsl(var(--secondary-foreground)) !important;
+}
+
+/* Also enforce light surfaces for native elements */
+.job-search-card input,
+.job-search-card textarea,
+.job-search-card select {
+  background-color: hsl(var(--secondary)) !important;
+  color: hsl(var(--secondary-foreground)) !important;
+}

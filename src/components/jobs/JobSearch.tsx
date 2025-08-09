@@ -50,7 +50,7 @@ const JobSearch = ({ onSearch }: JobSearchProps) => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6 text-left">
+    <div className="job-search-card bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6 text-left">
       <div className="flex justify-between items-start mb-4">
         <div className="flex items-center">
           <Search className="h-5 w-5 text-primary mr-2" />
