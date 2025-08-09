@@ -63,7 +63,7 @@ const JobCard = ({ job }: JobCardProps) => {
   };
 
   return (
-    <div className="relative h-[600px] w-full" style={{ perspective: "1000px" }}>
+    <div className="relative h-[480px] w-full" style={{ perspective: "1000px" }}>
       <Card 
         className="absolute inset-0 w-full h-full transition-all duration-500"
         style={{ 
@@ -82,12 +82,11 @@ const JobCard = ({ job }: JobCardProps) => {
           />
         </div>
         <div 
-          className="absolute inset-0 w-full h-full cursor-pointer"
+          className="absolute inset-0 w-full h-full"
           style={{ 
             backfaceVisibility: "hidden",
             transform: "rotateY(180deg)"
           }}
-          onClick={() => setIsFlipped(false)}
         >
           <JobCardBack 
             job={job} 

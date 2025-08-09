@@ -41,7 +41,7 @@ const JobCardFront = ({ job, showEmployerDetails = false, onFlip }: JobCardFront
       </div>
 
       {/* Key Details Section */}
-      <div className="space-y-3 flex-grow">
+      <div className="space-y-3">
         <div className="flex items-center text-sm text-foreground">
           <MapPin className="h-4 w-4 mr-2 flex-shrink-0 text-primary" />
           <span>{job.location}</span>
@@ -118,7 +118,7 @@ const JobCardFront = ({ job, showEmployerDetails = false, onFlip }: JobCardFront
           e.stopPropagation();
           onFlip?.();
         }}
-        className="w-full mt-6 text-sm bg-primary text-white hover:bg-primary/90 transition-colors py-2 rounded-md flex items-center justify-center group"
+        className="w-full mt-3 text-sm bg-primary text-white hover:bg-primary/90 transition-colors py-2 rounded-md flex items-center justify-center group"
       >
         View Full Details
         <BriefcaseIcon className="h-4 w-4 ml-2 transform transition-transform group-hover:translate-x-1" />

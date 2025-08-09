@@ -38,8 +38,14 @@ const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
 
   return (
     <div 
-      className="h-full p-6 bg-card text-foreground overflow-y-auto rounded-lg"
-      onClick={(e) => e.stopPropagation()}
+      className="h-full p-6 bg-card text-foreground overflow-y-auto rounded-lg cursor-pointer"
+      onClick={(e: any) => {
+        const target = (e.target as HTMLElement);
+        const interactive = target.closest('button, a, input, textarea, select, label, [role="dialog"], [role="menu"], [role="listbox"]');
+        if (!interactive) {
+          onClose();
+        }
+      }}
     >
       <div className="relative p-4">
         <button
