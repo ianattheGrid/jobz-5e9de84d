@@ -12,6 +12,7 @@ import { VerificationSection } from "@/components/candidate/VerificationSection"
 import { Button } from "@/components/ui/button";
 import ProfileDetails from "@/components/candidate-profile/ProfileDetails";
 import { CandidateProfile as ProfileType } from "@/integrations/supabase/types/profiles";
+import { CreateFromCVButton } from "@/components/candidate/CreateFromCVButton";
 
 export default function CandidateProfile() {
   const { toast } = useToast();
@@ -83,6 +84,13 @@ export default function CandidateProfile() {
     setShowPreview(prev => !prev);
   };
 
+  // After CV prefill completed
+  const handlePrefillComplete = async () => {
+    if (userId) {
+      await fetchProfileData(userId);
+      toast({ title: "Profile prefilled from CV", description: "Review the fields and click Save." });
+    }
+  };
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen bg-white">
@@ -148,6 +156,13 @@ export default function CandidateProfile() {
                   currentCV={cvUrl}
                   onUploadComplete={handleFileUploadComplete}
                 />
+                <div className="mt-4">
+                  <CreateFromCVButton 
+                    cvUrl={cvUrl}
+                    userId={userId}
+                    onComplete={handlePrefillComplete}
+                  />
+                </div>
               </div>
               
               <VerificationSection />

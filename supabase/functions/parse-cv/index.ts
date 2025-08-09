@@ -231,15 +231,74 @@ serve(async (req) => {
     const cvSkillsMatchScore = requiredSkills.length > 0 ? 
       matchedSkills.length / requiredSkills.length : 0;
 
+    // Rules-based structured extraction
+    const originalContent = cvContent; // keep original casing
+    const lines = originalContent.replace(/\r/g, '').split(/\n|\s{2,}/).map(l => l.trim()).filter(Boolean);
+
+    const pickFirst = (arr: (string | null | undefined)[]) => arr.find(Boolean) || null;
+
+    // Email
+    const emailMatch = originalContent.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i);
+    const email = emailMatch ? emailMatch[0] : null;
+
+    // Phone (simple international formats)
+    const phoneMatch = originalContent.match(/(\+?\d[\d\s().\-]{8,}\d)/);
+    const phone = phoneMatch ? phoneMatch[0].replace(/\s{2,}/g, ' ').trim() : null;
+
+    // LinkedIn
+    const linkedinMatch = originalContent.match(/https?:\/\/(?:www\.)?linkedin\.com\/[A-Za-z0-9\-_/]+/i);
+    const linkedin = linkedinMatch ? linkedinMatch[0] : null;
+
+    // Full name: look at first few non-empty lines that look like a name (2+ capitalized words)
+    const nameRegex = /^[A-Z][a-zA-Z'\-]+(?:\s+[A-Z][a-zA-Z'\-]+){1,3}$/;
+    const fullName = pickFirst(lines.slice(0, 8).filter(l => l.length <= 60 && nameRegex.test(l)));
+
+    // Location: grab first pattern like "City, Country" or ", UK"
+    const locationRegexes = [
+      /([A-Z][a-zA-Z]+\s?,\s?(?:UK|United Kingdom|England|Scotland|Wales|Northern Ireland))/,
+      /([A-Z][a-zA-Z]+\s?,\s?[A-Z]{2,})/,
+    ];
+    const location = pickFirst(locationRegexes.map(r => {
+      const m = originalContent.match(r); return m ? m[0] : null;
+    }));
+    const locationArray = location ? [location] : [];
+
+    // Years of experience
+    const yearsMatches = [...originalContent.matchAll(/(over\s+)?(\d{1,2})\+?\s*(?:years|yrs)\s*(?:of)?\s*experience/gi)];
+    const years_experience = yearsMatches.length
+      ? Math.max(...yearsMatches.map(m => parseInt(m[2], 10)))
+      : 0;
+
+    // Job titles: scan lines for common title keywords
+    const titleKeywords = [
+      'Developer','Engineer','Manager','Designer','Analyst','Consultant','Architect','Administrator','Scientist','Technician','Specialist','Officer','Lead','Principal','Director','Product','Project','Frontend','Back-End','Backend','Full Stack','Data','DevOps','Security','Marketing','Sales','Support'
+    ];
+    const titleLines = lines.filter(l => l.length <= 90 && /[A-Za-z]/.test(l))
+      .filter(l => !/(Ltd\.?|Limited|Inc\.?|LLC|Company|GmbH|PLC|SRL|SA)/i.test(l))
+      .filter(l => titleKeywords.some(k => new RegExp(`\\b${k}\\b`, 'i').test(l)));
+    const uniqueTitles: string[] = Array.from(new Set(titleLines)).slice(0, 5);
+
+    const structured = {
+      fullName,
+      email,
+      phone,
+      linkedin,
+      location: locationArray,
+      jobTitles: uniqueTitles,
+      yearsExperience: years_experience,
+    };
+
     console.log('CV parsing completed:', {
       totalSkills: requiredSkills.length,
       matchedSkills,
-      cvSkillsMatchScore
+      cvSkillsMatchScore,
+      structured
     });
 
     return new Response(JSON.stringify({
       matchedSkills,
       cvSkillsMatchScore,
+      structured,
       debug: debug ? {
         contentLength: cvContentLower.length,
         contentSample: cvContentLower.substring(0, 200) + '...',
