@@ -113,6 +113,7 @@ const JobCardFront = ({ job, showEmployerDetails = false, onFlip }: JobCardFront
       </div>
 
       {/* View Details Button */}
+      <div className="flex-1" />
       <button 
         onClick={(e) => {
           e.stopPropagation();
