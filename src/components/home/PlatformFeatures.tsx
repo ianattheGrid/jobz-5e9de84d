@@ -64,7 +64,7 @@ export const PlatformFeatures = () => {
           <div className="flex justify-end">
             <Dialog>
               <DialogTrigger asChild>
-                <Button variant="outline" size="sm" aria-label="How jobz works for employers">How jobz works for Employers</Button>
+                <Button variant="outline" size="sm" aria-label="How jobz works for employers">Learn more</Button>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
@@ -117,7 +117,7 @@ export const PlatformFeatures = () => {
           <div className="flex justify-end">
             <Dialog>
               <DialogTrigger asChild>
-                <Button variant="outline" size="sm" aria-label="How jobz works for candidates">How jobz works for Candidates</Button>
+                <Button variant="outline" size="sm" aria-label="How jobz works for candidates">Learn more</Button>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
@@ -170,7 +170,7 @@ export const PlatformFeatures = () => {
           <div className="flex justify-end">
             <Dialog>
               <DialogTrigger asChild>
-                <Button variant="outline" size="sm" aria-label="What is a Connector?">What is a Connector?</Button>
+                <Button variant="outline" size="sm" aria-label="What is a Connector?">Learn more</Button>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
