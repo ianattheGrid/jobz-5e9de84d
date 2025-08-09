@@ -99,11 +99,11 @@ function PreviewCandidateProfile() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-5xl bg-gray-50">
+    <div className="container mx-auto px-4 py-8 max-w-5xl bg-background demo-candidate-dark">
       <Button
         variant="outline"
         onClick={handleGoBack}
-        className="mb-6 flex items-center gap-2 bg-white"
+        className="mb-6 flex items-center gap-2"
       >
         <ArrowLeft className="h-4 w-4" />
         Back

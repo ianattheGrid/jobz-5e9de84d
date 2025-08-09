@@ -25,7 +25,7 @@ const ViewEmployerProfile = ({ previewMode = false, employerId: propEmployerId }
   
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen bg-white">
+      <div className="flex justify-center items-center min-h-screen bg-background">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
       </div>
     );
@@ -40,16 +40,16 @@ const ViewEmployerProfile = ({ previewMode = false, employerId: propEmployerId }
   }
   
   return (
-    <div className="bg-white min-h-screen">
+    <div className="demo-employer-dark min-h-screen bg-background">
       <div className="container mx-auto py-10 px-4">
         <div className="flex justify-start mb-6">
           {previewMode ? (
-            <Button variant="outline" className="flex items-center gap-2 bg-white text-gray-700" onClick={() => navigate("/employer/profile")}>
+            <Button variant="outline" className="flex items-center gap-2" onClick={() => navigate("/employer/profile")}>
               <ArrowLeft className="h-4 w-4" /> Back to Profile
             </Button>
           ) : (
             <Link to="/jobs">
-              <Button variant="outline" className="flex items-center gap-2 bg-white text-gray-700">
+              <Button variant="outline" className="flex items-center gap-2">
                 <ArrowLeft className="h-4 w-4" /> Back to Jobs
               </Button>
             </Link>
@@ -58,7 +58,7 @@ const ViewEmployerProfile = ({ previewMode = false, employerId: propEmployerId }
         
         <PreviewBanner isVisible={previewMode} />
         
-        <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+        <div className="rounded-lg shadow-lg overflow-hidden">
           <EmployerProfileHeader profile={profile} />
           <ProfileTabs profile={profile} galleryImages={galleryImages} />
         </div>
