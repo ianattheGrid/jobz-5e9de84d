@@ -38,7 +38,7 @@ const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
 
   return (
     <div 
-      className="h-full p-6 bg-[#2A2A2A] text-foreground overflow-y-auto rounded-lg"
+      className="h-full p-6 bg-card text-foreground overflow-y-auto rounded-lg"
       onClick={(e) => e.stopPropagation()}
     >
       <div className="relative p-4">
