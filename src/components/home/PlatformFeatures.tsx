@@ -61,7 +61,7 @@ export const PlatformFeatures = () => {
         </TooltipProvider>
 
         <TabsContent value="hiring" className="mt-8 space-y-8 radix-tabpanel">
-          <div className="flex justify-end">
+          <div>
             <Dialog>
               <DialogTrigger asChild>
                 <Button variant="outline" size="sm" aria-label="How jobz works for employers">Learn more</Button>
@@ -114,7 +114,7 @@ export const PlatformFeatures = () => {
         </TabsContent>
 
         <TabsContent value="candidates" className="mt-8 space-y-8 radix-tabpanel">
-          <div className="flex justify-end">
+           <div>
             <Dialog>
               <DialogTrigger asChild>
                 <Button variant="outline" size="sm" aria-label="How jobz works for candidates">Learn more</Button>
@@ -167,7 +167,7 @@ export const PlatformFeatures = () => {
         </TabsContent>
 
         <TabsContent value="recruiters" className="mt-8 space-y-8 radix-tabpanel">
-          <div className="flex justify-end">
+          <div>
             <Dialog>
               <DialogTrigger asChild>
                 <Button variant="outline" size="sm" aria-label="What is a Connector?">Learn more</Button>
