@@ -225,6 +225,27 @@ export type Database = {
           },
         ]
       }
+      candidate_gallery: {
+        Row: {
+          candidate_id: string
+          created_at: string
+          id: string
+          image_url: string
+        }
+        Insert: {
+          candidate_id: string
+          created_at?: string
+          id?: string
+          image_url: string
+        }
+        Update: {
+          candidate_id?: string
+          created_at?: string
+          id?: string
+          image_url?: string
+        }
+        Relationships: []
+      }
       candidate_profiles: {
         Row: {
           additional_skills: string | null
@@ -268,6 +289,7 @@ export type Database = {
           skills_experience: Json | null
           travel_radius: number | null
           updated_at: string
+          visible_sections: Json
           work_eligibility: string | null
           work_preferences: string | null
           workArea: string | null
@@ -316,6 +338,7 @@ export type Database = {
           skills_experience?: Json | null
           travel_radius?: number | null
           updated_at?: string
+          visible_sections?: Json
           work_eligibility?: string | null
           work_preferences?: string | null
           workArea?: string | null
@@ -364,6 +387,7 @@ export type Database = {
           skills_experience?: Json | null
           travel_radius?: number | null
           updated_at?: string
+          visible_sections?: Json
           work_eligibility?: string | null
           work_preferences?: string | null
           workArea?: string | null
