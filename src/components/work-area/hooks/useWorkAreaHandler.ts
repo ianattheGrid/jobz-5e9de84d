@@ -186,34 +186,50 @@ export const useWorkAreaHandler = (control: Control<any>) => {
     setSelectedSpecialisation(specialisation);
     
     let titles: string[] = [];
-    const showSpec = showSpecializations;
 
-    if (showSpec.it) {
-      titles = getTitlesForITSpecialisation(specialisation);
-    } else if (showSpec.customerService) {
-      titles = getTitlesForCustomerServiceSpecialisation(specialisation);
-    } else if (showSpec.finance) {
-      titles = getTitlesForFinanceSpecialisation(specialisation);
-    } else if (showSpec.hr) {
-      titles = getTitlesForHRSpecialisation(specialisation);
-    } else if (showSpec.legal) {
-      titles = getTitlesForLegalSpecialisation(specialisation);
-    } else if (showSpec.manufacturing) {
-      titles = getTitlesForManufacturingSpecialisation(specialisation);
-    } else if (showSpec.energy) {
-      titles = getTitlesForEnergySpecialisation(specialisation);
-    } else if (showSpec.pharma) {
-      titles = getTitlesForPharmaSpecialisation(specialisation);
-    } else if (showSpec.publicSector) {
-      titles = getTitlesForPublicSectorSpecialisation(specialisation);
-    } else if (showSpec.rd) {
-      titles = getTitlesForRDSpecialisation(specialisation);
-    } else if (showSpec.qa) {
-      titles = getTitlesForQASpecialisation(specialisation);
-    } else if (showSpec.sales) {
-      titles = getTitlesForSalesSpecialisation(specialisation);
-    } else if (showSpec.marketing) {
-      titles = getTitlesForMarketingSpecialisation(specialisation);
+    // Determine titles based on the currently selected work area (more reliable than flags)
+    switch (workArea) {
+      case "IT":
+        titles = getTitlesForITSpecialisation(specialisation);
+        break;
+      case "Customer Service":
+        titles = getTitlesForCustomerServiceSpecialisation(specialisation);
+        break;
+      case "Accounting & Finance":
+        titles = getTitlesForFinanceSpecialisation(specialisation);
+        break;
+      case "Human Resources":
+        titles = getTitlesForHRSpecialisation(specialisation);
+        break;
+      case "Legal":
+        titles = getTitlesForLegalSpecialisation(specialisation);
+        break;
+      case "Manufacturing":
+        titles = getTitlesForManufacturingSpecialisation(specialisation);
+        break;
+      case "Energy & Utilities":
+        titles = getTitlesForEnergySpecialisation(specialisation);
+        break;
+      case "Pharma":
+        titles = getTitlesForPharmaSpecialisation(specialisation);
+        break;
+      case "Public Sector":
+        titles = getTitlesForPublicSectorSpecialisation(specialisation);
+        break;
+      case "R&D":
+        titles = getTitlesForRDSpecialisation(specialisation);
+        break;
+      case "Quality Assurance":
+        titles = getTitlesForQASpecialisation(specialisation);
+        break;
+      case "Sales":
+        titles = getTitlesForSalesSpecialisation(specialisation);
+        break;
+      case "Marketing":
+        titles = getTitlesForMarketingSpecialisation(specialisation);
+        break;
+      default:
+        titles = [];
     }
     
     console.log("Setting available titles:", titles);
