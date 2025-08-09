@@ -9,6 +9,7 @@ import ExperienceSection from "./sections/ExperienceSection";
 import QualificationsSection from "./sections/QualificationsSection";
 import SkillsSection from "./sections/SkillsSection";
 import JobTitlesSection from "./sections/JobTitlesSection";
+import GalleryCarousel from "./sections/GalleryCarousel";
 
 interface ProfileDetailsProps {
   profile: CandidateProfile;
@@ -83,7 +84,7 @@ const ProfileDetails = ({ profile, showVRRecommendation = false, vrRecommendatio
                 <MapPin className="h-4 w-4" />
                 <span>{profile.location?.join(", ") || "Location not specified"}</span>
               </div>
-              {profile.linkedin_url && (
+              {((profile as any).visible_sections?.linkedin ?? true) && profile.linkedin_url && (
                 <a 
                   href={profile.linkedin_url} 
                   target="_blank" 
@@ -99,8 +100,13 @@ const ProfileDetails = ({ profile, showVRRecommendation = false, vrRecommendatio
         </CardContent>
       </Card>
  
+      {/* Gallery (optional) */}
+      {((profile as any).visible_sections?.gallery ?? true) && (
+        <GalleryCarousel candidateId={(profile as any).id as unknown as string} />
+      )}
+
       {/* About/Summary */}
-      {profile.ai_synopsis && (
+      {((profile as any).visible_sections?.about ?? true) && profile.ai_synopsis && (
         <Card className="shadow-sm border border-gray-200 bg-white">
           <CardContent className="pt-6">
             <h3 className="text-xl font-semibold mb-3 text-gray-900">About</h3>
@@ -110,7 +116,7 @@ const ProfileDetails = ({ profile, showVRRecommendation = false, vrRecommendatio
       )}
 
       {/* Personality Snapshots */}
-      {Array.isArray((profile as any).personality) && (profile as any).personality.length > 0 && (
+      {((profile as any).visible_sections?.personality ?? true) && Array.isArray((profile as any).personality) && (profile as any).personality.length > 0 && (
         <Card className="shadow-sm border border-gray-200 bg-white">
           <CardContent className="pt-6">
             <h3 className="text-xl font-semibold mb-4 text-gray-900">Personality</h3>
@@ -125,81 +131,87 @@ const ProfileDetails = ({ profile, showVRRecommendation = false, vrRecommendatio
           </CardContent>
         </Card>
       )}
- 
+
       {/* Experience */}
-      <Card className="shadow-sm border border-gray-200 bg-white">
-        <CardContent className="pt-6">
-          <div className="flex items-center space-x-2 mb-4">
-            <Briefcase className="h-5 w-5 text-pink-600" />
-            <h3 className="text-xl font-semibold text-gray-900">Experience</h3>
-          </div>
-          
-          <div className="space-y-6">
-            {profile.current_employer && (
-              <div className="border-l-2 border-pink-200 pl-4 py-1">
-                <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 bg-pink-50 flex items-center justify-center rounded">
-                    <Briefcase className="h-5 w-5 text-pink-500" />
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-gray-900">{(() => {
-                      // Handle job_title which might be a string, an array, or a JSON string
-                      if (!profile.job_title) return "No Job Title";
-                      
-                      try {
-                        // If it's a JSON string, parse it
-                        if (typeof profile.job_title === 'string' && profile.job_title.startsWith('[')) {
-                          const titles = JSON.parse(profile.job_title);
-                          return Array.isArray(titles) ? titles[0] : profile.job_title;
+      {((profile as any).visible_sections?.experience ?? true) && (
+        <Card className="shadow-sm border border-gray-200 bg-white">
+          <CardContent className="pt-6">
+            <div className="flex items-center space-x-2 mb-4">
+              <Briefcase className="h-5 w-5 text-pink-600" />
+              <h3 className="text-xl font-semibold text-gray-900">Experience</h3>
+            </div>
+            
+            <div className="space-y-6">
+              {profile.current_employer && (
+                <div className="border-l-2 border-pink-200 pl-4 py-1">
+                  <div className="flex items-start gap-3">
+                    <div className="w-10 h-10 bg-pink-50 flex items-center justify-center rounded">
+                      <Briefcase className="h-5 w-5 text-pink-500" />
+                    </div>
+                    <div>
+                      <h4 className="font-medium text-gray-900">{(() => {
+                        // Handle job_title which might be a string, an array, or a JSON string
+                        if (!profile.job_title) return "No Job Title";
+                        
+                        try {
+                          // If it's a JSON string, parse it
+                          if (typeof profile.job_title === 'string' && profile.job_title.startsWith('[')) {
+                            const titles = JSON.parse(profile.job_title);
+                            return Array.isArray(titles) ? titles[0] : profile.job_title;
+                          }
+                          // If it's already an array
+                          else if (Array.isArray(profile.job_title)) {
+                            return profile.job_title[0];
+                          }
+                          // If it's just a string
+                          return profile.job_title;
+                        } catch (e) {
+                          // If JSON parsing fails, return as is
+                          return profile.job_title;
                         }
-                        // If it's already an array
-                        else if (Array.isArray(profile.job_title)) {
-                          return profile.job_title[0];
-                        }
-                        // If it's just a string
-                        return profile.job_title;
-                      } catch (e) {
-                        // If JSON parsing fails, return as is
-                        return profile.job_title;
-                      }
-                    })()}</h4>
-                    <p className="text-gray-700">{profile.current_employer}</p>
-                    <div className="flex items-center text-gray-600 text-sm mt-1">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                        <line x1="16" y1="2" x2="16" y2="6"></line>
-                        <line x1="8" y1="2" x2="8" y2="6"></line>
-                        <line x1="3" y1="10" x2="21" y2="10"></line>
-                      </svg>
-                      <span>
-                        {profile.years_in_current_title !== null && profile.years_in_current_title !== undefined 
-                          ? `${profile.years_in_current_title} year${profile.years_in_current_title !== 1 ? 's' : ''} in current role` 
-                          : `${profile.years_experience} year${profile.years_experience !== 1 ? 's' : ''} of experience`}
-                      </span>
+                      })()}</h4>
+                      <p className="text-gray-700">{profile.current_employer}</p>
+                      <div className="flex items-center text-gray-600 text-sm mt-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                          <line x1="16" y1="2" x2="16" y2="6"></line>
+                          <line x1="8" y1="2" x2="8" y2="6"></line>
+                          <line x1="3" y1="10" x2="21" y2="10"></line>
+                        </svg>
+                        <span>
+                          {profile.years_in_current_title !== null && profile.years_in_current_title !== undefined 
+                            ? `${profile.years_in_current_title} year${profile.years_in_current_title !== 1 ? 's' : ''} in current role` 
+                            : `${profile.years_experience} year${profile.years_experience !== 1 ? 's' : ''} of experience`}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            )}
+              )}
 
-            <div className="space-y-4">
-              <ExperienceSection profile={profile} />
-              <JobTitlesSection profile={profile} />
+              <div className="space-y-4">
+                <ExperienceSection profile={profile} />
+                <JobTitlesSection profile={profile} />
+              </div>
             </div>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Skills and Qualifications */}
-      <Card className="shadow-sm border border-gray-200 bg-white">
-        <CardContent className="pt-6">
-          <SkillsSection profile={profile} />
-          
-          <div className="mt-6">
-            <QualificationsSection profile={profile} />
-          </div>
-        </CardContent>
-      </Card>
+      {(((profile as any).visible_sections?.skills ?? true) || ((profile as any).visible_sections?.qualifications ?? true)) && (
+        <Card className="shadow-sm border border-gray-200 bg-white">
+          <CardContent className="pt-6">
+            {((profile as any).visible_sections?.skills ?? true) && <SkillsSection profile={profile} />}
+            
+            {((profile as any).visible_sections?.qualifications ?? true) && (
+              <div className="mt-6">
+                <QualificationsSection profile={profile} />
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      )}
 
       {/* Location and Preferences */}
       <Card className="shadow-sm border border-gray-200 bg-white">

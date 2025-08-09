@@ -13,6 +13,8 @@ import { Button } from "@/components/ui/button";
 import ProfileDetails from "@/components/candidate-profile/ProfileDetails";
 import { CandidateProfile as ProfileType } from "@/integrations/supabase/types/profiles";
 import { CreateFromCVButton } from "@/components/candidate/CreateFromCVButton";
+import { CandidateGallerySection } from "@/components/candidate/gallery/CandidateGallerySection";
+import { SectionVisibilityToggles } from "@/components/candidate/SectionVisibilityToggles";
 
 export default function CandidateProfile() {
   const { toast } = useToast();
@@ -145,10 +147,10 @@ export default function CandidateProfile() {
           </div>
         </div>
         
-        <div className="mb-8 max-w-2xl mx-auto">
+        <div className="mb-8 max-w-3xl mx-auto">
           <h2 className="text-xl font-semibold mb-4 text-gray-900">Documents & Profile Picture</h2>
           {userId && (
-            <div className="space-y-6">
+            <div className="space-y-8">
               <div className="bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
                 <FileUploadSection 
                   userId={userId} 
@@ -164,7 +166,22 @@ export default function CandidateProfile() {
                   />
                 </div>
               </div>
+
+              {/* Candidate Gallery */}
+              <div className="bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
+                <div className="space-y-6">
+                  <h2 className="text-xl font-semibold text-gray-900">Gallery</h2>
+                  {userId && <CandidateGallerySection candidateId={userId} />}
+                </div>
+              </div>
               
+              {/* Visibility toggles */}
+              <SectionVisibilityToggles 
+                userId={userId}
+                initial={(profileData as any)?.visible_sections || null}
+                onChange={(next) => setProfileData(prev => ({ ...(prev as any), visible_sections: next }) as any)}
+              />
+
               <VerificationSection />
             </div>
           )}
