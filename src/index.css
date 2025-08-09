@@ -297,3 +297,9 @@ a {
 .demo-candidate-dark svg {
   color: hsl(var(--primary)) !important;
 }
+/* Ensure badge text (skills) remains readable on white chips */
+.demo-candidate-dark .badge,
+.demo-candidate-dark .badge * {
+  color: hsl(var(--secondary-foreground)) !important;
+}
+
