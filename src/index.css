@@ -136,9 +136,8 @@ button,
 }
 
 /* Form section headings */
-h1, h2, h3, h4, h5, h6 {
-  @apply text-gray-900 !important;
-}
+/* Remove global heading color override to allow contextual colors (e.g., white on dark hero) */
+/* h1, h2, h3, h4, h5, h6 { @apply text-gray-900 !important; } */
 
 /* Profile card text override */
 .profile-card h1, 
