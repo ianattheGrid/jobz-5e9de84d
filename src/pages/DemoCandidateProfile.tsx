@@ -126,27 +126,8 @@ export default function DemoCandidateProfile() {
         </div>
       </div>
 
-      {/* Hero Header */}
-      <div className="mb-8 rounded-xl overflow-hidden shadow-sm">
-        <div className="bg-gradient-to-r from-indigo-950 via-indigo-900 to-pink-700 text-white">
-          <div className="px-6 py-8 sm:px-8">
-            <div className="flex items-start gap-6">
-              <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden ring-4 ring-white/20 shadow">
-                <img src={sarahProfileImage} alt={candidate.name} className="w-full h-full object-cover" />
-              </div>
-              <div className="flex-1">
-                <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">{candidate.name}</h1>
-                <p className="text-white/90 text-sm sm:text-base">{candidate.title}</p>
-                <div className="mt-2 inline-flex items-center gap-2 text-white/80 text-sm">
-                  <MapPin className="h-4 w-4" /> {candidate.location}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      
       {/* Grid */}
+      <div className="demo-candidate-dark">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left Column - Profile Summary */}
         <div className="lg:col-span-1 space-y-6">
@@ -320,6 +301,7 @@ export default function DemoCandidateProfile() {
             </CardContent>
           </Card>
         </div>
+      </div>
       </div>
       </div>
     </div>

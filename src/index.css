@@ -267,3 +267,25 @@ a {
 .calculator-dark [data-radix-label] {
   color: hsl(var(--primary-foreground)) !important;
 }
+
+/* Demo Candidate dark wrapper overrides */
+.demo-candidate-dark { 
+  @apply text-white; 
+}
+.demo-candidate-dark [class*="bg-card"] {
+  @apply bg-indigo-950 border-indigo-900 !important;
+}
+.demo-candidate-dark h1,
+.demo-candidate-dark h2,
+.demo-candidate-dark h3,
+.demo-candidate-dark h4,
+.demo-candidate-dark h5,
+.demo-candidate-dark h6 {
+  color: hsl(var(--primary-foreground)) !important;
+}
+.demo-candidate-dark .text-muted-foreground {
+  color: hsl(var(--primary-foreground) / 0.85) !important;
+}
+.demo-candidate-dark svg {
+  color: hsl(var(--primary)) !important;
+}
