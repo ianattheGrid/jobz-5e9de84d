@@ -2,8 +2,9 @@
 import React from 'react';
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FileText, Coins, Bot, Calculator, User, Target, Users, MapPin, HandCoins, ListCheck, Clock } from "lucide-react";
+import { FileText, Coins, Bot, Calculator, User, Target, Users, MapPin, HandCoins, ListCheck, Clock, Info } from "lucide-react";
 import { PRIMARY_COLOR_PATTERN } from "@/styles/colorPatterns";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 export const PlatformFeatures = () => {
   return (
@@ -13,17 +14,49 @@ export const PlatformFeatures = () => {
       </h2>
       
       <Tabs defaultValue="hiring" className="w-full max-w-4xl mx-auto">
-        <TabsList className="grid w-full grid-cols-3 bg-white radix-tablist">
-          <TabsTrigger className="text-black radix-tab" value="hiring">
-            Employers
-          </TabsTrigger>
-          <TabsTrigger className="text-black radix-tab" value="candidates">
-            Candidates
-          </TabsTrigger>
-          <TabsTrigger className="text-black radix-tab" value="recruiters">
-            Connectors
-          </TabsTrigger>
-        </TabsList>
+        <TooltipProvider>
+          <TabsList className="grid w-full grid-cols-3 bg-white radix-tablist">
+            <TabsTrigger className="text-black radix-tab" value="hiring">
+              <span className="inline-flex items-center">
+                Employers
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Info className="ml-2 h-4 w-4 text-muted-foreground" aria-label="How it works for employers" />
+                  </TooltipTrigger>
+                  <TooltipContent className="max-w-xs">
+                    <p>Vetted Connectors discreetly source candidates for hard-to-fill roles. You stay in control and only pay on hire.</p>
+                  </TooltipContent>
+                </Tooltip>
+              </span>
+            </TabsTrigger>
+            <TabsTrigger className="text-black radix-tab" value="candidates">
+              <span className="inline-flex items-center">
+                Candidates
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Info className="ml-2 h-4 w-4 text-muted-foreground" aria-label="How it works for candidates" />
+                  </TooltipTrigger>
+                  <TooltipContent className="max-w-xs">
+                    <p>Get warm intros to relevant roles via Connectors. Your details stay private until you opt in; earn a bonus when hired.</p>
+                  </TooltipContent>
+                </Tooltip>
+              </span>
+            </TabsTrigger>
+            <TabsTrigger className="text-black radix-tab" value="recruiters">
+              <span className="inline-flex items-center">
+                Connectors
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Info className="ml-2 h-4 w-4 text-muted-foreground" aria-label="More about Connectors" />
+                  </TooltipTrigger>
+                  <TooltipContent className="max-w-xs">
+                    <p>Flexible income by introducing great candidates anonymously from your network. We handle the admin; paid on success.</p>
+                  </TooltipContent>
+                </Tooltip>
+              </span>
+            </TabsTrigger>
+          </TabsList>
+        </TooltipProvider>
 
         <TabsContent value="hiring" className="mt-8 space-y-8 radix-tabpanel">
           <div className="grid md:grid-cols-2 gap-6">
