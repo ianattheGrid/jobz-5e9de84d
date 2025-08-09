@@ -52,7 +52,7 @@ export const useVRDashboard = () => {
               
             if (!roleData || roleData.role !== 'vr') {
               console.error('User does not have VR role:', roleData);
-              setError('You do not have Virtual Recruiter permissions. Please contact support.');
+              setError('You do not have Connector permissions. Please contact support.');
               setLoading(false);
               return;
             }
@@ -86,7 +86,7 @@ export const useVRDashboard = () => {
             
             toast({
               title: "Profile Created",
-              description: "Your Virtual Recruiter profile has been created successfully."
+              description: "Your Connector profile has been created successfully."
             });
           } catch (err: any) {
             console.error('Error in profile creation:', err);

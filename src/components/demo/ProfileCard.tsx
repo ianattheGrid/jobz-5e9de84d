@@ -61,7 +61,7 @@ export const ProfileCard = ({
     switch (type) {
       case "candidate": return "Candidate";
       case "employer": return "Employer";
-      case "virtual-recruiter": return "Virtual Recruiter";
+      case "virtual-recruiter": return "Connector";
       default: return "Profile";
     }
   };

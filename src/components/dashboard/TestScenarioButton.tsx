@@ -22,8 +22,8 @@ export const TestScenarioButton = () => {
             <div className="p-2 bg-gray-100 rounded">
               <p><strong>Employer:</strong> {credentials.employerEmail}</p>
               <p><strong>Direct Candidate:</strong> {credentials.candidateEmail}</p>
-              <p><strong>VR Recommended Candidate:</strong> {credentials.vrCandidateEmail}</p>
-              <p><strong>Virtual Recruiter:</strong> {credentials.vrEmail}</p>
+              <p><strong>Connector-Recommended Candidate:</strong> {credentials.vrCandidateEmail}</p>
+              <p><strong>Connector:</strong> {credentials.vrEmail}</p>
             </div>
             <p>Complete workflow scenario created with:</p>
             <ul className="list-disc pl-5">
@@ -31,7 +31,7 @@ export const TestScenarioButton = () => {
               <li>Direct application and VR recommendation</li>
               <li>Interview slots that were rejected, rescheduled, and accepted</li>
               <li>Job offer to VR candidate</li>
-              <li>Commission setup (60% VR / 40% candidate)</li>
+              <li>Commission setup (60% Connector / 40% candidate)</li>
             </ul>
           </div>
         ),

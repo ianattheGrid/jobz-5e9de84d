@@ -37,7 +37,7 @@ export default function PreviewVRProfile() {
           toast({
             variant: "destructive",
             title: "Access Denied",
-            description: "Only Virtual Recruiters can access this page.",
+            description: "Only Connectors can access this page.",
           });
           navigate('/');
           return;
@@ -91,9 +91,9 @@ export default function PreviewVRProfile() {
         {profile && (
           <ProfileCard
             fullName={profile.full_name}
-            title="Virtual Recruiter"
+            title="Connector"
             additionalInfo={[
-              { label: "VR Number", value: profile.vr_number || "Not assigned" },
+              { label: "Connect ID", value: profile.vr_number || "Not assigned" },
               { label: "Location", value: profile.location || "Not specified" },
               { label: "Successful Placements", value: profile.successful_placements?.toString() || "0" },
               { label: "Recommendations", value: profile.recommendations_count?.toString() || "0" },

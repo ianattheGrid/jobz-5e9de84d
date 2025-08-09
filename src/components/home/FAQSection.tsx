@@ -43,7 +43,7 @@ export const FAQSection = () => {
                 value="recruiters"
                 className="tab-trigger py-3 radix-tab"
               >
-                Virtual Recruiters
+                Connectors
               </TabsTrigger>
             </TabsList>
 
@@ -67,7 +67,7 @@ export const FAQSection = () => {
                 </AccordionItem>
                 <AccordionItem value="item-3">
                   <AccordionTrigger className="text-left">
-                    How do virtual recruiters help with my hiring?
+                    How do connectors help with my hiring?
                   </AccordionTrigger>
                   <AccordionContent>
                     Content will be added soon.
@@ -109,7 +109,7 @@ export const FAQSection = () => {
               <Accordion type="single" collapsible className="w-full">
                 <AccordionItem value="item-1">
                   <AccordionTrigger className="text-left">
-                    How do I become a virtual recruiter?
+                    How do I become a connector?
                   </AccordionTrigger>
                   <AccordionContent>
                     Content will be added soon.
@@ -117,7 +117,7 @@ export const FAQSection = () => {
                 </AccordionItem>
                 <AccordionItem value="item-2">
                   <AccordionTrigger className="text-left">
-                    How much can I earn as a virtual recruiter?
+                    How much can I earn as a connector?
                   </AccordionTrigger>
                   <AccordionContent>
                     Content will be added soon.

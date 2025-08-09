@@ -48,7 +48,7 @@ export const CandidateFields = ({ linkedinUrl, setLinkedinUrl, referralCode = ""
                   <Info className="h-4 w-4 text-muted-foreground" />
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p className="max-w-xs">If you were referred by a Virtual Recruiter, please enter their referral code.</p>
+                  <p className="max-w-xs">If you were referred by a Connector, please enter their referral code.</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
@@ -59,7 +59,7 @@ export const CandidateFields = ({ linkedinUrl, setLinkedinUrl, referralCode = ""
             value={referralCode}
             onChange={(e) => setReferralCode(e.target.value)}
           />
-          <FormDescription>Enter if you were referred by a Virtual Recruiter</FormDescription>
+          <FormDescription>Enter if you were referred by a Connector</FormDescription>
         </div>
       )}
     </>

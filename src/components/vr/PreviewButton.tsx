@@ -29,7 +29,7 @@ export const PreviewButton = () => {
         toast({
           variant: "destructive",
           title: "Access denied",
-          description: "Only Virtual Recruiters can preview their profiles.",
+          description: "Only Connectors can preview their profiles.",
         });
         return;
       }

@@ -7,7 +7,7 @@ export const DashboardLoading = () => {
     <div className="container mx-auto py-8">
       <Card className="w-full">
         <CardHeader>
-          <CardTitle>Virtual Recruiter Dashboard</CardTitle>
+          <CardTitle>Connector Dashboard</CardTitle>
           <CardDescription>Loading your dashboard...</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col items-center justify-center p-12">

@@ -40,7 +40,7 @@ export const DemoCardsSection = () => {
   const vrData = {
     type: "virtual-recruiter" as const,
     name: "Alex",
-    title: "Senior Virtual Recruiter",
+    title: "Senior Connector",
     location: "UK-wide",
     image: alexImage,
     rating: 4.9,

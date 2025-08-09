@@ -100,7 +100,7 @@ export function JobSpecificRecommendationForm({
       if (status.exists && !status.isExpired) {
         toast({
           title: "Already Recommended",
-          description: `This candidate was already recommended by ${status.recommendedBy || "another Virtual Recruiter"}. Recommendations are valid for 6 months.`,
+          description: `This candidate was already recommended by ${status.recommendedBy || "another Connector"}. Recommendations are valid for 6 months.`,
           variant: "destructive",
         });
         return;

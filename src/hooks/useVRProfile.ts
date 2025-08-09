@@ -52,7 +52,7 @@ export const useVRProfile = () => {
           toast({
             variant: "destructive",
             title: "Access Error",
-            description: "You do not have Virtual Recruiter access."
+            description: "You do not have Connector access."
           });
           navigate('/');
           return;
@@ -72,7 +72,7 @@ export const useVRProfile = () => {
             toast({
               variant: "destructive",
               title: "Profile Not Found",
-              description: "Your Virtual Recruiter profile hasn't been set up correctly."
+              description: "Your Connector profile hasn't been set up correctly."
             });
           } else {
             throw error;

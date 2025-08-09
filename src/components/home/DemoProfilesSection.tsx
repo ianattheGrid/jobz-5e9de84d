@@ -30,7 +30,7 @@ export const DemoProfilesSection = () => {
             </Link>
             <Link to="/demo/virtual-recruiter">
               <Button variant="outline">
-                Meet Virtual Recruiter
+                Meet Connector
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>

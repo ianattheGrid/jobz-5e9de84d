@@ -21,7 +21,7 @@ export const PlatformFeatures = () => {
             Candidates
           </TabsTrigger>
           <TabsTrigger className="text-black radix-tab" value="recruiters">
-            Virtual Recruiters
+            Connectors
           </TabsTrigger>
         </TabsList>
 
@@ -40,7 +40,7 @@ export const PlatformFeatures = () => {
             <FeatureCard
               icon={Bot}
               title="AI-Powered Sourcing"
-              description="Activate virtual recruiters to anonymously source and match the best candidates for your roles."
+              description="Activate connectors to anonymously source and match the best candidates for your roles."
             />
             <FeatureCard
               icon={Calculator}

@@ -54,7 +54,7 @@ const MobileNav = ({ isAuthenticated, userType }: MobileNavProps) => {
                 Candidate Sign In
               </Link>
               <Link to="/vr/signin" className="text-lg text-muted-foreground hover:text-primary transition-colors">
-                Virtual Recruiter Sign In
+                Connector Sign In
               </Link>
               <div className="h-px bg-border my-2" />
               <Link to="/employer/signup" className="text-lg text-muted-foreground hover:text-primary transition-colors">
@@ -64,7 +64,7 @@ const MobileNav = ({ isAuthenticated, userType }: MobileNavProps) => {
                 Candidate Sign Up
               </Link>
               <Link to="/vr/signup" className="text-lg text-muted-foreground hover:text-primary transition-colors">
-                Virtual Recruiter Sign Up
+                Connector Sign Up
               </Link>
             </>
           ) : (

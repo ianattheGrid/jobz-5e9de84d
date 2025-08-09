@@ -47,11 +47,11 @@ export const ReferralInvite = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${process.env.SUPABASE_ANON_KEY}`,
         },
-        body: JSON.stringify({
-          to: [email],
-          vrName: vrProfile?.full_name || "A Virtual Recruiter",
-          referralCode: referralData.referral_code,
-        }),
+          body: JSON.stringify({
+            to: [email],
+            vrName: vrProfile?.full_name || "A Connector",
+            referralCode: referralData.referral_code,
+          }),
       });
 
       if (!response.ok) throw new Error("Failed to send email");

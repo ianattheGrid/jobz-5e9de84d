@@ -64,7 +64,7 @@ export const BonusCalculator = ({
             className="w-full"
           />
           <div className="text-sm text-gray-700">
-            Hired Candidate: {splitPercentage}% | Virtual Recruiter: {100 - splitPercentage}%
+            Hired Candidate: {splitPercentage}% | Connector: {100 - splitPercentage}%
           </div>
         </div>
 
@@ -76,7 +76,7 @@ export const BonusCalculator = ({
             <div className="text-sm text-gray-700 space-y-1">
               <p>Fee charged: {formatCurrency(totalCommission)}</p>
               <p>• Candidate: {formatCurrency(candidateCommission)}</p>
-              <p>• Virtual Recruiter: {formatCurrency(referralCommission)}</p>
+              <p>• Connector: {formatCurrency(referralCommission)}</p>
             </div>
           </div>
         )}

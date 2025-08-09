@@ -74,15 +74,15 @@ export default function VirtualRecruiterProfile() {
         </div>
 
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-2xl font-bold mb-6">Your Virtual Recruiter Profile</h1>
+          <h1 className="text-2xl font-bold mb-6">Your Connector Profile</h1>
 
           {profile && (
             <div className="space-y-8">
               <ProfileCard
                 fullName={profile.full_name}
-                title="Virtual Recruiter"
+                title="Connector"
                 additionalInfo={[
-                  { label: "VR Number", value: profile.vr_number || "Not assigned" },
+                  { label: "Connect ID", value: profile.vr_number || "Not assigned" },
                   { label: "Email", value: profile.email || "" },
                   { label: "Location", value: profile.location || "" },
                   { label: "Bank Account Status", value: profile.bank_account_verified ? "Verified" : "Not Verified" },

@@ -24,7 +24,7 @@ export const DashboardError = ({ error }: DashboardErrorProps) => {
       </Alert>
       <Card>
         <CardHeader>
-          <CardTitle>Virtual Recruiter Dashboard</CardTitle>
+          <CardTitle>Connector Dashboard</CardTitle>
           <CardDescription>We encountered an issue with your account</CardDescription>
         </CardHeader>
         <CardContent>

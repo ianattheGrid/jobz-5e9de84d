@@ -27,7 +27,7 @@ export const SignUpSection = () => {
           />
           <UserTypeCard
             icon={Users}
-            title="Virtual Recruiter"
+            title="Connector"
             description="Create a flexible income stream from anywhere - perfect as your main or second income"
             signInPath="/vr/signin"
             signUpPath="/vr/signup"

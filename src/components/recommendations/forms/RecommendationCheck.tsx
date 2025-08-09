@@ -81,7 +81,7 @@ export function RecommendationCheck() {
           <Info className="h-5 w-5 text-blue-600" />
           <AlertTitle>Previous recommendation expired</AlertTitle>
           <AlertDescription>
-            This candidate was previously recommended by {status.recommendedBy || "another Virtual Recruiter"} on {status.recommendationDate ? format(new Date(status.recommendationDate), "PPP") : "an unknown date"}, but the 6-month recommendation period has expired. You can submit a new recommendation.
+            This candidate was previously recommended by {status.recommendedBy || "another Connector"} on {status.recommendationDate ? format(new Date(status.recommendationDate), "PPP") : "an unknown date"}, but the 6-month recommendation period has expired. You can submit a new recommendation.
           </AlertDescription>
         </Alert>
       );
@@ -92,7 +92,7 @@ export function RecommendationCheck() {
         <AlertTriangle className="h-5 w-5 text-amber-600" />
         <AlertTitle>Candidate already recommended</AlertTitle>
         <AlertDescription>
-          This candidate was recently recommended by {status.recommendedBy || "another Virtual Recruiter"} on {status.recommendationDate ? format(new Date(status.recommendationDate), "PPP") : "an unknown date"}. Recommendations are valid for 6 months.
+          This candidate was recently recommended by {status.recommendedBy || "another Connector"} on {status.recommendationDate ? format(new Date(status.recommendationDate), "PPP") : "an unknown date"}. Recommendations are valid for 6 months.
         </AlertDescription>
       </Alert>
     );
