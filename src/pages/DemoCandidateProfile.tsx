@@ -191,7 +191,7 @@ export default function DemoCandidateProfile() {
             <CardContent>
               <div className="flex flex-wrap gap-2">
                 {candidate.skills.map((skill, index) => (
-                  <Badge key={index} variant="secondary">
+                  <Badge key={index} variant="secondary" className="text-primary">
                     {skill}
                   </Badge>
                 ))}
