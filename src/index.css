@@ -275,6 +275,10 @@ a {
 .demo-candidate-dark [class*="bg-card"] {
   @apply bg-indigo-950 border-indigo-900 !important;
 }
+/* Ensure default card text is white for readability on navy */
+.demo-candidate-dark .text-card-foreground {
+  color: hsl(var(--primary-foreground)) !important;
+}
 .demo-candidate-dark h1,
 .demo-candidate-dark h2,
 .demo-candidate-dark h3,
@@ -285,6 +289,10 @@ a {
 }
 .demo-candidate-dark .text-muted-foreground {
   color: hsl(var(--primary-foreground) / 0.85) !important;
+}
+/* Accent links in pink for contrast */
+.demo-candidate-dark a {
+  color: hsl(var(--primary)) !important;
 }
 .demo-candidate-dark svg {
   color: hsl(var(--primary)) !important;
