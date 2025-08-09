@@ -14,7 +14,7 @@ import {
   getTitlesForMarketingSpecialisation,
   getTitlesForPharmaSpecialisation,
   getTitlesForPublicSectorSpecialisation
-} from "../utils/titles";
+} from "../utils/titles/index";
 import { getTitlesForSalesSpecialisation } from "../utils/titles/sales-titles";
 import { itRoles } from "../constants/it-roles";
 
