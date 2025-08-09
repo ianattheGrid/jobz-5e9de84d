@@ -19,6 +19,10 @@ import {
   ArrowLeft
 } from "lucide-react";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import gallery1 from "@/assets/employer-gallery-1.jpg";
+import gallery2 from "@/assets/employer-gallery-2.jpg";
+import gallery3 from "@/assets/employer-gallery-3.jpg";
+import gallery4 from "@/assets/employer-gallery-4.jpg";
 
 export default function DemoEmployerProfile() {
   const employer = {
@@ -79,11 +83,10 @@ export default function DemoEmployerProfile() {
     }
   };
   const gallery = [
-    "/placeholder.svg",
-    "/placeholder.svg",
-    "/placeholder.svg",
-    "/placeholder.svg",
-    "/placeholder.svg",
+    gallery1,
+    gallery2,
+    gallery3,
+    gallery4,
   ];
 
   return (
@@ -171,10 +174,11 @@ export default function DemoEmployerProfile() {
         </nav>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="demo-employer-dark">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left Column */}
         <div className="lg:col-span-2 space-y-6">
-          <Card id="about" className="bg-muted">
+          <Card id="about">
             <CardHeader>
               <CardTitle>About Us</CardTitle>
             </CardHeader>
@@ -199,7 +203,7 @@ export default function DemoEmployerProfile() {
                   <CarouselContent>
                     {gallery.map((src, idx) => (
                       <CarouselItem key={idx}>
-                        <div className="w-full h-64 sm:h-80 overflow-hidden rounded-md">
+                        <div className="w-full h-48 sm:h-56 overflow-hidden rounded-md">
                           <img src={src} alt={`Company gallery ${idx+1}`} className="w-full h-full object-cover" loading="lazy" />
                         </div>
                       </CarouselItem>
@@ -212,7 +216,7 @@ export default function DemoEmployerProfile() {
             </CardContent>
           </Card>
 
-          <Card id="roles" className="bg-muted">
+          <Card id="roles">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Briefcase className="h-5 w-5" />
@@ -253,7 +257,7 @@ export default function DemoEmployerProfile() {
 
         {/* Right Column */}
         <div className="space-y-6">
-          <Card id="values" className="bg-muted">
+          <Card id="values">
             <CardHeader>
               <CardTitle>Company Values</CardTitle>
             </CardHeader>
@@ -269,7 +273,7 @@ export default function DemoEmployerProfile() {
             </CardContent>
           </Card>
 
-          <Card id="benefits" className="bg-muted">
+          <Card id="benefits">
             <CardHeader>
               <CardTitle>Benefits & Perks</CardTitle>
             </CardHeader>
@@ -285,7 +289,7 @@ export default function DemoEmployerProfile() {
             </CardContent>
           </Card>
 
-          <Card id="info" className="bg-muted">
+          <Card id="info">
             <CardHeader>
               <CardTitle>Company Info</CardTitle>
             </CardHeader>
@@ -307,6 +311,7 @@ export default function DemoEmployerProfile() {
             </CardContent>
           </Card>
         </div>
+      </div>
       </div>
       </div>
     </div>

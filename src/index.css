@@ -302,3 +302,29 @@ a {
   color: hsl(var(--secondary-foreground)) !important;
 }
 
+/* Demo Employer dark wrapper overrides */
+.demo-employer-dark { 
+  @apply text-white; 
+}
+.demo-employer-dark [class*="bg-card"],
+.demo-employer-dark .bg-muted {
+  @apply bg-indigo-950 border-indigo-900 !important;
+}
+.demo-employer-dark .text-card-foreground {
+  color: hsl(var(--primary-foreground)) !important;
+}
+.demo-employer-dark h1,
+.demo-employer-dark h2,
+.demo-employer-dark h3,
+.demo-employer-dark h4,
+.demo-employer-dark h5,
+.demo-employer-dark h6 {
+  color: hsl(var(--primary-foreground)) !important;
+}
+.demo-employer-dark .text-muted-foreground {
+  color: hsl(var(--primary-foreground) / 0.85) !important;
+}
+.demo-employer-dark a,
+.demo-employer-dark svg {
+  color: hsl(var(--primary)) !important;
+}
