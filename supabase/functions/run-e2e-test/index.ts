@@ -111,13 +111,15 @@ serve(async (req: Request) => {
     await insertCandidate(vrCandidateId, vrCandidateEmail, "E2E VR Candidate", 6);
 
     // VR profile (minimal)
-    const { error: vrProfErr } = await admin.from("virtual_recruiter_profiles").insert({
+    const vrProfile = {
       id: vrId,
       full_name: "E2E Connector",
       email: vrEmail,
       location: "Remote",
       is_active: true,
-    } as any);
+    } as any;
+    console.log("run-e2e-test: inserting VR profile", vrProfile);
+    const { error: vrProfErr } = await admin.from("virtual_recruiter_profiles").insert(vrProfile);
     if (vrProfErr) throw vrProfErr;
 
     // 3) Create job
