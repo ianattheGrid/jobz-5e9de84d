@@ -275,7 +275,6 @@ serve(async (req: Request) => {
         candidate_id: vrCandidateId,
         employer_id: employerId,
         recommendation_id: created.recommendationId,
-        vr_id: vrId,
         candidate_commission: candCommission,
         vr_commission: vrCommission,
         start_date: toDate(startDate),
