@@ -1328,7 +1328,7 @@ export type Database = {
           full_name: string
           id: string
           is_active?: boolean | null
-          location: string
+          location?: string
           national_insurance_number?: string | null
           recommendations_count?: number | null
           successful_placements?: number | null
