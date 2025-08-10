@@ -247,7 +247,7 @@ serve(async (req: Request) => {
     // 8) Offer to VR candidate
     const { error: offerErr } = await admin
       .from("applications")
-      .update({ status: "offered" })
+      .update({ status: "reviewing" })
       .eq("job_id", job.id)
       .eq("applicant_id", vrCandidateId);
     if (offerErr) throw offerErr;
@@ -263,7 +263,7 @@ serve(async (req: Request) => {
 
     const { error: acceptErr } = await admin
       .from("applications")
-      .update({ status: "accepted", candidate_accepted: true, employer_accepted: true })
+      .update({ status: "hired", candidate_accepted: true, employer_accepted: true })
       .eq("job_id", job.id)
       .eq("applicant_id", vrCandidateId);
     if (acceptErr) throw acceptErr;
