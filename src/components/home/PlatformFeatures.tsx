@@ -3,7 +3,7 @@ import React from 'react';
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FileText, Coins, Bot, Calculator, User, Target, Users, MapPin, HandCoins, ListCheck, Clock, Info } from "lucide-react";
+import { FileText, Coins, Bot, Calculator, User, Target, Users, MapPin, HandCoins, ListCheck, Clock, Info, Workflow } from "lucide-react";
 import { PRIMARY_COLOR_PATTERN } from "@/styles/colorPatterns";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -119,9 +119,9 @@ export const PlatformFeatures = () => {
               description="Activate connectors to anonymously source and match the best candidates for your roles."
             />
             <FeatureCard
-              icon={Calculator}
-              title="Commission Calculator"
-              description="Use our transparent calculator to see exact costs and potential savings for each hire."
+              icon={Workflow}
+              title="Automated Hiring Lifecycle"
+              description="From advertising to offering, it's all done in a few clicks."
             />
           </div>
         </TabsContent>
