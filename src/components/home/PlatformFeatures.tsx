@@ -97,7 +97,7 @@ export const PlatformFeatures = () => {
               <DialogTrigger asChild>
                 <Button variant="outline" size="sm" aria-label="Open employee recruitment cost calculator">Try cost calculator</Button>
               </DialogTrigger>
-              <DialogContent className="max-w-4xl">
+              <DialogContent className="max-w-4xl max-h-[85vh] overflow-y-auto">
                 <EmployeeRecruitmentCalculator />
               </DialogContent>
             </Dialog>
@@ -157,7 +157,7 @@ export const PlatformFeatures = () => {
               <DialogTrigger asChild>
                 <Button variant="outline" size="sm" aria-label="Open bonus calculator">Try bonus calculator</Button>
               </DialogTrigger>
-              <DialogContent className="max-w-xl">
+              <DialogContent className="max-w-xl max-h-[85vh] overflow-y-auto">
                 <BonusCalculator
                   sampleSalary={bonusSampleSalary}
                   feePercentage={bonusFeePercentage}
@@ -224,7 +224,7 @@ export const PlatformFeatures = () => {
               <DialogTrigger asChild>
                 <Button variant="outline" size="sm" aria-label="Open bonus calculator">Try bonus calculator</Button>
               </DialogTrigger>
-              <DialogContent className="max-w-xl">
+              <DialogContent className="max-w-xl max-h-[85vh] overflow-y-auto">
                 <BonusCalculator
                   sampleSalary={bonusSampleSalary}
                   feePercentage={bonusFeePercentage}
