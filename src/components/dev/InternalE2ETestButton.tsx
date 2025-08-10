@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -35,7 +35,16 @@ export const InternalE2ETestButton = () => {
       setLoading(false);
     }
   };
-
+  
+  useEffect(() => {
+    if (!enabled) return;
+    const already = sessionStorage.getItem('e2e-ran');
+    if (!already) {
+      sessionStorage.setItem('e2e-ran', '1');
+      runTest();
+    }
+  }, [enabled]);
+  
   return (
     <div className="fixed bottom-4 right-4 z-50">
       <Button variant="navy" onClick={runTest} disabled={loading}>
