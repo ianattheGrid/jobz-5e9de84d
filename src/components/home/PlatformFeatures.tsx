@@ -121,7 +121,7 @@ export const PlatformFeatures = () => {
             <FeatureCard
               icon={Workflow}
               title="Automated Hiring Lifecycle"
-              description="From advertising to offering, it's all done in a few clicks."
+              description="From advertising to offering, it's all done in a few clicks. Saving your team hours, even days."
             />
           </div>
         </TabsContent>
