@@ -115,6 +115,7 @@ serve(async (req: Request) => {
       id: vrId,
       full_name: "E2E Connector",
       email: vrEmail,
+      location: "Remote",
       is_active: true,
     } as any);
     if (vrProfErr) throw vrProfErr;
