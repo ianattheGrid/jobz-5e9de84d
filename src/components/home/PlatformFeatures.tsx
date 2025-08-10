@@ -66,27 +66,27 @@ export const PlatformFeatures = () => {
               <DialogTrigger asChild>
                 <Button variant="outline" size="sm" aria-label="How jobz works for employers">Learn more</Button>
               </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>How jobz works for Employers</DialogTitle>
-                  <DialogDescription>
-                    Control the process while expanding your reach for hard-to-fill roles. Pay only when a hire starts.
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="space-y-3 text-foreground">
-                  <ol className="list-decimal pl-5 space-y-2">
-                    <li>Post a role and set your “You’re Hired” bonus.</li>
-                    <li>Connectors anonymously source and recommend candidates from trusted networks.</li>
-                    <li>Review recommendations and request intros when you’re interested.</li>
-                    <li>Hire with confidence; bonuses are released on successful start.</li>
-                  </ol>
-                  <ul className="list-disc pl-5 space-y-1">
-                    <li>We vet and manage all Connectors.</li>
-                    <li>Recommendations remain anonymous until both sides opt in.</li>
-                    <li>Transparent, performance-based cost.</li>
-                  </ul>
-                </div>
-              </DialogContent>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Your virtual hiring team for £9/month</DialogTitle>
+                    <DialogDescription>
+                      Hire directly and fill multiple roles under one low‑cost subscription. Attract more applicants by setting a clear "You're Hired" bonus. For harder‑to‑fill roles, tap our connector/nomad network—no agencies, no complex software.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="space-y-3 text-foreground">
+                    <ol className="list-decimal pl-5 space-y-2">
+                      <li>Post roles and set your "You're Hired" bonus.</li>
+                      <li>Hire directly and fill multiple roles for just £9/month.</li>
+                      <li>Stay anonymous until you’re ready; build shortlists fast with match signals.</li>
+                      <li>Activate our connector/nomad network only when vacancies are harder to fill.</li>
+                    </ol>
+                    <ul className="list-disc pl-5 space-y-1">
+                      <li>No agency markups or bloated software.</li>
+                      <li>Transparent, pay‑on‑success costs.</li>
+                      <li>Recommendations remain anonymous until both sides opt in.</li>
+                    </ul>
+                  </div>
+                </DialogContent>
             </Dialog>
           </div>
           <div className="grid md:grid-cols-2 gap-6">
@@ -119,27 +119,26 @@ export const PlatformFeatures = () => {
               <DialogTrigger asChild>
                 <Button variant="outline" size="sm" aria-label="How jobz works for candidates">Learn more</Button>
               </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>How jobz works for Candidates</DialogTitle>
-                  <DialogDescription>
-                    Get warm introductions to roles that fit you—your privacy first, and earn a bonus on hire.
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="space-y-3 text-foreground">
-                  <ol className="list-decimal pl-5 space-y-2">
-                    <li>Create your profile and set preferences.</li>
-                    <li>Connectors share relevant opportunities without exposing your identity.</li>
-                    <li>Opt in when you want an introduction; proceed to interview.</li>
-                    <li>If hired, you receive your “You’re Hired” bonus.</li>
-                  </ol>
-                  <ul className="list-disc pl-5 space-y-1">
-                    <li>Your details stay private until you opt in.</li>
-                    <li>Opportunities beyond job boards via trusted networks.</li>
-                    <li>Clear status tracking and transparent bonuses.</li>
-                  </ul>
-                </div>
-              </DialogContent>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Be discovered. Hired faster. In control.</DialogTitle>
+                    <DialogDescription>
+                      Never be overlooked because of hiring costs or hidden databases. Employers find you directly. A few clicks, not a few months. Earn "You're Hired" bonuses when hired.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="space-y-3 text-foreground">
+                    <ol className="list-decimal pl-5 space-y-2">
+                      <li>Create your profile and set preferences.</li>
+                      <li>Employers find and contact you directly—no walled gardens or paywalls.</li>
+                      <li>Move through a streamlined process that takes a few clicks, not months.</li>
+                      <li>Get feedback on outcomes; if hired, receive your "You're Hired" bonus.</li>
+                    </ol>
+                    <ul className="list-disc pl-5 space-y-1">
+                      <li>Control your visibility and privacy.</li>
+                      <li>Clear status tracking and transparent bonuses.</li>
+                    </ul>
+                  </div>
+                </DialogContent>
             </Dialog>
           </div>
           <div className="grid md:grid-cols-2 gap-6">
@@ -172,27 +171,26 @@ export const PlatformFeatures = () => {
               <DialogTrigger asChild>
                 <Button variant="outline" size="sm" aria-label="What is a Connector?">Learn more</Button>
               </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>What is a Connector?</DialogTitle>
-                  <DialogDescription>
-                    Vetted individuals who anonymously introduce quality candidates from their networks—paid on successful hires.
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="space-y-3 text-foreground">
-                  <ol className="list-decimal pl-5 space-y-2">
-                    <li>Browse open roles and the talent pool.</li>
-                    <li>Recommend candidates anonymously with context.</li>
-                    <li>We handle intros and admin; you stay anonymous by default.</li>
-                    <li>Earn your commission when a recommended candidate is hired.</li>
-                  </ol>
-                  <ul className="list-disc pl-5 space-y-1">
-                    <li>Work from anywhere, choose your effort.</li>
-                    <li>We vet, verify, and monitor performance.</li>
-                    <li>Transparent commissions, paid on success.</li>
-                  </ul>
-                </div>
-              </DialogContent>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Recommend talent. Earn commission.</DialogTitle>
+                    <DialogDescription>
+                      When vacancies are harder to fill, jobz alerts Connectors to help source candidates. Recommend great people from your network and see commissions upfront.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="space-y-3 text-foreground">
+                    <ol className="list-decimal pl-5 space-y-2">
+                      <li>Get alerts for harder‑to‑fill roles.</li>
+                      <li>Recommend candidates from your network with simple submissions.</li>
+                      <li>Track status transparently—intros and admin handled for you.</li>
+                      <li>Earn commission when your recommended candidate is hired.</li>
+                    </ol>
+                    <ul className="list-disc pl-5 space-y-1">
+                      <li>Use the calculator to see the commission on offer per role.</li>
+                      <li>Flexible work from anywhere; paid on success.</li>
+                    </ul>
+                  </div>
+                </DialogContent>
             </Dialog>
           </div>
           <div className="grid md:grid-cols-2 gap-6">
