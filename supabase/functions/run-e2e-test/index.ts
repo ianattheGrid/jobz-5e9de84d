@@ -171,8 +171,7 @@ serve(async (req: Request) => {
         vr_id: vrId,
         candidate_email: vrCandidateEmail,
         job_id: job.id,
-        status: "pending",
-        notes: "Automated test recommendation",
+        status: "pending"
       })
       .select()
       .single();
