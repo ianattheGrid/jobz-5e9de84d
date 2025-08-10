@@ -69,7 +69,7 @@ export const PlatformFeatures = () => {
           <div className="flex flex-col sm:flex-row sm:justify-start gap-3">
             <Dialog>
               <DialogTrigger asChild>
-                <Button variant="secondary" className="w-full sm:w-auto" aria-label="How jobz works for employers"><Info className="mr-2 h-4 w-4" />Learn more</Button>
+                <Button variant="navy" className="w-full sm:w-auto" aria-label="How jobz works for employers"><Info className="mr-2 h-4 w-4" />Learn more</Button>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
@@ -130,7 +130,7 @@ export const PlatformFeatures = () => {
            <div className="flex flex-col sm:flex-row justify-center gap-3">
             <Dialog>
               <DialogTrigger asChild>
-                <Button variant="secondary" className="w-full sm:w-auto" aria-label="How jobz works for candidates"><Info className="mr-2 h-4 w-4" />Learn more</Button>
+                <Button variant="navy" className="w-full sm:w-auto" aria-label="How jobz works for candidates"><Info className="mr-2 h-4 w-4" />Learn more</Button>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
@@ -197,7 +197,7 @@ export const PlatformFeatures = () => {
           <div className="flex flex-col sm:flex-row justify-end gap-3">
             <Dialog>
               <DialogTrigger asChild>
-                <Button variant="secondary" className="w-full sm:w-auto" aria-label="What is a Connector?"><Info className="mr-2 h-4 w-4" />Learn more</Button>
+                <Button variant="navy" className="w-full sm:w-auto" aria-label="What is a Connector?"><Info className="mr-2 h-4 w-4" />Learn more</Button>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
