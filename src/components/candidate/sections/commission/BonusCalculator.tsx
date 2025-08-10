@@ -20,6 +20,13 @@ export const BonusCalculator = ({
   onFeeChange,
   onSplitChange,
 }: BonusCalculatorProps) => {
+  const formatWithCommas = (value: string) => {
+    if (!value) return "";
+    const numeric = value.replace(/[^0-9]/g, "");
+    if (!numeric) return "";
+    return Number(numeric).toLocaleString();
+  };
+  const displaySalary = sampleSalary ? formatWithCommas(sampleSalary) : "";
   const totalCommission = sampleSalary ? calculateTotalCommission(sampleSalary, feePercentage) : 0;
   const { candidateCommission, referralCommission } = calculateSplitCommissions(totalCommission, splitPercentage);
 
@@ -39,9 +46,13 @@ export const BonusCalculator = ({
           <label className="text-sm font-medium text-gray-900">Enter a sample yearly salary</label>
           <Input
             type="text"
-            placeholder="e.g. 50000"
-            value={sampleSalary}
-            onChange={(e) => onSalaryChange(e.target.value)}
+            inputMode="numeric"
+            placeholder="e.g. 50,000"
+            value={displaySalary}
+            onChange={(e) => {
+              const raw = e.target.value.replace(/[^0-9]/g, "");
+              onSalaryChange(raw);
+            }}
             className="mt-1 bg-white text-gray-900"
           />
         </div>
