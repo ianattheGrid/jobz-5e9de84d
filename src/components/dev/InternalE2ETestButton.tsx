@@ -10,7 +10,8 @@ export const InternalE2ETestButton = () => {
 
   const enabled = useMemo(() => {
     const params = new URLSearchParams(window.location.search);
-    return params.get("e2e") === "1" || params.get("internal") === "1";
+    if (params.get("e2e") === "1" || params.get("internal") === "1") return true;
+    return window.location.hostname.endsWith("lovableproject.com");
   }, []);
 
   if (!enabled) return null;
