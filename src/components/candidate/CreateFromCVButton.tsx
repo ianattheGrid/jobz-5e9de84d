@@ -36,8 +36,33 @@ export const CreateFromCVButton = ({ cvUrl, userId, onComplete }: CreateFromCVBu
         return;
       }
 
+      // Ensure we pass an accessible URL to the parser (generate signed URL if needed)
+      let fileUrl = cvUrl as string;
+      try {
+        let path = fileUrl;
+        if (fileUrl.startsWith('http')) {
+          const parts = fileUrl.split('/');
+          const idx = parts.findIndex(p => p === 'cvs');
+          if (idx !== -1) {
+            path = parts.slice(idx + 1).join('/');
+          } else {
+            path = '';
+          }
+        }
+        if (path) {
+          const { data: signed, error: signErr } = await supabase.storage
+            .from('cvs')
+            .createSignedUrl(path, 1800);
+          if (!signErr && signed?.signedUrl) {
+            fileUrl = signed.signedUrl;
+          }
+        }
+      } catch (e) {
+        console.warn('Falling back to original CV URL for parsing');
+      }
+
       const { data, error } = await supabase.functions.invoke('parse-cv', {
-        body: { fileUrl: cvUrl, requiredSkills: [], debug: false }
+        body: { fileUrl, requiredSkills: [], debug: false }
       });
 
       if (error || (data && (data as any).error)) {

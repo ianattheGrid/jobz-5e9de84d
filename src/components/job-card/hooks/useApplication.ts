@@ -214,15 +214,15 @@ export const useApplication = (jobId: number, employerId: string) => {
       try {
         let resumeUrl = null;
         if (resumeFile) {
-          const filePath = `resumes/${user.id}/${jobId}/${resumeFile.name}`;
+          const filePath = `${user.id}/applications/${jobId}/${Date.now()}-${resumeFile.name}`;
           const { error: uploadError } = await supabase.storage
-            .from('candidate-files')
-            .upload(filePath, resumeFile);
-  
+            .from('cvs')
+            .upload(filePath, resumeFile, { upsert: true });
+
           if (uploadError) {
             throw new Error(`Resume upload failed: ${uploadError.message}`);
           }
-  
+
           resumeUrl = filePath;
         }
 

@@ -69,25 +69,41 @@ export const useFileUpload = ({ userId, onUploadComplete }: UseFileUploadProps) 
 
       console.log('File uploaded successfully:', uploadData);
 
-      // Get public URL
-      const { data: urlData } = supabase.storage
-        .from(bucket)
-        .getPublicUrl(fileName);
+      if (isProfile) {
+        // Get public URL for profile pictures (bucket is public)
+        const { data: urlData } = supabase.storage
+          .from(bucket)
+          .getPublicUrl(fileName);
 
-      console.log('Public URL generated:', urlData.publicUrl);
+        console.log('Public URL generated:', urlData.publicUrl);
 
-      // Update candidate profile with new URL
-      const { error: updateError } = await supabase
-        .from('candidate_profiles')
-        .update({
-          [isProfile ? 'profile_picture_url' : 'cv_url']: urlData.publicUrl,
-        })
-        .eq('id', userId);
+        // Update candidate profile with new profile picture URL
+        const { error: updateError } = await supabase
+          .from('candidate_profiles')
+          .update({
+            profile_picture_url: urlData.publicUrl,
+          })
+          .eq('id', userId);
 
-      if (updateError) {
-        console.error('Profile update error:', updateError);
-        throw updateError;
+        if (updateError) {
+          console.error('Profile update error:', updateError);
+          throw updateError;
+        }
+      } else {
+        // Store private path (not a public URL) for CVs
+        const { error: updateError } = await supabase
+          .from('candidate_profiles')
+          .update({
+            cv_url: fileName,
+          })
+          .eq('id', userId);
+
+        if (updateError) {
+          console.error('Profile update error:', updateError);
+          throw updateError;
+        }
       }
+
 
       console.log('Profile updated successfully');
 
@@ -136,16 +152,20 @@ export const useFileUpload = ({ userId, onUploadComplete }: UseFileUploadProps) 
     try {
       setDeleting(true);
 
-      // Extract the file path from the URL
-      const urlParts = currentFile.split('/');
-      const bucketIndex = urlParts.findIndex(part => part === 'profile_pictures' || part === 'cvs');
-      
-      if (bucketIndex === -1) {
-        throw new Error('Invalid file URL format');
-      }
+      // Determine bucket and file path (supports stored path or legacy public URL)
+      const isUrl = currentFile.startsWith('http');
+      let bucket = isProfile ? 'profile_pictures' : 'cvs';
+      let filePath = currentFile;
 
-      const bucket = urlParts[bucketIndex];
-      const filePath = urlParts.slice(bucketIndex + 1).join('/');
+      if (isUrl) {
+        const urlParts = currentFile.split('/');
+        const bucketIdx = urlParts.findIndex(part => part === 'profile_pictures' || part === 'cvs');
+        if (bucketIdx === -1) {
+          throw new Error('Invalid file URL format');
+        }
+        bucket = urlParts[bucketIdx];
+        filePath = urlParts.slice(bucketIdx + 1).join('/');
+      }
 
       console.log('Deleting file:', { bucket, filePath });
 

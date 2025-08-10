@@ -10,6 +10,7 @@ import QualificationsSection from "./sections/QualificationsSection";
 import SkillsSection from "./sections/SkillsSection";
 import JobTitlesSection from "./sections/JobTitlesSection";
 import GalleryCarousel from "./sections/GalleryCarousel";
+import { supabase } from "@/integrations/supabase/client";
 
 interface ProfileDetailsProps {
   profile: CandidateProfile;
@@ -225,11 +226,31 @@ const ProfileDetails = ({ profile, showVRRecommendation = false, vrRecommendatio
           
           {profile.cv_url && (
             <div className="mt-6">
-              <a 
-                href={profile.cv_url}
-                target="_blank"
-                rel="noopener noreferrer"
+              <button 
+                type="button"
+                onClick={async () => {
+                  try {
+                    let path = profile.cv_url as string;
+                    if (path.startsWith('http')) {
+                      const parts = path.split('/');
+                      const idx = parts.findIndex(p => p === 'cvs');
+                      if (idx !== -1) {
+                        path = parts.slice(idx + 1).join('/');
+                      }
+                    }
+                    const { data, error } = await supabase.storage
+                      .from('cvs')
+                      .createSignedUrl(path, 3600);
+                    if (error) throw error;
+                    if (data?.signedUrl) {
+                      window.open(data.signedUrl, '_blank', 'noopener,noreferrer');
+                    }
+                  } catch (e) {
+                    console.error('Failed to open CV', e);
+                  }
+                }}
                 className="inline-flex items-center gap-2 px-4 py-2 bg-pink-600 hover:bg-pink-700 text-white rounded-md transition-colors"
+                aria-label="View CV"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
@@ -238,8 +259,8 @@ const ProfileDetails = ({ profile, showVRRecommendation = false, vrRecommendatio
                   <line x1="16" y1="17" x2="8" y2="17"></line>
                   <line x1="10" y1="9" x2="8" y2="9"></line>
                 </svg>
-                View CV
-              </a>
+                <span>View CV</span>
+              </button>
             </div>
           )}
         </CardContent>

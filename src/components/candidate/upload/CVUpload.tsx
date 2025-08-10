@@ -3,6 +3,7 @@ import React from "react";
 import { FileText } from "lucide-react";
 import { FileUploadButton } from "./FileUploadButton";
 import { DeleteFileButton } from "./DeleteFileButton";
+import { supabase } from "@/integrations/supabase/client";
 
 interface CVUploadProps {
   currentCV: string | null;
@@ -50,14 +51,35 @@ export const CVUpload = ({
 
             <div className="flex items-center gap-2">
               <FileText className="h-4 w-4 text-blue-600" />
-              <a
-                href={currentCV}
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                type="button"
+                onClick={async () => {
+                  try {
+                    if (!currentCV) return;
+                    let path = currentCV as string;
+                    if (path.startsWith('http')) {
+                      const parts = path.split('/');
+                      const idx = parts.findIndex(p => p === 'cvs');
+                      if (idx !== -1) {
+                        path = parts.slice(idx + 1).join('/');
+                      }
+                    }
+                    const { data, error } = await supabase.storage
+                      .from('cvs')
+                      .createSignedUrl(path, 3600);
+                    if (error) throw error;
+                    if (data?.signedUrl) {
+                      window.open(data.signedUrl, '_blank', 'noopener,noreferrer');
+                    }
+                  } catch (e) {
+                    console.error('Failed to open CV', e);
+                  }
+                }}
                 className="text-sm text-blue-600 hover:underline"
+                aria-label="View Current CV"
               >
                 View Current CV
-              </a>
+              </button>
             </div>
           </>
         )}
