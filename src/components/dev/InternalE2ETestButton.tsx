@@ -15,7 +15,8 @@ export const InternalE2ETestButton = () => {
   const enabled = useMemo(() => {
     const params = new URLSearchParams(window.location.search);
     if (params.get("e2e") === "1" || params.get("internal") === "1") return true;
-    return window.location.hostname.endsWith("lovableproject.com");
+    // Only show locally without query param
+    return ["localhost", "127.0.0.1"].includes(window.location.hostname);
   }, []);
 
   if (!enabled) return null;
