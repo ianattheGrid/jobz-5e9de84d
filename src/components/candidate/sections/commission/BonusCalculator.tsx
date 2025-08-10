@@ -26,6 +26,14 @@ export const BonusCalculator = ({
   return (
     <div className="mt-6 p-4 bg-white rounded-lg space-y-4 shadow-sm border border-gray-200">
       <h4 className="font-medium text-gray-900">Try the Bonus Calculator</h4>
+      <div className="rounded-md bg-gray-50 border border-gray-200 p-3 text-sm text-gray-700">
+        <p className="mb-1">
+          Employers can offer a "You're Hired" bonus to successful candidates and let our Connectors anonymously help source hard-to-fill roles.
+        </p>
+        <p>
+          Enter a sample salary, choose the fee (2.5% - 14% of the first year's basic salary), then set how that fee is split between the candidate and the Connector.
+        </p>
+      </div>
       <div className="space-y-4">
         <div>
           <label className="text-sm font-medium text-gray-900">Enter a sample yearly salary</label>
