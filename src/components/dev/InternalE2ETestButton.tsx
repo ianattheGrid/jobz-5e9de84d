@@ -19,8 +19,8 @@ export const InternalE2ETestButton = () => {
   const runTest = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase.functions.invoke("run-e2e-test", {
-        body: { trigger: "manual" },
+      const { data, error } = await supabase.functions.invoke("run-e2e-smoke", {
+        body: { trigger: "manual", mode: "smoke" },
       });
       if (error) {
         console.error("E2E test error", { error, data });
@@ -58,7 +58,7 @@ export const InternalE2ETestButton = () => {
   return (
     <div className="fixed bottom-4 right-4 z-50">
       <Button variant="navy" onClick={runTest} disabled={loading}>
-        {loading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin"/> Running…</> : "Run full demo (internal)"}
+        {loading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin"/> Running…</> : "Run smoke demo (internal)"}
       </Button>
     </div>
   );

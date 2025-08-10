@@ -26,3 +26,6 @@ verify_jwt = false
 
 [functions.configure-push]
 verify_jwt = false
+
+[functions.run-e2e-smoke]
+verify_jwt = false
