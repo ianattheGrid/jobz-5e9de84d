@@ -1,3 +1,4 @@
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
@@ -12,7 +13,8 @@ function jsonResponse(body: unknown, init: ResponseInit = {}) {
   });
 }
 
-export default async function handler(req: Request) {
+serve(async (req: Request) => {
+  // CORS preflight
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
@@ -21,7 +23,8 @@ export default async function handler(req: Request) {
   const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
 
   if (!supabaseUrl || !serviceRoleKey) {
-    return jsonResponse({ error: "Missing Supabase env configuration" }, { status: 500 });
+    console.error("run-e2e-test: Missing Supabase env configuration", { hasUrl: !!supabaseUrl, hasKey: !!serviceRoleKey });
+    return jsonResponse({ ok: false, error: "Missing Supabase env configuration" }, { status: 500 });
   }
 
   const admin = createClient(supabaseUrl, serviceRoleKey);
@@ -44,6 +47,8 @@ export default async function handler(req: Request) {
   const result: Record<string, string> = {};
 
   try {
+    console.log("run-e2e-test: starting");
+
     // 1) Create users (employer, candidate, VR, VR-candidate)
     const createUser = async (email: string, user_type: "employer" | "candidate" | "vr", full_name: string) => {
       const { data, error } = await admin.auth.admin.createUser({
@@ -242,7 +247,7 @@ export default async function handler(req: Request) {
     const vrCommission = Math.round(total * 0.6);
     const candCommission = total - vrCommission;
 
-    const startDate = new Date(now.getTime() + 14 * 24 * 60 * 60 * 1000);
+    const startDate = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000);
     const dueDate = new Date(startDate.getTime() + 30 * 24 * 60 * 60 * 1000);
 
     const { error: acceptErr } = await admin
@@ -299,9 +304,10 @@ export default async function handler(req: Request) {
     await cleanup();
 
     const ms = Date.now() - startedAt;
+    console.log("run-e2e-test: finished in", ms, "ms");
     return jsonResponse({ ok: true, duration_ms: ms, ...result });
   } catch (error: any) {
     console.error("run-e2e-test error", error);
     return jsonResponse({ ok: false, error: String(error?.message || error) }, { status: 500 });
   }
-}
+});

@@ -23,3 +23,6 @@ verify_jwt = false
 
 [functions.run-e2e-test]
 verify_jwt = false
+
+[functions.configure-push]
+verify_jwt = false
