@@ -1,4 +1,3 @@
-
 project_id = "lfwwhyjtbkfibxzefvkn"
 
 [functions.process-matches]
@@ -20,4 +19,7 @@ verify_jwt = false
 verify_jwt = true
 
 [functions.vr-notifications]
+verify_jwt = false
+
+[functions.run-e2e-test]
 verify_jwt = false
