@@ -147,14 +147,22 @@ serve(async (req: Request) => {
     if (jobErr || !job) throw jobErr || new Error("Job insert failed");
     created.jobId = job.id;
 
-    // 4) Direct application
-    const { error: appErr } = await admin.from("applications").insert({
+    // 4) Direct applications (direct candidate + VR candidate)
+    const { error: appErr1 } = await admin.from("applications").insert({
       job_id: job.id,
       applicant_id: candidateId,
       status: "pending",
       profile_visibility_enabled: true,
     });
-    if (appErr) throw appErr;
+    if (appErr1) throw appErr1;
+
+    const { error: appErr2 } = await admin.from("applications").insert({
+      job_id: job.id,
+      applicant_id: vrCandidateId,
+      status: "pending",
+      profile_visibility_enabled: true,
+    });
+    if (appErr2) throw appErr2;
 
     // 5) VR recommendation for VR candidate
     const { data: rec, error: recErr } = await admin
@@ -252,6 +260,7 @@ serve(async (req: Request) => {
 
     const startDate = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000);
     const dueDate = new Date(startDate.getTime() + 30 * 24 * 60 * 60 * 1000);
+    const toDate = (d: Date) => d.toISOString().slice(0, 10);
 
     const { error: acceptErr } = await admin
       .from("applications")
@@ -270,8 +279,8 @@ serve(async (req: Request) => {
         vr_id: vrId,
         candidate_commission: candCommission,
         vr_commission: vrCommission,
-        start_date: startDate.toISOString(),
-        payment_due_date: dueDate.toISOString(),
+        start_date: toDate(startDate),
+        payment_due_date: toDate(dueDate),
         payment_status: "pending",
       })
       .select()

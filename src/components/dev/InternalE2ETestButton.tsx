@@ -7,6 +7,7 @@ import { Loader2 } from "lucide-react";
 export const InternalE2ETestButton = () => {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
+  const [mode, setMode] = useState<"smoke" | "full">("smoke");
 
   const enabled = useMemo(() => {
     const params = new URLSearchParams(window.location.search);
@@ -19,8 +20,9 @@ export const InternalE2ETestButton = () => {
   const runTest = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase.functions.invoke("run-e2e-smoke", {
-        body: { trigger: "manual", mode: "smoke" },
+      const fn = mode === "smoke" ? "run-e2e-smoke" : "run-e2e-test";
+      const { data, error } = await supabase.functions.invoke(fn, {
+        body: { trigger: "manual", mode },
       });
       if (error) {
         console.error("E2E test error", { error, data });
@@ -57,9 +59,14 @@ export const InternalE2ETestButton = () => {
   
   return (
     <div className="fixed bottom-4 right-4 z-50">
-      <Button variant="navy" onClick={runTest} disabled={loading}>
-        {loading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin"/> Running…</> : "Run smoke demo (internal)"}
-      </Button>
+      <div className="flex items-center gap-2">
+        <Button variant="secondary" onClick={() => setMode(mode === 'smoke' ? 'full' : 'smoke')} disabled={loading}>
+          {mode === 'smoke' ? 'Mode: Smoke' : 'Mode: Full'}
+        </Button>
+        <Button variant="navy" onClick={runTest} disabled={loading}>
+          {loading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin"/> Running…</> : (mode === 'smoke' ? 'Run smoke demo (internal)' : 'Run full demo (internal)')}
+        </Button>
+      </div>
     </div>
   );
 };
