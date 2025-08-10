@@ -66,10 +66,10 @@ export const PlatformFeatures = () => {
         </TooltipProvider>
 
         <TabsContent value="hiring" className="mt-8 space-y-8 radix-tabpanel">
-          <div className="flex justify-start gap-2">
+          <div className="flex flex-col sm:flex-row sm:justify-start gap-3">
             <Dialog>
               <DialogTrigger asChild>
-                <Button variant="outline" size="sm" aria-label="How jobz works for employers">Learn more</Button>
+                <Button variant="secondary" className="w-full sm:w-auto" aria-label="How jobz works for employers"><Info className="mr-2 h-4 w-4" />Learn more</Button>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
@@ -95,7 +95,7 @@ export const PlatformFeatures = () => {
             </Dialog>
             <Dialog>
               <DialogTrigger asChild>
-                <Button variant="outline" size="sm" aria-label="Open employee recruitment cost calculator">Try cost calculator</Button>
+                <Button variant="default" className="w-full sm:w-auto" aria-label="Open employee recruitment cost calculator"><Calculator className="mr-2 h-4 w-4" />Try cost calculator</Button>
               </DialogTrigger>
               <DialogContent className="max-w-4xl max-h-[85vh] overflow-y-auto">
                 <EmployeeRecruitmentCalculator />
@@ -127,10 +127,10 @@ export const PlatformFeatures = () => {
         </TabsContent>
 
         <TabsContent value="candidates" className="mt-8 space-y-8 radix-tabpanel">
-           <div className="flex justify-center gap-2">
+           <div className="flex flex-col sm:flex-row justify-center gap-3">
             <Dialog>
               <DialogTrigger asChild>
-                <Button variant="outline" size="sm" aria-label="How jobz works for candidates">Learn more</Button>
+                <Button variant="secondary" className="w-full sm:w-auto" aria-label="How jobz works for candidates"><Info className="mr-2 h-4 w-4" />Learn more</Button>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
@@ -155,7 +155,7 @@ export const PlatformFeatures = () => {
             </Dialog>
             <Dialog>
               <DialogTrigger asChild>
-                <Button variant="outline" size="sm" aria-label="Open bonus calculator">Try bonus calculator</Button>
+                <Button variant="default" className="w-full sm:w-auto" aria-label="Open bonus calculator"><Calculator className="mr-2 h-4 w-4" />Try bonus calculator</Button>
               </DialogTrigger>
               <DialogContent className="max-w-xl max-h-[85vh] overflow-y-auto">
                 <BonusCalculator
@@ -194,10 +194,10 @@ export const PlatformFeatures = () => {
         </TabsContent>
 
         <TabsContent value="recruiters" className="mt-8 space-y-8 radix-tabpanel">
-          <div className="flex justify-end gap-2">
+          <div className="flex flex-col sm:flex-row justify-end gap-3">
             <Dialog>
               <DialogTrigger asChild>
-                <Button variant="outline" size="sm" aria-label="What is a Connector?">Learn more</Button>
+                <Button variant="secondary" className="w-full sm:w-auto" aria-label="What is a Connector?"><Info className="mr-2 h-4 w-4" />Learn more</Button>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
@@ -222,7 +222,7 @@ export const PlatformFeatures = () => {
             </Dialog>
             <Dialog>
               <DialogTrigger asChild>
-                <Button variant="outline" size="sm" aria-label="Open bonus calculator">Try bonus calculator</Button>
+                <Button variant="default" className="w-full sm:w-auto" aria-label="Open bonus calculator"><Calculator className="mr-2 h-4 w-4" />Try bonus calculator</Button>
               </DialogTrigger>
               <DialogContent className="max-w-xl max-h-[85vh] overflow-y-auto">
                 <BonusCalculator
