@@ -54,30 +54,44 @@ export const CVUpload = ({
     e?.preventDefault();
     e?.stopPropagation();
     
+    console.log('=== CV CLICK DEBUG START ===');
+    console.log('currentCV:', currentCV);
+    console.log('cvPath:', cvPath);
+    console.log('Click timestamp:', new Date().toISOString());
+    
     if (!currentCV) {
       toast({ variant: 'destructive', title: 'No CV found', description: 'Please upload your CV first.' });
       return;
     }
     
     try {
+      console.log('About to call edge function with path:', cvPath);
+      
       // Use the edge function to get a signed URL
       const { data, error } = await supabase.functions.invoke('get-cv-signed-url', {
         body: { path: cvPath }
       });
       
+      console.log('Edge function response:', { data, error });
+      console.log('Raw response data:', JSON.stringify(data, null, 2));
+      
       if (error) {
-        console.error('Failed to get signed URL:', error);
+        console.error('Edge function error:', error);
         throw error;
       }
       
       if (data?.signedUrl) {
+        console.log('Opening URL:', data.signedUrl);
         // Open the CV in a new tab
         window.open(data.signedUrl, '_blank', 'noopener,noreferrer');
+        console.log('=== CV CLICK DEBUG SUCCESS ===');
       } else {
+        console.error('No signedUrl in response. Data keys:', Object.keys(data || {}));
         throw new Error('No signed URL returned');
       }
     } catch (error) {
-      console.error('Failed to open CV:', error);
+      console.error('=== CV CLICK DEBUG ERROR ===');
+      console.error('Full error:', error);
       toast({ 
         variant: 'destructive', 
         title: 'Failed to open CV', 
