@@ -62,8 +62,6 @@ export const CVUpload = ({
               <FileText className="h-4 w-4 text-blue-600" />
               <a
                 href={`/cv-view?path=${encodeURIComponent(cvPath)}`}
-                target="_blank"
-                rel="noopener noreferrer"
                 className="text-sm text-blue-600 hover:underline"
                 aria-label="View Current CV"
               >
