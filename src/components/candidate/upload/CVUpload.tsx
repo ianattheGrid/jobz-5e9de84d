@@ -60,45 +60,28 @@ export const CVUpload = ({
     }
     
     try {
-      console.log('CVUpload - Using edge function for CV access:', cvPath);
-      
-      // Use the edge function instead of direct storage access
+      // Use the edge function to get a signed URL
       const { data, error } = await supabase.functions.invoke('get-cv-signed-url', {
         body: { path: cvPath }
       });
       
-      console.log('CVUpload - Edge function response:', { data, error });
-      console.log('CVUpload - Data structure:', JSON.stringify(data, null, 2));
-      console.log('CVUpload - data?.url exists?:', !!data?.url);
-      console.log('CVUpload - typeof data?.url:', typeof data?.url);
-      
       if (error) {
-        console.error('CVUpload - Edge function error:', error);
+        console.error('Failed to get signed URL:', error);
         throw error;
       }
       
-      // Check if we have a URL in the response
-      const signedUrl = data?.url || data?.signedUrl;
-      console.log('CVUpload - Final URL to use:', signedUrl);
-      
-      if (signedUrl) {
-        console.log('CVUpload - Got signed URL from edge function, opening:', signedUrl);
-        const link = document.createElement('a');
-        link.href = signedUrl;
-        link.target = '_blank';
-        link.rel = 'noopener noreferrer';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+      if (data?.signedUrl) {
+        // Open the CV in a new tab
+        window.open(data.signedUrl, '_blank', 'noopener,noreferrer');
       } else {
-        throw new Error('No signed URL returned from edge function');
+        throw new Error('No signed URL returned');
       }
     } catch (error) {
-      console.error('CVUpload - Failed to open CV:', error);
+      console.error('Failed to open CV:', error);
       toast({ 
         variant: 'destructive', 
         title: 'Failed to open CV', 
-        description: error instanceof Error ? error.message : 'Please try again.' 
+        description: 'Please try again or contact support if the issue persists.' 
       });
     }
   };
