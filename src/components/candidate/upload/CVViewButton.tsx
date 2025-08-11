@@ -21,14 +21,26 @@ export const CVViewButton = ({ cvPath }: CVViewButtonProps) => {
         }
       }
       
-      // Use the edge function to get a signed URL
+      console.log('Opening CV with file path:', filePath);
+      
+      // Always use the edge function - never try direct storage access
       const { data, error } = await supabase.functions.invoke('view-cv', {
         body: { filePath }
       });
       
-      if (error) throw error;
-      if (!data?.signedUrl) throw new Error('No signed URL returned');
+      console.log('Edge function response:', { data, error });
       
+      if (error) {
+        console.error('Edge function error:', error);
+        throw error;
+      }
+      
+      if (!data?.signedUrl) {
+        console.error('No signed URL in response:', data);
+        throw new Error('No signed URL returned');
+      }
+      
+      console.log('Opening URL:', data.signedUrl);
       window.open(data.signedUrl, '_blank');
       
     } catch (error) {
