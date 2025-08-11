@@ -58,12 +58,43 @@ export const CVUpload = ({
                   try {
                     if (!currentCV) { win?.close(); return; }
 
-                    // Minimal loading feedback in the new tab
+                    // 2) Write a tiny relay page that waits for a postMessage with the URL
                     try {
-                      win?.document.write('<!doctype html><title>Opening CV…</title><body style="font-family:sans-serif;padding:24px">Opening your CV…</body>');
+                      win?.document.open();
+                      win?.document.write(`<!doctype html><html><head>
+<meta charset="utf-8" />
+<title>Opening CV…</title>
+<meta name="referrer" content="no-referrer" />
+<style>body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,\n Noto Sans,sans-serif;margin:24px;color:#111}</style>
+</head><body>
+<p>Opening your CV…</p>
+<script>
+  try{
+    window.addEventListener('message', function(ev){
+      try{
+        if(!ev || !ev.data) return;
+        if(ev.data.type==='open-url' && ev.data.url){
+          var url = ev.data.url;
+          // Provide a clickable fallback first
+          var a = document.createElement('a');
+          a.href = url; a.textContent = 'Open your CV'; a.target = '_self';
+          a.rel = 'noopener noreferrer';
+          a.style.display = 'inline-block'; a.style.marginTop = '12px';
+          document.body.appendChild(a);
+          // Attempt direct navigation
+          try { window.location.href = url; } catch(e) {}
+          // Nudge with a delayed click
+          setTimeout(function(){ try{ a.click(); }catch(e){} }, 100);
+        }
+      }catch(e){}
+    });
+  }catch(e){}
+<\/script>
+</body></html>`);
                       win?.document.close();
                     } catch {}
 
+                    // 3) Build storage path (strip bucket prefix if present)
                     let path = currentCV as string;
                     if (path.startsWith('http')) {
                       const parts = path.split('/');
@@ -73,6 +104,7 @@ export const CVUpload = ({
                       }
                     }
 
+                    // 4) Get signed URL
                     const { data, error } = await supabase.functions.invoke('get-cv-signed-url', {
                       body: { path, expiresIn: 3600 }
                     });
@@ -80,32 +112,15 @@ export const CVUpload = ({
                     const signed = (data as any)?.url as string | undefined;
                     if (!signed) throw new Error('No signed URL returned');
 
-                    // Use a fragment to avoid breaking signature and nudge the viewer to refresh
+                    // 5) Send the URL to the new tab so it self-navigates
                     const url = `${signed}#ts=${Date.now()}`;
-
                     if (win) {
-                      try {
-                        win.location.replace(url);
-                      } catch {
-                        try {
-                          const a = win.document.createElement('a');
-                          a.href = url;
-                          a.textContent = 'Open your CV';
-                          a.rel = 'noopener noreferrer';
-                          a.target = '_self';
-                          win.document.body.appendChild(a);
-                          a.click();
-                        } catch {}
-                      }
+                      try { win.postMessage({ type: 'open-url', url }, '*'); } catch {}
                     } else {
                       // Fallback if the tab couldn't be created
                       const a = document.createElement('a');
-                      a.href = url;
-                      a.target = '_blank';
-                      a.rel = 'noopener noreferrer';
-                      document.body.appendChild(a);
-                      a.click();
-                      a.remove();
+                      a.href = url; a.target = '_blank'; a.rel = 'noopener noreferrer';
+                      document.body.appendChild(a); a.click(); a.remove();
                     }
                   } catch (e) {
                     console.error('Failed to open CV', e);
