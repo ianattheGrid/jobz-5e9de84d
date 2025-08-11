@@ -28,8 +28,19 @@ const CandidateDashboard = () => {
   useEffect(() => {
     // Initialize storage buckets
     initializeStorage().catch(console.error);
+
+    console.log('[CandidateDashboard] Mounting and starting auth/profile checks');
+    // Failsafe: never keep users on a spinner for more than 7s
+    const timeoutId = setTimeout(() => {
+      console.warn('[CandidateDashboard] Failsafe timeout hit — forcing loading=false');
+      setLoading(false);
+    }, 7000);
     
     checkUser();
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
   }, []);
 
   const checkUser = async () => {
