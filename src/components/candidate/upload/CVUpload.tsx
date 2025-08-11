@@ -1,4 +1,3 @@
-
 import React from "react";
 import { FileText } from "lucide-react";
 import { FileUploadButton } from "./FileUploadButton";
@@ -54,8 +53,16 @@ export const CVUpload = ({
               <button
                 type="button"
                 onClick={async () => {
+                  // Open a blank tab synchronously to avoid popup blockers
+                  const win = window.open('', '_blank');
                   try {
-                    if (!currentCV) return;
+                    if (!currentCV) { win?.close(); return; }
+
+                    // Minimal loading feedback in the new tab
+                    try {
+                      win?.document.write('<!doctype html><title>Opening CV…</title><body style="font-family:sans-serif;padding:24px">Opening your CV…</body>');
+                      win?.document.close();
+                    } catch {}
 
                     let path = currentCV as string;
                     if (path.startsWith('http')) {
@@ -70,11 +77,28 @@ export const CVUpload = ({
                       body: { path, expiresIn: 3600 }
                     });
                     if (error) throw error;
-                    const url = (data as any)?.url as string | undefined;
-                    if (!url) throw new Error('No signed URL returned');
+                    const signed = (data as any)?.url as string | undefined;
+                    if (!signed) throw new Error('No signed URL returned');
 
-                    const newWin = window.open(url, '_blank', 'noopener');
-                    if (!newWin || newWin.closed) {
+                    // Use a fragment to avoid breaking signature and nudge the viewer to refresh
+                    const url = `${signed}#ts=${Date.now()}`;
+
+                    if (win) {
+                      try {
+                        win.location.replace(url);
+                      } catch {
+                        try {
+                          const a = win.document.createElement('a');
+                          a.href = url;
+                          a.textContent = 'Open your CV';
+                          a.rel = 'noopener noreferrer';
+                          a.target = '_self';
+                          win.document.body.appendChild(a);
+                          a.click();
+                        } catch {}
+                      }
+                    } else {
+                      // Fallback if the tab couldn't be created
                       const a = document.createElement('a');
                       a.href = url;
                       a.target = '_blank';
@@ -85,6 +109,7 @@ export const CVUpload = ({
                     }
                   } catch (e) {
                     console.error('Failed to open CV', e);
+                    try { win?.close(); } catch {}
                   }
                 }}
                 className="text-sm text-blue-600 hover:underline"
