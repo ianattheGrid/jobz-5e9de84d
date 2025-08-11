@@ -8,14 +8,21 @@ const corsHeaders = {
 };
 
 serve(async (req) => {
+  console.log("=== EDGE FUNCTION START ===");
+  
   // Handle CORS preflight
   if (req.method === "OPTIONS") {
+    console.log("OPTIONS request - returning CORS headers");
     return new Response(null, { headers: corsHeaders });
   }
 
+  console.log("Processing POST request...");
+  
   let requestBody;
   try {
+    console.log("Parsing request body...");
     requestBody = await req.json();
+    console.log("Request body parsed:", { path: requestBody?.path, clickId: requestBody?.clickId });
   } catch (e) {
     console.error("Failed to parse JSON:", e);
     return new Response(
@@ -27,17 +34,22 @@ serve(async (req) => {
   const { path, expiresIn = 3600 } = requestBody;
 
   if (!path || typeof path !== "string") {
+    console.error("Invalid path:", path);
     return new Response(
       JSON.stringify({ error: "Missing or invalid 'path'" }),
       { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   }
 
+  console.log("Path validated:", path);
+
   try {
+    console.log("Getting environment variables...");
     const supabaseUrl = Deno.env.get("SUPABASE_URL");
     const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+    const anonKey = Deno.env.get("SUPABASE_ANON_KEY");
     
-    if (!supabaseUrl || !serviceKey) {
+    if (!supabaseUrl || !serviceKey || !anonKey) {
       console.error("Missing environment variables");
       return new Response(
         JSON.stringify({ error: "Server configuration error" }),
@@ -45,17 +57,24 @@ serve(async (req) => {
       );
     }
 
-    // Create client with user's auth token for verification
+    console.log("Environment variables OK");
+
+    // Get auth header
+    console.log("Checking auth header...");
     const authHeader = req.headers.get("Authorization");
     if (!authHeader?.startsWith("Bearer ")) {
+      console.error("Missing or invalid auth header");
       return new Response(
         JSON.stringify({ error: "Missing or invalid Authorization header" }),
         { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
+    console.log("Auth header OK");
+
     // Use Supabase client to verify the user and get their ID
-    const userClient = createClient(supabaseUrl, Deno.env.get("SUPABASE_ANON_KEY")!, {
+    console.log("Creating user client...");
+    const userClient = createClient(supabaseUrl, anonKey, {
       global: {
         headers: {
           Authorization: authHeader,
@@ -63,6 +82,7 @@ serve(async (req) => {
       },
     });
 
+    console.log("User client created, getting user...");
     const { data: { user }, error: userError } = await userClient.auth.getUser();
     
     if (userError || !user) {
@@ -73,20 +93,27 @@ serve(async (req) => {
       );
     }
 
+    console.log("User verified:", user.id);
     const userId = user.id;
 
     // Security check: ensure path belongs to user
+    console.log("Checking path security...");
     const firstSegment = path.split("/")[0];
     if (firstSegment !== userId) {
+      console.error("Access denied - path doesn't belong to user");
       return new Response(
         JSON.stringify({ error: "Access denied" }),
         { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
+    console.log("Security check passed");
+
     // Create service role client for signed URL generation
+    console.log("Creating admin client...");
     const adminClient = createClient(supabaseUrl, serviceKey);
     
+    console.log("Generating signed URL...");
     const { data: signed, error: signErr } = await adminClient
       .storage
       .from("cvs")
@@ -99,6 +126,9 @@ serve(async (req) => {
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
+
+    console.log("Signed URL generated successfully");
+    console.log("=== EDGE FUNCTION SUCCESS ===");
 
     return new Response(
       JSON.stringify({ signedUrl: signed?.signedUrl || null }),
