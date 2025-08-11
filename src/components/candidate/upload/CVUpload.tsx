@@ -54,7 +54,7 @@ export const CVUpload = ({
               <button
                 type="button"
                 onClick={async () => {
-                  const popup = window.open('', '_blank', 'noopener,noreferrer');
+                  const popup = window.open('', '_blank');
                   try {
                     if (!currentCV) { popup?.close(); return; }
                     // Show immediate feedback in the new tab
