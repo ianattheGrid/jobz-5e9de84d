@@ -50,50 +50,17 @@ export const CVUpload = ({
 
   const { toast } = useToast();
 
-  const handleOpenCurrentCV = async (e?: React.MouseEvent) => {
+  const handleOpenCurrentCV = (e?: React.MouseEvent) => {
     e?.preventDefault();
     e?.stopPropagation();
     
-    if (!cvPath) {
+    if (!currentCV) {
       toast({ variant: 'destructive', title: 'No CV found', description: 'Please upload your CV first.' });
       return;
     }
     
-    try {
-      console.log('Getting signed URL for path:', cvPath);
-      
-      // Add timeout to prevent hanging
-      const timeoutPromise = new Promise((_, reject) => 
-        setTimeout(() => reject(new Error('Request timeout')), 10000)
-      );
-      
-      const requestPromise = supabase.functions.invoke('get-cv-signed-url', {
-        body: { path: cvPath, expiresIn: 3600 }
-      });
-      
-      const { data, error } = await Promise.race([requestPromise, timeoutPromise]) as any;
-      
-      if (error) throw error;
-      if (!data?.url) throw new Error('No signed URL returned');
-      
-      console.log('Got signed URL, opening in new tab...');
-      
-      // Use window.open directly since it's more reliable
-      const newWindow = window.open(data.url, '_blank', 'noopener,noreferrer');
-      
-      if (!newWindow) {
-        // Fallback: try to navigate to the URL directly
-        window.location.href = data.url;
-      }
-      
-    } catch (error) {
-      console.error('Failed to open CV:', error);
-      toast({ 
-        variant: 'destructive', 
-        title: 'Failed to open CV', 
-        description: error instanceof Error ? error.message : 'Please try again or re-upload your CV.' 
-      });
-    }
+    // Since CVs are in a public bucket, we can open them directly
+    window.open(currentCV, '_blank', 'noopener,noreferrer');
   };
   return (
     <div className="space-y-4">
