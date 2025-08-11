@@ -25,22 +25,30 @@ export const CVViewButton = ({ cvPath }: CVViewButtonProps) => {
         error: sessionError 
       });
       
-      console.log(`[${clickId}] About to call edge function...`);
+      console.log(`[${clickId}] About to create signed URL...`);
       const startTime = Date.now();
       
-      const { data, error } = await supabase.functions.invoke('get-cv-signed-url', {
-        body: { path: cvPath, clickId } // Add unique ID to prevent caching
-      });
+      // Extract file path from URL if needed
+      let filePath = cvPath;
+      if (filePath.includes('/storage/v1/object/')) {
+        const parts = filePath.split('/');
+        const cvsIndex = parts.findIndex(part => part === 'cvs');
+        if (cvsIndex !== -1 && cvsIndex < parts.length - 1) {
+          filePath = parts.slice(cvsIndex + 1).join('/');
+        }
+      }
+      
+      const { data, error } = await supabase.storage
+        .from('cvs')
+        .createSignedUrl(filePath, 3600);
       
       const endTime = Date.now();
-      console.log(`[${clickId}] Edge function completed in ${endTime - startTime}ms`);
+      console.log(`[${clickId}] Signed URL created in ${endTime - startTime}ms`);
       console.log(`[${clickId}] Response:`, { data, error });
-      console.log(`[${clickId}] Data keys:`, data ? Object.keys(data) : 'no data');
       console.log(`[${clickId}] Data.signedUrl exists:`, !!data?.signedUrl);
-      console.log(`[${clickId}] Data.signedUrl type:`, typeof data?.signedUrl);
       
       if (error) {
-        console.error(`[${clickId}] Edge function error:`, error);
+        console.error(`[${clickId}] Storage error:`, error);
         throw error;
       }
       
