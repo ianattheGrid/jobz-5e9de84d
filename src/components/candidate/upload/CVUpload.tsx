@@ -3,6 +3,7 @@ import { FileText } from "lucide-react";
 import { FileUploadButton } from "./FileUploadButton";
 import { DeleteFileButton } from "./DeleteFileButton";
 import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 interface CVUploadProps {
   currentCV: string | null;
@@ -36,6 +37,40 @@ export const CVUpload = ({
     }
     return p;
   }, [currentCV]);
+
+  const { toast } = useToast();
+  const handleOpenCurrentCV = async (e?: React.MouseEvent) => {
+    e?.preventDefault();
+    try {
+      if (!cvPath) throw new Error('No CV found');
+      const { data, error } = await supabase.functions.invoke('get-cv-signed-url', {
+        body: { path: cvPath, expiresIn: 3600 }
+      });
+      if (error) throw error as any;
+      const url = (data as any)?.url as string | undefined;
+      if (!url) throw new Error('No signed URL returned');
+      window.open(`${url}#v=${Date.now()}`, '_blank', 'noopener');
+    } catch (err) {
+      console.error('Failed to open CV via function', err);
+      try {
+        const { data: signed, error: signErr } = await supabase.storage.from('cvs').createSignedUrl(cvPath, 3600);
+        if (signErr) throw signErr;
+        if (signed?.signedUrl) {
+          window.open(`${signed.signedUrl}#v=${Date.now()}`, '_blank', 'noopener');
+          return;
+        }
+        throw new Error('No signed URL from storage');
+      } catch (fallbackErr) {
+        console.error('Fallback sign failed', fallbackErr);
+        toast({
+          variant: 'destructive',
+          title: 'Unable to open CV',
+          description: 'Please try again or re-upload your CV.',
+        });
+      }
+    }
+  };
+
   return (
     <div className="space-y-4">
       <div className="text-sm font-medium text-gray-900">CV / Resume</div>
@@ -60,15 +95,14 @@ export const CVUpload = ({
 
             <div className="flex items-center gap-2">
               <FileText className="h-4 w-4 text-blue-600" />
-              <a
-                href={`/cv-view?path=${encodeURIComponent(cvPath)}`}
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                type="button"
+                onClick={handleOpenCurrentCV}
                 className="text-sm text-blue-600 hover:underline"
                 aria-label="View Current CV"
               >
                 View Current CV
-              </a>
+              </button>
             </div>
           </>
         )}
