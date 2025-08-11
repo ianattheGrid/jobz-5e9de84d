@@ -60,27 +60,30 @@ export const CVUpload = ({
     }
     
     try {
-      // Create a fresh signed URL each time to avoid caching issues
-      const { data: signedData, error: signedError } = await supabase.storage
-        .from('cvs')
-        .createSignedUrl(cvPath, 60); // Short 1-minute expiry
+      // Use the edge function with retry logic for reliability
+      const { data, error } = await supabase.functions.invoke('get-cv-signed-url', {
+        body: { path: cvPath, expiresIn: 300 } // 5 minute expiry
+      });
       
-      if (signedError) {
-        console.error('Direct storage error:', signedError);
-        throw signedError;
+      if (error) {
+        throw error;
       }
       
-      if (signedData?.signedUrl) {
-        // Use location.href instead of window.open to avoid popup blockers
-        const newWindow = window.open('', '_blank');
-        if (newWindow) {
-          newWindow.location.href = signedData.signedUrl;
-        } else {
-          // Fallback if popup is blocked
-          window.location.href = signedData.signedUrl;
-        }
+      // The edge function returns { signedUrl: "..." }
+      const signedUrl = data?.signedUrl;
+      
+      if (signedUrl && typeof signedUrl === 'string') {
+        // Simple, reliable approach
+        const link = document.createElement('a');
+        link.href = signedUrl;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.style.display = 'none';
+        document.body.appendChild(link);
+        link.click();
+        setTimeout(() => document.body.removeChild(link), 100);
       } else {
-        throw new Error('No signed URL generated');
+        throw new Error('Invalid response from CV service');
       }
     } catch (error) {
       console.error('Failed to open CV:', error);
