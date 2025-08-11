@@ -54,40 +54,30 @@ export const CVUpload = ({
     e?.preventDefault();
     e?.stopPropagation();
     
+    console.log('DEBUG: handleOpenCurrentCV called');
+    console.log('DEBUG: currentCV =', currentCV);
+    console.log('DEBUG: typeof currentCV =', typeof currentCV);
+    
     if (!currentCV) {
       toast({ variant: 'destructive', title: 'No CV found', description: 'Please upload your CV first.' });
       return;
     }
     
-    try {
-      // Force a fresh signed URL each time with a unique timestamp
-      const timestamp = Date.now();
-      const { data, error } = await supabase.functions.invoke('get-cv-signed-url', {
-        body: { 
-          path: cvPath, 
-          expiresIn: 60,
-          timestamp // Force fresh request
-        }
-      });
-      
-      if (error || !data?.signedUrl) {
-        throw new Error('Failed to get signed URL');
-      }
-      
-      // Use a simple anchor click approach
-      const a = document.createElement('a');
-      a.href = data.signedUrl;
-      a.target = '_blank';
-      a.click();
-      
-    } catch (error) {
-      console.error('Failed to open CV:', error);
-      toast({ 
-        variant: 'destructive', 
-        title: 'Failed to open CV', 
-        description: 'Please try again.' 
-      });
+    // Just open the URL directly - no complex processing
+    if (typeof currentCV === 'string' && currentCV.startsWith('http')) {
+      console.log('DEBUG: Opening URL directly:', currentCV);
+      window.open(currentCV, '_blank');
+      return;
     }
+    
+    console.log('DEBUG: Current CV is not a direct URL, trying edge function');
+    console.log('DEBUG: cvPath =', cvPath);
+    
+    toast({ 
+      variant: 'destructive', 
+      title: 'Debug Info', 
+      description: `CV: ${currentCV?.substring(0, 50)}... | Path: ${cvPath}` 
+    });
   };
   return (
     <div className="space-y-4">
