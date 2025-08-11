@@ -12,14 +12,15 @@ export default function CVRedirect() {
   }, [error]);
 
   useEffect(() => {
-    const go = async () => {
+    let unsub: { data: { subscription: { unsubscribe: () => void } } } | null = null;
+    let cancelled = false;
+
+    const invokeWithToken = async (accessToken: string) => {
       try {
-        if (!path) {
-          setError("Invalid or missing CV path.");
-          return;
-        }
+        const decoded = decodeURIComponent(path);
         const { data, error } = await supabase.functions.invoke('get-cv-signed-url', {
-          body: { path: decodeURIComponent(path), expiresIn: 3600 }
+          body: { path: decoded, expiresIn: 3600 },
+          headers: { Authorization: `Bearer ${accessToken}` }
         });
         if (error) throw error;
         const url = (data as any)?.url as string | undefined;
@@ -27,10 +28,40 @@ export default function CVRedirect() {
         window.location.replace(`${url}#v=${Date.now()}`);
       } catch (e) {
         console.error('Failed to redirect to CV', e);
-        setError("We couldn't open your CV. Please try again, or re-upload it.");
+        if (!cancelled) setError("We couldn't open your CV. Please try again, or re-upload it.");
       }
     };
+
+    const go = async () => {
+      if (!path) {
+        setError("Invalid or missing CV path.");
+        return;
+      }
+      const { data } = await supabase.auth.getSession();
+      const session = data.session;
+      if (session?.access_token) {
+        await invokeWithToken(session.access_token);
+        return;
+      }
+      // Wait briefly for session hydration in a new tab
+      unsub = supabase.auth.onAuthStateChange((_evt, sess) => {
+        if (sess?.access_token && !cancelled) {
+          unsub?.data.subscription.unsubscribe();
+          invokeWithToken(sess.access_token);
+        }
+      });
+      // Timeout fallback
+      setTimeout(() => {
+        if (!cancelled) setError('Authentication required. Please sign in again.');
+      }, 5000);
+    };
+
     go();
+
+    return () => {
+      cancelled = true;
+      unsub?.data.subscription.unsubscribe();
+    };
   }, [path]);
 
   return (
