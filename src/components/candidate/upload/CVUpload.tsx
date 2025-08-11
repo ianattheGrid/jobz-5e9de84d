@@ -39,99 +39,15 @@ export const CVUpload = ({
   }, [currentCV]);
 
   const { toast } = useToast();
-  const openingRef = React.useRef(false);
-  const lastBlobUrlRef = React.useRef<string | null>(null);
-  React.useEffect(() => {
-    return () => {
-      if (lastBlobUrlRef.current) {
-        URL.revokeObjectURL(lastBlobUrlRef.current);
-        lastBlobUrlRef.current = null;
-      }
-    };
-  }, []);
 
-  const handleOpenCurrentCV = async (e?: React.MouseEvent) => {
+  const handleOpenCurrentCV = (e?: React.MouseEvent) => {
     e?.preventDefault();
-    if (openingRef.current) return;
     if (!cvPath) {
-      toast({
-        variant: 'destructive',
-        title: 'No CV found',
-        description: 'Please upload your CV first.',
-      });
+      toast({ variant: 'destructive', title: 'No CV found', description: 'Please upload your CV first.' });
       return;
     }
-    openingRef.current = true;
     const viewerUrl = `/cv-view?path=${encodeURIComponent(cvPath)}&t=${Date.now()}`;
-    const newTab = window.open('about:blank', '_blank', 'noopener');
-    if (!newTab) {
-      toast({
-        variant: 'destructive',
-        title: 'Pop-up blocked',
-        description: 'Allow pop-ups for this site to view your CV. Redirecting...',
-      });
-      window.location.href = viewerUrl;
-      openingRef.current = false;
-      return;
-    }
-
-    // Show quick placeholder while loading
-    try {
-      newTab.document.write(`
-        <html><head><title>Opening CV…</title></head>
-        <body style="font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; padding: 24px;">
-        <h1 style="font-size: 18px; margin: 0 0 8px;">Opening your CV…</h1>
-        <p style="color:#555;margin:0;">Please wait.</p>
-        </body></html>
-      `);
-      newTab.document.close();
-    } catch {}
-
-    try {
-      // Try downloading via authenticated Storage (best UX)
-      const { data: blob, error } = await supabase.storage.from('cvs').download(cvPath);
-      if (error) throw error;
-      if (lastBlobUrlRef.current) {
-        URL.revokeObjectURL(lastBlobUrlRef.current);
-        lastBlobUrlRef.current = null;
-      }
-      const blobUrl = URL.createObjectURL(blob);
-      lastBlobUrlRef.current = blobUrl;
-      newTab.location.replace(`${blobUrl}#v=${Date.now()}`);
-      openingRef.current = false;
-      return;
-    } catch (err) {
-      console.warn('Storage download failed, falling back to signed URL', err);
-    }
-
-    try {
-      // Fallback: get signed URL via Edge Function
-      const { data: s } = await supabase.auth.getSession();
-      const accessToken = s.session?.access_token;
-      const { data, error } = await supabase.functions.invoke('get-cv-signed-url', {
-        body: { path: cvPath, expiresIn: 3600 },
-        headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : undefined,
-      });
-      if (error) throw error;
-      const url = (data as any)?.url as string | undefined;
-      if (!url) throw new Error('No URL returned');
-      newTab.location.replace(`${url}#v=${Date.now()}`);
-    } catch (err) {
-      console.error('Failed to open CV', err);
-      try {
-        newTab.document.body.innerHTML = `
-          <h1 style="font-family: system-ui; font-size:18px;">We couldn’t open your CV</h1>
-          <p style="font-family: system-ui; color:#555;">Please try again, or re-upload it.</p>
-        `;
-      } catch {}
-      toast({
-        variant: 'destructive',
-        title: "Couldn't open CV",
-        description: 'Please try again, or re-upload your CV.',
-      });
-    } finally {
-      openingRef.current = false;
-    }
+    window.location.href = viewerUrl;
   };
   return (
     <div className="space-y-4">
