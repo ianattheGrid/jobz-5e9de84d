@@ -52,22 +52,35 @@ export const CVUpload = ({
 
   const handleOpenCurrentCV = async (e?: React.MouseEvent) => {
     e?.preventDefault();
+    e?.stopPropagation();
+    
+    console.log('handleOpenCurrentCV called, cvPath:', cvPath);
+    
     if (!cvPath) {
       toast({ variant: 'destructive', title: 'No CV found', description: 'Please upload your CV first.' });
       return;
     }
     
     try {
+      console.log('Calling edge function with path:', cvPath);
+      
       // Get signed URL from edge function
       const { data, error } = await supabase.functions.invoke('get-cv-signed-url', {
         body: { path: cvPath, expiresIn: 3600 }
       });
       
+      console.log('Edge function response:', { data, error });
+      
       if (error) throw error;
       if (!data?.url) throw new Error('No signed URL returned');
       
+      console.log('Opening URL:', data.url);
+      
       // Open PDF in new tab
-      window.open(data.url, '_blank', 'noopener,noreferrer');
+      const opened = window.open(data.url, '_blank', 'noopener,noreferrer');
+      if (!opened) {
+        throw new Error('Pop-up blocked or failed to open');
+      }
     } catch (error) {
       console.error('Failed to open CV:', error);
       toast({ 
