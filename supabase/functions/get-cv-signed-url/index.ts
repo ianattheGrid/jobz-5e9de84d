@@ -8,14 +8,20 @@ const corsHeaders = {
 };
 
 serve(async (req) => {
+  console.log("Edge function called with method:", req.method);
+  
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const { path, expiresIn = 3600 } = await req.json();
+    const requestBody = await req.json();
+    console.log("Request body:", requestBody);
+    
+    const { path, expiresIn = 3600 } = requestBody;
 
     if (!path || typeof path !== "string") {
+      console.log("Missing or invalid path:", path);
       return new Response(
         JSON.stringify({ error: "Missing or invalid 'path'" }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
@@ -25,18 +31,26 @@ serve(async (req) => {
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const anonKey = Deno.env.get("SUPABASE_ANON_KEY")!;
     const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+    
+    console.log("Environment variables loaded");
 
     // Get the authenticated user from the incoming JWT
     const userClient = createClient(supabaseUrl, anonKey, {
       global: { headers: { Authorization: req.headers.get("Authorization") || "" } },
     });
+    
+    console.log("Getting user from auth token...");
     const { data: userData, error: userErr } = await userClient.auth.getUser();
+    
     if (userErr || !userData?.user) {
+      console.log("Auth error:", userErr);
       return new Response(
         JSON.stringify({ error: "Unauthorized" }),
         { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
+    
+    console.log("User authenticated:", userData.user.id);
 
     // Ensure the requested path belongs to the requester (first folder = user id)
     const firstSegment = path.split("/")[0];
@@ -52,9 +66,13 @@ serve(async (req) => {
         { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
+    
+    console.log("Creating admin client for signed URL generation...");
 
     // Use service role to bypass storage RLS securely after validating ownership
     const adminClient = createClient(supabaseUrl, serviceKey);
+    
+    console.log("Generating signed URL for path:", path);
     const { data: signed, error: signErr } = await adminClient
       .storage
       .from("cvs")
@@ -67,6 +85,8 @@ serve(async (req) => {
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
+    
+    console.log("Successfully generated signed URL");
 
     return new Response(
       JSON.stringify({ url: signed?.signedUrl || null }),
