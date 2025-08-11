@@ -10,16 +10,34 @@ interface CVViewButtonProps {
 export const CVViewButton = ({ cvPath }: CVViewButtonProps) => {
   const { toast } = useToast();
 
-  const openCV = () => {
-    // If it's already a full URL, use it directly
-    if (cvPath.startsWith('http')) {
-      window.open(cvPath, '_blank');
-      return;
+  const openCV = async () => {
+    try {
+      // Extract just the file path if it's a full URL
+      let filePath = cvPath;
+      if (cvPath.startsWith('http')) {
+        const urlParts = cvPath.split('/cvs/');
+        if (urlParts.length > 1) {
+          filePath = urlParts[1];
+        }
+      }
+      
+      const { data, error } = await supabase.storage
+        .from('cvs')
+        .createSignedUrl(filePath, 3600);
+      
+      if (error) throw error;
+      if (!data?.signedUrl) throw new Error('No signed URL returned');
+      
+      window.open(data.signedUrl, '_blank');
+      
+    } catch (error) {
+      console.error('Failed to open CV:', error);
+      toast({ 
+        variant: 'destructive', 
+        title: 'Failed to open CV', 
+        description: 'Please try again.' 
+      });
     }
-    
-    // Otherwise construct the public URL
-    const publicUrl = `https://lfwwhyjtbkfibxzefvkn.supabase.co/storage/v1/object/public/cvs/${cvPath}`;
-    window.open(publicUrl, '_blank');
   };
 
   return (
