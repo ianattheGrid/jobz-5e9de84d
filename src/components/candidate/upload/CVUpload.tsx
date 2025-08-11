@@ -41,6 +41,8 @@ export const CVUpload = ({
   const { toast } = useToast();
   const handleOpenCurrentCV = async (e?: React.MouseEvent) => {
     e?.preventDefault();
+    // Open a tab synchronously to avoid popup blockers on subsequent attempts
+    const newTab = window.open('', '_blank', 'noopener,noreferrer');
     try {
       if (!cvPath) throw new Error('No CV found');
       const { data, error } = await supabase.functions.invoke('get-cv-signed-url', {
@@ -49,19 +51,27 @@ export const CVUpload = ({
       if (error) throw error as any;
       const url = (data as any)?.url as string | undefined;
       if (!url) throw new Error('No signed URL returned');
-      window.open(`${url}#v=${Date.now()}`, '_blank', 'noopener');
+      if (newTab) newTab.location.href = `${url}#v=${Date.now()}`;
+      else window.location.href = `${url}#v=${Date.now()}`;
     } catch (err) {
       console.error('Failed to open CV via function', err);
       try {
         const { data: signed, error: signErr } = await supabase.storage.from('cvs').createSignedUrl(cvPath, 3600);
         if (signErr) throw signErr;
         if (signed?.signedUrl) {
-          window.open(`${signed.signedUrl}#v=${Date.now()}`, '_blank', 'noopener');
+          if (newTab) newTab.location.href = `${signed.signedUrl}#v=${Date.now()}`;
+          else window.location.href = `${signed.signedUrl}#v=${Date.now()}`;
           return;
         }
         throw new Error('No signed URL from storage');
       } catch (fallbackErr) {
         console.error('Fallback sign failed', fallbackErr);
+        if (currentCV?.startsWith('http')) {
+          if (newTab) newTab.location.href = `${currentCV}#v=${Date.now()}`;
+          else window.location.href = `${currentCV}#v=${Date.now()}`;
+          return;
+        }
+        if (newTab) newTab.close();
         toast({
           variant: 'destructive',
           title: 'Unable to open CV',
