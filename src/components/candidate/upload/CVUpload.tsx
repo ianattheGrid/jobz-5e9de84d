@@ -25,7 +25,17 @@ export const CVUpload = ({
     const file = e.target.files?.[0];
     if (file) onUpload(file);
   };
-  
+
+  const cvPath = React.useMemo(() => {
+    if (!currentCV) return '';
+    let p = currentCV as string;
+    if (p.startsWith('http')) {
+      const parts = p.split('/');
+      const idx = parts.findIndex((x) => x === 'cvs');
+      if (idx !== -1) p = parts.slice(idx + 1).join('/');
+    }
+    return p;
+  }, [currentCV]);
   return (
     <div className="space-y-4">
       <div className="text-sm font-medium text-gray-900">CV / Resume</div>
@@ -50,31 +60,15 @@ export const CVUpload = ({
 
             <div className="flex items-center gap-2">
               <FileText className="h-4 w-4 text-blue-600" />
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  if (!currentCV) return;
-                  let p = currentCV as string;
-                  if (p.startsWith('http')) {
-                    const parts = p.split('/');
-                    const idx = parts.findIndex((x) => x === 'cvs');
-                    if (idx !== -1) p = parts.slice(idx + 1).join('/');
-                  }
-                  const url = `/cv-view?path=${encodeURIComponent(p)}`;
-                  const w = window.open(url, '_blank', 'noopener');
-                  if (!w || w.closed) {
-                    const a = document.createElement('a');
-                    a.href = url; a.target = '_blank'; a.rel = 'noopener noreferrer';
-                    document.body.appendChild(a); a.click(); a.remove();
-                  }
-                }}
+              <a
+                href={`/cv-view?path=${encodeURIComponent(cvPath)}`}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-sm text-blue-600 hover:underline"
                 aria-label="View Current CV"
               >
                 View Current CV
-              </button>
+              </a>
             </div>
           </>
         )}
