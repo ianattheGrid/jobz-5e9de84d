@@ -55,13 +55,16 @@ export const CVUpload = ({
                 onClick={async (e) => {
                   e.preventDefault();
                   e.stopPropagation();
-                  // Pre-open a tab synchronously to avoid popup blockers
-                  const tab = window.open('about:blank', '_blank');
+                  // Pre-open or reuse a named tab to satisfy popup blockers reliably
+                  const tab = window.open('about:blank', 'cv_viewer');
                   try {
                     if (!currentCV) { tab?.close(); return; }
 
-                    // Optional minimal feedback while we fetch URL
-                    try { tab?.document.write('<!doctype html><title>Opening CV…</title><body style="font-family:sans-serif;padding:24px">Opening your CV…</body>'); tab?.document.close(); } catch {}
+                    try {
+                      tab?.document.open();
+                      tab?.document.write('<!doctype html><title>Opening CV…</title><body style="font-family:system-ui,sans-serif;padding:24px">Opening your CV…</body>');
+                      tab?.document.close();
+                    } catch {}
 
                     let path = currentCV as string;
                     if (path.startsWith('http')) {
@@ -81,13 +84,11 @@ export const CVUpload = ({
 
                     const viewUrl = `${signed}#v=${Date.now()}`;
                     if (tab) {
-                      try { tab.location.href = viewUrl; }
+                      try { tab.location.replace(viewUrl); }
                       catch {
-                        // Fallback if navigation fails
                         const a = document.createElement('a');
-                        a.href = viewUrl; a.target = '_blank'; a.rel = 'noopener noreferrer';
+                        a.href = viewUrl; a.target = 'cv_viewer'; a.rel = 'noopener noreferrer';
                         document.body.appendChild(a); a.click(); a.remove();
-                        try { tab.close(); } catch {}
                       }
                     } else {
                       const a = document.createElement('a');
