@@ -130,6 +130,12 @@ const NavBar = () => {
                         Profile
                       </Link>
                     )}
+                    <Link 
+                      to="/push-setup"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                    >
+                      Push Setup
+                    </Link>
                     <DropdownMenuItem 
                       onClick={handleSignOut}
                       className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left flex items-center"

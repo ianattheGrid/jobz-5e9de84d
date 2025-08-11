@@ -40,6 +40,7 @@ import Jobs from './pages/Jobs';
 import FAQ from './pages/FAQ';
 import QRCodePage from './pages/QRCodePage';
 import PricingPage from './pages/PricingPage';
+import PushSetup from './pages/PushSetup';
 
 import ViewCandidateProfile from './pages/ViewCandidateProfile';
 import ViewEmployerProfile from './pages/ViewEmployerProfile';
@@ -109,6 +110,7 @@ const App = () => {
           <Route path="jobs" element={<Jobs />} />
           <Route path="faq" element={<FAQ />} />
           <Route path="pricing" element={<PricingPage />} />
+          <Route path="push-setup" element={<PushSetup />} />
           
           <Route path="qr-code" element={<QRCodePage />} />
           <Route path="employer/:id" element={<ViewEmployerProfile />} />
