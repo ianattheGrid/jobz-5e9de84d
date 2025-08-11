@@ -64,12 +64,13 @@ export const CVUpload = ({
                         path = parts.slice(idx + 1).join('/');
                       }
                     }
-                    const { data, error } = await supabase.storage
-                      .from('cvs')
-                      .createSignedUrl(path, 3600);
+                    const { data, error } = await supabase.functions.invoke('get-cv-signed-url', {
+                      body: { path, expiresIn: 3600 }
+                    });
                     if (error) throw error;
-                    if (data?.signedUrl) {
-                      window.open(data.signedUrl, '_blank', 'noopener,noreferrer');
+                    const url = (data as any)?.url;
+                    if (url) {
+                      window.open(url, '_blank', 'noopener,noreferrer');
                     }
                   } catch (e) {
                     console.error('Failed to open CV', e);
