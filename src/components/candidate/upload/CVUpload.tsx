@@ -29,13 +29,24 @@ export const CVUpload = ({
 
   const cvPath = React.useMemo(() => {
     if (!currentCV) return '';
-    let p = currentCV as string;
-    if (p.startsWith('http')) {
-      const parts = p.split('/');
-      const idx = parts.findIndex((x) => x === 'cvs');
-      if (idx !== -1) p = parts.slice(idx + 1).join('/');
+    
+    // Extract the actual file path from any URL format
+    let path = currentCV as string;
+    
+    // If it's a full URL, extract just the path part after the bucket name
+    if (path.includes('/storage/v1/object/')) {
+      const parts = path.split('/');
+      const cvsIndex = parts.findIndex(part => part === 'cvs');
+      if (cvsIndex !== -1 && cvsIndex < parts.length - 1) {
+        // Get everything after 'cvs/' 
+        path = parts.slice(cvsIndex + 1).join('/');
+      }
     }
-    return p;
+    
+    console.log('Original CV URL:', currentCV);
+    console.log('Extracted CV path:', path);
+    
+    return path;
   }, [currentCV]);
 
   const { toast } = useToast();

@@ -17,9 +17,21 @@ export default function CVRedirect() {
 
     const invokeWithToken = async (accessToken: string) => {
       try {
-        const decoded = decodeURIComponent(path);
+        // Extract the actual file path from any URL format  
+        let filePath = decodeURIComponent(path);
+        if (filePath.includes('/storage/v1/object/')) {
+          const parts = filePath.split('/');
+          const cvsIndex = parts.findIndex(part => part === 'cvs');
+          if (cvsIndex !== -1 && cvsIndex < parts.length - 1) {
+            filePath = parts.slice(cvsIndex + 1).join('/');
+          }
+        }
+        
+        console.log('CVRedirect - Original path:', path);
+        console.log('CVRedirect - Extracted file path:', filePath);
+        
         const { data, error } = await supabase.functions.invoke('get-cv-signed-url', {
-          body: { path: decoded, expiresIn: 3600 },
+          body: { path: filePath, expiresIn: 3600 },
           headers: { Authorization: `Bearer ${accessToken}` }
         });
         if (error) throw error;
