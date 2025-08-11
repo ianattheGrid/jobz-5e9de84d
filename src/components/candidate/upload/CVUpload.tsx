@@ -60,28 +60,22 @@ export const CVUpload = ({
     }
     
     try {
-      console.log('CVUpload - Original CV URL:', currentCV);
-      console.log('CVUpload - Extracted CV path for storage:', cvPath);
+      console.log('CVUpload - Using edge function for CV access:', cvPath);
       
-      // Always create a signed URL for the private cvs bucket
-      // Remove any /public/ from the path since cvs bucket is private
-      let cleanPath = cvPath;
-      if (cleanPath.includes('/public/')) {
-        cleanPath = cleanPath.replace('/public/', '/');
-      }
+      // Use the edge function instead of direct storage access
+      const { data, error } = await supabase.functions.invoke('get-cv-signed-url', {
+        body: { path: cvPath }
+      });
       
-      console.log('CVUpload - Clean path for signed URL:', cleanPath);
-      const { data, error } = await supabase.storage.from('cvs').createSignedUrl(cleanPath, 3600);
-      
-      console.log('CVUpload - Storage response:', { data, error });
+      console.log('CVUpload - Edge function response:', { data, error });
       
       if (error) {
-        console.error('CVUpload - Storage error:', error);
+        console.error('CVUpload - Edge function error:', error);
         throw error;
       }
       
       if (data?.signedUrl) {
-        console.log('CVUpload - Got signed URL, opening:', data.signedUrl);
+        console.log('CVUpload - Got signed URL from edge function, opening:', data.signedUrl);
         const link = document.createElement('a');
         link.href = data.signedUrl;
         link.target = '_blank';
@@ -90,7 +84,7 @@ export const CVUpload = ({
         link.click();
         document.body.removeChild(link);
       } else {
-        throw new Error('No signed URL returned from storage');
+        throw new Error('No signed URL returned from edge function');
       }
     } catch (error) {
       console.error('CVUpload - Failed to open CV:', error);
