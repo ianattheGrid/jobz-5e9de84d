@@ -30,21 +30,20 @@ export const CVUpload = ({
   const cvPath = React.useMemo(() => {
     if (!currentCV) return '';
     
-    // Extract the actual file path from any URL format
+    // Extract the path after 'cvs/' from any URL format
     let path = currentCV as string;
     
-    // If it's a full URL, extract just the path part after the bucket name
     if (path.includes('/storage/v1/object/')) {
       const parts = path.split('/');
       const cvsIndex = parts.findIndex(part => part === 'cvs');
       if (cvsIndex !== -1 && cvsIndex < parts.length - 1) {
-        // Get everything after 'cvs/' 
+        // Get everything after 'cvs/' - this should be userId/filename.ext
         path = parts.slice(cvsIndex + 1).join('/');
       }
     }
     
-    console.log('Original CV URL:', currentCV);
-    console.log('Extracted CV path:', path);
+    console.log('CVUpload - Original CV URL:', currentCV);
+    console.log('CVUpload - Extracted CV path for edge function:', path);
     
     return path;
   }, [currentCV]);
