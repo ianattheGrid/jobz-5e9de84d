@@ -41,14 +41,22 @@ export const CVViewButton = ({ cvPath }: CVViewButtonProps) => {
       }
       
       console.log('Opening URL:', data.signedUrl);
-      window.open(data.signedUrl, '_blank');
+      
+      // Open the PDF in a new tab with a unique timestamp to avoid caching
+      const urlWithTimestamp = `${data.signedUrl}&t=${Date.now()}`;
+      const newWindow = window.open(urlWithTimestamp, '_blank');
+      
+      // Ensure the window opened successfully
+      if (!newWindow) {
+        throw new Error('Failed to open PDF window - please check popup blocker');
+      }
       
     } catch (error) {
       console.error('Failed to open CV:', error);
       toast({ 
         variant: 'destructive', 
         title: 'Failed to open CV', 
-        description: 'Please try again.' 
+        description: error instanceof Error ? error.message : 'Please try again.' 
       });
     }
   };
