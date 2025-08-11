@@ -39,45 +39,21 @@ export const CVUpload = ({
   }, [currentCV]);
 
   const { toast } = useToast();
-  const handleOpenCurrentCV = async (e?: React.MouseEvent) => {
+  const handleOpenCurrentCV = (e?: React.MouseEvent) => {
     e?.preventDefault();
-    // Open a tab synchronously to avoid popup blockers on subsequent attempts
-    const newTab = window.open('', '_blank', 'noopener,noreferrer');
-    try {
-      if (!cvPath) throw new Error('No CV found');
-      const { data, error } = await supabase.functions.invoke('get-cv-signed-url', {
-        body: { path: cvPath, expiresIn: 3600 }
+    if (!cvPath) {
+      toast({
+        variant: 'destructive',
+        title: 'No CV found',
+        description: 'Please upload your CV first.',
       });
-      if (error) throw error as any;
-      const url = (data as any)?.url as string | undefined;
-      if (!url) throw new Error('No signed URL returned');
-      if (newTab) newTab.location.href = `${url}#v=${Date.now()}`;
-      else window.location.href = `${url}#v=${Date.now()}`;
-    } catch (err) {
-      console.error('Failed to open CV via function', err);
-      try {
-        const { data: signed, error: signErr } = await supabase.storage.from('cvs').createSignedUrl(cvPath, 3600);
-        if (signErr) throw signErr;
-        if (signed?.signedUrl) {
-          if (newTab) newTab.location.href = `${signed.signedUrl}#v=${Date.now()}`;
-          else window.location.href = `${signed.signedUrl}#v=${Date.now()}`;
-          return;
-        }
-        throw new Error('No signed URL from storage');
-      } catch (fallbackErr) {
-        console.error('Fallback sign failed', fallbackErr);
-        if (currentCV?.startsWith('http')) {
-          if (newTab) newTab.location.href = `${currentCV}#v=${Date.now()}`;
-          else window.location.href = `${currentCV}#v=${Date.now()}`;
-          return;
-        }
-        if (newTab) newTab.close();
-        toast({
-          variant: 'destructive',
-          title: 'Unable to open CV',
-          description: 'Please try again or re-upload your CV.',
-        });
-      }
+      return;
+    }
+    const url = `/cv-view?path=${encodeURIComponent(cvPath)}&t=${Date.now()}`;
+    const newTab = window.open(url, '_blank', 'noopener');
+    if (!newTab) {
+      // Fallback if popup blocked
+      window.location.href = url;
     }
   };
 
