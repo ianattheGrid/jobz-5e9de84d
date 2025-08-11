@@ -54,8 +54,10 @@ export const CVUpload = ({
               <button
                 type="button"
                 onClick={async () => {
+                  // Open a blank tab synchronously to avoid popup blockers
+                  const popup = window.open('', '_blank', 'noopener,noreferrer');
                   try {
-                    if (!currentCV) return;
+                    if (!currentCV) { popup?.close(); return; }
                     let path = currentCV as string;
                     if (path.startsWith('http')) {
                       const parts = path.split('/');
@@ -69,11 +71,14 @@ export const CVUpload = ({
                     });
                     if (error) throw error;
                     const url = (data as any)?.url;
-                    if (url) {
-                      window.open(url, '_blank', 'noopener,noreferrer');
+                    if (url && popup) {
+                      popup.location.href = url;
+                    } else {
+                      popup?.close();
                     }
                   } catch (e) {
                     console.error('Failed to open CV', e);
+                    popup?.close();
                   }
                 }}
                 className="text-sm text-blue-600 hover:underline"
