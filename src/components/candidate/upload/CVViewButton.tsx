@@ -21,18 +21,25 @@ export const CVViewButton = ({ cvPath }: CVViewButtonProps) => {
         }
       }
       
-      const { data, error } = await supabase.rpc('get_cv_signed_url', {
-        file_path: filePath,
-        expires_in: 3600
+      const { data, error } = await supabase.rpc('get_cv_file_path', {
+        file_path: filePath
       });
       
       if (error) throw error;
       
-      const result = data as { error?: string; signedUrl?: string };
+      const result = data as { error?: string; filePath?: string };
       if (result?.error) throw new Error(result.error);
-      if (!result?.signedUrl) throw new Error('No signed URL returned');
+      if (!result?.filePath) throw new Error('No file path returned');
       
-      window.open(result.signedUrl, '_blank');
+      // Now create the signed URL using the validated path
+      const { data: signedData, error: signedError } = await supabase.storage
+        .from('cvs')
+        .createSignedUrl(result.filePath, 3600);
+      
+      if (signedError) throw signedError;
+      if (!signedData?.signedUrl) throw new Error('No signed URL returned');
+      
+      window.open(signedData.signedUrl, '_blank');
       
     } catch (error) {
       console.error('Failed to open CV:', error);
