@@ -75,6 +75,14 @@ export const useWebPushNotifications = () => {
 
           if (error) throw error;
           setSubscription(sub);
+          // Fire a one-off test notification
+          try {
+            await supabase.functions.invoke('send-test-push', {
+              body: { user_id: user.id }
+            });
+          } catch (e) {
+            console.error('Error sending test push:', e);
+          }
         }
       } catch (error) {
         console.error('Error registering for push notifications:', error);
