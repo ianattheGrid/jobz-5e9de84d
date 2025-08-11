@@ -50,7 +50,7 @@ export const CVUpload = ({
 
   const { toast } = useToast();
 
-  const handleOpenCurrentCV = (e?: React.MouseEvent) => {
+  const handleOpenCurrentCV = async (e?: React.MouseEvent) => {
     e?.preventDefault();
     e?.stopPropagation();
     
@@ -59,9 +59,22 @@ export const CVUpload = ({
       return;
     }
     
-    // Use a dedicated redirect page that handles authentication server-side
-    const redirectUrl = `/cv-redirect?path=${encodeURIComponent(cvPath)}`;
-    window.open(redirectUrl, '_blank', 'noopener,noreferrer');
+    // Use direct storage URL with proper authentication
+    const { data } = await supabase.storage.from('cvs').createSignedUrl(cvPath, 3600);
+    
+    if (data?.signedUrl) {
+      // Force download/view in new tab with proper headers
+      const link = document.createElement('a');
+      link.href = data.signedUrl;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      link.download = ''; // Remove to view instead of download
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } else {
+      toast({ variant: 'destructive', title: 'Failed to open CV', description: 'Please try again.' });
+    }
   };
   return (
     <div className="space-y-4">
