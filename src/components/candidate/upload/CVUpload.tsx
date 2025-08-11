@@ -69,10 +69,14 @@ export const CVUpload = ({
       if (error) throw error;
       if (!data?.url) throw new Error('No signed URL returned');
       
-      console.log('Got signed URL, opening CV:', data.url);
+      console.log('Got signed URL, opening CV in new tab');
       
-      // Use location.assign for more reliable navigation
-      window.location.assign(data.url);
+      // Use Object.assign to create a link and click it immediately
+      Object.assign(document.createElement('a'), {
+        target: '_blank',
+        rel: 'noopener noreferrer',
+        href: data.url,
+      }).click();
       
     } catch (error) {
       console.error('Failed to open CV:', error);
