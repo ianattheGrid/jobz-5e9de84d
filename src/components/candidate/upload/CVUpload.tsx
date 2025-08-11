@@ -56,6 +56,7 @@ export const CVUpload = ({
                   try {
                     if (!currentCV) return;
 
+                    // Derive storage path from public URL if needed
                     let path = currentCV as string;
                     if (path.startsWith('http')) {
                       const parts = path.split('/');
@@ -65,6 +66,7 @@ export const CVUpload = ({
                       }
                     }
 
+                    // Get a fresh signed URL
                     const { data, error } = await supabase.functions.invoke('get-cv-signed-url', {
                       body: { path, expiresIn: 3600 }
                     });
@@ -72,17 +74,23 @@ export const CVUpload = ({
                     const signed = (data as any)?.url as string | undefined;
                     if (!signed) throw new Error('No signed URL returned');
 
-                    const url = `${signed}#ts=${Date.now()}`;
-                    // Open in the same tab for maximum reliability
-                    window.location.href = url;
+                    // Force download to avoid flaky inline PDF viewers
+                    const downloadUrl = `${signed}${signed.includes('?') ? '&' : '?'}download`;
+                    const a = document.createElement('a');
+                    a.href = downloadUrl;
+                    a.download = '';
+                    a.rel = 'noopener noreferrer';
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
                   } catch (e) {
-                    console.error('Failed to open CV', e);
+                    console.error('Failed to download CV', e);
                   }
                 }}
                 className="text-sm text-blue-600 hover:underline"
-                aria-label="View Current CV"
+                aria-label="Download Current CV"
               >
-                View Current CV
+                Download CV
               </button>
             </div>
           </>
