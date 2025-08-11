@@ -1,8 +1,9 @@
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import type { Json } from '@/integrations/supabase/types';
+import { useToast } from '@/components/ui/use-toast';
 
 // Convert base64url VAPID key to Uint8Array for PushManager
 const urlBase64ToUint8Array = (base64String: string) => {
@@ -18,8 +19,10 @@ const urlBase64ToUint8Array = (base64String: string) => {
 
 export const useWebPushNotifications = () => {
   const { user } = useAuth();
+  const { toast } = useToast();
   const [subscription, setSubscription] = useState<PushSubscription | null>(null);
   const [vapidPublicKey, setVapidPublicKey] = useState<string | null>(null);
+  const [requested, setRequested] = useState(false);
 
   useEffect(() => {
     // Get VAPID public key from edge function (reads from Supabase secrets)
@@ -36,8 +39,15 @@ export const useWebPushNotifications = () => {
     getVapidKey();
   }, []);
 
+  const enableNotifications = useCallback(async () => {
+    setRequested(true);
+  }, []);
+
   useEffect(() => {
+    if (!requested) return;
     if (!user || !vapidPublicKey || !('serviceWorker' in navigator) || !('Notification' in window)) {
+      console.warn('Notifications prerequisites missing', { hasUser: !!user, vapidPublicKey: !!vapidPublicKey });
+      setRequested(false);
       return;
     }
 
@@ -75,6 +85,7 @@ export const useWebPushNotifications = () => {
 
           if (error) throw error;
           setSubscription(sub);
+          toast({ title: 'Notifications enabled', description: 'You will receive updates here.' });
           // Fire a one-off test notification
           try {
             await supabase.functions.invoke('send-test-push', {
@@ -83,14 +94,19 @@ export const useWebPushNotifications = () => {
           } catch (e) {
             console.error('Error sending test push:', e);
           }
+        } else if (permission === 'denied') {
+          toast({ title: 'Notifications blocked', description: 'Please enable notifications in your browser settings.' });
         }
       } catch (error) {
         console.error('Error registering for push notifications:', error);
+        toast({ title: 'Failed to enable notifications', description: 'Please try again or check settings.' });
+      } finally {
+        setRequested(false);
       }
     };
 
     registerServiceWorker();
-  }, [user, vapidPublicKey]);
+  }, [requested, user, vapidPublicKey, toast]);
 
-  return { subscription };
+  return { subscription, enableNotifications };
 };

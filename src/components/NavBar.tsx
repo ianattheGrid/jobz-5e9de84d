@@ -3,9 +3,10 @@ import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import MobileNav from "./navbar/MobileNav";
 import { Button } from "@/components/ui/button";
-import { LogIn, UserPlus, Home as HomeIcon, Briefcase, LogOut, User, HelpCircle, QrCode, PoundSterling } from "lucide-react";
+import { LogIn, UserPlus, Home as HomeIcon, Briefcase, LogOut, User, HelpCircle, QrCode, PoundSterling, Bell } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/hooks/useAuth";
+import { useWebPushNotifications } from "@/hooks/useWebPushNotifications";
 
 const NavBar = () => {
   const { user, userType, loading } = useAuth();
@@ -22,6 +23,9 @@ const NavBar = () => {
       setUserName(user.user_metadata.full_name);
     }
   }, [user, userType]);
+
+  const { enableNotifications } = useWebPushNotifications();
+  const showEnable = typeof window !== 'undefined' && 'Notification' in window && Notification.permission !== 'granted';
 
   // Check if this is a test account
   const isTestAccount = user?.email?.includes('test.employer') || 
@@ -96,6 +100,12 @@ const NavBar = () => {
           <div className="flex items-center">
             {!loading && user && !isTestAccount ? (
               <div className="hidden md:flex items-center gap-4">
+                {showEnable && (
+                  <Button variant="outline" onClick={enableNotifications} aria-label="Enable notifications">
+                    <Bell className="h-4 w-4 mr-2" />
+                    Enable notifications
+                  </Button>
+                )}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button className="bg-[#FF69B4] hover:bg-[#FF50A8] text-white">
