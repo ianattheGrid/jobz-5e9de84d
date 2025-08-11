@@ -59,39 +59,40 @@ export const CVUpload = ({
       return;
     }
     
-    // Create a temporary link and click it - this bypasses popup blockers
-    const link = document.createElement('a');
-    link.style.display = 'none';
-    document.body.appendChild(link);
-    
     try {
       console.log('Getting signed URL for path:', cvPath);
       
-      const { data, error } = await supabase.functions.invoke('get-cv-signed-url', {
+      // Add timeout to prevent hanging
+      const timeoutPromise = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error('Request timeout')), 10000)
+      );
+      
+      const requestPromise = supabase.functions.invoke('get-cv-signed-url', {
         body: { path: cvPath, expiresIn: 3600 }
       });
+      
+      const { data, error } = await Promise.race([requestPromise, timeoutPromise]) as any;
       
       if (error) throw error;
       if (!data?.url) throw new Error('No signed URL returned');
       
-      console.log('Got signed URL, opening...');
+      console.log('Got signed URL, opening in new tab...');
       
-      // Set the URL and click the link
-      link.href = data.url;
-      link.target = '_blank';
-      link.rel = 'noopener noreferrer';
-      link.click();
+      // Use window.open directly since it's more reliable
+      const newWindow = window.open(data.url, '_blank', 'noopener,noreferrer');
+      
+      if (!newWindow) {
+        // Fallback: try to navigate to the URL directly
+        window.location.href = data.url;
+      }
       
     } catch (error) {
       console.error('Failed to open CV:', error);
       toast({ 
         variant: 'destructive', 
         title: 'Failed to open CV', 
-        description: 'Please try again or re-upload your CV.' 
+        description: error instanceof Error ? error.message : 'Please try again or re-upload your CV.' 
       });
-    } finally {
-      // Clean up
-      document.body.removeChild(link);
     }
   };
   return (
