@@ -103,11 +103,11 @@ const Jobs = () => {
             {userType === 'candidate' && (
               <Button
                 onClick={() => navigate('/candidate/dashboard')}
-                size="sm"
-                className="mt-12 whitespace-nowrap px-2 py-1 text-xs leading-none h-auto w-auto"
+                size="xs"
+                className="mt-12 w-fit gap-1"
                 aria-label="Go to candidate dashboard"
               >
-                <LayoutDashboard className="w-3 h-3 mr-1" />
+                <LayoutDashboard className="w-3 h-3" />
                 Dashboard
               </Button>
             )}
