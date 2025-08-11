@@ -2,7 +2,7 @@ import React from "react";
 import { FileText } from "lucide-react";
 import { FileUploadButton } from "./FileUploadButton";
 import { DeleteFileButton } from "./DeleteFileButton";
-import { supabase } from "@/integrations/supabase/client";
+import { CVViewButton } from "./CVViewButton";
 import { useToast } from "@/hooks/use-toast";
 
 interface CVUploadProps {
@@ -49,42 +49,6 @@ export const CVUpload = ({
   }, [currentCV]);
 
   const { toast } = useToast();
-
-  const handleOpenCurrentCV = async (e?: React.MouseEvent) => {
-    e?.preventDefault();
-    e?.stopPropagation();
-    
-    if (!currentCV) {
-      toast({ variant: 'destructive', title: 'No CV found', description: 'Please upload your CV first.' });
-      return;
-    }
-    
-    try {
-      // Always use the edge function since cvs bucket is private
-      const { data, error } = await supabase.functions.invoke('get-cv-signed-url', {
-        body: { path: cvPath }
-      });
-      
-      if (error) {
-        console.error('Edge function error:', error);
-        throw error;
-      }
-      
-      if (data?.signedUrl) {
-        // Simple window.open approach
-        window.open(data.signedUrl, '_blank');
-      } else {
-        throw new Error('No signed URL returned');
-      }
-    } catch (error) {
-      console.error('Failed to open CV:', error);
-      toast({ 
-        variant: 'destructive', 
-        title: 'Failed to open CV', 
-        description: 'Please try again.' 
-      });
-    }
-  };
   return (
     <div className="space-y-4">
       <div className="text-sm font-medium text-gray-900">CV / Resume</div>
@@ -107,18 +71,7 @@ export const CVUpload = ({
               disabled={uploadingCV}
             />
 
-            <div className="flex items-center gap-2">
-              <FileText className="h-4 w-4 text-blue-600" />
-              <a
-                href={`https://lfwwhyjtbkfibxzefvkn.supabase.co/functions/v1/open-cv?path=${encodeURIComponent(cvPath)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm text-blue-600 hover:underline"
-                aria-label="View Current CV"
-              >
-                View Current CV
-              </a>
-            </div>
+            <CVViewButton cvPath={cvPath} />
           </>
         )}
 
