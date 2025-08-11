@@ -50,14 +50,32 @@ export const CVUpload = ({
 
   const { toast } = useToast();
 
-  const handleOpenCurrentCV = (e?: React.MouseEvent) => {
+  const handleOpenCurrentCV = async (e?: React.MouseEvent) => {
     e?.preventDefault();
     if (!cvPath) {
       toast({ variant: 'destructive', title: 'No CV found', description: 'Please upload your CV first.' });
       return;
     }
-    const viewerUrl = `/cv-view?path=${encodeURIComponent(cvPath)}&t=${Date.now()}`;
-    window.location.href = viewerUrl;
+    
+    try {
+      // Get signed URL from edge function
+      const { data, error } = await supabase.functions.invoke('get-cv-signed-url', {
+        body: { path: cvPath, expiresIn: 3600 }
+      });
+      
+      if (error) throw error;
+      if (!data?.url) throw new Error('No signed URL returned');
+      
+      // Open PDF in new tab
+      window.open(data.url, '_blank', 'noopener,noreferrer');
+    } catch (error) {
+      console.error('Failed to open CV:', error);
+      toast({ 
+        variant: 'destructive', 
+        title: 'Failed to open CV', 
+        description: 'Please try again or re-upload your CV.' 
+      });
+    }
   };
   return (
     <div className="space-y-4">
