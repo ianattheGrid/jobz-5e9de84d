@@ -1455,6 +1455,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: string
       }
+      get_cv_signed_url: {
+        Args: { file_path: string; expires_in?: number }
+        Returns: Json
+      }
       gtrgm_compress: {
         Args: { "": unknown }
         Returns: unknown
