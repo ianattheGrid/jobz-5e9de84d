@@ -109,14 +109,15 @@ export const CVUpload = ({
 
             <div className="flex items-center gap-2">
               <FileText className="h-4 w-4 text-blue-600" />
-              <button
-                type="button"
-                onClick={handleOpenCurrentCV}
+              <a
+                href={`https://lfwwhyjtbkfibxzefvkn.supabase.co/functions/v1/open-cv?path=${encodeURIComponent(cvPath)}`}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-sm text-blue-600 hover:underline"
                 aria-label="View Current CV"
               >
                 View Current CV
-              </button>
+              </a>
             </div>
           </>
         )}
