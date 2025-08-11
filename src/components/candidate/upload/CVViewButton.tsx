@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { FileText } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -9,8 +9,11 @@ interface CVViewButtonProps {
 
 export const CVViewButton = ({ cvPath }: CVViewButtonProps) => {
   const { toast } = useToast();
+  const [isLoading, setIsLoading] = useState(false);
 
   const openCV = async () => {
+    if (isLoading) return;
+    setIsLoading(true);
     try {
       // Extract just the file path if it's a full URL
       let filePath = cvPath;
@@ -58,6 +61,8 @@ export const CVViewButton = ({ cvPath }: CVViewButtonProps) => {
         title: 'Failed to open CV', 
         description: error instanceof Error ? error.message : 'Please try again.' 
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -67,10 +72,11 @@ export const CVViewButton = ({ cvPath }: CVViewButtonProps) => {
       <button
         type="button"
         onClick={openCV}
-        className="text-sm text-blue-600 hover:underline"
+        disabled={isLoading}
+        className="text-sm text-blue-600 hover:underline disabled:opacity-50 disabled:cursor-not-allowed"
         aria-label="View Current CV"
       >
-        View Current CV
+        {isLoading ? 'Opening...' : 'View Current CV'}
       </button>
     </div>
   );
