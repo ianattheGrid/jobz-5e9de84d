@@ -35,8 +35,29 @@ const CandidateDashboard = () => {
   const checkUser = async () => {
     try {
       const { data: { session } } = await supabase.auth.getSession();
-      if (!session || session.user.user_metadata.user_type !== 'candidate') {
+      if (!session) {
+        setLoading(false);
         navigate('/candidate/signin');
+        return;
+      }
+
+      // Verify role from database to avoid stale user_metadata
+      const { data: userRole, error: roleError } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', session.user.id)
+        .single();
+
+      if (roleError || !userRole) {
+        console.error('Error fetching user role:', roleError);
+        setLoading(false);
+        navigate('/candidate/signin');
+        return;
+      }
+
+      if (userRole.role !== 'candidate') {
+        setLoading(false);
+        navigate('/');
         return;
       }
 
@@ -86,6 +107,7 @@ const CandidateDashboard = () => {
         title: "Error",
         description: "An error occurred while checking authentication",
       });
+      setLoading(false);
     }
   };
 
