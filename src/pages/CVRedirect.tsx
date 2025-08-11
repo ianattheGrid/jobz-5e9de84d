@@ -1,15 +1,23 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 
 export default function CVRedirect() {
   const [params] = useSearchParams();
   const path = params.get("path") || "";
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    document.title = error ? "CV Error" : "Opening CV…";
+  }, [error]);
 
   useEffect(() => {
     const go = async () => {
       try {
-        if (!path) return;
+        if (!path) {
+          setError("Invalid or missing CV path.");
+          return;
+        }
         const { data, error } = await supabase.functions.invoke('get-cv-signed-url', {
           body: { path: decodeURIComponent(path), expiresIn: 3600 }
         });
@@ -19,6 +27,7 @@ export default function CVRedirect() {
         window.location.replace(`${url}#v=${Date.now()}`);
       } catch (e) {
         console.error('Failed to redirect to CV', e);
+        setError("We couldn't open your CV. Please try again, or re-upload it.");
       }
     };
     go();
@@ -27,7 +36,14 @@ export default function CVRedirect() {
   return (
     <main className="min-h-screen flex items-center justify-center p-6">
       <div className="text-center">
-        <p className="text-sm text-muted-foreground">Preparing your CV…</p>
+        {!error ? (
+          <p className="text-sm text-muted-foreground">Preparing your CV…</p>
+        ) : (
+          <div>
+            <h1 className="text-base font-medium">Unable to open CV</h1>
+            <p className="mt-2 text-sm text-muted-foreground">{error}</p>
+          </div>
+        )}
         <noscript>
           <p className="mt-2">JavaScript is required to open your CV.</p>
         </noscript>

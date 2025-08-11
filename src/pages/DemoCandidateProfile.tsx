@@ -176,10 +176,6 @@ export default function DemoCandidateProfile() {
                   <MessageCircle className="h-4 w-4 mr-2" />
                   Contact Candidate
                 </Button>
-                <Button variant="outline" className="w-full">
-                  <Download className="h-4 w-4 mr-2" />
-                  Download CV
-                </Button>
               </div>
             </CardContent>
           </Card>
