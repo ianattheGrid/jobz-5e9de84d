@@ -54,48 +54,40 @@ export const CVUpload = ({
     e?.preventDefault();
     e?.stopPropagation();
     
-    console.log('=== CV CLICK DEBUG START ===');
-    console.log('currentCV:', currentCV);
-    console.log('cvPath:', cvPath);
-    console.log('Click timestamp:', new Date().toISOString());
-    
     if (!currentCV) {
       toast({ variant: 'destructive', title: 'No CV found', description: 'Please upload your CV first.' });
       return;
     }
     
     try {
-      console.log('About to call edge function with path:', cvPath);
+      // Create a fresh signed URL each time to avoid caching issues
+      const { data: signedData, error: signedError } = await supabase.storage
+        .from('cvs')
+        .createSignedUrl(cvPath, 60); // Short 1-minute expiry
       
-      // Use the edge function to get a signed URL
-      const { data, error } = await supabase.functions.invoke('get-cv-signed-url', {
-        body: { path: cvPath }
-      });
-      
-      console.log('Edge function response:', { data, error });
-      console.log('Raw response data:', JSON.stringify(data, null, 2));
-      
-      if (error) {
-        console.error('Edge function error:', error);
-        throw error;
+      if (signedError) {
+        console.error('Direct storage error:', signedError);
+        throw signedError;
       }
       
-      if (data?.signedUrl) {
-        console.log('Opening URL:', data.signedUrl);
-        // Open the CV in a new tab
-        window.open(data.signedUrl, '_blank', 'noopener,noreferrer');
-        console.log('=== CV CLICK DEBUG SUCCESS ===');
+      if (signedData?.signedUrl) {
+        // Use location.href instead of window.open to avoid popup blockers
+        const newWindow = window.open('', '_blank');
+        if (newWindow) {
+          newWindow.location.href = signedData.signedUrl;
+        } else {
+          // Fallback if popup is blocked
+          window.location.href = signedData.signedUrl;
+        }
       } else {
-        console.error('No signedUrl in response. Data keys:', Object.keys(data || {}));
-        throw new Error('No signed URL returned');
+        throw new Error('No signed URL generated');
       }
     } catch (error) {
-      console.error('=== CV CLICK DEBUG ERROR ===');
-      console.error('Full error:', error);
+      console.error('Failed to open CV:', error);
       toast({ 
         variant: 'destructive', 
         title: 'Failed to open CV', 
-        description: 'Please try again or contact support if the issue persists.' 
+        description: 'Unable to open CV. Please try refreshing the page.' 
       });
     }
   };
