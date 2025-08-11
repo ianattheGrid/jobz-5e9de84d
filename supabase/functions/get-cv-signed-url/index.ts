@@ -8,94 +8,99 @@ const corsHeaders = {
 };
 
 serve(async (req) => {
-  console.log("Edge function called with method:", req.method);
-  
+  // Handle CORS preflight
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
+  let requestBody;
   try {
-    const requestBody = await req.json();
-    console.log("Request body:", requestBody);
-    
-    const { path, expiresIn = 3600 } = requestBody;
+    requestBody = await req.json();
+  } catch (e) {
+    console.error("Failed to parse JSON:", e);
+    return new Response(
+      JSON.stringify({ error: "Invalid JSON in request body" }),
+      { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+    );
+  }
 
-    if (!path || typeof path !== "string") {
-      console.log("Missing or invalid path:", path);
+  const { path, expiresIn = 3600 } = requestBody;
+
+  if (!path || typeof path !== "string") {
+    return new Response(
+      JSON.stringify({ error: "Missing or invalid 'path'" }),
+      { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+    );
+  }
+
+  try {
+    const supabaseUrl = Deno.env.get("SUPABASE_URL");
+    const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+    
+    if (!supabaseUrl || !serviceKey) {
+      console.error("Missing environment variables");
       return new Response(
-        JSON.stringify({ error: "Missing or invalid 'path'" }),
-        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        JSON.stringify({ error: "Server configuration error" }),
+        { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
-    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-    const anonKey = Deno.env.get("SUPABASE_ANON_KEY")!;
-    const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-    
-    console.log("Environment variables loaded");
-
-    // Get the authenticated user from the incoming JWT
-    const userClient = createClient(supabaseUrl, anonKey, {
-      global: { headers: { Authorization: req.headers.get("Authorization") || "" } },
-    });
-    
-    console.log("Getting user from auth token...");
-    const { data: userData, error: userErr } = await userClient.auth.getUser();
-    
-    if (userErr || !userData?.user) {
-      console.log("Auth error:", userErr);
+    // Get user ID from JWT token directly 
+    const authHeader = req.headers.get("Authorization");
+    if (!authHeader?.startsWith("Bearer ")) {
       return new Response(
-        JSON.stringify({ error: "Unauthorized" }),
+        JSON.stringify({ error: "Missing or invalid Authorization header" }),
         { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
-    
-    console.log("User authenticated:", userData.user.id);
 
-    // Ensure the requested path belongs to the requester (first folder = user id)
-    const firstSegment = path.split("/")[0];
-    console.log("Path:", path);
-    console.log("First segment:", firstSegment);
-    console.log("User ID:", userData.user.id);
-    console.log("Match:", firstSegment === userData.user.id);
-    
-    if (firstSegment !== userData.user.id) {
-      console.log("Access denied - path doesn't belong to user");
+    // Extract user ID from JWT payload (simpler than using Supabase client)
+    const token = authHeader.replace("Bearer ", "");
+    let userId;
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      userId = payload.sub;
+    } catch (e) {
       return new Response(
-        JSON.stringify({ error: "Forbidden" }),
+        JSON.stringify({ error: "Invalid token" }),
+        { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    // Security check: ensure path belongs to user
+    const firstSegment = path.split("/")[0];
+    if (firstSegment !== userId) {
+      return new Response(
+        JSON.stringify({ error: "Access denied" }),
         { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
-    
-    console.log("Creating admin client for signed URL generation...");
 
-    // Use service role to bypass storage RLS securely after validating ownership
+    // Create service role client for signed URL generation
     const adminClient = createClient(supabaseUrl, serviceKey);
     
-    console.log("Generating signed URL for path:", path);
     const { data: signed, error: signErr } = await adminClient
       .storage
       .from("cvs")
       .createSignedUrl(path, expiresIn);
 
     if (signErr) {
-      console.error("Failed to create signed URL", signErr);
+      console.error("Signed URL error:", signErr);
       return new Response(
-        JSON.stringify({ error: signErr.message || "Failed to create signed URL" }),
+        JSON.stringify({ error: "Failed to generate signed URL" }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
-    
-    console.log("Successfully generated signed URL");
 
     return new Response(
       JSON.stringify({ url: signed?.signedUrl || null }),
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
-  } catch (e: any) {
-    console.error("get-cv-signed-url error", e);
+
+  } catch (error) {
+    console.error("Edge function error:", error);
     return new Response(
-      JSON.stringify({ error: e?.message || "Internal error" }),
+      JSON.stringify({ error: "Internal server error" }),
       { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   }
