@@ -60,37 +60,32 @@ export const CVUpload = ({
     }
     
     try {
-      // Use the edge function with retry logic for reliability
+      // Force a fresh signed URL each time with a unique timestamp
+      const timestamp = Date.now();
       const { data, error } = await supabase.functions.invoke('get-cv-signed-url', {
-        body: { path: cvPath, expiresIn: 300 } // 5 minute expiry
+        body: { 
+          path: cvPath, 
+          expiresIn: 60,
+          timestamp // Force fresh request
+        }
       });
       
-      if (error) {
-        throw error;
+      if (error || !data?.signedUrl) {
+        throw new Error('Failed to get signed URL');
       }
       
-      // The edge function returns { signedUrl: "..." }
-      const signedUrl = data?.signedUrl;
+      // Use a simple anchor click approach
+      const a = document.createElement('a');
+      a.href = data.signedUrl;
+      a.target = '_blank';
+      a.click();
       
-      if (signedUrl && typeof signedUrl === 'string') {
-        // Simple, reliable approach
-        const link = document.createElement('a');
-        link.href = signedUrl;
-        link.target = '_blank';
-        link.rel = 'noopener noreferrer';
-        link.style.display = 'none';
-        document.body.appendChild(link);
-        link.click();
-        setTimeout(() => document.body.removeChild(link), 100);
-      } else {
-        throw new Error('Invalid response from CV service');
-      }
     } catch (error) {
       console.error('Failed to open CV:', error);
       toast({ 
         variant: 'destructive', 
         title: 'Failed to open CV', 
-        description: 'Unable to open CV. Please try refreshing the page.' 
+        description: 'Please try again.' 
       });
     }
   };
