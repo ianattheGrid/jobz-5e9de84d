@@ -63,6 +63,7 @@ import PreviewCandidateRealDemo from './pages/PreviewCandidateRealDemo';
 // Swipe interfaces
 import SwipeCandidates from './pages/SwipeCandidates';
 import SwipeEmployers from './pages/SwipeEmployers';
+import CVRedirect from './pages/CVRedirect';
 
 const App = () => {
   return (
@@ -111,6 +112,7 @@ const App = () => {
           <Route path="faq" element={<FAQ />} />
           <Route path="pricing" element={<PricingPage />} />
           <Route path="push-setup" element={<PushSetup />} />
+          <Route path="cv-view" element={<CVRedirect />} />
           
           <Route path="qr-code" element={<QRCodePage />} />
           <Route path="employer/:id" element={<ViewEmployerProfile />} />
