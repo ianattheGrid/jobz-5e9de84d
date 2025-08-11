@@ -59,18 +59,6 @@ export const CVUpload = ({
       return;
     }
     
-    // Open window immediately to avoid popup blocker
-    const newWindow = window.open('about:blank', '_blank', 'noopener,noreferrer');
-    
-    if (!newWindow) {
-      toast({ 
-        variant: 'destructive', 
-        title: 'Popup blocked', 
-        description: 'Please allow popups for this site to view your CV.' 
-      });
-      return;
-    }
-    
     try {
       console.log('Getting signed URL for path:', cvPath);
       
@@ -81,12 +69,28 @@ export const CVUpload = ({
       if (error) throw error;
       if (!data?.url) throw new Error('No signed URL returned');
       
-      console.log('Got signed URL, redirecting window...');
-      newWindow.location.href = data.url;
+      console.log('Got signed URL, downloading CV...');
+      
+      // Create a temporary link element to download/view the file
+      const link = document.createElement('a');
+      link.href = data.url;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      
+      // Try to open in new tab first, fallback to download
+      try {
+        link.click();
+      } catch (clickError) {
+        // If click fails, trigger download
+        link.download = 'CV.pdf';
+        link.click();
+      }
+      
+      // Clean up
+      link.remove();
       
     } catch (error) {
       console.error('Failed to open CV:', error);
-      newWindow.close();
       toast({ 
         variant: 'destructive', 
         title: 'Failed to open CV', 
