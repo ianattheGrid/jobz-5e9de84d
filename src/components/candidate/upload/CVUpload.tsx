@@ -54,15 +54,30 @@ export const CVUpload = ({
     e?.preventDefault();
     e?.stopPropagation();
     
-    if (!cvPath) {
+    if (!currentCV) {
       toast({ variant: 'destructive', title: 'No CV found', description: 'Please upload your CV first.' });
       return;
     }
     
     try {
-      console.log('CVUpload - Attempting to create signed URL for path:', cvPath);
+      console.log('CVUpload - Original CV URL:', currentCV);
+      console.log('CVUpload - Extracted CV path for storage:', cvPath);
       
-      // Use direct storage URL with proper authentication
+      // Use the full storage URL directly if it's already a public or signed URL
+      if (currentCV.includes('supabase.co/storage/v1/object/')) {
+        console.log('CVUpload - Opening CV URL directly:', currentCV);
+        const link = document.createElement('a');
+        link.href = currentCV;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        return;
+      }
+      
+      // If not a full URL, try to create signed URL with the path
+      console.log('CVUpload - Creating signed URL for path:', cvPath);
       const { data, error } = await supabase.storage.from('cvs').createSignedUrl(cvPath, 3600);
       
       console.log('CVUpload - Storage response:', { data, error });
@@ -74,7 +89,6 @@ export const CVUpload = ({
       
       if (data?.signedUrl) {
         console.log('CVUpload - Got signed URL, opening:', data.signedUrl);
-        // Force download/view in new tab with proper headers
         const link = document.createElement('a');
         link.href = data.signedUrl;
         link.target = '_blank';
