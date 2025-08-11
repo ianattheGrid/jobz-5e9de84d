@@ -69,25 +69,10 @@ export const CVUpload = ({
       if (error) throw error;
       if (!data?.url) throw new Error('No signed URL returned');
       
-      console.log('Got signed URL, downloading CV...');
+      console.log('Got signed URL, opening CV:', data.url);
       
-      // Create a temporary link element to download/view the file
-      const link = document.createElement('a');
-      link.href = data.url;
-      link.target = '_blank';
-      link.rel = 'noopener noreferrer';
-      
-      // Try to open in new tab first, fallback to download
-      try {
-        link.click();
-      } catch (clickError) {
-        // If click fails, trigger download
-        link.download = 'CV.pdf';
-        link.click();
-      }
-      
-      // Clean up
-      link.remove();
+      // Use location.assign for more reliable navigation
+      window.location.assign(data.url);
       
     } catch (error) {
       console.error('Failed to open CV:', error);
