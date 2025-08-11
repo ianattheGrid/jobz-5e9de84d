@@ -74,10 +74,10 @@ export const CVUpload = ({
         throw error;
       }
       
-      if (data?.signedUrl) {
-        console.log('CVUpload - Got signed URL from edge function, opening:', data.signedUrl);
+      if (data?.url) {
+        console.log('CVUpload - Got signed URL from edge function, opening:', data.url);
         const link = document.createElement('a');
-        link.href = data.signedUrl;
+        link.href = data.url;
         link.target = '_blank';
         link.rel = 'noopener noreferrer';
         document.body.appendChild(link);
