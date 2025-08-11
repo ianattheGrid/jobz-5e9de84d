@@ -45,7 +45,7 @@ serve(async (req) => {
       );
     }
 
-    // Get user ID from JWT token directly 
+    // Create client with user's auth token for verification
     const authHeader = req.headers.get("Authorization");
     if (!authHeader?.startsWith("Bearer ")) {
       return new Response(
@@ -54,18 +54,26 @@ serve(async (req) => {
       );
     }
 
-    // Extract user ID from JWT payload (simpler than using Supabase client)
-    const token = authHeader.replace("Bearer ", "");
-    let userId;
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      userId = payload.sub;
-    } catch (e) {
+    // Use Supabase client to verify the user and get their ID
+    const userClient = createClient(supabaseUrl, Deno.env.get("SUPABASE_ANON_KEY")!, {
+      global: {
+        headers: {
+          Authorization: authHeader,
+        },
+      },
+    });
+
+    const { data: { user }, error: userError } = await userClient.auth.getUser();
+    
+    if (userError || !user) {
+      console.error("Auth verification failed:", userError);
       return new Response(
-        JSON.stringify({ error: "Invalid token" }),
+        JSON.stringify({ error: "Invalid authentication" }),
         { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
+
+    const userId = user.id;
 
     // Security check: ensure path belongs to user
     const firstSegment = path.split("/")[0];
