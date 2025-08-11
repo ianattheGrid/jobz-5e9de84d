@@ -40,7 +40,13 @@ serve(async (req) => {
 
     // Ensure the requested path belongs to the requester (first folder = user id)
     const firstSegment = path.split("/")[0];
+    console.log("Path:", path);
+    console.log("First segment:", firstSegment);
+    console.log("User ID:", userData.user.id);
+    console.log("Match:", firstSegment === userData.user.id);
+    
     if (firstSegment !== userData.user.id) {
+      console.log("Access denied - path doesn't belong to user");
       return new Response(
         JSON.stringify({ error: "Forbidden" }),
         { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } }
