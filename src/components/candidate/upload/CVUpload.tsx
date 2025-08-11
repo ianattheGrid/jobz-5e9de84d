@@ -50,7 +50,7 @@ export const CVUpload = ({
 
   const { toast } = useToast();
 
-  const handleOpenCurrentCV = async (e?: React.MouseEvent) => {
+  const handleOpenCurrentCV = (e?: React.MouseEvent) => {
     e?.preventDefault();
     e?.stopPropagation();
     
@@ -59,33 +59,9 @@ export const CVUpload = ({
       return;
     }
     
-    try {
-      console.log('Getting signed URL for path:', cvPath);
-      
-      const { data, error } = await supabase.functions.invoke('get-cv-signed-url', {
-        body: { path: cvPath, expiresIn: 3600 }
-      });
-      
-      if (error) throw error;
-      if (!data?.url) throw new Error('No signed URL returned');
-      
-      console.log('Got signed URL, opening CV in new tab');
-      
-      // Use Object.assign to create a link and click it immediately
-      Object.assign(document.createElement('a'), {
-        target: '_blank',
-        rel: 'noopener noreferrer',
-        href: data.url,
-      }).click();
-      
-    } catch (error) {
-      console.error('Failed to open CV:', error);
-      toast({ 
-        variant: 'destructive', 
-        title: 'Failed to open CV', 
-        description: error instanceof Error ? error.message : 'Please try again or re-upload your CV.' 
-      });
-    }
+    // Use a dedicated redirect page that handles authentication server-side
+    const redirectUrl = `/cv-redirect?path=${encodeURIComponent(cvPath)}`;
+    window.open(redirectUrl, '_blank', 'noopener,noreferrer');
   };
   return (
     <div className="space-y-4">
