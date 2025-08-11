@@ -63,22 +63,15 @@ export const CVUpload = ({
       console.log('CVUpload - Original CV URL:', currentCV);
       console.log('CVUpload - Extracted CV path for storage:', cvPath);
       
-      // Use the full storage URL directly if it's already a public or signed URL
-      if (currentCV.includes('supabase.co/storage/v1/object/')) {
-        console.log('CVUpload - Opening CV URL directly:', currentCV);
-        const link = document.createElement('a');
-        link.href = currentCV;
-        link.target = '_blank';
-        link.rel = 'noopener noreferrer';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        return;
+      // Always create a signed URL for the private cvs bucket
+      // Remove any /public/ from the path since cvs bucket is private
+      let cleanPath = cvPath;
+      if (cleanPath.includes('/public/')) {
+        cleanPath = cleanPath.replace('/public/', '/');
       }
       
-      // If not a full URL, try to create signed URL with the path
-      console.log('CVUpload - Creating signed URL for path:', cvPath);
-      const { data, error } = await supabase.storage.from('cvs').createSignedUrl(cvPath, 3600);
+      console.log('CVUpload - Clean path for signed URL:', cleanPath);
+      const { data, error } = await supabase.storage.from('cvs').createSignedUrl(cleanPath, 3600);
       
       console.log('CVUpload - Storage response:', { data, error });
       
