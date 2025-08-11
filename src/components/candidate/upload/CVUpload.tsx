@@ -54,33 +54,34 @@ export const CVUpload = ({
     e?.preventDefault();
     e?.stopPropagation();
     
-    console.log('handleOpenCurrentCV called, cvPath:', cvPath);
-    
     if (!cvPath) {
       toast({ variant: 'destructive', title: 'No CV found', description: 'Please upload your CV first.' });
       return;
     }
     
+    // Create a temporary link and click it - this bypasses popup blockers
+    const link = document.createElement('a');
+    link.style.display = 'none';
+    document.body.appendChild(link);
+    
     try {
-      console.log('Calling edge function with path:', cvPath);
+      console.log('Getting signed URL for path:', cvPath);
       
-      // Get signed URL from edge function
       const { data, error } = await supabase.functions.invoke('get-cv-signed-url', {
         body: { path: cvPath, expiresIn: 3600 }
       });
       
-      console.log('Edge function response:', { data, error });
-      
       if (error) throw error;
       if (!data?.url) throw new Error('No signed URL returned');
       
-      console.log('Opening URL:', data.url);
+      console.log('Got signed URL, opening...');
       
-      // Open PDF in new tab
-      const opened = window.open(data.url, '_blank', 'noopener,noreferrer');
-      if (!opened) {
-        throw new Error('Pop-up blocked or failed to open');
-      }
+      // Set the URL and click the link
+      link.href = data.url;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      link.click();
+      
     } catch (error) {
       console.error('Failed to open CV:', error);
       toast({ 
@@ -88,6 +89,9 @@ export const CVUpload = ({
         title: 'Failed to open CV', 
         description: 'Please try again or re-upload your CV.' 
       });
+    } finally {
+      // Clean up
+      document.body.removeChild(link);
     }
   };
   return (
