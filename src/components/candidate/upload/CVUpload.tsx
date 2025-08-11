@@ -48,15 +48,15 @@ export const CVUpload = ({
               disabled={uploadingCV}
             />
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
               <FileText className="h-4 w-4 text-blue-600" />
               <button
                 type="button"
-                onClick={async () => {
+                onClick={async (e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
                   try {
                     if (!currentCV) return;
-
-                    // Derive storage path from public URL if needed
                     let path = currentCV as string;
                     if (path.startsWith('http')) {
                       const parts = path.split('/');
@@ -65,24 +65,55 @@ export const CVUpload = ({
                         path = parts.slice(idx + 1).join('/');
                       }
                     }
-
-                    // Get a fresh signed URL
                     const { data, error } = await supabase.functions.invoke('get-cv-signed-url', {
                       body: { path, expiresIn: 3600 }
                     });
                     if (error) throw error;
                     const signed = (data as any)?.url as string | undefined;
                     if (!signed) throw new Error('No signed URL returned');
-
-                    // Force download to avoid flaky inline PDF viewers
+                    const viewUrl = `${signed}#v=${Date.now()}`;
+                    const w = window.open(viewUrl, '_blank', 'noopener');
+                    if (!w || w.closed) {
+                      const a = document.createElement('a');
+                      a.href = viewUrl; a.target = '_blank'; a.rel = 'noopener noreferrer';
+                      document.body.appendChild(a); a.click(); a.remove();
+                    }
+                  } catch (e) {
+                    console.error('Failed to open CV', e);
+                  }
+                }}
+                className="text-sm text-blue-600 hover:underline"
+                aria-label="View Current CV"
+              >
+                View Current CV
+              </button>
+              <span className="text-muted-foreground">•</span>
+              <button
+                type="button"
+                onClick={async (e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  try {
+                    if (!currentCV) return;
+                    let path = currentCV as string;
+                    if (path.startsWith('http')) {
+                      const parts = path.split('/');
+                      const idx = parts.findIndex(p => p === 'cvs');
+                      if (idx !== -1) {
+                        path = parts.slice(idx + 1).join('/');
+                      }
+                    }
+                    const { data, error } = await supabase.functions.invoke('get-cv-signed-url', {
+                      body: { path, expiresIn: 3600 }
+                    });
+                    if (error) throw error;
+                    const signed = (data as any)?.url as string | undefined;
+                    if (!signed) throw new Error('No signed URL returned');
                     const downloadUrl = `${signed}${signed.includes('?') ? '&' : '?'}download`;
                     const a = document.createElement('a');
-                    a.href = downloadUrl;
-                    a.download = '';
+                    a.href = downloadUrl; a.download = '';
                     a.rel = 'noopener noreferrer';
-                    document.body.appendChild(a);
-                    a.click();
-                    a.remove();
+                    document.body.appendChild(a); a.click(); a.remove();
                   } catch (e) {
                     console.error('Failed to download CV', e);
                   }
