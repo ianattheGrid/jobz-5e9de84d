@@ -54,10 +54,14 @@ export const CVUpload = ({
               <button
                 type="button"
                 onClick={async () => {
-                  // Open a blank tab synchronously to avoid popup blockers
                   const popup = window.open('', '_blank', 'noopener,noreferrer');
                   try {
                     if (!currentCV) { popup?.close(); return; }
+                    // Show immediate feedback in the new tab
+                    try {
+                      popup?.document.write('<!doctype html><title>Opening CV…</title><body style="font-family:sans-serif;padding:24px">Opening your CV… If nothing happens, this page will show a link shortly.</body>');
+                    } catch {}
+
                     let path = currentCV as string;
                     if (path.startsWith('http')) {
                       const parts = path.split('/');
@@ -66,19 +70,32 @@ export const CVUpload = ({
                         path = parts.slice(idx + 1).join('/');
                       }
                     }
+
                     const { data, error } = await supabase.functions.invoke('get-cv-signed-url', {
                       body: { path, expiresIn: 3600 }
                     });
                     if (error) throw error;
-                    const url = (data as any)?.url;
+                    const url = (data as any)?.url as string | undefined;
+
                     if (url && popup) {
+                      // Try navigating first
                       popup.location.href = url;
+                      // Also provide clickable fallback after a short delay in case navigation is blocked
+                      setTimeout(() => {
+                        try {
+                          if (popup.location.href === 'about:blank') {
+                            popup.document.body.innerHTML = `<p>Click <a href="${url}" target="_self" rel="noopener noreferrer">here</a> to open your CV.</p>`;
+                          }
+                        } catch {}
+                      }, 700);
                     } else {
-                      popup?.close();
+                      try {
+                        popup?.document.body?.insertAdjacentHTML('beforeend', '<p>Sorry, could not generate a link.</p>');
+                      } catch {}
                     }
                   } catch (e) {
                     console.error('Failed to open CV', e);
-                    popup?.close();
+                    try { popup?.close(); } catch {}
                   }
                 }}
                 className="text-sm text-blue-600 hover:underline"
