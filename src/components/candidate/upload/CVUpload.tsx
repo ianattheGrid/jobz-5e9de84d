@@ -62,16 +62,9 @@ export const CVUpload = ({
     try {
       console.log('Getting signed URL for path:', cvPath);
       
-      // Add timeout to prevent hanging
-      const timeoutPromise = new Promise((_, reject) => 
-        setTimeout(() => reject(new Error('Request timeout after 10 seconds')), 10000)
-      );
-      
-      const requestPromise = supabase.functions.invoke('get-cv-signed-url', {
+      const { data, error } = await supabase.functions.invoke('get-cv-signed-url', {
         body: { path: cvPath, expiresIn: 3600 }
       });
-      
-      const { data, error } = await Promise.race([requestPromise, timeoutPromise]) as any;
       
       if (error) throw error;
       if (!data?.url) throw new Error('No signed URL returned');
