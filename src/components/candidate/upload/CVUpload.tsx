@@ -78,14 +78,13 @@ export const CVUpload = ({
                     const url = (data as any)?.url as string | undefined;
 
                     if (url && popup) {
-                      try { popup.location.replace(url); } catch {}
-                      setTimeout(() => {
-                        try {
-                          if (popup?.location?.href?.startsWith('about:blank')) {
-                            popup.document.body.innerHTML = `<p>Click <a href="${url}" target="_self" rel="noopener noreferrer">open your CV</a>.</p><iframe src="${url}" style="width:100%;height:100vh;border:0;margin-top:12px"></iframe>`;
-                          }
-                        } catch {}
-                      }, 600);
+                      try {
+                        const html = `<!doctype html><html><head><meta http-equiv="refresh" content="0;url=${url}"><title>Opening CV…</title></head><body style="margin:0;font-family:sans-serif"><p style="padding:16px">Opening your CV… If it doesn't open automatically, <a href="${url}" target="_self" rel="noopener noreferrer">click here</a>.</p><iframe src="${url}" style="width:100%;height:100vh;border:0"></iframe></body></html>`;
+                        popup.document.open();
+                        popup.document.write(html);
+                        popup.document.close();
+                      } catch {}
+                      try { popup.location.assign(url); } catch {}
                     } else {
                       try {
                         popup?.document.body?.insertAdjacentHTML('beforeend', '<p>Sorry, could not generate a link.</p>');
