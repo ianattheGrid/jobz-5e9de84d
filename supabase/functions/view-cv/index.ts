@@ -6,6 +6,8 @@ const corsHeaders = {
 }
 
 Deno.serve(async (req) => {
+  console.log('View CV function called:', req.method);
+
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -13,13 +15,28 @@ Deno.serve(async (req) => {
 
   try {
     // Create Supabase client with service role key for admin access
-    const supabase = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
-    );
+    const supabaseUrl = Deno.env.get('SUPABASE_URL');
+    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
+    
+    console.log('Environment check:', { 
+      hasUrl: !!supabaseUrl, 
+      hasServiceKey: !!supabaseServiceKey 
+    });
+
+    if (!supabaseUrl || !supabaseServiceKey) {
+      console.error('Missing environment variables');
+      return new Response(
+        JSON.stringify({ error: 'Server configuration error' }),
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
     // Get the authorization header
     const authHeader = req.headers.get('Authorization');
+    console.log('Auth header present:', !!authHeader);
+    
     if (!authHeader) {
       return new Response(
         JSON.stringify({ error: 'No authorization header' }),
@@ -27,19 +44,25 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Verify the user's JWT token
+    // Verify the user's JWT token using the anon key client
     const token = authHeader.replace('Bearer ', '');
-    const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+    const anonClient = createClient(supabaseUrl, Deno.env.get('SUPABASE_ANON_KEY') ?? '');
+    const { data: { user }, error: authError } = await anonClient.auth.getUser(token);
+    
+    console.log('User verification:', { hasUser: !!user, authError });
     
     if (authError || !user) {
       return new Response(
-        JSON.stringify({ error: 'Invalid token' }),
+        JSON.stringify({ error: 'Invalid token', details: authError?.message }),
         { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
     // Get the file path from the request
-    const { filePath } = await req.json();
+    const requestBody = await req.json();
+    const { filePath } = requestBody;
+    
+    console.log('File path received:', filePath);
     
     if (!filePath) {
       return new Response(
@@ -50,6 +73,8 @@ Deno.serve(async (req) => {
 
     // Extract user ID from file path and verify it matches the authenticated user
     const userIdFromPath = filePath.split('/')[0];
+    console.log('User ID comparison:', { fromPath: userIdFromPath, fromAuth: user.id });
+    
     if (userIdFromPath !== user.id) {
       return new Response(
         JSON.stringify({ error: 'Access denied' }),
@@ -58,6 +83,7 @@ Deno.serve(async (req) => {
     }
 
     // Create signed URL using service role (bypasses RLS)
+    console.log('Creating signed URL for:', filePath);
     const { data, error } = await supabase.storage
       .from('cvs')
       .createSignedUrl(filePath, 3600);
@@ -65,11 +91,12 @@ Deno.serve(async (req) => {
     if (error) {
       console.error('Error creating signed URL:', error);
       return new Response(
-        JSON.stringify({ error: 'Failed to create signed URL' }),
+        JSON.stringify({ error: 'Failed to create signed URL', details: error.message }),
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
+    console.log('Signed URL created successfully');
     return new Response(
       JSON.stringify({ signedUrl: data.signedUrl }),
       { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
@@ -78,7 +105,7 @@ Deno.serve(async (req) => {
   } catch (error) {
     console.error('Error in view-cv function:', error);
     return new Response(
-      JSON.stringify({ error: 'Internal server error' }),
+      JSON.stringify({ error: 'Internal server error', details: error.message }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }
