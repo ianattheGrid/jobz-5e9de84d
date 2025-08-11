@@ -31,14 +31,13 @@ export default function CVRedirect() {
         console.log('CVRedirect - Original path:', path);
         console.log('CVRedirect - Extracted file path for edge function:', filePath);
         
-        const { data, error } = await supabase.functions.invoke('get-cv-signed-url', {
-          body: { path: filePath, expiresIn: 3600 },
-          headers: { Authorization: `Bearer ${accessToken}` }
-        });
+        const { data, error } = await supabase.storage
+          .from('cvs')
+          .createSignedUrl(filePath, 3600);
+        
         if (error) throw error;
-        const url = (data as any)?.url as string | undefined;
-        if (!url) throw new Error('No signed URL returned');
-        window.location.replace(`${url}#v=${Date.now()}`);
+        if (!data?.signedUrl) throw new Error('No signed URL returned');
+        window.location.replace(`${data.signedUrl}#v=${Date.now()}`);
       } catch (e) {
         console.error('Failed to redirect to CV', e);
         if (!cancelled) setError("We couldn't open your CV. Please try again, or re-upload it.");
