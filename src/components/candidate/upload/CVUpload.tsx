@@ -54,13 +54,8 @@ export const CVUpload = ({
               <button
                 type="button"
                 onClick={async () => {
-                  const popup = window.open('', '_blank');
                   try {
-                    if (!currentCV) { popup?.close(); return; }
-                    // Show immediate feedback in the new tab
-                    try {
-                      popup?.document.write('<!doctype html><title>Opening CV…</title><body style="font-family:sans-serif;padding:24px">Opening your CV… If nothing happens, this page will show a link shortly.</body>');
-                    } catch {}
+                    if (!currentCV) return;
 
                     let path = currentCV as string;
                     if (path.startsWith('http')) {
@@ -76,23 +71,20 @@ export const CVUpload = ({
                     });
                     if (error) throw error;
                     const url = (data as any)?.url as string | undefined;
+                    if (!url) throw new Error('No signed URL returned');
 
-                    if (url && popup) {
-                      try {
-                        const html = `<!doctype html><html><head><meta http-equiv="refresh" content="0;url=${url}"><title>Opening CV…</title></head><body style="margin:0;font-family:sans-serif"><p style="padding:16px">Opening your CV… If it doesn't open automatically, <a href="${url}" target="_self" rel="noopener noreferrer">click here</a>.</p><iframe src="${url}" style="width:100%;height:100vh;border:0"></iframe></body></html>`;
-                        popup.document.open();
-                        popup.document.write(html);
-                        popup.document.close();
-                      } catch {}
-                      try { popup.location.assign(url); } catch {}
-                    } else {
-                      try {
-                        popup?.document.body?.insertAdjacentHTML('beforeend', '<p>Sorry, could not generate a link.</p>');
-                      } catch {}
+                    const newWin = window.open(url, '_blank', 'noopener');
+                    if (!newWin || newWin.closed) {
+                      const a = document.createElement('a');
+                      a.href = url;
+                      a.target = '_blank';
+                      a.rel = 'noopener noreferrer';
+                      document.body.appendChild(a);
+                      a.click();
+                      a.remove();
                     }
                   } catch (e) {
                     console.error('Failed to open CV', e);
-                    try { popup?.close(); } catch {}
                   }
                 }}
                 className="text-sm text-blue-600 hover:underline"
