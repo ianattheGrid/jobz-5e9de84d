@@ -59,21 +59,39 @@ export const CVUpload = ({
       return;
     }
     
-    // Use direct storage URL with proper authentication
-    const { data } = await supabase.storage.from('cvs').createSignedUrl(cvPath, 3600);
-    
-    if (data?.signedUrl) {
-      // Force download/view in new tab with proper headers
-      const link = document.createElement('a');
-      link.href = data.signedUrl;
-      link.target = '_blank';
-      link.rel = 'noopener noreferrer';
-      link.download = ''; // Remove to view instead of download
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    } else {
-      toast({ variant: 'destructive', title: 'Failed to open CV', description: 'Please try again.' });
+    try {
+      console.log('CVUpload - Attempting to create signed URL for path:', cvPath);
+      
+      // Use direct storage URL with proper authentication
+      const { data, error } = await supabase.storage.from('cvs').createSignedUrl(cvPath, 3600);
+      
+      console.log('CVUpload - Storage response:', { data, error });
+      
+      if (error) {
+        console.error('CVUpload - Storage error:', error);
+        throw error;
+      }
+      
+      if (data?.signedUrl) {
+        console.log('CVUpload - Got signed URL, opening:', data.signedUrl);
+        // Force download/view in new tab with proper headers
+        const link = document.createElement('a');
+        link.href = data.signedUrl;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } else {
+        throw new Error('No signed URL returned from storage');
+      }
+    } catch (error) {
+      console.error('CVUpload - Failed to open CV:', error);
+      toast({ 
+        variant: 'destructive', 
+        title: 'Failed to open CV', 
+        description: error instanceof Error ? error.message : 'Please try again.' 
+      });
     }
   };
   return (
