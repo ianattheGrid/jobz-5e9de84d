@@ -68,16 +68,23 @@ export const CVUpload = ({
       });
       
       console.log('CVUpload - Edge function response:', { data, error });
+      console.log('CVUpload - Data structure:', JSON.stringify(data, null, 2));
+      console.log('CVUpload - data?.url exists?:', !!data?.url);
+      console.log('CVUpload - typeof data?.url:', typeof data?.url);
       
       if (error) {
         console.error('CVUpload - Edge function error:', error);
         throw error;
       }
       
-      if (data?.url) {
-        console.log('CVUpload - Got signed URL from edge function, opening:', data.url);
+      // Check if we have a URL in the response
+      const signedUrl = data?.url || data?.signedUrl;
+      console.log('CVUpload - Final URL to use:', signedUrl);
+      
+      if (signedUrl) {
+        console.log('CVUpload - Got signed URL from edge function, opening:', signedUrl);
         const link = document.createElement('a');
-        link.href = data.url;
+        link.href = signedUrl;
         link.target = '_blank';
         link.rel = 'noopener noreferrer';
         document.body.appendChild(link);
