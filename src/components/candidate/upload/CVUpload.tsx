@@ -48,15 +48,21 @@ export const CVUpload = ({
               disabled={uploadingCV}
             />
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
               <FileText className="h-4 w-4 text-blue-600" />
               <button
                 type="button"
                 onClick={async (e) => {
                   e.preventDefault();
                   e.stopPropagation();
+                  // Pre-open a tab synchronously to avoid popup blockers
+                  const tab = window.open('about:blank', '_blank');
                   try {
-                    if (!currentCV) return;
+                    if (!currentCV) { tab?.close(); return; }
+
+                    // Optional minimal feedback while we fetch URL
+                    try { tab?.document.write('<!doctype html><title>Opening CV…</title><body style="font-family:sans-serif;padding:24px">Opening your CV…</body>'); tab?.document.close(); } catch {}
+
                     let path = currentCV as string;
                     if (path.startsWith('http')) {
                       const parts = path.split('/');
@@ -65,63 +71,38 @@ export const CVUpload = ({
                         path = parts.slice(idx + 1).join('/');
                       }
                     }
+
                     const { data, error } = await supabase.functions.invoke('get-cv-signed-url', {
                       body: { path, expiresIn: 3600 }
                     });
                     if (error) throw error;
                     const signed = (data as any)?.url as string | undefined;
                     if (!signed) throw new Error('No signed URL returned');
+
                     const viewUrl = `${signed}#v=${Date.now()}`;
-                    const w = window.open(viewUrl, '_blank', 'noopener');
-                    if (!w || w.closed) {
+                    if (tab) {
+                      try { tab.location.href = viewUrl; }
+                      catch {
+                        // Fallback if navigation fails
+                        const a = document.createElement('a');
+                        a.href = viewUrl; a.target = '_blank'; a.rel = 'noopener noreferrer';
+                        document.body.appendChild(a); a.click(); a.remove();
+                        try { tab.close(); } catch {}
+                      }
+                    } else {
                       const a = document.createElement('a');
                       a.href = viewUrl; a.target = '_blank'; a.rel = 'noopener noreferrer';
                       document.body.appendChild(a); a.click(); a.remove();
                     }
-                  } catch (e) {
-                    console.error('Failed to open CV', e);
+                  } catch (err) {
+                    console.error('Failed to open CV', err);
+                    try { tab?.close(); } catch {}
                   }
                 }}
                 className="text-sm text-blue-600 hover:underline"
                 aria-label="View Current CV"
               >
                 View Current CV
-              </button>
-              <span className="text-muted-foreground">•</span>
-              <button
-                type="button"
-                onClick={async (e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  try {
-                    if (!currentCV) return;
-                    let path = currentCV as string;
-                    if (path.startsWith('http')) {
-                      const parts = path.split('/');
-                      const idx = parts.findIndex(p => p === 'cvs');
-                      if (idx !== -1) {
-                        path = parts.slice(idx + 1).join('/');
-                      }
-                    }
-                    const { data, error } = await supabase.functions.invoke('get-cv-signed-url', {
-                      body: { path, expiresIn: 3600 }
-                    });
-                    if (error) throw error;
-                    const signed = (data as any)?.url as string | undefined;
-                    if (!signed) throw new Error('No signed URL returned');
-                    const downloadUrl = `${signed}${signed.includes('?') ? '&' : '?'}download`;
-                    const a = document.createElement('a');
-                    a.href = downloadUrl; a.download = '';
-                    a.rel = 'noopener noreferrer';
-                    document.body.appendChild(a); a.click(); a.remove();
-                  } catch (e) {
-                    console.error('Failed to download CV', e);
-                  }
-                }}
-                className="text-sm text-blue-600 hover:underline"
-                aria-label="Download Current CV"
-              >
-                Download CV
               </button>
             </div>
           </>
