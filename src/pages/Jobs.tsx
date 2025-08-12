@@ -97,23 +97,10 @@ const Jobs = () => {
     <>
       <NavBar />
       <div className="container mx-auto py-8 px-4 bg-background min-h-screen demo-employer-dark">
-        <div className="mb-8">
-          <div className="flex justify-between items-start">
-            <JobsHeader userType={userType} />
-            {userType === 'candidate' && (
-              <Button
-                onClick={() => navigate('/candidate/dashboard')}
-                className="bg-[#FF69B4] hover:bg-[#FF50A8] text-white mt-1"
-                variant="default"
-                size="sm"
-              >
-                <LayoutDashboard className="w-4 h-4 mr-2" />
-                Dashboard
-              </Button>
-            )}
-          </div>
+        <div className="mb-6">
+          <JobsHeader userType={userType} />
         </div>
-        <JobSearch onSearch={handleSearch} />
+        <JobSearch onSearch={handleSearch} userType={userType} />
         
         {isLoading ? (
           <LoadingSpinner />

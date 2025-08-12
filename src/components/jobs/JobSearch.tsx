@@ -15,9 +15,10 @@ import JobDetailsFields from "@/components/JobDetailsFields";
 
 interface JobSearchProps {
   onSearch: (data: JobSearchSchema) => void;
+  userType?: string | null;
 }
 
-const JobSearch = ({ onSearch }: JobSearchProps) => {
+const JobSearch = ({ onSearch, userType }: JobSearchProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const form = useForm<JobSearchSchema>({
@@ -52,13 +53,33 @@ const JobSearch = ({ onSearch }: JobSearchProps) => {
 
   return (
     <div className="job-search-card bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6 text-left">
-      <div className="flex justify-between items-start mb-4">
+      <div className="flex justify-between items-center mb-4">
         <div className="flex items-center">
           <Search className="h-5 w-5 text-primary mr-2" />
           <h2 className={`text-lg font-semibold ${PRIMARY_COLOR_PATTERN}`}>
             Find Your Perfect Job Match
           </h2>
         </div>
+        
+        {userType === 'candidate' && (
+          <Button
+            onClick={() => window.location.href = '/candidate/dashboard'}
+            className="bg-[#FF69B4] hover:bg-[#FF50A8] text-white"
+            variant="default"
+            size="sm"
+          >
+            <div className="flex items-center">
+              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <rect width="7" height="9" x="3" y="3" rx="1"/>
+                <rect width="7" height="5" x="14" y="3" rx="1"/>
+                <rect width="7" height="9" x="14" y="12" rx="1"/>
+                <rect width="7" height="5" x="3" y="16" rx="1"/>
+              </svg>
+              Dashboard
+            </div>
+          </Button>
+        )}
+        
         <Button
           variant="outline"
           size="sm"
