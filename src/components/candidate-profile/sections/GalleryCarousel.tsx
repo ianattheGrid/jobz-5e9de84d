@@ -20,13 +20,13 @@ export default function GalleryCarousel({ candidateId }: GalleryCarouselProps) {
         <h3 className="text-xl font-semibold mb-4 text-primary">Gallery</h3>
         <div className="relative">
           <Carousel className="px-12">
-            <CarouselContent>
+            <CarouselContent className="-ml-2">
               {images.map((img) => (
-                <CarouselItem key={img.id}>
+                <CarouselItem key={img.id} className="pl-2 basis-1/3">
                   <Dialog>
                     <DialogTrigger asChild>
                       <div className="relative group cursor-pointer">
-                        <div className="overflow-hidden rounded-md shadow-sm hover:shadow-lg transition-all mx-auto" style={{width: "250px", height: "250px"}}>
+                        <div className="overflow-hidden rounded-md shadow-sm hover:shadow-lg transition-all mx-auto" style={{width: "200px", height: "200px"}}>
                           <img
                             src={img.signed_url || img.image_url}
                             alt="Candidate gallery image"
