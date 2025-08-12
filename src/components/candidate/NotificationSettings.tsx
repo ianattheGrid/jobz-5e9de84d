@@ -57,6 +57,21 @@ export const NotificationSettings = () => {
     }
   };
 
+  const getNotificationStatus = () => {
+    if (!('Notification' in window)) {
+      return { text: "Not supported", variant: "secondary" as const, disabled: true };
+    }
+    
+    const permission = Notification.permission;
+    if (permission === 'granted') {
+      return { text: "Enabled", variant: "default" as const, disabled: true };
+    } else if (permission === 'denied') {
+      return { text: "Blocked", variant: "destructive" as const, disabled: true };
+    } else {
+      return { text: "Enable", variant: "default" as const, disabled: false };
+    }
+  };
+
   return (
     <Card>
       <Collapsible open={isOpen} onOpenChange={setIsOpen}>
@@ -95,15 +110,16 @@ export const NotificationSettings = () => {
                 {!isEnabled && (
                   <Button
                     onClick={handleEnableNotifications}
-                    disabled={isLoading}
-                    className="bg-[#FF69B4] hover:bg-[#FF50A8] text-white"
+                    disabled={isLoading || getNotificationStatus().disabled}
+                    variant={getNotificationStatus().variant}
+                    className={getNotificationStatus().variant === "default" ? "bg-[#FF69B4] hover:bg-[#FF50A8] text-white" : ""}
                   >
                     {isLoading ? (
                       "Enabling..."
                     ) : (
                       <>
                         <Bell className="w-4 h-4 mr-2" />
-                        Enable
+                        {getNotificationStatus().text}
                       </>
                     )}
                   </Button>
