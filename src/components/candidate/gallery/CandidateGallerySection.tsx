@@ -14,20 +14,24 @@ export function CandidateGallerySection({ candidateId }: CandidateGallerySection
   const { images, uploading, uploadImage, deleteImage } = useCandidateGallery(candidateId);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
+  console.log("CandidateGallerySection rendering with", images.length, "images");
+  
   return (
     <div className="space-y-4">
-      <h3 className="text-xl font-semibold border-l-4 border-primary pl-4">Your Gallery (Updated)</h3>
+      <h3 className="text-xl font-semibold border-l-4 border-primary pl-4">🔄 Gallery (Compact Mode)</h3>
       <p className="text-sm text-gray-600 -mt-2 pl-4">
         You are more than words—show the human element. Add up to 9 images (running, skiing, building projects, volunteering, etc.).
       </p>
-      <p className="text-xs text-blue-600 pl-4 font-medium">✨ New compact gallery with 80x80px thumbnails</p>
+      <div className="bg-green-100 border border-green-400 rounded p-2 pl-4">
+        <p className="text-xs text-green-800 font-medium">✅ Updated to 80x80px thumbnails - if still large, there may be CSS caching</p>
+      </div>
 
       <div className="flex flex-wrap gap-2">
         {images.map((img) => (
           <Dialog key={img.id}>
             <DialogTrigger asChild>
               <div className="relative group cursor-pointer">
-                <Card className="overflow-hidden w-20 h-20 hover:shadow-lg transition-all">
+                <Card className="overflow-hidden hover:shadow-lg transition-all" style={{width: "80px", height: "80px"}}>
                   <div className="w-full h-full overflow-hidden relative">
                     <img 
                       src={img.signed_url || img.image_url} 
@@ -73,7 +77,7 @@ export function CandidateGallerySection({ candidateId }: CandidateGallerySection
         ))}
 
         {images.length < 9 && (
-          <Card className="border-dashed border-2 bg-gray-50 hover:bg-gray-100 transition-colors cursor-pointer w-20 h-20">
+          <Card className="border-dashed border-2 bg-gray-50 hover:bg-gray-100 transition-colors cursor-pointer" style={{width: "80px", height: "80px"}}>
             <CardContent className="p-0 h-full">
               <label className="flex flex-col items-center justify-center w-full h-full cursor-pointer">
                 <div className="flex flex-col items-center justify-center text-center">
