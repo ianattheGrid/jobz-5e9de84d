@@ -18,7 +18,7 @@ export const NotificationSettings = () => {
     }
   }, []);
 
-  const handleEnableNotifications = async () => {
+  const handleToggleNotifications = async () => {
     if (!('Notification' in window)) {
       toast({
         variant: "destructive",
@@ -31,26 +31,36 @@ export const NotificationSettings = () => {
     setIsLoading(true);
 
     try {
-      const permission = await Notification.requestPermission();
-      
-      if (permission === 'granted') {
-        setIsEnabled(true);
+      if (isEnabled) {
+        // User wants to disable - we can't actually revoke permission, but we can track their preference
+        setIsEnabled(false);
         toast({
-          title: "Notifications enabled!",
-          description: "You'll now receive updates about new job matches and interview invites.",
+          title: "Notifications disabled",
+          description: "You won't receive job alerts (you can re-enable anytime).",
         });
       } else {
-        toast({
-          variant: "destructive",
-          title: "Permission denied",
-          description: "Please enable notifications in your browser settings to receive job alerts.",
-        });
+        // User wants to enable
+        const permission = await Notification.requestPermission();
+        
+        if (permission === 'granted') {
+          setIsEnabled(true);
+          toast({
+            title: "Notifications enabled!",
+            description: "You'll now receive updates about new job matches and interview invites.",
+          });
+        } else {
+          toast({
+            variant: "destructive",
+            title: "Notifications blocked",
+            description: "Please allow notifications in your browser settings to receive job alerts.",
+          });
+        }
       }
     } catch (error) {
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Failed to enable notifications. Please try again.",
+        description: "Failed to update notification settings. Please try again.",
       });
     } finally {
       setIsLoading(false);
@@ -104,23 +114,21 @@ export const NotificationSettings = () => {
                   </p>
                 </div>
                 
-                {!isEnabled && (
-                  <Button
-                    onClick={handleEnableNotifications}
-                    disabled={isLoading || getNotificationStatus().disabled}
-                    variant={getNotificationStatus().variant}
-                    className={getNotificationStatus().variant === "default" ? "bg-[#FF69B4] hover:bg-[#FF50A8] text-white" : ""}
-                  >
-                    {isLoading ? (
-                      "Enabling..."
-                    ) : (
-                      <>
-                        <Bell className="w-4 h-4 mr-2" />
-                        {getNotificationStatus().text}
-                      </>
-                    )}
-                  </Button>
-                )}
+                <Button
+                  onClick={handleToggleNotifications}
+                  disabled={isLoading || !('Notification' in window)}
+                  variant={isEnabled ? "outline" : "default"}
+                  className={isEnabled ? "" : "bg-[#FF69B4] hover:bg-[#FF50A8] text-white"}
+                >
+                  {isLoading ? (
+                    "Updating..."
+                  ) : (
+                    <>
+                      <Bell className="w-4 h-4 mr-2" />
+                      {isEnabled ? "Disable" : "Enable"}
+                    </>
+                  )}
+                </Button>
               </div>
               
               <div className="bg-blue-50 p-3 rounded-lg">

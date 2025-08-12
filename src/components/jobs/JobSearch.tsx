@@ -63,22 +63,20 @@ const JobSearch = ({ onSearch, userType }: JobSearchProps) => {
         
         <div className="flex items-center gap-3">
           {userType === 'candidate' && (
-            <Button
-              onClick={() => window.location.href = '/candidate/dashboard'}
-              className="bg-[#FF69B4] hover:bg-[#FF50A8] text-white"
-              variant="default"
-              size="sm"
-            >
-              <div className="flex items-center">
-                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <rect width="7" height="9" x="3" y="3" rx="1"/>
-                  <rect width="7" height="5" x="14" y="3" rx="1"/>
-                  <rect width="7" height="9" x="14" y="12" rx="1"/>
-                  <rect width="7" height="5" x="3" y="16" rx="1"/>
-                </svg>
-                Dashboard
-              </div>
-            </Button>
+             <Button
+               onClick={() => window.location.href = '/candidate/dashboard'}
+               className="bg-[#FF69B4] hover:bg-[#FF50A8] text-white"
+               variant="default"
+               size="sm"
+             >
+               <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                 <rect width="7" height="9" x="3" y="3" rx="1"/>
+                 <rect width="7" height="5" x="14" y="3" rx="1"/>
+                 <rect width="7" height="9" x="14" y="12" rx="1"/>
+                 <rect width="7" height="5" x="3" y="16" rx="1"/>
+               </svg>
+               Dashboard
+             </Button>
           )}
           
           <Button
