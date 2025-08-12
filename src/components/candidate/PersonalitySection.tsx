@@ -16,21 +16,34 @@ export type PersonalityItem = {
 };
 
 const CHAR_LIMIT = 100;
-const MAX_ITEMS = 10;
+const MAX_ITEMS = 8;
 
 const PROMPTS: { key: string; label: string }[] = [
-  { key: "best_holiday", label: "Best holiday I’ve taken" },
+  { key: "best_holiday", label: "Best holiday I've taken" },
   { key: "favorite_book", label: "Favorite book" },
-  { key: "best_concert", label: "Best concert I’ve been to" },
+  { key: "best_concert", label: "Best concert I've been to" },
   { key: "day_maker", label: "A small thing that makes my day" },
-  { key: "proud_challenge", label: "A challenge I’m proud I solved" },
+  { key: "proud_challenge", label: "A challenge I'm proud I solved" },
   { key: "last_cry", label: "When I last cried (and why it mattered)" },
   { key: "learn_new", label: "My go-to way to learn something new" },
-  { key: "fav_tool", label: "The tool I can’t live without at work" },
-  { key: "core_value", label: "A value I won’t compromise on" },
+  { key: "fav_tool", label: "The tool I can't live without at work" },
+  { key: "core_value", label: "A value I won't compromise on" },
   { key: "hobby", label: "A hobby I love" },
-  { key: "best_advice", label: "The best advice I’ve received" },
+  { key: "best_advice", label: "The best advice I've received" },
   { key: "teammates_expect", label: "What teammates can expect from me" },
+  { key: "morning_ritual", label: "My perfect morning starts with" },
+  { key: "proudest_moment", label: "My proudest professional moment" },
+  { key: "weekend_activity", label: "How I like to spend my weekends" },
+  { key: "learning_moment", label: "A time I learned something important" },
+  { key: "dream_project", label: "A dream project I'd love to work on" },
+  { key: "inspiration", label: "What motivates me every day" },
+  { key: "fun_fact", label: "A fun fact about me" },
+  { key: "problem_solving", label: "How I approach difficult problems" },
+  { key: "team_contribution", label: "How I contribute to team success" },
+  { key: "work_environment", label: "My ideal work environment" },
+  { key: "career_highlight", label: "A career milestone I'm proud of" },
+  { key: "personal_growth", label: "Something I'm working to improve" },
+  { key: "life_philosophy", label: "A belief that guides my decisions" },
 ];
 
 interface PersonalitySectionProps {

@@ -15,6 +15,7 @@ import { CandidateProfile as ProfileType } from "@/integrations/supabase/types/p
 import { CreateFromCVButton } from "@/components/candidate/CreateFromCVButton";
 import { CandidateGallerySection } from "@/components/candidate/gallery/CandidateGallerySection";
 import { SectionVisibilityToggles } from "@/components/candidate/SectionVisibilityToggles";
+import { PersonalitySection } from "@/components/candidate/PersonalitySection";
 
 export default function CandidateProfile() {
   const { toast } = useToast();
@@ -174,6 +175,15 @@ export default function CandidateProfile() {
                   {userId && <CandidateGallerySection candidateId={userId} />}
                 </div>
               </div>
+
+              {/* Personality Questions */}
+              {userId && (
+                <PersonalitySection 
+                  userId={userId}
+                  initialItems={(profileData as any)?.personality || null}
+                  onSaved={(items) => setProfileData(prev => ({ ...(prev as any), personality: items }) as any)}
+                />
+              )}
               
               {/* Visibility toggles */}
               <SectionVisibilityToggles 
