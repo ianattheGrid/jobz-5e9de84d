@@ -68,17 +68,19 @@ const JobSearch = ({ onSearch, userType }: JobSearchProps) => {
           {userType === 'candidate' && (
             <Button
               onClick={() => window.location.href = '/candidate/dashboard'}
-              className="bg-[#FF69B4] hover:bg-[#FF50A8] text-white flex items-center justify-center"
+              className="bg-[#FF69B4] hover:bg-[#FF50A8] text-white text-center"
               variant="default"
               size="sm"
             >
-              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <rect width="7" height="9" x="3" y="3" rx="1"/>
-                <rect width="7" height="5" x="14" y="3" rx="1"/>
-                <rect width="7" height="9" x="14" y="12" rx="1"/>
-                <rect width="7" height="5" x="3" y="16" rx="1"/>
-              </svg>
-              Dashboard
+              <div className="flex items-center justify-center w-full">
+                <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <rect width="7" height="9" x="3" y="3" rx="1"/>
+                  <rect width="7" height="5" x="14" y="3" rx="1"/>
+                  <rect width="7" height="9" x="14" y="12" rx="1"/>
+                  <rect width="7" height="5" x="3" y="16" rx="1"/>
+                </svg>
+                <span>Dashboard</span>
+              </div>
             </Button>
           )}
           
@@ -86,17 +88,19 @@ const JobSearch = ({ onSearch, userType }: JobSearchProps) => {
           {!userType && (
             <Button
               onClick={() => window.location.href = '/candidate/dashboard'}
-              className="bg-[#FF69B4] hover:bg-[#FF50A8] text-white flex items-center justify-center"
+              className="bg-[#FF69B4] hover:bg-[#FF50A8] text-white text-center"
               variant="default"
               size="sm"
             >
-              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <rect width="7" height="9" x="3" y="3" rx="1"/>
-                <rect width="7" height="5" x="14" y="3" rx="1"/>
-                <rect width="7" height="9" x="14" y="12" rx="1"/>
-                <rect width="7" height="5" x="3" y="16" rx="1"/>
-              </svg>
-              Dashboard
+              <div className="flex items-center justify-center w-full">
+                <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <rect width="7" height="9" x="3" y="3" rx="1"/>
+                  <rect width="7" height="5" x="14" y="3" rx="1"/>
+                  <rect width="7" height="9" x="14" y="12" rx="1"/>
+                  <rect width="7" height="5" x="3" y="16" rx="1"/>
+                </svg>
+                <span>Dashboard</span>
+              </div>
             </Button>
           )}
           
