@@ -183,15 +183,6 @@ export default function CandidateProfile() {
                 onChange={(next) => setProfileData(prev => ({ ...(prev as any), visible_sections: next }) as any)}
               />
 
-              {/* Personality Questions */}
-              {userId && (
-                <PersonalitySection 
-                  userId={userId}
-                  initialItems={(profileData as any)?.personality || null}
-                  onSaved={(items) => setProfileData(prev => ({ ...(prev as any), personality: items }) as any)}
-                />
-              )}
-
               <VerificationSection />
             </div>
           )}
@@ -200,6 +191,17 @@ export default function CandidateProfile() {
         <div className="flex justify-center">
           <CandidateForm />
         </div>
+        
+        {/* Personality Questions - moved to bottom */}
+        {userId && (
+          <div className="container mx-auto px-4 pb-10 max-w-3xl">
+            <PersonalitySection 
+              userId={userId}
+              initialItems={(profileData as any)?.personality || null}
+              onSaved={(items) => setProfileData(prev => ({ ...(prev as any), personality: items }) as any)}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

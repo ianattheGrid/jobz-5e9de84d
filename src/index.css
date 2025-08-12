@@ -289,7 +289,10 @@ a {
   color: hsl(var(--primary-foreground)) !important;
 }
 .demo-candidate-dark .text-muted-foreground,
-.demo-candidate-dark .text-gray-700 {
+.demo-candidate-dark .text-gray-700,
+.demo-candidate-dark .text-gray-600,
+.demo-candidate-dark .text-gray-500,
+.demo-candidate-dark .text-gray-400 {
   color: hsl(var(--primary-foreground) / 0.85) !important;
 }
 .demo-candidate-dark .text-foreground {
@@ -304,6 +307,11 @@ a {
 .demo-candidate-dark .badge,
 .demo-candidate-dark .badge * {
   color: hsl(var(--secondary-foreground)) !important;
+}
+/* Fix specific text visibility issues */
+.demo-candidate-dark .text-sm,
+.demo-candidate-dark .text-xs {
+  color: hsl(var(--primary-foreground) / 0.9) !important;
 }
 
 /* Demo Employer dark wrapper overrides */
