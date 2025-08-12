@@ -57,7 +57,7 @@ const JobTitlesSection = ({ profile }: JobTitlesSectionProps) => {
       <div className="space-y-3">
         {jobTitles.map((title, index) => (
           <div key={index} className="flex justify-between items-center bg-gray-50 p-3 rounded-md">
-            <div className="font-medium">{title}</div>
+            <div className="font-medium text-gray-600">{title}</div>
             <div className="text-sm text-gray-600">
               {getTitleExperience(title) 
                 ? `${getTitleExperience(title)} years experience`
