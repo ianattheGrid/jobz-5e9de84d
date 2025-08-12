@@ -176,6 +176,13 @@ export default function CandidateProfile() {
                 </div>
               </div>
 
+              {/* Visibility toggles */}
+              <SectionVisibilityToggles 
+                userId={userId}
+                initial={(profileData as any)?.visible_sections || null}
+                onChange={(next) => setProfileData(prev => ({ ...(prev as any), visible_sections: next }) as any)}
+              />
+
               {/* Personality Questions */}
               {userId && (
                 <PersonalitySection 
@@ -184,13 +191,6 @@ export default function CandidateProfile() {
                   onSaved={(items) => setProfileData(prev => ({ ...(prev as any), personality: items }) as any)}
                 />
               )}
-              
-              {/* Visibility toggles */}
-              <SectionVisibilityToggles 
-                userId={userId}
-                initial={(profileData as any)?.visible_sections || null}
-                onChange={(next) => setProfileData(prev => ({ ...(prev as any), visible_sections: next }) as any)}
-              />
 
               <VerificationSection />
             </div>

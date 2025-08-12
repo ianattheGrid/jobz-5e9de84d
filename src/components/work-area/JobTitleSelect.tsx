@@ -59,11 +59,12 @@ const JobTitleSelect = ({ control, titles, name }: JobTitleSelectProps) => {
                   options={options}
                   selected={currentValues}
                   onChange={(values) => field.onChange(values)}
-                  placeholder="Select job titles"
+                  placeholder="Click to select job titles..."
+                  className="min-h-[42px]"
                 />
               ) : (
                 <div className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-muted-foreground">
-                  No job titles available
+                  Please select a work area and specialization first to see available job titles
                 </div>
               )}
             </FormControl>
