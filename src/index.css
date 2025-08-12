@@ -277,7 +277,12 @@ a {
   @apply bg-indigo-950 border-indigo-900 !important;
 }
 /* Ensure default card text is white for readability on navy */
-.demo-candidate-dark .text-card-foreground {
+.demo-candidate-dark .text-card-foreground,
+.demo-candidate-dark .text-gray-900,
+.demo-candidate-dark .text-gray-800,
+.demo-candidate-dark .text-gray-700,
+.demo-candidate-dark .text-gray-600,
+.demo-candidate-dark .text-gray-500 {
   color: hsl(var(--primary-foreground)) !important;
 }
 .demo-candidate-dark h1,
@@ -289,9 +294,6 @@ a {
   color: hsl(var(--primary-foreground)) !important;
 }
 .demo-candidate-dark .text-muted-foreground,
-.demo-candidate-dark .text-gray-700,
-.demo-candidate-dark .text-gray-600,
-.demo-candidate-dark .text-gray-500,
 .demo-candidate-dark .text-gray-400 {
   color: hsl(var(--primary-foreground) / 0.85) !important;
 }
@@ -312,6 +314,11 @@ a {
 .demo-candidate-dark .text-sm,
 .demo-candidate-dark .text-xs {
   color: hsl(var(--primary-foreground) / 0.9) !important;
+}
+/* Fix span and div text inside cards */
+.demo-candidate-dark span,
+.demo-candidate-dark div {
+  color: hsl(var(--primary-foreground)) !important;
 }
 
 /* Demo Employer dark wrapper overrides */
