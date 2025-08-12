@@ -29,90 +29,32 @@ const CandidateDashboard = () => {
     // Initialize storage buckets
     initializeStorage().catch(console.error);
 
-    console.log('[CandidateDashboard] Mounting and starting auth/profile checks');
-    // Failsafe: never keep users on a spinner for more than 7s
-    const timeoutId = setTimeout(() => {
-      console.warn('[CandidateDashboard] Failsafe timeout hit — forcing loading=false');
-      setLoading(false);
-    }, 7000);
-    
-    checkUser();
-
-    return () => {
-      clearTimeout(timeoutId);
-    };
+    console.log('[CandidateDashboard] Loading user profile');
+    loadUserProfile();
   }, []);
 
-  const checkUser = async () => {
+  const loadUserProfile = async () => {
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
-        navigate('/candidate/signin');
-        return;
-      }
-
-      // Verify role from database to avoid stale user_metadata
-      const { data: userRole, error: roleError } = await supabase
-        .from('user_roles')
-        .select('role')
-        .eq('user_id', session.user.id)
-        .single();
-
-      if (roleError || !userRole) {
-        console.error('Error fetching user role:', roleError);
-        navigate('/candidate/signin');
-        return;
-      }
-
-      if (userRole.role !== 'candidate') {
-        navigate('/');
+        console.log('[CandidateDashboard] No session found');
+        setLoading(false);
         return;
       }
 
       const { data: profile, error } = await supabase
         .from('candidate_profiles')
-        .select('*')
+        .select('full_name')
         .eq('id', session.user.id)
         .maybeSingle();
 
       if (error) {
         console.error('Error fetching profile:', error);
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description: "Failed to load profile information",
-        });
-      } else if (!profile) {
-        const { error: createError } = await supabase
-          .from('candidate_profiles')
-          .insert({
-            id: session.user.id,
-            email: session.user.email,
-            job_title: 'Not specified',
-            location: ['Not specified'],
-            min_salary: 0,
-            max_salary: 0,
-            years_experience: 0
-          });
-
-        if (createError) {
-          console.error('Error creating profile:', createError);
-          toast({
-            variant: "destructive",
-            title: "Error",
-            description: "Failed to create profile",
-          });
-        }
-      } else {
+      } else if (profile) {
         setFullName(profile.full_name);
       }
     } catch (error) {
-      console.error('Error:', error);
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "An error occurred while checking authentication",
-      });
+      console.error('Error loading profile:', error);
     } finally {
       setLoading(false);
     }
