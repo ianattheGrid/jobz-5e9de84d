@@ -22,19 +22,17 @@ export function UploadCard({ onUpload, isUploading }: UploadCardProps) {
   };
 
   return (
-    <Card className="border-dashed border-2 bg-gray-50 hover:bg-gray-100 transition-colors cursor-pointer">
-      <CardContent className="p-0">
-        <label className="flex flex-col items-center justify-center w-full h-36 cursor-pointer">
-          <div className="flex flex-col items-center justify-center pt-5 pb-6">
+    <Card className="border-dashed border-2 bg-gray-50 hover:bg-gray-100 transition-colors cursor-pointer h-full">
+      <CardContent className="p-0 h-full">
+        <label className="flex flex-col items-center justify-center w-full h-full cursor-pointer aspect-square">{" "}
+          <div className="flex flex-col items-center justify-center p-4 text-center">
             {isUploading ? (
-              <div className="animate-pulse">Uploading...</div>
+              <div className="animate-pulse text-sm">Uploading...</div>
             ) : (
               <>
-                <ImageIcon className="w-8 h-8 mb-3 text-gray-400" />
-                <p className="text-sm text-gray-500">
-                  <span className="font-semibold">Click to upload</span> or drag and drop
-                </p>
-                <p className="text-xs text-gray-500 mt-1">PNG, JPG or WEBP (max. 5MB)</p>
+                <ImageIcon className="w-6 h-6 mb-2 text-gray-400" />
+                <p className="text-xs text-gray-500 font-semibold mb-1">Click to upload</p>
+                <p className="text-xs text-gray-400">PNG, JPG or WEBP</p>
               </>
             )}
           </div>
