@@ -14,6 +14,7 @@ export const CVViewButton = ({ cvPath }: CVViewButtonProps) => {
   const openCV = async () => {
     if (isLoading) return;
     setIsLoading(true);
+    
     try {
       // Extract just the file path if it's a full URL
       let filePath = cvPath;
@@ -26,10 +27,18 @@ export const CVViewButton = ({ cvPath }: CVViewButtonProps) => {
       
       console.log('Opening CV with file path:', filePath);
       
-      // Always use the edge function - never try direct storage access
-      const { data, error } = await supabase.functions.invoke('view-cv', {
+      // Add timeout to prevent hanging
+      const timeoutPromise = new Promise<never>((_, reject) => 
+        setTimeout(() => reject(new Error('Request timeout')), 10000)
+      );
+      
+      const edgeFunctionPromise = supabase.functions.invoke('view-cv', {
         body: { filePath }
       });
+      
+      // Race between the function call and timeout
+      const result = await Promise.race([edgeFunctionPromise, timeoutPromise]);
+      const { data, error } = result;
       
       console.log('Edge function response:', { data, error });
       
@@ -47,12 +56,23 @@ export const CVViewButton = ({ cvPath }: CVViewButtonProps) => {
       
       // Open the PDF in a new tab with a unique timestamp to avoid caching
       const urlWithTimestamp = `${data.signedUrl}&t=${Date.now()}`;
+      
+      // Use a small delay to help with popup blocker issues
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
       const newWindow = window.open(urlWithTimestamp, '_blank');
       
-      // Ensure the window opened successfully
-      if (!newWindow) {
-        throw new Error('Failed to open PDF window - please check popup blocker');
-      }
+      // Give the window a moment to open, then check if it worked
+      setTimeout(() => {
+        if (!newWindow || newWindow.closed) {
+          console.error('Window failed to open or was blocked');
+          toast({ 
+            variant: 'destructive', 
+            title: 'Popup blocked', 
+            description: 'Please allow popups for this site to view CVs.' 
+          });
+        }
+      }, 500);
       
     } catch (error) {
       console.error('Failed to open CV:', error);
