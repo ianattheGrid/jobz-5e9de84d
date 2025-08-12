@@ -340,28 +340,6 @@ a {
   color: #047857 !important;
 }
 
-/* Simple direct fixes for text visibility */
-
-/* 1. "Not specified" text under Ian Gibbons name */
-.demo-candidate-dark .text-gray-600 {
-  color: white !important;
-}
-
-/* 2. "5 years in current role" in ExperienceSection */
-.demo-candidate-dark .text-gray-700 {
-  color: white !important;
-}
-
-/* 3. Job titles in JobTitlesSection - make grey */
-.demo-candidate-dark .space-y-3 .font-medium {
-  color: #9ca3af !important;
-}
-
-/* 4. "Professional Experience" and "Salary Expectations" headings */
-.demo-candidate-dark .bg-white .font-medium {
-  color: white !important;
-}
-
 /* Demo Employer dark wrapper overrides */
 .demo-employer-dark { 
   @apply text-white; 
