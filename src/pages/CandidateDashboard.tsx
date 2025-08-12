@@ -3,7 +3,11 @@ import { Button } from "@/components/ui/button";
 import NavBar from "@/components/NavBar";
 import { 
   UserCircle,
-  Briefcase
+  Briefcase,
+  Database,
+  Settings,
+  Calendar,
+  MessageSquare
 } from "lucide-react";
 
 const CandidateDashboard = () => {
@@ -23,6 +27,30 @@ const CandidateDashboard = () => {
       icon: <Briefcase className="h-6 w-6" />,
       path: "/jobs",
       description: "Browse available positions"
+    },
+    {
+      title: "My Applications",
+      icon: <Database className="h-6 w-6" />,
+      path: "/candidate/applications",
+      description: "Track your job applications"
+    },
+    {
+      title: "My Interviews",
+      icon: <Calendar className="h-6 w-6" />,
+      path: "/candidate/interviews",
+      description: "View and schedule interviews"
+    },
+    {
+      title: "Account Settings",
+      icon: <Settings className="h-6 w-6" />,
+      path: "/candidate/settings",
+      description: "Manage your account"
+    },
+    {
+      title: "AI Assistant",
+      icon: <MessageSquare className="h-6 w-6" />,
+      path: "/candidate/chat",
+      description: "Get AI-powered career advice"
     }
   ];
 
