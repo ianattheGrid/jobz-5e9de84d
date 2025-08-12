@@ -31,7 +31,7 @@ export function CandidateGallerySection({ candidateId }: CandidateGallerySection
           <Dialog key={img.id}>
             <DialogTrigger asChild>
               <div className="relative group cursor-pointer">
-                <Card className="overflow-hidden hover:shadow-lg transition-all" style={{width: "80px", height: "80px"}}>
+                <Card className="overflow-hidden hover:shadow-lg transition-all" style={{width: "128px", height: "128px"}}>
                   <div className="w-full h-full overflow-hidden relative">
                     <img 
                       src={img.signed_url || img.image_url} 
@@ -77,7 +77,7 @@ export function CandidateGallerySection({ candidateId }: CandidateGallerySection
         ))}
 
         {images.length < 9 && (
-          <Card className="border-dashed border-2 bg-gray-50 hover:bg-gray-100 transition-colors cursor-pointer" style={{width: "80px", height: "80px"}}>
+          <Card className="border-dashed border-2 bg-gray-50 hover:bg-gray-100 transition-colors cursor-pointer" style={{width: "128px", height: "128px"}}>
             <CardContent className="p-0 h-full">
               <label className="flex flex-col items-center justify-center w-full h-full cursor-pointer">
                 <div className="flex flex-col items-center justify-center text-center">

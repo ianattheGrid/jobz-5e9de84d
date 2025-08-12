@@ -16,9 +16,9 @@ export default function GalleryCarousel({ candidateId }: GalleryCarouselProps) {
     <Card className="shadow-sm border border-gray-200 bg-[#0b1437]">
       <CardContent className="pt-6">
         <h3 className="text-xl font-semibold mb-4 text-primary">Gallery</h3>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-3">
           {images.map((img) => (
-            <div key={img.id} className="w-20 h-20 overflow-hidden rounded-md">
+            <div key={img.id} className="w-32 h-32 overflow-hidden rounded-md shadow-sm">
               <img
                 src={img.signed_url || img.image_url}
                 alt="Candidate gallery image"
