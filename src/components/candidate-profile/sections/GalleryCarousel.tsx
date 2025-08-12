@@ -26,7 +26,7 @@ export default function GalleryCarousel({ candidateId }: GalleryCarouselProps) {
                   <Dialog>
                     <DialogTrigger asChild>
                       <div className="relative group cursor-pointer">
-                        <div className="overflow-hidden rounded-md shadow-sm hover:shadow-lg transition-all mx-auto" style={{width: "200px", height: "200px"}}>
+                        <div className="overflow-hidden rounded-md shadow-sm hover:shadow-lg transition-all mx-auto" style={{width: "250px", height: "250px"}}>
                           <img
                             src={img.signed_url || img.image_url}
                             alt="Candidate gallery image"
