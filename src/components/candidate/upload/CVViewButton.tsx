@@ -10,8 +10,21 @@ interface CVViewButtonProps {
 export const CVViewButton = ({ cvPath }: CVViewButtonProps) => {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
+  const [lastClickTime, setLastClickTime] = useState(0);
 
   const openCV = async () => {
+    // Debounce to prevent rapid clicks
+    const now = Date.now();
+    if (now - lastClickTime < 2000) {
+      toast({
+        variant: 'destructive',
+        title: 'Please wait',
+        description: 'Please wait a moment before trying again.'
+      });
+      return;
+    }
+    setLastClickTime(now);
+    
     if (isLoading) return;
     setIsLoading(true);
     
