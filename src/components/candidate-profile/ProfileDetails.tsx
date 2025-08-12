@@ -101,10 +101,6 @@ const ProfileDetails = ({ profile, showVRRecommendation = false, vrRecommendatio
         </CardContent>
       </Card>
  
-      {/* Gallery (optional) */}
-      {((profile as any).visible_sections?.gallery ?? true) && (
-        <GalleryCarousel candidateId={(profile as any).id as unknown as string} />
-      )}
 
       {/* About/Summary */}
       {((profile as any).visible_sections?.about ?? true) && profile.ai_synopsis && (
@@ -250,22 +246,30 @@ const ProfileDetails = ({ profile, showVRRecommendation = false, vrRecommendatio
         </CardContent>
       </Card>
 
-      {/* Personality Snapshots - moved to bottom */}
-      {((profile as any).visible_sections?.personality ?? true) && Array.isArray((profile as any).personality) && (profile as any).personality.length > 0 && (
-        <Card className="shadow-sm border border-gray-200 bg-white">
-          <CardContent className="pt-6">
-            <h3 className="text-xl font-semibold mb-4 text-gray-900">Personality</h3>
-            <div className="grid gap-3 sm:grid-cols-2">
-              {(profile as any).personality.map((item: any) => (
-                <div key={item.question_key} className="rounded-md border border-pink-200 bg-pink-50 p-4">
-                  <div className="text-xs font-medium text-pink-700">{item.question_label}</div>
-                  <div className="mt-1 text-gray-800">{item.answer}</div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      )}
+      {/* Bottom section with Gallery and Personality side by side */}
+      <div className="grid gap-6 lg:grid-cols-2">
+        {/* Gallery */}
+        {((profile as any).visible_sections?.gallery ?? true) && (
+          <GalleryCarousel candidateId={(profile as any).id as unknown as string} />
+        )}
+
+        {/* Personality Snapshots */}
+        {((profile as any).visible_sections?.personality ?? true) && Array.isArray((profile as any).personality) && (profile as any).personality.length > 0 && (
+          <Card className="shadow-sm border border-gray-200 bg-white">
+            <CardContent className="pt-6">
+              <h3 className="text-xl font-semibold mb-4 text-gray-900">Personality</h3>
+              <div className="grid gap-3">
+                {(profile as any).personality.map((item: any) => (
+                  <div key={item.question_key} className="rounded-md border border-pink-200 bg-pink-50 p-4">
+                    <div className="text-xs font-medium text-pink-700">{item.question_label}</div>
+                    <div className="mt-1 text-gray-800">{item.answer}</div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+      </div>
     </div>
   );
 };
