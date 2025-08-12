@@ -340,26 +340,26 @@ a {
   color: #047857 !important;
 }
 
-/* VERY SPECIFIC fixes for exact text visibility issues */
-/* "5 years in current role" text - force white with higher specificity */
-.demo-candidate-dark .flex.items-center.text-gray-600.text-sm span,
-.demo-candidate-dark .text-gray-600.text-sm {
+/* Simple direct fixes for text visibility */
+
+/* 1. "Not specified" text under Ian Gibbons name */
+.demo-candidate-dark .text-gray-600 {
   color: white !important;
-  background: transparent !important;
 }
 
-/* Job titles "Azure Administrator" and "Cloud Operations Engineer" - force grey */
-.demo-candidate-dark .space-y-3 .font-medium,
-.demo-candidate-dark .bg-gray-50 .font-medium {
+/* 2. "5 years in current role" in ExperienceSection */
+.demo-candidate-dark .text-gray-700 {
+  color: white !important;
+}
+
+/* 3. Job titles in JobTitlesSection - make grey */
+.demo-candidate-dark .space-y-3 .font-medium {
   color: #9ca3af !important;
-  background: transparent !important;
 }
 
-/* "Qualifications" heading text - force white using different selector */
-.demo-candidate-dark .flex.items-center.gap-2 .font-medium,
-.demo-candidate-dark h3.text-xl.font-semibold {
+/* 4. "Professional Experience" and "Salary Expectations" headings */
+.demo-candidate-dark .bg-white .font-medium {
   color: white !important;
-  background: transparent !important;
 }
 
 /* Demo Employer dark wrapper overrides */
