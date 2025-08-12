@@ -1,5 +1,6 @@
 
 import { X } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { Job } from "@/integrations/supabase/types/jobs";
 import JobDetails from "./details/JobDetails";
 import CommissionDetails from "./details/CommissionDetails";
@@ -17,6 +18,7 @@ interface JobCardBackProps {
 }
 
 const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
+  const navigate = useNavigate();
   const { toast } = useToast();
   const {
     isApplying,
@@ -74,7 +76,7 @@ const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
             <ApplicationStatus 
               status={application}
               onAccept={handleAccept}
-              onChat={() => window.location.href = `/messages/${application.id}`}
+              onChat={() => navigate(`/messages/${application.id}`)}
             />
           ) : (
             isApplying ? (

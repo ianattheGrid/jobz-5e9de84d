@@ -1,5 +1,6 @@
 
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Search, X, SlidersHorizontal } from "lucide-react";
@@ -19,6 +20,7 @@ interface JobSearchProps {
 }
 
 const JobSearch = ({ onSearch, userType }: JobSearchProps) => {
+  const navigate = useNavigate();
   const [isExpanded, setIsExpanded] = useState(false);
 
   const form = useForm<JobSearchSchema>({
@@ -67,7 +69,7 @@ const JobSearch = ({ onSearch, userType }: JobSearchProps) => {
           
           {userType === 'candidate' && (
             <Button
-              onClick={() => window.location.href = '/candidate/dashboard'}
+              onClick={() => navigate('/candidate/dashboard')}
               className="bg-[#FF69B4] hover:bg-[#FF50A8] text-white justify-center"
               variant="default"
               size="sm"
@@ -79,7 +81,7 @@ const JobSearch = ({ onSearch, userType }: JobSearchProps) => {
           {/* Temporary: Always show dashboard for testing */}
           {!userType && (
             <Button
-              onClick={() => window.location.href = '/candidate/dashboard'}
+              onClick={() => navigate('/candidate/dashboard')}
               className="bg-[#FF69B4] hover:bg-[#FF50A8] text-white justify-center"
               variant="default"
               size="sm"
