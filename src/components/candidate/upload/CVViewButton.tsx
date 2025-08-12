@@ -27,9 +27,9 @@ export const CVViewButton = ({ cvPath }: CVViewButtonProps) => {
       
       console.log('Opening CV with file path:', filePath);
       
-      // Add timeout to prevent hanging
+      // Add shorter timeout to prevent hanging
       const timeoutPromise = new Promise<never>((_, reject) => 
-        setTimeout(() => reject(new Error('Request timeout')), 10000)
+        setTimeout(() => reject(new Error('Request timeout - please try again')), 5000)
       );
       
       const edgeFunctionPromise = supabase.functions.invoke('view-cv', {
