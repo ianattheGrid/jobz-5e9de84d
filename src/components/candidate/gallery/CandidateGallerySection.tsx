@@ -16,10 +16,11 @@ export function CandidateGallerySection({ candidateId }: CandidateGallerySection
 
   return (
     <div className="space-y-4">
-      <h3 className="text-xl font-semibold border-l-4 border-primary pl-4">Your Gallery</h3>
+      <h3 className="text-xl font-semibold border-l-4 border-primary pl-4">Your Gallery (Updated)</h3>
       <p className="text-sm text-gray-600 -mt-2 pl-4">
         You are more than words—show the human element. Add up to 9 images (running, skiing, building projects, volunteering, etc.).
       </p>
+      <p className="text-xs text-blue-600 pl-4 font-medium">✨ New compact gallery with 80x80px thumbnails</p>
 
       <div className="flex flex-wrap gap-2">
         {images.map((img) => (
