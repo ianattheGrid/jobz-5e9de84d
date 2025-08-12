@@ -340,32 +340,21 @@ a {
   color: #047857 !important;
 }
 
-/* Fix specific text visibility issues mentioned by user */
-/* "Not specified" text under name */
-.demo-candidate-dark .text-gray-600 {
+/* Targeted fixes for specific text visibility issues */
+/* "Not specified" text under name - make white */
+.demo-candidate-dark .flex.items-center.text-gray-600 span {
   color: hsl(var(--primary-foreground)) !important;
 }
 
-/* "5 years in current role" text */
-.demo-candidate-dark .text-gray-600.text-sm {
+/* "5 years in current role" text - make pink */
+.demo-candidate-dark .text-gray-600.text-sm span {
   color: hsl(var(--primary)) !important;
 }
 
-/* Job titles text - user wants this grey */
-.demo-candidate-dark .text-gray-700 {
+/* Job titles text in JobTitlesSection - make grey */
+.demo-candidate-dark [class*="JobTitles"] .text-gray-900,
+.demo-candidate-dark [class*="JobTitles"] .text-gray-800 {
   color: #9ca3af !important;
-}
-
-/* Professional Experience or Salary Expectations text */
-.demo-candidate-dark .text-muted-foreground,
-.demo-candidate-dark .form-description {
-  color: hsl(var(--primary)) !important;
-}
-
-/* Qualifications text next to tick box */
-.demo-candidate-dark h3,
-.demo-candidate-dark .text-xl.font-semibold {
-  color: hsl(var(--primary-foreground)) !important;
 }
 
 /* Demo Employer dark wrapper overrides */
