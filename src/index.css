@@ -355,9 +355,9 @@ a {
   background: transparent !important;
 }
 
-/* "Qualifications" heading text - force white */
-.demo-candidate-dark .flex.items-center.gap-2 .font-medium.text-gray-900,
-.demo-candidate-dark h3.text-xl.font-semibold.text-gray-900 {
+/* "Qualifications" heading text - force white using different selector */
+.demo-candidate-dark .flex.items-center.gap-2 .font-medium,
+.demo-candidate-dark h3.text-xl.font-semibold {
   color: white !important;
   background: transparent !important;
 }
