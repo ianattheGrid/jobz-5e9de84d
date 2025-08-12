@@ -68,7 +68,7 @@ const JobSearch = ({ onSearch, userType }: JobSearchProps) => {
           {userType === 'candidate' && (
             <Button
               onClick={() => window.location.href = '/candidate/dashboard'}
-              className="bg-[#FF69B4] hover:bg-[#FF50A8] text-white"
+              className="bg-[#FF69B4] hover:bg-[#FF50A8] text-white flex items-center justify-center"
               variant="default"
               size="sm"
             >
@@ -86,7 +86,7 @@ const JobSearch = ({ onSearch, userType }: JobSearchProps) => {
           {!userType && (
             <Button
               onClick={() => window.location.href = '/candidate/dashboard'}
-              className="bg-[#FF69B4] hover:bg-[#FF50A8] text-white"
+              className="bg-[#FF69B4] hover:bg-[#FF50A8] text-white flex items-center justify-center"
               variant="default"
               size="sm"
             >
