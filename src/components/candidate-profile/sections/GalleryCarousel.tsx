@@ -16,25 +16,17 @@ export default function GalleryCarousel({ candidateId }: GalleryCarouselProps) {
     <Card className="shadow-sm border border-gray-200 bg-[#0b1437]">
       <CardContent className="pt-6">
         <h3 className="text-xl font-semibold mb-4 text-primary">Gallery</h3>
-        <div className="relative">
-          <Carousel className="px-12">
-            <CarouselContent>
-              {images.map((img) => (
-                <CarouselItem key={img.id}>
-                  <div className="w-full h-64 sm:h-80 overflow-hidden rounded-md">
-                    <img
-                      src={img.signed_url || img.image_url}
-                      alt="Candidate gallery image"
-                      className="w-full h-full object-cover"
-                      loading="lazy"
-                    />
-                  </div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <CarouselPrevious variant="outline" className="border-primary text-primary hover:bg-primary/10" />
-            <CarouselNext variant="outline" className="border-primary text-primary hover:bg-primary/10" />
-          </Carousel>
+        <div className="flex flex-wrap gap-2">
+          {images.map((img) => (
+            <div key={img.id} className="w-20 h-20 overflow-hidden rounded-md">
+              <img
+                src={img.signed_url || img.image_url}
+                alt="Candidate gallery image"
+                className="w-full h-full object-cover"
+                loading="lazy"
+              />
+            </div>
+          ))}
         </div>
       </CardContent>
     </Card>
