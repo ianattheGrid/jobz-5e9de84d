@@ -61,44 +61,46 @@ const JobSearch = ({ onSearch, userType }: JobSearchProps) => {
           </h2>
         </div>
         
-        {userType === 'candidate' && (
-          <Button
-            onClick={() => window.location.href = '/candidate/dashboard'}
-            className="bg-[#FF69B4] hover:bg-[#FF50A8] text-white"
-            variant="default"
-            size="sm"
-          >
-            <div className="flex items-center">
-              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <rect width="7" height="9" x="3" y="3" rx="1"/>
-                <rect width="7" height="5" x="14" y="3" rx="1"/>
-                <rect width="7" height="9" x="14" y="12" rx="1"/>
-                <rect width="7" height="5" x="3" y="16" rx="1"/>
-              </svg>
-              Dashboard
-            </div>
-          </Button>
-        )}
-        
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={handleExpandToggle}
-          aria-label={isExpanded ? 'Hide filters' : 'Show filters'}
-          className="border border-gray-200 bg-white text-gray-700 hover:bg-primary hover:text-white hover:border-primary transition-colors"
-        >
-          {isExpanded ? (
-            <>
-              <X className="h-4 w-4 mr-1" />
-              Hide Filters
-            </>
-          ) : (
-            <>
-              <SlidersHorizontal className="h-4 w-4 mr-1" />
-              Show Filters
-            </>
+        <div className="flex items-center gap-3">
+          {userType === 'candidate' && (
+            <Button
+              onClick={() => window.location.href = '/candidate/dashboard'}
+              className="bg-[#FF69B4] hover:bg-[#FF50A8] text-white"
+              variant="default"
+              size="sm"
+            >
+              <div className="flex items-center">
+                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <rect width="7" height="9" x="3" y="3" rx="1"/>
+                  <rect width="7" height="5" x="14" y="3" rx="1"/>
+                  <rect width="7" height="9" x="14" y="12" rx="1"/>
+                  <rect width="7" height="5" x="3" y="16" rx="1"/>
+                </svg>
+                Dashboard
+              </div>
+            </Button>
           )}
-        </Button>
+          
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleExpandToggle}
+            aria-label={isExpanded ? 'Hide filters' : 'Show filters'}
+            className="border border-gray-200 bg-white text-gray-700 hover:bg-primary hover:text-white hover:border-primary transition-colors"
+          >
+            {isExpanded ? (
+              <>
+                <X className="h-4 w-4 mr-1" />
+                Hide Filters
+              </>
+            ) : (
+              <>
+                <SlidersHorizontal className="h-4 w-4 mr-1" />
+                Show Filters
+              </>
+            )}
+          </Button>
+        </div>
       </div>
 
       {isExpanded && (

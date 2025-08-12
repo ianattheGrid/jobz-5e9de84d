@@ -62,11 +62,8 @@ export const NotificationSettings = () => {
       return { text: "Not supported", variant: "secondary" as const, disabled: true };
     }
     
-    const permission = Notification.permission;
-    if (permission === 'granted') {
+    if (isEnabled) {
       return { text: "Enabled", variant: "default" as const, disabled: true };
-    } else if (permission === 'denied') {
-      return { text: "Blocked", variant: "destructive" as const, disabled: true };
     } else {
       return { text: "Enable", variant: "default" as const, disabled: false };
     }
