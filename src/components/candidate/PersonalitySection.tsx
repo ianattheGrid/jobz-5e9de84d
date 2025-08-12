@@ -7,7 +7,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { Badge } from "@/components/ui/badge";
-import { Check, Info, Sparkles } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Check, Info, Sparkles, Plus } from "lucide-react";
 
 export type PersonalityItem = {
   question_key: string;
@@ -23,27 +24,27 @@ const PROMPTS: { key: string; label: string }[] = [
   { key: "favorite_book", label: "Favorite book" },
   { key: "best_concert", label: "Best concert I've been to" },
   { key: "day_maker", label: "A small thing that makes my day" },
-  { key: "proud_challenge", label: "A challenge I'm proud I solved" },
+  { key: "proud_challenge", label: "A personal challenge I overcame" },
   { key: "last_cry", label: "When I last cried (and why it mattered)" },
-  { key: "learn_new", label: "My go-to way to learn something new" },
-  { key: "fav_tool", label: "The tool I can't live without at work" },
-  { key: "core_value", label: "A value I won't compromise on" },
   { key: "hobby", label: "A hobby I love" },
   { key: "best_advice", label: "The best advice I've received" },
-  { key: "teammates_expect", label: "What teammates can expect from me" },
   { key: "morning_ritual", label: "My perfect morning starts with" },
-  { key: "proudest_moment", label: "My proudest professional moment" },
   { key: "weekend_activity", label: "How I like to spend my weekends" },
-  { key: "learning_moment", label: "A time I learned something important" },
-  { key: "dream_project", label: "A dream project I'd love to work on" },
-  { key: "inspiration", label: "What motivates me every day" },
+  { key: "learning_moment", label: "A time I learned something important about myself" },
   { key: "fun_fact", label: "A fun fact about me" },
-  { key: "problem_solving", label: "How I approach difficult problems" },
-  { key: "team_contribution", label: "How I contribute to team success" },
-  { key: "work_environment", label: "My ideal work environment" },
-  { key: "career_highlight", label: "A career milestone I'm proud of" },
-  { key: "personal_growth", label: "Something I'm working to improve" },
-  { key: "life_philosophy", label: "A belief that guides my decisions" },
+  { key: "childhood_memory", label: "A favorite childhood memory" },
+  { key: "sports_achievement", label: "A sports or fitness achievement I'm proud of" },
+  { key: "volunteer_experience", label: "A volunteering experience that meant something to me" },
+  { key: "travel_story", label: "A travel story that changed me" },
+  { key: "family_tradition", label: "A family tradition I cherish" },
+  { key: "creative_project", label: "A creative project I've enjoyed" },
+  { key: "friendship_story", label: "What friendship means to me" },
+  { key: "fear_conquered", label: "A fear I've conquered" },
+  { key: "guilty_pleasure", label: "My guilty pleasure" },
+  { key: "life_lesson", label: "An important life lesson I've learned" },
+  { key: "personality_quirk", label: "A quirky thing about my personality" },
+  { key: "inspiration_person", label: "Someone who inspires me and why" },
+  { key: "bucket_list", label: "Something on my bucket list" },
 ];
 
 interface PersonalitySectionProps {
@@ -141,20 +142,45 @@ export function PersonalitySection({ userId, initialItems, onSaved }: Personalit
           </Badge>
         </div>
 
-        <div className="mt-4 grid gap-2 sm:grid-cols-2">
-          {availablePrompts.map((p) => (
-            <button
-              key={p.key}
-              type="button"
-              onClick={() => onTogglePrompt(p.key, p.label)}
-              className={`flex items-center justify-between rounded-md border px-3 py-2 text-left transition hover:bg-gray-50 ${
-                p.chosen ? "border-pink-300 bg-pink-50" : "border-gray-200 bg-white"
-              }`}
-            >
-              <span className="text-sm text-gray-800">{p.label}</span>
-              {p.chosen && <Check className="w-4 h-4 text-pink-600" />}
-            </button>
-          ))}
+        <div className="mt-4">
+          <Select onValueChange={(value) => {
+            const prompt = PROMPTS.find(p => p.key === value);
+            if (prompt) {
+              onTogglePrompt(prompt.key, prompt.label);
+            }
+          }}>
+            <SelectTrigger className="w-full">
+              <div className="flex items-center gap-2">
+                <Plus className="w-4 h-4" />
+                <SelectValue placeholder="Add a personality question..." />
+              </div>
+            </SelectTrigger>
+            <SelectContent>
+              {availablePrompts
+                .filter(p => !p.chosen)
+                .map((p) => (
+                  <SelectItem key={p.key} value={p.key}>
+                    {p.label}
+                  </SelectItem>
+                ))}
+            </SelectContent>
+          </Select>
+          
+          {selected.length > 0 && (
+            <div className="mt-4 flex flex-wrap gap-2">
+              {selected.map((item) => (
+                <button
+                  key={item.question_key}
+                  type="button"
+                  onClick={() => onTogglePrompt(item.question_key, item.question_label)}
+                  className="flex items-center gap-2 rounded-full border border-pink-300 bg-pink-50 px-3 py-1 text-sm text-pink-800 hover:bg-pink-100 transition"
+                >
+                  <span>{item.question_label}</span>
+                  <Check className="w-3 h-3" />
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         {selected.length > 0 && (
