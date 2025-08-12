@@ -5,8 +5,8 @@ interface JobsHeaderProps {
 
 const JobsHeader = ({ userType }: JobsHeaderProps) => {
   return (
-    <div className="mb-6">
-      <h1 className="text-2xl font-bold mb-2 text-white">
+    <div>
+      <h1 className="text-2xl font-bold text-white">
         {userType === 'employer' ? 'Manage Jobs' : 'Browse Jobs'}
       </h1>
     </div>
