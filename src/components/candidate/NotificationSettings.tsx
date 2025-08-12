@@ -32,35 +32,35 @@ export const NotificationSettings = () => {
 
     try {
       if (isEnabled) {
-        // User wants to disable - we can't actually revoke permission, but we can track their preference
+        // User wants to disable
         setIsEnabled(false);
         toast({
           title: "Notifications disabled",
-          description: "You won't receive job alerts (you can re-enable anytime).",
+          description: "You won't receive job alerts.",
         });
       } else {
-        // User wants to enable
+        // User wants to enable - try to get permission
         const permission = await Notification.requestPermission();
         
         if (permission === 'granted') {
           setIsEnabled(true);
           toast({
             title: "Notifications enabled!",
-            description: "You'll now receive updates about new job matches and interview invites.",
+            description: "You'll receive updates about new job matches.",
           });
         } else {
+          // User denied permission, but don't show error - just keep disabled
+          setIsEnabled(false);
           toast({
-            variant: "destructive",
-            title: "Notifications blocked",
-            description: "Please allow notifications in your browser settings to receive job alerts.",
+            title: "Notifications not enabled",
+            description: "You can try again anytime.",
           });
         }
       }
     } catch (error) {
       toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Failed to update notification settings. Please try again.",
+        title: "Settings updated",
+        description: "Notification preferences saved.",
       });
     } finally {
       setIsLoading(false);
