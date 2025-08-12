@@ -340,20 +340,26 @@ a {
   color: #047857 !important;
 }
 
-/* Targeted fixes for specific text visibility issues */
-/* "5 years in current role" text - make white/visible */
+/* VERY SPECIFIC fixes for exact text visibility issues */
+/* "5 years in current role" text - force white with higher specificity */
+.demo-candidate-dark .flex.items-center.text-gray-600.text-sm span,
 .demo-candidate-dark .text-gray-600.text-sm {
   color: white !important;
+  background: transparent !important;
 }
 
-/* Job titles text in JobTitlesSection - make grey */
-.demo-candidate-dark .font-medium {
+/* Job titles "Azure Administrator" and "Cloud Operations Engineer" - force grey */
+.demo-candidate-dark .space-y-3 .font-medium,
+.demo-candidate-dark .bg-gray-50 .font-medium {
   color: #9ca3af !important;
+  background: transparent !important;
 }
 
-/* "Qualifications" text next to checkbox icon - make white */
-.demo-candidate-dark .font-medium.text-gray-900 {
+/* "Qualifications" heading text - force white */
+.demo-candidate-dark .flex.items-center.gap-2 .font-medium.text-gray-900,
+.demo-candidate-dark h3.text-xl.font-semibold.text-gray-900 {
   color: white !important;
+  background: transparent !important;
 }
 
 /* Demo Employer dark wrapper overrides */
