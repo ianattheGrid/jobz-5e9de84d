@@ -1,72 +1,15 @@
-
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
 import NavBar from "@/components/NavBar";
 import { 
   UserCircle,
-  Briefcase,
-  Database,
-  Settings,
-  Mail,
-  Calendar,
-  MessageSquare
+  Briefcase
 } from "lucide-react";
-import { VerificationSection } from "@/components/candidate/VerificationSection";
-import { initializeStorage } from "@/integrations/supabase/storage";
-import CandidateChatSection from "@/components/chat/CandidateChatSection";
 
 const CandidateDashboard = () => {
   const navigate = useNavigate();
-  const { toast } = useToast();
-  const [loading, setLoading] = useState(true);
-  const [fullName, setFullName] = useState<string | null>(null);
-  const [showChat, setShowChat] = useState(false);
-
-  useEffect(() => {
-    // Initialize storage buckets
-    initializeStorage().catch(console.error);
-
-    console.log('[CandidateDashboard] Loading user profile');
-    loadUserProfile();
-  }, []);
-
-  const loadUserProfile = async () => {
-    try {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        console.log('[CandidateDashboard] No session found');
-        setLoading(false);
-        return;
-      }
-
-      const { data: profile, error } = await supabase
-        .from('candidate_profiles')
-        .select('full_name')
-        .eq('id', session.user.id)
-        .maybeSingle();
-
-      if (error) {
-        console.error('Error fetching profile:', error);
-      } else if (profile) {
-        setFullName(profile.full_name);
-      }
-    } catch (error) {
-      console.error('Error loading profile:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-screen bg-white">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-      </div>
-    );
-  }
+  
+  console.log('[CandidateDashboard] Rendering MINIMAL test version');
 
   const menuItems = [
     {
@@ -76,35 +19,10 @@ const CandidateDashboard = () => {
       description: "Edit your professional details"
     },
     {
-      title: "View Jobs",
+      title: "View Jobs", 
       icon: <Briefcase className="h-6 w-6" />,
       path: "/jobs",
       description: "Browse available positions"
-    },
-    {
-      title: "My Applications",
-      icon: <Database className="h-6 w-6" />,
-      path: "/candidate/applications",
-      description: "Track your job applications"
-    },
-    {
-      title: "My Interviews",
-      icon: <Calendar className="h-6 w-6" />,
-      path: "/candidate/interviews",
-      description: "View and schedule interviews"
-    },
-    {
-      title: "Account Settings",
-      icon: <Settings className="h-6 w-6" />,
-      path: "/candidate/settings",
-      description: "Manage your account"
-    },
-    {
-      title: "AI Assistant",
-      icon: <MessageSquare className="h-6 w-6" />,
-      path: "#",
-      description: "Get AI-powered career advice",
-      onClick: () => setShowChat(!showChat)
     }
   ];
 
@@ -113,31 +31,17 @@ const CandidateDashboard = () => {
       <NavBar />
       <div className="container mx-auto py-8 px-4">
         <h1 className="text-3xl font-bold mb-2 text-gray-900">
-          Welcome{fullName ? `, ${fullName}` : ''}
+          Welcome to Your Dashboard
         </h1>
         <p className="text-gray-600 mb-8">Manage your job search and applications</p>
         
-        <VerificationSection />
-        
-        {showChat && (
-          <div className="mb-8">
-            <CandidateChatSection onClose={() => setShowChat(false)} />
-          </div>
-        )}
-
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-2">
           {menuItems.map((item, index) => (
             <Button
               key={index}
               variant="outline"
               className="h-auto p-6 flex flex-col items-center gap-4 bg-white hover:bg-gray-50 transition-all duration-200 border border-gray-200 rounded-lg shadow-sm hover:shadow-md"
-              onClick={() => {
-                if (item.onClick) {
-                  item.onClick();
-                } else if (item.path !== "#") {
-                  navigate(item.path);
-                }
-              }}
+              onClick={() => navigate(item.path)}
             >
               <div className="text-[#FF69B4]">{item.icon}</div>
               <div className="text-center">
