@@ -98,7 +98,7 @@ const Jobs = () => {
       <NavBar />
       <div className="container mx-auto py-8 px-4 bg-background min-h-screen demo-employer-dark">
         <div className="mb-8">
-          <div className="flex justify-between items-start">
+          <div className="flex justify-between items-center">
             <JobsHeader userType={userType} />
             {userType === 'candidate' && (
               <Button

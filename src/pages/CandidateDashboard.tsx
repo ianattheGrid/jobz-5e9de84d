@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import NavBar from "@/components/NavBar";
+import { NotificationSettings } from "@/components/candidate/NotificationSettings";
 import { 
   UserCircle,
   Briefcase,
@@ -62,6 +63,11 @@ const CandidateDashboard = () => {
           Welcome to Your Dashboard
         </h1>
         <p className="text-gray-600 mb-8">Manage your job search and applications</p>
+        
+        {/* Notification Settings */}
+        <div className="mb-8">
+          <NotificationSettings />
+        </div>
         
         <div className="grid gap-6 md:grid-cols-2">
           {menuItems.map((item, index) => (
