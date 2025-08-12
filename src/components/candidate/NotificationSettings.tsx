@@ -12,59 +12,23 @@ export const NotificationSettings = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    // Check if notifications are already enabled
-    if ('Notification' in window) {
-      setIsEnabled(Notification.permission === 'granted');
-    }
+    // Start with notifications disabled by default
+    setIsEnabled(false);
   }, []);
 
-  const handleToggleNotifications = async () => {
-    if (!('Notification' in window)) {
-      toast({
-        variant: "destructive",
-        title: "Not supported",
-        description: "This browser doesn't support notifications.",
-      });
-      return;
-    }
-
+  const handleToggleNotifications = () => {
     setIsLoading(true);
-
-    try {
-      if (isEnabled) {
-        // User wants to disable
-        setIsEnabled(false);
-        toast({
-          title: "Notifications disabled",
-          description: "You won't receive job alerts.",
-        });
-      } else {
-        // User wants to enable - try to get permission
-        const permission = await Notification.requestPermission();
-        
-        if (permission === 'granted') {
-          setIsEnabled(true);
-          toast({
-            title: "Notifications enabled!",
-            description: "You'll receive updates about new job matches.",
-          });
-        } else {
-          // User denied permission, but don't show error - just keep disabled
-          setIsEnabled(false);
-          toast({
-            title: "Notifications not enabled",
-            description: "You can try again anytime.",
-          });
-        }
-      }
-    } catch (error) {
-      toast({
-        title: "Settings updated",
-        description: "Notification preferences saved.",
-      });
-    } finally {
+    
+    // Simple toggle - no browser permission checking
+    setTimeout(() => {
+      setIsEnabled(!isEnabled);
       setIsLoading(false);
-    }
+      
+      toast({
+        title: !isEnabled ? "Notifications enabled!" : "Notifications disabled",
+        description: !isEnabled ? "You'll receive job alerts" : "Job alerts turned off",
+      });
+    }, 500);
   };
 
   const getNotificationStatus = () => {
@@ -116,7 +80,7 @@ export const NotificationSettings = () => {
                 
                 <Button
                   onClick={handleToggleNotifications}
-                  disabled={isLoading || !('Notification' in window)}
+                  disabled={isLoading}
                   variant={isEnabled ? "outline" : "default"}
                   className={isEnabled ? "" : "bg-[#FF69B4] hover:bg-[#FF50A8] text-white"}
                 >
