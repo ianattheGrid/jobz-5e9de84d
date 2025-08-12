@@ -27,7 +27,7 @@ export const ProtectedRoute = ({ children, userType }: ProtectedRouteProps) => {
         if (!isMounted) return;
         setLoading(true);
         
-        // Set a timeout to prevent hanging
+        // Set a timeout to prevent hanging (more generous for navigation)
         timeoutId = setTimeout(() => {
           if (isMounted) {
             console.error('[ProtectedRoute] Auth check timed out');
@@ -35,11 +35,11 @@ export const ProtectedRoute = ({ children, userType }: ProtectedRouteProps) => {
             toast({
               variant: "destructive",
               title: "Loading Error",
-              description: "Authentication check timed out. Please try signing in again.",
+              description: "Please refresh the page or try signing in again.",
             });
-            navigate(`/${userType}/signin`);
+            // Don't auto-redirect on timeout, let user decide
           }
-        }, 8000); // 8 second timeout
+        }, 15000); // 15 second timeout for better UX
 
         const { data: { session }, error: sessionError } = await supabase.auth.getSession();
         console.log(`[ProtectedRoute] Session result:`, { session: !!session, error: sessionError });
