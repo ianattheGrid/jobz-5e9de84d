@@ -18,6 +18,7 @@ export const ProtectedRoute = ({ children, userType }: ProtectedRouteProps) => {
 
   useEffect(() => {
     let isMounted = true;
+    let timeoutId: NodeJS.Timeout;
     
     const checkAuth = async () => {
       try {
@@ -26,6 +27,20 @@ export const ProtectedRoute = ({ children, userType }: ProtectedRouteProps) => {
         if (!isMounted) return;
         setLoading(true);
         
+        // Set a timeout to prevent hanging
+        timeoutId = setTimeout(() => {
+          if (isMounted) {
+            console.error('[ProtectedRoute] Auth check timed out');
+            setLoading(false);
+            toast({
+              variant: "destructive",
+              title: "Loading Error",
+              description: "Authentication check timed out. Please try signing in again.",
+            });
+            navigate(`/${userType}/signin`);
+          }
+        }, 8000); // 8 second timeout
+
         const { data: { session }, error: sessionError } = await supabase.auth.getSession();
         console.log(`[ProtectedRoute] Session result:`, { session: !!session, error: sessionError });
         
@@ -33,22 +48,32 @@ export const ProtectedRoute = ({ children, userType }: ProtectedRouteProps) => {
         
         if (sessionError) {
           console.error('[ProtectedRoute] Session error:', sessionError);
+          clearTimeout(timeoutId);
           throw sessionError;
         }
         
         if (!session) {
           console.log('[ProtectedRoute] No session found, redirecting to sign in');
+          clearTimeout(timeoutId);
           navigate(`/${userType}/signin`);
           return;
         }
 
-        // Fetch the user's role from the database
+        // Fetch the user's role from the database with timeout protection
         console.log(`[ProtectedRoute] Fetching user role for user:`, session.user.id);
-        const { data: userRoleData, error: roleError } = await supabase
+        
+        const rolePromise = supabase
           .from('user_roles')
           .select('role')
           .eq('user_id', session.user.id)
           .maybeSingle();
+
+        const { data: userRoleData, error: roleError } = await Promise.race([
+          rolePromise,
+          new Promise<{ data: null; error: Error }>((_, reject) =>
+            setTimeout(() => reject(new Error('Role query timeout')), 5000)
+          )
+        ]);
 
         if (!isMounted) return;
         
@@ -56,11 +81,25 @@ export const ProtectedRoute = ({ children, userType }: ProtectedRouteProps) => {
 
         if (roleError) {
           console.error('[ProtectedRoute] Error fetching user role:', roleError);
+          clearTimeout(timeoutId);
+          
+          // If it's a timeout, try to continue with cached data
+          if (roleError.message === 'Role query timeout') {
+            const cachedUserType = session.user.user_metadata?.user_type;
+            if (cachedUserType === userType) {
+              console.log('[ProtectedRoute] Using cached user type from metadata');
+              setAuthorized(true);
+              setLoading(false);
+              return;
+            }
+          }
+          
           throw roleError;
         }
         
         if (!userRoleData) {
           console.error('[ProtectedRoute] No user role found');
+          clearTimeout(timeoutId);
           await supabase.auth.signOut();
           navigate(`/${userType}/signin`);
           return;
@@ -71,6 +110,7 @@ export const ProtectedRoute = ({ children, userType }: ProtectedRouteProps) => {
         
         if (currentUserType !== userType) {
           console.log(`[ProtectedRoute] User type mismatch - redirecting to home`);
+          clearTimeout(timeoutId);
           navigate('/');
           return;
         }
@@ -79,13 +119,14 @@ export const ProtectedRoute = ({ children, userType }: ProtectedRouteProps) => {
         if (userType === 'candidate' && window.location.pathname === '/candidate/profile') {
           console.log(`[ProtectedRoute] Candidate profile page - skipping profile check`);
           if (isMounted) {
+            clearTimeout(timeoutId);
             setAuthorized(true);
             setLoading(false);
           }
           return;
         }
         
-        // Check if the user has a profile for this user type
+        // Check if the user has a profile for this user type (with timeout)
         const profileTable = 
           userType === 'employer' ? 'employer_profiles' :
           userType === 'candidate' ? 'candidate_profiles' :
@@ -93,21 +134,30 @@ export const ProtectedRoute = ({ children, userType }: ProtectedRouteProps) => {
           
         if (profileTable) {
           console.log(`[ProtectedRoute] Checking profile in ${profileTable}`);
-          const { data: profile, error: profileError } = await supabase
+          
+          const profilePromise = supabase
             .from(profileTable)
             .select('id')
             .eq('id', session.user.id)
             .maybeSingle();
+
+          const { data: profile, error: profileError } = await Promise.race([
+            profilePromise,
+            new Promise<{ data: null; error: Error }>((_, reject) =>
+              setTimeout(() => reject(new Error('Profile query timeout')), 5000)
+            )
+          ]);
   
           if (!isMounted) return;
           
           console.log(`[ProtectedRoute] Profile check result:`, { profile: !!profile, profileError });
 
-          if (profileError) {
+          if (profileError && profileError.message !== 'Profile query timeout') {
             console.error(`[ProtectedRoute] Error fetching ${userType} profile:`, profileError);
           } else if (!profile && window.location.pathname !== `/${userType}/profile`) {
             // If no profile exists and not already on the profile page, redirect to profile page
             console.log(`[ProtectedRoute] No ${userType} profile found, redirecting to profile page`);
+            clearTimeout(timeoutId);
             navigate(`/${userType}/profile`);
             return;
           }
@@ -116,12 +166,14 @@ export const ProtectedRoute = ({ children, userType }: ProtectedRouteProps) => {
         // If we get here, the user is authorized
         console.log(`[ProtectedRoute] Auth check passed - user authorized`);
         if (isMounted) {
+          clearTimeout(timeoutId);
           setAuthorized(true);
           setLoading(false);
         }
       } catch (error) {
         console.error('[ProtectedRoute] Error checking authentication:', error);
         if (isMounted) {
+          clearTimeout(timeoutId);
           setLoading(false);
           navigate(`/${userType}/signin`);
         }
@@ -132,13 +184,17 @@ export const ProtectedRoute = ({ children, userType }: ProtectedRouteProps) => {
     
     return () => {
       isMounted = false;
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
     };
   }, [navigate, userType]);
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
-        <Loader2 className="h-10 w-10 animate-spin text-primary" />
+      <div className="flex flex-col justify-center items-center min-h-screen">
+        <Loader2 className="h-10 w-10 animate-spin text-primary mb-4" />
+        <p className="text-sm text-muted-foreground">Loading dashboard...</p>
       </div>
     );
   }
