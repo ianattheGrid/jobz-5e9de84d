@@ -100,12 +100,6 @@ const NavBar = () => {
           <div className="flex items-center">
             {!loading && user && !isTestAccount ? (
               <div className="hidden md:flex items-center gap-4">
-                {showEnable && (
-                  <Button variant="outline" onClick={enableNotifications} aria-label="Enable notifications">
-                    <Bell className="h-4 w-4 mr-2" />
-                    Enable notifications
-                  </Button>
-                )}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button className="bg-[#FF69B4] hover:bg-[#FF50A8] text-white">
