@@ -54,25 +54,16 @@ export default function CandidateProfile() {
     
     const initializeProfile = async () => {
       try {
-        console.log('CandidateProfile: Starting profile initialization...');
         const { data: { session } } = await supabase.auth.getSession();
-        console.log('CandidateProfile: Session:', session?.user?.id ? 'Found' : 'Not found');
         
         if (session?.user?.id) {
           setUserId(session.user.id);
-          console.log('CandidateProfile: Fetching profile data...');
           await fetchProfileData(session.user.id);
-          console.log('CandidateProfile: Profile data fetched');
-        } else {
-          console.log('CandidateProfile: No session, redirecting to auth...');
-          navigate('/');
-          return;
         }
         
         setLoading(false);
-        console.log('CandidateProfile: Loading complete');
       } catch (error) {
-        console.error('CandidateProfile: Error initializing profile:', error);
+        console.error('Error initializing profile:', error);
         setLoading(false);
       }
     };
