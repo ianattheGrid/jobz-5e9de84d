@@ -340,6 +340,34 @@ a {
   color: #047857 !important;
 }
 
+/* Fix specific text visibility issues mentioned by user */
+/* "Not specified" text under name */
+.demo-candidate-dark .text-gray-600 {
+  color: hsl(var(--primary-foreground)) !important;
+}
+
+/* "5 years in current role" text */
+.demo-candidate-dark .text-gray-600.text-sm {
+  color: hsl(var(--primary)) !important;
+}
+
+/* Job titles text - user wants this grey */
+.demo-candidate-dark .text-gray-700 {
+  color: #9ca3af !important;
+}
+
+/* Professional Experience or Salary Expectations text */
+.demo-candidate-dark .text-muted-foreground,
+.demo-candidate-dark .form-description {
+  color: hsl(var(--primary)) !important;
+}
+
+/* Qualifications text next to tick box */
+.demo-candidate-dark h3,
+.demo-candidate-dark .text-xl.font-semibold {
+  color: hsl(var(--primary-foreground)) !important;
+}
+
 /* Demo Employer dark wrapper overrides */
 .demo-employer-dark { 
   @apply text-white; 
