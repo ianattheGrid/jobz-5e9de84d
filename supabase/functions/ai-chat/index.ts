@@ -82,13 +82,14 @@ Deno.serve(async (req) => {
 
     // Call Abacus AI API
     console.log('Calling Abacus AI API...')
-    const response = await fetch('https://api.abacus.ai/api/v0/chatLLM', {
+    const response = await fetch('https://api.abacus.ai/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${abacusApiKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
+        model: 'gpt-4o-mini', // or whatever model you prefer
         messages: fullMessages,
         temperature: 0.7,
         max_tokens: 1000,
@@ -96,16 +97,22 @@ Deno.serve(async (req) => {
     })
 
     if (!response.ok) {
-      console.error('Abacus AI API error:', response.status, response.statusText)
-      throw new Error(`Abacus AI API error: ${response.status}`)
+      const errorText = await response.text()
+      console.error('Abacus AI API error:', response.status, response.statusText, errorText)
+      throw new Error(`Abacus AI API error: ${response.status} - ${errorText}`)
     }
 
     const data = await response.json()
-    console.log('Abacus AI API call successful')
+    console.log('Abacus AI API call successful', data)
 
-    // Extract the assistant's response
-    const assistantResponse = data.content || data.response || data.choices?.[0]?.message?.content
+    // Extract the assistant's response (OpenAI-compatible format)
+    const assistantResponse = data.choices?.[0]?.message?.content
     console.log('Assistant response extracted, length:', assistantResponse?.length)
+
+    if (!assistantResponse) {
+      console.error('No response content found in API response:', data)
+      throw new Error('No response content received from AI')
+    }
 
     // Save the response to the database
     if (conversationId) {
