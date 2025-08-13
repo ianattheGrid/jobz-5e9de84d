@@ -246,8 +246,8 @@ const ProfileDetails = ({ profile, showVRRecommendation = false, vrRecommendatio
         </CardContent>
       </Card>
 
-      {/* Bottom section with Gallery and Personality side by side */}
-      <div className="grid gap-6 lg:grid-cols-2">
+      {/* Bottom section with Gallery above Personality, both full width */}
+      <div className="space-y-6">
         {/* Gallery */}
         {((profile as any).visible_sections?.gallery ?? true) && (
           <GalleryCarousel candidateId={(profile as any).id as unknown as string} />
