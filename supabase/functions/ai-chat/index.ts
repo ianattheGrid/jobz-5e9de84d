@@ -82,56 +82,100 @@ Deno.serve(async (req) => {
 
     // Call Abacus AI API
     console.log('Calling Abacus AI API...')
-    const response = await fetch('https://api.abacus.ai/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${abacusApiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'gpt-4o-mini', // or whatever model you prefer
-        messages: fullMessages,
-        temperature: 0.7,
-        max_tokens: 1000,
+    console.log('API Key present:', !!abacusApiKey)
+    console.log('API Key length:', abacusApiKey?.length)
+    
+    const requestBody = {
+      model: 'gpt-4o-mini',
+      messages: fullMessages,
+      temperature: 0.7,
+      max_tokens: 1000,
+    }
+    console.log('Request body:', JSON.stringify(requestBody, null, 2))
+    
+    try {
+      const response = await fetch('https://api.abacus.ai/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${abacusApiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody)
       })
-    })
 
-    if (!response.ok) {
-      const errorText = await response.text()
-      console.error('Abacus AI API error:', response.status, response.statusText, errorText)
-      throw new Error(`Abacus AI API error: ${response.status} - ${errorText}`)
+      console.log('Response status:', response.status)
+      console.log('Response headers:', Object.fromEntries(response.headers.entries()))
+
+      if (!response.ok) {
+        const errorText = await response.text()
+        console.error('Abacus AI API error details:', {
+          status: response.status,
+          statusText: response.statusText,
+          headers: Object.fromEntries(response.headers.entries()),
+          body: errorText
+        })
+        
+        // Return a helpful error message instead of throwing
+        return new Response(
+          JSON.stringify({ 
+            error: `AI service temporarily unavailable (${response.status}). Please try again later.`,
+            details: `Status: ${response.status}, Error: ${errorText.substring(0, 200)}`
+          }),
+          { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        )
+      }
+
+      const data = await response.json()
+      console.log('Abacus AI API response:', JSON.stringify(data, null, 2))
+
+      // Extract the assistant's response (OpenAI-compatible format)
+      const assistantResponse = data.choices?.[0]?.message?.content
+      console.log('Assistant response extracted:', assistantResponse?.substring(0, 100) + '...')
+
+      if (!assistantResponse) {
+        console.error('No response content found in API response:', data)
+        return new Response(
+          JSON.stringify({ 
+            error: "AI service returned empty response. Please try again.",
+            responseStructure: JSON.stringify(data)
+          }),
+          { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        )
+      }
+
+      // Save the response to the database
+      if (conversationId) {
+        await supabase.from('ai_chat_messages').insert({
+          conversation_id: conversationId,
+          role: 'assistant',
+          content: assistantResponse
+        })
+      }
+
+      // Return the assistant's response
+      return new Response(
+        JSON.stringify({ response: assistantResponse }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+      
+    } catch (apiError) {
+      console.error('API call failed:', apiError)
+      return new Response(
+        JSON.stringify({ 
+          error: "AI service connection failed. Please try again.",
+          details: apiError.message
+        }),
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
     }
 
-    const data = await response.json()
-    console.log('Abacus AI API call successful', data)
-
-    // Extract the assistant's response (OpenAI-compatible format)
-    const assistantResponse = data.choices?.[0]?.message?.content
-    console.log('Assistant response extracted, length:', assistantResponse?.length)
-
-    if (!assistantResponse) {
-      console.error('No response content found in API response:', data)
-      throw new Error('No response content received from AI')
-    }
-
-    // Save the response to the database
-    if (conversationId) {
-      await supabase.from('ai_chat_messages').insert({
-        conversation_id: conversationId,
-        role: 'assistant',
-        content: assistantResponse
-      })
-    }
-
-    // Return the assistant's response
-    return new Response(
-      JSON.stringify({ response: assistantResponse }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    )
   } catch (error) {
-    console.error('Error:', error.message)
+    console.error('General error:', error.message, error.stack)
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ 
+        error: "An unexpected error occurred. Please try again.",
+        details: error.message
+      }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     )
   }
