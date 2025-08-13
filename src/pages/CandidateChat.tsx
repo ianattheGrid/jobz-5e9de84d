@@ -4,12 +4,10 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import NavBar from "@/components/NavBar";
 import CandidateChatSection from "@/components/chat/CandidateChatSection";
-import { useCandidateAuthCheck } from "@/hooks/useCandidateAuthCheck";
 
 const CandidateChat = () => {
   console.log('[CandidateChat] Component initialized');
   const navigate = useNavigate();
-  const { loading } = useCandidateAuthCheck();
 
   const handleClose = () => {
     console.log('[CandidateChat] handleClose called');
@@ -17,14 +15,6 @@ const CandidateChat = () => {
   };
 
   console.log('[CandidateChat] Component rendering');
-  
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="text-gray-600">Loading...</div>
-      </div>
-    );
-  }
   
   return (
     <div className="min-h-screen bg-white">{/* Changed from bg-background to bg-white */}
