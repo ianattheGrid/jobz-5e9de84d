@@ -16,6 +16,7 @@ import PreviewCandidateProfile from './pages/PreviewCandidateProfile';
 import CandidateApplications from './pages/candidate/Applications';
 import CandidateInterviews from './pages/CandidateInterviews';
 import CandidateAccountSettings from './pages/CandidateAccountSettings';
+import { PersonalizedJobs } from './pages/PersonalizedJobs';
 
 // Employer routes
 import EmployerSignIn from './pages/EmployerSignIn';
@@ -85,6 +86,7 @@ const App = () => {
           <Route path="candidate/interviews" element={<ProtectedRouteWithTimeout userType="candidate"><CandidateInterviews /></ProtectedRouteWithTimeout>} />
           <Route path="candidate/account" element={<ProtectedRouteWithTimeout userType="candidate"><CandidateAccountSettings /></ProtectedRouteWithTimeout>} />
           <Route path="candidate/settings" element={<ProtectedRouteWithTimeout userType="candidate"><CandidateAccountSettings /></ProtectedRouteWithTimeout>} />
+          <Route path="candidate/personalized-jobs" element={<ProtectedRouteWithTimeout userType="candidate"><PersonalizedJobs /></ProtectedRouteWithTimeout>} />
           
           {/* Employer routes */}
           <Route path="employer/signin" element={<EmployerSignIn />} />
