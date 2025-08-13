@@ -210,7 +210,7 @@ const AIChatInterface: React.FC<AIChatInterfaceProps> = ({ userType, onClose }) 
       console.error('Error sending message:', error);
       setMessages(prev => [...prev, {
         role: 'assistant',
-        content: "Sorry, I encountered an error. Please try again later."
+        content: "I'm currently experiencing technical difficulties. Please try again in a moment. If the problem persists, please contact support."
       }]);
     } finally {
       setLoading(false);
@@ -283,15 +283,17 @@ const AIChatInterface: React.FC<AIChatInterfaceProps> = ({ userType, onClose }) 
         </div>
       </div>
 
-      <div className="flex-1 flex flex-col h-full relative">
+      <div className="flex-1 flex flex-col h-full">
         {onClose && (
-          <Button
-            variant="outline"
-            className="absolute top-2 right-2 z-10 bg-[#D946EF] text-white hover:bg-[#D946EF]/90 hover:text-white rounded-full px-3 py-1"
-            onClick={onClose}
-          >
-            Close Chat
-          </Button>
+          <div className="flex justify-end p-2 border-b">
+            <Button
+              variant="outline"
+              className="bg-[#D946EF] text-white hover:bg-[#D946EF]/90 hover:text-white rounded-full px-3 py-1"
+              onClick={onClose}
+            >
+              Close Chat
+            </Button>
+          </div>
         )}
 
         {!activeConversation && conversations.length === 0 ? (
