@@ -13,11 +13,18 @@ const CandidateChatSection: React.FC<CandidateChatSectionProps> = ({ onClose }) 
       <CardHeader>
         <CardTitle>AI Career Assistant</CardTitle>
         <CardDescription>
-          Get personalized help with your job search, applications, and career questions
+          Our AI assistant is temporarily unavailable while we improve the service
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <AIChatInterface userType="candidate" onClose={onClose} />
+        <div className="flex flex-col items-center justify-center py-8 text-center space-y-4">
+          <div className="text-muted-foreground">
+            We're working on enhancing your AI chat experience. This feature will be available again soon.
+          </div>
+          <div className="text-sm text-muted-foreground">
+            In the meantime, explore our job board and complete your profile to get matched with opportunities.
+          </div>
+        </div>
       </CardContent>
     </Card>
   );
