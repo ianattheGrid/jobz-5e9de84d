@@ -20,38 +20,38 @@ export default {
     },
     extend: {
       colors: {
-        border: "#333333",
-        input: "#333333",
-        ring: "#666666",
-        background: "#FFFFFF",
-        foreground: "#333333", // Darker text color for better readability
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "#FF69B4",
-          foreground: "#FFFFFF",
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
-          DEFAULT: "#FFFFFF",
-          light: "#F3F3F3",
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
         },
         card: {
-          DEFAULT: "#FFFFFF",
-          foreground: "#333333", // Darker text color for better readability
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
         },
         muted: {
-          DEFAULT: "#F5F5F5",
-          foreground: "#555555", // Darker muted text color for better readability
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
         },
         accent: {
-          DEFAULT: "#F0F0F0",
-          foreground: "#333333", // Darker text color for better readability
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
         },
         destructive: {
-          DEFAULT: "#FF0000",
-          foreground: "#FFFFFF",
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
         },
         popover: {
-          DEFAULT: "#FFFFFF",
-          foreground: "#333333", // Darker text color for better readability
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
         },
       },
       keyframes: {
