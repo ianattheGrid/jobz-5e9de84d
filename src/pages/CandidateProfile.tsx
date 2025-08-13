@@ -113,7 +113,7 @@ export default function CandidateProfile() {
             onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#FF50A8'}
             onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#FF69B4'}
           >
-            <ArrowLeft className="h-4 w-4" style={{ color: 'white' }} />
+            <ArrowLeft className="h-4 w-4" stroke="white" fill="none" strokeWidth={2} />
             Back to Editing
           </Button>
 
