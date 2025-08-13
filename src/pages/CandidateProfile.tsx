@@ -140,7 +140,6 @@ export default function CandidateProfile() {
             <PreviewButton onPreviewClick={togglePreview} />
             <Button
               onClick={() => navigate('/candidate/dashboard')}
-              className="bg-[#FF69B4] hover:bg-[#FF50A8] text-white"
               variant="default"
             >
               <LayoutDashboard className="w-4 h-4 mr-2" />
