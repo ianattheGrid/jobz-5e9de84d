@@ -64,13 +64,25 @@ const CandidateDashboard = () => {
           <NotificationSettings />
         </div>
         
-        {/* Personalized Job Recommendations */}
-        <div className="mb-8">
-          <PersonalizedJobRecommendations />
-        </div>
-        
         <div className="grid gap-6 md:grid-cols-2">
-          {menuItems.map((item, index) => (
+          {/* Update Profile */}
+          <Button
+            variant="outline"
+            className="h-auto p-6 flex flex-col items-center gap-4 bg-white hover:bg-gray-50 transition-all duration-200 border border-gray-200 rounded-lg shadow-sm hover:shadow-md"
+            onClick={() => navigate("/candidate/profile")}
+          >
+            <div className="text-[#FF69B4]"><UserCircle className="h-6 w-6" /></div>
+            <div className="text-center">
+              <h3 className="font-semibold text-lg mb-2 text-gray-900">Update Profile</h3>
+              <p className="text-sm text-gray-600">Edit your professional details</p>
+            </div>
+          </Button>
+
+          {/* Personalized Job Recommendations */}
+          <PersonalizedJobRecommendations />
+
+          {/* Remaining menu items */}
+          {menuItems.slice(1).map((item, index) => (
             <Button
               key={index}
               variant="outline"
