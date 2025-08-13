@@ -21,8 +21,8 @@ export const PersonalizedJobRecommendations = () => {
         onClick={handleClick}
       >
         <TrendingUp className="h-8 w-8 text-[#FF69B4] mb-2" />
-        <h3 className="font-semibold mb-1">Jobs Match</h3>
-        <p className="text-sm text-gray-600 text-center">Loading matches...</p>
+        <h3 className="font-semibold text-lg mb-2 text-gray-900">Jobs Match</h3>
+        <p className="text-sm text-gray-600 text-center">View your profile job matches</p>
       </Button>
     );
   }
@@ -35,7 +35,7 @@ export const PersonalizedJobRecommendations = () => {
         onClick={() => navigate('/candidate/profile')}
       >
         <TrendingUp className="h-8 w-8 text-[#FF69B4] mb-2" />
-        <h3 className="font-semibold mb-1">Jobs Match</h3>
+        <h3 className="font-semibold text-lg mb-2 text-gray-900">Jobs Match</h3>
         <p className="text-sm text-gray-600 text-center">Complete your profile to see matches</p>
       </Button>
     );
@@ -48,7 +48,7 @@ export const PersonalizedJobRecommendations = () => {
       onClick={handleClick}
     >
       <TrendingUp className="h-8 w-8 text-[#FF69B4] mb-2" />
-      <h3 className="font-semibold mb-1">Jobs Match</h3>
+      <h3 className="font-semibold text-lg mb-2 text-gray-900">Jobs Match</h3>
       <p className="text-sm text-gray-600 text-center">
         {jobs.length === 0 
           ? "No matches found - click to browse all jobs" 
