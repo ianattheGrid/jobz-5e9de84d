@@ -17,11 +17,7 @@ const CandidateChat = () => {
   console.log('[CandidateChat] Component rendering');
   
   return (
-    <div className="min-h-screen bg-red-100 p-8">{/* Temporary red background for debugging */}
-      <div className="bg-blue-100 p-4 mb-4">
-        <h1 className="text-2xl font-bold text-black">DEBUG: CandidateChat Component Loaded</h1>
-        <p className="text-black">If you can see this, the component is rendering correctly.</p>
-      </div>
+    <div className="min-h-screen bg-white">{/* Changed from bg-background to bg-white */}
       <NavBar />
       <div className="container mx-auto py-6 px-4">
         <div className="mb-6 flex items-center gap-4">
