@@ -7,7 +7,7 @@ export const HeroSection = () => {
       <div className="relative container mx-auto px-4 h-full flex items-center pt-16 md:pt-0">
         <div className="max-w-2xl text-white">
           <h1 className="text-primary [&]:!text-primary text-4xl md:text-5xl font-bold mb-4">Welcome to what's next. This is how you'll do hiring from now on.</h1>
-          <p className="text-xl mb-8">You control everything. We've combined automation, AI, recommendations, and hiring bonuses into one platform—then stepped out of your way.</p>
+          <p className="text-xl mb-8">You're at the controls. We get out of the way. Automation, AI, recommendations, and hiring bonuses—all in one space.</p>
         </div>
       </div>
     </section>;
