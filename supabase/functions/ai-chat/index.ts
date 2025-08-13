@@ -1,6 +1,5 @@
 
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.46.2'
-import { OpenAI } from 'https://esm.sh/openai@4.26.0'
 
 // Define CORS headers
 const corsHeaders = {
@@ -11,8 +10,8 @@ const corsHeaders = {
 const supabaseUrl = 'https://lfwwhyjtbkfibxzefvkn.supabase.co'
 const supabaseKey = Deno.env.get('SUPABASE_ANON_KEY') || ''
 
-// Get OpenAI API key from environment
-const openaiApiKey = Deno.env.get('OPENAI_API_KEY')
+// Get Abacus AI API key from environment
+const abacusApiKey = Deno.env.get('ABACUS_AI_API_KEY')
 
 interface Message {
   role: 'system' | 'user' | 'assistant'
@@ -29,16 +28,16 @@ Deno.serve(async (req) => {
 
   try {
     // Check for required environment variables
-    if (!openaiApiKey) {
-      console.error('OPENAI_API_KEY is not set')
+    if (!abacusApiKey) {
+      console.error('ABACUS_AI_API_KEY is not set')
       return new Response(
-        JSON.stringify({ error: 'OpenAI API key not configured' }),
+        JSON.stringify({ error: 'Abacus AI API key not configured' }),
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       )
     }
-    // Initialize clients
+    
+    // Initialize Supabase client
     const supabase = createClient(supabaseUrl, supabaseKey)
-    const openai = new OpenAI({ apiKey: openaiApiKey })
 
     // Get the JWT from the request
     const authHeader = req.headers.get('Authorization')
@@ -81,18 +80,31 @@ Deno.serve(async (req) => {
     ]
     console.log('Full messages prepared, count:', fullMessages.length)
 
-    // Call OpenAI API
-    console.log('Calling OpenAI API...')
-    const completion = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
-      messages: fullMessages,
-      temperature: 0.7,
-      max_tokens: 1000,
+    // Call Abacus AI API
+    console.log('Calling Abacus AI API...')
+    const response = await fetch('https://api.abacus.ai/api/v0/chatLLM', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${abacusApiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        messages: fullMessages,
+        temperature: 0.7,
+        max_tokens: 1000,
+      })
     })
-    console.log('OpenAI API call successful')
+
+    if (!response.ok) {
+      console.error('Abacus AI API error:', response.status, response.statusText)
+      throw new Error(`Abacus AI API error: ${response.status}`)
+    }
+
+    const data = await response.json()
+    console.log('Abacus AI API call successful')
 
     // Extract the assistant's response
-    const assistantResponse = completion.choices[0].message.content
+    const assistantResponse = data.content || data.response || data.choices?.[0]?.message?.content
     console.log('Assistant response extracted, length:', assistantResponse?.length)
 
     // Save the response to the database
