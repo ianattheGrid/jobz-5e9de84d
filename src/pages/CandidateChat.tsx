@@ -6,14 +6,18 @@ import NavBar from "@/components/NavBar";
 import CandidateChatSection from "@/components/chat/CandidateChatSection";
 
 const CandidateChat = () => {
+  console.log('[CandidateChat] Component initialized');
   const navigate = useNavigate();
 
   const handleClose = () => {
+    console.log('[CandidateChat] handleClose called');
     navigate("/candidate/dashboard");
   };
 
+  console.log('[CandidateChat] Component rendering');
+  
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-white">{/* Changed from bg-background to bg-white */}
       <NavBar />
       <div className="container mx-auto py-6 px-4">
         <div className="mb-6 flex items-center gap-4">
