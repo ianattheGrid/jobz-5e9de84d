@@ -18,12 +18,22 @@ interface Message {
 }
 
 Deno.serve(async (req) => {
+  console.log('AI Chat function called with method:', req.method)
+  
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders })
   }
 
   try {
+    // Check for required environment variables
+    if (!openaiApiKey) {
+      console.error('OPENAI_API_KEY is not set')
+      return new Response(
+        JSON.stringify({ error: 'OpenAI API key not configured' }),
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
     // Initialize clients
     const supabase = createClient(supabaseUrl, supabaseKey)
     const openai = new OpenAI({ apiKey: openaiApiKey })
@@ -47,25 +57,41 @@ Deno.serve(async (req) => {
     }
 
     // Parse the request body
-    const { messages, conversationId, userType } = await req.json()
+    console.log('Parsing request body...')
+    const body = await req.json()
+    const { messages, conversationId, userType } = body
+    console.log('Request body parsed:', { userType, conversationId, messageCount: messages?.length })
+
+    if (!messages || !Array.isArray(messages)) {
+      console.error('Invalid messages format:', messages)
+      return new Response(
+        JSON.stringify({ error: 'Invalid messages format' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
 
     // Get user type-specific system instructions
+    console.log('Getting system instruction for user type:', userType)
     const systemInstruction = getSystemInstruction(userType)
     const fullMessages: Message[] = [
       { role: 'system', content: systemInstruction },
       ...messages
     ]
+    console.log('Full messages prepared, count:', fullMessages.length)
 
     // Call OpenAI API
+    console.log('Calling OpenAI API...')
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",
       messages: fullMessages,
       temperature: 0.7,
       max_tokens: 1000,
     })
+    console.log('OpenAI API call successful')
 
     // Extract the assistant's response
     const assistantResponse = completion.choices[0].message.content
+    console.log('Assistant response extracted, length:', assistantResponse?.length)
 
     // Save the response to the database
     if (conversationId) {
