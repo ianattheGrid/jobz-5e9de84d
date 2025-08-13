@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import NavBar from "@/components/NavBar";
 import { NotificationSettings } from "@/components/candidate/NotificationSettings";
+import { PersonalizedJobRecommendations } from "@/components/candidate/PersonalizedJobRecommendations";
 import { 
   UserCircle,
   Briefcase,
@@ -22,12 +23,6 @@ const CandidateDashboard = () => {
       icon: <UserCircle className="h-6 w-6" />,
       path: "/candidate/profile",
       description: "Edit your professional details"
-    },
-    {
-      title: "View Jobs", 
-      icon: <Briefcase className="h-6 w-6" />,
-      path: "/jobs",
-      description: "Browse available positions"
     },
     {
       title: "My Applications",
@@ -67,6 +62,11 @@ const CandidateDashboard = () => {
         {/* Notification Settings */}
         <div className="mb-8">
           <NotificationSettings />
+        </div>
+        
+        {/* Personalized Job Recommendations */}
+        <div className="mb-8">
+          <PersonalizedJobRecommendations />
         </div>
         
         <div className="grid gap-6 md:grid-cols-2">
