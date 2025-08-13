@@ -405,3 +405,8 @@ a {
 .job-search-card .bonus-label {
   color: hsl(var(--primary)) !important;
 }
+
+/* Override demo-candidate-dark for preview mode text */
+.demo-candidate-dark .preview-mode-text p {
+  color: #1e293b !important;
+}
