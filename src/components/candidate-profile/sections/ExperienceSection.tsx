@@ -54,7 +54,7 @@ const ExperienceSection = ({ profile }: ExperienceSectionProps) => {
           <p className="text-gray-700">£{profile.min_salary.toLocaleString()} - £{profile.max_salary.toLocaleString()} per year</p>
           
           {profile.commission_percentage && (
-            <div className="mt-2">
+            <div className="mt-2 commission-text">
               <p className="text-gray-700">
                 <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                   Open to "You're Hired" Bonus: {profile.commission_percentage}%

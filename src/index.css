@@ -410,3 +410,9 @@ a {
 .demo-candidate-dark .preview-mode-text p {
   color: #1e293b !important;
 }
+
+/* Override demo-candidate-dark for commission text */
+.demo-candidate-dark .commission-text span {
+  background-color: #dcfce7 !important;
+  color: #166534 !important;
+}
