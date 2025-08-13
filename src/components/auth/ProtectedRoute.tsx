@@ -61,7 +61,7 @@ export const ProtectedRoute = ({ children, userType }: ProtectedRouteProps) => {
     return (
       <div className="flex flex-col justify-center items-center min-h-screen">
         <Loader2 className="h-10 w-10 animate-spin text-primary mb-4" />
-        <p className="text-sm text-muted-foreground">Loading dashboard...</p>
+        <p className="text-sm text-muted-foreground">Loading...</p>
       </div>
     );
   }
