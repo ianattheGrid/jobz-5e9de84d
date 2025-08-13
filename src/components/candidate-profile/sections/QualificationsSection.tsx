@@ -26,7 +26,7 @@ const QualificationsSection = ({ profile }: QualificationsSectionProps) => {
               <CheckSquare className="h-4 w-4 text-blue-600" />
               <span className="font-medium text-gray-900">Qualifications</span>
             </div>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2 qualifications-badges">
               {profile.required_qualifications.map((qual, index) => (
                 <Badge key={index} variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
                   {qual}
@@ -42,9 +42,11 @@ const QualificationsSection = ({ profile }: QualificationsSectionProps) => {
               <Shield className="h-4 w-4 text-blue-600" />
               <span className="font-medium text-gray-900">Security Clearance</span>
             </div>
-            <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
-              {profile.security_clearance}
-            </Badge>
+            <div className="security-clearance-badge">
+              <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
+                {profile.security_clearance}
+              </Badge>
+            </div>
           </div>
         )}
       </div>

@@ -421,3 +421,16 @@ a {
 .demo-candidate-dark .job-title-item div {
   color: #4b5563 !important;
 }
+
+/* Override demo-candidate-dark for qualifications badges */
+.demo-candidate-dark .qualifications-badges .bg-blue-50 {
+  background-color: #dbeafe !important;
+  color: #1d4ed8 !important;
+  border-color: #93c5fd !important;
+}
+
+.demo-candidate-dark .security-clearance-badge .bg-green-50 {
+  background-color: #dcfce7 !important;
+  color: #166534 !important;
+  border-color: #86efac !important;
+}
