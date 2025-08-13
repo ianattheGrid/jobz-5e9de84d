@@ -434,3 +434,17 @@ a {
   color: #166534 !important;
   border-color: #86efac !important;
 }
+
+/* Override demo-candidate-dark for personality items */
+.demo-candidate-dark .personality-item {
+  background-color: #fdf2f8 !important;
+  border-color: #f9a8d4 !important;
+}
+
+.demo-candidate-dark .personality-question {
+  color: #be185d !important;
+}
+
+.demo-candidate-dark .personality-answer {
+  color: #374151 !important;
+}
