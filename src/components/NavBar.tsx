@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import MobileNav from "./navbar/MobileNav";
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,7 @@ import { useWebPushNotifications } from "@/hooks/useWebPushNotifications";
 const NavBar = () => {
   const { user, userType, loading } = useAuth();
   const [userName, setUserName] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     console.log('NavBar user data:', {
@@ -36,6 +37,8 @@ const NavBar = () => {
   const handleSignOut = async () => {
     try {
       await supabase.auth.signOut();
+      // Navigate to home page after successful sign out
+      navigate('/');
     } catch (error) {
       console.error('Error signing out:', error);
     }
