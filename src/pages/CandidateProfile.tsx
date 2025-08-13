@@ -119,7 +119,7 @@ export default function CandidateProfile() {
 
           <div className="bg-pink-100 border-l-4 border-pink-500 p-4 mb-6">
             <p className="font-medium" style={{ color: '#1e293b' }}>Preview Mode</p>
-            <p className="text-sm" style={{ color: '#475569' }}>This is how your profile appears to employers after they request to view your details.</p>
+            <p className="text-sm" style={{ color: '#1e293b' }}>This is how your profile appears to employers after they request to view your details.</p>
           </div>
 
           {profileData && <ProfileDetails profile={profileData} />}
