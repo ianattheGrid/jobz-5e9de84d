@@ -416,3 +416,8 @@ a {
   background-color: #dcfce7 !important;
   color: #166534 !important;
 }
+
+/* Override demo-candidate-dark for job title items */
+.demo-candidate-dark .job-title-item div {
+  color: #4b5563 !important;
+}
