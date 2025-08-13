@@ -28,6 +28,7 @@ import CandidateAccountSettings from "@/pages/CandidateAccountSettings";
 import CandidateInterviews from "@/pages/CandidateInterviews";
 import PreviewCandidateProfile from "@/pages/PreviewCandidateProfile";
 import FAQ from "@/pages/FAQ";
+import CandidateChat from "@/pages/CandidateChat";
 
 export const routes = [
   {
@@ -89,6 +90,10 @@ export const routes = [
   {
     path: "/candidate/interviews",
     element: <CandidateInterviews />
+  },
+  {
+    path: "/candidate/chat",
+    element: <CandidateChat />
   },
   {
     path: "/employer/signup",
