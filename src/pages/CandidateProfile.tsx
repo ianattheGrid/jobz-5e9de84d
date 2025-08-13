@@ -107,9 +107,11 @@ export default function CandidateProfile() {
       <div className="min-h-screen bg-background demo-candidate-dark">
         <div className="container mx-auto px-4 py-10">
           <Button
-            variant="outline"
             onClick={togglePreview}
             className="mb-6 flex items-center gap-2"
+            style={{ backgroundColor: '#FF69B4', color: 'white', border: 'none' }}
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#FF50A8'}
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#FF69B4'}
           >
             <ArrowLeft className="h-4 w-4" />
             Back to Editing
