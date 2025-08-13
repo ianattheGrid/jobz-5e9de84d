@@ -10,8 +10,8 @@ const corsHeaders = {
 const supabaseUrl = 'https://lfwwhyjtbkfibxzefvkn.supabase.co'
 const supabaseKey = Deno.env.get('SUPABASE_ANON_KEY') || ''
 
-// Get Abacus AI API key from environment
-const abacusApiKey = Deno.env.get('ABACUS_AI_API_KEY')
+// Get OpenAI API key from environment
+const openaiApiKey = Deno.env.get('OPENAI_API_KEY')
 
 interface Message {
   role: 'system' | 'user' | 'assistant'
@@ -28,10 +28,10 @@ Deno.serve(async (req) => {
 
   try {
     // Check for required environment variables
-    if (!abacusApiKey) {
-      console.error('ABACUS_AI_API_KEY is not set')
+    if (!openaiApiKey) {
+      console.error('OPENAI_API_KEY is not set')
       return new Response(
-        JSON.stringify({ error: 'Abacus AI API key not configured' }),
+        JSON.stringify({ error: 'OpenAI API key not configured' }),
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       )
     }
@@ -80,10 +80,10 @@ Deno.serve(async (req) => {
     ]
     console.log('Full messages prepared, count:', fullMessages.length)
 
-    // Call Abacus AI API
-    console.log('Calling Abacus AI API...')
-    console.log('API Key present:', !!abacusApiKey)
-    console.log('API Key length:', abacusApiKey?.length)
+    // Call OpenAI API
+    console.log('Calling OpenAI API...')
+    console.log('API Key present:', !!openaiApiKey)
+    console.log('API Key length:', openaiApiKey?.length)
     
     const requestBody = {
       model: 'gpt-4o-mini',
@@ -94,10 +94,10 @@ Deno.serve(async (req) => {
     console.log('Request body:', JSON.stringify(requestBody, null, 2))
     
     try {
-      const response = await fetch('https://api.abacus.ai/v1/chat/completions', {
+      const response = await fetch('https://api.openai.com/v1/chat/completions', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${abacusApiKey}`,
+          'Authorization': `Bearer ${openaiApiKey}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(requestBody)
@@ -108,7 +108,7 @@ Deno.serve(async (req) => {
 
       if (!response.ok) {
         const errorText = await response.text()
-        console.error('Abacus AI API error details:', {
+        console.error('OpenAI API error details:', {
           status: response.status,
           statusText: response.statusText,
           headers: Object.fromEntries(response.headers.entries()),
