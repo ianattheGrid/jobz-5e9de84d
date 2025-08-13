@@ -10,7 +10,9 @@ const corsHeaders = {
 
 const supabaseUrl = 'https://lfwwhyjtbkfibxzefvkn.supabase.co'
 const supabaseKey = Deno.env.get('SUPABASE_ANON_KEY') || ''
-const openaiApiKey = Deno.env.get('OPENAI_API_KEY') || ''
+
+// Get OpenAI API key from environment
+const openaiApiKey = Deno.env.get('OPENAI_API_KEY')
 
 interface Message {
   role: 'system' | 'user' | 'assistant'
