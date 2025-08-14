@@ -21,6 +21,11 @@ export const FileUploadSection = ({ userId, currentProfilePicture, currentCompan
   const { toast } = useToast();
 
   const handleFileUpload = async (file: File, type: 'profile_picture' | 'company_logo') => {
+    console.log('=== UPLOAD STARTING ===');
+    console.log('File object:', file);
+    console.log('Type:', type);
+    console.log('UserId:', userId);
+    
     const isProfile = type === 'profile_picture';
     const setUploading = isProfile ? setUploadingPicture : setUploadingLogo;
     const fileExtension = file.name.split('.').pop();
