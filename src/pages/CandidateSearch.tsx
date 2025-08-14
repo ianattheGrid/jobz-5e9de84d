@@ -26,7 +26,7 @@ export default function CandidateSearch() {
         <Header />
 
         <div className="flex flex-col gap-8">
-          
+          <SavedSearches />
 
           <div className="bg-white rounded-lg shadow-md p-6 border border-gray-200">
             <div className="mb-6">
