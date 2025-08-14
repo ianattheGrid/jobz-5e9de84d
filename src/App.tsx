@@ -25,6 +25,8 @@ import EmployerSignUp from './pages/EmployerSignUp';
 import EmployerDashboard from './pages/EmployerDashboard';
 import CreateVacancy from './pages/CreateVacancy';
 import ManageJobs from './pages/ManageJobs';
+import EditJob from './pages/EditJob';
+import JobApplications from './pages/JobApplications';
 import EmployerProfile from './pages/EmployerProfile';
 import PreviewEmployerProfile from './pages/PreviewEmployerProfile';
 import EmployerInterviews from './pages/EmployerInterviews';
@@ -96,6 +98,8 @@ const App = () => {
           <Route path="employer/dashboard" element={<ProtectedRouteWithTimeout userType="employer"><EmployerDashboard /></ProtectedRouteWithTimeout>} />
           <Route path="employer/create-vacancy" element={<ProtectedRouteWithTimeout userType="employer"><CreateVacancy /></ProtectedRouteWithTimeout>} />
           <Route path="employer/manage-jobs" element={<ProtectedRouteWithTimeout userType="employer"><ManageJobs /></ProtectedRouteWithTimeout>} />
+          <Route path="employer/edit-job/:id" element={<ProtectedRouteWithTimeout userType="employer"><EditJob /></ProtectedRouteWithTimeout>} />
+          <Route path="employer/job-applications/:jobId" element={<ProtectedRouteWithTimeout userType="employer"><JobApplications /></ProtectedRouteWithTimeout>} />
           <Route path="employer/profile" element={<ProtectedRouteWithTimeout userType="employer"><EmployerProfile /></ProtectedRouteWithTimeout>} />
           <Route path="employer/profile/preview" element={<PreviewEmployerProfile />} />
           <Route path="employer/interviews" element={<ProtectedRouteWithTimeout userType="employer"><EmployerInterviews /></ProtectedRouteWithTimeout>} />
