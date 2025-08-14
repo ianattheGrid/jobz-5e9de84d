@@ -66,9 +66,14 @@ export const EmployerProfileHeader = ({ profile }: EmployerProfileHeaderProps) =
         </div>
       </div>
       
-      <div className="pt-20 px-8 pb-8">
-        <h1 className="text-3xl font-bold" style={{ color: '#1a1a1a' }}>{profile.company_name}</h1>
-        
+      {/* Move company name outside the problematic container */}
+      <div className="px-8 pt-4">
+        <h1 style={{ color: '#000000', fontSize: '2rem', fontWeight: 'bold', margin: '0' }}>
+          {profile.company_name}
+        </h1>
+      </div>
+      
+      <div className="px-8 pb-8">
         {/* Always render the company size section, but with a fallback */}
         <div className="mt-2 mb-4">
           <div className="inline-flex items-center px-3 py-1 bg-gray-50 rounded-md border border-gray-300">
