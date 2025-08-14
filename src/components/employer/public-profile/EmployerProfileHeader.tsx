@@ -67,22 +67,10 @@ export const EmployerProfileHeader = ({ profile }: EmployerProfileHeaderProps) =
       </div>
       
       <div className="pt-16 px-8">
-        {/* Company name at the top with strong overrides */}
-        <h1 
-          style={{
-            color: '#000000',
-            fontSize: '32px',
-            fontWeight: 'bold',
-            marginBottom: '24px',
-            display: 'block',
-            position: 'relative',
-            zIndex: 10,
-            backgroundColor: 'rgba(255,255,255,0.9)',
-            padding: '8px 0'
-          } as React.CSSProperties}
-        >
+        {/* Company name - simple black text */}
+        <div className="text-black text-4xl font-bold mb-6">
           {profile.company_name}
-        </h1>
+        </div>
         
         {/* Employee count on the right */}
         <div className="flex justify-end mb-4">
