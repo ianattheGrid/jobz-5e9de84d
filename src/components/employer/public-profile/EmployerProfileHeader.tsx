@@ -66,39 +66,20 @@ export const EmployerProfileHeader = ({ profile }: EmployerProfileHeaderProps) =
         </div>
       </div>
       
-      {/* NUCLEAR OPTION - Position absolutely with maximum overrides */}
-      <div 
-        style={{
-          position: 'absolute',
-          top: '200px',
-          left: '32px',
-          zIndex: 9999,
-          backgroundColor: 'white',
-          padding: '8px 16px',
-          borderRadius: '4px',
-          boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-        }}
-      >
-        <h1 
-          style={{
-            color: '#000000',
-            fontSize: '32px',
-            fontWeight: 'bold',
-            margin: '0',
-            padding: '0',
-            lineHeight: '1.2',
-            display: 'block',
-            visibility: 'visible',
-            opacity: '1'
-          } as React.CSSProperties}
-        >
-          {profile.company_name || 'theGrid'}
-        </h1>
-      </div>
-      
-      <div className="px-8 pb-8" style={{ paddingTop: '80px' }}>
-        {/* Always render the company size section, but with a fallback */}
-        <div className="mt-2 mb-4">
+      <div className="pt-20 px-8 pb-8">
+        {/* Company name and employee count on the same line */}
+        <div className="flex items-center justify-between mb-4">
+          <h1 
+            style={{
+              color: '#000000',
+              fontSize: '32px',
+              fontWeight: 'bold',
+              margin: '0'
+            } as React.CSSProperties}
+          >
+            {profile.company_name || 'theGrid'}
+          </h1>
+          
           <div className="inline-flex items-center px-3 py-1 bg-gray-50 rounded-md border border-gray-300">
             <Users className="h-4 w-4 mr-2 text-gray-600" />
             <span className="text-navy font-medium">
