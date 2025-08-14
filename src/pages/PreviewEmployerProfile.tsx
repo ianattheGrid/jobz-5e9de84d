@@ -88,14 +88,6 @@ export default function PreviewEmployerProfile() {
 
   return (
     <div className="container mx-auto py-10 px-4">
-      <Button 
-        variant="outline" 
-        className="mb-6 flex items-center gap-2 bg-white text-gray-700"
-        onClick={() => navigate("/employer/profile")}
-      >
-        <ArrowLeft className="h-4 w-4" /> Back to Profile
-      </Button>
-      
       <ViewEmployerProfile previewMode={true} employerId={profile.id} />
     </div>
   );
