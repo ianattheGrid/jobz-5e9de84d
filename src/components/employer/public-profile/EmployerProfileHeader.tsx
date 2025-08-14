@@ -67,13 +67,13 @@ export const EmployerProfileHeader = ({ profile }: EmployerProfileHeaderProps) =
       </div>
       
       <div className="pt-20 px-8 pb-8 text-white">
-        <h1 className="text-3xl font-bold text-white">{profile.company_name}</h1>
+        <h1 className="text-3xl font-bold text-gray-900">{profile.company_name}</h1>
         
         {/* Always render the company size section, but with a fallback */}
         <div className="mt-2 mb-4">
-          <div className="inline-flex items-center px-3 py-1 bg-white/20 rounded-md border border-white/30">
-            <Users className="h-4 w-4 mr-2 text-white" />
-            <span className="text-white font-medium">
+          <div className="inline-flex items-center px-3 py-1 bg-gray-100 rounded-md border border-gray-200">
+            <Users className="h-4 w-4 mr-2 text-gray-600" />
+            <span className="text-gray-900 font-medium">
               {getCompanySizeLabel(profile.company_size)}
             </span>
           </div>
@@ -85,7 +85,7 @@ export const EmployerProfileHeader = ({ profile }: EmployerProfileHeaderProps) =
               href={profile.company_website} 
               target="_blank" 
               rel="noopener noreferrer"
-              className="flex items-center gap-2 text-white hover:text-white/80 transition-colors hover:underline"
+              className="flex items-center gap-2 text-pink-600 hover:text-pink-700 transition-colors hover:underline"
             >
               <Globe className="h-4 w-4" />
               Website
