@@ -9,7 +9,7 @@ import { useState } from "react";
 import {
   educationLevels,
   fieldsOfStudy,
-  industryCertifications,
+  getCertificationsForWorkArea,
   securityClearanceLevels,
   professionalMemberships,
   languageRequirements,
@@ -29,7 +29,8 @@ const QualificationRequirements = ({ control }: QualificationRequirementsProps) 
   const [selectedLicenses, setSelectedLicenses] = useState<string[]>([]);
   const [selectedBackgroundChecks, setSelectedBackgroundChecks] = useState<string[]>([]);
 
-  // Watch the toggle fields
+  // Watch the toggle fields and work area
+  const workArea = useWatch({ control, name: "work_area" });
   const requiresEducation = useWatch({ control, name: "requires_education" });
   const requiresCertifications = useWatch({ control, name: "requires_certifications" });
   const requiresSecurityClearance = useWatch({ control, name: "requires_security_clearance" });
@@ -37,6 +38,9 @@ const QualificationRequirements = ({ control }: QualificationRequirementsProps) 
   const requiresLanguages = useWatch({ control, name: "requires_languages" });
   const requiresDrivingLicense = useWatch({ control, name: "requires_driving_license" });
   const requiresBackgroundCheck = useWatch({ control, name: "requires_background_check" });
+
+  // Get certifications for the current work area
+  const availableCertifications = getCertificationsForWorkArea(workArea || "IT");
 
   const addCertification = (cert: string) => {
     if (!selectedCertifications.includes(cert)) {
@@ -209,7 +213,7 @@ const QualificationRequirements = ({ control }: QualificationRequirementsProps) 
                   <SelectValue placeholder="Add certification requirement" />
                 </SelectTrigger>
                 <SelectContent className="bg-white border shadow-lg z-50">
-                  {industryCertifications
+                  {availableCertifications
                     .filter(cert => !selectedCertifications.includes(cert))
                     .map((cert) => (
                     <SelectItem key={cert} value={cert}>{cert}</SelectItem>

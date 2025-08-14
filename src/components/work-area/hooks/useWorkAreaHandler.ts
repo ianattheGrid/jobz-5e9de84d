@@ -73,6 +73,14 @@ export const useWorkAreaHandler = (control: Control<any>) => {
     }
   }, [itSpecialization, workArea]);
 
+  // Clear titles when work area changes away from current selection
+  useEffect(() => {
+    if (workArea && workArea !== "IT") {
+      setAvailableTitles([]);
+      setSelectedSpecialisation("");
+    }
+  }, [workArea]);
+
   // Effect to ensure job title is in available titles for IT roles
   useEffect(() => {
     if (workArea === "IT" && itSpecialization && jobTitle) {
