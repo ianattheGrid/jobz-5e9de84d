@@ -7,7 +7,7 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instanciate createClient with right options
+  // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "12.2.3 (519615d)"
@@ -922,12 +922,15 @@ export type Database = {
           id: number
           interview_process_description: string | null
           location: string
+          location_radius: number | null
           match_threshold: number | null
           min_years_experience: number | null
           min_years_in_title: number | null
           notice_period_required: string | null
+          office_postcode: string | null
           qualification_essential: boolean | null
           remote_work_allowed: boolean | null
+          require_location_radius: boolean | null
           required_citizenship: string | null
           required_qualifications: string[] | null
           required_skills: string[] | null
@@ -956,12 +959,15 @@ export type Database = {
           id?: number
           interview_process_description?: string | null
           location: string
+          location_radius?: number | null
           match_threshold?: number | null
           min_years_experience?: number | null
           min_years_in_title?: number | null
           notice_period_required?: string | null
+          office_postcode?: string | null
           qualification_essential?: boolean | null
           remote_work_allowed?: boolean | null
+          require_location_radius?: boolean | null
           required_citizenship?: string | null
           required_qualifications?: string[] | null
           required_skills?: string[] | null
@@ -990,12 +996,15 @@ export type Database = {
           id?: number
           interview_process_description?: string | null
           location?: string
+          location_radius?: number | null
           match_threshold?: number | null
           min_years_experience?: number | null
           min_years_in_title?: number | null
           notice_period_required?: string | null
+          office_postcode?: string | null
           qualification_essential?: boolean | null
           remote_work_allowed?: boolean | null
+          require_location_radius?: boolean | null
           required_citizenship?: string | null
           required_qualifications?: string[] | null
           required_skills?: string[] | null
@@ -1429,10 +1438,10 @@ export type Database = {
       }
       check_signup_attempts: {
         Args: {
-          p_ip_address: string
-          p_email: string
-          max_attempts?: number
           block_duration_hours?: number
+          max_attempts?: number
+          p_email: string
+          p_ip_address: string
         }
         Returns: {
           can_proceed: boolean
@@ -1440,7 +1449,7 @@ export type Database = {
         }[]
       }
       check_user_employer_match: {
-        Args: { user_id: string; employer_id: string }
+        Args: { employer_id: string; user_id: string }
         Returns: boolean
       }
       company_names_match: {

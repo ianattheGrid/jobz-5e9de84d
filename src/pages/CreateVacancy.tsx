@@ -33,6 +33,7 @@ export default function CreateVacancy() {
       qualificationEssential: false,
       citizenshipEssential: false,
       requiredCitizenship: "UK citizens only",
+      requireLocationRadius: false,
       workArea: "",
       specialization: "",
     },
@@ -61,6 +62,21 @@ export default function CreateVacancy() {
         });
         navigate('/');
         return;
+      }
+
+      // Fetch employer profile to pre-populate office postcode
+      try {
+        const { data: employerProfile } = await supabase
+          .from('employer_profiles')
+          .select('company_postcode')
+          .eq('id', session.user.id)
+          .single();
+
+        if (employerProfile?.company_postcode) {
+          form.setValue('officePostcode', employerProfile.company_postcode);
+        }
+      } catch (error) {
+        console.log('No employer profile found or error fetching postcode');
       }
     };
 
@@ -108,7 +124,10 @@ export default function CreateVacancy() {
         specialization: values.specialization || "Other",
         match_threshold: values.matchThreshold,
         required_skills: [],
-        required_qualifications: []
+        required_qualifications: [],
+        require_location_radius: values.requireLocationRadius,
+        office_postcode: values.requireLocationRadius ? values.officePostcode : null,
+        location_radius: values.requireLocationRadius ? values.locationRadius : null
       });
 
       if (error) throw error;
