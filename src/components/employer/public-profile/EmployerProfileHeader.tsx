@@ -25,15 +25,19 @@ export const EmployerProfileHeader = ({ profile }: EmployerProfileHeaderProps) =
         <div className="h-40 rounded-b-xl bg-gradient-to-br from-[#0b1437] via-[#14245a] to-[#1f2d72]"></div>
         <div className="absolute -bottom-16 left-8 ring-4 ring-white rounded-lg overflow-hidden">
           {profile.company_logo_url ? (
-            <img 
-              src={profile.company_logo_url} 
-              alt={`${profile.company_name} logo`} 
-              className="w-32 h-32 object-contain bg-white p-2"
-              style={{ 
-                imageRendering: 'auto',
-                filter: 'none'
-              }}
-            />
+            <div className="w-32 h-32 bg-white rounded-lg overflow-hidden flex items-center justify-center">
+              <img 
+                src={profile.company_logo_url} 
+                alt={`${profile.company_name} logo`} 
+                className="max-w-full max-h-full"
+                style={{ 
+                  objectFit: 'contain',
+                  imageRendering: 'auto',
+                  filter: 'none',
+                  mixBlendMode: 'normal'
+                }}
+              />
+            </div>
           ) : (
             <div className="w-32 h-32 bg-gray-200 flex items-center justify-center">
               <Building2 className="h-12 w-12 text-gray-400" />
