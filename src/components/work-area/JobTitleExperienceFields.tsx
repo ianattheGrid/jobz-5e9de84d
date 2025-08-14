@@ -27,7 +27,7 @@ interface JobTitleExperienceFieldsProps {
 const JobTitleExperienceFields = ({ control, jobTitles }: JobTitleExperienceFieldsProps) => {
   return (
     <div className="space-y-3">
-      <FormLabel>Years of experience in each job title</FormLabel>
+      <FormLabel>Minimum years experience in each job title</FormLabel>
       <Card>
         <CardContent className="pt-4">
           <div className="space-y-3">
