@@ -18,6 +18,8 @@ export const EmployerProfileHeader = ({ profile }: EmployerProfileHeaderProps) =
   // For debugging
   console.log("Company size:", profile.company_size);
   console.log("Company size label:", getCompanySizeLabel(profile.company_size));
+  console.log("Company logo URL:", profile.company_logo_url);
+  console.log("Full profile object:", profile);
 
   return (
     <>
