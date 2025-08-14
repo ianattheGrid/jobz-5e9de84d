@@ -20,7 +20,7 @@ const ITSpecializationSelect = ({ control, onSpecializationChange }: ITSpecializ
         
         return (
           <FormItem>
-            <FormLabel>IT Specialization</FormLabel>
+            <FormLabel>IT Specialisation</FormLabel>
             <FormControl>
               <Select 
                 onValueChange={(value) => {
@@ -31,7 +31,7 @@ const ITSpecializationSelect = ({ control, onSpecializationChange }: ITSpecializ
                 defaultValue={currentValue}
               >
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select your IT specialization" />
+                  <SelectValue placeholder="Select your IT specialisation" />
                 </SelectTrigger>
                 <SelectContent>
                   {itSpecializations.map((specialization) => (
