@@ -226,8 +226,12 @@ export const genericCertifications = [
 
 // Helper function to get certifications for a specific work area
 export const getCertificationsForWorkArea = (workArea: string): string[] => {
+  console.log("getCertificationsForWorkArea called with:", workArea);
   const workAreaCerts = certificationsByWorkArea[workArea as keyof typeof certificationsByWorkArea] || [];
-  return [...workAreaCerts, ...genericCertifications];
+  console.log("Found work area certs:", workAreaCerts);
+  const result = [...workAreaCerts, ...genericCertifications];
+  console.log("Final certifications:", result);
+  return result;
 };
 
 // Backward compatibility - use IT certifications as default
