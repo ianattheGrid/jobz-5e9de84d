@@ -66,14 +66,37 @@ export const EmployerProfileHeader = ({ profile }: EmployerProfileHeaderProps) =
         </div>
       </div>
       
-      {/* Move company name outside the problematic container */}
-      <div className="px-8 pt-4">
-        <h1 style={{ color: '#000000', fontSize: '2rem', fontWeight: 'bold', margin: '0' }}>
-          {profile.company_name}
+      {/* NUCLEAR OPTION - Position absolutely with maximum overrides */}
+      <div 
+        style={{
+          position: 'absolute',
+          top: '200px',
+          left: '32px',
+          zIndex: 9999,
+          backgroundColor: 'white',
+          padding: '8px 16px',
+          borderRadius: '4px',
+          boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+        }}
+      >
+        <h1 
+          style={{
+            color: '#000000',
+            fontSize: '32px',
+            fontWeight: 'bold',
+            margin: '0',
+            padding: '0',
+            lineHeight: '1.2',
+            display: 'block',
+            visibility: 'visible',
+            opacity: '1'
+          } as React.CSSProperties}
+        >
+          {profile.company_name || 'theGrid'}
         </h1>
       </div>
       
-      <div className="px-8 pb-8">
+      <div className="px-8 pb-8" style={{ paddingTop: '80px' }}>
         {/* Always render the company size section, but with a fallback */}
         <div className="mt-2 mb-4">
           <div className="inline-flex items-center px-3 py-1 bg-gray-50 rounded-md border border-gray-300">
