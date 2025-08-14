@@ -9,7 +9,7 @@ import { useState, useEffect } from "react";
 import {
   educationLevels,
   fieldsOfStudy,
-  getCertificationsForWorkArea,
+  // getCertificationsForWorkArea, // Removed - now using database
   securityClearanceLevels,
   professionalMemberships,
   languageRequirements,
@@ -17,6 +17,7 @@ import {
   drivingLicenseTypes,
   backgroundCheckTypes
 } from "@/constants/qualificationOptions";
+import CertificationsField from "@/components/certifications/CertificationsField";
 
 interface QualificationRequirementsProps {
   control: Control<any>;
@@ -31,6 +32,7 @@ const QualificationRequirements = ({ control }: QualificationRequirementsProps) 
 
   // Watch the toggle fields and work area
   const workArea = useWatch({ control, name: "workArea" });
+  const specialization = useWatch({ control, name: "specialization" });
   const requiresEducation = useWatch({ control, name: "requires_education" });
   const requiresCertifications = useWatch({ control, name: "requires_certifications" });
   const requiresSecurityClearance = useWatch({ control, name: "requires_security_clearance" });
@@ -38,14 +40,6 @@ const QualificationRequirements = ({ control }: QualificationRequirementsProps) 
   const requiresLanguages = useWatch({ control, name: "requires_languages" });
   const requiresDrivingLicense = useWatch({ control, name: "requires_driving_license" });
   const requiresBackgroundCheck = useWatch({ control, name: "requires_background_check" });
-
-  // Get certifications for the current work area
-  const availableCertifications = getCertificationsForWorkArea(workArea || "IT");
-  
-  // Clear selected certifications when work area changes
-  useEffect(() => {
-    setSelectedCertifications([]);
-  }, [workArea]);
 
   const addCertification = (cert: string) => {
     if (!selectedCertifications.includes(cert)) {
@@ -199,46 +193,25 @@ const QualificationRequirements = ({ control }: QualificationRequirementsProps) 
                     onCheckedChange={field.onChange}
                   />
                 </FormControl>
-                <div className="space-y-1 leading-none">
-                  <FormLabel className="font-medium">
-                    Professional Certifications Required
-                  </FormLabel>
-                  <p className="text-sm text-muted-foreground">
-                    Does this role require specific industry certifications?
-                  </p>
-                </div>
+                 <div className="space-y-1 leading-none">
+                   <FormLabel className="font-medium">
+                     Professional Certifications & Qualifications Required
+                   </FormLabel>
+                   <p className="text-sm text-muted-foreground">
+                     Does this role require specific industry certifications or qualifications?
+                   </p>
+                 </div>
               </FormItem>
             )}
           />
 
           {requiresCertifications && (
-            <div className="ml-6 space-y-3">
-              <Select onValueChange={addCertification}>
-                <SelectTrigger className="bg-white">
-                  <SelectValue placeholder="Add certification requirement" />
-                </SelectTrigger>
-                <SelectContent className="bg-white border shadow-lg z-50">
-                  {availableCertifications
-                    .filter(cert => !selectedCertifications.includes(cert))
-                    .map((cert) => (
-                    <SelectItem key={cert} value={cert}>{cert}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              
-              {selectedCertifications.length > 0 && (
-                <div className="flex flex-wrap gap-2">
-                  {selectedCertifications.map((cert) => (
-                    <Badge key={cert} variant="secondary" className="flex items-center gap-1">
-                      {cert}
-                      <X 
-                        className="h-3 w-3 cursor-pointer" 
-                        onClick={() => removeCertification(cert)}
-                      />
-                    </Badge>
-                  ))}
-                </div>
-              )}
+            <div className="ml-6">
+              <CertificationsField 
+                control={control} 
+                workArea={workArea}
+                specialization={specialization}
+              />
             </div>
           )}
         </div>

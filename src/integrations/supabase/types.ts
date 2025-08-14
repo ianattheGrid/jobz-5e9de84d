@@ -462,6 +462,57 @@ export type Database = {
         }
         Relationships: []
       }
+      certification_suggestions: {
+        Row: {
+          admin_notes: string | null
+          admin_reviewed_at: string | null
+          admin_reviewed_by: string | null
+          admin_status: string
+          ai_validation_reason: string | null
+          ai_validation_score: number | null
+          ai_validation_status: string
+          certification_name: string
+          created_at: string
+          id: string
+          specialization: string | null
+          suggested_by: string
+          updated_at: string
+          work_area: string
+        }
+        Insert: {
+          admin_notes?: string | null
+          admin_reviewed_at?: string | null
+          admin_reviewed_by?: string | null
+          admin_status?: string
+          ai_validation_reason?: string | null
+          ai_validation_score?: number | null
+          ai_validation_status?: string
+          certification_name: string
+          created_at?: string
+          id?: string
+          specialization?: string | null
+          suggested_by: string
+          updated_at?: string
+          work_area: string
+        }
+        Update: {
+          admin_notes?: string | null
+          admin_reviewed_at?: string | null
+          admin_reviewed_by?: string | null
+          admin_status?: string
+          ai_validation_reason?: string | null
+          ai_validation_score?: number | null
+          ai_validation_status?: string
+          certification_name?: string
+          created_at?: string
+          id?: string
+          specialization?: string | null
+          suggested_by?: string
+          updated_at?: string
+          work_area?: string
+        }
+        Relationships: []
+      }
       commission_negotiations: {
         Row: {
           candidate_id: string | null
@@ -1069,6 +1120,33 @@ export type Database = {
           type?: string
           work_area?: string
           years_experience_essential?: boolean | null
+        }
+        Relationships: []
+      }
+      master_certifications: {
+        Row: {
+          certification_name: string
+          created_at: string
+          id: string
+          specialization: string | null
+          updated_at: string
+          work_area: string
+        }
+        Insert: {
+          certification_name: string
+          created_at?: string
+          id?: string
+          specialization?: string | null
+          updated_at?: string
+          work_area: string
+        }
+        Update: {
+          certification_name?: string
+          created_at?: string
+          id?: string
+          specialization?: string | null
+          updated_at?: string
+          work_area?: string
         }
         Relationships: []
       }
