@@ -11,7 +11,6 @@ import {
   fieldsOfStudy,
   // getCertificationsForWorkArea, // Removed - now using database
   securityClearanceLevels,
-  professionalMemberships,
   languageRequirements,
   languageProficiencyLevels,
   drivingLicenseTypes,
@@ -25,7 +24,6 @@ interface QualificationRequirementsProps {
 
 const QualificationRequirements = ({ control }: QualificationRequirementsProps) => {
   const [selectedCertifications, setSelectedCertifications] = useState<string[]>([]);
-  const [selectedMemberships, setSelectedMemberships] = useState<string[]>([]);
   const [selectedLanguages, setSelectedLanguages] = useState<{language: string, level: string}[]>([]);
   const [selectedLicenses, setSelectedLicenses] = useState<string[]>([]);
   const [selectedBackgroundChecks, setSelectedBackgroundChecks] = useState<string[]>([]);
@@ -36,7 +34,6 @@ const QualificationRequirements = ({ control }: QualificationRequirementsProps) 
   const requiresEducation = useWatch({ control, name: "requires_education" });
   const requiresCertifications = useWatch({ control, name: "requires_certifications" });
   const requiresSecurityClearance = useWatch({ control, name: "requires_security_clearance" });
-  const requiresMemberships = useWatch({ control, name: "requires_memberships" });
   const requiresLanguages = useWatch({ control, name: "requires_languages" });
   const requiresDrivingLicense = useWatch({ control, name: "requires_driving_license" });
   const requiresBackgroundCheck = useWatch({ control, name: "requires_background_check" });
@@ -49,16 +46,6 @@ const QualificationRequirements = ({ control }: QualificationRequirementsProps) 
 
   const removeCertification = (cert: string) => {
     setSelectedCertifications(selectedCertifications.filter(c => c !== cert));
-  };
-
-  const addMembership = (membership: string) => {
-    if (!selectedMemberships.includes(membership)) {
-      setSelectedMemberships([...selectedMemberships, membership]);
-    }
-  };
-
-  const removeMembership = (membership: string) => {
-    setSelectedMemberships(selectedMemberships.filter(m => m !== membership));
   };
 
   const addLanguage = (language: string, level: string) => {
@@ -269,62 +256,6 @@ const QualificationRequirements = ({ control }: QualificationRequirementsProps) 
           )}
         </div>
 
-        {/* Professional Memberships */}
-        <div className="space-y-4">
-          <FormField
-            control={control}
-            name="requires_memberships"
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                <FormControl>
-                  <Checkbox 
-                    checked={field.value} 
-                    onCheckedChange={field.onChange}
-                  />
-                </FormControl>
-                <div className="space-y-1 leading-none">
-                  <FormLabel className="font-medium">
-                    Professional Memberships Required
-                  </FormLabel>
-                  <p className="text-sm text-muted-foreground">
-                    Does this role require professional body memberships?
-                  </p>
-                </div>
-              </FormItem>
-            )}
-          />
-
-          {requiresMemberships && (
-            <div className="ml-6 space-y-3">
-              <Select onValueChange={addMembership}>
-                <SelectTrigger className="bg-white">
-                  <SelectValue placeholder="Add membership requirement" />
-                </SelectTrigger>
-                <SelectContent className="bg-white border shadow-lg z-50">
-                  {professionalMemberships
-                    .filter(membership => !selectedMemberships.includes(membership))
-                    .map((membership) => (
-                    <SelectItem key={membership} value={membership}>{membership}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              
-              {selectedMemberships.length > 0 && (
-                <div className="flex flex-wrap gap-2">
-                  {selectedMemberships.map((membership) => (
-                    <Badge key={membership} variant="secondary" className="flex items-center gap-1">
-                      {membership}
-                      <X 
-                        className="h-3 w-3 cursor-pointer" 
-                        onClick={() => removeMembership(membership)}
-                      />
-                    </Badge>
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
-        </div>
 
         {/* Language Requirements */}
         <div className="space-y-4">
