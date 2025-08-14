@@ -36,11 +36,30 @@ const NavBar = () => {
 
   const handleSignOut = async () => {
     try {
-      await supabase.auth.signOut();
-      // Navigate to home page after successful sign out
-      navigate('/');
+      console.log('Starting sign out process...');
+      
+      // Clear any local storage/session storage that might contain auth tokens
+      localStorage.clear();
+      sessionStorage.clear();
+      
+      // Force sign out with scope 'local' to clear local session
+      const { error } = await supabase.auth.signOut({ scope: 'local' });
+      
+      if (error) {
+        console.error('Sign out error:', error);
+        // Even if there's an error, we should still clear local state and redirect
+      } else {
+        console.log('Successfully signed out');
+      }
+      
+      // Force refresh to clear any cached state
+      window.location.href = '/';
     } catch (error) {
-      console.error('Error signing out:', error);
+      console.error('Error during sign out:', error);
+      // Even if there's an error, clear local state and redirect
+      localStorage.clear();
+      sessionStorage.clear();
+      window.location.href = '/';
     }
   };
 
