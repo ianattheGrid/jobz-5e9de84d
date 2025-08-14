@@ -88,6 +88,11 @@ export const EmployerProfileHeader = ({ profile }: EmployerProfileHeaderProps) =
           </div>
         </div>
         
+        {/* Company name above website link */}
+        <h1 style={{ color: '#000000', fontSize: '28px', fontWeight: 'bold', marginBottom: '16px' }}>
+          {profile.company_name}
+        </h1>
+        
         <div className="mt-4 flex flex-wrap gap-y-2 gap-x-6">
           {profile.company_website && (
             <a 
