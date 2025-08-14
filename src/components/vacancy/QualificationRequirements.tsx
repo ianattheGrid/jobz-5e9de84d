@@ -42,10 +42,6 @@ const QualificationRequirements = ({ control }: QualificationRequirementsProps) 
   // Get certifications for the current work area
   const availableCertifications = getCertificationsForWorkArea(workArea || "IT");
   
-  // Debug logging
-  console.log("QualificationRequirements - Current work area:", workArea);
-  console.log("QualificationRequirements - Available certifications:", availableCertifications);
-  
   // Clear selected certifications when work area changes
   useEffect(() => {
     setSelectedCertifications([]);
