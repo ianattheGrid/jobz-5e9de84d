@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2, Upload, Trash2 } from "lucide-react";
+import { Loader2, Upload, Trash2, Plus, Building2, User } from "lucide-react";
+import { CompanyGallerySection } from "./CompanyGallerySection";
 
 interface FileUploadSectionProps {
   userId: string;
@@ -132,45 +133,63 @@ export const FileUploadSection = ({ userId, currentProfilePicture, currentCompan
   };
 
   return (
-    <div className="space-y-6">
-      <div className="space-y-4">
-        <div className="text-sm font-medium">Profile Picture</div>
-        <div className="flex items-center gap-4">
-          <Button
-            variant="outline"
-            onClick={() => document.getElementById('profile-picture-input')?.click()}
-            disabled={uploadingPicture || deletingPicture}
-            className="w-[200px]"
-          >
-            {uploadingPicture ? (
-              <Loader2 className="h-4 w-4 animate-spin mr-2" />
-            ) : (
-              <Upload className="h-4 w-4 mr-2" />
-            )}
-            Upload Picture
-          </Button>
+    <div className="space-y-8">
+      <h3 className="text-xl font-semibold border-l-4 border-primary pl-4">Company Assets & Gallery</h3>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {/* Profile Picture Section */}
+        <div className="space-y-4">
+          <div className="flex items-center gap-2 text-base font-medium text-gray-900">
+            <User className="h-5 w-5 text-primary" />
+            Your Profile Picture
+          </div>
+          <div className="flex flex-col items-center gap-4 p-6 border-2 border-dashed border-gray-200 rounded-lg bg-gray-50/50">
+            <Avatar className="h-24 w-24">
+              <AvatarImage src={currentProfilePicture || undefined} />
+              <AvatarFallback className="bg-gray-200 text-gray-400">
+                <User className="h-12 w-12" />
+              </AvatarFallback>
+            </Avatar>
+            
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => document.getElementById('profile-picture-input')?.click()}
+                disabled={uploadingPicture || deletingPicture}
+                className="bg-white"
+              >
+                {uploadingPicture ? (
+                  <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                ) : (
+                  <Upload className="h-4 w-4 mr-2" />
+                )}
+                {currentProfilePicture ? 'Change' : 'Upload'}
+              </Button>
 
-          {currentProfilePicture && (
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => handleFileDelete('profile_picture')}
-              disabled={uploadingPicture || deletingPicture}
-              className="bg-red-50 hover:bg-red-100 border-red-200"
-              title="Delete profile picture"
-            >
-              {deletingPicture ? (
-                <Loader2 className="h-4 w-4 animate-spin text-red-500" />
-              ) : (
-                <Trash2 className="h-4 w-4 text-red-500" />
+              {currentProfilePicture && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleFileDelete('profile_picture')}
+                  disabled={uploadingPicture || deletingPicture}
+                  className="bg-white text-red-600 hover:text-red-700 hover:bg-red-50"
+                >
+                  {deletingPicture ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Trash2 className="h-4 w-4" />
+                  )}
+                </Button>
               )}
-            </Button>
-          )}
+            </div>
+            
+            <p className="text-xs text-gray-500 text-center">
+              Professional headshot recommended<br />
+              JPG, PNG up to 5MB
+            </p>
+          </div>
 
-          <Avatar className="h-20 w-20">
-            <AvatarImage src={currentProfilePicture || undefined} />
-            <AvatarFallback>{/* Intentionally left blank */}</AvatarFallback>
-          </Avatar>
           <input
             type="file"
             id="profile-picture-input"
@@ -182,46 +201,61 @@ export const FileUploadSection = ({ userId, currentProfilePicture, currentCompan
             }}
           />
         </div>
-      </div>
 
-      <div className="space-y-4">
-        <div className="text-sm font-medium">Company Logo</div>
-        <div className="flex items-center gap-4">
-          <Button
-            variant="outline"
-            onClick={() => document.getElementById('company-logo-input')?.click()}
-            disabled={uploadingLogo || deletingLogo}
-            className="w-[200px]"
-          >
-            {uploadingLogo ? (
-              <Loader2 className="h-4 w-4 animate-spin mr-2" />
-            ) : (
-              <Upload className="h-4 w-4 mr-2" />
-            )}
-            Upload Logo
-          </Button>
+        {/* Company Logo Section */}
+        <div className="space-y-4">
+          <div className="flex items-center gap-2 text-base font-medium text-gray-900">
+            <Building2 className="h-5 w-5 text-primary" />
+            Company Logo
+          </div>
+          
+          <div className="flex flex-col items-center gap-4 p-6 border-2 border-dashed border-gray-200 rounded-lg bg-gray-50/50">
+            <Avatar className="h-24 w-24">
+              <AvatarImage src={currentCompanyLogo || undefined} />
+              <AvatarFallback className="bg-gray-200 text-gray-400">
+                <Building2 className="h-12 w-12" />
+              </AvatarFallback>
+            </Avatar>
+            
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => document.getElementById('company-logo-input')?.click()}
+                disabled={uploadingLogo || deletingLogo}
+                className="bg-white"
+              >
+                {uploadingLogo ? (
+                  <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                ) : (
+                  <Upload className="h-4 w-4 mr-2" />
+                )}
+                {currentCompanyLogo ? 'Change' : 'Upload'}
+              </Button>
 
-          {currentCompanyLogo && (
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => handleFileDelete('company_logo')}
-              disabled={uploadingLogo || deletingLogo}
-              className="bg-red-50 hover:bg-red-100 border-red-200"
-              title="Delete company logo"
-            >
-              {deletingLogo ? (
-                <Loader2 className="h-4 w-4 animate-spin text-red-500" />
-              ) : (
-                <Trash2 className="h-4 w-4 text-red-500" />
+              {currentCompanyLogo && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleFileDelete('company_logo')}
+                  disabled={uploadingLogo || deletingLogo}
+                  className="bg-white text-red-600 hover:text-red-700 hover:bg-red-50"
+                >
+                  {deletingLogo ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Trash2 className="h-4 w-4" />
+                  )}
+                </Button>
               )}
-            </Button>
-          )}
+            </div>
+            
+            <p className="text-xs text-gray-500 text-center">
+              Square logo works best<br />
+              JPG, PNG up to 5MB
+            </p>
+          </div>
 
-          <Avatar className="h-20 w-20">
-            <AvatarImage src={currentCompanyLogo || undefined} />
-            <AvatarFallback>{/* Intentionally left blank */}</AvatarFallback>
-          </Avatar>
           <input
             type="file"
             id="company-logo-input"
@@ -234,6 +268,9 @@ export const FileUploadSection = ({ userId, currentProfilePicture, currentCompan
           />
         </div>
       </div>
+
+      {/* Company Gallery Section */}
+      <CompanyGallerySection employerId={userId} />
     </div>
   );
 };
