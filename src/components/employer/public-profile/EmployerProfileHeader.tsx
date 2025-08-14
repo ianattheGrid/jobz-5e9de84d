@@ -28,7 +28,11 @@ export const EmployerProfileHeader = ({ profile }: EmployerProfileHeaderProps) =
             <img 
               src={profile.company_logo_url} 
               alt={`${profile.company_name} logo`} 
-              className="w-32 h-32 object-cover bg-white"
+              className="w-32 h-32 object-contain bg-white p-2"
+              style={{ 
+                imageRendering: 'auto',
+                filter: 'none'
+              }}
             />
           ) : (
             <div className="w-32 h-32 bg-gray-200 flex items-center justify-center">
