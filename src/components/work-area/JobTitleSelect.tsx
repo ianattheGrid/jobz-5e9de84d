@@ -3,26 +3,33 @@ import { FormField, FormItem, FormLabel, FormControl, FormMessage, FormDescripti
 import { Control } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { MultiSelect } from "@/components/ui/multi-select";
+import { useJobTitles } from "@/hooks/useJobTitles";
+import JobTitleSuggestionForm from "@/components/job-titles/JobTitleSuggestionForm";
 
 interface JobTitleSelectProps {
   control: Control<any>;
   titles: string[];
   name: string;
+  workArea?: string;
 }
 
-const JobTitleSelect = ({ control, titles, name }: JobTitleSelectProps) => {
-  // Ensure we don't have empty titles list
+const JobTitleSelect = ({ control, titles, name, workArea }: JobTitleSelectProps) => {
   const [filteredTitles, setFilteredTitles] = useState<string[]>([]);
+  const { jobTitles, loading, refetch } = useJobTitles(workArea);
   
   useEffect(() => {
-    // Filter out empty titles and remove duplicates
-    if (titles && titles.length > 0) {
-      setFilteredTitles([...new Set(titles.filter(title => !!title))]);
-    } else {
-      console.log("No titles provided to JobTitleSelect:", titles);
-      setFilteredTitles([]);
-    }
-  }, [titles]);
+    // Combine static titles with database job titles
+    const dbTitles = jobTitles.map(jt => jt.job_title);
+    const allTitles = [...titles, ...dbTitles];
+    
+    // Filter out empty/null titles and remove duplicates
+    const validTitles = allTitles
+      .filter(title => title && title.trim() !== '')
+      .filter((title, index, self) => self.indexOf(title) === index)
+      .sort();
+    
+    setFilteredTitles(validTitles);
+  }, [titles, jobTitles]);
 
   return (
     <FormField
@@ -49,7 +56,15 @@ const JobTitleSelect = ({ control, titles, name }: JobTitleSelectProps) => {
         
         return (
           <FormItem>
-            <FormLabel>Job Titles</FormLabel>
+            <div className="flex items-center justify-between">
+              <FormLabel>Job Titles (Select up to 5)</FormLabel>
+              {workArea && (
+                <JobTitleSuggestionForm 
+                  workArea={workArea} 
+                  onSuggestionSubmitted={refetch}
+                />
+              )}
+            </div>
             <FormDescription>
               Select multiple job titles that match your experience. This helps employers find you for suitable positions.
             </FormDescription>
