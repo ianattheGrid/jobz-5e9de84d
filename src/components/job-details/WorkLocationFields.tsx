@@ -3,6 +3,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Slider } from "@/components/ui/slider";
 import { Control } from "react-hook-form";
 import { useState } from "react";
+import LocationRadiusFields from "./LocationRadiusFields";
 
 interface WorkLocationFieldsProps {
   control: Control<any>;
@@ -85,6 +86,8 @@ const WorkLocationFields = ({ control }: WorkLocationFieldsProps) => {
           )}
         />
       )}
+
+      <LocationRadiusFields control={control} />
     </>
   );
 };
