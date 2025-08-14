@@ -27,9 +27,34 @@ export const EmployerProfileHeader = ({ profile }: EmployerProfileHeaderProps) =
         <div className="h-40 rounded-b-xl bg-gradient-to-br from-[#0b1437] via-[#14245a] to-[#1f2d72]"></div>
         <div className="absolute -bottom-16 left-8 ring-4 ring-white rounded-lg overflow-hidden">
           {profile.company_logo_url ? (
-            <div className="w-32 h-32 bg-white rounded-lg border-4 border-white">
-              <div style={{ width: '120px', height: '120px', background: `url(${profile.company_logo_url}) no-repeat center center`, backgroundSize: 'contain' }}></div>
-              <p style={{ fontSize: '10px', color: 'red' }}>URL: {profile.company_logo_url}</p>
+            <div 
+              style={{
+                width: '128px',
+                height: '128px',
+                backgroundColor: 'white',
+                borderRadius: '8px',
+                border: '4px solid white',
+                position: 'relative',
+                overflow: 'hidden'
+              }}
+              onClick={() => window.open(profile.company_logo_url, '_blank')}
+            >
+              <img 
+                src={profile.company_logo_url}
+                alt={`${profile.company_name} logo`}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'contain',
+                  filter: 'none',
+                  transform: 'none',
+                  mixBlendMode: 'normal',
+                  opacity: '1',
+                  position: 'absolute',
+                  top: '0',
+                  left: '0'
+                }}
+              />
             </div>
           ) : (
             <div className="w-32 h-32 bg-gray-200 flex items-center justify-center">
