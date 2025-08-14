@@ -67,19 +67,8 @@ export const EmployerProfileHeader = ({ profile }: EmployerProfileHeaderProps) =
       </div>
       
       <div className="pt-20 px-8 pb-8">
-        {/* Company name and employee count on the same line */}
-        <div className="flex items-center justify-between mb-4">
-          <h1 
-            style={{
-              color: '#000000',
-              fontSize: '32px',
-              fontWeight: 'bold',
-              margin: '0'
-            } as React.CSSProperties}
-          >
-            {profile.company_name || 'theGrid'}
-          </h1>
-          
+        {/* Employee count on the right */}
+        <div className="flex justify-end mb-4">
           <div className="inline-flex items-center px-3 py-1 bg-gray-50 rounded-md border border-gray-300">
             <Users className="h-4 w-4 mr-2 text-gray-600" />
             <span className="text-navy font-medium">
