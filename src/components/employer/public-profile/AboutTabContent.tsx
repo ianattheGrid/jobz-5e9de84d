@@ -62,22 +62,22 @@ export const AboutTabContent = ({ profile, galleryImages }: AboutTabContentProps
           <dl className="divide-y divide-gray-100">
             {profile.full_name && (
               <div className="px-4 py-3 grid grid-cols-3 gap-4">
-                <dt className="text-sm font-medium text-gray-500">Contact Person</dt>
-                <dd className="text-sm text-gray-900 col-span-2">{profile.full_name}</dd>
+                <dt className="text-sm font-medium text-white">Contact Person</dt>
+                <dd className="text-sm text-primary col-span-2">{profile.full_name}</dd>
               </div>
             )}
             
             {profile.job_title && (
               <div className="px-4 py-3 grid grid-cols-3 gap-4">
-                <dt className="text-sm font-medium text-gray-500">Role</dt>
-                <dd className="text-sm text-gray-900 col-span-2">{profile.job_title}</dd>
+                <dt className="text-sm font-medium text-white">Role</dt>
+                <dd className="text-sm text-primary col-span-2">{profile.job_title}</dd>
               </div>
             )}
             
             {profile.company_website && (
               <div className="px-4 py-3 grid grid-cols-3 gap-4">
-                <dt className="text-sm font-medium text-gray-500">Website</dt>
-                <dd className="text-sm text-gray-900 col-span-2">
+                <dt className="text-sm font-medium text-white">Website</dt>
+                <dd className="text-sm col-span-2">
                   <a 
                     href={profile.company_website} 
                     target="_blank" 
