@@ -14,8 +14,8 @@ export const ProfileTabs = ({ profile, galleryImages }: ProfileTabsProps) => {
     <div className="mt-8">
       <Tabs defaultValue="about" className="w-full">
         <TabsList className="grid w-full grid-cols-2 bg-muted">
-          <TabsTrigger className="text-muted-foreground data-[state=active]:bg-card data-[state=active]:text-primary hover:!bg-primary/10 hover:!text-primary transition-all duration-200 cursor-pointer" value="about">About</TabsTrigger>
-          <TabsTrigger className="text-muted-foreground data-[state=active]:bg-card data-[state=active]:text-primary hover:!bg-primary/10 hover:!text-primary transition-all duration-200 cursor-pointer" value="jobs">Current Openings</TabsTrigger>
+          <TabsTrigger className="text-muted-foreground data-[state=active]:bg-card data-[state=active]:text-primary hover:!bg-primary hover:!text-white transition-all duration-200 cursor-pointer" value="about">About</TabsTrigger>
+          <TabsTrigger className="text-muted-foreground data-[state=active]:bg-card data-[state=active]:text-primary hover:!bg-primary hover:!text-white transition-all duration-200 cursor-pointer" value="jobs">Current Openings</TabsTrigger>
         </TabsList>
         
         <TabsContent value="about" className="mt-6 bg-card p-6 rounded-md border shadow-sm">
