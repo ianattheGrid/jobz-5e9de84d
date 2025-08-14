@@ -28,18 +28,8 @@ export const EmployerProfileHeader = ({ profile }: EmployerProfileHeaderProps) =
         <div className="absolute -bottom-16 left-8 ring-4 ring-white rounded-lg overflow-hidden">
           {profile.company_logo_url ? (
             <div className="w-32 h-32 bg-white rounded-lg border-4 border-white">
-              <img 
-                src={profile.company_logo_url}
-                alt={`${profile.company_name} logo`} 
-                width="120"
-                height="120"
-                style={{ 
-                  width: '120px',
-                  height: '120px',
-                  objectFit: 'contain',
-                  display: 'block'
-                }}
-              />
+              <div style={{ width: '120px', height: '120px', background: `url(${profile.company_logo_url}) no-repeat center center`, backgroundSize: 'contain' }}></div>
+              <p style={{ fontSize: '10px', color: 'red' }}>URL: {profile.company_logo_url}</p>
             </div>
           ) : (
             <div className="w-32 h-32 bg-gray-200 flex items-center justify-center">
