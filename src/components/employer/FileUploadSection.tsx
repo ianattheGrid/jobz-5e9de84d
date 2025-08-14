@@ -213,8 +213,21 @@ export const FileUploadSection = ({ userId, currentProfilePicture, currentCompan
             accept="image/*"
             className="hidden"
             onChange={(e) => {
+              console.log('=== FILE INPUT CHANGE EVENT ===');
+              console.log('Event target:', e.target);
+              console.log('Files:', e.target.files);
               const file = e.target.files?.[0];
-              if (file) handleFileUpload(file, 'profile_picture');
+              console.log('Selected file:', file);
+              if (file) {
+                console.log('File details:', {
+                  name: file.name,
+                  size: file.size,
+                  type: file.type
+                });
+                handleFileUpload(file, 'profile_picture');
+              } else {
+                console.log('No file selected');
+              }
             }}
           />
         </div>
