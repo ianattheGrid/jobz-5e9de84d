@@ -27,7 +27,7 @@ export interface JobTitleSuggestion {
   admin_reviewed_by?: string;
 }
 
-export const useJobTitles = (workArea?: string) => {
+export const useJobTitles = (workArea?: string, specialization?: string) => {
   const [jobTitles, setJobTitles] = useState<JobTitle[]>([]);
   const [suggestions, setSuggestions] = useState<JobTitleSuggestion[]>([]);
   const [loading, setLoading] = useState(true);
@@ -42,6 +42,10 @@ export const useJobTitles = (workArea?: string) => {
 
       if (workArea) {
         query = query.eq('work_area', workArea);
+      }
+
+      if (specialization) {
+        query = query.eq('specialization', specialization);
       }
 
       const { data, error } = await query;
@@ -199,7 +203,7 @@ export const useJobTitles = (workArea?: string) => {
 
   useEffect(() => {
     refetch();
-  }, [workArea]);
+  }, [workArea, specialization]);
 
   return {
     jobTitles,

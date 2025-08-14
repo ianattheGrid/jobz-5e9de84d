@@ -69,6 +69,8 @@ const WorkAreaField = ({ control }: WorkAreaFieldProps) => {
             control={control}
             titles={availableTitles}
             name="job_title"
+            workArea={workArea}
+            specialization={itSpecialization}
           />
           
           {/* Replace single experience field with multi-title experience fields */}

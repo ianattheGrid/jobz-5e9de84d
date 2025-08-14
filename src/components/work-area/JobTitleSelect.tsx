@@ -11,11 +11,12 @@ interface JobTitleSelectProps {
   titles: string[];
   name: string;
   workArea?: string;
+  specialization?: string;
 }
 
-const JobTitleSelect = ({ control, titles, name, workArea }: JobTitleSelectProps) => {
+const JobTitleSelect = ({ control, titles, name, workArea, specialization }: JobTitleSelectProps) => {
   const [filteredTitles, setFilteredTitles] = useState<string[]>([]);
-  const { jobTitles, loading, refetch } = useJobTitles(workArea);
+  const { jobTitles, loading, refetch } = useJobTitles(workArea, specialization);
   
   useEffect(() => {
     // Combine static titles with database job titles
@@ -29,7 +30,7 @@ const JobTitleSelect = ({ control, titles, name, workArea }: JobTitleSelectProps
       .sort();
     
     setFilteredTitles(validTitles);
-  }, [titles, jobTitles]);
+  }, [titles, jobTitles, specialization]);
 
   return (
     <FormField
