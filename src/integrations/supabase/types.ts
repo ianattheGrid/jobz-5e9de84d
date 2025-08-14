@@ -669,8 +669,10 @@ export type Database = {
           company_address: string | null
           company_culture: string | null
           company_description: string | null
+          company_email: string | null
           company_logo_url: string | null
           company_name: string
+          company_phone: string | null
           company_postcode: string | null
           company_size: number | null
           company_values: string[] | null
@@ -691,8 +693,10 @@ export type Database = {
           company_address?: string | null
           company_culture?: string | null
           company_description?: string | null
+          company_email?: string | null
           company_logo_url?: string | null
           company_name: string
+          company_phone?: string | null
           company_postcode?: string | null
           company_size?: number | null
           company_values?: string[] | null
@@ -713,8 +717,10 @@ export type Database = {
           company_address?: string | null
           company_culture?: string | null
           company_description?: string | null
+          company_email?: string | null
           company_logo_url?: string | null
           company_name?: string
+          company_phone?: string | null
           company_postcode?: string | null
           company_size?: number | null
           company_values?: string[] | null
