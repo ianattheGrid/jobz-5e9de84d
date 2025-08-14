@@ -37,15 +37,7 @@ export const CompanyMediaSection = ({ employerId, galleryImages = [] }: CompanyM
           
           const mediaItems: MediaItem[] = [];
           
-          if (profileData.company_logo_url) {
-            mediaItems.push({
-              id: 'logo',
-              type: 'image',
-              url: profileData.company_logo_url,
-              title: 'Company Logo',
-              description: `${profileData.company_name} logo`
-            });
-          }
+          // Only add gallery images (office, staff, etc.) - not the company logo
           
           if (galleryImages && galleryImages.length > 0) {
             galleryImages.forEach((img, index) => {
