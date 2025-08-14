@@ -5,7 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Control, useWatch } from "react-hook-form";
 import { Badge } from "@/components/ui/badge";
 import { X } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   educationLevels,
   fieldsOfStudy,
@@ -41,6 +41,11 @@ const QualificationRequirements = ({ control }: QualificationRequirementsProps) 
 
   // Get certifications for the current work area
   const availableCertifications = getCertificationsForWorkArea(workArea || "IT");
+  
+  // Clear selected certifications when work area changes
+  useEffect(() => {
+    setSelectedCertifications([]);
+  }, [workArea]);
 
   const addCertification = (cert: string) => {
     if (!selectedCertifications.includes(cert)) {
