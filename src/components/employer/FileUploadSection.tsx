@@ -26,6 +26,8 @@ export const FileUploadSection = ({ userId, currentProfilePicture, currentCompan
     const fileExtension = file.name.split('.').pop();
     const fileName = `${userId}/${Date.now()}.${fileExtension}`;
 
+    console.log('Starting upload:', { fileName, type, fileSize: file.size });
+
     try {
       setUploading(true);
 
@@ -35,11 +37,15 @@ export const FileUploadSection = ({ userId, currentProfilePicture, currentCompan
           upsert: true,
         });
 
+      console.log('Upload result:', { uploadError, data });
+
       if (uploadError) throw uploadError;
 
       const { data: urlData } = supabase.storage
         .from('company_assets')
         .getPublicUrl(fileName);
+
+      console.log('Public URL:', urlData.publicUrl);
 
       const { error: updateError } = await supabase
         .from('employer_profiles')
@@ -48,6 +54,8 @@ export const FileUploadSection = ({ userId, currentProfilePicture, currentCompan
         })
         .eq('id', userId);
 
+      console.log('Database update result:', { updateError });
+
       if (updateError) throw updateError;
 
       toast({
@@ -55,8 +63,12 @@ export const FileUploadSection = ({ userId, currentProfilePicture, currentCompan
         description: `${isProfile ? 'Profile picture' : 'Company logo'} uploaded successfully`,
       });
 
+      console.log('Upload completed successfully');
+      
+      // Instead of reloading, let's update the parent component state
       window.location.reload();
     } catch (error: any) {
+      console.error('Upload error:', error);
       toast({
         variant: "destructive",
         title: "Error",
