@@ -9,6 +9,7 @@ import CommissionSection from "@/components/CommissionSection";
 import ApplicationPreferencesField from "@/components/ApplicationPreferencesField";
 import EssentialCriteriaFields from "./EssentialCriteriaFields";
 import MatchThresholdField from "./MatchThresholdField";
+import QualificationRequirements from "./QualificationRequirements";
 import { LayoutDashboard } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
@@ -45,6 +46,7 @@ export function VacancyForm({ form, onSubmit }: VacancyFormProps) {
           <div className="space-y-8">
             <CompanyVisibilityField form={form} />
             <WorkAreaField control={form.control} />
+            <QualificationRequirements control={form.control} />
             <JobDetailsFields control={form.control} />
             <MatchThresholdField 
               control={form.control} 
