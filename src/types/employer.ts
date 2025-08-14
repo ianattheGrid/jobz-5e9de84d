@@ -3,6 +3,8 @@ export interface EmployerProfile {
   id: string;
   company_name: string;
   company_website?: string | null;
+  company_email?: string | null;
+  company_phone?: string | null;
   company_logo_url?: string | null;
   profile_picture_url?: string | null;
   full_name: string;

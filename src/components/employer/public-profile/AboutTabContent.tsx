@@ -89,6 +89,34 @@ export const AboutTabContent = ({ profile, galleryImages }: AboutTabContentProps
                 </dd>
               </div>
             )}
+            
+            {profile.company_email && (
+              <div className="px-4 py-3 grid grid-cols-3 gap-4">
+                <dt className="text-sm font-medium text-white">Email</dt>
+                <dd className="text-sm text-primary col-span-2">
+                  <a 
+                    href={`mailto:${profile.company_email}`}
+                    className="hover:underline"
+                  >
+                    {profile.company_email}
+                  </a>
+                </dd>
+              </div>
+            )}
+            
+            {profile.company_phone && (
+              <div className="px-4 py-3 grid grid-cols-3 gap-4">
+                <dt className="text-sm font-medium text-white">Phone</dt>
+                <dd className="text-sm text-primary col-span-2">
+                  <a 
+                    href={`tel:${profile.company_phone}`}
+                    className="hover:underline"
+                  >
+                    {profile.company_phone}
+                  </a>
+                </dd>
+              </div>
+            )}
           </dl>
         </CardContent>
       </Card>

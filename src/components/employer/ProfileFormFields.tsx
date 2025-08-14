@@ -97,6 +97,36 @@ export const ProfileFormFields = ({ control }: ProfileFormFieldsProps) => {
           )}
         />
       </div>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <FormField
+          control={control}
+          name="company_email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Company Email</FormLabel>
+              <FormControl>
+                <Input placeholder="contact@company.com" type="email" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        
+        <FormField
+          control={control}
+          name="company_phone"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Company Tel</FormLabel>
+              <FormControl>
+                <Input placeholder="+44 123 456 7890" type="tel" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </div>
     </div>
   );
 };

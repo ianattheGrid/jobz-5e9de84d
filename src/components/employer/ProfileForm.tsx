@@ -35,6 +35,8 @@ const formSchema = z.object({
     message: "Company name must be at least 2 characters.",
   }),
   company_website: urlSchema,
+  company_email: z.string().email("Please enter a valid email address").or(z.literal('')),
+  company_phone: z.string().optional(),
   full_name: z.string().min(2, {
     message: "Name must be at least 2 characters.",
   }),
@@ -75,6 +77,8 @@ export function ProfileForm({ profile, setProfile, email }: ProfileFormProps) {
     defaultValues: {
       company_name: profile.company_name,
       company_website: profile.company_website || "",
+      company_email: profile.company_email || "",
+      company_phone: profile.company_phone || "",
       full_name: profile.full_name,
       job_title: profile.job_title,
       company_size: profile.company_size || undefined,
@@ -119,6 +123,8 @@ export function ProfileForm({ profile, setProfile, email }: ProfileFormProps) {
         id: session.user.id,
         company_name: values.company_name,
         company_website: formattedWebsite,
+        company_email: values.company_email || null,
+        company_phone: values.company_phone || null,
         full_name: values.full_name,
         job_title: values.job_title,
         company_size: values.company_size,
