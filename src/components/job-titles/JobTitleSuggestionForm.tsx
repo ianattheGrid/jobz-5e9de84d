@@ -6,6 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Plus } from 'lucide-react';
 import { useJobTitles } from '@/hooks/useJobTitles';
+import { supabase } from '@/integrations/supabase/client';
 
 interface JobTitleSuggestionFormProps {
   workArea?: string;
@@ -26,7 +27,34 @@ const JobTitleSuggestionForm = ({ workArea, onSuggestionSubmitted }: JobTitleSug
   const [jobTitle, setJobTitle] = useState('');
   const [selectedWorkArea, setSelectedWorkArea] = useState(workArea || '');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [similarTitles, setSimilarTitles] = useState<string[]>([]);
+  const [showDuplicateWarning, setShowDuplicateWarning] = useState(false);
   const { suggestJobTitle } = useJobTitles();
+
+  // Check for similar job titles when user types
+  const checkForDuplicates = async (title: string, area: string) => {
+    if (!title.trim() || !area || title.length < 3) {
+      setSimilarTitles([]);
+      setShowDuplicateWarning(false);
+      return;
+    }
+
+    try {
+      const { data } = await supabase.functions.invoke('check-job-title-duplicates', {
+        body: { jobTitle: title, workArea: area }
+      });
+
+      if (data?.isDuplicate && data?.suggestions?.length > 0) {
+        setSimilarTitles(data.suggestions.map((s: any) => s.existingTitle));
+        setShowDuplicateWarning(true);
+      } else {
+        setSimilarTitles([]);
+        setShowDuplicateWarning(false);
+      }
+    } catch (error) {
+      console.error('Error checking duplicates:', error);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,12 +63,22 @@ const JobTitleSuggestionForm = ({ workArea, onSuggestionSubmitted }: JobTitleSug
       return;
     }
 
+    // Show warning if similar titles exist
+    if (showDuplicateWarning) {
+      const userConfirmed = window.confirm(
+        `Similar job titles already exist: ${similarTitles.join(', ')}. Do you still want to suggest "${jobTitle}"?`
+      );
+      if (!userConfirmed) return;
+    }
+
     setIsSubmitting(true);
     const success = await suggestJobTitle(jobTitle.trim(), selectedWorkArea);
     
     if (success) {
       setJobTitle('');
       setSelectedWorkArea(workArea || '');
+      setSimilarTitles([]);
+      setShowDuplicateWarning(false);
       setOpen(false);
       onSuggestionSubmitted?.();
     }
@@ -69,10 +107,18 @@ const JobTitleSuggestionForm = ({ workArea, onSuggestionSubmitted }: JobTitleSug
             <Input
               id="jobTitle"
               value={jobTitle}
-              onChange={(e) => setJobTitle(e.target.value)}
+              onChange={(e) => {
+                setJobTitle(e.target.value);
+                checkForDuplicates(e.target.value, selectedWorkArea);
+              }}
               placeholder="e.g., Senior Full Stack Developer"
               required
             />
+            {showDuplicateWarning && (
+              <div className="text-sm text-amber-600 mt-1">
+                ⚠️ Similar titles exist: {similarTitles.join(', ')}
+              </div>
+            )}
           </div>
           
           <div className="space-y-2">

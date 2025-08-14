@@ -4,6 +4,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { Job } from "@/integrations/supabase/types/jobs";
 import { CandidateProfile } from "@/integrations/supabase/types/profiles";
 import { useMatchScore } from "@/components/job-card/hooks/useMatchScore";
+import { calculateJobTitleMatchScore } from "@/utils/jobTitleMatching";
 
 interface JobWithScore extends Job {
   matchScore?: number;
@@ -72,13 +73,15 @@ export const usePersonalizedJobs = () => {
             let matchScore = 0;
             let totalCriteria = 0;
 
-            // Title/Work Area match (30% weight)
+            // Enhanced Title/Work Area match (30% weight)
             if (candidateProfile.job_title && job.work_area) {
               totalCriteria += 30;
-              if (candidateProfile.job_title.toLowerCase().includes(job.work_area.toLowerCase()) ||
-                  job.work_area.toLowerCase().includes(candidateProfile.job_title.toLowerCase())) {
-                matchScore += 30;
-              }
+              const titleMatchScore = calculateJobTitleMatchScore(
+                candidateProfile.job_title,
+                job.work_area,
+                job.specialization
+              );
+              matchScore += titleMatchScore * 30;
             }
 
             // Location match (20% weight)
