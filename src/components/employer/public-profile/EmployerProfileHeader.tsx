@@ -67,7 +67,7 @@ export const EmployerProfileHeader = ({ profile }: EmployerProfileHeaderProps) =
       </div>
       
       <div className="pt-20 px-8 pb-8">
-        <h1 className="text-3xl font-bold text-slate-900">{profile.company_name}</h1>
+        <h1 className="text-3xl font-bold" style={{ color: '#1a1a1a' }}>{profile.company_name}</h1>
         
         {/* Always render the company size section, but with a fallback */}
         <div className="mt-2 mb-4">
