@@ -30,7 +30,7 @@ const QualificationRequirements = ({ control }: QualificationRequirementsProps) 
   const [selectedBackgroundChecks, setSelectedBackgroundChecks] = useState<string[]>([]);
 
   // Watch the toggle fields and work area
-  const workArea = useWatch({ control, name: "work_area" });
+  const workArea = useWatch({ control, name: "workArea" });
   const requiresEducation = useWatch({ control, name: "requires_education" });
   const requiresCertifications = useWatch({ control, name: "requires_certifications" });
   const requiresSecurityClearance = useWatch({ control, name: "requires_security_clearance" });
