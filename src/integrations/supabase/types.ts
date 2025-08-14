@@ -907,6 +907,57 @@ export type Database = {
           },
         ]
       }
+      job_title_suggestions: {
+        Row: {
+          admin_notes: string | null
+          admin_reviewed_at: string | null
+          admin_reviewed_by: string | null
+          admin_status: string
+          ai_validation_reason: string | null
+          ai_validation_score: number | null
+          ai_validation_status: string
+          created_at: string
+          id: string
+          job_title: string
+          specialization: string | null
+          suggested_by: string
+          updated_at: string
+          work_area: string
+        }
+        Insert: {
+          admin_notes?: string | null
+          admin_reviewed_at?: string | null
+          admin_reviewed_by?: string | null
+          admin_status?: string
+          ai_validation_reason?: string | null
+          ai_validation_score?: number | null
+          ai_validation_status?: string
+          created_at?: string
+          id?: string
+          job_title: string
+          specialization?: string | null
+          suggested_by: string
+          updated_at?: string
+          work_area: string
+        }
+        Update: {
+          admin_notes?: string | null
+          admin_reviewed_at?: string | null
+          admin_reviewed_by?: string | null
+          admin_status?: string
+          ai_validation_reason?: string | null
+          ai_validation_score?: number | null
+          ai_validation_status?: string
+          created_at?: string
+          id?: string
+          job_title?: string
+          specialization?: string | null
+          suggested_by?: string
+          updated_at?: string
+          work_area?: string
+        }
+        Relationships: []
+      }
       jobs: {
         Row: {
           candidate_commission: number | null
@@ -1018,6 +1069,33 @@ export type Database = {
           type?: string
           work_area?: string
           years_experience_essential?: boolean | null
+        }
+        Relationships: []
+      }
+      master_job_titles: {
+        Row: {
+          created_at: string
+          id: string
+          job_title: string
+          specialization: string | null
+          updated_at: string
+          work_area: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          job_title: string
+          specialization?: string | null
+          updated_at?: string
+          work_area: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          job_title?: string
+          specialization?: string | null
+          updated_at?: string
+          work_area?: string
         }
         Relationships: []
       }
