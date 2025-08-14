@@ -71,9 +71,9 @@ export const EmployerProfileHeader = ({ profile }: EmployerProfileHeaderProps) =
         
         {/* Always render the company size section, but with a fallback */}
         <div className="mt-2 mb-4">
-          <div className="inline-flex items-center px-3 py-1 bg-muted rounded-md">
-            <Users className="h-4 w-4 mr-2 text-muted-foreground" />
-            <span className="text-foreground font-medium">
+          <div className="inline-flex items-center px-3 py-1 bg-white/20 rounded-md border border-white/30">
+            <Users className="h-4 w-4 mr-2 text-white" />
+            <span className="text-white font-medium">
               {getCompanySizeLabel(profile.company_size)}
             </span>
           </div>
@@ -85,7 +85,7 @@ export const EmployerProfileHeader = ({ profile }: EmployerProfileHeaderProps) =
               href={profile.company_website} 
               target="_blank" 
               rel="noopener noreferrer"
-              className="flex items-center gap-2 text-primary hover:underline"
+              className="flex items-center gap-2 text-white hover:text-white/80 transition-colors hover:underline"
             >
               <Globe className="h-4 w-4" />
               Website
