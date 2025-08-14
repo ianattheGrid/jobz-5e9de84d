@@ -17,7 +17,7 @@ const WorkAreaSelect = ({ control, onWorkAreaChange, defaultValue }: WorkAreaSel
       name="workArea"
       render={({ field }) => (
         <FormItem>
-          <FormLabel className="text-gray-900">Current Area of Work</FormLabel>
+          <FormLabel className="text-gray-900">Area of Work</FormLabel>
           <FormControl>
             <Select 
               onValueChange={(value) => {
