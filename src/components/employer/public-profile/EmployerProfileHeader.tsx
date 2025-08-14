@@ -35,9 +35,11 @@ export const EmployerProfileHeader = ({ profile }: EmployerProfileHeaderProps) =
                 borderRadius: '8px',
                 border: '4px solid white',
                 position: 'relative',
-                overflow: 'hidden'
+                overflow: 'hidden',
+                cursor: 'pointer'
               }}
               onClick={() => window.open(profile.company_logo_url, '_blank')}
+              title="Click to view logo"
             >
               <img 
                 src={profile.company_logo_url}
