@@ -63,37 +63,40 @@ export const useAuth = () => {
 
         // Set up auth state listener for changes
         const { data: { subscription } } = supabase.auth.onAuthStateChange(
-          async (event, session) => {
+          (event, session) => {
             console.log('Auth state changed:', event);
             
             if (session?.user) {
-              try {
-                // Fetch user role from database when signed in
-                const { data: roleData } = await supabase
-                  .from('user_roles')
-                  .select('role')
-                  .eq('user_id', session.user.id)
-                  .maybeSingle();
-                
-                const userType = roleData?.role as 'employer' | 'candidate' | 'vr' | null;
-                
-                setAuthState({
-                  user: session.user,
-                  session,
-                  userType,
-                  loading: false
-                });
-              } catch (error) {
-                console.error('Error fetching user role:', error);
-                setAuthState({
-                  user: session.user,
-                  session,
-                  userType: null,
-                  loading: false
-                });
-              }
+              // Use setTimeout to defer database calls and prevent infinite loops
+              setTimeout(async () => {
+                try {
+                  // Fetch user role from database when signed in
+                  const { data: roleData } = await supabase
+                    .from('user_roles')
+                    .select('role')
+                    .eq('user_id', session.user.id)
+                    .maybeSingle();
+                  
+                  const userType = roleData?.role as 'employer' | 'candidate' | 'vr' | null;
+                  
+                  setAuthState({
+                    user: session.user,
+                    session,
+                    userType,
+                    loading: false
+                  });
+                } catch (error) {
+                  console.error('Error fetching user role:', error);
+                  setAuthState({
+                    user: session.user,
+                    session,
+                    userType: null,
+                    loading: false
+                  });
+                }
+              }, 0);
             } else {
-              // When signed out
+              // When signed out - immediate update, no async calls needed
               setAuthState({
                 user: null,
                 session: null,
