@@ -29,7 +29,7 @@ export const EmployerProfileHeader = ({ profile }: EmployerProfileHeaderProps) =
           {profile.company_logo_url ? (
             <div className="w-32 h-32 bg-white rounded-lg overflow-hidden flex items-center justify-center p-2">
               <img 
-                src={profile.company_logo_url} 
+                src={`${profile.company_logo_url}?t=${Date.now()}`}
                 alt={`${profile.company_name} logo`} 
                 className="w-full h-full"
                 style={{ 
@@ -41,7 +41,11 @@ export const EmployerProfileHeader = ({ profile }: EmployerProfileHeaderProps) =
                   maxHeight: '100%'
                 }}
                 onLoad={() => console.log('Logo loaded successfully:', profile.company_logo_url)}
-                onError={(e) => console.error('Logo failed to load:', e, profile.company_logo_url)}
+                onError={(e) => {
+                  console.error('Logo failed to load:', e, profile.company_logo_url);
+                  // Try direct URL access
+                  window.open(profile.company_logo_url, '_blank');
+                }}
               />
             </div>
           ) : (
