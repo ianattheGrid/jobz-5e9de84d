@@ -18,6 +18,17 @@ export const useEmployerProfile = () => {
     company_website: null,
     company_logo_url: null,
     profile_picture_url: null,
+    company_size: null,
+    company_description: null,
+    office_amenities: null,
+    nearby_amenities: null,
+    industry_sector: null,
+    company_address: null,
+    company_postcode: null,
+    remote_work_policy: "office_based",
+    company_culture: null,
+    company_values: null,
+    is_sme: false,
   });
 
   const isProfileComplete = (profile: EmployerProfile) => {
@@ -61,6 +72,17 @@ export const useEmployerProfile = () => {
           profile_picture_url: data.profile_picture_url,
           full_name: data.full_name || "",
           job_title: data.job_title || "",
+          company_size: data.company_size,
+          company_description: data.company_description,
+          office_amenities: data.office_amenities,
+          nearby_amenities: data.nearby_amenities,
+          industry_sector: data.industry_sector,
+          company_address: data.company_address,
+          company_postcode: data.company_postcode,
+          remote_work_policy: data.remote_work_policy,
+          company_culture: data.company_culture,
+          company_values: data.company_values,
+          is_sme: data.is_sme,
         });
       } else {
         const { error: createError } = await supabase
@@ -87,6 +109,17 @@ export const useEmployerProfile = () => {
           company_website: null,
           company_logo_url: null,
           profile_picture_url: null,
+          company_size: null,
+          company_description: null,
+          office_amenities: null,
+          nearby_amenities: null,
+          industry_sector: null,
+          company_address: null,
+          company_postcode: null,
+          remote_work_policy: "office_based",
+          company_culture: null,
+          company_values: null,
+          is_sme: false,
         });
       }
     } catch (error: any) {

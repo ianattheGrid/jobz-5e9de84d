@@ -93,9 +93,11 @@ export function ProfileForm({ profile, setProfile, email }: ProfileFormProps) {
 
   async function onSubmit(values: FormValues) {
     try {
+      console.log("ProfileForm: Starting submit with values:", values);
       const { data: { session } } = await supabase.auth.getSession();
       
       if (!session) {
+        console.log("ProfileForm: No session found");
         toast({
           variant: "destructive",
           title: "Error",
@@ -103,6 +105,8 @@ export function ProfileForm({ profile, setProfile, email }: ProfileFormProps) {
         });
         return;
       }
+      
+      console.log("ProfileForm: Session found, user ID:", session.user.id);
 
       // Format website URL if needed
       let formattedWebsite = values.company_website;
@@ -132,11 +136,18 @@ export function ProfileForm({ profile, setProfile, email }: ProfileFormProps) {
         is_sme: isSME, // Automatically set based on company size
       };
 
+      console.log("ProfileForm: About to upsert data:", updateData);
+      
       const { error } = await supabase
         .from('employer_profiles')
         .upsert(updateData);
 
-      if (error) throw error;
+      if (error) {
+        console.error("ProfileForm: Database error:", error);
+        throw error;
+      }
+      
+      console.log("ProfileForm: Database update successful");
 
       setProfile({
         ...profile,
@@ -148,6 +159,7 @@ export function ProfileForm({ profile, setProfile, email }: ProfileFormProps) {
         description: "Your profile has been updated successfully.",
       });
     } catch (error: any) {
+      console.error("ProfileForm: Error in onSubmit:", error);
       toast({
         variant: "destructive",
         title: "Error",
