@@ -26,7 +26,7 @@ export default function PreviewEmployerRealDemo() {
     industry_sector: "Software Development",
     company_address: "Bristol, UK",
     company_postcode: "BS1 5TT",
-    remote_work_policy: "Hybrid-first with remote options",
+    
     company_culture:
       "We believe in work-life balance, continuous learning, and collaborative innovation. Our team is diverse, inclusive, and driven by curiosity.",
     company_values: ["Innovation", "Collaboration", "Integrity", "Growth Mindset", "Customer Focus"],

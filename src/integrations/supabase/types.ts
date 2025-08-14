@@ -685,7 +685,6 @@ export type Database = {
           nearby_amenities: string | null
           office_amenities: string | null
           profile_picture_url: string | null
-          remote_work_policy: string | null
           updated_at: string
         }
         Insert: {
@@ -708,7 +707,6 @@ export type Database = {
           nearby_amenities?: string | null
           office_amenities?: string | null
           profile_picture_url?: string | null
-          remote_work_policy?: string | null
           updated_at?: string
         }
         Update: {
@@ -731,7 +729,6 @@ export type Database = {
           nearby_amenities?: string | null
           office_amenities?: string | null
           profile_picture_url?: string | null
-          remote_work_policy?: string | null
           updated_at?: string
         }
         Relationships: []

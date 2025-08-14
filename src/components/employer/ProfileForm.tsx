@@ -54,7 +54,6 @@ const formSchema = z.object({
   industry_sector: z.string().optional(),
   company_address: z.string().optional(),
   company_postcode: z.string().optional(),
-  remote_work_policy: z.string().default("office_based"),
   company_culture: z.string().max(1000, {
     message: "Company culture cannot exceed 1000 characters",
   }).optional(),
@@ -85,7 +84,6 @@ export function ProfileForm({ profile, setProfile, email }: ProfileFormProps) {
       industry_sector: profile.industry_sector || "",
       company_address: profile.company_address || "",
       company_postcode: profile.company_postcode || "",
-      remote_work_policy: profile.remote_work_policy || "office_based",
       company_culture: profile.company_culture || "",
       company_values: profile.company_values || [],
     },
@@ -130,7 +128,6 @@ export function ProfileForm({ profile, setProfile, email }: ProfileFormProps) {
         industry_sector: values.industry_sector,
         company_address: values.company_address,
         company_postcode: values.company_postcode,
-        remote_work_policy: values.remote_work_policy,
         company_culture: values.company_culture,
         company_values: values.company_values,
         is_sme: isSME, // Automatically set based on company size

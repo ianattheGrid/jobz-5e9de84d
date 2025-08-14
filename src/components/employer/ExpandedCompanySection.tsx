@@ -12,19 +12,11 @@ interface ExpandedCompanySectionProps {
 
 export const ExpandedCompanySection = ({ control }: ExpandedCompanySectionProps) => {
 
-  const remoteWorkPolicies = [
-    { value: "office_based", label: "Office Based" },
-    { value: "remote_friendly", label: "Remote Friendly" },
-    { value: "hybrid", label: "Hybrid" },
-    { value: "fully_remote", label: "Fully Remote" }
-  ];
-
   return (
     <div className="space-y-6">
       <h3 className="text-xl font-semibold border-l-4 border-primary pl-4">Company Profile</h3>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <FormField
+      <FormField
           control={control}
           name="industry_sector"
           render={({ field }) => (
@@ -48,32 +40,6 @@ export const ExpandedCompanySection = ({ control }: ExpandedCompanySectionProps)
             </FormItem>
           )}
         />
-
-        <FormField
-          control={control}
-          name="remote_work_policy"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Remote Work Policy</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select remote work policy" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {remoteWorkPolicies.map((policy) => (
-                    <SelectItem key={policy.value} value={policy.value}>
-                      {policy.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <FormField
