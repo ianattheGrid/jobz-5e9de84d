@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { groupInterviewsByTime, Interview } from "@/utils/interviewUtils";
 import InterviewsHeader from "@/components/employer/interviews/InterviewsHeader";
 import InterviewTabs from "@/components/employer/interviews/InterviewTabs";
+import InterviewStats from "@/components/employer/interviews/InterviewStats";
 
 const EmployerInterviews = () => {
   const { user } = useAuth();
@@ -54,8 +55,9 @@ const EmployerInterviews = () => {
   const interviewGroups = groupInterviewsByTime(interviews);
 
   return (
-    <div className="container mx-auto py-8">
+    <div className="container mx-auto py-8 px-4">
       <InterviewsHeader />
+      <InterviewStats interviews={interviews || []} />
       <InterviewTabs 
         past={interviewGroups.past} 
         today={interviewGroups.today} 
