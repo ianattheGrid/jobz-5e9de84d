@@ -1,5 +1,6 @@
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
+import { CompanyVisibilityField } from "./CompanyVisibilityField";
 import { UseFormReturn } from "react-hook-form";
 import { VacancyFormValues } from "./VacancyFormSchema";
 import WorkAreaField from "@/components/WorkAreaField";
@@ -42,6 +43,7 @@ export function VacancyForm({ form, onSubmit }: VacancyFormProps) {
           </div>
           
           <div className="space-y-8">
+            <CompanyVisibilityField form={form} />
             <WorkAreaField control={form.control} />
             <JobDetailsFields control={form.control} />
             <MatchThresholdField 

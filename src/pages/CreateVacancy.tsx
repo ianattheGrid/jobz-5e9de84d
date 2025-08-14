@@ -20,6 +20,7 @@ export default function CreateVacancy() {
   const form = useForm<VacancyFormValues>({
     resolver: zodResolver(vacancyFormSchema),
     defaultValues: {
+      showCompanyName: true,
       type: "Full-time",
       applicationMethod: "platform",
       offerCandidateCommission: false,
@@ -102,7 +103,9 @@ export default function CreateVacancy() {
       const { error } = await supabase.from('jobs').insert({
         title: values.title,
         description: values.description,
-        company: session.user.user_metadata.company_name || "Unknown Company",
+        company: values.showCompanyName 
+          ? (session.user.user_metadata.company_name || "Unknown Company")
+          : "Anonymous Company",
         location: values.location,
         salary_min: minSalary,
         salary_max: maxSalary,

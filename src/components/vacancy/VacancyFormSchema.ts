@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 export const vacancyFormSchema = z.object({
+  showCompanyName: z.boolean().default(true),
   workArea: z.string({
     required_error: "Please select the area of work for this vacancy.",
   }),
