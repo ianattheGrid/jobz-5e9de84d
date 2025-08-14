@@ -66,7 +66,24 @@ export const EmployerProfileHeader = ({ profile }: EmployerProfileHeaderProps) =
         </div>
       </div>
       
-      <div className="pt-20 px-8 pb-8">
+      <div className="pt-16 px-8">
+        {/* Company name at the top with strong overrides */}
+        <h1 
+          style={{
+            color: '#000000',
+            fontSize: '32px',
+            fontWeight: 'bold',
+            marginBottom: '24px',
+            display: 'block',
+            position: 'relative',
+            zIndex: 10,
+            backgroundColor: 'rgba(255,255,255,0.9)',
+            padding: '8px 0'
+          } as React.CSSProperties}
+        >
+          {profile.company_name}
+        </h1>
+        
         {/* Employee count on the right */}
         <div className="flex justify-end mb-4">
           <div className="inline-flex items-center px-3 py-1 bg-gray-50 rounded-md border border-gray-300">
@@ -76,11 +93,6 @@ export const EmployerProfileHeader = ({ profile }: EmployerProfileHeaderProps) =
             </span>
           </div>
         </div>
-        
-        {/* Company name above website link */}
-        <h1 style={{ color: '#000000', fontSize: '28px', fontWeight: 'bold', marginBottom: '16px' }}>
-          {profile.company_name}
-        </h1>
         
         <div className="mt-4 flex flex-wrap gap-y-2 gap-x-6">
           {profile.company_website && (
