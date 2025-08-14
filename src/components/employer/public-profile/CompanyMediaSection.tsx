@@ -105,14 +105,22 @@ export const CompanyMediaSection = ({ employerId, galleryImages = [] }: CompanyM
             {media.map((item) => (
               <Card key={item.id} className="overflow-hidden bg-white">
                 <div className="relative">
-                  {item.type === 'image' ? (
-                    <AspectRatio ratio={16 / 9}>
-                      <img 
-                        src={item.url} 
-                        alt={item.title || 'Company media'} 
-                        className="w-full h-full object-cover"
-                      />
-                    </AspectRatio>
+                   {item.type === 'image' ? (
+                     <AspectRatio ratio={16 / 9}>
+                       <img 
+                         src={item.url} 
+                         alt={item.title || 'Company media'} 
+                         style={{
+                           width: '100%',
+                           height: '100%',
+                           objectFit: 'cover',
+                           filter: 'none',
+                           transform: 'none',
+                           mixBlendMode: 'normal',
+                           opacity: '1'
+                         }}
+                       />
+                     </AspectRatio>
                   ) : (
                     <AspectRatio ratio={16 / 9}>
                       <div className="w-full h-full flex items-center justify-center bg-gray-100">
