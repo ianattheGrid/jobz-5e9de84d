@@ -1,13 +1,15 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Coffee, Landmark } from "lucide-react";
-import type { EmployerProfile } from "@/types/employer";
+import { CompanyGalleryCarousel } from "./CompanyGalleryCarousel";
+import type { EmployerProfile, CompanyGalleryImage } from "@/types/employer";
 
 interface AboutTabContentProps {
   profile: EmployerProfile;
+  galleryImages: CompanyGalleryImage[];
 }
 
-export const AboutTabContent = ({ profile }: AboutTabContentProps) => {
+export const AboutTabContent = ({ profile, galleryImages }: AboutTabContentProps) => {
   return (
     <div className="space-y-6">
       <Card className="bg-white">
@@ -49,6 +51,9 @@ export const AboutTabContent = ({ profile }: AboutTabContentProps) => {
           </CardContent>
         </Card>
       )}
+      
+      {/* Company Gallery - positioned between Workplace and Contact Information */}
+      <CompanyGalleryCarousel galleryImages={galleryImages} />
       
       <Card className="bg-white">
         <CardContent className="pt-6">
