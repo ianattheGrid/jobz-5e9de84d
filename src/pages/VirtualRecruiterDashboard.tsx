@@ -118,48 +118,7 @@ const VirtualRecruiterDashboard = () => {
             </Card>
           </div>
           
-          {/* Quick Actions */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <UserPlus className="h-5 w-5" />
-                Recommend Candidates
-              </CardTitle>
-              <CardDescription>Choose how you'd like to recommend a candidate</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid gap-4 md:grid-cols-2">
-                <Button 
-                  className="h-auto p-6 flex flex-col items-start gap-2 bg-primary hover:bg-primary/90" 
-                  onClick={() => navigate('/vr/recommendations?type=job')}
-                >
-                  <div className="flex items-center gap-2 w-full">
-                    <FileText className="h-5 w-5" />
-                    <span className="font-medium">Job-Specific</span>
-                  </div>
-                  <span className="text-sm text-primary-foreground/80 text-left">
-                    Recommend for a specific vacancy with set commission rate
-                  </span>
-                </Button>
-                
-                <Button 
-                  variant="outline" 
-                  className="h-auto p-6 flex flex-col items-start gap-2 border-primary/20 hover:bg-primary/5" 
-                  onClick={() => navigate('/vr/recommendations?type=general')}
-                >
-                  <div className="flex items-center gap-2 w-full">
-                    <Users className="h-5 w-5" />
-                    <span className="font-medium">Add to Talent Pool</span>
-                  </div>
-                  <span className="text-sm text-muted-foreground text-left">
-                    Add candidate to our talent pool (2.5% commission)
-                  </span>
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* WhatsApp Referrals */}
+          {/* WhatsApp Referrals - Now the primary method */}
           <Card className="bg-gradient-to-br from-green-50 to-green-100 border-green-200">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-green-800">
