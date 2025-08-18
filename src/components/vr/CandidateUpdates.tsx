@@ -97,49 +97,47 @@ export const CandidateUpdates = () => {
   };
 
   if (loading) {
-    return <div className="space-y-4 mt-4">
+    return <div className="space-y-3">
       {[1, 2, 3].map((n) => (
-        <Card key={n} className="bg-muted/50">
-          <CardContent className="p-4">
-            <div className="h-4 bg-muted rounded w-1/4 mb-2"></div>
-            <div className="h-3 bg-muted rounded w-3/4"></div>
-          </CardContent>
-        </Card>
+        <div key={n} className="bg-muted/30 rounded-lg p-3">
+          <div className="h-3 bg-muted rounded w-1/4 mb-2"></div>
+          <div className="h-2 bg-muted rounded w-3/4"></div>
+        </div>
       ))}
     </div>;
   }
 
   if (updates.length === 0) {
     return (
-      <Card className="mt-4">
-        <CardContent className="p-6 text-center text-muted-foreground">
-          No candidate updates yet
-        </CardContent>
-      </Card>
+      <div className="text-center text-muted-foreground py-6">
+        No candidate updates yet
+      </div>
     );
   }
 
   return (
-    <div className="space-y-4 mt-4">
+    <div className="space-y-3">
       {updates.map((update) => (
-        <Card 
+        <div 
           key={update.id} 
-          className={update.is_read ? "bg-background" : "bg-muted/20 border-primary/20"}
+          className={`p-3 rounded-lg border cursor-pointer transition-colors ${
+            update.is_read 
+              ? "bg-background hover:bg-muted/50" 
+              : "bg-primary/5 border-primary/20 hover:bg-primary/10"
+          }`}
           onClick={() => !update.is_read && markAsRead(update.id)}
         >
-          <CardContent className="p-4">
-            <div className="flex justify-between items-start mb-1">
-              <h4 className="font-medium">{update.title}</h4>
-              {!update.is_read && (
-                <Badge variant="default" className="bg-primary text-white">New</Badge>
-              )}
-            </div>
-            <p className="text-sm text-muted-foreground">{update.message}</p>
-            <p className="text-xs text-muted-foreground mt-2">
-              {new Date(update.created_at).toLocaleString()}
-            </p>
-          </CardContent>
-        </Card>
+          <div className="flex justify-between items-start mb-1">
+            <h4 className="font-medium text-sm">{update.title}</h4>
+            {!update.is_read && (
+              <Badge variant="default" className="bg-primary text-primary-foreground text-xs">New</Badge>
+            )}
+          </div>
+          <p className="text-sm text-muted-foreground">{update.message}</p>
+          <p className="text-xs text-muted-foreground mt-2">
+            {new Date(update.created_at).toLocaleString()}
+          </p>
+        </div>
       ))}
     </div>
   );
