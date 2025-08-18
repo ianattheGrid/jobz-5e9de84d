@@ -30,6 +30,7 @@ import JobApplications from './pages/JobApplications';
 import EmployerProfile from './pages/EmployerProfile';
 import PreviewEmployerProfile from './pages/PreviewEmployerProfile';
 import EmployerInterviews from './pages/EmployerInterviews';
+import CostCalculatorPage from './pages/employer/CostCalculatorPage';
 
 // Virtual Recruiter routes
 import VirtualRecruiterSignIn from './pages/VirtualRecruiterSignIn';
@@ -106,6 +107,7 @@ const App = () => {
           <Route path="employer/candidate/:id" element={<ProtectedRouteWithTimeout userType="employer"><ViewCandidateProfile /></ProtectedRouteWithTimeout>} />
           <Route path="employer/candidates" element={<ProtectedRouteWithTimeout userType="employer"><CandidateSearch /></ProtectedRouteWithTimeout>} />
           <Route path="employer/candidate-search" element={<ProtectedRouteWithTimeout userType="employer"><CandidateSearch /></ProtectedRouteWithTimeout>} />
+          <Route path="employer/calculator" element={<ProtectedRouteWithTimeout userType="employer"><CostCalculatorPage /></ProtectedRouteWithTimeout>} />
           
           {/* Virtual Recruiter routes */}
           <Route path="vr/signin" element={<VirtualRecruiterSignIn />} />
