@@ -90,7 +90,7 @@ const VirtualRecruiterDashboard = () => {
             <VRChatSection onClose={() => setShowChat(false)} />
           )}
           
-          <RecommendationExpiryCard />
+          
           
           <div className="grid gap-6 md:grid-cols-3">
             <Card>
