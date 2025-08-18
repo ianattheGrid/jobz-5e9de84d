@@ -54,6 +54,9 @@ export const PortfolioUpload = ({ onUpload, uploading }: PortfolioUploadProps) =
     <Card>
       <CardHeader>
         <CardTitle className="text-lg">Add Portfolio Item</CardTitle>
+        <p className="text-sm text-muted-foreground">
+          You can upload multiple portfolio items to showcase different aspects of your work.
+        </p>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
