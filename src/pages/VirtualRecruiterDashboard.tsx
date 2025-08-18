@@ -5,8 +5,9 @@ import { DashboardError } from "@/components/vr/dashboard/DashboardError";
 import { InactiveAccountWarning } from "@/components/vr/dashboard/InactiveAccountWarning";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Users, UserCheck, TrendingUp, FileText, UserPlus, ChevronDown, Bell, MessageSquare, MessageCircle } from "lucide-react";
+import { Users, UserCheck, TrendingUp, FileText, UserPlus, ChevronDown, Bell, MessageSquare, MessageCircle, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
 import { SessionTimeoutHandler } from "@/components/auth/SessionTimeoutHandler";
 import NavBar from "@/components/NavBar";
@@ -14,12 +15,17 @@ import { useState } from "react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ReferralsList } from "@/components/vr/ReferralsList";
 import { CandidateUpdates } from "@/components/vr/CandidateUpdates";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 const VirtualRecruiterDashboard = () => {
   const { loading, error, profile, stats } = useVRDashboard();
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [referralsOpen, setReferralsOpen] = useState(false);
   const [updatesOpen, setUpdatesOpen] = useState(false);
+  const [checkEmail, setCheckEmail] = useState("");
+  const [checkingCandidate, setCheckingCandidate] = useState(false);
 
   if (loading) {
     return (
@@ -57,6 +63,44 @@ const VirtualRecruiterDashboard = () => {
       </>
     );
   }
+
+  const handleCheckCandidate = async () => {
+    if (!checkEmail.trim()) return;
+    
+    setCheckingCandidate(true);
+    try {
+      const { data, error } = await supabase
+        .from('candidate_profiles')
+        .select('email, full_name, job_title')
+        .eq('email', checkEmail.trim().toLowerCase())
+        .maybeSingle();
+
+      if (error) throw error;
+
+      if (data) {
+        toast({
+          title: "Candidate Found",
+          description: `${data.full_name || 'Candidate'} (${data.job_title || 'No title'}) is already registered on JobZ.`,
+          variant: "default"
+        });
+      } else {
+        toast({
+          title: "Candidate Not Found",
+          description: "This email is not registered on JobZ. You can proceed with your recommendation.",
+          variant: "default"
+        });
+      }
+    } catch (error: any) {
+      console.error('Error checking candidate:', error);
+      toast({
+        title: "Error",
+        description: "Failed to check candidate. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setCheckingCandidate(false);
+    }
+  };
 
   return (
     <>
@@ -118,6 +162,37 @@ const VirtualRecruiterDashboard = () => {
             </Card>
           </div>
           
+          {/* Candidate Checker */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Search className="h-5 w-5" />
+                Check Candidate
+              </CardTitle>
+              <CardDescription>
+                Check if a candidate is already registered before making a recommendation
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex gap-2">
+                <Input
+                  placeholder="Enter candidate email address"
+                  value={checkEmail}
+                  onChange={(e) => setCheckEmail(e.target.value)}
+                  onKeyPress={(e) => e.key === 'Enter' && handleCheckCandidate()}
+                  type="email"
+                />
+                <Button 
+                  onClick={handleCheckCandidate}
+                  disabled={!checkEmail.trim() || checkingCandidate}
+                  variant="outline"
+                >
+                  {checkingCandidate ? "Checking..." : "Check"}
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+
           {/* WhatsApp Referrals - Now the primary method */}
           <Card className="bg-gradient-to-br from-green-50 to-green-100 border-green-200">
             <CardHeader>
