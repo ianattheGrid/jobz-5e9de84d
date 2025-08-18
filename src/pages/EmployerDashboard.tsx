@@ -106,7 +106,7 @@ const EmployerDashboard = () => {
       description: "Update your company profile"
     },
     {
-      title: "Cost & Savings Calculator",
+      title: "Savings & Bonus calculators",
       icon: <MessageSquare className="h-6 w-6" />,
       path: "/employer/calculator",
       description: "Calculate recruitment costs and bonus structures"

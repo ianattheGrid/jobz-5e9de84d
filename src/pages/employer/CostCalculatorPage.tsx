@@ -1,11 +1,14 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import NavBar from "@/components/NavBar";
 import { CostCalculatorSection } from "@/components/home/CostCalculatorSection";
-import { ContractorCalculatorSection } from "@/components/home/ContractorCalculatorSection";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { BonusCalculator } from "@/components/candidate/sections/commission/BonusCalculator";
+import { ArrowLeft } from "lucide-react";
 
 const CostCalculatorPage = () => {
+  const navigate = useNavigate();
   const [salary, setSalary] = React.useState("50000");
   const [feePercentage, setFeePercentage] = React.useState(15);
   const [splitPercentage, setSplitPercentage] = React.useState(50);
@@ -15,9 +18,20 @@ const CostCalculatorPage = () => {
       <NavBar />
       <div className="container mx-auto px-4 pt-20">
         <div className="max-w-6xl mx-auto">
+          <div className="mb-6">
+            <Button 
+              variant="outline" 
+              onClick={() => navigate('/employer/dashboard')}
+              className="flex items-center gap-2"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Dashboard
+            </Button>
+          </div>
+          
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold mb-4 text-primary">
-              Cost & Savings Calculator
+              Savings & Bonus calculators
             </h1>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
               Calculate your recruitment savings and understand the bonus structure 
@@ -28,11 +42,6 @@ const CostCalculatorPage = () => {
           {/* Recruitment Cost Savings */}
           <div className="mb-16">
             <CostCalculatorSection />
-          </div>
-
-          {/* Contractor Savings */}
-          <div className="mb-16">
-            <ContractorCalculatorSection />
           </div>
 
           {/* Bonus Structure Calculator */}
