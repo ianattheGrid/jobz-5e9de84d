@@ -10,6 +10,7 @@ import QualificationsSection from "./sections/QualificationsSection";
 import SkillsSection from "./sections/SkillsSection";
 import JobTitlesSection from "./sections/JobTitlesSection";
 import GalleryCarousel from "./sections/GalleryCarousel";
+import { PortfolioSection } from "./sections/PortfolioSection";
 import { supabase } from "@/integrations/supabase/client";
 
 interface ProfileDetailsProps {
@@ -252,6 +253,9 @@ const ProfileDetails = ({ profile, showVRRecommendation = false, vrRecommendatio
         {((profile as any).visible_sections?.gallery ?? true) && (
           <GalleryCarousel candidateId={(profile as any).id as unknown as string} />
         )}
+
+        {/* Portfolio */}
+        <PortfolioSection candidateId={(profile as any).id as unknown as string} />
 
         {/* Personality Snapshots */}
         {((profile as any).visible_sections?.personality ?? true) && Array.isArray((profile as any).personality) && (profile as any).personality.length > 0 && (

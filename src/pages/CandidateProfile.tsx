@@ -16,6 +16,7 @@ import { CreateFromCVButton } from "@/components/candidate/CreateFromCVButton";
 import { CandidateGallerySection } from "@/components/candidate/gallery/CandidateGallerySection";
 import { SectionVisibilityToggles } from "@/components/candidate/SectionVisibilityToggles";
 import { PersonalitySection } from "@/components/candidate/PersonalitySection";
+import { PortfolioSection } from "@/components/candidate/portfolio/PortfolioSection";
 
 export default function CandidateProfile() {
   const { toast } = useToast();
@@ -179,6 +180,11 @@ export default function CandidateProfile() {
                   <h2 className="text-xl font-semibold text-gray-900">Gallery</h2>
                   {userId && <CandidateGallerySection candidateId={userId} />}
                 </div>
+              </div>
+
+              {/* Portfolio Section */}
+              <div className="bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
+                {userId && <PortfolioSection userId={userId} />}
               </div>
 
               {/* Visibility toggles */}
