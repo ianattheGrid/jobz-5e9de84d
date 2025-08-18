@@ -5,7 +5,7 @@ import { DashboardError } from "@/components/vr/dashboard/DashboardError";
 import { InactiveAccountWarning } from "@/components/vr/dashboard/InactiveAccountWarning";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Users, UserCheck, TrendingUp, FileText, UserPlus, ChevronDown, Bell, MessageSquare } from "lucide-react";
+import { Users, UserCheck, TrendingUp, FileText, UserPlus, ChevronDown, Bell, MessageSquare, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { SessionTimeoutHandler } from "@/components/auth/SessionTimeoutHandler";
@@ -155,6 +155,36 @@ const VirtualRecruiterDashboard = () => {
                     Add candidate to our talent pool (2.5% commission)
                   </span>
                 </Button>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* WhatsApp Referrals */}
+          <Card className="bg-gradient-to-br from-green-50 to-green-100 border-green-200">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-green-800">
+                <MessageCircle className="h-5 w-5" />
+                WhatsApp Referrals
+              </CardTitle>
+              <CardDescription className="text-green-700">
+                Send referral invitations directly via WhatsApp
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                <p className="text-sm text-green-700">
+                  Share your referral link instantly with candidates through WhatsApp messaging.
+                </p>
+                <Button 
+                  disabled
+                  className="w-full bg-green-600 hover:bg-green-700 text-white disabled:bg-green-300 disabled:text-green-600"
+                >
+                  <MessageCircle className="h-4 w-4 mr-2" />
+                  Send WhatsApp Invitation
+                </Button>
+                <p className="text-xs text-green-600 text-center">
+                  Coming soon - pending WhatsApp Business approval
+                </p>
               </div>
             </CardContent>
           </Card>
