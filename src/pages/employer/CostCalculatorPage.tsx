@@ -20,7 +20,6 @@ const CostCalculatorPage = () => {
         <div className="max-w-6xl mx-auto">
           <div className="mb-6">
             <Button 
-              variant="outline" 
               onClick={() => navigate('/employer/dashboard')}
               className="flex items-center gap-2"
             >
