@@ -12,7 +12,6 @@ import { Users, UserPlus, BarChart3, FileText, Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { CandidateUpdates } from "@/components/vr/CandidateUpdates";
-import { RecommendationExpiryCard } from "@/components/vr/dashboard/RecommendationExpiryCard";
 import { SessionTimeoutHandler } from "@/components/auth/SessionTimeoutHandler";
 import NavBar from "@/components/NavBar";
 
