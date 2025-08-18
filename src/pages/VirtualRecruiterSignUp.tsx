@@ -22,12 +22,12 @@ const VirtualRecruiterSignUp = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-background">
       <NavBar />
       <div className="container mx-auto px-4 py-8 pt-24">
         <div className="max-w-md mx-auto">
-          <h1 className={`text-2xl font-bold text-center mb-8 text-white ${PRIMARY_COLOR_PATTERN}`}>
-            Sign Up as Virtual Recruiter
+          <h1 className={`text-2xl font-bold text-center mb-8 ${PRIMARY_COLOR_PATTERN}`}>
+            Sign Up as Connector
           </h1>
           {error && (
             <Alert variant="destructive" className="mb-4">
