@@ -47,6 +47,8 @@ export const useNotifications = () => {
         (payload) => {
           setNotifications(prev => [payload.new, ...prev]);
           setUnreadCount(prev => prev + 1);
+          
+          // Show toast notification
           toast({
             title: payload.new.title,
             description: payload.new.message,

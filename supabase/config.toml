@@ -32,3 +32,9 @@ verify_jwt = false
 
 [functions.send-test-push]
 verify_jwt = true
+
+[functions.scrape-external-jobs]
+verify_jwt = false
+
+[functions.match-external-jobs]
+verify_jwt = false

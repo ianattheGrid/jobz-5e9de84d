@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import NavBar from "@/components/NavBar";
 import { NotificationSettings } from "@/components/candidate/NotificationSettings";
 import { PersonalizedJobRecommendations } from "@/components/candidate/PersonalizedJobRecommendations";
+import ExternalJobsWidget from "@/components/candidate/ExternalJobsWidget";
 import { 
   UserCircle,
   Briefcase,
@@ -80,6 +81,9 @@ const CandidateDashboard = () => {
 
           {/* Personalized Job Recommendations */}
           <PersonalizedJobRecommendations />
+
+          {/* External Jobs Widget */}
+          <ExternalJobsWidget />
 
           {/* Remaining menu items */}
           {menuItems.slice(1).map((item, index) => (

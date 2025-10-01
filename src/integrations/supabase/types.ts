@@ -820,6 +820,127 @@ export type Database = {
         }
         Relationships: []
       }
+      external_job_matches: {
+        Row: {
+          candidate_id: string
+          candidate_interested: boolean | null
+          candidate_viewed_at: string | null
+          created_at: string | null
+          external_job_id: string | null
+          id: string
+          match_explanation: string | null
+          match_score: number
+          notified_at: string | null
+        }
+        Insert: {
+          candidate_id: string
+          candidate_interested?: boolean | null
+          candidate_viewed_at?: string | null
+          created_at?: string | null
+          external_job_id?: string | null
+          id?: string
+          match_explanation?: string | null
+          match_score: number
+          notified_at?: string | null
+        }
+        Update: {
+          candidate_id?: string
+          candidate_interested?: boolean | null
+          candidate_viewed_at?: string | null
+          created_at?: string | null
+          external_job_id?: string | null
+          id?: string
+          match_explanation?: string | null
+          match_score?: number
+          notified_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "external_job_matches_external_job_id_fkey"
+            columns: ["external_job_id"]
+            isOneToOne: false
+            referencedRelation: "external_jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      external_jobs: {
+        Row: {
+          company_id: string | null
+          contract_type: string | null
+          created_at: string | null
+          expires_at: string | null
+          id: string
+          is_active: boolean | null
+          job_description: string | null
+          job_title: string
+          job_url: string
+          location: string
+          posting_date: string | null
+          required_qualifications: string[] | null
+          required_skills: string[] | null
+          salary_max: number | null
+          salary_min: number | null
+          scraped_at: string | null
+          specialization: string | null
+          updated_at: string | null
+          work_area: string | null
+          years_experience: number | null
+        }
+        Insert: {
+          company_id?: string | null
+          contract_type?: string | null
+          created_at?: string | null
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          job_description?: string | null
+          job_title: string
+          job_url: string
+          location: string
+          posting_date?: string | null
+          required_qualifications?: string[] | null
+          required_skills?: string[] | null
+          salary_max?: number | null
+          salary_min?: number | null
+          scraped_at?: string | null
+          specialization?: string | null
+          updated_at?: string | null
+          work_area?: string | null
+          years_experience?: number | null
+        }
+        Update: {
+          company_id?: string | null
+          contract_type?: string | null
+          created_at?: string | null
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          job_description?: string | null
+          job_title?: string
+          job_url?: string
+          location?: string
+          posting_date?: string | null
+          required_qualifications?: string[] | null
+          required_skills?: string[] | null
+          salary_max?: number | null
+          salary_min?: number | null
+          scraped_at?: string | null
+          specialization?: string | null
+          updated_at?: string | null
+          work_area?: string | null
+          years_experience?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "external_jobs_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "target_companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       interview_feedback: {
         Row: {
           additional_clarifications: string | null
@@ -1463,6 +1584,57 @@ export type Database = {
           suggested_by?: string
           updated_at?: string
           work_area?: string
+        }
+        Relationships: []
+      }
+      target_companies: {
+        Row: {
+          ats_type: string | null
+          careers_page_url: string
+          company_name: string
+          created_at: string | null
+          estimated_size: number | null
+          id: string
+          industry_sector: string | null
+          is_active: boolean | null
+          last_scraped_at: string | null
+          location: string
+          notes: string | null
+          scrape_frequency_hours: number | null
+          updated_at: string | null
+          website: string | null
+        }
+        Insert: {
+          ats_type?: string | null
+          careers_page_url: string
+          company_name: string
+          created_at?: string | null
+          estimated_size?: number | null
+          id?: string
+          industry_sector?: string | null
+          is_active?: boolean | null
+          last_scraped_at?: string | null
+          location?: string
+          notes?: string | null
+          scrape_frequency_hours?: number | null
+          updated_at?: string | null
+          website?: string | null
+        }
+        Update: {
+          ats_type?: string | null
+          careers_page_url?: string
+          company_name?: string
+          created_at?: string | null
+          estimated_size?: number | null
+          id?: string
+          industry_sector?: string | null
+          is_active?: boolean | null
+          last_scraped_at?: string | null
+          location?: string
+          notes?: string | null
+          scrape_frequency_hours?: number | null
+          updated_at?: string | null
+          website?: string | null
         }
         Relationships: []
       }

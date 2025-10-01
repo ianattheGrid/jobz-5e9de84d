@@ -8,9 +8,21 @@ import {
 } from "@/components/ui/popover";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useNotifications } from "@/hooks/useNotifications";
+import { useNavigate } from "react-router-dom";
 
 export const NotificationsPopover = () => {
   const { notifications, unreadCount, markAsRead } = useNotifications();
+  const navigate = useNavigate();
+
+  const handleNotificationClick = (notification: any) => {
+    markAsRead(notification.id);
+    
+    // Navigate based on notification type
+    if (notification.type === 'external_job_match') {
+      navigate('/external-jobs');
+    }
+    // Add other notification type handlers as needed
+  };
 
   return (
     <Popover>
@@ -39,10 +51,10 @@ export const NotificationsPopover = () => {
                 {notifications.map((notification) => (
                   <div
                     key={notification.id}
-                    className={`p-3 rounded-lg ${
+                    className={`p-3 rounded-lg cursor-pointer ${
                       notification.is_read ? 'bg-gray-50' : 'bg-blue-50'
                     }`}
-                    onClick={() => markAsRead(notification.id)}
+                    onClick={() => handleNotificationClick(notification)}
                   >
                     <h5 className="font-medium text-sm">{notification.title}</h5>
                     <p className="text-sm text-gray-600">{notification.message}</p>
