@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Navigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2 } from "lucide-react";
 
@@ -59,6 +58,13 @@ export const AdminProtectedRoute = ({ children }: AdminProtectedRouteProps) => {
     checkAdminStatus();
   }, []);
 
+  useEffect(() => {
+    if (!loading && !isAdmin) {
+      console.log('[AdminProtectedRoute] Redirecting to homepage - not authorized');
+      window.location.href = "/";
+    }
+  }, [loading, isAdmin]);
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -68,7 +74,11 @@ export const AdminProtectedRoute = ({ children }: AdminProtectedRouteProps) => {
   }
 
   if (!isAdmin) {
-    return <Navigate to="/" replace />;
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <p>Redirecting...</p>
+      </div>
+    );
   }
 
   return <>{children}</>;
