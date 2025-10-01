@@ -1855,6 +1855,10 @@ export type Database = {
         Args: { "": unknown }
         Returns: unknown
       }
+      is_admin: {
+        Args: { user_email: string }
+        Returns: boolean
+      }
       normalize_company_name: {
         Args: { company_name: string }
         Returns: string

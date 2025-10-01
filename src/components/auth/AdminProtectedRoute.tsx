@@ -14,15 +14,25 @@ export const AdminProtectedRoute = ({ children }: AdminProtectedRouteProps) => {
   useEffect(() => {
     const checkAdminStatus = async () => {
       try {
-        const { data: { session } } = await supabase.auth.getSession();
+        console.log('[AdminProtectedRoute] Checking admin status...');
+        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+        
+        if (sessionError) {
+          console.error('[AdminProtectedRoute] Session error:', sessionError);
+          setIsAdmin(false);
+          setLoading(false);
+          return;
+        }
         
         if (!session) {
+          console.log('[AdminProtectedRoute] No session found - user not logged in');
           setIsAdmin(false);
           setLoading(false);
           return;
         }
 
         const userEmail = session.user.email;
+        console.log('[AdminProtectedRoute] Checking admin status for email:', userEmail);
         
         const { data: adminData, error } = await supabase
           .from('admins')
@@ -31,13 +41,15 @@ export const AdminProtectedRoute = ({ children }: AdminProtectedRouteProps) => {
           .maybeSingle();
 
         if (error) {
-          console.error('Error checking admin status:', error);
+          console.error('[AdminProtectedRoute] Error checking admin status:', error);
           setIsAdmin(false);
         } else {
-          setIsAdmin(!!adminData);
+          const isAdminUser = !!adminData;
+          console.log('[AdminProtectedRoute] Admin check result:', isAdminUser);
+          setIsAdmin(isAdminUser);
         }
       } catch (error) {
-        console.error('Error in admin check:', error);
+        console.error('[AdminProtectedRoute] Exception in admin check:', error);
         setIsAdmin(false);
       } finally {
         setLoading(false);
