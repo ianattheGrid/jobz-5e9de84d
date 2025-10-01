@@ -20,6 +20,7 @@ import CandidateChat from './pages/CandidateChat';
 import { PersonalizedJobs } from './pages/PersonalizedJobs';
 import ExternalJobsView from './pages/ExternalJobsView';
 import AdminExternalJobs from './pages/AdminExternalJobs';
+import { AdminProtectedRoute } from './components/auth/AdminProtectedRoute';
 
 // Employer routes
 import EmployerSignIn from './pages/EmployerSignIn';
@@ -95,7 +96,7 @@ const App = () => {
           <Route path="candidate/personalized-jobs" element={<ProtectedRouteWithTimeout userType="candidate"><PersonalizedJobs /></ProtectedRouteWithTimeout>} />
           <Route path="candidate/chat" element={<ProtectedRouteWithTimeout userType="candidate"><CandidateChat /></ProtectedRouteWithTimeout>} />
           <Route path="external-jobs" element={<ProtectedRouteWithTimeout userType="candidate"><ExternalJobsView /></ProtectedRouteWithTimeout>} />
-          <Route path="admin/external-jobs" element={<AdminExternalJobs />} />
+          <Route path="admin/external-jobs" element={<AdminProtectedRoute><AdminExternalJobs /></AdminProtectedRoute>} />
           
           {/* Employer routes */}
           <Route path="employer/signin" element={<EmployerSignIn />} />
