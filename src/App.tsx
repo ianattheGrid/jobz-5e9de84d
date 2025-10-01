@@ -70,6 +70,8 @@ import PreviewCandidateRealDemo from './pages/PreviewCandidateRealDemo';
 import SwipeCandidates from './pages/SwipeCandidates';
 import SwipeEmployers from './pages/SwipeEmployers';
 import CVRedirect from './pages/CVRedirect';
+import AdminExternalJobs from './pages/AdminExternalJobs';
+import { AdminProtectedRoute } from './components/auth/AdminProtectedRoute';
 
 const App = () => {
   return (
@@ -144,6 +146,13 @@ const App = () => {
           {/* Swipe Interface Routes */}
           <Route path="swipe/candidates" element={<ProtectedRouteWithTimeout userType="employer"><SwipeCandidates /></ProtectedRouteWithTimeout>} />
           <Route path="swipe/employers" element={<ProtectedRouteWithTimeout userType="candidate"><SwipeEmployers /></ProtectedRouteWithTimeout>} />
+          
+          {/* Admin Routes */}
+          <Route path="admin/external-jobs" element={
+            <AdminProtectedRoute>
+              <AdminExternalJobs />
+            </AdminProtectedRoute>
+          } />
         </Route>
       </Routes>
       <Toaster />
