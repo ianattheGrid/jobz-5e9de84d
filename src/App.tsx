@@ -71,6 +71,7 @@ import SwipeCandidates from './pages/SwipeCandidates';
 import SwipeEmployers from './pages/SwipeEmployers';
 import CVRedirect from './pages/CVRedirect';
 import AdminExternalJobs from './pages/AdminExternalJobs';
+import AdminSignIn from './pages/AdminSignIn';
 import { AdminProtectedRoute } from './components/auth/AdminProtectedRoute';
 
 const App = () => {
@@ -148,6 +149,7 @@ const App = () => {
           <Route path="swipe/employers" element={<ProtectedRouteWithTimeout userType="candidate"><SwipeEmployers /></ProtectedRouteWithTimeout>} />
           
           {/* Admin Routes */}
+          <Route path="admin/signin" element={<AdminSignIn />} />
           <Route path="admin/external-jobs" element={
             <AdminProtectedRoute>
               <AdminExternalJobs />

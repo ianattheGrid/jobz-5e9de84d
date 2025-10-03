@@ -60,8 +60,8 @@ export const AdminProtectedRoute = ({ children }: AdminProtectedRouteProps) => {
 
   useEffect(() => {
     if (!loading && !isAdmin) {
-      console.log('[AdminProtectedRoute] Redirecting to homepage - not authorized');
-      window.location.href = "/";
+      console.log('[AdminProtectedRoute] Redirecting to admin signin - not authorized');
+      window.location.href = "/admin/signin";
     }
   }, [loading, isAdmin]);
 
