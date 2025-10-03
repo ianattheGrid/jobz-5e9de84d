@@ -21,15 +21,38 @@ const AdminSignIn = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    // Check if user arrived via password recovery link
-    const hashParams = new URLSearchParams(window.location.hash.substring(1));
-    if (hashParams.get('type') === 'recovery') {
-      setRecoveryMode(true);
-    }
+    const checkRecoveryMode = async () => {
+      // Check URL hash for recovery parameters
+      const hashParams = new URLSearchParams(window.location.hash.substring(1));
+      const hasRecoveryType = hashParams.get('type') === 'recovery';
+      const hasAccessToken = hashParams.has('access_token');
+      
+      // Check sessionStorage for recovery flag
+      const isRecoverySession = sessionStorage.getItem('password_recovery') === 'true';
+      
+      // If recovery link was clicked, set flag in sessionStorage
+      if (hasRecoveryType || hasAccessToken) {
+        sessionStorage.setItem('password_recovery', 'true');
+        setRecoveryMode(true);
+        return;
+      }
+      
+      // Check if user is already signed in (happens after recovery redirect)
+      if (isRecoverySession) {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session) {
+          setRecoveryMode(true);
+          return;
+        }
+      }
+    };
+
+    checkRecoveryMode();
 
     // Listen for auth state changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
       if (event === 'PASSWORD_RECOVERY') {
+        sessionStorage.setItem('password_recovery', 'true');
         setRecoveryMode(true);
       }
     });
@@ -172,6 +195,9 @@ const AdminSignIn = () => {
           return;
         }
 
+        // Clear recovery flag from sessionStorage
+        sessionStorage.removeItem('password_recovery');
+        
         toast({
           title: "Success",
           description: "Password updated successfully",
