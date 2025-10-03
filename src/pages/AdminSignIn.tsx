@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -12,10 +12,30 @@ import { signInWithEmail } from "@/utils/auth/signInWithEmail";
 const AdminSignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [resetMode, setResetMode] = useState(false);
+  const [recoveryMode, setRecoveryMode] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  useEffect(() => {
+    // Check if user arrived via password recovery link
+    const hashParams = new URLSearchParams(window.location.hash.substring(1));
+    if (hashParams.get('type') === 'recovery') {
+      setRecoveryMode(true);
+    }
+
+    // Listen for auth state changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+      if (event === 'PASSWORD_RECOVERY') {
+        setRecoveryMode(true);
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -94,6 +114,82 @@ const AdminSignIn = () => {
     setLoading(false);
   };
 
+  const handleSetNewPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    if (newPassword !== confirmPassword) {
+      toast({
+        title: "Error",
+        description: "Passwords do not match",
+        variant: "destructive",
+      });
+      setLoading(false);
+      return;
+    }
+
+    if (newPassword.length < 6) {
+      toast({
+        title: "Error",
+        description: "Password must be at least 6 characters",
+        variant: "destructive",
+      });
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const { data, error } = await supabase.auth.updateUser({
+        password: newPassword,
+      });
+
+      if (error) {
+        toast({
+          title: "Error",
+          description: error.message,
+          variant: "destructive",
+        });
+        setLoading(false);
+        return;
+      }
+
+      if (data.user) {
+        // Check if user is an admin
+        const { data: adminData, error: adminError } = await supabase
+          .from('admins')
+          .select('email')
+          .eq('email', data.user.email)
+          .maybeSingle();
+
+        if (adminError || !adminData) {
+          await supabase.auth.signOut();
+          toast({
+            title: "Access Denied",
+            description: "Admin privileges required",
+            variant: "destructive",
+          });
+          setLoading(false);
+          return;
+        }
+
+        toast({
+          title: "Success",
+          description: "Password updated successfully",
+        });
+        navigate("/admin/external-jobs");
+      }
+    } catch (error) {
+      console.error("Password update error:", error);
+      toast({
+        title: "Error",
+        description: "An unexpected error occurred",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-muted p-4">
       <Card className="w-full max-w-md p-8 space-y-6">
@@ -103,11 +199,52 @@ const AdminSignIn = () => {
           </div>
           <h1 className="text-2xl font-bold text-center">Admin Access</h1>
           <p className="text-sm text-muted-foreground text-center">
-            {resetMode ? "Reset your password" : "Sign in to access the admin dashboard"}
+            {recoveryMode 
+              ? "Set your new password" 
+              : resetMode 
+              ? "Reset your password" 
+              : "Sign in to access the admin dashboard"}
           </p>
         </div>
 
-        <form onSubmit={resetMode ? handleResetPassword : onSubmit} className="space-y-4">
+        {recoveryMode ? (
+          <form onSubmit={handleSetNewPassword} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="newPassword">New Password</Label>
+              <Input
+                id="newPassword"
+                type="password"
+                placeholder="••••••••"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                required
+                minLength={6}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="confirmPassword">Confirm Password</Label>
+              <Input
+                id="confirmPassword"
+                type="password"
+                placeholder="••••••••"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+                minLength={6}
+              />
+            </div>
+
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={loading}
+            >
+              {loading ? "Loading..." : "Set New Password"}
+            </Button>
+          </form>
+        ) : (
+          <form onSubmit={resetMode ? handleResetPassword : onSubmit} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <Input
@@ -150,6 +287,7 @@ const AdminSignIn = () => {
             {resetMode ? "Back to sign in" : "Forgot password?"}
           </button>
         </form>
+        )}
       </Card>
     </div>
   );
