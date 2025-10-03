@@ -151,29 +151,51 @@ async function scrapeCompanyJobs(company: CompanyToScrape): Promise<ScrapedJob[]
   const jobs: ScrapedJob[] = [];
 
   try {
-    const response = await fetch(company.careers_page_url, {
+    // Follow redirects automatically (up to 5)
+    let url = company.careers_page_url;
+    let redirectCount = 0;
+    let response = await fetch(url, {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
       },
+      redirect: 'follow',
     });
 
+    while (response.status >= 300 && response.status < 400 && redirectCount < 5) {
+      const location = response.headers.get('location');
+      if (!location) break;
+      
+      url = location.startsWith('http') ? location : new URL(location, url).toString();
+      console.log(`Following redirect to: ${url}`);
+      
+      response = await fetch(url, {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+        },
+        redirect: 'follow',
+      });
+      
+      redirectCount++;
+    }
+
     if (!response.ok) {
-      console.error(`Failed to fetch ${company.careers_page_url}: ${response.status}`);
+      console.error(`Failed to fetch ${url}: ${response.status}`);
       return jobs;
     }
 
     const html = await response.text();
+    const finalUrl = response.url || url;
 
     // Parse based on ATS type or generic scraping
     if (company.ats_type === 'greenhouse') {
-      return parseGreenhouseJobs(html, company);
+      return parseGreenhouseJobs(html, company, finalUrl);
     } else if (company.ats_type === 'lever') {
-      return parseLeverJobs(html, company);
+      return parseLeverJobs(html, company, finalUrl);
     } else if (company.ats_type === 'workday') {
-      return parseWorkdayJobs(html, company);
+      return parseWorkdayJobs(html, company, finalUrl);
     } else {
       // Generic parsing for custom career pages
-      return parseGenericJobs(html, company);
+      return parseGenericJobs(html, company, finalUrl);
     }
   } catch (error) {
     console.error(`Error scraping ${company.company_name}:`, error);
@@ -181,7 +203,7 @@ async function scrapeCompanyJobs(company: CompanyToScrape): Promise<ScrapedJob[]
   }
 }
 
-function parseGreenhouseJobs(html: string, company: CompanyToScrape): ScrapedJob[] {
+function parseGreenhouseJobs(html: string, company: CompanyToScrape, baseUrl: string): ScrapedJob[] {
   const jobs: ScrapedJob[] = [];
   
   // Greenhouse typically uses a specific structure
@@ -190,7 +212,7 @@ function parseGreenhouseJobs(html: string, company: CompanyToScrape): ScrapedJob
   
   let match;
   while ((match = jobPattern.exec(html)) !== null) {
-    const jobUrl = match[1].startsWith('http') ? match[1] : `${company.careers_page_url}${match[1]}`;
+    const jobUrl = match[1].startsWith('http') ? match[1] : `${baseUrl}${match[1]}`;
     jobs.push({
       company_id: company.id,
       job_title: match[2].trim(),
@@ -203,7 +225,7 @@ function parseGreenhouseJobs(html: string, company: CompanyToScrape): ScrapedJob
   return jobs;
 }
 
-function parseLeverJobs(html: string, company: CompanyToScrape): ScrapedJob[] {
+function parseLeverJobs(html: string, company: CompanyToScrape, baseUrl: string): ScrapedJob[] {
   const jobs: ScrapedJob[] = [];
   
   // Lever uses a different structure
@@ -223,7 +245,7 @@ function parseLeverJobs(html: string, company: CompanyToScrape): ScrapedJob[] {
   return jobs;
 }
 
-function parseWorkdayJobs(html: string, company: CompanyToScrape): ScrapedJob[] {
+function parseWorkdayJobs(html: string, company: CompanyToScrape, baseUrl: string): ScrapedJob[] {
   const jobs: ScrapedJob[] = [];
   
   // Workday typically loads jobs via API, but we can try to find job links
@@ -231,7 +253,7 @@ function parseWorkdayJobs(html: string, company: CompanyToScrape): ScrapedJob[] 
   
   let match;
   while ((match = jobPattern.exec(html)) !== null) {
-    const jobUrl = match[2].startsWith('http') ? match[2] : `${new URL(company.careers_page_url).origin}${match[2]}`;
+    const jobUrl = match[2].startsWith('http') ? match[2] : `${new URL(baseUrl).origin}${match[2]}`;
     jobs.push({
       company_id: company.id,
       job_title: match[1].trim(),
@@ -244,36 +266,81 @@ function parseWorkdayJobs(html: string, company: CompanyToScrape): ScrapedJob[] 
   return jobs;
 }
 
-function parseGenericJobs(html: string, company: CompanyToScrape): ScrapedJob[] {
+function parseGenericJobs(html: string, company: CompanyToScrape, baseUrl: string): ScrapedJob[] {
   const jobs: ScrapedJob[] = [];
+  
+  // Navigation/call-to-action phrases to exclude
+  const excludedPhrases = [
+    'see our', 'view all', 'see all', 'browse', 'search', 'apply now',
+    'learn more', 'find out', 'click here', 'read more', 'explore',
+    'current vacancies', 'available positions', 'open roles', 'join us',
+    'careers home', 'back to', 'download', 'contact', 'about'
+  ];
+  
+  // Job title keywords that indicate a real job posting
+  const jobKeywords = [
+    'manager', 'director', 'engineer', 'developer', 'designer', 'analyst',
+    'coordinator', 'specialist', 'lead', 'senior', 'junior', 'assistant',
+    'officer', 'executive', 'administrator', 'consultant', 'technician',
+    'supervisor', 'head of', 'architect', 'scientist', 'researcher'
+  ];
   
   // Generic approach: look for common patterns
   // Look for links that might be job postings (containing keywords like "job", "position", "career", "vacancy")
-  const jobLinkPattern = /<a[^>]*href="([^"]*(?:job|position|career|vacancy|opening)[^"]*)"[^>]*>(.*?)<\/a>/gi;
+  const jobLinkPattern = /<a[^>]*href="([^"]*)"[^>]*>(.*?)<\/a>/gi;
   
   let match;
   const foundUrls = new Set<string>();
   
   while ((match = jobLinkPattern.exec(html)) !== null) {
-    const url = match[1].startsWith('http') ? match[1] : `${new URL(company.careers_page_url).origin}${match[1]}`;
+    const href = match[1];
+    const linkText = match[2].replace(/<[^>]*>/g, '').trim();
+    
+    // Skip if link text is too short or too long
+    if (!linkText || linkText.length < 10 || linkText.length > 150) {
+      continue;
+    }
+    
+    const lowerLinkText = linkText.toLowerCase();
+    
+    // Skip navigation/CTA links
+    if (excludedPhrases.some(phrase => lowerLinkText.includes(phrase))) {
+      continue;
+    }
+    
+    // Skip PDF and common non-job pages
+    if (href.match(/\.(pdf|doc|docx|jpg|png|gif)$/i) || 
+        href.match(/\/(about|contact|privacy|terms|cookie)/i)) {
+      continue;
+    }
+    
+    // Check if URL or link text contains job-related keywords
+    const isJobUrl = href.match(/\/(job|position|career|vacancy|vacancies|opening|role)s?[\/\-_]/i);
+    const hasJobKeyword = jobKeywords.some(keyword => lowerLinkText.includes(keyword));
+    
+    // Only proceed if it looks like a job posting
+    if (!isJobUrl && !hasJobKeyword) {
+      continue;
+    }
+    
+    // Build full URL
+    const url = href.startsWith('http') ? href : 
+                href.startsWith('/') ? `${new URL(baseUrl).origin}${href}` :
+                `${baseUrl}${href.startsWith('/') ? '' : '/'}${href}`;
     
     if (!foundUrls.has(url)) {
       foundUrls.add(url);
       
-      // Try to extract job title from link text or nearby heading
-      const titleMatch = match[2].replace(/<[^>]*>/g, '').trim();
-      
-      if (titleMatch && titleMatch.length > 5 && titleMatch.length < 150) {
-        jobs.push({
-          company_id: company.id,
-          job_title: titleMatch,
-          job_description: '',
-          location: 'Bristol', // Default to Bristol for now
-          job_url: url,
-        });
-      }
+      jobs.push({
+        company_id: company.id,
+        job_title: linkText,
+        job_description: '',
+        location: 'Bristol', // Default to Bristol for now
+        job_url: url,
+      });
     }
   }
 
+  console.log(`Generic parser found ${jobs.length} potential jobs for ${company.company_name}`);
   return jobs;
 }

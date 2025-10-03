@@ -69,12 +69,12 @@ export default function AdminExternalJobs() {
       </div>
 
       <Tabs defaultValue="overview" className="space-y-6">
-        <TabsList>
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="companies">Companies</TabsTrigger>
-          <TabsTrigger value="jobs">Jobs</TabsTrigger>
-          <TabsTrigger value="matches">Matches</TabsTrigger>
-          <TabsTrigger value="actions">Actions</TabsTrigger>
+        <TabsList className="radix-tablist">
+          <TabsTrigger value="overview" className="radix-tab">Overview</TabsTrigger>
+          <TabsTrigger value="companies" className="radix-tab">Companies</TabsTrigger>
+          <TabsTrigger value="jobs" className="radix-tab">Jobs</TabsTrigger>
+          <TabsTrigger value="matches" className="radix-tab">Matches</TabsTrigger>
+          <TabsTrigger value="actions" className="radix-tab">Actions</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
