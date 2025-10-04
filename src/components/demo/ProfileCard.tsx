@@ -89,12 +89,7 @@ export const ProfileCard = ({
               <Badge className={`${getTypeColor()} text-white border-0 shadow-lg`}>
                 {getTypeLabel()}
               </Badge>
-              {rating && (
-                <div className="flex items-center gap-1">
-                  <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                  <span className="text-sm font-medium">{rating}</span>
-                </div>
-              )}
+              <RotateCcw className="h-5 w-5 text-primary" />
             </div>
 
             {/* Profile Image & Basic Info */}
@@ -144,13 +139,6 @@ export const ProfileCard = ({
               </div>
             )}
 
-            {/* Flip indicator */}
-            <div className="mt-auto text-center">
-              <div className="flex items-center justify-center gap-1 text-xs text-gray-400 bg-gray-800/30 rounded-full px-3 py-1">
-                <RotateCcw className="h-3 w-3 text-primary" />
-                <span>Click to flip for details</span>
-              </div>
-            </div>
           </div>
         </CardContent>
 
