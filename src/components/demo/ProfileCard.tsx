@@ -149,7 +149,13 @@ export const ProfileCard = ({
         </CardContent>
 
         {/* Back of card */}
-        <CardContent className="absolute inset-0 w-full h-full p-6 backface-hidden rotate-y-180 bg-gradient-to-br from-gray-900 via-gray-800 to-black profile-card">
+        <CardContent 
+          className="absolute inset-0 w-full h-full p-6 bg-gradient-to-br from-gray-900 via-gray-800 to-black profile-card"
+          style={{ 
+            backfaceVisibility: 'hidden',
+            transform: 'rotateY(180deg)'
+          }}
+        >
           <div className="flex flex-col h-full text-white">
             <div className="text-center mb-4">
               <h3 className="text-2xl font-black mb-2 drop-shadow-2xl shadow-black" style={{ color: '#FFFFFF' }}>{name}</h3>
