@@ -69,14 +69,20 @@ export const ProfileCard = ({
   return (
     <div className="relative w-full h-96 perspective-1000">
       <Card 
-        className={`absolute inset-0 w-full h-full cursor-pointer transition-transform duration-700 preserve-3d overflow-hidden
+        className={`absolute inset-0 w-full h-full cursor-pointer transition-transform duration-700 preserve-3d
           bg-gradient-to-br from-gray-900 via-gray-800 to-black border-gray-700 hover:shadow-2xl hover:shadow-primary/20 ${
           isFlipped ? 'rotate-y-180' : ''
         }`}
         onClick={() => setIsFlipped(!isFlipped)}
       >
         {/* Front of card */}
-        <CardContent className="absolute inset-0 w-full h-full p-6 backface-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-black profile-card">
+        <CardContent 
+          className="absolute inset-0 w-full h-full p-6 bg-gradient-to-br from-gray-900 via-gray-800 to-black profile-card"
+          style={{ 
+            backfaceVisibility: 'hidden',
+            transform: 'rotateY(0deg)'
+          }}
+        >
           <div className="flex flex-col h-full text-white">
             {/* Header */}
             <div className="flex items-start justify-between mb-4">
