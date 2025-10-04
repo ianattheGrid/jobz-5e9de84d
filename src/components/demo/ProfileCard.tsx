@@ -67,7 +67,7 @@ export const ProfileCard = ({
   };
 
   return (
-    <div className="relative w-full h-96 perspective-1000">
+    <div className="relative w-full h-96 perspective-1000 overflow-hidden isolate">
       <Card 
         className={`absolute inset-0 w-full h-full cursor-pointer transition-transform duration-700 preserve-3d
           bg-gradient-to-br from-gray-900 via-gray-800 to-black border-gray-700 hover:shadow-2xl hover:shadow-primary/20 ${
