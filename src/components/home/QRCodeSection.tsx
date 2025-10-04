@@ -12,10 +12,10 @@ export const QRCodeSection = () => {
           <div className="text-center mb-12">
             <Smartphone className="h-12 w-12 mx-auto text-primary mb-4" />
             <h2 className="text-3xl font-bold mb-4 text-foreground">
-              Take jobz With You
+              Take Jobz With You
             </h2>
             <p className="text-xl text-muted-foreground">
-              Scan the QR code to access jobz on your mobile device
+              Scan the QR code to access Jobz on your mobile device
             </p>
           </div>
 

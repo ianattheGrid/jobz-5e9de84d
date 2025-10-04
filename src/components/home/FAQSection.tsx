@@ -21,7 +21,7 @@ export const FAQSection = () => {
               Frequently Asked Questions
             </h2>
             <p className="text-foreground">
-              Find answers to the most common questions about jobz
+              Find answers to the most common questions about Jobz
             </p>
           </div>
 

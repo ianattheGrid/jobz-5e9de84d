@@ -17,7 +17,7 @@ export const PlatformFeatures = () => {
   return (
     <section className="py-20 container mx-auto px-4">
       <h2 className={`text-3xl font-bold text-center mb-2 ${PRIMARY_COLOR_PATTERN}`}>
-        How jobz Works
+        How Jobz Works
       </h2>
       
       <Tabs defaultValue="hiring" className="w-full max-w-4xl mx-auto">
@@ -69,7 +69,7 @@ export const PlatformFeatures = () => {
           <div className="flex flex-col sm:flex-row sm:justify-start gap-3">
             <Dialog>
               <DialogTrigger asChild>
-                <Button variant="navy" className="w-full sm:w-auto" aria-label="How jobz works for employers"><Info className="mr-2 h-4 w-4" />Learn more</Button>
+                <Button variant="navy" className="w-full sm:w-auto" aria-label="How Jobz works for employers"><Info className="mr-2 h-4 w-4" />Learn more</Button>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
@@ -130,7 +130,7 @@ export const PlatformFeatures = () => {
            <div className="flex flex-col sm:flex-row justify-center gap-3">
             <Dialog>
               <DialogTrigger asChild>
-                <Button variant="navy" className="w-full sm:w-auto" aria-label="How jobz works for candidates"><Info className="mr-2 h-4 w-4" />Learn more</Button>
+                <Button variant="navy" className="w-full sm:w-auto" aria-label="How Jobz works for candidates"><Info className="mr-2 h-4 w-4" />Learn more</Button>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
@@ -203,7 +203,7 @@ export const PlatformFeatures = () => {
                 <DialogHeader>
                   <DialogTitle>Recommend talent. Earn commission.</DialogTitle>
                   <DialogDescription>
-                    When vacancies are harder to fill, jobz alerts Connectors to help source candidates. Recommend great people from your network and see commissions upfront.
+                    When vacancies are harder to fill, Jobz alerts Connectors to help source candidates. Recommend great people from your network and see commissions upfront.
                   </DialogDescription>
                 </DialogHeader>
                 <div className="space-y-3 text-foreground">

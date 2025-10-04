@@ -108,7 +108,7 @@ export default function DemoVirtualRecruiterProfile() {
       <div className="mb-6 p-4 bg-purple-50 rounded-lg border-l-4 border-purple-400">
         <h2 className="text-lg font-semibold text-purple-800 mb-2">Demo Virtual Recruiter Profile</h2>
         <p className="text-purple-700">
-          This is an example of how a virtual recruiter profile looks on jobz. Real profiles would be AI assistants trained for specific recruiting needs.
+          This is an example of how a virtual recruiter profile looks on Jobz. Real profiles would be AI assistants trained for specific recruiting needs.
         </p>
       </div>
 

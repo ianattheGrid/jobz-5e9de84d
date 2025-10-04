@@ -160,7 +160,7 @@ const PricingPage = () => {
         <div className="mt-16 text-center bg-gradient-to-r from-primary/10 to-pink-100 rounded-xl p-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Ready to Get Started?</h2>
           <p className="text-gray-600 mb-6 max-w-xl mx-auto">
-            Join hundreds of employers and candidates in Bristol who are already using jobz to find the perfect match.
+            Join hundreds of employers and candidates in Bristol who are already using Jobz to find the perfect match.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/employer/signup">

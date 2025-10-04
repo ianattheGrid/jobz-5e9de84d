@@ -91,7 +91,7 @@ export const EmployeeRecruitmentCalculator = () => {
             <span className="text-white">Employee Recruitment Cost Calculator</span>
           </CardTitle>
           <p className="text-white text-base md:text-lg font-semibold mt-4 max-w-2xl mx-auto">
-            Calculate how much you could save using jobz for employee recruitment
+            Calculate how much you could save using Jobz for employee recruitment
           </p>
         </CardHeader>
         <CardContent className="space-y-8 p-4 md:p-6 bg-gradient-to-br from-slate-800 to-slate-900 text-white">
@@ -150,7 +150,7 @@ export const EmployeeRecruitmentCalculator = () => {
 
           {/* Months Selection */}
           <div className="space-y-4 p-6 bg-slate-700/30 rounded-xl border border-pink-500/30">
-            <Label className="text-base md:text-lg font-bold" style={{ color: 'white' }}>Months using jobz: <span className="text-pink-400 font-bold">{months} month{months !== 1 ? "s" : ""}</span></Label>
+            <Label className="text-base md:text-lg font-bold" style={{ color: 'white' }}>Months using Jobz: <span className="text-pink-400 font-bold">{months} month{months !== 1 ? "s" : ""}</span></Label>
             <div className="px-0">
               <input
                 type="range"
@@ -210,7 +210,7 @@ export const EmployeeRecruitmentCalculator = () => {
 
               <div className="text-center p-4 bg-slate-700/30 rounded-xl border border-blue-500/30 shadow-lg">
                  <p className="text-sm text-blue-400 font-semibold mb-2">
-                   jobz Cost ({months} month{months !== 1 ? 's' : ''})
+                   Jobz Cost ({months} month{months !== 1 ? 's' : ''})
                  </p>
                 <p className="text-xl md:text-2xl font-bold text-blue-300 mb-2">
                   {formatCurrency(results.jobzCost)}

@@ -13,7 +13,7 @@ export const DemoProfilesSection = () => {
         <div className="container mx-auto px-4 text-center">
           <h3 className="text-2xl font-semibold mb-4">Explore Demo Profiles</h3>
           <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
-            Experience the full profiles and see how jobz works for each user type.
+            Experience the full profiles and see how Jobz works for each user type.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <Link to="/demo/candidate">

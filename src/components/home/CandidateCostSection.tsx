@@ -41,7 +41,7 @@ export const CandidateCostSection = () => {
             {/* Solution Section */}
             <div className="space-y-4 pt-6 border-t border-border">
               <h3 className="text-2xl font-bold text-foreground">
-                Jobz changes everything
+              Jobz changes everything
               </h3>
               
               <p className="text-xl font-bold text-primary">

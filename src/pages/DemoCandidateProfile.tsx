@@ -76,7 +76,7 @@ export default function DemoCandidateProfile() {
   };
 
   useEffect(() => {
-    document.title = "Candidate Profile: Sarah Johnson | jobz";
+    document.title = "Candidate Profile: Sarah Johnson | Jobz";
     const ensureMeta = (name: string, content: string) => {
       let el = document.querySelector(`meta[name="${name}"]`) as HTMLMetaElement | null;
       if (!el) {
@@ -117,7 +117,7 @@ export default function DemoCandidateProfile() {
       <div className="mb-6 p-4 bg-pink-50 rounded-lg border-l-4 border-pink-400">
         <h2 className="text-lg font-semibold text-pink-800 mb-2">Demo Candidate Profile</h2>
         <p className="text-pink-700 mb-3">
-          This is an example of how a candidate profile looks on jobz. Real profiles would be created by actual job seekers.
+          This is an example of how a candidate profile looks on Jobz. Real profiles would be created by actual job seekers.
         </p>
         <div className="flex gap-2">
           <Button variant="outline" size="sm" onClick={() => window.location.href = '/swipe/employers'}>

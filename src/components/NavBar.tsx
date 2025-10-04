@@ -76,7 +76,7 @@ const NavBar = () => {
           <div className="flex items-center gap-12">
             <Link to="/" className="text-2xl font-bold flex items-center gap-2">
               <Briefcase className="h-6 w-6 text-primary" />
-              <span className="text-primary font-bold tracking-tight">jobz</span>
+              <span className="text-primary font-bold tracking-tight">Jobz</span>
             </Link>
             <div className="hidden md:block">
               <nav className="flex items-center space-x-6">

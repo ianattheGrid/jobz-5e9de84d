@@ -85,7 +85,7 @@ const MatchThresholdField = ({ control, onMatchingChange }: MatchThresholdFieldP
 
       <CardContent className="space-y-6 p-6">
         <FormItem className="space-y-3">
-          <FormLabel className="text-gray-900">Would you like to use jobz's intelligent matching algorithm to automatically filter candidates?</FormLabel>
+          <FormLabel className="text-gray-900">Would you like to use Jobz's intelligent matching algorithm to automatically filter candidates?</FormLabel>
           <RadioGroup
             defaultValue="yes"
             onValueChange={handleMatchingChange}
