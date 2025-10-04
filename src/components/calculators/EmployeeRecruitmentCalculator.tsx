@@ -150,34 +150,6 @@ export const EmployeeRecruitmentCalculator = () => {
             </div>
           )}
 
-          {/* Direct Hire Cost Display */}
-          {recruitmentType === 'direct' && (
-            <div className="p-6 bg-slate-700/30 rounded-xl border border-pink-500/30">
-              <div className="flex items-center gap-2 mb-3">
-                <PoundSterling className="h-5 w-5 text-pink-500" />
-                <span className="font-bold text-white text-lg">CIPD Average Cost Per Hire</span>
-              </div>
-              <p className="text-3xl font-bold text-pink-400 mb-2">{formatCurrency(6125)}</p>
-              <p className="text-sm text-white font-semibold">
-                According to the Chartered Institute of Personnel and Development
-              </p>
-            </div>
-          )}
-
-          {/* LinkedIn Recruiter Cost Display */}
-          {recruitmentType === 'linkedin_recruiter' && (
-            <div className="p-6 bg-slate-700/30 rounded-xl border border-pink-500/30">
-              <div className="flex items-center gap-2 mb-3">
-                <PoundSterling className="h-5 w-5 text-pink-500" />
-                <span className="font-bold text-white text-lg">LinkedIn Recruiter Annual Fee</span>
-              </div>
-              <p className="text-3xl font-bold text-pink-400 mb-2">{formatCurrency(10238)}</p>
-              <p className="text-sm text-white font-semibold">
-                Annual subscription cost for LinkedIn Recruiter
-              </p>
-            </div>
-          )}
-
           {/* Months Selection */}
           <div className="space-y-4 p-6 bg-slate-700/30 rounded-xl border border-pink-500/30">
             <Label className="text-xl font-bold" style={{ color: 'white' }}>Months using jobz: <span className="text-pink-400 font-bold">{months} month{months !== 1 ? "s" : ""}</span></Label>
@@ -224,6 +196,11 @@ export const EmployeeRecruitmentCalculator = () => {
                 {recruitmentType === 'agency' && (
                   <p className="text-xs text-red-400/80">
                     {feePercentage}% of £{salary}
+                  </p>
+                )}
+                {recruitmentType === 'direct' && (
+                  <p className="text-xs text-red-400/80">
+                    CIPD average cost per hire
                   </p>
                 )}
                 {recruitmentType === 'linkedin_recruiter' && (
