@@ -62,21 +62,21 @@ export const AboutTabContent = ({ profile, galleryImages }: AboutTabContentProps
           <dl className="divide-y divide-gray-100">
             {profile.full_name && (
               <div className="px-4 py-3 grid grid-cols-3 gap-4">
-                <dt className="text-sm font-medium text-white">Contact Person</dt>
+                <dt className="text-sm font-medium text-gray-700">Contact Person</dt>
                 <dd className="text-sm text-primary col-span-2">{profile.full_name}</dd>
               </div>
             )}
             
             {profile.job_title && (
               <div className="px-4 py-3 grid grid-cols-3 gap-4">
-                <dt className="text-sm font-medium text-white">Role</dt>
+                <dt className="text-sm font-medium text-gray-700">Role</dt>
                 <dd className="text-sm text-primary col-span-2">{profile.job_title}</dd>
               </div>
             )}
             
             {profile.company_website && (
               <div className="px-4 py-3 grid grid-cols-3 gap-4">
-                <dt className="text-sm font-medium text-white">Website</dt>
+                <dt className="text-sm font-medium text-gray-700">Website</dt>
                 <dd className="text-sm col-span-2">
                   <a 
                     href={profile.company_website} 
@@ -92,7 +92,7 @@ export const AboutTabContent = ({ profile, galleryImages }: AboutTabContentProps
             
             {profile.company_email && (
               <div className="px-4 py-3 grid grid-cols-3 gap-4">
-                <dt className="text-sm font-medium text-white">Email</dt>
+                <dt className="text-sm font-medium text-gray-700">Email</dt>
                 <dd className="text-sm text-primary col-span-2">
                   <a 
                     href={`mailto:${profile.company_email}`}
@@ -106,7 +106,7 @@ export const AboutTabContent = ({ profile, galleryImages }: AboutTabContentProps
             
             {profile.company_phone && (
               <div className="px-4 py-3 grid grid-cols-3 gap-4">
-                <dt className="text-sm font-medium text-white">Phone</dt>
+                <dt className="text-sm font-medium text-gray-700">Phone</dt>
                 <dd className="text-sm text-primary col-span-2">
                   <a 
                     href={`tel:${profile.company_phone}`}

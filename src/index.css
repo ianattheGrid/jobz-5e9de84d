@@ -315,9 +315,9 @@ a {
 .demo-candidate-dark .text-xs {
   color: hsl(var(--primary-foreground) / 0.9) !important;
 }
-/* Fix span and div text inside cards */
-.demo-candidate-dark span,
-.demo-candidate-dark div {
+/* Fix span and div text inside cards - but allow specific overrides */
+.demo-candidate-dark span:not(.personality-question):not(.personality-answer):not([class*="bg-"]),
+.demo-candidate-dark div:not(.personality-item):not(.personality-question):not(.personality-answer):not([class*="bg-"]) {
   color: hsl(var(--primary-foreground)) !important;
 }
 
@@ -341,9 +341,14 @@ a {
 .demo-employer-dark h6 {
   color: hsl(var(--primary-foreground)) !important;
 }
-.demo-employer-dark .text-muted-foreground,
-.demo-employer-dark .text-gray-700 {
+.demo-employer-dark .text-muted-foreground {
   color: hsl(var(--primary-foreground) / 0.85) !important;
+}
+
+/* Allow text-gray-700 to remain dark on light backgrounds */
+.demo-employer-dark .bg-white .text-gray-700,
+.demo-employer-dark [class*="bg-white"] .text-gray-700 {
+  color: #374151 !important;
 }
 .demo-employer-dark .text-foreground {
   color: hsl(var(--primary-foreground)) !important;
@@ -441,10 +446,14 @@ a {
   border-color: #f9a8d4 !important;
 }
 
-.demo-candidate-dark .personality-question {
+.demo-candidate-dark .personality-item .personality-question {
   color: #be185d !important;
 }
 
-.demo-candidate-dark .personality-answer {
+.demo-candidate-dark .personality-item .personality-answer {
   color: #374151 !important;
+}
+
+.demo-candidate-dark .personality-item * {
+  color: inherit !important;
 }
