@@ -17,7 +17,7 @@ interface CalculatorResults {
 
 export const EmployeeRecruitmentCalculator = () => {
   const [salary, setSalary] = useState<string>('');
-  const [recruitmentType, setRecruitmentType] = useState<'agency' | 'direct' | ''>('');
+  const [recruitmentType, setRecruitmentType] = useState<'agency' | 'direct' | 'linkedin_recruiter' | ''>('');
   const [feePercentage, setFeePercentage] = useState<number>(20);
   const [months, setMonths] = useState<number>(1);
   const [results, setResults] = useState<CalculatorResults | null>(null);
@@ -62,6 +62,8 @@ export const EmployeeRecruitmentCalculator = () => {
       traditionalCost = numericSalary * (feePercentage / 100);
     } else if (recruitmentType === 'direct') {
       traditionalCost = 6125; // CIPD average cost per hire
+    } else if (recruitmentType === 'linkedin_recruiter') {
+      traditionalCost = 10238; // LinkedIn Recruiter annual fee
     }
 
     const jobzCost = 9 * months;
@@ -111,13 +113,14 @@ export const EmployeeRecruitmentCalculator = () => {
           {/* Recruitment Type Selection */}
           <div className="space-y-3">
             <Label className="text-xl font-bold" style={{ color: 'white' }}>Current Recruitment Method</Label>
-            <Select value={recruitmentType} onValueChange={(value: 'agency' | 'direct') => setRecruitmentType(value)}>
+            <Select value={recruitmentType} onValueChange={(value: 'agency' | 'direct' | 'linkedin_recruiter') => setRecruitmentType(value)}>
               <SelectTrigger className="h-12 bg-slate-700/50 border-pink-500/30 text-white focus:border-pink-500">
                 <SelectValue placeholder="Select your current recruitment method" className="text-slate-400" />
               </SelectTrigger>
               <SelectContent className="bg-slate-800 border-pink-500/30">
                 <SelectItem value="agency" className="text-white hover:bg-slate-700">Recruitment Agency</SelectItem>
                 <SelectItem value="direct" className="text-white hover:bg-slate-700">Direct Hire</SelectItem>
+                <SelectItem value="linkedin_recruiter" className="text-white hover:bg-slate-700">LinkedIn Recruiter</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -161,6 +164,20 @@ export const EmployeeRecruitmentCalculator = () => {
             </div>
           )}
 
+          {/* LinkedIn Recruiter Cost Display */}
+          {recruitmentType === 'linkedin_recruiter' && (
+            <div className="p-6 bg-slate-700/30 rounded-xl border border-pink-500/30">
+              <div className="flex items-center gap-2 mb-3">
+                <PoundSterling className="h-5 w-5 text-pink-500" />
+                <span className="font-bold text-white text-lg">LinkedIn Recruiter Annual Fee</span>
+              </div>
+              <p className="text-3xl font-bold text-pink-400 mb-2">{formatCurrency(10238)}</p>
+              <p className="text-sm text-white font-semibold">
+                Annual subscription cost for LinkedIn Recruiter
+              </p>
+            </div>
+          )}
+
           {/* Months Selection */}
           <div className="space-y-4 p-6 bg-slate-700/30 rounded-xl border border-pink-500/30">
             <Label className="text-xl font-bold" style={{ color: 'white' }}>Months using jobz: <span className="text-pink-400 font-bold">{months} month{months !== 1 ? "s" : ""}</span></Label>
@@ -199,7 +216,7 @@ export const EmployeeRecruitmentCalculator = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="text-center p-6 bg-slate-700/30 rounded-xl border border-red-500/30 shadow-lg">
                 <p className="text-sm text-red-400 font-semibold mb-2">
-                  {recruitmentType === 'agency' ? 'Agency Cost' : 'Direct Hire Cost'}
+                  {recruitmentType === 'agency' ? 'Agency Cost' : recruitmentType === 'linkedin_recruiter' ? 'LinkedIn Recruiter Cost' : 'Direct Hire Cost'}
                 </p>
                 <p className="text-3xl font-bold text-red-300 mb-2">
                   {formatCurrency(results.traditionalCost)}
@@ -207,6 +224,11 @@ export const EmployeeRecruitmentCalculator = () => {
                 {recruitmentType === 'agency' && (
                   <p className="text-xs text-red-400/80">
                     {feePercentage}% of £{salary}
+                  </p>
+                )}
+                {recruitmentType === 'linkedin_recruiter' && (
+                  <p className="text-xs text-red-400/80">
+                    Annual subscription
                   </p>
                 )}
               </div>
