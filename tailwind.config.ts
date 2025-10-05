@@ -59,9 +59,41 @@ export default {
           "0%, 100%": { transform: "translateX(0)" },
           "50%": { transform: "translateX(var(--swipe-x))" },
         },
+        "twinkle": {
+          "0%, 100%": { opacity: "1" },
+          "50%": { opacity: "0.3" },
+        },
+        "twinkle-slow": {
+          "0%, 100%": { opacity: "1" },
+          "50%": { opacity: "0.4" },
+        },
+        "pulse-glow": {
+          "0%, 100%": { filter: "drop-shadow(0 0 2px rgba(255, 255, 255, 0.8))" },
+          "50%": { filter: "drop-shadow(0 0 6px rgba(255, 255, 255, 1))" },
+        },
+        "shooting-star": {
+          "0%": { 
+            transform: "translateX(0) translateY(0)",
+            opacity: "1"
+          },
+          "70%": { opacity: "1" },
+          "100%": { 
+            transform: "translateX(-300px) translateY(300px)",
+            opacity: "0"
+          },
+        },
+        "float": {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-10px)" },
+        },
       },
       animation: {
         "card-swipe": "card-swipe 0.5s ease-in-out",
+        "twinkle": "twinkle 3s ease-in-out infinite",
+        "twinkle-slow": "twinkle-slow 4s ease-in-out infinite",
+        "pulse-glow": "pulse-glow 2s ease-in-out infinite",
+        "shooting-star": "shooting-star 3s linear infinite",
+        "float": "float 5s ease-in-out infinite",
       },
     },
   },

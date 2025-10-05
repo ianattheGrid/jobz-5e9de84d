@@ -12,56 +12,42 @@ export const HowItWorksHero = ({ activeTab, onTabChange }: HowItWorksHeroProps) 
     <>
       {/* Gradient Banner Section */}
       <section className="relative h-[300px] overflow-hidden bg-gradient-to-br from-[#0a0e27] via-[#1a1047] to-[#0d1b2a]">
-        {/* Large Bright Stars */}
-        <div 
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `radial-gradient(circle at 15% 25%, rgba(255, 255, 255, 0.9) 0, rgba(255, 255, 255, 0.9) 2px, transparent 2px),
-                              radial-gradient(circle at 85% 15%, rgba(255, 255, 255, 1) 0, rgba(255, 255, 255, 1) 3px, transparent 3px),
-                              radial-gradient(circle at 45% 35%, rgba(255, 255, 255, 0.85) 0, rgba(255, 255, 255, 0.85) 2.5px, transparent 2.5px),
-                              radial-gradient(circle at 70% 80%, rgba(255, 255, 255, 0.95) 0, rgba(255, 255, 255, 0.95) 2px, transparent 2px),
-                              radial-gradient(circle at 25% 70%, rgba(255, 255, 255, 0.9) 0, rgba(255, 255, 255, 0.9) 2.5px, transparent 2.5px),
-                              radial-gradient(circle at 90% 60%, rgba(255, 255, 255, 0.85) 0, rgba(255, 255, 255, 0.85) 2px, transparent 2px)`,
-            backgroundSize: '100% 100%',
-            filter: 'drop-shadow(0 0 2px rgba(255, 255, 255, 0.5))'
-          }}
-        />
+        {/* Large Bright Stars with Glow */}
+        <div className="absolute w-2 h-2 bg-white rounded-full top-[25%] left-[15%] animate-twinkle animate-pulse-glow" style={{ animationDelay: '0s' }} />
+        <div className="absolute w-3 h-3 bg-white rounded-full top-[15%] left-[85%] animate-twinkle animate-pulse-glow" style={{ animationDelay: '0.5s' }} />
+        <div className="absolute w-2.5 h-2.5 bg-white rounded-full top-[35%] left-[45%] animate-twinkle animate-pulse-glow" style={{ animationDelay: '1s' }} />
+        <div className="absolute w-2 h-2 bg-white rounded-full top-[80%] left-[70%] animate-twinkle animate-pulse-glow" style={{ animationDelay: '1.5s' }} />
+        <div className="absolute w-2.5 h-2.5 bg-white rounded-full top-[70%] left-[25%] animate-twinkle animate-pulse-glow" style={{ animationDelay: '2s' }} />
+        <div className="absolute w-2 h-2 bg-white rounded-full top-[60%] left-[90%] animate-twinkle animate-pulse-glow" style={{ animationDelay: '2.5s' }} />
         
         {/* Medium Stars */}
-        <div 
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `radial-gradient(circle at 10% 45%, rgba(255, 255, 255, 0.7) 0, rgba(255, 255, 255, 0.7) 1.5px, transparent 1.5px),
-                              radial-gradient(circle at 30% 15%, rgba(255, 255, 255, 0.65) 0, rgba(255, 255, 255, 0.65) 1.5px, transparent 1.5px),
-                              radial-gradient(circle at 55% 65%, rgba(255, 255, 255, 0.75) 0, rgba(255, 255, 255, 0.75) 1.5px, transparent 1.5px),
-                              radial-gradient(circle at 75% 40%, rgba(255, 255, 255, 0.7) 0, rgba(255, 255, 255, 0.7) 1.5px, transparent 1.5px),
-                              radial-gradient(circle at 40% 85%, rgba(255, 255, 255, 0.65) 0, rgba(255, 255, 255, 0.65) 1.5px, transparent 1.5px),
-                              radial-gradient(circle at 65% 20%, rgba(255, 255, 255, 0.7) 0, rgba(255, 255, 255, 0.7) 1.5px, transparent 1.5px),
-                              radial-gradient(circle at 20% 90%, rgba(255, 255, 255, 0.65) 0, rgba(255, 255, 255, 0.65) 1.5px, transparent 1.5px),
-                              radial-gradient(circle at 95% 85%, rgba(255, 255, 255, 0.7) 0, rgba(255, 255, 255, 0.7) 1.5px, transparent 1.5px)`,
-            backgroundSize: '100% 100%'
-          }}
-        />
+        <div className="absolute w-1.5 h-1.5 bg-white rounded-full top-[45%] left-[10%] animate-twinkle-slow opacity-70" style={{ animationDelay: '0.3s' }} />
+        <div className="absolute w-1.5 h-1.5 bg-white rounded-full top-[15%] left-[30%] animate-twinkle-slow opacity-65" style={{ animationDelay: '0.8s' }} />
+        <div className="absolute w-1.5 h-1.5 bg-white rounded-full top-[65%] left-[55%] animate-twinkle-slow opacity-75" style={{ animationDelay: '1.3s' }} />
+        <div className="absolute w-1.5 h-1.5 bg-white rounded-full top-[40%] left-[75%] animate-twinkle-slow opacity-70" style={{ animationDelay: '1.8s' }} />
+        <div className="absolute w-1.5 h-1.5 bg-white rounded-full top-[85%] left-[40%] animate-twinkle-slow opacity-65" style={{ animationDelay: '2.3s' }} />
+        <div className="absolute w-1.5 h-1.5 bg-white rounded-full top-[20%] left-[65%] animate-twinkle-slow opacity-70" style={{ animationDelay: '2.8s' }} />
+        <div className="absolute w-1.5 h-1.5 bg-white rounded-full top-[90%] left-[20%] animate-twinkle-slow opacity-65" style={{ animationDelay: '0.2s' }} />
+        <div className="absolute w-1.5 h-1.5 bg-white rounded-full top-[85%] left-[95%] animate-twinkle-slow opacity-70" style={{ animationDelay: '0.7s' }} />
         
-        {/* Small Distant Stars */}
-        <div 
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `radial-gradient(circle at 8% 12%, rgba(255, 255, 255, 0.5) 0, rgba(255, 255, 255, 0.5) 1px, transparent 1px),
-                              radial-gradient(circle at 22% 35%, rgba(255, 255, 255, 0.45) 0, rgba(255, 255, 255, 0.45) 1px, transparent 1px),
-                              radial-gradient(circle at 35% 55%, rgba(255, 255, 255, 0.5) 0, rgba(255, 255, 255, 0.5) 1px, transparent 1px),
-                              radial-gradient(circle at 48% 22%, rgba(255, 255, 255, 0.45) 0, rgba(255, 255, 255, 0.45) 1px, transparent 1px),
-                              radial-gradient(circle at 58% 75%, rgba(255, 255, 255, 0.5) 0, rgba(255, 255, 255, 0.5) 1px, transparent 1px),
-                              radial-gradient(circle at 68% 45%, rgba(255, 255, 255, 0.4) 0, rgba(255, 255, 255, 0.4) 1px, transparent 1px),
-                              radial-gradient(circle at 78% 68%, rgba(255, 255, 255, 0.45) 0, rgba(255, 255, 255, 0.45) 1px, transparent 1px),
-                              radial-gradient(circle at 88% 28%, rgba(255, 255, 255, 0.5) 0, rgba(255, 255, 255, 0.5) 1px, transparent 1px),
-                              radial-gradient(circle at 12% 82%, rgba(255, 255, 255, 0.45) 0, rgba(255, 255, 255, 0.45) 1px, transparent 1px),
-                              radial-gradient(circle at 52% 92%, rgba(255, 255, 255, 0.4) 0, rgba(255, 255, 255, 0.4) 1px, transparent 1px),
-                              radial-gradient(circle at 82% 8%, rgba(255, 255, 255, 0.5) 0, rgba(255, 255, 255, 0.5) 1px, transparent 1px),
-                              radial-gradient(circle at 38% 48%, rgba(255, 255, 255, 0.45) 0, rgba(255, 255, 255, 0.45) 1px, transparent 1px)`,
-            backgroundSize: '100% 100%'
-          }}
-        />
+        {/* Small Distant Stars with Float */}
+        <div className="absolute w-1 h-1 bg-white rounded-full top-[12%] left-[8%] animate-twinkle animate-float opacity-50" style={{ animationDelay: '0.1s' }} />
+        <div className="absolute w-1 h-1 bg-white rounded-full top-[35%] left-[22%] animate-twinkle animate-float opacity-45" style={{ animationDelay: '0.6s' }} />
+        <div className="absolute w-1 h-1 bg-white rounded-full top-[55%] left-[35%] animate-twinkle animate-float opacity-50" style={{ animationDelay: '1.1s' }} />
+        <div className="absolute w-1 h-1 bg-white rounded-full top-[22%] left-[48%] animate-twinkle animate-float opacity-45" style={{ animationDelay: '1.6s' }} />
+        <div className="absolute w-1 h-1 bg-white rounded-full top-[75%] left-[58%] animate-twinkle animate-float opacity-50" style={{ animationDelay: '2.1s' }} />
+        <div className="absolute w-1 h-1 bg-white rounded-full top-[45%] left-[68%] animate-twinkle animate-float opacity-40" style={{ animationDelay: '2.6s' }} />
+        <div className="absolute w-1 h-1 bg-white rounded-full top-[68%] left-[78%] animate-twinkle animate-float opacity-45" style={{ animationDelay: '0.4s' }} />
+        <div className="absolute w-1 h-1 bg-white rounded-full top-[28%] left-[88%] animate-twinkle animate-float opacity-50" style={{ animationDelay: '0.9s' }} />
+        <div className="absolute w-1 h-1 bg-white rounded-full top-[82%] left-[12%] animate-twinkle animate-float opacity-45" style={{ animationDelay: '1.4s' }} />
+        <div className="absolute w-1 h-1 bg-white rounded-full top-[92%] left-[52%] animate-twinkle animate-float opacity-40" style={{ animationDelay: '1.9s' }} />
+        <div className="absolute w-1 h-1 bg-white rounded-full top-[8%] left-[82%] animate-twinkle animate-float opacity-50" style={{ animationDelay: '2.4s' }} />
+        <div className="absolute w-1 h-1 bg-white rounded-full top-[48%] left-[38%] animate-twinkle animate-float opacity-45" style={{ animationDelay: '2.9s' }} />
+        
+        {/* Shooting Stars */}
+        <div className="absolute w-1 h-1 bg-white rounded-full top-[20%] left-[80%] animate-shooting-star" style={{ animationDelay: '0s' }} />
+        <div className="absolute w-1 h-1 bg-white rounded-full top-[60%] left-[90%] animate-shooting-star" style={{ animationDelay: '5s' }} />
+        <div className="absolute w-0.5 h-0.5 bg-white rounded-full top-[40%] left-[70%] animate-shooting-star" style={{ animationDelay: '8s' }} />
         
         {/* Nebula Glow Effects */}
         <div 
