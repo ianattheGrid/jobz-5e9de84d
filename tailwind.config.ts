@@ -88,7 +88,7 @@ export default {
         },
         "typewriter": {
           "0%": { width: "0" },
-          "100%": { width: "100%" },
+          "100%": { width: "110ch" },
         },
         "blink": {
           "0%, 100%": { borderColor: "transparent" },

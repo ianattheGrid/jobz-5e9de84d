@@ -3,7 +3,7 @@ export const MissionSection = () => {
     <section className="py-16 bg-background">
       <div className="container mx-auto px-4 max-w-4xl">
         <div className="space-y-3 text-center">
-          <p className="text-sm md:text-base text-foreground/80 leading-tight font-mono border-r-2 border-foreground/80 pr-1 animate-typewriter animate-blink whitespace-nowrap overflow-hidden mx-auto" style={{ width: '0', maxWidth: 'fit-content' }}>
+          <p className="text-sm md:text-base text-foreground/80 leading-tight font-mono border-r-2 border-foreground/80 pr-1 animate-typewriter animate-blink whitespace-nowrap overflow-hidden inline-block">
             Online and traditional middlemen have made hiring expensive and slow – they profit from complexity.
           </p>
           
