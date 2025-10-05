@@ -102,7 +102,7 @@ export default {
         "pulse-glow": "pulse-glow 2s ease-in-out infinite",
         "shooting-star": "shooting-star 3s linear infinite",
         "float": "float 5s ease-in-out infinite",
-        "typewriter": "typewriter 3s steps(40, end) forwards",
+        "typewriter": "typewriter 4s steps(100, end) forwards",
         "blink": "blink 1s step-end infinite",
       },
     },
