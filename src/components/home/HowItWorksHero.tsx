@@ -11,31 +11,65 @@ export const HowItWorksHero = ({ activeTab, onTabChange }: HowItWorksHeroProps) 
   return (
     <>
       {/* Gradient Banner Section */}
-      <section className="relative h-[300px] overflow-hidden bg-gradient-to-br from-[#1e3a8a] via-[#7c3aed] to-[#4f46e5]">
-        {/* Constellation Pattern Overlay */}
+      <section className="relative h-[300px] overflow-hidden bg-gradient-to-br from-[#0a0e27] via-[#1a1047] to-[#0d1b2a]">
+        {/* Large Bright Stars */}
         <div 
-          className="absolute inset-0 opacity-20"
+          className="absolute inset-0"
           style={{
-            backgroundImage: `radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.4) 1px, transparent 1px),
-                              radial-gradient(circle at 60% 70%, rgba(255, 255, 255, 0.3) 1px, transparent 1px),
-                              radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.4) 1px, transparent 1px),
-                              radial-gradient(circle at 40% 80%, rgba(255, 255, 255, 0.3) 1px, transparent 1px),
-                              radial-gradient(circle at 10% 60%, rgba(255, 255, 255, 0.4) 1px, transparent 1px)`,
-            backgroundSize: '100px 100px, 150px 150px, 120px 120px, 180px 180px, 140px 140px',
-            backgroundPosition: '0 0, 40px 60px, 130px 270px, 70px 100px, 210px 160px'
+            backgroundImage: `radial-gradient(circle at 15% 25%, rgba(255, 255, 255, 0.9) 0, rgba(255, 255, 255, 0.9) 2px, transparent 2px),
+                              radial-gradient(circle at 85% 15%, rgba(255, 255, 255, 1) 0, rgba(255, 255, 255, 1) 3px, transparent 3px),
+                              radial-gradient(circle at 45% 35%, rgba(255, 255, 255, 0.85) 0, rgba(255, 255, 255, 0.85) 2.5px, transparent 2.5px),
+                              radial-gradient(circle at 70% 80%, rgba(255, 255, 255, 0.95) 0, rgba(255, 255, 255, 0.95) 2px, transparent 2px),
+                              radial-gradient(circle at 25% 70%, rgba(255, 255, 255, 0.9) 0, rgba(255, 255, 255, 0.9) 2.5px, transparent 2.5px),
+                              radial-gradient(circle at 90% 60%, rgba(255, 255, 255, 0.85) 0, rgba(255, 255, 255, 0.85) 2px, transparent 2px)`,
+            backgroundSize: '100% 100%',
+            filter: 'drop-shadow(0 0 2px rgba(255, 255, 255, 0.5))'
           }}
         />
         
-        {/* Geometric Pattern Overlay */}
+        {/* Medium Stars */}
         <div 
-          className="absolute inset-0 opacity-10"
+          className="absolute inset-0"
           style={{
-            backgroundImage: `linear-gradient(45deg, rgba(255, 255, 255, 0.1) 25%, transparent 25%),
-                              linear-gradient(-45deg, rgba(255, 255, 255, 0.1) 25%, transparent 25%),
-                              linear-gradient(45deg, transparent 75%, rgba(255, 255, 255, 0.1) 75%),
-                              linear-gradient(-45deg, transparent 75%, rgba(255, 255, 255, 0.1) 75%)`,
-            backgroundSize: '60px 60px',
-            backgroundPosition: '0 0, 0 30px, 30px -30px, -30px 0px'
+            backgroundImage: `radial-gradient(circle at 10% 45%, rgba(255, 255, 255, 0.7) 0, rgba(255, 255, 255, 0.7) 1.5px, transparent 1.5px),
+                              radial-gradient(circle at 30% 15%, rgba(255, 255, 255, 0.65) 0, rgba(255, 255, 255, 0.65) 1.5px, transparent 1.5px),
+                              radial-gradient(circle at 55% 65%, rgba(255, 255, 255, 0.75) 0, rgba(255, 255, 255, 0.75) 1.5px, transparent 1.5px),
+                              radial-gradient(circle at 75% 40%, rgba(255, 255, 255, 0.7) 0, rgba(255, 255, 255, 0.7) 1.5px, transparent 1.5px),
+                              radial-gradient(circle at 40% 85%, rgba(255, 255, 255, 0.65) 0, rgba(255, 255, 255, 0.65) 1.5px, transparent 1.5px),
+                              radial-gradient(circle at 65% 20%, rgba(255, 255, 255, 0.7) 0, rgba(255, 255, 255, 0.7) 1.5px, transparent 1.5px),
+                              radial-gradient(circle at 20% 90%, rgba(255, 255, 255, 0.65) 0, rgba(255, 255, 255, 0.65) 1.5px, transparent 1.5px),
+                              radial-gradient(circle at 95% 85%, rgba(255, 255, 255, 0.7) 0, rgba(255, 255, 255, 0.7) 1.5px, transparent 1.5px)`,
+            backgroundSize: '100% 100%'
+          }}
+        />
+        
+        {/* Small Distant Stars */}
+        <div 
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `radial-gradient(circle at 8% 12%, rgba(255, 255, 255, 0.5) 0, rgba(255, 255, 255, 0.5) 1px, transparent 1px),
+                              radial-gradient(circle at 22% 35%, rgba(255, 255, 255, 0.45) 0, rgba(255, 255, 255, 0.45) 1px, transparent 1px),
+                              radial-gradient(circle at 35% 55%, rgba(255, 255, 255, 0.5) 0, rgba(255, 255, 255, 0.5) 1px, transparent 1px),
+                              radial-gradient(circle at 48% 22%, rgba(255, 255, 255, 0.45) 0, rgba(255, 255, 255, 0.45) 1px, transparent 1px),
+                              radial-gradient(circle at 58% 75%, rgba(255, 255, 255, 0.5) 0, rgba(255, 255, 255, 0.5) 1px, transparent 1px),
+                              radial-gradient(circle at 68% 45%, rgba(255, 255, 255, 0.4) 0, rgba(255, 255, 255, 0.4) 1px, transparent 1px),
+                              radial-gradient(circle at 78% 68%, rgba(255, 255, 255, 0.45) 0, rgba(255, 255, 255, 0.45) 1px, transparent 1px),
+                              radial-gradient(circle at 88% 28%, rgba(255, 255, 255, 0.5) 0, rgba(255, 255, 255, 0.5) 1px, transparent 1px),
+                              radial-gradient(circle at 12% 82%, rgba(255, 255, 255, 0.45) 0, rgba(255, 255, 255, 0.45) 1px, transparent 1px),
+                              radial-gradient(circle at 52% 92%, rgba(255, 255, 255, 0.4) 0, rgba(255, 255, 255, 0.4) 1px, transparent 1px),
+                              radial-gradient(circle at 82% 8%, rgba(255, 255, 255, 0.5) 0, rgba(255, 255, 255, 0.5) 1px, transparent 1px),
+                              radial-gradient(circle at 38% 48%, rgba(255, 255, 255, 0.45) 0, rgba(255, 255, 255, 0.45) 1px, transparent 1px)`,
+            backgroundSize: '100% 100%'
+          }}
+        />
+        
+        {/* Nebula Glow Effects */}
+        <div 
+          className="absolute inset-0 opacity-20"
+          style={{
+            backgroundImage: `radial-gradient(circle 600px at 20% 30%, rgba(99, 102, 241, 0.3) 0%, transparent 50%),
+                              radial-gradient(circle 500px at 80% 70%, rgba(139, 92, 246, 0.25) 0%, transparent 50%),
+                              radial-gradient(circle 400px at 50% 50%, rgba(59, 130, 246, 0.15) 0%, transparent 50%)`
           }}
         />
         
