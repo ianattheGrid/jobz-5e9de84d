@@ -7,6 +7,7 @@ import { PlatformFeatures } from "@/components/home/PlatformFeatures";
 import { QRCodeSection } from "@/components/home/QRCodeSection";
 import { DemoProfilesSection } from "@/components/home/DemoProfilesSection";
 import { CandidateCostSection } from "@/components/home/CandidateCostSection";
+import { CandidateSectionHero } from "@/components/home/CandidateSectionHero";
 import { InternalE2ETestButton } from "@/components/dev/InternalE2ETestButton";
 
 
@@ -20,6 +21,7 @@ export default function Index() {
       <MissionSection />
       <HowItWorksHero activeTab={activeTab} onTabChange={setActiveTab} />
       <PlatformFeatures activeTab={activeTab} />
+      <CandidateSectionHero />
       <CandidateCostSection />
       <DemoProfilesSection />
       <QRCodeSection />
