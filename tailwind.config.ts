@@ -86,6 +86,14 @@ export default {
           "0%, 100%": { transform: "translateY(0)" },
           "50%": { transform: "translateY(-10px)" },
         },
+        "typewriter": {
+          "0%": { width: "0" },
+          "100%": { width: "100%" },
+        },
+        "blink": {
+          "0%, 100%": { borderColor: "transparent" },
+          "50%": { borderColor: "currentColor" },
+        },
       },
       animation: {
         "card-swipe": "card-swipe 0.5s ease-in-out",
@@ -94,6 +102,8 @@ export default {
         "pulse-glow": "pulse-glow 2s ease-in-out infinite",
         "shooting-star": "shooting-star 3s linear infinite",
         "float": "float 5s ease-in-out infinite",
+        "typewriter": "typewriter 3s steps(40, end) forwards",
+        "blink": "blink 1s step-end infinite",
       },
     },
   },
