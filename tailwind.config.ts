@@ -94,6 +94,18 @@ export default {
           "0%": { width: "0" },
           "100%": { width: "110ch" },
         },
+        "typewriter-2": {
+          "0%": { width: "0" },
+          "100%": { width: "110ch" },
+        },
+        "typewriter-3": {
+          "0%": { width: "0" },
+          "100%": { width: "110ch" },
+        },
+        "typewriter-4": {
+          "0%": { width: "0" },
+          "100%": { width: "110ch" },
+        },
         "blink": {
           "0%, 100%": { borderColor: "transparent" },
           "50%": { borderColor: "currentColor" },
@@ -107,6 +119,9 @@ export default {
         "shooting-star": "shooting-star 3s linear infinite",
         "float": "float 5s ease-in-out infinite",
         "typewriter": "typewriter 5s steps(120, end) forwards",
+        "typewriter-2": "typewriter-2 5s steps(120, end) 5s forwards",
+        "typewriter-3": "typewriter-3 5s steps(120, end) 10s forwards",
+        "typewriter-4": "typewriter-4 5s steps(120, end) 15s forwards",
         "fade-in-delayed-1": "fade-in 0.5s ease-out 5s forwards",
         "fade-in-delayed-2": "fade-in 0.5s ease-out 5.5s forwards",
         "fade-in-delayed-3": "fade-in 0.5s ease-out 6s forwards",
