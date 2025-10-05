@@ -86,6 +86,10 @@ export default {
           "0%, 100%": { transform: "translateY(0)" },
           "50%": { transform: "translateY(-10px)" },
         },
+        "fade-in": {
+          "0%": { opacity: "0" },
+          "100%": { opacity: "1" }
+        },
         "typewriter": {
           "0%": { width: "0" },
           "100%": { width: "110ch" },
