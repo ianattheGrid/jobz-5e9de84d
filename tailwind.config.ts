@@ -91,23 +91,26 @@ export default {
           "100%": { opacity: "1" }
         },
         "typewriter": {
-          "0%": { width: "0" },
-          "100%": { width: "110ch" },
+          "0%": { width: "0", borderColor: "currentColor" },
+          "99%": { borderColor: "currentColor" },
+          "100%": { width: "150ch", borderColor: "transparent" },
         },
         "typewriter-2": {
-          "0%": { width: "0", opacity: "0" },
-          "0.1%": { opacity: "1" },
-          "100%": { width: "110ch", opacity: "1" },
+          "0%": { width: "0", opacity: "0", borderColor: "currentColor" },
+          "0.1%": { opacity: "1", borderColor: "currentColor" },
+          "99%": { borderColor: "currentColor" },
+          "100%": { width: "150ch", opacity: "1", borderColor: "transparent" },
         },
         "typewriter-3": {
-          "0%": { width: "0", opacity: "0" },
-          "0.1%": { opacity: "1" },
-          "100%": { width: "110ch", opacity: "1" },
+          "0%": { width: "0", opacity: "0", borderColor: "currentColor" },
+          "0.1%": { opacity: "1", borderColor: "currentColor" },
+          "99%": { borderColor: "currentColor" },
+          "100%": { width: "150ch", opacity: "1", borderColor: "transparent" },
         },
         "typewriter-4": {
-          "0%": { width: "0", opacity: "0" },
-          "0.1%": { opacity: "1" },
-          "100%": { width: "110ch", opacity: "1" },
+          "0%": { width: "0", opacity: "0", borderColor: "currentColor" },
+          "0.1%": { opacity: "1", borderColor: "currentColor" },
+          "100%": { width: "150ch", opacity: "1", borderColor: "currentColor" },
         },
         "blink": {
           "0%, 100%": { borderColor: "transparent" },
