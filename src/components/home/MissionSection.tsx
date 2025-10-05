@@ -12,11 +12,11 @@ export const MissionSection = () => {
           </p>
           
           <p className="text-sm md:text-base text-foreground/80 leading-snug font-mono pr-1 animate-typewriter-3 whitespace-nowrap overflow-hidden inline-block opacity-0">
-            Employers can attract talent with "You're Hired" bonuses & anonymously tap into a huge community to find candidates for them.
+            Employers can attract talent with "You're Hired" bonuses & anonymously tap into our huge community to find candidates.
           </p>
           
           <p className="text-base md:text-lg font-mono font-bold text-primary mt-6 pr-1 animate-typewriter-4 whitespace-nowrap overflow-hidden inline-block opacity-0">
-            Your mission: Hired.
+            Mission accomplished.
           </p>
         </div>
       </div>
