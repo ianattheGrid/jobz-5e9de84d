@@ -95,16 +95,19 @@ export default {
           "100%": { width: "110ch" },
         },
         "typewriter-2": {
-          "0%": { width: "0" },
-          "100%": { width: "110ch" },
+          "0%": { width: "0", opacity: "0" },
+          "0.1%": { opacity: "1" },
+          "100%": { width: "110ch", opacity: "1" },
         },
         "typewriter-3": {
-          "0%": { width: "0" },
-          "100%": { width: "110ch" },
+          "0%": { width: "0", opacity: "0" },
+          "0.1%": { opacity: "1" },
+          "100%": { width: "110ch", opacity: "1" },
         },
         "typewriter-4": {
-          "0%": { width: "0" },
-          "100%": { width: "110ch" },
+          "0%": { width: "0", opacity: "0" },
+          "0.1%": { opacity: "1" },
+          "100%": { width: "110ch", opacity: "1" },
         },
         "blink": {
           "0%, 100%": { borderColor: "transparent" },
