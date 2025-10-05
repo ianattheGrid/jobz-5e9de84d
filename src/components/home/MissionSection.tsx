@@ -9,15 +9,15 @@ export const MissionSection = () => {
             </p>
           </div>
           
-          <p className="text-sm md:text-base text-foreground/90 leading-snug font-mono">
+          <p className="text-sm md:text-base text-foreground/90 leading-snug font-mono opacity-0 animate-fade-in-delayed-1">
             No more per-hire business talk. Candidates get hired for the price of a coffee.
           </p>
           
-          <p className="text-sm md:text-base text-foreground/80 leading-snug font-mono">
+          <p className="text-sm md:text-base text-foreground/80 leading-snug font-mono opacity-0 animate-fade-in-delayed-2">
             If a role is harder to fill, employers can attract talent with "You're Hired" bonuses, or anonymously tap into a huge community to find candidates for them.
           </p>
           
-          <p className="text-base md:text-lg font-mono font-bold text-primary mt-6">
+          <p className="text-base md:text-lg font-mono font-bold text-primary mt-6 opacity-0 animate-fade-in-delayed-3">
             Your mission: Hired.
           </p>
         </div>
