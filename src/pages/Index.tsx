@@ -1,6 +1,7 @@
 
 import NavBar from "@/components/NavBar";
 import { HeroSection } from "@/components/home/HeroSection";
+import { MissionSection } from "@/components/home/MissionSection";
 import { PlatformFeatures } from "@/components/home/PlatformFeatures";
 import { QRCodeSection } from "@/components/home/QRCodeSection";
 import { DemoProfilesSection } from "@/components/home/DemoProfilesSection";
@@ -13,6 +14,7 @@ export default function Index() {
     <div className="min-h-screen bg-background">
       <NavBar />
       <HeroSection />
+      <MissionSection />
       
       <PlatformFeatures />
       <CandidateCostSection />
