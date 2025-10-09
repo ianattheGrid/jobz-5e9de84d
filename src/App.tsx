@@ -7,6 +7,9 @@ import { AppLayout } from './components/layout/AppLayout';
 import { Toaster } from './components/ui/toaster';
 import Index from './pages/Index';
 
+// Auth routes
+import SignUp from './pages/SignUp';
+
 // Candidate routes
 import CandidateSignIn from './pages/CandidateSignIn';
 import CandidateSignUp from './pages/CandidateSignUp';
@@ -80,6 +83,9 @@ const App = () => {
       <Routes>
         <Route path="/" element={<AppLayout><Outlet /></AppLayout>}>
           <Route index element={<Index />} />
+          
+          {/* Auth routes */}
+          <Route path="signup" element={<SignUp />} />
           
           {/* Candidate routes */}
           <Route path="candidate/signin" element={<CandidateSignIn />} />

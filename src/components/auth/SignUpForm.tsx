@@ -6,7 +6,8 @@ import { CandidateFields } from "./signup/CandidateFields";
 import { SignUpError } from "./signup/SignUpError";
 import { CommonFields } from "./signup/CommonFields";
 import { useSignUpForm } from "./signup/useSignUpForm";
-import { useEffect } from "react";
+import { TermsOfUse } from "./TermsOfUse";
+import { useEffect, useState } from "react";
 
 interface SignUpFormProps {
   onSubmit: (email: string, password: string, fullName: string, jobTitle?: string, companyName?: string, companyWebsite?: string, companySize?: number) => Promise<void>;
@@ -25,6 +26,7 @@ export const SignUpForm = ({
 }: SignUpFormProps) => {
   const { formState, handleSubmit } = useSignUpForm({ userType, onSubmit });
   const [searchParams] = useSearchParams();
+  const [termsAgreed, setTermsAgreed] = useState(false);
   
   // Auto-fill referral code from URL params
   useEffect(() => {
@@ -86,7 +88,13 @@ export const SignUpForm = ({
         </>
       )}
 
-      <Button className="w-full bg-[#FF69B4] hover:bg-[#FF50A8] text-white" type="submit" disabled={loading}>
+      <TermsOfUse agreed={termsAgreed} onAgreeChange={setTermsAgreed} />
+
+      <Button 
+        className="w-full bg-[#FF69B4] hover:bg-[#FF50A8] text-white" 
+        type="submit" 
+        disabled={loading || !termsAgreed}
+      >
         {loading ? "Signing up..." : "Sign Up"}
       </Button>
 

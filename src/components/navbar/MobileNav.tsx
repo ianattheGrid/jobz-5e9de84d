@@ -57,14 +57,8 @@ const MobileNav = ({ isAuthenticated, userType }: MobileNavProps) => {
                 Connector Sign In
               </Link>
               <div className="h-px bg-border my-2" />
-              <Link to="/employer/signup" className="text-lg text-muted-foreground hover:text-primary transition-colors">
-                Employer Sign Up
-              </Link>
-              <Link to="/candidate/signup" className="text-lg text-muted-foreground hover:text-primary transition-colors">
-                Candidate Sign Up
-              </Link>
-              <Link to="/vr/signup" className="text-lg text-muted-foreground hover:text-primary transition-colors">
-                Connector Sign Up
+              <Link to="/signup" className="text-lg text-primary [&]:!text-primary hover:text-primary/80 transition-colors font-medium">
+                Sign Up
               </Link>
             </>
           ) : (
