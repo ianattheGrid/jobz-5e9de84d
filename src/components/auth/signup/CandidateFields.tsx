@@ -1,7 +1,6 @@
 
-import { useState } from "react";
 import { Input } from "@/components/ui/input";
-import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Label } from "@/components/ui/label";
 import { Info } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
@@ -16,7 +15,7 @@ export const CandidateFields = ({ linkedinUrl, setLinkedinUrl, referralCode = ""
   return (
     <>
       <div className="space-y-2">
-        <FormLabel className="flex items-center gap-2">
+        <Label className="flex items-center gap-2">
           LinkedIn URL
           <TooltipProvider>
             <Tooltip>
@@ -28,19 +27,19 @@ export const CandidateFields = ({ linkedinUrl, setLinkedinUrl, referralCode = ""
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
-        </FormLabel>
+        </Label>
         <Input
           type="url"
           placeholder="https://linkedin.com/in/yourname"
           value={linkedinUrl}
           onChange={(e) => setLinkedinUrl(e.target.value)}
         />
-        <FormDescription>Optional but recommended</FormDescription>
+        <p className="text-sm text-muted-foreground">Optional but recommended</p>
       </div>
       
       {setReferralCode && (
         <div className="space-y-2">
-          <FormLabel className="flex items-center gap-2">
+          <Label className="flex items-center gap-2">
             Referral Code
             <TooltipProvider>
               <Tooltip>
@@ -52,14 +51,14 @@ export const CandidateFields = ({ linkedinUrl, setLinkedinUrl, referralCode = ""
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
-          </FormLabel>
+          </Label>
           <Input
             type="text"
             placeholder="Enter referral code (e.g., REF-ABC12)"
             value={referralCode}
             onChange={(e) => setReferralCode(e.target.value)}
           />
-          <FormDescription>Enter if you were referred by a Connector</FormDescription>
+          <p className="text-sm text-muted-foreground">Enter if you were referred by a Connector</p>
         </div>
       )}
     </>
