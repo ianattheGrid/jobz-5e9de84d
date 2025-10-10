@@ -93,7 +93,7 @@ export const SignUpForm = ({
       <Button 
         className="w-full bg-[#FF69B4] hover:bg-[#FF50A8] text-white" 
         type="submit" 
-        disabled={loading || !termsAgreed}
+        disabled={loading || !termsAgreed || (userType === 'employer' && !formState.isSME)}
       >
         {loading ? "Signing up..." : "Sign Up"}
       </Button>

@@ -64,6 +64,11 @@ export const useSignUpForm = ({ userType, onSubmit }: SignUpFormProps) => {
         return;
       }
 
+      if (userType === 'employer' && !isSME) {
+        setError("Please confirm your company meets the eligibility criteria");
+        return;
+      }
+
       try {
         if (userType === 'employer') {
           await onSubmit(email, password, fullName, jobTitle, companyName, companyWebsite, companySize);

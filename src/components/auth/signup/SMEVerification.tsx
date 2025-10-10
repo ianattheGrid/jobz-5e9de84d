@@ -13,10 +13,6 @@ export const SMEVerification = ({
 }: SMEVerificationProps) => {
   return (
     <div className="space-y-4">
-      <div className="text-sm text-muted-foreground mb-4">
-        Jobz is exclusively for Small and Medium-sized Enterprises (SMEs) with 499 employees or fewer. This allows us to better serve the unique needs of growing businesses.
-      </div>
-      
       <div className="flex items-center space-x-2">
         <Checkbox 
           id="sme"
@@ -24,8 +20,8 @@ export const SMEVerification = ({
           onCheckedChange={setIsSME}
           required
         />
-        <Label htmlFor="sme" className="text-sm leading-none">
-          I confirm that my company has 499 employees or fewer
+        <Label htmlFor="sme" className="text-sm leading-none cursor-pointer">
+          This company is independently owned, not part of a larger corporate group or franchise, and has fewer than 250 employees in total.
         </Label>
       </div>
     </div>
