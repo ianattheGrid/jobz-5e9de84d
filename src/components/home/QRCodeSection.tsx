@@ -3,7 +3,7 @@ import { Smartphone, Download, Briefcase } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export const QRCodeSection = () => {
-  const appUrl = window.location.origin;
+  const appUrl = "https://jobz.dgrid.co/";
 
   return (
     <section className="py-20 bg-gradient-to-br from-primary/5 to-background">

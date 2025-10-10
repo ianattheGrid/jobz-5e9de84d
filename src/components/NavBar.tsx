@@ -106,7 +106,7 @@ const NavBar = () => {
                   className="text-black hover:text-black/80 flex items-center gap-2"
                 >
                   <QrCode className="h-4 w-4" />
-                  <span>QR Code</span>
+                  <span>GetApp</span>
                 </Link>
                 <Link 
                   to="/faq" 

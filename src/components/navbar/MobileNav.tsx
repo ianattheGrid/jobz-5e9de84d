@@ -43,6 +43,9 @@ const MobileNav = ({ isAuthenticated, userType }: MobileNavProps) => {
           <Link to="/jobs" className="text-lg text-muted-foreground hover:text-primary transition-colors">
             Job Board
           </Link>
+          <Link to="/qr-code" className="text-lg text-muted-foreground hover:text-primary transition-colors">
+            GetApp
+          </Link>
 
           {!isAuthenticated ? (
             <>

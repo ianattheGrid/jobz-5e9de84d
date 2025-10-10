@@ -4,7 +4,6 @@ import { HeroSection } from "@/components/home/HeroSection";
 import { MissionSection } from "@/components/home/MissionSection";
 import { HowItWorksHero } from "@/components/home/HowItWorksHero";
 import { PlatformFeatures } from "@/components/home/PlatformFeatures";
-import { QRCodeSection } from "@/components/home/QRCodeSection";
 import { DemoProfilesSection } from "@/components/home/DemoProfilesSection";
 import { CandidateCostSection } from "@/components/home/CandidateCostSection";
 import { CandidateSectionHero } from "@/components/home/CandidateSectionHero";
@@ -25,7 +24,6 @@ export default function Index() {
       <CandidateSectionHero />
       <CandidateCostSection />
       <DemoProfilesSection />
-      <QRCodeSection />
       <InternalE2ETestButton />
       <Footer />
     </div>

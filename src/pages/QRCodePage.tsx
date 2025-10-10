@@ -4,7 +4,7 @@ import { Briefcase, Smartphone, Download, QrCode } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function QRCodePage() {
-  const appUrl = window.location.origin;
+  const appUrl = "https://jobz.dgrid.co/";
 
   return (
     <div className="min-h-screen bg-background">
@@ -52,6 +52,30 @@ export default function QRCodePage() {
                   </div>
                   <h3 className="text-lg font-semibold mb-2">Add to Home Screen</h3>
                   <p className="text-muted-foreground">Save jobz to your home screen for quick access</p>
+                </div>
+              </div>
+
+              {/* Browser Instructions Section */}
+              <div className="mt-16 text-left">
+                <h2 className="text-2xl font-bold mb-4 text-center">Option 2: Add Directly from Your Browser</h2>
+                <p className="text-center text-muted-foreground mb-8">Here's how to add it to your home screen for quick access:</p>
+                
+                <div className="grid md:grid-cols-2 gap-8">
+                  <div className="bg-card p-6 rounded-lg border">
+                    <h3 className="text-xl font-semibold mb-4">For iPhone (using Safari):</h3>
+                    <ol className="space-y-3 list-decimal list-inside text-muted-foreground">
+                      <li>Tap the Share icon (↑ in a square) at the bottom of your screen.</li>
+                      <li>Then, tap 'Add to Home Screen'.</li>
+                    </ol>
+                  </div>
+                  
+                  <div className="bg-card p-6 rounded-lg border">
+                    <h3 className="text-xl font-semibold mb-4">For Android (using Chrome):</h3>
+                    <ol className="space-y-3 list-decimal list-inside text-muted-foreground">
+                      <li>Tap the 3-dot menu in the top right corner.</li>
+                      <li>Then, select 'Add to Home Screen'.</li>
+                    </ol>
+                  </div>
                 </div>
               </div>
             </div>
