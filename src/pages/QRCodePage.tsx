@@ -18,8 +18,10 @@ export default function QRCodePage() {
                 Get jobz on Your Phone
               </h1>
               <p className="text-xl text-muted-foreground mb-12">
-                Scan the QR code below to access jobz instantly on your mobile device
+                Choose one of the options below to access jobz on your mobile device
               </p>
+              
+              <h2 className="text-2xl font-bold mb-8 text-center">Option 1: Scan the QR Code</h2>
               
               <div className="bg-white p-8 rounded-2xl shadow-lg inline-block mb-8">
                 <QRCode
