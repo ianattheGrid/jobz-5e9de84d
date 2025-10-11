@@ -87,9 +87,21 @@ export const Footer = () => {
 
         {/* Bottom Bar */}
         <div className="mt-12 pt-8 border-t border-border">
-          <p className="text-center text-sm text-muted-foreground">
-            © {new Date().getFullYear()} Jobz. All rights reserved.
-          </p>
+          <div className="text-center space-y-2">
+            <p className="text-sm text-muted-foreground">
+              © {new Date().getFullYear()} Jobz. All rights reserved.
+            </p>
+            <p className="text-sm">
+              <a 
+                href="https://dgrid.co/contribute" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-muted-foreground hover:text-primary transition-colors"
+              >
+                Contribute to theGrid
+              </a>
+            </p>
+          </div>
         </div>
       </div>
     </footer>
