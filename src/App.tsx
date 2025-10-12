@@ -47,7 +47,7 @@ import PreviewVRProfile from './pages/PreviewVRProfile';
 // Common routes
 import Jobs from './pages/Jobs';
 import FAQ from './pages/FAQ';
-import Contact from './pages/Contact';
+
 import QRCodePage from './pages/QRCodePage';
 import PricingPage from './pages/PricingPage';
 import PushSetup from './pages/PushSetup';
@@ -132,7 +132,7 @@ const App = () => {
           {/* Common routes */}
           <Route path="jobs" element={<Jobs />} />
           <Route path="faq" element={<FAQ />} />
-          <Route path="contact" element={<Contact />} />
+          
           <Route path="pricing" element={<PricingPage />} />
           <Route path="push-setup" element={<PushSetup />} />
           <Route path="cv-view" element={<CVRedirect />} />
