@@ -93,6 +93,16 @@ export const Footer = () => {
             </p>
             <p className="text-sm">
               <a 
+                href="mailto:holler@dgrid.co"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-muted-foreground hover:text-primary transition-colors"
+              >
+                holler@dgrid.co
+              </a>
+            </p>
+            <p className="text-sm">
+              <a 
                 href="https://dgrid.co/contribute" 
                 target="_blank"
                 rel="noopener noreferrer"
