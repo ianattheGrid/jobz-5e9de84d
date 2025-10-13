@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Sparkles, AlertCircle } from 'lucide-react';
+import { Rocket, AlertCircle } from 'lucide-react';
 import { useAppStatus } from '@/hooks/useAppStatus';
 
 export const SoftLaunchBanner = () => {
@@ -43,9 +43,9 @@ export const SoftLaunchBanner = () => {
       >
         {!isExpanded ? (
           // Compact vertical badge
-          <div className="bg-gradient-to-b from-brand-pink via-brand-purple to-brand-blue text-white p-2 rounded-full shadow-lg cursor-pointer hover:shadow-xl transition-all duration-300">
-            <div className="flex flex-col items-center gap-1.5 h-32">
-              <Sparkles className="w-4 h-4" />
+          <div className="bg-black/30 backdrop-blur-md border-2 border-brand-pink text-white p-2 rounded-full shadow-lg cursor-pointer hover:shadow-xl hover:bg-black/40 transition-all duration-300">
+            <div className="flex flex-col items-center gap-1 h-20">
+              <Rocket className="w-5 h-5" />
               <span className="text-xs font-bold [writing-mode:vertical-rl] rotate-180">
                 Soft Launch
               </span>
@@ -53,16 +53,16 @@ export const SoftLaunchBanner = () => {
           </div>
         ) : (
           // Expanded card
-          <div className="bg-white/95 border-2 border-transparent bg-clip-padding rounded-lg shadow-2xl p-4 w-96 animate-in slide-in-from-right duration-300 relative before:absolute before:inset-0 before:-z-10 before:rounded-lg before:p-[2px] before:bg-gradient-to-br before:from-brand-pink before:via-brand-purple before:to-brand-blue">
+          <div className="bg-black/40 backdrop-blur-md border-2 border-brand-pink rounded-lg shadow-2xl p-4 w-96 animate-in slide-in-from-right duration-300">
             <div className="flex items-start gap-3">
-              <div className="bg-gradient-to-br from-brand-pink to-brand-purple p-2 rounded-full flex-shrink-0">
-                <Sparkles className="w-5 h-5 text-white" />
+              <div className="bg-brand-pink/20 border border-brand-pink p-2 rounded-full flex-shrink-0">
+                <Rocket className="w-5 h-5 text-white" />
               </div>
               <div className="flex-1 space-y-2">
-                <h3 className="text-lg font-bold text-gray-900">
+                <h3 className="text-lg font-bold text-white">
                   🚀 Soft Launch in {status?.launchLocation || 'Bristol'}
                 </h3>
-                <p className="text-sm text-gray-600 leading-relaxed">
+                <p className="text-sm text-white/90 leading-relaxed">
                   We're just getting started here. Sign up and add your details, and we'll send you 
                   matches via in-app Alerts even while things are filling up.
                   {status?.isFreeInLaunchLocation && (
@@ -73,7 +73,7 @@ export const SoftLaunchBanner = () => {
                 </p>
                 <button 
                   onClick={scrollToFooter}
-                  className="text-sm text-brand-pink hover:text-brand-pink/80 underline transition-colors inline-flex items-center gap-1"
+                  className="text-sm text-brand-pink hover:text-white underline transition-colors inline-flex items-center gap-1"
                 >
                   <AlertCircle className="w-4 h-4" />
                   Want to help even more? Tap to scroll to Contribute
@@ -95,30 +95,30 @@ export const SoftLaunchBanner = () => {
           <button
             onClick={() => setIsExpanded(true)}
             aria-expanded={isExpanded}
-            className="bg-gradient-to-r from-brand-pink via-brand-purple to-brand-blue text-white px-4 py-2 rounded-full shadow-lg flex items-center gap-2 hover:shadow-xl transition-all duration-300"
+            className="bg-black/30 backdrop-blur-md border-2 border-brand-pink text-white px-4 py-2 rounded-full shadow-lg flex items-center gap-2 hover:shadow-xl hover:bg-black/40 transition-all duration-300"
           >
-            <Sparkles className="w-4 h-4" />
+            <Rocket className="w-4 h-4" />
             <span className="text-sm font-bold">Soft Launch</span>
           </button>
         ) : (
           // Expanded card
-          <div className="relative bg-white/95 border-2 border-transparent rounded-lg shadow-2xl p-4 w-[85vw] animate-in slide-in-from-bottom duration-300 before:absolute before:inset-0 before:-z-10 before:rounded-lg before:p-[2px] before:bg-gradient-to-br before:from-brand-pink before:via-brand-purple before:to-brand-blue">
+          <div className="relative bg-black/40 backdrop-blur-md border-2 border-brand-pink rounded-lg shadow-2xl p-4 w-[85vw] animate-in slide-in-from-bottom duration-300">
             <button
               onClick={() => setIsExpanded(false)}
-              className="absolute top-2 right-2 text-gray-400 hover:text-gray-900 transition-colors z-10"
+              className="absolute top-2 right-2 text-white/60 hover:text-white transition-colors z-10"
               aria-label="Close"
             >
               ✕
             </button>
             <div className="flex items-start gap-3">
-              <div className="bg-gradient-to-br from-brand-pink to-brand-purple p-2 rounded-full flex-shrink-0">
-                <Sparkles className="w-5 h-5 text-white" />
+              <div className="bg-brand-pink/20 border border-brand-pink p-2 rounded-full flex-shrink-0">
+                <Rocket className="w-5 h-5 text-white" />
               </div>
               <div className="flex-1 space-y-2 pr-6">
-                <h3 className="text-base font-bold text-gray-900">
+                <h3 className="text-base font-bold text-white">
                   🚀 Soft Launch in {status?.launchLocation || 'Bristol'}
                 </h3>
-                <p className="text-sm text-gray-600 leading-relaxed">
+                <p className="text-sm text-white/90 leading-relaxed">
                   We're just getting started. Sign up and we'll send you matches via Alerts.
                   {status?.isFreeInLaunchLocation && (
                     <span className="font-semibold text-brand-pink">
@@ -128,7 +128,7 @@ export const SoftLaunchBanner = () => {
                 </p>
                 <button 
                   onClick={scrollToFooter}
-                  className="text-sm text-brand-pink hover:text-brand-pink/80 underline transition-colors inline-flex items-center gap-1"
+                  className="text-sm text-brand-pink hover:text-white underline transition-colors inline-flex items-center gap-1"
                 >
                   <AlertCircle className="w-4 h-4" />
                   Contribute
