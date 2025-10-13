@@ -9,6 +9,7 @@ import { CandidateCostSection } from "@/components/home/CandidateCostSection";
 import { CandidateSectionHero } from "@/components/home/CandidateSectionHero";
 import { InternalE2ETestButton } from "@/components/dev/InternalE2ETestButton";
 import { Footer } from "@/components/Footer";
+import { SoftLaunchBanner } from "@/components/SoftLaunchBanner";
 
 
 export default function Index() {
@@ -17,6 +18,7 @@ export default function Index() {
   return (
     <div className="min-h-screen bg-background">
       <NavBar />
+      <SoftLaunchBanner />
       <HeroSection />
       <MissionSection />
       <HowItWorksHero activeTab={activeTab} onTabChange={setActiveTab} />

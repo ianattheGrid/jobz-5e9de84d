@@ -91,6 +91,36 @@ export type Database = {
           },
         ]
       }
+      app_settings: {
+        Row: {
+          app_name: string
+          created_at: string | null
+          id: string
+          is_free_in_launch_location: boolean | null
+          launch_location: string
+          status: string
+          updated_at: string | null
+        }
+        Insert: {
+          app_name: string
+          created_at?: string | null
+          id?: string
+          is_free_in_launch_location?: boolean | null
+          launch_location: string
+          status: string
+          updated_at?: string | null
+        }
+        Update: {
+          app_name?: string
+          created_at?: string | null
+          id?: string
+          is_free_in_launch_location?: boolean | null
+          launch_location?: string
+          status?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       applications: {
         Row: {
           applicant_id: string

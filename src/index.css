@@ -25,6 +25,9 @@
     --input: 220 13% 91%;
     --ring: 330 100% 71%;
     --radius: 0.5rem;
+    --brand-pink: 330 81% 60%;
+    --brand-purple: 280 87% 65%;
+    --brand-blue: 217 91% 60%;
     --navy: 226 60% 20%;
     --navy-foreground: 0 0% 100%;
   }

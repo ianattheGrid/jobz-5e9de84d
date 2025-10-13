@@ -1,0 +1,128 @@
+import { useState } from 'react';
+import { Sparkles, AlertCircle } from 'lucide-react';
+import { useAppStatus } from '@/hooks/useAppStatus';
+
+export const SoftLaunchBanner = () => {
+  const { status, isLoading } = useAppStatus('localz');
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  // Hide banner if loading or app is live
+  if (isLoading || status?.status === 'live') return null;
+
+  const scrollToFooter = () => {
+    const footer = document.querySelector('footer');
+    if (footer) {
+      footer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
+  return (
+    <>
+      {/* Desktop Version - Right-side vertical badge */}
+      <div 
+        className="hidden md:block fixed right-4 top-1/2 -translate-y-1/2 z-50"
+        onMouseEnter={() => setIsExpanded(true)}
+        onMouseLeave={() => setIsExpanded(false)}
+        role="complementary"
+        aria-label="Soft launch announcement"
+      >
+        {!isExpanded ? (
+          // Compact vertical badge
+          <div className="bg-gradient-to-b from-brand-pink via-brand-purple to-brand-blue text-white p-3 rounded-full shadow-lg cursor-pointer animate-pulse hover:animate-none transition-all duration-300">
+            <div className="flex flex-col items-center gap-2 h-48">
+              <Sparkles className="w-5 h-5" />
+              <span className="text-sm font-bold [writing-mode:vertical-rl] rotate-180">
+                Soft Launch
+              </span>
+            </div>
+          </div>
+        ) : (
+          // Expanded card
+          <div className="bg-gradient-to-br from-brand-pink/10 via-brand-purple/10 to-brand-blue/10 backdrop-blur-sm border border-brand-pink/20 rounded-lg shadow-xl p-4 w-96 animate-in slide-in-from-right duration-300">
+            <div className="flex items-start gap-3">
+              <div className="bg-brand-pink/20 p-2 rounded-full flex-shrink-0">
+                <Sparkles className="w-5 h-5 text-brand-pink" />
+              </div>
+              <div className="flex-1 space-y-2">
+                <h3 className="text-lg font-bold text-foreground">
+                  🚀 Soft Launch in {status?.launchLocation || 'Bristol'}
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  We're just getting started here. Sign up and add your details, and we'll send you 
+                  matches via in-app Alerts even while things are filling up.
+                  {status?.isFreeInLaunchLocation && (
+                    <span className="font-semibold text-brand-pink">
+                      {' '}It's free in {status.launchLocation}
+                    </span>
+                  )}; we'll only start charging when we roll out across the UK.
+                </p>
+                <button 
+                  onClick={scrollToFooter}
+                  className="text-sm text-brand-pink hover:text-brand-pink/80 underline transition-colors inline-flex items-center gap-1"
+                >
+                  <AlertCircle className="w-4 h-4" />
+                  Want to help even more? Tap to scroll to Contribute
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Mobile Version - Bottom-right badge */}
+      <div 
+        className="md:hidden fixed bottom-20 right-4 z-50"
+        role="complementary"
+        aria-label="Soft launch announcement"
+      >
+        {!isExpanded ? (
+          // Compact horizontal badge
+          <button
+            onClick={() => setIsExpanded(true)}
+            aria-expanded={isExpanded}
+            className="bg-gradient-to-r from-brand-pink via-brand-purple to-brand-blue text-white px-4 py-2 rounded-full shadow-lg flex items-center gap-2 animate-pulse hover:animate-none transition-all duration-300"
+          >
+            <Sparkles className="w-4 h-4" />
+            <span className="text-sm font-bold">Soft Launch</span>
+          </button>
+        ) : (
+          // Expanded card
+          <div className="bg-gradient-to-br from-brand-pink/10 via-brand-purple/10 to-brand-blue/10 backdrop-blur-sm border border-brand-pink/20 rounded-lg shadow-xl p-4 w-[90vw] animate-in slide-in-from-bottom duration-300">
+            <button
+              onClick={() => setIsExpanded(false)}
+              className="absolute top-2 right-2 text-muted-foreground hover:text-foreground"
+              aria-label="Close"
+            >
+              ✕
+            </button>
+            <div className="flex items-start gap-3">
+              <div className="bg-brand-pink/20 p-2 rounded-full flex-shrink-0">
+                <Sparkles className="w-5 h-5 text-brand-pink" />
+              </div>
+              <div className="flex-1 space-y-2 pr-6">
+                <h3 className="text-base font-bold text-foreground">
+                  🚀 Soft Launch in {status?.launchLocation || 'Bristol'}
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  We're just getting started. Sign up and we'll send you matches via Alerts.
+                  {status?.isFreeInLaunchLocation && (
+                    <span className="font-semibold text-brand-pink">
+                      {' '}Free in {status.launchLocation}!
+                    </span>
+                  )}
+                </p>
+                <button 
+                  onClick={scrollToFooter}
+                  className="text-sm text-brand-pink hover:text-brand-pink/80 underline transition-colors inline-flex items-center gap-1"
+                >
+                  <AlertCircle className="w-4 h-4" />
+                  Contribute
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </>
+  );
+};

@@ -53,6 +53,9 @@ export default {
           DEFAULT: "hsl(var(--popover))",
           foreground: "hsl(var(--popover-foreground))",
         },
+        "brand-pink": "hsl(var(--brand-pink))",
+        "brand-purple": "hsl(var(--brand-purple))",
+        "brand-blue": "hsl(var(--brand-blue))",
       },
       keyframes: {
         "card-swipe": {
