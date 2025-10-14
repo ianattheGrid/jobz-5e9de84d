@@ -193,7 +193,7 @@ export default function DemoCandidateProfile() {
             <CardContent>
               <div className="flex flex-wrap gap-2">
                 {candidate.skills.map((skill, index) => (
-                  <Badge key={index} variant="secondary">
+                  <Badge key={index} variant="outline">
                     <span className="text-sm">{skill}</span>
                   </Badge>
                 ))}
@@ -224,8 +224,8 @@ export default function DemoCandidateProfile() {
               <CardContent>
                 <div className="grid gap-3 sm:grid-cols-2">
                   {candidate.personality.map((item, idx) => (
-                    <div key={idx} className="rounded-md border border-pink-200 bg-pink-50 p-4">
-                      <div className="text-xs font-medium text-pink-700 mb-1">{item.label}</div>
+                    <div key={idx} className="rounded-md border border-primary p-4">
+                      <div className="text-xs font-medium text-primary mb-1">{item.label}</div>
                       <div className="text-sm text-foreground">{item.answer}</div>
                     </div>
                   ))}
