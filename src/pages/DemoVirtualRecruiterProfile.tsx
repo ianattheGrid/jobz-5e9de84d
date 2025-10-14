@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import NavBar from "@/components/NavBar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -59,6 +60,11 @@ export default function DemoVirtualRecruiterProfile() {
       offersExtended: 3
     }
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return <div className="min-h-screen bg-background">
       <NavBar />
       <div className="container mx-auto px-4 py-8 max-w-6xl" style={{
@@ -67,7 +73,14 @@ export default function DemoVirtualRecruiterProfile() {
       
       {/* Back to Card Link */}
       <div className="mb-4">
-        <Link to="/#interactive-cards" className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors">
+        <Link 
+          to="/" 
+          onClick={(e) => {
+            e.preventDefault();
+            window.location.href = '/#interactive-cards';
+          }}
+          className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors"
+        >
           <ArrowLeft className="h-4 w-4" />
           <span className="text-sm">Back to Interactive Cards</span>
         </Link>

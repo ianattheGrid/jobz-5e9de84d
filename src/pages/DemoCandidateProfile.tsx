@@ -90,7 +90,14 @@ export default function DemoCandidateProfile() {
       
       {/* Back to Card Link */}
       <div className="mb-4">
-        <Link to="/#interactive-cards" className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors">
+        <Link 
+          to="/" 
+          onClick={(e) => {
+            e.preventDefault();
+            window.location.href = '/#interactive-cards';
+          }}
+          className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors"
+        >
           <ArrowLeft className="h-4 w-4" />
           <span className="text-sm">Back to Interactive Cards</span>
         </Link>
