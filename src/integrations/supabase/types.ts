@@ -1236,6 +1236,7 @@ export type Database = {
           salary_max: number
           salary_min: number
           skills_essential: boolean | null
+          soft_launch_only: boolean | null
           specialization: string
           title: string
           title_essential: boolean | null
@@ -1273,6 +1274,7 @@ export type Database = {
           salary_max: number
           salary_min: number
           skills_essential?: boolean | null
+          soft_launch_only?: boolean | null
           specialization: string
           title: string
           title_essential?: boolean | null
@@ -1310,6 +1312,7 @@ export type Database = {
           salary_max?: number
           salary_min?: number
           skills_essential?: boolean | null
+          soft_launch_only?: boolean | null
           specialization?: string
           title?: string
           title_essential?: boolean | null

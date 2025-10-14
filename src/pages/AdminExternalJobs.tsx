@@ -9,6 +9,9 @@ import { AdminStats } from "@/components/admin/AdminStats";
 import { CompaniesTable } from "@/components/admin/CompaniesTable";
 import { ExternalJobsList } from "@/components/admin/ExternalJobsList";
 import { JobMatchesTable } from "@/components/admin/JobMatchesTable";
+import { AdminNavigation } from "@/components/admin/AdminNavigation";
+import { AdminProtectedRoute } from "@/components/auth/AdminProtectedRoute";
+import { JobVisibilityManager } from "@/components/admin/JobVisibilityManager";
 
 export default function AdminExternalJobs() {
   const [scrapingLoading, setScrapingLoading] = useState(false);
@@ -60,13 +63,16 @@ export default function AdminExternalJobs() {
   };
 
   return (
-    <div className="container mx-auto py-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">External Jobs Management</h1>
-        <p className="text-muted-foreground">
-          Monitor and manage job scraping from Bristol SME companies
-        </p>
-      </div>
+    <AdminProtectedRoute>
+      <div className="container mx-auto py-8">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold mb-2">External Jobs Management</h1>
+          <p className="text-muted-foreground">
+            Monitor and manage job scraping from Bristol SME companies
+          </p>
+        </div>
+
+        <AdminNavigation />
 
       <Tabs defaultValue="overview" className="space-y-6">
         <TabsList className="radix-tablist">
@@ -74,6 +80,7 @@ export default function AdminExternalJobs() {
           <TabsTrigger value="companies" className="radix-tab">Companies</TabsTrigger>
           <TabsTrigger value="jobs" className="radix-tab">Jobs</TabsTrigger>
           <TabsTrigger value="matches" className="radix-tab">Matches</TabsTrigger>
+          <TabsTrigger value="visibility" className="radix-tab">Visibility</TabsTrigger>
           <TabsTrigger value="actions" className="radix-tab">Actions</TabsTrigger>
         </TabsList>
 
@@ -142,6 +149,10 @@ export default function AdminExternalJobs() {
           <JobMatchesTable />
         </TabsContent>
 
+        <TabsContent value="visibility">
+          <JobVisibilityManager />
+        </TabsContent>
+
         <TabsContent value="actions" className="space-y-6">
           <div className="grid gap-6 md:grid-cols-2">
             <Card>
@@ -184,6 +195,7 @@ export default function AdminExternalJobs() {
           </div>
         </TabsContent>
       </Tabs>
-    </div>
+      </div>
+    </AdminProtectedRoute>
   );
 }
