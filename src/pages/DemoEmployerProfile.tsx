@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import NavBar from "@/components/NavBar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -11,6 +12,10 @@ import gallery2 from "@/assets/employer-gallery-2.jpg";
 import gallery3 from "@/assets/employer-gallery-3.jpg";
 import gallery4 from "@/assets/employer-gallery-4.jpg";
 export default function DemoEmployerProfile() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const employer = {
     name: "Bristol Tech Solutions",
     industry: "Software Development",
@@ -69,15 +74,7 @@ export default function DemoEmployerProfile() {
       </div>
       <div className="mb-6 p-4 bg-green-50 rounded-lg border-l-4 border-green-400">
         <h2 className="text-lg font-semibold text-green-800 mb-2">Demo Employer Profile</h2>
-        <p className="text-green-700 mb-3">This is an example of how an employer profile looks on Jobz. </p>
-          <div className="flex gap-2">
-          <Button variant="outline" size="sm" onClick={() => window.location.href = '/swipe/candidates'}>
-            🔥 Try Swipe Interface (Candidates)
-          </Button>
-            <Link to="/preview/employer-demo">
-              <Button variant="secondary" size="sm">Preview with real components</Button>
-            </Link>
-          </div>
+        <p className="text-green-700">This is an example of how an employer profile looks on Jobz. </p>
       </div>
 
       {/* Hero Section */}
