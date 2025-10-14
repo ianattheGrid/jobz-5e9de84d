@@ -31,6 +31,7 @@ import FAQ from "@/pages/FAQ";
 import AdminSignIn from "@/pages/AdminSignIn";
 import AdminDashboard from "@/pages/AdminDashboard";
 import AdminExternalJobs from "@/pages/AdminExternalJobs";
+import AdminUserManagement from "@/pages/AdminUserManagement";
 
 import CandidateChat from "@/pages/CandidateChat";
 
@@ -170,6 +171,10 @@ export const routes = [
   {
     path: "/admin/external-jobs",
     element: <AdminExternalJobs />
+  },
+  {
+    path: "/admin/users",
+    element: <AdminUserManagement />
   },
   {
     path: "*",

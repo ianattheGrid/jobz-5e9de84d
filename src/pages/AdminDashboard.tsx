@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { AdminProtectedRoute } from "@/components/auth/AdminProtectedRoute";
+import { AdminNavigation } from "@/components/admin/AdminNavigation";
 import { AppStatusManagement } from "@/components/admin/AppStatusManagement";
 import { SoftLaunchMetrics } from "@/components/admin/SoftLaunchMetrics";
 import { Loader2 } from "lucide-react";
@@ -81,6 +82,8 @@ const AdminDashboard = () => {
               Manage soft launch status and monitor user signups
             </p>
           </div>
+
+          <AdminNavigation />
 
           <SoftLaunchMetrics
             totalCandidates={metrics.totalCandidates}
