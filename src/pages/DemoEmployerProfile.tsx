@@ -100,7 +100,7 @@ export default function DemoEmployerProfile() {
               <Button className="bg-primary text-white hover:bg-primary/90">
                 <MessageCircle className="h-4 w-4 mr-2" /> Contact Employer
               </Button>
-              <Button variant="outline" className="border-white/30 text-white hover:bg-white/10">
+              <Button variant="outline" className="bg-transparent border-white/30 text-white hover:bg-white/10">
                 <ExternalLink className="h-4 w-4 mr-2" /> Visit Website
               </Button>
             </div>
