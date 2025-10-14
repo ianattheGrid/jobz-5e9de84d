@@ -28,6 +28,9 @@ import CandidateAccountSettings from "@/pages/CandidateAccountSettings";
 import CandidateInterviews from "@/pages/CandidateInterviews";
 import PreviewCandidateProfile from "@/pages/PreviewCandidateProfile";
 import FAQ from "@/pages/FAQ";
+import AdminSignIn from "@/pages/AdminSignIn";
+import AdminDashboard from "@/pages/AdminDashboard";
+import AdminExternalJobs from "@/pages/AdminExternalJobs";
 
 import CandidateChat from "@/pages/CandidateChat";
 
@@ -155,6 +158,18 @@ export const routes = [
   {
     path: "/vr/profile",
     element: <VirtualRecruiterProfile />
+  },
+  {
+    path: "/admin/signin",
+    element: <AdminSignIn />
+  },
+  {
+    path: "/admin/dashboard",
+    element: <AdminDashboard />
+  },
+  {
+    path: "/admin/external-jobs",
+    element: <AdminExternalJobs />
   },
   {
     path: "*",

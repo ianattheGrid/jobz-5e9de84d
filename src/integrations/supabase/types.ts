@@ -95,27 +95,33 @@ export type Database = {
         Row: {
           app_name: string
           created_at: string | null
+          go_live_date: string | null
           id: string
           is_free_in_launch_location: boolean | null
           launch_location: string
+          soft_launch_end_date: string | null
           status: string
           updated_at: string | null
         }
         Insert: {
           app_name: string
           created_at?: string | null
+          go_live_date?: string | null
           id?: string
           is_free_in_launch_location?: boolean | null
           launch_location: string
+          soft_launch_end_date?: string | null
           status: string
           updated_at?: string | null
         }
         Update: {
           app_name?: string
           created_at?: string | null
+          go_live_date?: string | null
           id?: string
           is_free_in_launch_location?: boolean | null
           launch_location?: string
+          soft_launch_end_date?: string | null
           status?: string
           updated_at?: string | null
         }
