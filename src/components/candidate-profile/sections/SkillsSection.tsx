@@ -47,14 +47,14 @@ const SkillsSection = ({ profile }: SkillsSectionProps) => {
         <TabsContent value="all" className="space-y-4">
           <div className="flex flex-wrap gap-2">
             {requiredSkills.map((skill, index) => (
-              <Badge key={`tech-${index}`} variant="default" className="bg-blue-500 text-white py-1 px-3">
-                {skill}
+              <Badge key={`tech-${index}`} variant="default" className="bg-primary text-primary-foreground py-1 px-3">
+                <span className="text-sm">{skill}</span>
               </Badge>
             ))}
             
             {additionalSkills.map((skill, index) => (
               <Badge key={`add-${index}`} variant="secondary" className="py-1 px-3">
-                {skill}
+                <span className="text-sm">{skill}</span>
               </Badge>
             ))}
           </div>
@@ -64,8 +64,8 @@ const SkillsSection = ({ profile }: SkillsSectionProps) => {
           <TabsContent value="technical" className="space-y-4">
             <div className="flex flex-wrap gap-2">
               {requiredSkills.map((skill, index) => (
-                <Badge key={index} variant="default" className="bg-blue-500 text-white py-1 px-3">
-                  {skill}
+                <Badge key={index} variant="default" className="bg-primary text-primary-foreground py-1 px-3">
+                  <span className="text-sm">{skill}</span>
                 </Badge>
               ))}
             </div>
@@ -77,7 +77,7 @@ const SkillsSection = ({ profile }: SkillsSectionProps) => {
             <div className="flex flex-wrap gap-2">
               {additionalSkills.map((skill, index) => (
                 <Badge key={index} variant="secondary" className="py-1 px-3">
-                  {skill}
+                  <span className="text-sm">{skill}</span>
                 </Badge>
               ))}
             </div>

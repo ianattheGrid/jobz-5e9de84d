@@ -8,11 +8,11 @@ interface JobDetailsProps {
 
 const JobDetails = ({ job }: JobDetailsProps) => {
   return (
-    <div className="space-y-6 bg-white p-6 rounded-lg">
+    <div className="space-y-6 bg-card p-6 rounded-lg">
       {/* Full Description */}
       <div className="text-sm">
-        <h4 className="font-semibold text-lg mb-3 text-gray-900">About This Role</h4>
-        <div className="space-y-4 text-gray-700">
+        <h4 className="font-semibold text-lg mb-3 text-foreground">About This Role</h4>
+        <div className="space-y-4 text-muted-foreground">
           <p className="whitespace-pre-line leading-relaxed">
             {job.description}
             {'\n\n'}
@@ -52,7 +52,7 @@ const JobDetails = ({ job }: JobDetailsProps) => {
       {/* Required Skills */}
       {job.required_skills && job.required_skills.length > 0 && (
         <div>
-          <h4 className="font-semibold mb-3 text-gray-900 flex items-center gap-2">
+          <h4 className="font-semibold mb-3 text-foreground flex items-center gap-2">
             <ListChecks className="h-5 w-5 text-primary" />
             Required Skills
           </h4>
@@ -69,11 +69,11 @@ const JobDetails = ({ job }: JobDetailsProps) => {
       {/* Qualifications */}
       {job.required_qualifications && (
         <div>
-          <h4 className="font-semibold mb-3 text-gray-900 flex items-center gap-2">
+          <h4 className="font-semibold mb-3 text-foreground flex items-center gap-2">
             <GraduationCap className="h-5 w-5 text-primary" />
             Required Qualifications
           </h4>
-          <ul className="list-disc pl-5 text-sm text-gray-700 space-y-2">
+          <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-2">
             {job.required_qualifications.map((qual, index) => (
               <li key={index}>{qual}</li>
             ))}
@@ -83,7 +83,7 @@ const JobDetails = ({ job }: JobDetailsProps) => {
           </ul>
           
           {job.min_years_experience > 0 && (
-            <div className="mt-3 text-sm text-gray-700">
+            <div className="mt-3 text-sm text-muted-foreground">
               <p>Minimum {job.min_years_experience} years of relevant experience required</p>
               <p className="mt-2">The successful candidate should demonstrate:</p>
               <ul className="list-disc pl-5 mt-2 space-y-1">
@@ -99,11 +99,11 @@ const JobDetails = ({ job }: JobDetailsProps) => {
 
       {/* Benefits & Perks */}
       <div>
-        <h4 className="font-semibold mb-3 text-gray-900 flex items-center gap-2">
+        <h4 className="font-semibold mb-3 text-foreground flex items-center gap-2">
           <Briefcase className="h-5 w-5 text-primary" />
           Benefits & Perks
         </h4>
-        <ul className="text-sm text-gray-700 space-y-2">
+        <ul className="text-sm text-muted-foreground space-y-2">
           <li className="flex items-center gap-2">
             <Clock className="h-4 w-4 text-primary" />
             {job.holiday_entitlement || 25} days annual leave

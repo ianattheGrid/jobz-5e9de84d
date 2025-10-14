@@ -76,6 +76,9 @@ export default function DemoCandidateProfile() {
   };
 
   useEffect(() => {
+    // Scroll to top on mount
+    window.scrollTo(0, 0);
+    
     document.title = "Candidate Profile: Sarah Johnson | Jobz";
     const ensureMeta = (name: string, content: string) => {
       let el = document.querySelector(`meta[name="${name}"]`) as HTMLMetaElement | null;
@@ -190,8 +193,8 @@ export default function DemoCandidateProfile() {
             <CardContent>
               <div className="flex flex-wrap gap-2">
                 {candidate.skills.map((skill, index) => (
-                  <Badge key={index} variant="secondary" className="text-primary">
-                    {skill}
+                  <Badge key={index} variant="secondary">
+                    <span className="text-sm">{skill}</span>
                   </Badge>
                 ))}
               </div>
@@ -222,8 +225,8 @@ export default function DemoCandidateProfile() {
                 <div className="grid gap-3 sm:grid-cols-2">
                   {candidate.personality.map((item, idx) => (
                     <div key={idx} className="rounded-md border border-pink-200 bg-pink-50 p-4">
-                      <div className="text-xs font-medium text-pink-700">{item.label}</div>
-                      <div className="mt-1 text-gray-800">{item.answer}</div>
+                      <div className="text-xs font-medium text-pink-700 mb-1">{item.label}</div>
+                      <div className="text-sm text-foreground">{item.answer}</div>
                     </div>
                   ))}
                 </div>
