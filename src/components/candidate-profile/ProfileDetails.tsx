@@ -259,9 +259,9 @@ const ProfileDetails = ({ profile, showVRRecommendation = false, vrRecommendatio
 
         {/* Personality Snapshots */}
         {((profile as any).visible_sections?.personality ?? true) && Array.isArray((profile as any).personality) && (profile as any).personality.length > 0 && (
-          <Card className="shadow-sm border border-gray-200 bg-white">
+          <Card className="shadow-sm border border-gray-200 bg-card">
             <CardContent className="pt-6">
-              <h3 className="text-xl font-semibold mb-4 text-gray-900">Personality</h3>
+              <h3 className="text-xl font-semibold mb-4 text-foreground">Personality</h3>
               <div className="grid gap-3 sm:grid-cols-2">
                 {(profile as any).personality.map((item: any) => (
                   <div key={item.question_key} className="rounded-md border border-border p-4 personality-item">
