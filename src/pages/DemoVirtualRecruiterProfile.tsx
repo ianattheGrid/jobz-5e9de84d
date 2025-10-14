@@ -4,21 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { 
-  Bot, 
-  Zap, 
-  Target, 
-  Users, 
-  TrendingUp, 
-  Award, 
-  Calendar,
-  MessageCircle,
-  Clock,
-  CheckCircle,
-  Star,
-  ArrowLeft
-} from "lucide-react";
-
+import { Bot, Zap, Target, Users, TrendingUp, Award, Calendar, MessageCircle, Clock, CheckCircle, Star, ArrowLeft } from "lucide-react";
 export default function DemoVirtualRecruiterProfile() {
   const vr = {
     name: "Alex AI",
@@ -32,56 +18,40 @@ export default function DemoVirtualRecruiterProfile() {
     languages: ["English", "Spanish", "French"],
     availability: "24/7",
     description: "I'm Alex AI, your dedicated virtual recruiting assistant. I specialize in matching top tech talent with innovative companies. Using advanced AI algorithms, I can identify the perfect candidates for your roles while ensuring cultural fit and technical competency.",
-    expertise: [
-      "Software Development",
-      "Data Science",
-      "DevOps & Cloud",
-      "Product Management",
-      "UI/UX Design",
-      "Cybersecurity"
-    ],
-    services: [
-      {
-        name: "Candidate Sourcing",
-        description: "AI-powered search across multiple platforms",
-        efficiency: 95
-      },
-      {
-        name: "Profile Screening",
-        description: "Automated technical and cultural fit assessment",
-        efficiency: 89
-      },
-      {
-        name: "Interview Scheduling",
-        description: "Coordinated scheduling with all stakeholders",
-        efficiency: 98
-      },
-      {
-        name: "Communication",
-        description: "Regular updates and candidate engagement",
-        efficiency: 92
-      }
-    ],
-    recentPlacements: [
-      {
-        role: "Senior React Developer",
-        company: "Bristol Tech Hub",
-        timeToHire: "12 days",
-        salary: "£65k"
-      },
-      {
-        role: "DevOps Engineer",
-        company: "West Country Digital",
-        timeToHire: "8 days",
-        salary: "£58k"
-      },
-      {
-        role: "Product Manager",
-        company: "InnovateBristol",
-        timeToHire: "16 days",
-        salary: "£70k"
-      }
-    ],
+    expertise: ["Software Development", "Data Science", "DevOps & Cloud", "Product Management", "UI/UX Design", "Cybersecurity"],
+    services: [{
+      name: "Candidate Sourcing",
+      description: "AI-powered search across multiple platforms",
+      efficiency: 95
+    }, {
+      name: "Profile Screening",
+      description: "Automated technical and cultural fit assessment",
+      efficiency: 89
+    }, {
+      name: "Interview Scheduling",
+      description: "Coordinated scheduling with all stakeholders",
+      efficiency: 98
+    }, {
+      name: "Communication",
+      description: "Regular updates and candidate engagement",
+      efficiency: 92
+    }],
+    recentPlacements: [{
+      role: "Senior React Developer",
+      company: "Bristol Tech Hub",
+      timeToHire: "12 days",
+      salary: "£65k"
+    }, {
+      role: "DevOps Engineer",
+      company: "West Country Digital",
+      timeToHire: "8 days",
+      salary: "£58k"
+    }, {
+      role: "Product Manager",
+      company: "InnovateBristol",
+      timeToHire: "16 days",
+      salary: "£70k"
+    }],
     stats: {
       activeSearches: 12,
       candidatesInPipeline: 47,
@@ -89,27 +59,22 @@ export default function DemoVirtualRecruiterProfile() {
       offersExtended: 3
     }
   };
-
-  return (
-    <div className="min-h-screen bg-background">
+  return <div className="min-h-screen bg-background">
       <NavBar />
-      <div className="container mx-auto px-4 py-8 max-w-6xl" style={{ paddingTop: '80px' }}>
+      <div className="container mx-auto px-4 py-8 max-w-6xl" style={{
+      paddingTop: '80px'
+    }}>
       
       {/* Back to Card Link */}
       <div className="mb-4">
-        <Link 
-          to="/#interactive-cards" 
-          className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors"
-        >
+        <Link to="/#interactive-cards" className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors">
           <ArrowLeft className="h-4 w-4" />
           <span className="text-sm">Back to Interactive Cards</span>
         </Link>
       </div>
       <div className="mb-6 p-4 bg-purple-50 rounded-lg border-l-4 border-purple-400">
         <h2 className="text-lg font-semibold text-purple-800 mb-2">Demo Virtual Recruiter Profile</h2>
-        <p className="text-purple-700">
-          This is an example of how a virtual recruiter profile looks on Jobz. Real profiles would be AI assistants trained for specific recruiting needs.
-        </p>
+        <p className="text-purple-700">This is an example of how a Connector profile looks on Jobz. </p>
       </div>
 
       {/* Header Section */}
@@ -192,16 +157,14 @@ export default function DemoVirtualRecruiterProfile() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {vr.services.map((service, index) => (
-                  <div key={index}>
+                {vr.services.map((service, index) => <div key={index}>
                     <div className="flex justify-between items-center mb-2">
                       <h3 className="font-medium">{service.name}</h3>
                       <span className="text-sm font-bold text-green-600">{service.efficiency}%</span>
                     </div>
                     <p className="text-sm text-muted-foreground mb-2">{service.description}</p>
                     <Progress value={service.efficiency} className="h-2" />
-                  </div>
-                ))}
+                  </div>)}
               </div>
             </CardContent>
           </Card>
@@ -215,8 +178,7 @@ export default function DemoVirtualRecruiterProfile() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {vr.recentPlacements.map((placement, index) => (
-                  <div key={index} className="border rounded-lg p-4">
+                {vr.recentPlacements.map((placement, index) => <div key={index} className="border rounded-lg p-4">
                     <div className="flex justify-between items-start mb-2">
                       <div>
                         <h3 className="font-semibold">{placement.role}</h3>
@@ -228,8 +190,7 @@ export default function DemoVirtualRecruiterProfile() {
                       <span className="text-sm text-muted-foreground">Salary: {placement.salary}</span>
                       <CheckCircle className="h-4 w-4 text-green-500" />
                     </div>
-                  </div>
-                ))}
+                  </div>)}
               </div>
             </CardContent>
           </Card>
@@ -269,11 +230,9 @@ export default function DemoVirtualRecruiterProfile() {
             </CardHeader>
             <CardContent>
               <div className="flex flex-wrap gap-2">
-                {vr.expertise.map((skill, index) => (
-                  <Badge key={index} variant="secondary">
+                {vr.expertise.map((skill, index) => <Badge key={index} variant="secondary">
                     {skill}
-                  </Badge>
-                ))}
+                  </Badge>)}
               </div>
             </CardContent>
           </Card>
@@ -310,18 +269,15 @@ export default function DemoVirtualRecruiterProfile() {
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
-                {vr.languages.map((language, index) => (
-                  <div key={index} className="flex items-center gap-2">
+                {vr.languages.map((language, index) => <div key={index} className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-primary rounded-full"></div>
                     <span className="text-sm">{language}</span>
-                  </div>
-                ))}
+                  </div>)}
               </div>
             </CardContent>
           </Card>
         </div>
       </div>
       </div>
-    </div>
-  );
+    </div>;
 }
