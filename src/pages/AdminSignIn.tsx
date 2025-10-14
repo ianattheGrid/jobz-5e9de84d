@@ -37,6 +37,14 @@ const AdminSignIn = () => {
         return;
       }
       
+      // If user navigates to /admin/signin without hash params, clear stale recovery mode
+      if (isRecoverySession && !window.location.hash) {
+        console.log('Clearing stale password recovery mode');
+        sessionStorage.removeItem('password_recovery');
+        setRecoveryMode(false);
+        return;
+      }
+      
       // Check if user is already signed in (happens after recovery redirect)
       if (isRecoverySession) {
         const { data: { session } } = await supabase.auth.getSession();
@@ -98,7 +106,7 @@ const AdminSignIn = () => {
           title: "Success",
           description: "Signed in successfully",
         });
-        navigate("/admin/external-jobs");
+        navigate("/admin/dashboard");
       }
     } catch (error) {
       console.error("Sign in error:", error);
@@ -167,11 +175,20 @@ const AdminSignIn = () => {
       });
 
       if (error) {
-        toast({
-          title: "Error",
-          description: error.message,
-          variant: "destructive",
-        });
+        // Check for specific error: same password
+        if (error.message?.includes('same password') || error.message?.includes('New password should be different')) {
+          toast({
+            title: "Same Password",
+            description: "Please choose a different password than your current one. Click Cancel below to return to sign in.",
+            variant: "destructive",
+          });
+        } else {
+          toast({
+            title: "Error",
+            description: error.message,
+            variant: "destructive",
+          });
+        }
         setLoading(false);
         return;
       }
@@ -195,14 +212,20 @@ const AdminSignIn = () => {
           return;
         }
 
-        // Clear recovery flag from sessionStorage
+        // Clear recovery flag and reset state
         sessionStorage.removeItem('password_recovery');
+        setRecoveryMode(false);
+        setNewPassword('');
+        setConfirmPassword('');
         
         toast({
           title: "Success",
-          description: "Password updated successfully",
+          description: "Password updated! Redirecting to dashboard...",
         });
-        navigate("/admin/external-jobs");
+
+        setTimeout(() => {
+          navigate("/admin/dashboard");
+        }, 1500);
       }
     } catch (error) {
       console.error("Password update error:", error);
@@ -214,6 +237,17 @@ const AdminSignIn = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleCancelRecovery = () => {
+    sessionStorage.removeItem('password_recovery');
+    setRecoveryMode(false);
+    setNewPassword('');
+    setConfirmPassword('');
+    toast({
+      title: "Cancelled",
+      description: "Password reset cancelled. You can sign in with your current password.",
+    });
   };
 
   return (
@@ -266,8 +300,22 @@ const AdminSignIn = () => {
               className="w-full"
               disabled={loading}
             >
-              {loading ? "Loading..." : "Set New Password"}
+              {loading ? "Updating..." : "Set New Password"}
             </Button>
+
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full"
+              onClick={handleCancelRecovery}
+              disabled={loading}
+            >
+              Cancel Password Reset
+            </Button>
+
+            <p className="text-xs text-muted-foreground text-center mt-2">
+              Changed your mind? Click Cancel to return to sign in.
+            </p>
           </form>
         ) : (
           <form onSubmit={resetMode ? handleResetPassword : onSubmit} className="space-y-4">
