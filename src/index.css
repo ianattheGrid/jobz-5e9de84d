@@ -308,11 +308,7 @@ a {
 .demo-candidate-dark svg {
   color: hsl(var(--primary)) !important;
 }
-/* Ensure badge text (skills) remains readable on white chips */
-.demo-candidate-dark .badge,
-.demo-candidate-dark .badge * {
-  color: hsl(var(--secondary-foreground)) !important;
-}
+/* Badge text styling removed - let component handle it */
 /* Fix specific text visibility issues */
 .demo-candidate-dark .text-sm,
 .demo-candidate-dark .text-xs {
@@ -443,20 +439,4 @@ a {
   border-color: #86efac !important;
 }
 
-/* Override demo-candidate-dark for personality items */
-.demo-candidate-dark .personality-item {
-  background-color: #fdf2f8 !important;
-  border-color: #f9a8d4 !important;
-}
-
-.demo-candidate-dark .personality-item .personality-question {
-  color: #be185d !important;
-}
-
-.demo-candidate-dark .personality-item .personality-answer {
-  color: #374151 !important;
-}
-
-.demo-candidate-dark .personality-item * {
-  color: inherit !important;
-}
+/* Personality items styling removed - let component handle it */
