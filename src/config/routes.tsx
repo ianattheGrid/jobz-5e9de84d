@@ -32,6 +32,8 @@ import AdminSignIn from "@/pages/AdminSignIn";
 import AdminDashboard from "@/pages/AdminDashboard";
 import AdminExternalJobs from "@/pages/AdminExternalJobs";
 import AdminUserManagement from "@/pages/AdminUserManagement";
+import AdminCandidates from "@/pages/AdminCandidates";
+import AdminVirtualRecruiters from "@/pages/AdminVirtualRecruiters";
 
 import CandidateChat from "@/pages/CandidateChat";
 
@@ -175,6 +177,14 @@ export const routes = [
   {
     path: "/admin/users",
     element: <AdminUserManagement />
+  },
+  {
+    path: "/admin/candidates",
+    element: <AdminCandidates />
+  },
+  {
+    path: "/admin/virtual-recruiters",
+    element: <AdminVirtualRecruiters />
   },
   {
     path: "*",

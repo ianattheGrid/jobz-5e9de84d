@@ -898,6 +898,20 @@ export type Database = {
             referencedRelation: "external_jobs"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "fk_external_job_matches_candidate"
+            columns: ["candidate_id"]
+            isOneToOne: false
+            referencedRelation: "candidate_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_external_job_matches_external_job"
+            columns: ["external_job_id"]
+            isOneToOne: false
+            referencedRelation: "external_jobs"
+            referencedColumns: ["id"]
+          },
         ]
       }
       external_jobs: {

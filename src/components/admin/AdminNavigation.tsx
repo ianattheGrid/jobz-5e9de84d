@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { LayoutDashboard, Users, Briefcase } from "lucide-react";
+import { LayoutDashboard, Users, Briefcase, UserCheck, Users2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export const AdminNavigation = () => {
@@ -8,6 +8,8 @@ export const AdminNavigation = () => {
   const navItems = [
     { path: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
     { path: "/admin/users", label: "User Management", icon: Users },
+    { path: "/admin/candidates", label: "Candidates", icon: UserCheck },
+    { path: "/admin/virtual-recruiters", label: "Connectors", icon: Users2 },
     { path: "/admin/external-jobs", label: "External Jobs", icon: Briefcase },
   ];
 
