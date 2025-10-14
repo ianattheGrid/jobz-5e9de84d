@@ -76,7 +76,12 @@ import SwipeEmployers from './pages/SwipeEmployers';
 import CVRedirect from './pages/CVRedirect';
 import AdminExternalJobs from './pages/AdminExternalJobs';
 import AdminSignIn from './pages/AdminSignIn';
+import AdminDashboard from './pages/AdminDashboard';
+import AdminUserManagement from './pages/AdminUserManagement';
+import AdminCandidates from './pages/AdminCandidates';
+import AdminVirtualRecruiters from './pages/AdminVirtualRecruiters';
 import { AdminProtectedRoute } from './components/auth/AdminProtectedRoute';
+import { ErrorBoundary } from './components/ErrorBoundary';
 
 const App = () => {
   return (
@@ -158,10 +163,40 @@ const App = () => {
           
           {/* Admin Routes */}
           <Route path="admin/signin" element={<AdminSignIn />} />
+          <Route path="admin/dashboard" element={
+            <ErrorBoundary>
+              <AdminProtectedRoute>
+                <AdminDashboard />
+              </AdminProtectedRoute>
+            </ErrorBoundary>
+          } />
+          <Route path="admin/users" element={
+            <ErrorBoundary>
+              <AdminProtectedRoute>
+                <AdminUserManagement />
+              </AdminProtectedRoute>
+            </ErrorBoundary>
+          } />
+          <Route path="admin/candidates" element={
+            <ErrorBoundary>
+              <AdminProtectedRoute>
+                <AdminCandidates />
+              </AdminProtectedRoute>
+            </ErrorBoundary>
+          } />
+          <Route path="admin/virtual-recruiters" element={
+            <ErrorBoundary>
+              <AdminProtectedRoute>
+                <AdminVirtualRecruiters />
+              </AdminProtectedRoute>
+            </ErrorBoundary>
+          } />
           <Route path="admin/external-jobs" element={
-            <AdminProtectedRoute>
-              <AdminExternalJobs />
-            </AdminProtectedRoute>
+            <ErrorBoundary>
+              <AdminProtectedRoute>
+                <AdminExternalJobs />
+              </AdminProtectedRoute>
+            </ErrorBoundary>
           } />
         </Route>
       </Routes>
