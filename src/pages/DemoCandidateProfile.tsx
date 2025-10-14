@@ -5,21 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { 
-  MapPin, 
-  Phone, 
-  Mail, 
-  Calendar, 
-  Award, 
-  BookOpen, 
-  Briefcase,
-  Star,
-  Download,
-  MessageCircle,
-  ArrowLeft
-} from "lucide-react";
+import { MapPin, Phone, Mail, Calendar, Award, BookOpen, Briefcase, Star, Download, MessageCircle, ArrowLeft } from "lucide-react";
 import sarahProfileImage from "@/assets/sarah-johnson-profile.jpg";
-
 export default function DemoCandidateProfile() {
   const candidate = {
     name: "Sarah Johnson",
@@ -30,55 +17,52 @@ export default function DemoCandidateProfile() {
     experience: "5+ years",
     availability: "Available immediately",
     summary: "Passionate frontend developer with 5+ years of experience building responsive web applications using React, TypeScript, and modern CSS. Strong advocate for clean code, accessibility, and user-centered design.",
-    skills: [
-      "React", "TypeScript", "JavaScript", "HTML5", "CSS3", "Tailwind CSS",
-      "Next.js", "Node.js", "Git", "Figma", "Jest", "Cypress"
-    ],
-    experience_items: [
-      {
-        title: "Senior Frontend Developer",
-        company: "TechHub Bristol",
-        period: "2022 - Present",
-        description: "Lead frontend development for enterprise dashboard application serving 50k+ users. Implemented responsive design system and improved page load times by 40%."
-      },
-      {
-        title: "Frontend Developer",
-        company: "Digital West Ltd.",
-        period: "2020 - 2022",
-        description: "Developed customer-facing web applications using React and TypeScript. Collaborated with UX team to implement accessibility standards."
-      },
-      {
-        title: "Junior Web Developer",
-        company: "Bristol Startups",
-        period: "2019 - 2020",
-        description: "Built responsive websites and landing pages. Gained experience with modern frontend frameworks and build tools."
-      }
-    ],
-    education: [
-      {
-        degree: "Bachelor of Science in Computer Science",
-        school: "University of Bristol",
-        year: "2019"
-      }
-    ],
-    certifications: [
-      "AWS Certified Developer Associate",
-      "Google Analytics Certified"
-    ],
-    personality: [
-      { label: "Best holiday I’ve taken", answer: "Road-tripping the Scottish Highlands in autumn." },
-      { label: "Favorite book", answer: "Atomic Habits — small wins, big results." },
-      { label: "Best concert I’ve been to", answer: "Coldplay at Wembley — pure energy." },
-      { label: "A small thing that makes my day", answer: "Perfectly brewed flat white." },
-      { label: "My go-to way to learn something new", answer: "Build a tiny project and ship it." },
-      { label: "What teammates can expect from me", answer: "Thoughtful PRs and zero-blame debugging." }
-    ]
+    skills: ["React", "TypeScript", "JavaScript", "HTML5", "CSS3", "Tailwind CSS", "Next.js", "Node.js", "Git", "Figma", "Jest", "Cypress"],
+    experience_items: [{
+      title: "Senior Frontend Developer",
+      company: "TechHub Bristol",
+      period: "2022 - Present",
+      description: "Lead frontend development for enterprise dashboard application serving 50k+ users. Implemented responsive design system and improved page load times by 40%."
+    }, {
+      title: "Frontend Developer",
+      company: "Digital West Ltd.",
+      period: "2020 - 2022",
+      description: "Developed customer-facing web applications using React and TypeScript. Collaborated with UX team to implement accessibility standards."
+    }, {
+      title: "Junior Web Developer",
+      company: "Bristol Startups",
+      period: "2019 - 2020",
+      description: "Built responsive websites and landing pages. Gained experience with modern frontend frameworks and build tools."
+    }],
+    education: [{
+      degree: "Bachelor of Science in Computer Science",
+      school: "University of Bristol",
+      year: "2019"
+    }],
+    certifications: ["AWS Certified Developer Associate", "Google Analytics Certified"],
+    personality: [{
+      label: "Best holiday I’ve taken",
+      answer: "Road-tripping the Scottish Highlands in autumn."
+    }, {
+      label: "Favorite book",
+      answer: "Atomic Habits — small wins, big results."
+    }, {
+      label: "Best concert I’ve been to",
+      answer: "Coldplay at Wembley — pure energy."
+    }, {
+      label: "A small thing that makes my day",
+      answer: "Perfectly brewed flat white."
+    }, {
+      label: "My go-to way to learn something new",
+      answer: "Build a tiny project and ship it."
+    }, {
+      label: "What teammates can expect from me",
+      answer: "Thoughtful PRs and zero-blame debugging."
+    }]
   };
-
   useEffect(() => {
     // Scroll to top on mount
     window.scrollTo(0, 0);
-    
     document.title = "Candidate Profile: Sarah Johnson | Jobz";
     const ensureMeta = (name: string, content: string) => {
       let el = document.querySelector(`meta[name="${name}"]`) as HTMLMetaElement | null;
@@ -89,10 +73,7 @@ export default function DemoCandidateProfile() {
       }
       el.setAttribute('content', content);
     };
-    ensureMeta(
-      'description',
-      "View Sarah Johnson’s profile: Senior Frontend Developer in Bristol, UK — skills, experience, education, and personality snapshots."
-    );
+    ensureMeta('description', "View Sarah Johnson’s profile: Senior Frontend Developer in Bristol, UK — skills, experience, education, and personality snapshots.");
     let link = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
     if (!link) {
       link = document.createElement('link');
@@ -101,27 +82,22 @@ export default function DemoCandidateProfile() {
     }
     link.href = window.location.origin + '/demo/candidate';
   }, []);
-
-  return (
-    <div className="min-h-screen bg-background">
+  return <div className="min-h-screen bg-background">
       <NavBar />
-      <div className="container mx-auto px-4 py-8 max-w-4xl" style={{ paddingTop: '80px' }}>
+      <div className="container mx-auto px-4 py-8 max-w-4xl" style={{
+      paddingTop: '80px'
+    }}>
       
       {/* Back to Card Link */}
       <div className="mb-4">
-        <Link 
-          to="/#interactive-cards" 
-          className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors"
-        >
+        <Link to="/#interactive-cards" className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors">
           <ArrowLeft className="h-4 w-4" />
           <span className="text-sm">Back to Interactive Cards</span>
         </Link>
       </div>
       <div className="mb-6 p-4 bg-pink-50 rounded-lg border-l-4 border-pink-400">
         <h2 className="text-lg font-semibold text-pink-800 mb-2">Demo Candidate Profile</h2>
-        <p className="text-pink-700 mb-3">
-          This is an example of how a candidate profile looks on Jobz. Real profiles would be created by actual job seekers.
-        </p>
+        <p className="text-pink-700 mb-3">This is an example of how a candidate profile looks on Jobz. </p>
       </div>
 
       {/* Grid */}
@@ -133,11 +109,7 @@ export default function DemoCandidateProfile() {
             <CardContent className="pt-6">
               <div className="text-center mb-6">
                 <div className="w-24 h-24 rounded-full overflow-hidden mx-auto mb-4 border-4 border-primary/10">
-                  <img 
-                    src={sarahProfileImage} 
-                    alt="Sarah Johnson" 
-                    className="w-full h-full object-cover"
-                  />
+                  <img src={sarahProfileImage} alt="Sarah Johnson" className="w-full h-full object-cover" />
                 </div>
                 <h1 className="text-2xl font-bold">{candidate.name}</h1>
                 <p className="text-lg text-muted-foreground">{candidate.title}</p>
@@ -184,11 +156,9 @@ export default function DemoCandidateProfile() {
             </CardHeader>
             <CardContent>
               <div className="flex flex-wrap gap-2">
-                {candidate.skills.map((skill, index) => (
-                  <Badge key={index} variant="outline">
+                {candidate.skills.map((skill, index) => <Badge key={index} variant="outline">
                     <span className="text-sm">{skill}</span>
-                  </Badge>
-                ))}
+                  </Badge>)}
               </div>
             </CardContent>
           </Card>
@@ -208,23 +178,19 @@ export default function DemoCandidateProfile() {
           </Card>
 
           {/* Personality */}
-          {candidate.personality && candidate.personality.length > 0 && (
-            <Card>
+          {candidate.personality && candidate.personality.length > 0 && <Card>
               <CardHeader>
                 <CardTitle>Personality</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid gap-3 sm:grid-cols-2">
-                  {candidate.personality.map((item, idx) => (
-                    <div key={idx} className="rounded-md border border-primary p-4">
+                  {candidate.personality.map((item, idx) => <div key={idx} className="rounded-md border border-primary p-4">
                       <div className="text-xs font-medium text-primary mb-1">{item.label}</div>
                       <div className="text-sm text-foreground">{item.answer}</div>
-                    </div>
-                  ))}
+                    </div>)}
                 </div>
               </CardContent>
-            </Card>
-          )}
+            </Card>}
 
           <Card>
             <CardHeader>
@@ -235,8 +201,7 @@ export default function DemoCandidateProfile() {
             </CardHeader>
             <CardContent>
               <div className="space-y-6">
-                {candidate.experience_items.map((exp, index) => (
-                  <div key={index}>
+                {candidate.experience_items.map((exp, index) => <div key={index}>
                     <div className="flex justify-between items-start mb-2">
                       <div>
                         <h3 className="font-semibold">{exp.title}</h3>
@@ -247,11 +212,8 @@ export default function DemoCandidateProfile() {
                     <p className="text-muted-foreground text-sm leading-relaxed">
                       {exp.description}
                     </p>
-                    {index < candidate.experience_items.length - 1 && (
-                      <Separator className="mt-4" />
-                    )}
-                  </div>
-                ))}
+                    {index < candidate.experience_items.length - 1 && <Separator className="mt-4" />}
+                  </div>)}
               </div>
             </CardContent>
           </Card>
@@ -265,13 +227,11 @@ export default function DemoCandidateProfile() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {candidate.education.map((edu, index) => (
-                  <div key={index}>
+                {candidate.education.map((edu, index) => <div key={index}>
                     <h3 className="font-semibold">{edu.degree}</h3>
                     <p className="text-primary font-medium">{edu.school}</p>
                     <p className="text-muted-foreground text-sm">{edu.year}</p>
-                  </div>
-                ))}
+                  </div>)}
               </div>
             </CardContent>
           </Card>
@@ -285,12 +245,10 @@ export default function DemoCandidateProfile() {
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
-                {candidate.certifications.map((cert, index) => (
-                  <div key={index} className="flex items-center gap-2">
+                {candidate.certifications.map((cert, index) => <div key={index} className="flex items-center gap-2">
                     <Award className="h-4 w-4 text-primary" />
                     <span>{cert}</span>
-                  </div>
-                ))}
+                  </div>)}
               </div>
             </CardContent>
           </Card>
@@ -298,6 +256,5 @@ export default function DemoCandidateProfile() {
       </div>
       </div>
       </div>
-    </div>
-  );
+    </div>;
 }
