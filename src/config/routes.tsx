@@ -1,5 +1,5 @@
-
 import { Navigate } from "react-router-dom";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import Index from "@/pages/Index";
 import Jobs from "@/pages/Jobs";
 import DummyCandidateProfile from "@/pages/DummyCandidateProfile";
@@ -168,23 +168,23 @@ export const routes = [
   },
   {
     path: "/admin/dashboard",
-    element: <AdminDashboard />
+    element: <ErrorBoundary><AdminDashboard /></ErrorBoundary>
   },
   {
     path: "/admin/external-jobs",
-    element: <AdminExternalJobs />
+    element: <ErrorBoundary><AdminExternalJobs /></ErrorBoundary>
   },
   {
     path: "/admin/users",
-    element: <AdminUserManagement />
+    element: <ErrorBoundary><AdminUserManagement /></ErrorBoundary>
   },
   {
     path: "/admin/candidates",
-    element: <AdminCandidates />
+    element: <ErrorBoundary><AdminCandidates /></ErrorBoundary>
   },
   {
     path: "/admin/virtual-recruiters",
-    element: <AdminVirtualRecruiters />
+    element: <ErrorBoundary><AdminVirtualRecruiters /></ErrorBoundary>
   },
   {
     path: "*",
