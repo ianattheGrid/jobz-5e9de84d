@@ -4,26 +4,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { 
-  MapPin, 
-  Phone, 
-  Mail, 
-  Globe, 
-  Users, 
-  Building, 
-  Calendar,
-  Briefcase,
-  Star,
-  MessageCircle,
-  ExternalLink,
-  ArrowLeft
-} from "lucide-react";
+import { MapPin, Phone, Mail, Globe, Users, Building, Calendar, Briefcase, Star, MessageCircle, ExternalLink, ArrowLeft } from "lucide-react";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import gallery1 from "@/assets/employer-gallery-1.jpg";
 import gallery2 from "@/assets/employer-gallery-2.jpg";
 import gallery3 from "@/assets/employer-gallery-3.jpg";
 import gallery4 from "@/assets/employer-gallery-4.jpg";
-
 export default function DemoEmployerProfile() {
   const employer = {
     name: "Bristol Tech Solutions",
@@ -36,79 +22,54 @@ export default function DemoEmployerProfile() {
     size: "50-200 employees",
     description: "Bristol Tech Solutions is a fast-growing software company specializing in cloud-native solutions and AI-powered analytics. We're passionate about innovation and building products that make a real difference in our clients' businesses.",
     culture: "We believe in work-life balance, continuous learning, and collaborative innovation. Our team is diverse, inclusive, and driven by curiosity.",
-    benefits: [
-      "Competitive salary + pension",
-      "Private healthcare",
-      "25 days holiday + bank holidays",
-      "Flexible working hours",
-      "Remote work options",
-      "Learning & development budget",
-      "Company shares scheme",
-      "Free lunch and refreshments"
-    ],
-    values: [
-      "Innovation", "Collaboration", "Integrity", "Growth Mindset", "Customer Focus"
-    ],
-    openPositions: [
-      {
-        title: "Senior React Developer",
-        department: "Engineering",
-        location: "Bristol, UK / Remote",
-        type: "Full-time",
-        posted: "2 days ago",
-        salary: "£55k - £70k"
-      },
-      {
-        title: "Product Manager",
-        department: "Product",
-        location: "Bristol, UK",
-        type: "Full-time",
-        posted: "1 week ago",
-        salary: "£60k - £75k"
-      },
-      {
-        title: "DevOps Engineer",
-        department: "Engineering",
-        location: "Remote",
-        type: "Full-time",
-        posted: "3 days ago",
-        salary: "£50k - £65k"
-      }
-    ],
+    benefits: ["Competitive salary + pension", "Private healthcare", "25 days holiday + bank holidays", "Flexible working hours", "Remote work options", "Learning & development budget", "Company shares scheme", "Free lunch and refreshments"],
+    values: ["Innovation", "Collaboration", "Integrity", "Growth Mindset", "Customer Focus"],
+    openPositions: [{
+      title: "Senior React Developer",
+      department: "Engineering",
+      location: "Bristol, UK / Remote",
+      type: "Full-time",
+      posted: "2 days ago",
+      salary: "£55k - £70k"
+    }, {
+      title: "Product Manager",
+      department: "Product",
+      location: "Bristol, UK",
+      type: "Full-time",
+      posted: "1 week ago",
+      salary: "£60k - £75k"
+    }, {
+      title: "DevOps Engineer",
+      department: "Engineering",
+      location: "Remote",
+      type: "Full-time",
+      posted: "3 days ago",
+      salary: "£50k - £65k"
+    }],
     stats: {
       totalEmployees: 125,
       avgRating: 4.6,
       responseRate: "95%",
-    avgResponseTime: "2 days"
+      avgResponseTime: "2 days"
     }
   };
-  const gallery = [
-    gallery1,
-    gallery2,
-    gallery3,
-    gallery4,
-  ];
-
-  return (
-    <div className="min-h-screen bg-background">
+  const gallery = [gallery1, gallery2, gallery3, gallery4];
+  return <div className="min-h-screen bg-background">
       <NavBar />
-      <div className="container mx-auto px-4 py-8 max-w-6xl" style={{ paddingTop: '80px' }}>
+      <div className="container mx-auto px-4 py-8 max-w-6xl" style={{
+      paddingTop: '80px'
+    }}>
       
       {/* Back to Card Link */}
       <div className="mb-4">
-        <Link 
-          to="/#interactive-cards" 
-          className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors"
-        >
+        <Link to="/#interactive-cards" className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors">
           <ArrowLeft className="h-4 w-4" />
           <span className="text-sm">Back to Interactive Cards</span>
         </Link>
       </div>
       <div className="mb-6 p-4 bg-green-50 rounded-lg border-l-4 border-green-400">
         <h2 className="text-lg font-semibold text-green-800 mb-2">Demo Employer Profile</h2>
-        <p className="text-green-700 mb-3">
-          This is an example of how an employer profile looks on Jobz. Real profiles would be created by actual companies.
-        </p>
+        <p className="text-green-700 mb-3">This is an example of how an employer profile looks on Jobz. </p>
           <div className="flex gap-2">
           <Button variant="outline" size="sm" onClick={() => window.location.href = '/swipe/candidates'}>
             🔥 Try Swipe Interface (Candidates)
@@ -164,16 +125,25 @@ export default function DemoEmployerProfile() {
       {/* Sticky Section Nav */}
       <div className="sticky top-16 z-20 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b mb-6">
         <nav className="flex flex-wrap gap-2 py-2 text-sm">
-          {[
-            { href: '#about', label: 'About' },
-            { href: '#gallery', label: 'Gallery' },
-            { href: '#roles', label: 'Open Roles' },
-            { href: '#values', label: 'Values' },
-            { href: '#benefits', label: 'Benefits' },
-            { href: '#info', label: 'Company Info' },
-          ].map(link => (
-            <a key={link.href} href={link.href} className="px-3 py-1 rounded-full hover:bg-muted/70 transition-colors">{link.label}</a>
-          ))}
+          {[{
+            href: '#about',
+            label: 'About'
+          }, {
+            href: '#gallery',
+            label: 'Gallery'
+          }, {
+            href: '#roles',
+            label: 'Open Roles'
+          }, {
+            href: '#values',
+            label: 'Values'
+          }, {
+            href: '#benefits',
+            label: 'Benefits'
+          }, {
+            href: '#info',
+            label: 'Company Info'
+          }].map(link => <a key={link.href} href={link.href} className="px-3 py-1 rounded-full hover:bg-muted/70 transition-colors">{link.label}</a>)}
         </nav>
       </div>
 
@@ -204,13 +174,11 @@ export default function DemoEmployerProfile() {
               <div className="relative">
                 <Carousel className="px-10">
                   <CarouselContent>
-                    {gallery.map((src, idx) => (
-                      <CarouselItem key={idx}>
+                    {gallery.map((src, idx) => <CarouselItem key={idx}>
                         <div className="w-full h-48 sm:h-56 overflow-hidden rounded-md">
-                          <img src={src} alt={`Company gallery ${idx+1}`} className="w-full h-full object-cover" loading="lazy" />
+                          <img src={src} alt={`Company gallery ${idx + 1}`} className="w-full h-full object-cover" loading="lazy" />
                         </div>
-                      </CarouselItem>
-                    ))}
+                      </CarouselItem>)}
                   </CarouselContent>
                   <CarouselPrevious variant="outline" className="border-primary text-primary hover:bg-primary/10" />
                   <CarouselNext variant="outline" className="border-primary text-primary hover:bg-primary/10" />
@@ -228,8 +196,7 @@ export default function DemoEmployerProfile() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {employer.openPositions.map((position, index) => (
-                  <div key={index} className="border rounded-lg p-4">
+                {employer.openPositions.map((position, index) => <div key={index} className="border rounded-lg p-4">
                     <div className="flex justify-between items-start mb-2">
                       <div>
                         <h3 className="font-semibold text-lg">{position.title}</h3>
@@ -251,8 +218,7 @@ export default function DemoEmployerProfile() {
                       <span className="font-semibold text-green-600">{position.salary}</span>
                       <Button size="sm">Apply Now</Button>
                     </div>
-                  </div>
-                ))}
+                  </div>)}
               </div>
             </CardContent>
           </Card>
@@ -266,12 +232,10 @@ export default function DemoEmployerProfile() {
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
-                {employer.values.map((value, index) => (
-                  <div key={index} className="flex items-center gap-2">
+                {employer.values.map((value, index) => <div key={index} className="flex items-center gap-2">
                     <Star className="h-4 w-4 text-primary" />
                     <span className="text-sm">{value}</span>
-                  </div>
-                ))}
+                  </div>)}
               </div>
             </CardContent>
           </Card>
@@ -282,12 +246,10 @@ export default function DemoEmployerProfile() {
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
-                {employer.benefits.map((benefit, index) => (
-                  <div key={index} className="flex items-start gap-2">
+                {employer.benefits.map((benefit, index) => <div key={index} className="flex items-start gap-2">
                     <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
                     <span className="text-sm">{benefit}</span>
-                  </div>
-                ))}
+                  </div>)}
               </div>
             </CardContent>
           </Card>
@@ -317,6 +279,5 @@ export default function DemoEmployerProfile() {
       </div>
       </div>
       </div>
-    </div>
-  );
+    </div>;
 }
