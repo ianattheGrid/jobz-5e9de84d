@@ -264,7 +264,7 @@ const ProfileDetails = ({ profile, showVRRecommendation = false, vrRecommendatio
               <h3 className="text-xl font-semibold mb-4 text-foreground">Personality</h3>
               <div className="grid gap-3 sm:grid-cols-2">
                 {(profile as any).personality.map((item: any) => (
-                  <div key={item.question_key} className="rounded-md border border-border p-4 personality-item">
+                  <div key={item.question_key} className="rounded-md border border-primary p-4 personality-item">
                     <div className="text-sm font-semibold text-primary mb-1 personality-question">{item.question_label}</div>
                     <div className="text-sm text-foreground font-medium personality-answer">{item.answer}</div>
                   </div>
