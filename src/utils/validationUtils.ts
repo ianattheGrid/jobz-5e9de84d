@@ -4,9 +4,12 @@
  */
 export const isFreeEmailProvider = (email: string): boolean => {
   const freeEmailDomains = [
-    'gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 
-    'aol.com', 'icloud.com', 'proton.me', 'protonmail.com',
-    'mail.com', 'zoho.com', 'yandex.com', 'live.com'
+    'gmail.com', 'yahoo.com', 'ymail.com', 'rocketmail.com',
+    'hotmail.com', 'outlook.com', 'live.com', 'msn.com',
+    'aol.com', 'icloud.com', 'me.com',
+    'proton.me', 'protonmail.com',
+    'mail.com', 'zoho.com', 'yandex.com',
+    'gmx.com', 'inbox.com', 'fastmail.com'
   ];
   const domain = email.split('@')[1]?.toLowerCase();
   return freeEmailDomains.includes(domain);

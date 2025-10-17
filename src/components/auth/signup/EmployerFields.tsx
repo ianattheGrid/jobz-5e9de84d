@@ -32,8 +32,8 @@ export const EmployerFields = ({
       label="Company Website"
       value={companyWebsite}
       onChange={(e) => setCompanyWebsite(e.target.value)}
-      placeholder="https://www.company.com"
-      type="url"
+      placeholder="www.company.com or company.com"
+      type="text"
       required
     />
     <SMEVerification isSME={isSME} setIsSME={setIsSME} />

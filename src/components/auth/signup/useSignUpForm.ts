@@ -74,6 +74,14 @@ export const useSignUpForm = ({ userType, onSubmit }: SignUpFormProps) => {
         return;
       }
 
+      if (userType === 'employer' && companyWebsite) {
+        const websitePattern = /^(https?:\/\/)?(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\/.*)?$/;
+        if (!websitePattern.test(companyWebsite.trim())) {
+          setError("Please enter a valid company website (e.g., www.company.com or company.com)");
+          return;
+        }
+      }
+
       try {
         if (userType === 'employer') {
           await onSubmit(email, password, fullName, jobTitle, companyName, companyWebsite, companySize);
