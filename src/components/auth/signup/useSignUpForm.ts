@@ -1,6 +1,6 @@
-
 import { useState, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
+import { isFreeEmailProvider } from "@/utils/validationUtils";
 
 interface FormState {
   email: string;
@@ -56,6 +56,11 @@ export const useSignUpForm = ({ userType, onSubmit }: SignUpFormProps) => {
 
       if (!email || !password || !fullName) {
         setError("Please fill in all required fields");
+        return;
+      }
+
+      if (userType === 'employer' && isFreeEmailProvider(email)) {
+        setError("Please use your work email address. Free email providers (Gmail, Yahoo, etc.) are not allowed for employer accounts.");
         return;
       }
 
