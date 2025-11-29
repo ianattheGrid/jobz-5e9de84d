@@ -1876,62 +1876,17 @@ export type Database = {
         Args: { name1: string; name2: string }
         Returns: boolean
       }
-      generate_referral_code: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      generate_vr_number: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      get_cv_file_path: {
-        Args: { file_path: string }
-        Returns: Json
-      }
-      gtrgm_compress: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gtrgm_decompress: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gtrgm_in: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gtrgm_options: {
-        Args: { "": unknown }
-        Returns: undefined
-      }
-      gtrgm_out: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      is_admin: {
-        Args: { user_email: string }
-        Returns: boolean
-      }
+      generate_referral_code: { Args: never; Returns: string }
+      generate_vr_number: { Args: never; Returns: string }
+      get_cv_file_path: { Args: { file_path: string }; Returns: Json }
+      is_admin: { Args: { user_email: string }; Returns: boolean }
       normalize_company_name: {
         Args: { company_name: string }
         Returns: string
       }
-      set_limit: {
-        Args: { "": number }
-        Returns: number
-      }
-      show_limit: {
-        Args: Record<PropertyKey, never>
-        Returns: number
-      }
-      show_trgm: {
-        Args: { "": string }
-        Returns: string[]
-      }
-      validate_sme_size: {
-        Args: { size: number }
-        Returns: boolean
-      }
+      show_limit: { Args: never; Returns: number }
+      show_trgm: { Args: { "": string }; Returns: string[] }
+      validate_sme_size: { Args: { size: number }; Returns: boolean }
     }
     Enums: {
       interview_status: "pending" | "scheduled" | "completed" | "cancelled"
