@@ -6,6 +6,9 @@ verify_jwt = true
 [functions.webby-match]
 verify_jwt = true
 
+[functions.webby-match-employer]
+verify_jwt = true
+
 [functions.notify-go-live]
 verify_jwt = true
 
