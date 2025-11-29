@@ -22,11 +22,11 @@ export default function Index() {
       <SoftLaunchBanner />
       <HeroSection />
       <MissionSection />
-      <WebbySection />
       <HowItWorksHero activeTab={activeTab} onTabChange={setActiveTab} />
       <PlatformFeatures activeTab={activeTab} />
       <CandidateSectionHero />
       <CandidateCostSection />
+      <WebbySection />
       <DemoProfilesSection />
       <InternalE2ETestButton />
       <Footer />
