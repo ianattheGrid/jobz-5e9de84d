@@ -21,8 +21,8 @@ export const WebbyChatInterface = ({ userType, onComplete }: WebbyChatInterfaceP
     {
       role: 'assistant',
       content: userType === 'candidate' 
-        ? "Hey! I'm Webby 👋 I'm here to help you find work that fits your life. Let's start simple - what area are you based in? (Just your town or postcode is fine)"
-        : "Hey! I'm Webby 👋 I'm here to help you find great candidates. Let's start - what kind of role are you looking to fill?"
+        ? "Hey! I'm Webby 👋 I already have your job title, experience, and location from your profile - so we're good there! What I'm really curious about is YOU beyond the CV. Tell me - what do you love doing when you're not working? Any hobbies, passions, or side projects that light you up? 🎨🏊‍♀️🎸"
+        : "Hey! I'm Webby 👋 I'm here to help you find great candidates beyond the usual job boards. Let's think differently - what kind of role are you looking to fill, and more importantly, what KIND of person would thrive in it?"
     }
   ]);
   const [input, setInput] = useState('');

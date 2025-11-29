@@ -1899,59 +1899,77 @@ export type Database = {
       }
       webby_candidate_profiles: {
         Row: {
+          alternative_paths_ai: Json | null
           availability_slots: Json | null
           avoid_tags: string[] | null
           candidate_id: string
           created_at: string | null
           environment_preferences: string[] | null
+          hidden_interests: string[] | null
+          hobbies_activities: Json | null
           hours_per_week_max: number | null
           hours_per_week_min: number | null
           id: string
           industry_tags: string[] | null
+          life_outside_work: string | null
           location_radius_miles: number | null
           min_annual_salary: number | null
           min_hourly_rate: number | null
           rough_location: string | null
           skills_tags: string[] | null
           soft_qualities: Json | null
+          soft_skills_self_assessed: string[] | null
+          transferable_skills_ai: Json | null
           updated_at: string | null
           webby_summary: string | null
         }
         Insert: {
+          alternative_paths_ai?: Json | null
           availability_slots?: Json | null
           avoid_tags?: string[] | null
           candidate_id: string
           created_at?: string | null
           environment_preferences?: string[] | null
+          hidden_interests?: string[] | null
+          hobbies_activities?: Json | null
           hours_per_week_max?: number | null
           hours_per_week_min?: number | null
           id?: string
           industry_tags?: string[] | null
+          life_outside_work?: string | null
           location_radius_miles?: number | null
           min_annual_salary?: number | null
           min_hourly_rate?: number | null
           rough_location?: string | null
           skills_tags?: string[] | null
           soft_qualities?: Json | null
+          soft_skills_self_assessed?: string[] | null
+          transferable_skills_ai?: Json | null
           updated_at?: string | null
           webby_summary?: string | null
         }
         Update: {
+          alternative_paths_ai?: Json | null
           availability_slots?: Json | null
           avoid_tags?: string[] | null
           candidate_id?: string
           created_at?: string | null
           environment_preferences?: string[] | null
+          hidden_interests?: string[] | null
+          hobbies_activities?: Json | null
           hours_per_week_max?: number | null
           hours_per_week_min?: number | null
           id?: string
           industry_tags?: string[] | null
+          life_outside_work?: string | null
           location_radius_miles?: number | null
           min_annual_salary?: number | null
           min_hourly_rate?: number | null
           rough_location?: string | null
           skills_tags?: string[] | null
           soft_qualities?: Json | null
+          soft_skills_self_assessed?: string[] | null
+          transferable_skills_ai?: Json | null
           updated_at?: string | null
           webby_summary?: string | null
         }
@@ -2037,13 +2055,16 @@ export type Database = {
           business_context: string | null
           created_at: string | null
           employment_type: string | null
+          hidden_skills_welcome: string[] | null
           id: string
           industry_type: string | null
           job_id: number
           nice_to_have_skills: string[] | null
+          personality_fit: Json | null
           remote_hybrid_flags: Json | null
           required_skills: string[] | null
           seniority_level: string | null
+          soft_qualities_needed: string[] | null
           soft_requirements: string[] | null
           webby_summary: string | null
         }
@@ -2051,13 +2072,16 @@ export type Database = {
           business_context?: string | null
           created_at?: string | null
           employment_type?: string | null
+          hidden_skills_welcome?: string[] | null
           id?: string
           industry_type?: string | null
           job_id: number
           nice_to_have_skills?: string[] | null
+          personality_fit?: Json | null
           remote_hybrid_flags?: Json | null
           required_skills?: string[] | null
           seniority_level?: string | null
+          soft_qualities_needed?: string[] | null
           soft_requirements?: string[] | null
           webby_summary?: string | null
         }
@@ -2065,13 +2089,16 @@ export type Database = {
           business_context?: string | null
           created_at?: string | null
           employment_type?: string | null
+          hidden_skills_welcome?: string[] | null
           id?: string
           industry_type?: string | null
           job_id?: number
           nice_to_have_skills?: string[] | null
+          personality_fit?: Json | null
           remote_hybrid_flags?: Json | null
           required_skills?: string[] | null
           seniority_level?: string | null
+          soft_qualities_needed?: string[] | null
           soft_requirements?: string[] | null
           webby_summary?: string | null
         }
