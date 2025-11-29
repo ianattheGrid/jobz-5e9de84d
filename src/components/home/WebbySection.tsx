@@ -135,8 +135,8 @@ export const WebbySection = () => {
           </Button>
           <Button 
             size="lg" 
-            variant="outline" 
-            className="text-white border-white/30 hover:bg-white/10 hover:border-white/50 text-lg px-8 transition-all"
+            variant="ghost" 
+            className="text-white border border-white/30 hover:bg-white/10 hover:border-white/50 hover:text-white text-lg px-8 transition-all"
             onClick={() => {
               const howItWorks = document.getElementById('how-it-works');
               howItWorks?.scrollIntoView({ behavior: 'smooth' });
