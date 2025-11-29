@@ -229,8 +229,18 @@ After gathering enough info, use the create_job_spec tool to structure the data.
     
     console.log('AI response received, length:', aiMessage.length);
     
+    // Check if significant profile data was discussed (hobbies, soft skills, interests)
+    const keywords = ['hobby', 'hobbies', 'passion', 'soft skill', 'interest', 'outside work', 'free time', 'volunteer', 'coaching', 'teaching'];
+    const shouldRefreshMatches = keywords.some(keyword => 
+      aiMessage.toLowerCase().includes(keyword) || 
+      messages.some(msg => msg.content.toLowerCase().includes(keyword))
+    );
+    
     return new Response(
-      JSON.stringify({ message: aiMessage }),
+      JSON.stringify({ 
+        message: aiMessage,
+        shouldRefreshMatches: userType === 'candidate' && shouldRefreshMatches
+      }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
 

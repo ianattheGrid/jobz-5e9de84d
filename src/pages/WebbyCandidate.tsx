@@ -1,17 +1,22 @@
 import { useState } from 'react';
 import NavBar from '@/components/NavBar';
 import { WebbyToggle } from '@/components/webby/WebbyToggle';
-import { WebbyChatInterface } from '@/components/webby/WebbyChatInterface';
+import { WebbyChat } from '@/components/webby/WebbyChat';
+import { WebbyMatches } from '@/components/webby/WebbyMatches';
 import { useWebbyPreferences } from '@/hooks/useWebbyPreferences';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Sparkles, Shield, Target, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
+import { useToast } from '@/hooks/use-toast';
+import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from '@/components/ui/resizable';
 
 export default function WebbyCandidate() {
   const { preferences, loading, toggleWebby } = useWebbyPreferences('candidate');
   const [showOnboarding, setShowOnboarding] = useState(false);
+  const [matchRefreshTrigger, setMatchRefreshTrigger] = useState(0);
   const navigate = useNavigate();
+  const { toast } = useToast();
 
   const handleToggle = async (enabled: boolean) => {
     await toggleWebby(enabled);
@@ -22,7 +27,19 @@ export default function WebbyCandidate() {
 
   const handleOnboardingComplete = () => {
     setShowOnboarding(false);
-    navigate('/candidate-dashboard');
+    setMatchRefreshTrigger(prev => prev + 1);
+  };
+
+  const handleProfileUpdate = () => {
+    // Trigger matches refresh when profile is updated during chat
+    setMatchRefreshTrigger(prev => prev + 1);
+  };
+
+  const handleInterested = async (jobId: number) => {
+    toast({
+      title: 'Interest Registered',
+      description: 'We\'ll notify the employer about your interest!'
+    });
   };
 
   if (loading) {
@@ -91,42 +108,25 @@ export default function WebbyCandidate() {
             </div>
           )}
 
-          {preferences?.webby_enabled && showOnboarding && !preferences?.onboarding_completed && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Let's Get You Set Up</CardTitle>
-                <CardDescription>
-                  Have a quick chat with Webby to understand what you're looking for
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <WebbyChatInterface
-                  userType="candidate"
-                  onComplete={handleOnboardingComplete}
-                />
-              </CardContent>
-            </Card>
-          )}
-
-          {preferences?.webby_enabled && preferences?.onboarding_completed && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Your Webby Profile is Active</CardTitle>
-                <CardDescription>
-                  Webby is now helping you find matching jobs
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <p className="text-sm text-muted-foreground">
-                    Check your dashboard to see personalized job recommendations from Webby.
-                  </p>
-                  <Button onClick={() => navigate('/candidate-dashboard')}>
-                    Go to Dashboard
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+          {preferences?.webby_enabled && (
+            <div className="h-[calc(100vh-16rem)] border border-border rounded-lg overflow-hidden">
+              <ResizablePanelGroup direction="horizontal" className="h-full">
+                <ResizablePanel defaultSize={60} minSize={40}>
+                  <WebbyChat
+                    userType="candidate"
+                    onComplete={handleOnboardingComplete}
+                    onProfileUpdate={handleProfileUpdate}
+                  />
+                </ResizablePanel>
+                <ResizableHandle withHandle />
+                <ResizablePanel defaultSize={40} minSize={30}>
+                  <WebbyMatches
+                    onInterested={handleInterested}
+                    refreshTrigger={matchRefreshTrigger}
+                  />
+                </ResizablePanel>
+              </ResizablePanelGroup>
+            </div>
           )}
         </div>
       </div>

@@ -1,0 +1,82 @@
+import { MapPin, DollarSign, Briefcase, Sparkles } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+
+interface WebbyJobCardProps {
+  job: {
+    id: number;
+    title: string;
+    company: string;
+    location: string;
+    salary_min: number;
+    salary_max: number;
+    type: string;
+    match_reason: string;
+    match_score: number;
+  };
+  matchCategory: 'primary' | 'serendipitous' | 'unexpected';
+  onInterested: (jobId: number) => void;
+}
+
+export const WebbyJobCard = ({ job, matchCategory, onInterested }: WebbyJobCardProps) => {
+  const categoryColors = {
+    primary: 'bg-primary/10 text-primary border-primary/20',
+    serendipitous: 'bg-accent/10 text-accent-foreground border-accent/20',
+    unexpected: 'bg-secondary/10 text-secondary-foreground border-secondary/20'
+  };
+
+  const categoryIcons = {
+    primary: '🎯',
+    serendipitous: '✨',
+    unexpected: '🔮'
+  };
+
+  return (
+    <Card className="hover:shadow-md transition-shadow">
+      <CardContent className="p-4 space-y-3">
+        <div className="flex items-start justify-between gap-2">
+          <div className="flex-1 min-w-0">
+            <h4 className="font-semibold text-foreground truncate">{job.title}</h4>
+            <p className="text-sm text-muted-foreground truncate">{job.company}</p>
+          </div>
+          <Badge variant="outline" className={categoryColors[matchCategory]}>
+            {categoryIcons[matchCategory]} {Math.round(job.match_score)}%
+          </Badge>
+        </div>
+
+        <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
+          <span className="flex items-center gap-1">
+            <MapPin className="w-3 h-3" />
+            {job.location}
+          </span>
+          <span className="flex items-center gap-1">
+            <DollarSign className="w-3 h-3" />
+            £{job.salary_min.toLocaleString()}-£{job.salary_max.toLocaleString()}
+          </span>
+          <span className="flex items-center gap-1">
+            <Briefcase className="w-3 h-3" />
+            {job.type}
+          </span>
+        </div>
+
+        <div className="bg-muted/50 rounded-md p-2">
+          <div className="flex items-start gap-2">
+            <Sparkles className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              {job.match_reason}
+            </p>
+          </div>
+        </div>
+
+        <Button 
+          onClick={() => onInterested(job.id)}
+          className="w-full"
+          size="sm"
+        >
+          I'm Interested
+        </Button>
+      </CardContent>
+    </Card>
+  );
+};
