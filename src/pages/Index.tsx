@@ -2,6 +2,7 @@ import { useState } from "react";
 import NavBar from "@/components/NavBar";
 import { HeroSection } from "@/components/home/HeroSection";
 import { MissionSection } from "@/components/home/MissionSection";
+import { WebbySection } from "@/components/home/WebbySection";
 import { HowItWorksHero } from "@/components/home/HowItWorksHero";
 import { PlatformFeatures } from "@/components/home/PlatformFeatures";
 import { DemoProfilesSection } from "@/components/home/DemoProfilesSection";
@@ -21,6 +22,7 @@ export default function Index() {
       <SoftLaunchBanner />
       <HeroSection />
       <MissionSection />
+      <WebbySection />
       <HowItWorksHero activeTab={activeTab} onTabChange={setActiveTab} />
       <PlatformFeatures activeTab={activeTab} />
       <CandidateSectionHero />
