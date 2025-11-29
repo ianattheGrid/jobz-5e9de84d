@@ -7,7 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 import NavBar from "@/components/NavBar";
 import BonusNegotiations from "@/components/employer/BonusNegotiations";
 import { BonusPaymentsSection } from "@/components/employer/BonusPaymentsSection";
-import { Briefcase, Building2, Search, Calendar, UserCircle, MessageSquare } from "lucide-react";
+import { Briefcase, Building2, Search, Calendar, UserCircle, MessageSquare, Sparkles } from "lucide-react";
 
 
 const EmployerDashboard = () => {
@@ -110,6 +110,12 @@ const EmployerDashboard = () => {
       icon: <MessageSquare className="h-6 w-6" />,
       path: "/employer/calculator",
       description: "Calculate recruitment costs and bonus structures"
+    },
+    {
+      title: "Webby AI Co-pilot",
+      icon: <Sparkles className="h-6 w-6" />,
+      path: "/webby-employer",
+      description: "AI-powered candidate matching & recruitment"
     }
   ];
 
