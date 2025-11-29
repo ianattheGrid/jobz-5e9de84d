@@ -72,11 +72,40 @@ serve(async (req) => {
       VAPID_PRIVATE_KEY
     );
 
-    const payload = {
-      title: title ?? "Test Notification",
-      body: body ?? "Push is working!",
-      url: url ?? "/",
-    };
+    // Get notification type from request or default
+    const notificationType = (await req.json())?.notification_type || 'test';
+    
+    // Customize payload based on notification type
+    let payload;
+    switch (notificationType) {
+      case 'profile_viewed':
+        payload = {
+          title: "👀 Someone viewed your profile",
+          body: "A hiring manager is checking out your profile right now!",
+          url: "/webby-candidate",
+        };
+        break;
+      case 'interest_received':
+        payload = {
+          title: "💖 Someone's interested!",
+          body: "A company wants to connect with you!",
+          url: "/webby-candidate",
+        };
+        break;
+      case 'match_created':
+        payload = {
+          title: "🎉 It's a Match!",
+          body: "You and a company are both interested! Open to see who.",
+          url: "/webby-candidate",
+        };
+        break;
+      default:
+        payload = {
+          title: title ?? "Test Notification",
+          body: body ?? "Push is working!",
+          url: url ?? "/",
+        };
+    }
 
     await webpush.sendNotification(data.subscription as any, JSON.stringify(payload));
 

@@ -2112,6 +2112,36 @@ export type Database = {
           },
         ]
       }
+      webby_matches: {
+        Row: {
+          candidate_id: string
+          created_at: string | null
+          employer_id: string
+          id: string
+          job_id: number | null
+          matched_at: string | null
+          status: string | null
+        }
+        Insert: {
+          candidate_id: string
+          created_at?: string | null
+          employer_id: string
+          id?: string
+          job_id?: number | null
+          matched_at?: string | null
+          status?: string | null
+        }
+        Update: {
+          candidate_id?: string
+          created_at?: string | null
+          employer_id?: string
+          id?: string
+          job_id?: number | null
+          matched_at?: string | null
+          status?: string | null
+        }
+        Relationships: []
+      }
       webby_preferences: {
         Row: {
           anonymity_level: string | null
@@ -2142,6 +2172,33 @@ export type Database = {
           user_id?: string
           user_type?: string
           webby_enabled?: boolean | null
+        }
+        Relationships: []
+      }
+      webby_presence: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_online: boolean | null
+          last_seen: string | null
+          user_id: string
+          user_type: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_online?: boolean | null
+          last_seen?: string | null
+          user_id: string
+          user_type: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_online?: boolean | null
+          last_seen?: string | null
+          user_id?: string
+          user_type?: string
         }
         Relationships: []
       }
