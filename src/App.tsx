@@ -43,6 +43,8 @@ import VirtualRecruiterDashboard from './pages/VirtualRecruiterDashboard';
 import VirtualRecruiterRecommendations from './pages/VirtualRecruiterRecommendations';
 import VirtualRecruiterProfile from './pages/VirtualRecruiterProfile';
 import PreviewVRProfile from './pages/PreviewVRProfile';
+import WebbyCandidate from './pages/WebbyCandidate';
+import WebbyEmployer from './pages/WebbyEmployer';
 
 // Common routes
 import Jobs from './pages/Jobs';
@@ -133,6 +135,10 @@ const App = () => {
           <Route path="vr/recommendations" element={<ProtectedRouteWithTimeout userType="vr"><VirtualRecruiterRecommendations /></ProtectedRouteWithTimeout>} />
           <Route path="vr/profile" element={<ProtectedRouteWithTimeout userType="vr"><VirtualRecruiterProfile /></ProtectedRouteWithTimeout>} />
           <Route path="vr/profile/preview" element={<PreviewVRProfile />} />
+          
+          {/* Webby AI Co-pilot routes */}
+          <Route path="webby-candidate" element={<ProtectedRouteWithTimeout userType="candidate"><WebbyCandidate /></ProtectedRouteWithTimeout>} />
+          <Route path="webby-employer" element={<ProtectedRouteWithTimeout userType="employer"><WebbyEmployer /></ProtectedRouteWithTimeout>} />
           
           {/* Common routes */}
           <Route path="jobs" element={<Jobs />} />
