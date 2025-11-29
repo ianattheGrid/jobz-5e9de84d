@@ -1847,6 +1847,277 @@ export type Database = {
         }
         Relationships: []
       }
+      webby_anonymous_cards: {
+        Row: {
+          anonymous_display_name: string
+          area_code: string | null
+          availability_summary: string | null
+          candidate_id: string
+          created_at: string | null
+          experience_level: string | null
+          id: string
+          pay_expectation_range: string | null
+          skills_summary: string[] | null
+          soft_qualities_summary: string[] | null
+          updated_at: string | null
+        }
+        Insert: {
+          anonymous_display_name: string
+          area_code?: string | null
+          availability_summary?: string | null
+          candidate_id: string
+          created_at?: string | null
+          experience_level?: string | null
+          id?: string
+          pay_expectation_range?: string | null
+          skills_summary?: string[] | null
+          soft_qualities_summary?: string[] | null
+          updated_at?: string | null
+        }
+        Update: {
+          anonymous_display_name?: string
+          area_code?: string | null
+          availability_summary?: string | null
+          candidate_id?: string
+          created_at?: string | null
+          experience_level?: string | null
+          id?: string
+          pay_expectation_range?: string | null
+          skills_summary?: string[] | null
+          soft_qualities_summary?: string[] | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "webby_anonymous_cards_candidate_id_fkey"
+            columns: ["candidate_id"]
+            isOneToOne: true
+            referencedRelation: "candidate_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      webby_candidate_profiles: {
+        Row: {
+          availability_slots: Json | null
+          avoid_tags: string[] | null
+          candidate_id: string
+          created_at: string | null
+          environment_preferences: string[] | null
+          hours_per_week_max: number | null
+          hours_per_week_min: number | null
+          id: string
+          industry_tags: string[] | null
+          location_radius_miles: number | null
+          min_annual_salary: number | null
+          min_hourly_rate: number | null
+          rough_location: string | null
+          skills_tags: string[] | null
+          soft_qualities: Json | null
+          updated_at: string | null
+          webby_summary: string | null
+        }
+        Insert: {
+          availability_slots?: Json | null
+          avoid_tags?: string[] | null
+          candidate_id: string
+          created_at?: string | null
+          environment_preferences?: string[] | null
+          hours_per_week_max?: number | null
+          hours_per_week_min?: number | null
+          id?: string
+          industry_tags?: string[] | null
+          location_radius_miles?: number | null
+          min_annual_salary?: number | null
+          min_hourly_rate?: number | null
+          rough_location?: string | null
+          skills_tags?: string[] | null
+          soft_qualities?: Json | null
+          updated_at?: string | null
+          webby_summary?: string | null
+        }
+        Update: {
+          availability_slots?: Json | null
+          avoid_tags?: string[] | null
+          candidate_id?: string
+          created_at?: string | null
+          environment_preferences?: string[] | null
+          hours_per_week_max?: number | null
+          hours_per_week_min?: number | null
+          id?: string
+          industry_tags?: string[] | null
+          location_radius_miles?: number | null
+          min_annual_salary?: number | null
+          min_hourly_rate?: number | null
+          rough_location?: string | null
+          skills_tags?: string[] | null
+          soft_qualities?: Json | null
+          updated_at?: string | null
+          webby_summary?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "webby_candidate_profiles_candidate_id_fkey"
+            columns: ["candidate_id"]
+            isOneToOne: true
+            referencedRelation: "candidate_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      webby_interests: {
+        Row: {
+          anonymity_state: string | null
+          candidate_id: string
+          candidate_interest_status: string | null
+          created_at: string | null
+          drafted_message: string | null
+          employer_id: string
+          employer_interest_status: string | null
+          id: string
+          initiated_by: string
+          job_id: number
+          match_explanation: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          anonymity_state?: string | null
+          candidate_id: string
+          candidate_interest_status?: string | null
+          created_at?: string | null
+          drafted_message?: string | null
+          employer_id: string
+          employer_interest_status?: string | null
+          id?: string
+          initiated_by: string
+          job_id: number
+          match_explanation?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          anonymity_state?: string | null
+          candidate_id?: string
+          candidate_interest_status?: string | null
+          created_at?: string | null
+          drafted_message?: string | null
+          employer_id?: string
+          employer_interest_status?: string | null
+          id?: string
+          initiated_by?: string
+          job_id?: number
+          match_explanation?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "webby_interests_candidate_id_fkey"
+            columns: ["candidate_id"]
+            isOneToOne: false
+            referencedRelation: "candidate_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "webby_interests_employer_id_fkey"
+            columns: ["employer_id"]
+            isOneToOne: false
+            referencedRelation: "employer_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "webby_interests_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      webby_job_specs: {
+        Row: {
+          business_context: string | null
+          created_at: string | null
+          employment_type: string | null
+          id: string
+          industry_type: string | null
+          job_id: number
+          nice_to_have_skills: string[] | null
+          remote_hybrid_flags: Json | null
+          required_skills: string[] | null
+          seniority_level: string | null
+          soft_requirements: string[] | null
+          webby_summary: string | null
+        }
+        Insert: {
+          business_context?: string | null
+          created_at?: string | null
+          employment_type?: string | null
+          id?: string
+          industry_type?: string | null
+          job_id: number
+          nice_to_have_skills?: string[] | null
+          remote_hybrid_flags?: Json | null
+          required_skills?: string[] | null
+          seniority_level?: string | null
+          soft_requirements?: string[] | null
+          webby_summary?: string | null
+        }
+        Update: {
+          business_context?: string | null
+          created_at?: string | null
+          employment_type?: string | null
+          id?: string
+          industry_type?: string | null
+          job_id?: number
+          nice_to_have_skills?: string[] | null
+          remote_hybrid_flags?: Json | null
+          required_skills?: string[] | null
+          seniority_level?: string | null
+          soft_requirements?: string[] | null
+          webby_summary?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "webby_job_specs_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: true
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      webby_preferences: {
+        Row: {
+          anonymity_level: string | null
+          created_at: string | null
+          id: string
+          onboarding_completed: boolean | null
+          updated_at: string | null
+          user_id: string
+          user_type: string
+          webby_enabled: boolean | null
+        }
+        Insert: {
+          anonymity_level?: string | null
+          created_at?: string | null
+          id?: string
+          onboarding_completed?: boolean | null
+          updated_at?: string | null
+          user_id: string
+          user_type: string
+          webby_enabled?: boolean | null
+        }
+        Update: {
+          anonymity_level?: string | null
+          created_at?: string | null
+          id?: string
+          onboarding_completed?: boolean | null
+          updated_at?: string | null
+          user_id?: string
+          user_type?: string
+          webby_enabled?: boolean | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
