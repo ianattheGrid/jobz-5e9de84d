@@ -10,7 +10,7 @@ import {
   Database,
   Settings,
   Calendar,
-  MessageSquare
+  Sparkles
 } from "lucide-react";
 
 const CandidateDashboard = () => {
@@ -44,10 +44,10 @@ const CandidateDashboard = () => {
       description: "Manage your account"
     },
     {
-      title: "AI Assistant",
-      icon: <MessageSquare className="h-6 w-6" />,
-      path: "/candidate/chat",
-      description: "Get AI-powered career advice"
+      title: "Webby AI Co-pilot",
+      icon: <Sparkles className="h-6 w-6" />,
+      path: "/webby-candidate",
+      description: "Get AI-powered job matching & advice"
     }
   ];
 
