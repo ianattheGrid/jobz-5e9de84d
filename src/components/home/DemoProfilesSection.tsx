@@ -2,7 +2,7 @@ import { DemoCardsSection } from "@/components/demo/DemoCardsSection";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
-import spaceWomanImage from "@/assets/space-woman-abstract.jpg";
+import astronautMarsImage from "@/assets/astronaut-mars.jpg";
 
 export const DemoProfilesSection = () => {
   return (
@@ -10,14 +10,14 @@ export const DemoProfilesSection = () => {
       <DemoCardsSection />
       
       {/* Demo Profile Navigation Section */}
-      <section className="py-12 relative overflow-hidden">
+      <section className="py-24 md:py-32 relative overflow-hidden">
         {/* Background Image */}
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url(${spaceWomanImage})` }}
+          style={{ backgroundImage: `url(${astronautMarsImage})` }}
         />
-        {/* Dark overlay for readability */}
-        <div className="absolute inset-0 bg-black/60" />
+        {/* Gradient overlay for readability */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/40 to-black/60" />
         
         <div className="container mx-auto px-4 text-center relative z-10">
           <h3 className="text-2xl font-semibold mb-4 text-white">Explore Demo Profiles</h3>
