@@ -1,17 +1,23 @@
 import { useState } from 'react';
 import NavBar from '@/components/NavBar';
 import { WebbyToggle } from '@/components/webby/WebbyToggle';
-import { WebbyChatInterface } from '@/components/webby/WebbyChatInterface';
+import { WebbyChat } from '@/components/webby/WebbyChat';
+import { WebbyCandidateMatches } from '@/components/webby/WebbyCandidateMatches';
 import { useWebbyPreferences } from '@/hooks/useWebbyPreferences';
+import { useWebbyEmployerMatches } from '@/hooks/useWebbyEmployerMatches';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from '@/components/ui/resizable';
 import { Sparkles, Users, Target, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
+import { useToast } from '@/components/ui/use-toast';
 
 export default function WebbyEmployer() {
   const { preferences, loading, toggleWebby } = useWebbyPreferences('employer');
+  const { matches, loading: matchesLoading, refresh: refreshMatches } = useWebbyEmployerMatches();
   const [showOnboarding, setShowOnboarding] = useState(false);
   const navigate = useNavigate();
+  const { toast } = useToast();
 
   const handleToggle = async (enabled: boolean) => {
     await toggleWebby(enabled);
@@ -23,6 +29,20 @@ export default function WebbyEmployer() {
   const handleOnboardingComplete = () => {
     setShowOnboarding(false);
     navigate('/employer-dashboard');
+  };
+
+  const handleProfileUpdate = () => {
+    console.log('Employer job spec updated, refreshing matches...');
+    refreshMatches();
+  };
+
+  const handleInterested = async (candidateId: string) => {
+    toast({
+      title: "Interest Expressed",
+      description: "We'll notify the candidate that you're interested.",
+    });
+    // TODO: Create interest record in webby_interests table
+    console.log('Employer interested in candidate:', candidateId);
   };
 
   if (loading) {
@@ -91,42 +111,57 @@ export default function WebbyEmployer() {
             </div>
           )}
 
-          {preferences?.webby_enabled && showOnboarding && !preferences?.onboarding_completed && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Create Your First Job with Webby</CardTitle>
-                <CardDescription>
-                  Have a quick chat with Webby to describe what you're looking for
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <WebbyChatInterface
-                  userType="employer"
-                  onComplete={handleOnboardingComplete}
-                />
-              </CardContent>
-            </Card>
-          )}
-
-          {preferences?.webby_enabled && preferences?.onboarding_completed && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Webby is Ready to Help</CardTitle>
-                <CardDescription>
-                  Post jobs and find candidates with AI assistance
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <p className="text-sm text-muted-foreground">
-                    Go to your dashboard to post jobs with Webby's help or see candidate matches.
-                  </p>
-                  <Button onClick={() => navigate('/employer-dashboard')}>
-                    Go to Dashboard
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+          {preferences?.webby_enabled && (
+            <div className="h-[calc(100vh-16rem)]">
+              <ResizablePanelGroup direction="horizontal" className="rounded-lg border">
+                <ResizablePanel defaultSize={60} minSize={40}>
+                  <div className="h-full flex flex-col bg-card">
+                    <div className="border-b p-4">
+                      <div className="flex items-center gap-2">
+                        <Sparkles className="h-5 w-5 text-primary" />
+                        <h2 className="font-semibold">Chat with Webby</h2>
+                      </div>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        {!preferences?.onboarding_completed 
+                          ? "Describe your ideal candidate and watch matches appear"
+                          : "Refine your search or create new job specs"
+                        }
+                      </p>
+                    </div>
+                    <div className="flex-1 overflow-hidden">
+                      <WebbyChat
+                        userType="employer"
+                        onComplete={handleOnboardingComplete}
+                        onProfileUpdate={handleProfileUpdate}
+                      />
+                    </div>
+                  </div>
+                </ResizablePanel>
+                
+                <ResizableHandle withHandle />
+                
+                <ResizablePanel defaultSize={40} minSize={30}>
+                  <div className="h-full flex flex-col bg-muted/30">
+                    <div className="border-b bg-card p-4">
+                      <div className="flex items-center gap-2">
+                        <Users className="h-5 w-5 text-primary" />
+                        <h2 className="font-semibold">Candidate Matches</h2>
+                      </div>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Live matches based on your conversation
+                      </p>
+                    </div>
+                    <div className="flex-1 overflow-y-auto p-4">
+                      <WebbyCandidateMatches
+                        matches={matches}
+                        loading={matchesLoading}
+                        onInterested={handleInterested}
+                      />
+                    </div>
+                  </div>
+                </ResizablePanel>
+              </ResizablePanelGroup>
+            </div>
           )}
         </div>
       </div>
