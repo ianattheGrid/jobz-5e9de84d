@@ -1986,44 +1986,59 @@ export type Database = {
       webby_interests: {
         Row: {
           anonymity_state: string | null
+          candidate_first_name: string | null
           candidate_id: string
           candidate_interest_status: string | null
+          candidate_viewed_at: string | null
           created_at: string | null
+          declined_by: string | null
           drafted_message: string | null
           employer_id: string
           employer_interest_status: string | null
+          employer_viewed_at: string | null
           id: string
           initiated_by: string
           job_id: number
           match_explanation: string | null
+          status: string | null
           updated_at: string | null
         }
         Insert: {
           anonymity_state?: string | null
+          candidate_first_name?: string | null
           candidate_id: string
           candidate_interest_status?: string | null
+          candidate_viewed_at?: string | null
           created_at?: string | null
+          declined_by?: string | null
           drafted_message?: string | null
           employer_id: string
           employer_interest_status?: string | null
+          employer_viewed_at?: string | null
           id?: string
           initiated_by: string
           job_id: number
           match_explanation?: string | null
+          status?: string | null
           updated_at?: string | null
         }
         Update: {
           anonymity_state?: string | null
+          candidate_first_name?: string | null
           candidate_id?: string
           candidate_interest_status?: string | null
+          candidate_viewed_at?: string | null
           created_at?: string | null
+          declined_by?: string | null
           drafted_message?: string | null
           employer_id?: string
           employer_interest_status?: string | null
+          employer_viewed_at?: string | null
           id?: string
           initiated_by?: string
           job_id?: number
           match_explanation?: string | null
+          status?: string | null
           updated_at?: string | null
         }
         Relationships: [

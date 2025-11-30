@@ -48,6 +48,9 @@ verify_jwt = true
 [functions.webby-express-interest]
 verify_jwt = true
 
+[functions.webby-respond-to-interest]
+verify_jwt = true
+
 [functions.scrape-external-jobs]
 verify_jwt = false
 

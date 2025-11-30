@@ -64,7 +64,7 @@ serve(async (req) => {
 
     console.log(`Interest from ${fromUserType} ${user.id} to ${toUserType} ${to_user_id}`);
 
-    // Record interest in webby_interests table
+    // Record interest in webby_interests table with status
     const { data: interest, error: interestError } = await supabase
       .from("webby_interests")
       .upsert({
@@ -73,9 +73,11 @@ serve(async (req) => {
         job_id: job_id,
         initiated_by: user.id,
         [`${fromUserType}_interest_status`]: 'interested',
+        status: fromUserType === 'employer' ? 'employer_interested' : 'candidate_interested_anon',
+        employer_viewed_at: fromUserType === 'employer' ? new Date().toISOString() : null,
         updated_at: new Date().toISOString(),
       }, {
-        onConflict: 'candidate_id,employer_id',
+        onConflict: 'candidate_id,employer_id,job_id',
       })
       .select()
       .single();
