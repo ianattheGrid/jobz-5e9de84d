@@ -2053,56 +2053,84 @@ export type Database = {
       webby_job_specs: {
         Row: {
           business_context: string | null
+          company_culture: string | null
           created_at: string | null
+          employer_id: string | null
           employment_type: string | null
+          hidden_skills_valued: string[] | null
           hidden_skills_welcome: string[] | null
           id: string
           industry_type: string | null
           job_id: number
           nice_to_have_skills: string[] | null
+          pay_range_max: number | null
+          pay_range_min: number | null
           personality_fit: Json | null
           remote_hybrid_flags: Json | null
           required_skills: string[] | null
+          role_title: string | null
           seniority_level: string | null
           soft_qualities_needed: string[] | null
+          soft_qualities_sought: string[] | null
           soft_requirements: string[] | null
           webby_summary: string | null
         }
         Insert: {
           business_context?: string | null
+          company_culture?: string | null
           created_at?: string | null
+          employer_id?: string | null
           employment_type?: string | null
+          hidden_skills_valued?: string[] | null
           hidden_skills_welcome?: string[] | null
           id?: string
           industry_type?: string | null
           job_id: number
           nice_to_have_skills?: string[] | null
+          pay_range_max?: number | null
+          pay_range_min?: number | null
           personality_fit?: Json | null
           remote_hybrid_flags?: Json | null
           required_skills?: string[] | null
+          role_title?: string | null
           seniority_level?: string | null
           soft_qualities_needed?: string[] | null
+          soft_qualities_sought?: string[] | null
           soft_requirements?: string[] | null
           webby_summary?: string | null
         }
         Update: {
           business_context?: string | null
+          company_culture?: string | null
           created_at?: string | null
+          employer_id?: string | null
           employment_type?: string | null
+          hidden_skills_valued?: string[] | null
           hidden_skills_welcome?: string[] | null
           id?: string
           industry_type?: string | null
           job_id?: number
           nice_to_have_skills?: string[] | null
+          pay_range_max?: number | null
+          pay_range_min?: number | null
           personality_fit?: Json | null
           remote_hybrid_flags?: Json | null
           required_skills?: string[] | null
+          role_title?: string | null
           seniority_level?: string | null
           soft_qualities_needed?: string[] | null
+          soft_qualities_sought?: string[] | null
           soft_requirements?: string[] | null
           webby_summary?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "webby_job_specs_employer_id_fkey"
+            columns: ["employer_id"]
+            isOneToOne: false
+            referencedRelation: "employer_profiles"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "webby_job_specs_job_id_fkey"
             columns: ["job_id"]
