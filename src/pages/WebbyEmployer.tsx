@@ -6,6 +6,7 @@ import { WebbyCandidateMatches } from '@/components/webby/WebbyCandidateMatches'
 import { WebbyLiveIndicator } from '@/components/webby/WebbyLiveIndicator';
 import { WebbyIncomingInterest } from '@/components/webby/WebbyIncomingInterest';
 import { WebbyMatchCelebration } from '@/components/webby/WebbyMatchCelebration';
+import { WebbyQuickLookAnonymous } from '@/components/webby/WebbyQuickLookAnonymous';
 import { useWebbyPreferences } from '@/hooks/useWebbyPreferences';
 import { useWebbyEmployerMatches } from '@/hooks/useWebbyEmployerMatches';
 import { useWebbyPresence } from '@/hooks/useWebbyPresence';
@@ -28,6 +29,8 @@ export default function WebbyEmployer() {
     clearMatchNotification 
   } = useWebbyPresence('employer');
   const [showOnboarding, setShowOnboarding] = useState(false);
+  const [quickLookCandidate, setQuickLookCandidate] = useState<any>(null);
+  const [dismissedCandidates, setDismissedCandidates] = useState<Set<string>>(new Set());
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -50,6 +53,15 @@ export default function WebbyEmployer() {
 
   const handleInterested = async (candidateId: string) => {
     try {
+      // Check if candidate is online
+      const { data: presenceData } = await supabase
+        .from('webby_presence')
+        .select('is_online')
+        .eq('user_id', candidateId)
+        .single();
+
+      const isOnline = presenceData?.is_online || false;
+
       const { data, error } = await supabase.functions.invoke('webby-express-interest', {
         body: {
           to_user_id: candidateId,
@@ -61,13 +73,19 @@ export default function WebbyEmployer() {
 
       if (data?.is_match) {
         toast({
-          title: '🎉 Match!',
+          title: '🎉 It\'s a Match!',
           description: 'You and the candidate are both interested!',
         });
       } else {
+        // Context-aware message based on online status
+        const description = isOnline
+          ? "Nice choice. I've pinged this candidate in real time. If they're interested, I'll let you know here."
+          : "Good pick. This candidate isn't online right now, but I've sent them an alert about your role. As soon as they see it and respond, I'll update you here.";
+        
         toast({
           title: 'Interest Expressed',
-          description: 'We\'ll notify the candidate that you\'re interested.',
+          description,
+          duration: 5000,
         });
       }
     } catch (error) {
@@ -78,6 +96,30 @@ export default function WebbyEmployer() {
         variant: 'destructive',
       });
     }
+  };
+
+  const handleViewOverview = (candidateId: string) => {
+    const candidate = [
+      ...matches.primary,
+      ...matches.hidden_gems,
+      ...matches.trainable
+    ].find(m => m.candidate_id === candidateId);
+
+    if (candidate) {
+      setQuickLookCandidate(candidate);
+    }
+  };
+
+  const handleDismiss = (candidateId: string) => {
+    setDismissedCandidates(prev => new Set([...prev, candidateId]));
+    toast({
+      title: 'Candidate Dismissed',
+      description: 'This candidate won\'t be shown again.',
+    });
+  };
+
+  const handleInviteToChat = async (candidateId: string) => {
+    await handleInterested(candidateId);
   };
 
   const handleRespondToInterest = async () => {
@@ -133,6 +175,24 @@ export default function WebbyEmployer() {
           onOpenChange={(open) => !open && clearMatchNotification()}
           match={matchNotification}
           userType="employer"
+        />
+
+        <WebbyQuickLookAnonymous
+          open={!!quickLookCandidate}
+          onOpenChange={(open) => !open && setQuickLookCandidate(null)}
+          data={quickLookCandidate ? {
+            id: quickLookCandidate.candidate_id,
+            job_title: quickLookCandidate.candidate.job_title,
+            location: quickLookCandidate.candidate.location,
+            years_experience: quickLookCandidate.candidate.years_experience,
+            skills: quickLookCandidate.candidate.required_skills,
+            match_score: quickLookCandidate.match_score,
+            match_reason: quickLookCandidate.match_reason,
+            webby_profile: quickLookCandidate.webby_profile,
+          } : null}
+          userType="employer"
+          onInviteToChat={handleInviteToChat}
+          onNotRight={handleDismiss}
         />
 
         <div className="space-y-6">
@@ -221,6 +281,8 @@ export default function WebbyEmployer() {
                         matches={matches}
                         loading={matchesLoading}
                         onInterested={handleInterested}
+                        onViewOverview={handleViewOverview}
+                        onDismiss={handleDismiss}
                       />
                     </div>
                   </div>

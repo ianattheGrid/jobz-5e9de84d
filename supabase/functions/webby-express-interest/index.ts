@@ -120,24 +120,51 @@ serve(async (req) => {
 
     // Send notification based on whether they're online
     if (!isOnline) {
-      // Send push notification
+      // Fetch additional context for richer notification
+      let roleTitle = 'Role';
+      let roughArea = 'your area';
+      let payRange = '';
+      
+      if (fromUserType === 'employer') {
+        // Fetch job spec for employer
+        const { data: jobSpec } = await supabase
+          .from('webby_job_specs')
+          .select('role_title, pay_range_min, pay_range_max')
+          .eq('employer_id', user.id)
+          .single();
+        
+        if (jobSpec) {
+          roleTitle = jobSpec.role_title || 'Role';
+          if (jobSpec.pay_range_min && jobSpec.pay_range_max) {
+            payRange = ` · £${jobSpec.pay_range_min}–${jobSpec.pay_range_max}`;
+          }
+        }
+      }
+      
+      // Send enhanced push notification
       const notificationType = isMutualMatch 
         ? 'match_created' 
         : interest_type === 'interested' ? 'interest_received' : 'profile_viewed';
+
+      const notificationTitle = isMutualMatch
+        ? "🎉 It's a Match!"
+        : interest_type === 'interested'
+          ? 'A local employer is interested!'
+          : 'A local employer viewed your profile';
+
+      const notificationMessage = isMutualMatch
+        ? `You and ${fromUserType === 'employer' ? 'a company' : 'a candidate'} are interested in each other!`
+        : interest_type === 'interested'
+          ? `A local employer has seen your profile and thinks you might be a good fit.\n\nRole: ${roleTitle}\nArea: ${roughArea}${payRange}\n\nDo you want to:\n– See more and stay semi-anonymous\n– Share your first name and open a chat\n– Not interested`
+          : `An employer checked out your profile. They might reach out soon!`;
 
       const { error: notifError } = await supabase
         .from("push_notifications")
         .insert({
           user_id: to_user_id,
           type: notificationType,
-          title: isMutualMatch 
-            ? "🎉 It's a Match!" 
-            : interest_type === 'interested' 
-              ? "Someone's Interested!" 
-              : "Profile View",
-          message: isMutualMatch
-            ? `You and ${fromUserType === 'employer' ? 'a company' : 'a candidate'} are interested in each other!`
-            : `A ${fromUserType} is interested in your profile`,
+          title: notificationTitle,
+          message: notificationMessage,
           related_entity_id: interest.id,
         });
 
