@@ -6,6 +6,8 @@ interface CandidateMatch {
   category: string;
   match_score: number;
   match_reason: string;
+  employer_id?: string;
+  job_id?: number;
   candidate: {
     id: string;
     full_name: string | null;

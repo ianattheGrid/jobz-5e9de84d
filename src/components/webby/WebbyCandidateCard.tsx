@@ -5,11 +5,14 @@ import { MapPin, Calendar, Briefcase, Eye, Sparkles, CheckCircle2, Clock } from 
 import { getDescriptivePseudonym, getRoughLocation, formatPayRange, formatAvailability } from '@/lib/anonymize';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { useWebbyInterestStatus, getStatusLabels } from '@/hooks/useWebbyInterestStatus';
 
 interface CandidateMatch {
   candidate_id: string;
   match_score: number;
   match_reason: string;
+  employer_id?: string;
+  job_id?: number;
   candidate: {
     id: string;
     full_name: string | null;
@@ -40,7 +43,11 @@ interface WebbyCandidateCardProps {
 export const WebbyCandidateCard = ({ match, onInterested, onViewOverview, onDismiss }: WebbyCandidateCardProps) => {
   const { candidate, match_score, match_reason, webby_profile } = match;
   const [isOnline, setIsOnline] = useState(false);
-  const [interestStatus, setInterestStatus] = useState<'none' | 'pending' | 'sent'>('none');
+  const { statusData, loading: statusLoading } = useWebbyInterestStatus(
+    candidate.id,
+    match.employer_id || '',
+    match.job_id || 0
+  );
 
   // Generate anonymous pseudonym
   const pseudonym = getDescriptivePseudonym(
@@ -107,14 +114,20 @@ export const WebbyCandidateCard = ({ match, onInterested, onViewOverview, onDism
   }, [candidate.id]);
 
   const handleInterested = () => {
-    setInterestStatus('pending');
     onInterested(candidate.id);
-    
-    // Update status after a short delay to show "sent"
-    setTimeout(() => {
-      setInterestStatus('sent');
-    }, 1000);
   };
+
+  // Get status labels
+  const { employerLabel } = getStatusLabels(
+    statusData,
+    isOnline,
+    statusData?.candidate_first_name || undefined
+  );
+
+  // Don't show declined candidates
+  if (statusData?.status === 'declined') {
+    return null;
+  }
 
   return (
     <Card className="hover:shadow-md transition-shadow">
@@ -162,21 +175,39 @@ export const WebbyCandidateCard = ({ match, onInterested, onViewOverview, onDism
           </div>
         </div>
 
-        {/* Online Status */}
-        {isOnline && (
-          <div className="flex items-center gap-1.5 text-xs text-green-600 dark:text-green-500">
-            <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-            <span>Active now</span>
-          </div>
-        )}
-
-        {/* Interest Status (after clicking interested) */}
-        {interestStatus === 'sent' && (
-          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-            <Clock className="h-3 w-3" />
-            <span>
-              {isOnline ? 'Invited – awaiting response' : 'Alert sent – waiting for candidate'}
-            </span>
+        {/* Status Display */}
+        {employerLabel && (
+          <div className="flex items-center gap-1.5 text-xs">
+            {statusData?.status === 'matched' && isOnline && (
+              <>
+                <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                <span className="text-green-600 dark:text-green-500">{employerLabel}</span>
+              </>
+            )}
+            {statusData?.status === 'employer_interested' && (
+              <>
+                <Clock className="h-3 w-3 text-muted-foreground" />
+                <span className="text-muted-foreground">{employerLabel}</span>
+              </>
+            )}
+            {statusData?.status === 'candidate_viewed' && (
+              <>
+                <Clock className="h-3 w-3 text-primary" />
+                <span className="text-primary">{employerLabel}</span>
+              </>
+            )}
+            {statusData?.status === 'candidate_interested_anon' && (
+              <>
+                <CheckCircle2 className="h-3 w-3 text-primary" />
+                <span className="text-primary">{employerLabel}</span>
+              </>
+            )}
+            {statusData?.status === 'chatting' && (
+              <>
+                <Sparkles className="h-3 w-3 text-primary" />
+                <span className="text-primary">{employerLabel}</span>
+              </>
+            )}
           </div>
         )}
 
@@ -195,15 +226,15 @@ export const WebbyCandidateCard = ({ match, onInterested, onViewOverview, onDism
             onClick={handleInterested}
             size="sm"
             className="flex-1 gap-1.5 text-xs h-8"
-            disabled={interestStatus !== 'none'}
+            disabled={statusLoading || (statusData?.status && statusData.status !== 'matched')}
           >
             <Sparkles className="h-3 w-3" />
-            {interestStatus === 'pending' ? 'Sending...' : "I'm interested"}
+            {statusData?.status === 'matched' || !statusData ? "I'm interested" : 'Invited'}
           </Button>
         </div>
 
         {/* Optional Dismiss */}
-        {onDismiss && interestStatus === 'none' && (
+        {onDismiss && (!statusData || statusData.status === 'matched') && (
           <Button
             onClick={() => onDismiss(candidate.id)}
             variant="ghost"

@@ -220,6 +220,8 @@ Categorize and score each candidate. Focus on finding hidden gems - candidates w
 
         return {
           ...match,
+          employer_id: user.id,
+          job_id: jobSpec.job_id,
           candidate: {
             id: candidate.id,
             full_name: candidate.full_name,
