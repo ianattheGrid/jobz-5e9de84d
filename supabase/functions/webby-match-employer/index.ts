@@ -59,12 +59,24 @@ serve(async (req) => {
 
     console.log('Job spec found:', jobSpec);
 
-    // Fetch all candidate profiles
+    // Fetch all candidate profiles with webby profiles
     const { data: candidates, error: candidatesError } = await supabase
       .from('candidate_profiles')
       .select(`
         *,
-        webby_candidate_profiles (*)
+        webby_candidate_profiles (
+          rough_location,
+          min_hourly_rate,
+          min_annual_salary,
+          availability_slots,
+          hours_per_week_min,
+          hours_per_week_max,
+          skills_tags,
+          soft_skills_self_assessed,
+          environment_preferences,
+          life_outside_work,
+          hobbies_activities
+        )
       `);
 
     if (candidatesError) {
@@ -196,11 +208,15 @@ Categorize and score each candidate. Focus on finding hidden gems - candidates w
       .sort((a: any, b: any) => b.match_score - a.match_score)
       .slice(0, 5);
 
-    // Enrich with full candidate data
+    // Enrich with full candidate data including webby profile
     const enrichMatches = (matchList: any[]) => {
       return matchList.map(match => {
         const candidate = candidates.find(c => c.id === match.candidate_id);
         if (!candidate) return null;
+
+        const webbyProfile = Array.isArray(candidate.webby_candidate_profiles) 
+          ? candidate.webby_candidate_profiles[0] 
+          : candidate.webby_candidate_profiles;
 
         return {
           ...match,
@@ -212,7 +228,8 @@ Categorize and score each candidate. Focus on finding hidden gems - candidates w
             years_experience: candidate.years_experience,
             required_skills: candidate.required_skills,
             profile_picture_url: candidate.profile_picture_url,
-          }
+          },
+          webby_profile: webbyProfile || null,
         };
       }).filter(Boolean);
     };

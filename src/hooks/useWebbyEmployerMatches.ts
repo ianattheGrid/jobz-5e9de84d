@@ -15,6 +15,18 @@ interface CandidateMatch {
     required_skills: string[] | null;
     profile_picture_url: string | null;
   };
+  webby_profile?: {
+    rough_location?: string | null;
+    min_hourly_rate?: number | null;
+    min_annual_salary?: number | null;
+    availability_slots?: any;
+    hours_per_week_min?: number | null;
+    hours_per_week_max?: number | null;
+    skills_tags?: string[] | null;
+    soft_skills_self_assessed?: string[] | null;
+    environment_preferences?: string[] | null;
+    life_outside_work?: string | null;
+  };
 }
 
 interface EmployerMatches {

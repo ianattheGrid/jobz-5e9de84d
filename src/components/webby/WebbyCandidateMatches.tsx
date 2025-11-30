@@ -27,9 +27,11 @@ interface WebbyCandidateMatchesProps {
   };
   loading: boolean;
   onInterested: (candidateId: string) => void;
+  onViewOverview: (candidateId: string) => void;
+  onDismiss?: (candidateId: string) => void;
 }
 
-export const WebbyCandidateMatches = ({ matches, loading, onInterested }: WebbyCandidateMatchesProps) => {
+export const WebbyCandidateMatches = ({ matches, loading, onInterested, onViewOverview, onDismiss }: WebbyCandidateMatchesProps) => {
   const [openSections, setOpenSections] = useState({
     primary: true,
     hidden_gems: true,
@@ -55,10 +57,13 @@ export const WebbyCandidateMatches = ({ matches, loading, onInterested }: WebbyC
     return (
       <div className="flex flex-col items-center justify-center h-full py-12 text-center px-4">
         <Sparkles className="h-12 w-12 text-muted-foreground mb-3" />
-        <h3 className="font-semibold mb-2">No Matches Yet</h3>
-        <p className="text-sm text-muted-foreground max-w-sm">
-          Chat with Webby to refine your job requirements. As you describe what you're looking for, 
-          we'll find candidates who match.
+        <h3 className="font-semibold mb-2">No matches yet</h3>
+        <p className="text-sm text-muted-foreground max-w-sm leading-relaxed">
+          Chat with Webby and describe the role you're hiring for.
+          <br />
+          <span className="block mt-2">
+            As you refine what you need, I'll show you candidates who match – in real time.
+          </span>
         </p>
       </div>
     );
@@ -66,6 +71,14 @@ export const WebbyCandidateMatches = ({ matches, loading, onInterested }: WebbyC
 
   return (
     <div className="space-y-4 pb-4">
+      {/* Live Matches Header */}
+      <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+        <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+        <span>Live matches</span>
+      </div>
+      <p className="text-xs text-muted-foreground -mt-2 mb-2">
+        These candidates match what you've told Webby so far.
+      </p>
       {/* Primary Matches */}
       {matches.primary.length > 0 && (
         <Collapsible open={openSections.primary} onOpenChange={() => toggleSection('primary')}>
@@ -95,6 +108,8 @@ export const WebbyCandidateMatches = ({ matches, loading, onInterested }: WebbyC
                 key={match.candidate_id}
                 match={match}
                 onInterested={onInterested}
+                onViewOverview={onViewOverview}
+                onDismiss={onDismiss}
               />
             ))}
           </CollapsibleContent>
@@ -130,6 +145,8 @@ export const WebbyCandidateMatches = ({ matches, loading, onInterested }: WebbyC
                 key={match.candidate_id}
                 match={match}
                 onInterested={onInterested}
+                onViewOverview={onViewOverview}
+                onDismiss={onDismiss}
               />
             ))}
           </CollapsibleContent>
@@ -165,6 +182,8 @@ export const WebbyCandidateMatches = ({ matches, loading, onInterested }: WebbyC
                 key={match.candidate_id}
                 match={match}
                 onInterested={onInterested}
+                onViewOverview={onViewOverview}
+                onDismiss={onDismiss}
               />
             ))}
           </CollapsibleContent>
