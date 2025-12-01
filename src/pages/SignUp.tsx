@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import NavBar from "@/components/NavBar";
-import { Briefcase, User, Users } from "lucide-react";
+import { Briefcase, User, Users, Sparkles } from "lucide-react";
+import { CosmicBackground } from "@/components/ui/cosmic-background";
+import { GlowCard } from "@/components/ui/glow-card";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -30,48 +32,55 @@ const SignUp = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <CosmicBackground mode="light">
       <NavBar />
       <div className="container mx-auto px-4 py-16 pt-24">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold mb-4 text-foreground">
-              Join <span className="text-primary [&]:!text-primary">Jobz</span>
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-12 animate-fade-in space-y-4">
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <Sparkles className="w-8 h-8 text-primary animate-pulse" />
+            </div>
+            <h1 className="text-5xl font-bold mb-4">
+              Join <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Jobz</span>
             </h1>
-            <p className="text-lg text-muted-foreground">
-              Select your account type to get started
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Choose your path and start your journey in the new generation of hiring
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
-            {roles.map((role) => {
+          <div className="grid md:grid-cols-3 gap-8 mb-12">
+            {roles.map((role, index) => {
               const Icon = role.icon;
               return (
-                <button
+                <GlowCard
                   key={role.title}
+                  className="group cursor-pointer p-8 animate-fade-in"
+                  style={{ animationDelay: `${index * 100}ms` }}
                   onClick={() => navigate(role.path)}
-                  className="group p-8 bg-card border border-border rounded-lg hover:border-primary transition-all duration-300 hover:shadow-lg hover:scale-105"
                 >
-                  <div className={`w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br ${role.color} flex items-center justify-center group-hover:scale-110 transition-transform`}>
-                    <Icon className="w-8 h-8 text-primary [&]:!text-primary" />
+                  <div className="relative mb-6">
+                    <div className="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                      <Icon className="w-10 h-10 text-primary" />
+                    </div>
+                    <Sparkles className="w-4 h-4 text-primary absolute top-0 right-1/3 opacity-0 group-hover:opacity-100 transition-opacity animate-pulse" />
                   </div>
-                  <h2 className="text-2xl font-bold mb-2 text-foreground group-hover:text-primary [&]:!text-primary transition-colors">
+                  <h2 className="text-2xl font-bold mb-3 text-center bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text group-hover:from-primary group-hover:to-accent transition-all duration-300">
                     {role.title}
                   </h2>
-                  <p className="text-muted-foreground">
+                  <p className="text-muted-foreground text-center leading-relaxed">
                     {role.description}
                   </p>
-                </button>
+                </GlowCard>
               );
             })}
           </div>
 
-          <div className="mt-8 text-center">
-            <p className="text-sm text-muted-foreground">
+          <div className="text-center animate-fade-in" style={{ animationDelay: '300ms' }}>
+            <p className="text-muted-foreground">
               Already have an account?{" "}
               <button
                 onClick={() => navigate("/")}
-                className="text-primary [&]:!text-primary hover:underline font-medium"
+                className="text-primary hover:text-accent transition-colors font-medium hover:underline"
               >
                 Sign In
               </button>
@@ -79,7 +88,7 @@ const SignUp = () => {
           </div>
         </div>
       </div>
-    </div>
+    </CosmicBackground>
   );
 };
 
