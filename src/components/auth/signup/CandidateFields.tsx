@@ -15,12 +15,12 @@ export const CandidateFields = ({ linkedinUrl, setLinkedinUrl, referralCode = ""
   return (
     <>
       <div className="space-y-2">
-        <Label className="flex items-center gap-2">
+        <Label className="flex items-center gap-2 text-white">
           LinkedIn URL
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Info className="h-4 w-4 text-muted-foreground" />
+                <Info className="h-4 w-4 text-white/50" />
               </TooltipTrigger>
               <TooltipContent>
                 <p className="max-w-xs">Adding your LinkedIn profile helps employers verify your experience.</p>
@@ -34,17 +34,17 @@ export const CandidateFields = ({ linkedinUrl, setLinkedinUrl, referralCode = ""
           value={linkedinUrl}
           onChange={(e) => setLinkedinUrl(e.target.value)}
         />
-        <p className="text-sm text-muted-foreground">Optional but recommended</p>
+        <p className="text-sm text-white/70">Optional but recommended</p>
       </div>
       
       {setReferralCode && (
         <div className="space-y-2">
-          <Label className="flex items-center gap-2">
+          <Label className="flex items-center gap-2 text-white">
             Referral Code
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Info className="h-4 w-4 text-muted-foreground" />
+                  <Info className="h-4 w-4 text-white/50" />
                 </TooltipTrigger>
                 <TooltipContent>
                   <p className="max-w-xs">If you were referred by a Connector, please enter their referral code.</p>
@@ -58,7 +58,7 @@ export const CandidateFields = ({ linkedinUrl, setLinkedinUrl, referralCode = ""
             value={referralCode}
             onChange={(e) => setReferralCode(e.target.value)}
           />
-          <p className="text-sm text-muted-foreground">Enter if you were referred by a Connector</p>
+          <p className="text-sm text-white/70">Enter if you were referred by a Connector</p>
         </div>
       )}
     </>

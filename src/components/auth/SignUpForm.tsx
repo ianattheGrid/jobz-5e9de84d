@@ -98,9 +98,9 @@ export const SignUpForm = ({
         {loading ? "Signing up..." : "Sign Up"}
       </Button>
 
-      <div className="text-center text-sm text-muted-foreground">
+      <div className="text-center text-sm text-white/70">
         Already have an account?{" "}
-        <Link to={getSignInLink()} className="text-[#FF69B4] hover:underline">
+        <Link to={getSignInLink()} className="text-primary hover:underline font-medium">
           Sign In
         </Link>
       </div>

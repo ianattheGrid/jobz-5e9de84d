@@ -1,9 +1,10 @@
 import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
 import NavBar from "@/components/NavBar";
 import { NotificationSettings } from "@/components/candidate/NotificationSettings";
 import { PersonalizedJobRecommendations } from "@/components/candidate/PersonalizedJobRecommendations";
 import ExternalJobsWidget from "@/components/candidate/ExternalJobsWidget";
+import { CosmicBackground } from "@/components/ui/cosmic-background";
+import { DashboardCard } from "@/components/ui/dashboard-card";
 import { 
   UserCircle,
   Briefcase,
@@ -52,13 +53,15 @@ const CandidateDashboard = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-white">
+    <CosmicBackground mode="light">
       <NavBar />
       <div className="container mx-auto py-8 px-4">
-        <h1 className="text-3xl font-bold mb-2 text-gray-900">
-          Welcome to Your Dashboard
-        </h1>
-        <p className="text-gray-600 mb-8">Manage your job search and applications</p>
+        <div className="text-center mb-8 pt-4">
+          <h1 className="text-4xl font-bold mb-3 bg-gradient-to-r from-primary via-primary/80 to-primary bg-clip-text text-transparent drop-shadow-sm">
+            Welcome to Your Dashboard
+          </h1>
+          <p className="text-foreground/70 text-lg">Discover opportunities and manage your journey</p>
+        </div>
         
         {/* Notification Settings */}
         <div className="mb-8">
@@ -67,17 +70,17 @@ const CandidateDashboard = () => {
         
         <div className="grid gap-6 md:grid-cols-2">
           {/* Update Profile */}
-          <Button
-            variant="outline"
-            className="h-auto p-6 flex flex-col items-center gap-4 bg-white hover:bg-gray-50 transition-all duration-200 border border-gray-200 rounded-lg shadow-sm hover:shadow-md"
-            onClick={() => navigate("/candidate/profile")}
-          >
-            <div className="text-[#FF69B4]"><UserCircle className="h-6 w-6" /></div>
-            <div className="text-center">
-              <h3 className="font-semibold text-lg mb-2 text-gray-900">Update Profile</h3>
-              <p className="text-sm text-gray-600">Edit your professional details</p>
+          <DashboardCard onClick={() => navigate("/candidate/profile")}>
+            <div className="flex flex-col items-center gap-4 text-center">
+              <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                <UserCircle className="h-6 w-6 text-primary group-hover:drop-shadow-[0_0_8px_rgba(236,72,153,0.6)] transition-all" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-lg mb-2 text-foreground">Update Profile</h3>
+                <p className="text-sm text-muted-foreground">Edit your professional details</p>
+              </div>
             </div>
-          </Button>
+          </DashboardCard>
 
           {/* Personalized Job Recommendations */}
           <PersonalizedJobRecommendations />
@@ -87,22 +90,23 @@ const CandidateDashboard = () => {
 
           {/* Remaining menu items */}
           {menuItems.slice(1).map((item, index) => (
-            <Button
-              key={index}
-              variant="outline"
-              className="h-auto p-6 flex flex-col items-center gap-4 bg-white hover:bg-gray-50 transition-all duration-200 border border-gray-200 rounded-lg shadow-sm hover:shadow-md"
-              onClick={() => navigate(item.path)}
-            >
-              <div className="text-[#FF69B4]">{item.icon}</div>
-              <div className="text-center">
-                <h3 className="font-semibold text-lg mb-2 text-gray-900">{item.title}</h3>
-                <p className="text-sm text-gray-600">{item.description}</p>
+            <DashboardCard key={index} onClick={() => navigate(item.path)}>
+              <div className="flex flex-col items-center gap-4 text-center">
+                <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                  <div className="text-primary group-hover:drop-shadow-[0_0_8px_rgba(236,72,153,0.6)] transition-all">
+                    {item.icon}
+                  </div>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-lg mb-2 text-foreground">{item.title}</h3>
+                  <p className="text-sm text-muted-foreground">{item.description}</p>
+                </div>
               </div>
-            </Button>
+            </DashboardCard>
           ))}
         </div>
       </div>
-    </div>
+    </CosmicBackground>
   );
 };
 

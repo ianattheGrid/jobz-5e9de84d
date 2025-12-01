@@ -29,7 +29,7 @@ export const TermsOfUse = ({ agreed, onAgreeChange }: TermsOfUseProps) => {
       <div className="space-y-1 leading-none">
         <Label
           htmlFor="terms"
-          className="text-sm font-normal text-foreground cursor-pointer"
+          className="text-sm font-normal text-white cursor-pointer"
         >
           I agree to the{" "}
           <Dialog open={open} onOpenChange={setOpen}>

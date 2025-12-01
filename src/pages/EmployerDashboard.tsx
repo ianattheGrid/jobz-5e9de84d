@@ -2,11 +2,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import NavBar from "@/components/NavBar";
 import BonusNegotiations from "@/components/employer/BonusNegotiations";
 import { BonusPaymentsSection } from "@/components/employer/BonusPaymentsSection";
+import { CosmicBackground } from "@/components/ui/cosmic-background";
+import { DashboardCard } from "@/components/ui/dashboard-card";
 import { Briefcase, Building2, Search, Calendar, UserCircle, MessageSquare, Sparkles } from "lucide-react";
 
 
@@ -120,29 +121,32 @@ const EmployerDashboard = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <CosmicBackground mode="light">
       <NavBar />
       <div className="container mx-auto px-4 pt-20">
-        <h1 className="text-3xl font-bold mb-2 !text-[#FF69B4]">
-          Welcome{companyName ? `, ${companyName}` : ''}
-        </h1>
-        <p className="text-white mb-8">Manage your job postings and candidates</p>
+        <div className="text-center mb-8 pt-4">
+          <h1 className="text-4xl font-bold mb-3 bg-gradient-to-r from-primary via-primary/80 to-primary bg-clip-text text-transparent drop-shadow-sm">
+            Welcome{companyName ? `, ${companyName}` : ''}
+          </h1>
+          <p className="text-foreground/70 text-lg">Manage your talent pipeline with ease</p>
+        </div>
         
         
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {menuItems.map((item, index) => (
-            <Button 
-              key={index} 
-              variant="outline" 
-              className="h-auto p-6 flex flex-col items-center gap-4 bg-white hover:bg-red-50 transition-all duration-200 border border-gray-200 rounded-lg shadow-sm hover:shadow-md" 
-              onClick={() => navigate(item.path)}
-            >
-              <div className="text-primary">{item.icon}</div>
-              <div className="text-center">
-                <h3 className="font-semibold text-lg mb-2 text-primary">{item.title}</h3>
-                <p className="text-sm text-gray-600">{item.description}</p>
+            <DashboardCard key={index} onClick={() => navigate(item.path)}>
+              <div className="flex flex-col items-center gap-4 text-center">
+                <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                  <div className="text-primary group-hover:drop-shadow-[0_0_8px_rgba(236,72,153,0.6)] transition-all">
+                    {item.icon}
+                  </div>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-lg mb-2 text-foreground">{item.title}</h3>
+                  <p className="text-sm text-muted-foreground">{item.description}</p>
+                </div>
               </div>
-            </Button>
+            </DashboardCard>
           ))}
         </div>
 
@@ -153,7 +157,7 @@ const EmployerDashboard = () => {
           </div>
         )}
       </div>
-    </div>
+    </CosmicBackground>
   );
 };
 
