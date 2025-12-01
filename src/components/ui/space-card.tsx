@@ -10,6 +10,7 @@ export const SpaceCard = ({ children, className }: SpaceCardProps) => {
   return (
     <div
       className={cn(
+        "cosmic-form space-card",
         "relative group",
         "bg-black/40 backdrop-blur-xl",
         "border border-primary/30",
