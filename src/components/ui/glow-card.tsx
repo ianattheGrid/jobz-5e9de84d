@@ -8,9 +8,10 @@ const GlowCard = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      "rounded-lg border bg-card/80 backdrop-blur-sm text-card-foreground shadow-sm",
+      "rounded-lg border border-primary/10 bg-card/90 backdrop-blur-md text-card-foreground",
+      "shadow-[0_0_15px_rgba(var(--primary-rgb),0.05)]",
       "transition-all duration-300",
-      "hover:shadow-lg hover:border-primary/30 hover:bg-card/90",
+      "hover:shadow-[0_0_30px_rgba(var(--primary-rgb),0.15)] hover:border-primary/30 hover:bg-card/95 hover:scale-[1.02]",
       "relative overflow-hidden",
       "before:absolute before:inset-0 before:rounded-lg before:p-[1px]",
       "before:bg-gradient-to-br before:from-primary/20 before:via-transparent before:to-accent/20",
