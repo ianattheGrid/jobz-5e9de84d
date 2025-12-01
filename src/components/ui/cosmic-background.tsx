@@ -16,14 +16,14 @@ export const CosmicBackground = ({
     <div className={cn(
       "relative min-h-screen overflow-hidden",
       mode === "full" 
-        ? "bg-gradient-to-br from-[#1a1a2e] via-[#16213e] to-[#0f3460]"
-        : "bg-gradient-to-br from-slate-50 via-background to-primary/5 dark:from-slate-950 dark:via-background dark:to-primary/10",
+        ? "bg-gradient-to-br from-[#1a0a15] via-[#2d1028] to-[#150a1a]"
+        : "bg-gradient-to-br from-rose-50/50 via-background to-primary/10 dark:from-slate-950 dark:via-background dark:to-primary/20",
       className
     )}>
       {/* Animated stars */}
       {mode === "full" && (
         <div className="absolute inset-0 overflow-hidden">
-          {[...Array(50)].map((_, i) => (
+          {[...Array(100)].map((_, i) => (
             <div
               key={i}
               className="absolute rounded-full bg-white animate-pulse"
@@ -34,33 +34,45 @@ export const CosmicBackground = ({
                 top: Math.random() * 100 + "%",
                 animationDelay: Math.random() * 3 + "s",
                 animationDuration: Math.random() * 3 + 2 + "s",
-                opacity: Math.random() * 0.5 + 0.2,
+                opacity: Math.random() * 0.7 + 0.3,
               }}
             />
           ))}
         </div>
       )}
 
-      {/* Subtle orb glows */}
+      {/* Glowing orb effects */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div 
-          className={cn(
-            "absolute rounded-full blur-3xl transition-opacity duration-1000",
-            mode === "full" 
-              ? "bg-primary/20 w-96 h-96 -top-48 -right-48"
-              : "bg-primary/10 w-96 h-96 -top-32 -right-32 animate-pulse"
-          )}
-          style={{ animationDuration: '4s' }}
-        />
-        <div 
-          className={cn(
-            "absolute rounded-full blur-3xl transition-opacity duration-1000",
-            mode === "full"
-              ? "bg-accent/20 w-96 h-96 -bottom-48 -left-48"
-              : "bg-accent/10 w-96 h-96 -bottom-32 -left-32 animate-pulse"
-          )}
-          style={{ animationDuration: '5s', animationDelay: '1s' }}
-        />
+        {mode === "full" ? (
+          <>
+            {/* Large central pink glow */}
+            <div 
+              className="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-primary/30 rounded-full blur-[120px] animate-pulse"
+              style={{ animationDuration: '4s' }}
+            />
+            {/* Secondary purple glow */}
+            <div 
+              className="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] bg-accent/25 rounded-full blur-[100px] animate-pulse"
+              style={{ animationDuration: '5s', animationDelay: '1s' }}
+            />
+            {/* Top accent glow */}
+            <div 
+              className="absolute -top-32 left-1/2 w-[300px] h-[300px] bg-primary/20 rounded-full blur-[80px] animate-pulse"
+              style={{ animationDuration: '6s', animationDelay: '2s' }}
+            />
+          </>
+        ) : (
+          <>
+            <div 
+              className="absolute rounded-full blur-3xl transition-opacity duration-1000 bg-primary/20 w-96 h-96 -top-32 -right-32 animate-pulse"
+              style={{ animationDuration: '4s' }}
+            />
+            <div 
+              className="absolute rounded-full blur-3xl transition-opacity duration-1000 bg-accent/20 w-96 h-96 -bottom-32 -left-32 animate-pulse"
+              style={{ animationDuration: '5s', animationDelay: '1s' }}
+            />
+          </>
+        )}
       </div>
 
       {/* Content */}

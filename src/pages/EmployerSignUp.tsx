@@ -3,6 +3,7 @@ import { SignUpForm } from "@/components/auth/SignUpForm";
 import { useSignUp } from "@/hooks/useSignUp";
 import NavBar from "@/components/NavBar";
 import { CosmicBackground } from "@/components/ui/cosmic-background";
+import { SpaceCard } from "@/components/ui/space-card";
 import { Building2, Sparkles } from "lucide-react";
 
 const EmployerSignUp = () => {
@@ -30,32 +31,32 @@ const EmployerSignUp = () => {
   };
 
   return (
-    <CosmicBackground mode="light">
+    <CosmicBackground mode="full">
       <NavBar />
       <div className="container mx-auto px-4 py-8 pt-24">
         <div className="max-w-md mx-auto animate-fade-in">
           <div className="text-center mb-8 space-y-3">
             <div className="flex items-center justify-center gap-3">
               <div className="relative">
-                <Building2 className="h-10 w-10 text-primary" />
+                <Building2 className="h-10 w-10 text-primary drop-shadow-[0_0_20px_rgba(236,72,153,0.8)]" />
                 <Sparkles className="h-4 w-4 text-primary absolute -top-1 -right-1 animate-pulse" />
               </div>
             </div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text">
+            <h1 className="text-3xl font-bold text-white drop-shadow-[0_0_10px_rgba(236,72,153,0.5)]">
               Let's Find Your Next Hire
             </h1>
-            <p className="text-muted-foreground">
+            <p className="text-white/80 drop-shadow-lg">
               Join the future of recruitment. Your perfect candidate is out there.
             </p>
           </div>
-          <div className="bg-card/80 backdrop-blur-sm rounded-lg shadow-lg p-6 border border-border/50 hover:border-primary/30 transition-all duration-300">
+          <SpaceCard>
             <SignUpForm 
               onSubmit={handleSubmit} 
               loading={loading} 
               userType="employer"
               showCompanyField={true} 
             />
-          </div>
+          </SpaceCard>
         </div>
       </div>
     </CosmicBackground>
