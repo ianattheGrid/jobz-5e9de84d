@@ -15,6 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from '@/components/ui/resizable';
 import { supabase } from '@/integrations/supabase/client';
+import { CosmicBackground } from '@/components/ui/cosmic-background';
 
 export default function WebbyCandidate() {
   const { preferences, loading, toggleWebby } = useWebbyPreferences('candidate');
@@ -124,30 +125,30 @@ export default function WebbyCandidate() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background">
+      <CosmicBackground mode="full">
         <NavBar />
         <div className="flex items-center justify-center h-[calc(100vh-4rem)]">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
         </div>
-      </div>
+      </CosmicBackground>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <CosmicBackground mode="full">
       <NavBar />
       <div className="container mx-auto px-4 py-8 pt-24 max-w-6xl">
         <div className="mb-8">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-3">
-              <Sparkles className="w-8 h-8 text-primary" />
-              <h1 className="text-3xl font-bold">Webby AI Co-pilot</h1>
+              <Sparkles className="w-8 h-8 text-primary animate-pulse" style={{ animationDuration: '3s' }} />
+              <h1 className="text-3xl font-bold text-white">Webby AI Co-pilot</h1>
             </div>
             {preferences?.webby_enabled && (
               <WebbyLiveIndicator onlineCount={onlineCount} userType="candidate" />
             )}
           </div>
-          <p className="text-muted-foreground">
+          <p className="text-white/80 text-lg">
             Let AI help you find local work that fits your life, without exposing yourself publicly
           </p>
         </div>
@@ -179,31 +180,31 @@ export default function WebbyCandidate() {
 
           {!preferences?.webby_enabled && (
             <div className="grid md:grid-cols-3 gap-4">
-              <Card>
+              <Card className="bg-black/40 backdrop-blur-xl border-primary/30 hover:border-primary/50 transition-colors">
                 <CardHeader>
                   <Shield className="w-8 h-8 text-primary mb-2" />
-                  <CardTitle className="text-lg">Stay Anonymous</CardTitle>
-                  <CardDescription>
+                  <CardTitle className="text-lg text-white">Stay Anonymous</CardTitle>
+                  <CardDescription className="text-white/70">
                     Explore jobs without revealing your identity until you're ready
                   </CardDescription>
                 </CardHeader>
               </Card>
 
-              <Card>
+              <Card className="bg-black/40 backdrop-blur-xl border-primary/30 hover:border-primary/50 transition-colors">
                 <CardHeader>
                   <Target className="w-8 h-8 text-primary mb-2" />
-                  <CardTitle className="text-lg">Smart Matches</CardTitle>
-                  <CardDescription>
+                  <CardTitle className="text-lg text-white">Smart Matches</CardTitle>
+                  <CardDescription className="text-white/70">
                     Get curated job matches based on your skills, location, and preferences
                   </CardDescription>
                 </CardHeader>
               </Card>
 
-              <Card>
+              <Card className="bg-black/40 backdrop-blur-xl border-primary/30 hover:border-primary/50 transition-colors">
                 <CardHeader>
                   <Zap className="w-8 h-8 text-primary mb-2" />
-                  <CardTitle className="text-lg">Quick Apply</CardTitle>
-                  <CardDescription>
+                  <CardTitle className="text-lg text-white">Quick Apply</CardTitle>
+                  <CardDescription className="text-white/70">
                     One-tap interest with AI-drafted messages you can edit
                   </CardDescription>
                 </CardHeader>
@@ -212,7 +213,7 @@ export default function WebbyCandidate() {
           )}
 
           {preferences?.webby_enabled && (
-            <div className="h-[calc(100vh-16rem)] border border-border rounded-lg overflow-hidden">
+            <div className="h-[calc(100vh-16rem)] border border-primary/30 rounded-lg overflow-hidden shadow-lg shadow-primary/20">
               <ResizablePanelGroup direction="horizontal" className="h-full">
                 <ResizablePanel defaultSize={60} minSize={40}>
                   <WebbyChat
@@ -221,7 +222,7 @@ export default function WebbyCandidate() {
                     onProfileUpdate={handleProfileUpdate}
                   />
                 </ResizablePanel>
-                <ResizableHandle withHandle />
+                <ResizableHandle withHandle className="bg-primary/20" />
                 <ResizablePanel defaultSize={40} minSize={30}>
                   <WebbyMatches
                     onInterested={handleInterested}
@@ -233,6 +234,6 @@ export default function WebbyCandidate() {
           )}
         </div>
       </div>
-    </div>
+    </CosmicBackground>
   );
 }
