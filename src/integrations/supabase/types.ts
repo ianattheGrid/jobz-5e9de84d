@@ -758,8 +758,11 @@ export type Database = {
           linkedin_url: string | null
           nearby_amenities: string | null
           office_amenities: string | null
+          open_to_career_switchers: boolean | null
           profile_picture_url: string | null
           updated_at: string
+          values_soft_skills_over_experience: boolean | null
+          willing_to_train_on_the_job: boolean | null
         }
         Insert: {
           company_address?: string | null
@@ -782,8 +785,11 @@ export type Database = {
           linkedin_url?: string | null
           nearby_amenities?: string | null
           office_amenities?: string | null
+          open_to_career_switchers?: boolean | null
           profile_picture_url?: string | null
           updated_at?: string
+          values_soft_skills_over_experience?: boolean | null
+          willing_to_train_on_the_job?: boolean | null
         }
         Update: {
           company_address?: string | null
@@ -806,8 +812,11 @@ export type Database = {
           linkedin_url?: string | null
           nearby_amenities?: string | null
           office_amenities?: string | null
+          open_to_career_switchers?: boolean | null
           profile_picture_url?: string | null
           updated_at?: string
+          values_soft_skills_over_experience?: boolean | null
+          willing_to_train_on_the_job?: boolean | null
         }
         Relationships: []
       }
@@ -1363,6 +1372,45 @@ export type Database = {
         }
         Relationships: []
       }
+      master_environment_tags: {
+        Row: {
+          created_at: string | null
+          id: string
+          name: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          name: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      master_function_tags: {
+        Row: {
+          aliases: string[] | null
+          created_at: string | null
+          id: string
+          name: string
+        }
+        Insert: {
+          aliases?: string[] | null
+          created_at?: string | null
+          id?: string
+          name: string
+        }
+        Update: {
+          aliases?: string[] | null
+          created_at?: string | null
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
       master_job_titles: {
         Row: {
           created_at: string
@@ -1387,6 +1435,27 @@ export type Database = {
           specialization?: string | null
           updated_at?: string
           work_area?: string
+        }
+        Relationships: []
+      }
+      master_sector_tags: {
+        Row: {
+          aliases: string[] | null
+          created_at: string | null
+          id: string
+          name: string
+        }
+        Insert: {
+          aliases?: string[] | null
+          created_at?: string | null
+          id?: string
+          name: string
+        }
+        Update: {
+          aliases?: string[] | null
+          created_at?: string | null
+          id?: string
+          name?: string
         }
         Relationships: []
       }
@@ -1905,8 +1974,10 @@ export type Database = {
           candidate_id: string
           created_at: string | null
           environment_preferences: string[] | null
+          functions_to_avoid: string[] | null
           hidden_interests: string[] | null
           hobbies_activities: Json | null
+          hobby_work_preferences: Json | null
           hours_per_week_max: number | null
           hours_per_week_min: number | null
           id: string
@@ -1915,7 +1986,12 @@ export type Database = {
           location_radius_miles: number | null
           min_annual_salary: number | null
           min_hourly_rate: number | null
+          moving_towards_functions: string[] | null
+          moving_towards_sectors: string[] | null
+          next_chapter_environment: string[] | null
+          next_chapter_summary: string | null
           rough_location: string | null
+          sectors_to_avoid: string[] | null
           skills_tags: string[] | null
           soft_qualities: Json | null
           soft_skills_self_assessed: string[] | null
@@ -1930,8 +2006,10 @@ export type Database = {
           candidate_id: string
           created_at?: string | null
           environment_preferences?: string[] | null
+          functions_to_avoid?: string[] | null
           hidden_interests?: string[] | null
           hobbies_activities?: Json | null
+          hobby_work_preferences?: Json | null
           hours_per_week_max?: number | null
           hours_per_week_min?: number | null
           id?: string
@@ -1940,7 +2018,12 @@ export type Database = {
           location_radius_miles?: number | null
           min_annual_salary?: number | null
           min_hourly_rate?: number | null
+          moving_towards_functions?: string[] | null
+          moving_towards_sectors?: string[] | null
+          next_chapter_environment?: string[] | null
+          next_chapter_summary?: string | null
           rough_location?: string | null
+          sectors_to_avoid?: string[] | null
           skills_tags?: string[] | null
           soft_qualities?: Json | null
           soft_skills_self_assessed?: string[] | null
@@ -1955,8 +2038,10 @@ export type Database = {
           candidate_id?: string
           created_at?: string | null
           environment_preferences?: string[] | null
+          functions_to_avoid?: string[] | null
           hidden_interests?: string[] | null
           hobbies_activities?: Json | null
+          hobby_work_preferences?: Json | null
           hours_per_week_max?: number | null
           hours_per_week_min?: number | null
           id?: string
@@ -1965,7 +2050,12 @@ export type Database = {
           location_radius_miles?: number | null
           min_annual_salary?: number | null
           min_hourly_rate?: number | null
+          moving_towards_functions?: string[] | null
+          moving_towards_sectors?: string[] | null
+          next_chapter_environment?: string[] | null
+          next_chapter_summary?: string | null
           rough_location?: string | null
+          sectors_to_avoid?: string[] | null
           skills_tags?: string[] | null
           soft_qualities?: Json | null
           soft_skills_self_assessed?: string[] | null
@@ -2072,6 +2162,8 @@ export type Database = {
           created_at: string | null
           employer_id: string | null
           employment_type: string | null
+          environment_tags: string[] | null
+          function_tags: string[] | null
           hidden_skills_valued: string[] | null
           hidden_skills_welcome: string[] | null
           id: string
@@ -2084,6 +2176,7 @@ export type Database = {
           remote_hybrid_flags: Json | null
           required_skills: string[] | null
           role_title: string | null
+          sector_tags: string[] | null
           seniority_level: string | null
           soft_qualities_needed: string[] | null
           soft_qualities_sought: string[] | null
@@ -2096,6 +2189,8 @@ export type Database = {
           created_at?: string | null
           employer_id?: string | null
           employment_type?: string | null
+          environment_tags?: string[] | null
+          function_tags?: string[] | null
           hidden_skills_valued?: string[] | null
           hidden_skills_welcome?: string[] | null
           id?: string
@@ -2108,6 +2203,7 @@ export type Database = {
           remote_hybrid_flags?: Json | null
           required_skills?: string[] | null
           role_title?: string | null
+          sector_tags?: string[] | null
           seniority_level?: string | null
           soft_qualities_needed?: string[] | null
           soft_qualities_sought?: string[] | null
@@ -2120,6 +2216,8 @@ export type Database = {
           created_at?: string | null
           employer_id?: string | null
           employment_type?: string | null
+          environment_tags?: string[] | null
+          function_tags?: string[] | null
           hidden_skills_valued?: string[] | null
           hidden_skills_welcome?: string[] | null
           id?: string
@@ -2132,6 +2230,7 @@ export type Database = {
           remote_hybrid_flags?: Json | null
           required_skills?: string[] | null
           role_title?: string | null
+          sector_tags?: string[] | null
           seniority_level?: string | null
           soft_qualities_needed?: string[] | null
           soft_qualities_sought?: string[] | null

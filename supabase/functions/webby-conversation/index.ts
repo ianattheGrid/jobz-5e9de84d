@@ -65,22 +65,31 @@ Your mission is to discover the WHOLE PERSON, not just their job title. Have a S
 1. **Life Outside Work**: What do they do when they're not working? Hobbies, passions, volunteer work, side projects?
    - Ask specifically: "What fills your time outside of work? Any hobbies you're passionate about?"
 
-2. **Hidden Skills**: Activities that might translate to job opportunities
+2. **Hidden Skills & Next Chapter**: Activities that might translate to job opportunities, and what they want to do NEXT
    - Examples: "You swim 4x/week? That's dedication! Ever thought about coaching?" or "You organize community events? That's project management!"
+   - **CRITICAL NEXT CHAPTER QUESTION**: "Forget your CV for a moment. If you could move your work life a bit closer to something you'd actually enjoy, what would that look like? Answer in your own words."
+   - Follow-up: "Would you say you're mainly trying to move: into a new type of work (e.g., from retail into admin/office), a different environment (e.g., smaller team, more creative, outdoors), or both?"
 
-3. **Soft Skills**: How do they describe themselves? Patient? Creative problem-solver? Good with people?
+3. **Hobby Clarification** (IMPORTANT - Ask this when they mention hobbies):
+   - When they mention activities like swimming, football, photography, etc., ALWAYS ask:
+   - "Is [hobby] something you'd like paid work around, or is it just for you?"
+   - Options: "Just a hobby" | "I'd consider paid roles around this" | "Yes, I'd like to work in this area"
+   - NEVER assume hobbies = job preferences without asking!
+
+4. **Soft Skills**: How do they describe themselves? Patient? Creative problem-solver? Good with people?
    - Ask: "How would your friends describe you? What are you naturally good at?"
 
-4. **What They Want to Avoid**: Red flags, deal-breakers in jobs
-   - Ask: "Any types of work or environments you want to avoid?"
+5. **What They Want to Avoid**: Red flags, deal-breakers in jobs
+   - Ask: "Any types of work or environments you want to avoid? Be specific - this helps me not waste your time."
 
 **IMPORTANT MATCHING PHILOSOPHY:**
 - Look for TRANSFERABLE skills from hobbies → jobs (e.g., swimming coach → teaching/coaching roles)
 - Consider personality fit, not just technical skills
 - Think outside the box: a developer who loves public speaking might be great in technical sales
 - Focus on "who they are" not just "what they've done"
+- **Normalize career change**: "Lots of people are in jobs they don't love. It's okay to say what you'd rather be doing – we can look for realistic first steps, not just perfect dreams."
 
-Keep questions conversational and ONE at a time. After gathering rich data about their hobbies, soft skills, and hidden interests, use the save_candidate_profile tool to structure everything.`;
+Keep questions conversational and ONE at a time. After gathering rich data about their hobbies, soft skills, hidden interests, and Next Chapter goals, use the save_candidate_profile tool to structure everything.`;
 
     const employerPrompt = `You are Webby, a friendly AI assistant helping SMEs (small and medium businesses) find candidates beyond traditional keyword matching.
 
@@ -95,6 +104,13 @@ Your job is to have a SHORT, natural conversation to understand:
 
 **ASK SPECIFICALLY**: "Are there any skills from hobbies or interests that would be valuable? Like coaching, teaching, organizing events, creative pursuits?"
 
+**CAREER-SWITCHER OPENNESS** (Ask this near the end):
+- "Are you open to hiring someone changing careers if they have the right attitude and learning ability?"
+- "Would you be willing to train someone on the job if they bring strong soft skills?"
+- This helps me show you candidates who might not have the exact job title but have the personality and transferable skills to succeed.
+
+**EDUCATION MESSAGING**: "If you're open to people changing direction, I can show you candidates with strong people and learning skills, even if their last job title doesn't match perfectly. Many great hires come from unexpected backgrounds."
+
 Ask ONE question at a time. Be friendly and efficient.
 After gathering enough info, use the create_job_spec tool to structure the data.`;
 
@@ -106,7 +122,7 @@ After gathering enough info, use the create_job_spec tool to structure the data.
       
       console.log('Saving candidate profile data:', profileData);
       
-      // Save to webby_candidate_profiles with new hobby/soft skills data
+      // Save to webby_candidate_profiles with new hobby/soft skills data + Next Chapter
       const { error: profileError } = await supabaseClient
         .from('webby_candidate_profiles')
         .upsert({
@@ -122,7 +138,7 @@ After gathering enough info, use the create_job_spec tool to structure the data.
           avoid_tags: profileData.avoid_tags,
           environment_preferences: profileData.environment_preferences,
           location_radius_miles: profileData.location_radius_miles,
-          // NEW PHASE 2 FIELDS
+          // PHASE 2 FIELDS
           hobbies_activities: profileData.hobbies_activities || [],
           life_outside_work: profileData.life_outside_work,
           hidden_interests: profileData.hidden_interests || [],
@@ -130,6 +146,14 @@ After gathering enough info, use the create_job_spec tool to structure the data.
           transferable_skills_ai: profileData.transferable_skills_ai || {},
           alternative_paths_ai: profileData.alternative_paths_ai || {},
           webby_summary: profileData.webby_summary,
+          // NEXT CHAPTER FIELDS
+          next_chapter_summary: profileData.next_chapter_summary,
+          moving_towards_sectors: profileData.moving_towards_sectors || [],
+          moving_towards_functions: profileData.moving_towards_functions || [],
+          next_chapter_environment: profileData.next_chapter_environment || [],
+          sectors_to_avoid: profileData.sectors_to_avoid || [],
+          functions_to_avoid: profileData.functions_to_avoid || [],
+          hobby_work_preferences: profileData.hobby_work_preferences || {},
           updated_at: new Date().toISOString()
         });
 
@@ -166,7 +190,7 @@ After gathering enough info, use the create_job_spec tool to structure the data.
       
       console.log('Saving job spec data:', specData);
       
-      // Save to webby_job_specs with new soft skills fields
+      // Save to webby_job_specs with new soft skills fields + tags
       const { error } = await supabaseClient
         .from('webby_job_specs')
         .upsert({
@@ -179,12 +203,28 @@ After gathering enough info, use the create_job_spec tool to structure the data.
           nice_to_have_skills: specData.nice_to_have_skills,
           business_context: specData.business_context,
           soft_requirements: specData.soft_requirements,
-          // NEW PHASE 2 FIELDS
+          // PHASE 2 FIELDS
           soft_qualities_needed: specData.soft_qualities_needed || [],
           personality_fit: specData.personality_fit || {},
           hidden_skills_welcome: specData.hidden_skills_welcome || [],
-          webby_summary: specData.webby_summary
+          webby_summary: specData.webby_summary,
+          // NEXT CHAPTER TAGGING FIELDS
+          sector_tags: specData.sector_tags || [],
+          function_tags: specData.function_tags || [],
+          environment_tags: specData.environment_tags || []
         });
+      
+      // Also update employer profile with career-switcher preferences
+      if (specData.open_to_career_switchers !== undefined) {
+        await supabaseClient
+          .from('employer_profiles')
+          .update({
+            open_to_career_switchers: specData.open_to_career_switchers,
+            willing_to_train_on_the_job: specData.willing_to_train_on_the_job,
+            values_soft_skills_over_experience: specData.values_soft_skills_over_experience
+          })
+          .eq('id', user.id);
+      }
 
       if (error) {
         console.error('Error saving job spec:', error);

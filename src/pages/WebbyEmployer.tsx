@@ -7,6 +7,7 @@ import { WebbyLiveIndicator } from '@/components/webby/WebbyLiveIndicator';
 import { WebbyIncomingInterest } from '@/components/webby/WebbyIncomingInterest';
 import { WebbyMatchCelebration } from '@/components/webby/WebbyMatchCelebration';
 import { WebbyQuickLookAnonymous } from '@/components/webby/WebbyQuickLookAnonymous';
+import { WebbyEmployerToggles } from '@/components/webby/WebbyEmployerToggles';
 import { useWebbyPreferences } from '@/hooks/useWebbyPreferences';
 import { useWebbyEmployerMatches } from '@/hooks/useWebbyEmployerMatches';
 import { useWebbyPresence } from '@/hooks/useWebbyPresence';
@@ -31,6 +32,11 @@ export default function WebbyEmployer() {
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [quickLookCandidate, setQuickLookCandidate] = useState<any>(null);
   const [dismissedCandidates, setDismissedCandidates] = useState<Set<string>>(new Set());
+  const [employerPreferences, setEmployerPreferences] = useState({
+    open_to_career_switchers: false,
+    willing_to_train_on_the_job: false,
+    values_soft_skills_over_experience: false
+  });
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -38,6 +44,35 @@ export default function WebbyEmployer() {
     await toggleWebby(enabled);
     if (enabled && !preferences?.onboarding_completed) {
       setShowOnboarding(true);
+    }
+  };
+
+  const handleEmployerToggle = async (field: string, value: boolean) => {
+    setEmployerPreferences(prev => ({ ...prev, [field]: value }));
+    
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      await supabase
+        .from('employer_profiles')
+        .update({ [field]: value })
+        .eq('id', user.id);
+
+      toast({
+        title: 'Preferences updated',
+        description: 'Your hiring preferences have been saved.'
+      });
+
+      // Refresh matches to apply new preferences
+      refreshMatches();
+    } catch (error) {
+      console.error('Error updating employer preferences:', error);
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Failed to update preferences.'
+      });
     }
   };
 
@@ -201,6 +236,15 @@ export default function WebbyEmployer() {
             onToggle={handleToggle}
             loading={loading}
           />
+
+          {preferences?.webby_enabled && (
+            <WebbyEmployerToggles
+              openToCareerSwitchers={employerPreferences.open_to_career_switchers}
+              willingToTrainOnTheJob={employerPreferences.willing_to_train_on_the_job}
+              valuesSoftSkillsOverExperience={employerPreferences.values_soft_skills_over_experience}
+              onToggle={handleEmployerToggle}
+            />
+          )}
 
           {!preferences?.webby_enabled && (
             <div className="grid md:grid-cols-3 gap-4">

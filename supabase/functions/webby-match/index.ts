@@ -69,34 +69,80 @@ serve(async (req) => {
       throw new Error('ABACUS_AI_API_KEY not configured');
     }
 
-    const prompt = `You are Webby, an AI career matchmaker. Analyze these jobs and categorize them for the candidate.
+    // Get job specs to access tags
+    const { data: jobSpecs } = await supabaseClient
+      .from('webby_job_specs')
+      .select('job_id, sector_tags, function_tags, environment_tags')
+      .in('job_id', jobs?.map(j => j.id) || []);
+
+    // Filter jobs based on avoid lists BEFORE sending to AI
+    const sectorsToAvoid = webbyProfile?.sectors_to_avoid || [];
+    const functionsToAvoid = webbyProfile?.functions_to_avoid || [];
+    
+    const filteredJobs = jobs?.filter(job => {
+      const jobSpec = jobSpecs?.find(spec => spec.job_id === job.id);
+      if (!jobSpec) return true; // Include if no tags
+      
+      // Exclude if any sector or function tags overlap with avoid lists
+      const hasForbiddenSector = jobSpec.sector_tags?.some((tag: string) => 
+        sectorsToAvoid.includes(tag)
+      );
+      const hasForbiddenFunction = jobSpec.function_tags?.some((tag: string) => 
+        functionsToAvoid.includes(tag)
+      );
+      
+      return !hasForbiddenSector && !hasForbiddenFunction;
+    }) || [];
+
+    console.log(`Filtered ${jobs?.length || 0} jobs to ${filteredJobs.length} after avoid lists`);
+
+    const prompt = `You are Webby, an AI career matchmaker. Analyze these jobs and categorize them for the candidate using their NEXT CHAPTER goals.
+
+**CRITICAL MATCHING RULES:**
+1. Never match based on free-text keywords alone - use structured tags and Next Chapter data
+2. Prioritize jobs that align with moving_towards_sectors and moving_towards_functions
+3. Consider hobby_work_preferences - only match hobby-related jobs if candidate explicitly wants work in that area
+4. Always explain WHY you're showing each job
 
 Candidate Profile:
-- Job Title: ${candidateProfile.job_title}
+- Current Job Title: ${candidateProfile.job_title}
 - Experience: ${candidateProfile.years_experience} years
 - Skills: ${candidateProfile.required_skills?.join(', ') || 'Not specified'}
 - Location: ${candidateProfile.location?.join(', ') || 'Not specified'}
 - Salary Range: £${candidateProfile.min_salary} - £${candidateProfile.max_salary}
+${webbyProfile?.next_chapter_summary ? `\n**NEXT CHAPTER (What they want next):**\n"${webbyProfile.next_chapter_summary}"` : ''}
+${webbyProfile?.moving_towards_sectors?.length ? `- Moving towards sectors: ${webbyProfile.moving_towards_sectors.join(', ')}` : ''}
+${webbyProfile?.moving_towards_functions?.length ? `- Moving towards functions: ${webbyProfile.moving_towards_functions.join(', ')}` : ''}
+${webbyProfile?.next_chapter_environment?.length ? `- Next chapter environment: ${webbyProfile.next_chapter_environment.join(', ')}` : ''}
 ${webbyProfile?.hobbies_activities ? `- Hobbies: ${JSON.stringify(webbyProfile.hobbies_activities)}` : ''}
+${webbyProfile?.hobby_work_preferences ? `- Hobby work preferences: ${JSON.stringify(webbyProfile.hobby_work_preferences)}` : ''}
 ${webbyProfile?.soft_skills_self_assessed?.length ? `- Soft Skills: ${webbyProfile.soft_skills_self_assessed.join(', ')}` : ''}
 ${webbyProfile?.life_outside_work ? `- Life Outside Work: ${webbyProfile.life_outside_work}` : ''}
 
-Jobs to Analyze:
-${JSON.stringify(jobs?.slice(0, 20) || [], null, 2)}
+Jobs to Analyze (already filtered by avoid lists):
+${JSON.stringify(filteredJobs.slice(0, 20).map(job => {
+  const spec = jobSpecs?.find(s => s.job_id === job.id);
+  return {
+    ...job,
+    sector_tags: spec?.sector_tags || [],
+    function_tags: spec?.function_tags || [],
+    environment_tags: spec?.environment_tags || []
+  };
+}), null, 2)}
 
 Categorize each job into ONE of these categories:
-1. PRIMARY: Strong match based on job title, skills, and experience
-2. SERENDIPITOUS: Unexpected match based on hobbies, interests, or life outside work (e.g., loves swimming → swim teacher role)
-3. UNEXPECTED: Alternative career path based on transferable skills
+1. PRIMARY: Strong match based on NEXT CHAPTER goals (moving_towards_* fields) - explain how it's a step towards what they want
+2. SERENDIPITOUS: Unexpected match based on hobbies they want work in, or hidden interests
+3. UNEXPECTED: Alternative career path based on transferable skills from current role
 
 For each match, provide:
 - match_score (0-100)
-- match_reason (1-2 sentences explaining why this is a good fit)
+- match_reason: Start with "I'm showing you this because:" then explain using Next Chapter context (e.g., "you said you'd like to move into admin/office work", "it's within your travel radius", "the pay meets your minimum")
 - category (primary/serendipitous/unexpected)
 
 Return ONLY valid JSON in this format:
 {
-  "primary": [{"id": 1, "match_score": 85, "match_reason": "..."}],
+  "primary": [{"id": 1, "match_score": 85, "match_reason": "I'm showing you this because: you said you'd like to move into admin/office work, it's within your travel radius, and the pay meets your minimum."}],
   "serendipitous": [{"id": 2, "match_score": 72, "match_reason": "..."}],
   "unexpected": [{"id": 3, "match_score": 68, "match_reason": "..."}]
 }
