@@ -71,6 +71,30 @@ label,
   @apply text-gray-900 font-medium !important;
 }
 
+/* Allow dark/cosmic backgrounds to override with white text */
+.cosmic-form label,
+.cosmic-form .form-label,
+.cosmic-form [data-radix-label],
+.space-card label,
+.space-card .form-label,
+.space-card [data-radix-label] {
+  @apply text-white font-medium !important;
+}
+
+/* Same for checkbox labels on dark backgrounds */
+.cosmic-form [type="checkbox"] + label,
+.space-card [type="checkbox"] + label {
+  @apply text-white !important;
+}
+
+/* Helper text and descriptions on dark backgrounds */
+.cosmic-form .text-sm,
+.space-card .text-sm,
+.cosmic-form p,
+.space-card p {
+  @apply text-white/80 !important;
+}
+
 /* Select components */
 .select-trigger {
   @apply bg-white text-gray-900 border-gray-200 !important;
