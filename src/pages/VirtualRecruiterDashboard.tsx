@@ -17,6 +17,7 @@ import { ReferralsList } from "@/components/vr/ReferralsList";
 import { CandidateUpdates } from "@/components/vr/CandidateUpdates";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { CosmicBackground } from "@/components/ui/cosmic-background";
 
 const VirtualRecruiterDashboard = () => {
   const { loading, error, profile, stats } = useVRDashboard();
@@ -103,7 +104,7 @@ const VirtualRecruiterDashboard = () => {
   };
 
   return (
-    <>
+    <CosmicBackground mode="light">
       <NavBar />
       <div className="container mx-auto py-8 pt-16">
         <SessionTimeoutHandler />
@@ -112,9 +113,9 @@ const VirtualRecruiterDashboard = () => {
           {!profile.is_active && <InactiveAccountWarning />}
           
           {/* Welcome Header */}
-          <div className="text-center pb-6">
-            <h1 className="text-2xl font-bold text-foreground">Connector Dashboard</h1>
-            <p className="text-muted-foreground mt-2">Manage your referrals and recommendations</p>
+          <div className="text-center pb-6 pt-4">
+            <h1 className="text-4xl font-bold mb-3 bg-gradient-to-r from-primary via-primary/80 to-primary bg-clip-text text-transparent drop-shadow-sm">Connector Dashboard</h1>
+            <p className="text-foreground/70 text-lg">Grow your network and earn rewards</p>
           </div>
 
           {/* Stats Overview */}
@@ -271,7 +272,7 @@ const VirtualRecruiterDashboard = () => {
           </div>
         </div>
       </div>
-    </>
+    </CosmicBackground>
   );
 }
 

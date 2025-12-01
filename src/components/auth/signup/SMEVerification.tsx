@@ -20,7 +20,7 @@ export const SMEVerification = ({
           onCheckedChange={setIsSME}
           required
         />
-        <Label htmlFor="sme" className="text-sm leading-none cursor-pointer">
+        <Label htmlFor="sme" className="text-sm leading-none cursor-pointer text-white">
           This company is independently owned, not part of a larger corporate group or franchise, and has fewer than 250 employees in total.
         </Label>
       </div>

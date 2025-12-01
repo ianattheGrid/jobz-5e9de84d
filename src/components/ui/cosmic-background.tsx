@@ -17,7 +17,7 @@ export const CosmicBackground = ({
       "relative min-h-screen overflow-hidden",
       mode === "full" 
         ? "bg-gradient-to-br from-[#1a0a15] via-[#2d1028] to-[#150a1a]"
-        : "bg-gradient-to-br from-rose-50/50 via-background to-primary/10 dark:from-slate-950 dark:via-background dark:to-primary/20",
+        : "bg-gradient-to-b from-rose-100/40 via-pink-50/30 to-primary/10",
       className
     )}>
       {/* Animated stars */}
@@ -63,14 +63,9 @@ export const CosmicBackground = ({
           </>
         ) : (
           <>
-            <div 
-              className="absolute rounded-full blur-3xl transition-opacity duration-1000 bg-primary/20 w-96 h-96 -top-32 -right-32 animate-pulse"
-              style={{ animationDuration: '4s' }}
-            />
-            <div 
-              className="absolute rounded-full blur-3xl transition-opacity duration-1000 bg-accent/20 w-96 h-96 -bottom-32 -left-32 animate-pulse"
-              style={{ animationDuration: '5s', animationDelay: '1s' }}
-            />
+            <div className="absolute top-20 left-10 w-96 h-96 bg-primary/20 rounded-full blur-[120px] animate-pulse" />
+            <div className="absolute bottom-20 right-10 w-96 h-96 bg-primary/25 rounded-full blur-[120px] animate-pulse" style={{ animationDelay: '1s' }} />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/15 rounded-full blur-[150px]" />
           </>
         )}
       </div>
