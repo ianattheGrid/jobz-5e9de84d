@@ -1,4 +1,4 @@
-import { MapPin, DollarSign, Briefcase, Sparkles, Eye, Clock, CheckCircle2 } from 'lucide-react';
+import { MapPin, DollarSign, Briefcase, Sparkles, Eye, Clock, CheckCircle2, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { useWebbyInterestStatus, getStatusLabels } from '@/hooks/useWebbyInterestStatus';
 import { supabase } from '@/integrations/supabase/client';
 import { WebbyCandidateResponseSheet } from './WebbyCandidateResponseSheet';
+import { WebbyJobDeclineSheet } from './WebbyJobDeclineSheet';
 
 interface WebbyJobCardProps {
   job: {
@@ -27,6 +28,7 @@ interface WebbyJobCardProps {
 
 export const WebbyJobCard = ({ job, matchCategory, onInterested, onViewOverview }: WebbyJobCardProps) => {
   const [showResponseSheet, setShowResponseSheet] = useState(false);
+  const [showDeclineSheet, setShowDeclineSheet] = useState(false);
   const [userId, setUserId] = useState<string>('');
 
   // Get user ID
@@ -167,6 +169,14 @@ export const WebbyJobCard = ({ job, matchCategory, onInterested, onViewOverview 
 
           {/* Action Buttons */}
           <div className="flex gap-2">
+            <Button 
+              onClick={() => setShowDeclineSheet(true)}
+              variant="ghost"
+              className="flex-shrink-0"
+              size="sm"
+            >
+              <X className="h-3 w-3" />
+            </Button>
             {onViewOverview && (
               <Button 
                 onClick={handleViewOverview}
@@ -175,7 +185,7 @@ export const WebbyJobCard = ({ job, matchCategory, onInterested, onViewOverview 
                 size="sm"
               >
                 <Eye className="h-3 w-3 mr-1" />
-                View Details
+                View
               </Button>
             )}
             <Button 
@@ -204,6 +214,18 @@ export const WebbyJobCard = ({ job, matchCategory, onInterested, onViewOverview 
         payRange={`£${job.salary_min.toLocaleString()}-£${job.salary_max.toLocaleString()}`}
         onResponse={() => {
           // Refresh will happen via real-time subscription
+        }}
+      />
+
+      {/* Decline Sheet */}
+      <WebbyJobDeclineSheet
+        open={showDeclineSheet}
+        onOpenChange={setShowDeclineSheet}
+        jobId={job.id}
+        jobTitle={job.title}
+        onDeclineComplete={() => {
+          // Refresh matches to remove this job
+          window.location.reload();
         }}
       />
     </>

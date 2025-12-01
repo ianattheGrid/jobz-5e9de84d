@@ -59,6 +59,15 @@ serve(async (req) => {
 
     console.log('Job spec found:', jobSpec);
 
+    // Get employer's career-switcher preferences
+    const { data: employerProfile } = await supabase
+      .from('employer_profiles')
+      .select('open_to_career_switchers, willing_to_train_on_the_job, values_soft_skills_over_experience')
+      .eq('id', user.id)
+      .single();
+
+    console.log('Employer preferences:', employerProfile);
+
     // Fetch all candidate profiles with webby profiles
     const { data: candidates, error: candidatesError } = await supabase
       .from('candidate_profiles')
@@ -75,7 +84,12 @@ serve(async (req) => {
           soft_skills_self_assessed,
           environment_preferences,
           life_outside_work,
-          hobbies_activities
+          hobbies_activities,
+          next_chapter_summary,
+          moving_towards_sectors,
+          moving_towards_functions,
+          next_chapter_environment,
+          transferable_skills_ai
         )
       `);
 
@@ -103,18 +117,36 @@ serve(async (req) => {
       throw new Error('ABACUS_AI_API_KEY not configured');
     }
 
+    const openToCareerSwitchers = employerProfile?.open_to_career_switchers || false;
+    const willingToTrain = employerProfile?.willing_to_train_on_the_job || false;
+    const valuesСoftSkills = employerProfile?.values_soft_skills_over_experience || false;
+
     const systemPrompt = `You are a recruitment AI specializing in matching candidates to job opportunities based on both technical skills AND soft skills/life experiences.
+
+${openToCareerSwitchers ? `\n**IMPORTANT**: This employer is OPEN TO CAREER-SWITCHERS. You should:
+- Prioritize candidates whose "Next Chapter" goals align with this role, even if their past experience is in another sector
+- Highlight transferable strengths from their current/past roles
+- Explain how career-switchers bring valuable perspective\n` : ''}
+
+${willingToTrain ? `**IMPORTANT**: This employer is willing to TRAIN ON THE JOB. Consider candidates with:
+- Strong learning ability and soft skills
+- Relevant transferable skills even if lacking specific technical expertise
+- Adjacent industry experience that can be adapted\n` : ''}
 
 Your task is to categorize candidates into three types:
 
 1. PRIMARY: Candidates who match the core technical skills and job title requirements
 2. HIDDEN_GEMS: Candidates whose hobbies, activities, or life experiences suggest valuable transferable skills (e.g., sports coaching → leadership, teaching → communication, volunteering → empathy)
+   ${openToCareerSwitchers ? '**OR** candidates whose Next Chapter aligns with this role even if their past job titles are in different sectors' : ''}
 3. TRAINABLE: Candidates who may lack some technical skills but have the right personality traits, soft skills, and learning potential
+   ${willingToTrain ? '(Employer is willing to train, so be generous here)' : ''}
 
 For each candidate, return:
 - category: "PRIMARY" | "HIDDEN_GEMS" | "TRAINABLE"
 - match_score: 0-100 (how well they fit)
-- match_reason: A brief, human explanation of why they match (mention specific hobbies/activities if relevant)
+- match_reason: A brief, human explanation of why they match
+  ${openToCareerSwitchers ? '- For career-switchers, say: "This candidate\'s past roles are in [sector], but their Next Chapter is to move into [new sector]. They\'ve shown strengths in [transferable skills]. You indicated you\'re open to career-switchers, so I\'ve prioritised them."' : ''}
+  - Mention specific hobbies/activities/Next Chapter goals if relevant
 
 Return ONLY valid JSON in this exact format:
 {
@@ -143,17 +175,21 @@ ${candidates.map(c => {
   
   return `
 Candidate ID: ${c.id}
-- Job Title: ${c.job_title}
+- Current Job Title: ${c.job_title}
 - Skills: ${c.required_skills?.join(', ') || 'None listed'}
 - Years Experience: ${c.years_experience || 0}
+${webbyProfile?.next_chapter_summary ? `\n**NEXT CHAPTER:**\n"${webbyProfile.next_chapter_summary}"` : ''}
+${webbyProfile?.moving_towards_sectors?.length ? `- Moving towards sectors: ${webbyProfile.moving_towards_sectors.join(', ')}` : ''}
+${webbyProfile?.moving_towards_functions?.length ? `- Moving towards functions: ${webbyProfile.moving_towards_functions.join(', ')}` : ''}
 - Hobbies/Activities: ${webbyProfile?.hobbies_activities ? JSON.stringify(webbyProfile.hobbies_activities) : 'None listed'}
 - Soft Skills: ${webbyProfile?.soft_skills_self_assessed?.join(', ') || 'None listed'}
 - Environment Preferences: ${webbyProfile?.environment_preferences?.join(', ') || 'None listed'}
 - Life Outside Work: ${webbyProfile?.life_outside_work || 'Not specified'}
+${webbyProfile?.transferable_skills_ai ? `- Transferable Skills (AI-identified): ${JSON.stringify(webbyProfile.transferable_skills_ai)}` : ''}
 `;
 }).join('\n---\n')}
 
-Categorize and score each candidate. Focus on finding hidden gems - candidates whose life experiences make them valuable even if their resume doesn't perfectly match.`;
+Categorize and score each candidate. ${openToCareerSwitchers ? 'PRIORITISE candidates whose Next Chapter aligns with this role, even if their past experience is different.' : 'Focus on finding hidden gems - candidates whose life experiences make them valuable even if their resume doesn\'t perfectly match.'}`;
 
     console.log('Calling AI for candidate matching...');
 
