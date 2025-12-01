@@ -1,16 +1,15 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { UserPlus } from "lucide-react";
+import { UserPlus, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useSignIn } from "@/hooks/useSignIn";
 import NavBar from "@/components/NavBar";
-import { PRIMARY_COLOR_PATTERN } from "@/styles/colorPatterns";
+import { CosmicBackground } from "@/components/ui/cosmic-background";
+import { GlowCard, GlowCardContent, GlowCardDescription, GlowCardHeader, GlowCardTitle } from "@/components/ui/glow-card";
+import { AnimatedInput } from "@/components/ui/animated-input";
 
 const CandidateSignIn = () => {
   const [email, setEmail] = useState("");
@@ -49,78 +48,87 @@ const CandidateSignIn = () => {
   };
 
   return (
-    <>
+    <CosmicBackground mode="light">
       <NavBar />
-      <div className="container mx-auto flex min-h-screen items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader className="space-y-1">
-            <div className="flex items-center justify-center gap-2">
-              <UserPlus className="h-8 w-8 text-[#FF69B4]" />
-              <CardTitle className={`text-2xl ${PRIMARY_COLOR_PATTERN}`}>Candidate Sign In</CardTitle>
+      <div className="container mx-auto flex min-h-screen items-center justify-center px-4 py-8">
+        <GlowCard className="w-full max-w-md animate-fade-in">
+          <GlowCardHeader className="space-y-3 text-center">
+            <div className="flex items-center justify-center gap-3">
+              <div className="relative">
+                <UserPlus className="h-8 w-8 text-primary" />
+                <Sparkles className="h-4 w-4 text-primary absolute -top-1 -right-1 animate-pulse" />
+              </div>
             </div>
-            <CardDescription>
-              {resetMode ? "Reset your password" : "Sign in to access your profile"}
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
+            <GlowCardTitle className="text-2xl">
+              {resetMode ? "Reset Your Password" : "Welcome Back, Explorer"}
+            </GlowCardTitle>
+            <GlowCardDescription>
+              {resetMode 
+                ? "Enter your email and we'll send you a reset link" 
+                : "Your next chapter is waiting. Let's get you back on track."}
+            </GlowCardDescription>
+          </GlowCardHeader>
+          <GlowCardContent className="space-y-6">
             <form onSubmit={resetMode ? handleResetPassword : onSubmit} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <Input 
-                  id="email" 
-                  type="email" 
+                <AnimatedInput
+                  id="email"
+                  type="email"
+                  label="Email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email" 
                   required
                 />
               </div>
               {!resetMode && (
                 <div className="space-y-2">
-                  <Label htmlFor="password">Password</Label>
-                  <Input 
-                    id="password" 
-                    type="password" 
+                  <AnimatedInput
+                    id="password"
+                    type="password"
+                    label="Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Enter your password" 
                     required
                   />
                 </div>
               )}
-              <Button className="w-full bg-[#FF69B4] hover:bg-[#FF50A8] text-white" type="submit" disabled={loading}>
+              <Button 
+                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300" 
+                type="submit" 
+                disabled={loading}
+              >
                 {loading ? (resetMode ? "Sending..." : "Signing in...") : (resetMode ? "Send Reset Link" : "Sign In")}
               </Button>
             </form>
             <div className="space-y-4 text-center">
               <div>
                 {resetMode ? (
-                  <a 
+                  <button 
                     onClick={() => setResetMode(false)} 
-                    className="text-[#FF69B4] hover:underline cursor-pointer text-sm"
+                    className="text-primary hover:underline cursor-pointer text-sm transition-colors"
                   >
                     Back to Sign In
-                  </a>
+                  </button>
                 ) : (
-                  <a 
+                  <button 
                     onClick={() => setResetMode(true)} 
-                    className="text-[#FF69B4] hover:underline cursor-pointer text-sm"
+                    className="text-primary hover:underline cursor-pointer text-sm transition-colors"
                   >
                     Forgot Password?
-                  </a>
+                  </button>
                 )}
               </div>
               <div className="text-sm text-muted-foreground">
                 Don't have an account?{" "}
-                <Link to="/candidate/signup" className="text-[#FF69B4] hover:underline">
+                <Link to="/candidate/signup" className="text-primary hover:underline transition-colors">
                   Sign Up
                 </Link>
               </div>
             </div>
-          </CardContent>
-        </Card>
+          </GlowCardContent>
+        </GlowCard>
       </div>
-    </>
+    </CosmicBackground>
   );
 };
 
