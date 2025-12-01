@@ -1,89 +1,82 @@
 import { useNavigate } from "react-router-dom";
 import NavBar from "@/components/NavBar";
-import { Briefcase, User, Users, Sparkles } from "lucide-react";
 import { CosmicBackground } from "@/components/ui/cosmic-background";
-import { GlowCard } from "@/components/ui/glow-card";
+import { SpaceCard } from "@/components/ui/space-card";
+import { Building2, UserPlus, Link, Sparkles } from "lucide-react";
 
 const SignUp = () => {
   const navigate = useNavigate();
 
-  const roles = [
-    {
-      title: "Employer",
-      description: "Post jobs and find qualified candidates",
-      icon: Briefcase,
-      path: "/employer/signup",
-      color: "from-primary/20 to-primary/5"
-    },
-    {
-      title: "Candidate",
-      description: "Find your next career opportunity",
-      icon: User,
-      path: "/candidate/signup",
-      color: "from-primary/20 to-primary/5"
-    },
-    {
-      title: "Connector",
-      description: "Connect candidates with employers and earn",
-      icon: Users,
-      path: "/vr/signup",
-      color: "from-primary/20 to-primary/5"
-    }
-  ];
-
   return (
-    <CosmicBackground mode="light">
+    <CosmicBackground mode="full">
       <NavBar />
       <div className="container mx-auto px-4 py-16 pt-24">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-12 animate-fade-in space-y-4">
-            <div className="flex items-center justify-center gap-2 mb-2">
-              <Sparkles className="w-8 h-8 text-primary animate-pulse" />
-            </div>
-            <h1 className="text-5xl font-bold mb-4">
-              Join <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Jobz</span>
+        <div className="max-w-6xl mx-auto space-y-12 animate-fade-in">
+          <div className="text-center space-y-4">
+            <h1 className="text-4xl md:text-5xl font-bold text-white drop-shadow-[0_0_10px_rgba(236,72,153,0.5)]">
+              Welcome to Your Next Great Opportunity
             </h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Choose your path and start your journey in the new generation of hiring
+            <p className="text-lg text-white/80 max-w-2xl mx-auto drop-shadow-lg">
+              Join thousands of professionals finding their perfect match. Choose your path below.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8 mb-12">
-            {roles.map((role, index) => {
-              const Icon = role.icon;
-              return (
-                <GlowCard
-                  key={role.title}
-                  className="group cursor-pointer p-8 animate-fade-in"
-                  style={{ animationDelay: `${index * 100}ms` }}
-                  onClick={() => navigate(role.path)}
-                >
-                  <div className="relative mb-6">
-                    <div className="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                      <Icon className="w-10 h-10 text-primary" />
-                    </div>
-                    <Sparkles className="w-4 h-4 text-primary absolute top-0 right-1/3 opacity-0 group-hover:opacity-100 transition-opacity animate-pulse" />
-                  </div>
-                  <h2 className="text-2xl font-bold mb-3 text-center bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text group-hover:from-primary group-hover:to-accent transition-all duration-300">
-                    {role.title}
-                  </h2>
-                  <p className="text-muted-foreground text-center leading-relaxed">
-                    {role.description}
-                  </p>
-                </GlowCard>
-              );
-            })}
+          <div className="grid md:grid-cols-3 gap-6">
+            <SpaceCard className="cursor-pointer transition-transform hover:scale-105">
+              <div 
+                className="text-center space-y-4"
+                onClick={() => navigate("/employer/signup")}
+              >
+                <div className="flex justify-center relative">
+                  <Building2 className="h-16 w-16 text-primary drop-shadow-[0_0_20px_rgba(236,72,153,0.8)]" />
+                  <Sparkles className="h-6 w-6 text-primary absolute -top-2 -right-2 animate-pulse" />
+                </div>
+                <h2 className="text-2xl font-bold text-white">For Employers</h2>
+                <p className="text-white/70">
+                  Find exceptional talent that fits your company culture and requirements.
+                </p>
+              </div>
+            </SpaceCard>
+
+            <SpaceCard className="cursor-pointer transition-transform hover:scale-105">
+              <div 
+                className="text-center space-y-4"
+                onClick={() => navigate("/candidate/signup")}
+              >
+                <div className="flex justify-center relative">
+                  <UserPlus className="h-16 w-16 text-primary drop-shadow-[0_0_20px_rgba(236,72,153,0.8)]" />
+                  <Sparkles className="h-6 w-6 text-primary absolute -top-2 -right-2 animate-pulse" />
+                </div>
+                <h2 className="text-2xl font-bold text-white">For Candidates</h2>
+                <p className="text-white/70">
+                  Discover opportunities that match your skills, values, and career goals.
+                </p>
+              </div>
+            </SpaceCard>
+
+            <SpaceCard className="cursor-pointer transition-transform hover:scale-105">
+              <div 
+                className="text-center space-y-4"
+                onClick={() => navigate("/vr/signup")}
+              >
+                <div className="flex justify-center relative">
+                  <Link className="h-16 w-16 text-primary drop-shadow-[0_0_20px_rgba(236,72,153,0.8)]" />
+                  <Sparkles className="h-6 w-6 text-primary absolute -top-2 -right-2 animate-pulse" />
+                </div>
+                <h2 className="text-2xl font-bold text-white">Become a Connector</h2>
+                <p className="text-white/70">
+                  Help match great talent with amazing opportunities and earn rewards.
+                </p>
+              </div>
+            </SpaceCard>
           </div>
 
-          <div className="text-center animate-fade-in" style={{ animationDelay: '300ms' }}>
-            <p className="text-muted-foreground">
+          <div className="text-center">
+            <p className="text-white/70">
               Already have an account?{" "}
-              <button
-                onClick={() => navigate("/")}
-                className="text-primary hover:text-accent transition-colors font-medium hover:underline"
-              >
-                Sign In
-              </button>
+              <a href="/" className="text-primary hover:text-primary/80 font-medium drop-shadow-[0_0_10px_rgba(236,72,153,0.5)]">
+                Sign in
+              </a>
             </p>
           </div>
         </div>

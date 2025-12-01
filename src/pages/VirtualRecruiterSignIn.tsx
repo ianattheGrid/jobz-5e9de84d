@@ -8,7 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useSignIn } from "@/hooks/useSignIn";
 import NavBar from "@/components/NavBar";
 import { CosmicBackground } from "@/components/ui/cosmic-background";
-import { GlowCard, GlowCardContent, GlowCardDescription, GlowCardHeader, GlowCardTitle } from "@/components/ui/glow-card";
+import { SpaceCard } from "@/components/ui/space-card";
 import { AnimatedInput } from "@/components/ui/animated-input";
 
 const VirtualRecruiterSignIn = () => {
@@ -48,27 +48,27 @@ const VirtualRecruiterSignIn = () => {
   };
 
   return (
-    <CosmicBackground mode="light">
+    <CosmicBackground mode="full">
       <NavBar />
       <div className="container mx-auto flex min-h-screen items-center justify-center px-4 py-8">
-        <GlowCard className="w-full max-w-md animate-fade-in">
-          <GlowCardHeader className="space-y-3 text-center">
+        <SpaceCard className="w-full max-w-md animate-fade-in">
+          <div className="space-y-3 text-center mb-6">
             <div className="flex items-center justify-center gap-3">
               <div className="relative">
-                <LinkIcon className="h-8 w-8 text-primary" />
+                <LinkIcon className="h-8 w-8 text-primary drop-shadow-[0_0_20px_rgba(236,72,153,0.8)]" />
                 <Sparkles className="h-4 w-4 text-primary absolute -top-1 -right-1 animate-pulse" />
               </div>
             </div>
-            <GlowCardTitle className="text-2xl">
+            <h1 className="text-2xl font-bold text-white drop-shadow-[0_0_10px_rgba(236,72,153,0.5)]">
               {resetMode ? "Reset Your Password" : "Welcome Back, Connector"}
-            </GlowCardTitle>
-            <GlowCardDescription>
+            </h1>
+            <p className="text-sm text-white/70">
               {resetMode 
                 ? "Enter your email and we'll send you a reset link" 
                 : "Ready to make more connections? Let's get you signed in."}
-            </GlowCardDescription>
-          </GlowCardHeader>
-          <GlowCardContent className="space-y-6">
+            </p>
+          </div>
+          <div className="space-y-6">
             <form onSubmit={resetMode ? handleResetPassword : onSubmit} className="space-y-4">
               <div className="space-y-2">
                 <AnimatedInput
@@ -105,28 +105,28 @@ const VirtualRecruiterSignIn = () => {
                 {resetMode ? (
                   <button 
                     onClick={() => setResetMode(false)} 
-                    className="text-primary hover:underline cursor-pointer text-sm transition-colors"
+                    className="text-primary hover:text-primary/80 cursor-pointer text-sm transition-colors drop-shadow-[0_0_10px_rgba(236,72,153,0.5)]"
                   >
                     Back to Sign In
                   </button>
                 ) : (
                   <button 
                     onClick={() => setResetMode(true)} 
-                    className="text-primary hover:underline cursor-pointer text-sm transition-colors"
+                    className="text-primary hover:text-primary/80 cursor-pointer text-sm transition-colors drop-shadow-[0_0_10px_rgba(236,72,153,0.5)]"
                   >
                     Forgot Password?
                   </button>
                 )}
               </div>
-              <div className="text-sm text-muted-foreground">
+              <div className="text-sm text-white/70">
                 Don't have an account?{" "}
-                <Link to="/vr/signup" className="text-primary hover:underline transition-colors">
+                <Link to="/vr/signup" className="text-primary hover:text-primary/80 transition-colors drop-shadow-[0_0_10px_rgba(236,72,153,0.5)]">
                   Sign Up
                 </Link>
               </div>
             </div>
-          </GlowCardContent>
-        </GlowCard>
+          </div>
+        </SpaceCard>
       </div>
     </CosmicBackground>
   );
