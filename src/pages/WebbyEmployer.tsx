@@ -18,6 +18,7 @@ import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { CosmicBackground } from '@/components/ui/cosmic-background';
 
 export default function WebbyEmployer() {
   const { preferences, loading, toggleWebby } = useWebbyPreferences('employer');
@@ -166,30 +167,30 @@ export default function WebbyEmployer() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background">
+      <CosmicBackground mode="full">
         <NavBar />
         <div className="flex items-center justify-center h-[calc(100vh-4rem)]">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
         </div>
-      </div>
+      </CosmicBackground>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <CosmicBackground mode="full">
       <NavBar />
       <div className="container mx-auto px-4 py-8 pt-24 max-w-6xl">
         <div className="mb-8">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-3">
-              <Sparkles className="w-8 h-8 text-primary" />
-              <h1 className="text-3xl font-bold">Webby AI Co-pilot</h1>
+              <Sparkles className="w-8 h-8 text-primary animate-pulse" style={{ animationDuration: '3s' }} />
+              <h1 className="text-3xl font-bold text-white">Webby AI Co-pilot</h1>
             </div>
             {preferences?.webby_enabled && (
               <WebbyLiveIndicator onlineCount={onlineCount} userType="employer" />
             )}
           </div>
-          <p className="text-muted-foreground">
+          <p className="text-white/80 text-lg">
             Let AI help you create jobs and find the right candidates, faster
           </p>
         </div>
@@ -248,31 +249,31 @@ export default function WebbyEmployer() {
 
           {!preferences?.webby_enabled && (
             <div className="grid md:grid-cols-3 gap-4">
-              <Card>
+              <Card className="bg-black/40 backdrop-blur-xl border-primary/30 hover:border-primary/50 transition-colors">
                 <CardHeader>
                   <Users className="w-8 h-8 text-primary mb-2" />
-                  <CardTitle className="text-lg">Find Local Talent</CardTitle>
-                  <CardDescription>
+                  <CardTitle className="text-lg text-white">Find Local Talent</CardTitle>
+                  <CardDescription className="text-white/70">
                     Get matched with candidates in your area who fit your needs
                   </CardDescription>
                 </CardHeader>
               </Card>
 
-              <Card>
+              <Card className="bg-black/40 backdrop-blur-xl border-primary/30 hover:border-primary/50 transition-colors">
                 <CardHeader>
                   <Target className="w-8 h-8 text-primary mb-2" />
-                  <CardTitle className="text-lg">Smart Matching</CardTitle>
-                  <CardDescription>
+                  <CardTitle className="text-lg text-white">Smart Matching</CardTitle>
+                  <CardDescription className="text-white/70">
                     See why each candidate matches your role with AI explanations
                   </CardDescription>
                 </CardHeader>
               </Card>
 
-              <Card>
+              <Card className="bg-black/40 backdrop-blur-xl border-primary/30 hover:border-primary/50 transition-colors">
                 <CardHeader>
                   <Zap className="w-8 h-8 text-primary mb-2" />
-                  <CardTitle className="text-lg">Quick Outreach</CardTitle>
-                  <CardDescription>
+                  <CardTitle className="text-lg text-white">Quick Outreach</CardTitle>
+                  <CardDescription className="text-white/70">
                     AI-drafted messages help you connect with candidates faster
                   </CardDescription>
                 </CardHeader>
@@ -282,15 +283,15 @@ export default function WebbyEmployer() {
 
           {preferences?.webby_enabled && (
             <div className="h-[calc(100vh-16rem)]">
-              <ResizablePanelGroup direction="horizontal" className="rounded-lg border">
+              <ResizablePanelGroup direction="horizontal" className="rounded-lg border border-primary/30 shadow-lg shadow-primary/20 overflow-hidden">
                 <ResizablePanel defaultSize={60} minSize={40}>
-                  <div className="h-full flex flex-col bg-card">
-                    <div className="border-b p-4">
+                  <div className="h-full flex flex-col bg-black/40 backdrop-blur-xl">
+                    <div className="border-b border-primary/30 p-4">
                       <div className="flex items-center gap-2">
-                        <Sparkles className="h-5 w-5 text-primary" />
-                        <h2 className="font-semibold">Chat with Webby</h2>
+                        <Sparkles className="h-5 w-5 text-primary animate-pulse" />
+                        <h2 className="font-semibold text-white">Chat with Webby</h2>
                       </div>
-                      <p className="text-xs text-muted-foreground mt-1">
+                      <p className="text-xs text-white/70 mt-1">
                         {!preferences?.onboarding_completed 
                           ? "Describe your ideal candidate and watch matches appear"
                           : "Refine your search or create new job specs"
@@ -307,16 +308,16 @@ export default function WebbyEmployer() {
                   </div>
                 </ResizablePanel>
                 
-                <ResizableHandle withHandle />
+                <ResizableHandle withHandle className="bg-primary/20" />
                 
                 <ResizablePanel defaultSize={40} minSize={30}>
-                  <div className="h-full flex flex-col bg-muted/30">
-                    <div className="border-b bg-card p-4">
+                  <div className="h-full flex flex-col bg-black/30 backdrop-blur-xl">
+                    <div className="border-b border-primary/30 p-4">
                       <div className="flex items-center gap-2">
                         <Users className="h-5 w-5 text-primary" />
-                        <h2 className="font-semibold">Candidate Matches</h2>
+                        <h2 className="font-semibold text-white">Candidate Matches</h2>
                       </div>
-                      <p className="text-xs text-muted-foreground mt-1">
+                      <p className="text-xs text-white/70 mt-1">
                         Live matches based on your conversation
                       </p>
                     </div>
@@ -336,6 +337,6 @@ export default function WebbyEmployer() {
           )}
         </div>
       </div>
-    </div>
+    </CosmicBackground>
   );
 }

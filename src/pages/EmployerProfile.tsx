@@ -14,20 +14,24 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { LayoutDashboard } from "lucide-react";
 import { PreviewButton } from "@/components/employer/PreviewButton";
+import { CosmicBackground } from "@/components/ui/cosmic-background";
 
 export default function EmployerProfile() {
   const { loading, profile, setProfile, email } = useEmployerProfile();
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
-        <Loader2 className="h-8 w-8 animate-spin" />
-      </div>
+      <CosmicBackground mode="light">
+        <div className="flex justify-center items-center min-h-screen">
+          <Loader2 className="h-8 w-8 animate-spin" />
+        </div>
+      </CosmicBackground>
     );
   }
 
   return (
-    <div className="container mx-auto py-10 px-4">
+    <CosmicBackground mode="light">
+      <div className="container mx-auto py-10 px-4">
       <div className="flex justify-end mb-4 gap-2">
         <PreviewButton />
         <Link to="/employer/dashboard">
@@ -62,6 +66,7 @@ export default function EmployerProfile() {
           </div>
         </CardContent>
       </Card>
-    </div>
+      </div>
+    </CosmicBackground>
   );
 }

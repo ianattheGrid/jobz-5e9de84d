@@ -17,6 +17,7 @@ import { CandidateGallerySection } from "@/components/candidate/gallery/Candidat
 import { SectionVisibilityToggles } from "@/components/candidate/SectionVisibilityToggles";
 import { PersonalitySection } from "@/components/candidate/PersonalitySection";
 import { PortfolioSection } from "@/components/candidate/portfolio/PortfolioSection";
+import { CosmicBackground } from "@/components/ui/cosmic-background";
 
 export default function CandidateProfile() {
   const { toast } = useToast();
@@ -97,9 +98,11 @@ export default function CandidateProfile() {
   };
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen bg-white">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-      </div>
+      <CosmicBackground mode="light">
+        <div className="flex justify-center items-center min-h-screen">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        </div>
+      </CosmicBackground>
     );
   }
 
@@ -130,7 +133,7 @@ export default function CandidateProfile() {
   }
 
   return (
-    <div className="min-h-screen bg-white overflow-auto">
+    <CosmicBackground mode="light">
       <div className="container mx-auto px-4 py-10 pb-20">
         <div className="flex justify-between items-center mb-6">
           <div>
@@ -214,6 +217,6 @@ export default function CandidateProfile() {
           </div>
         )}
       </div>
-    </div>
+    </CosmicBackground>
   );
 }

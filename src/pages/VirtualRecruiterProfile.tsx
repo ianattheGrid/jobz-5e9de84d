@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { ProfileCard } from "@/components/shared/ProfileCard";
 import { ProtectedRouteWithTimeout } from "@/components/auth/ProtectedRouteWithTimeout";
 import { PreviewButton } from "@/components/vr/PreviewButton";
+import { CosmicBackground } from "@/components/ui/cosmic-background";
 
 const formSchema = z.object({
   full_name: z.string().min(2, { message: "Full name must be at least 2 characters" }),
@@ -52,15 +53,18 @@ export default function VirtualRecruiterProfile() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
+      <CosmicBackground mode="light">
+        <div className="flex justify-center items-center min-h-screen">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </div>
+      </CosmicBackground>
     );
   }
 
   return (
     <ProtectedRouteWithTimeout userType="vr">
-      <div className="container mx-auto py-10 px-4">
+      <CosmicBackground mode="light">
+        <div className="container mx-auto py-10 px-4">
         <div className="mb-6 flex justify-between items-center">
           <Button
             className="flex items-center gap-2 bg-[#FF69B4] hover:bg-[#FF50A8] text-white"
@@ -160,7 +164,8 @@ export default function VirtualRecruiterProfile() {
             </div>
           )}
         </div>
-      </div>
+        </div>
+      </CosmicBackground>
     </ProtectedRouteWithTimeout>
   );
 }
