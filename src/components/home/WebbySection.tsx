@@ -1,6 +1,8 @@
-import { Shield, Target, Zap, Sparkles } from "lucide-react";
+import { Target, Users, MessageCircle, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { WebbyDemoDialog } from "./WebbyDemoDialog";
 
 interface WebbyFeatureCardProps {
   icon: React.ElementType;
@@ -24,6 +26,7 @@ const WebbyFeatureCard = ({ icon: Icon, title, description }: WebbyFeatureCardPr
 
 export const WebbySection = () => {
   const navigate = useNavigate();
+  const [isDemoOpen, setIsDemoOpen] = useState(false);
 
   return (
     <section className="relative min-h-[600px] overflow-hidden bg-gradient-to-br from-[#1a0a15] via-[#2d1028] to-[#150a1a]">
@@ -98,29 +101,29 @@ export const WebbySection = () => {
         {/* Headlines */}
         <div className="animate-fade-in" style={{ animationDelay: '0.2s' }}>
           <h2 className="text-4xl md:text-6xl font-bold text-center text-white mb-4">
-            Meet <span className="text-primary drop-shadow-[0_0_20px_rgba(236,72,153,0.6)]">Webby</span>. Your AI Navigator.
+            Meet <span className="text-primary drop-shadow-[0_0_20px_rgba(236,72,153,0.6)]">Webby</span>. Where potential meets opportunity.
           </h2>
           <p className="text-xl md:text-2xl text-center text-white/80 max-w-3xl mx-auto mb-16 leading-relaxed">
-            Let AI chart your course through the job search universe—without exposing your coordinates.
+            Job boards match your past. Webby matches your potential. For candidates ready to grow, and employers ready to develop talent—not just find it.
           </p>
         </div>
         
         {/* Three pillars - floating cards */}
         <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto mb-12">
           <WebbyFeatureCard 
-            icon={Shield}
-            title="Stealth Mode"
-            description="Explore opportunities anonymously. Your identity stays cloaked until you're ready to reveal."
-          />
-          <WebbyFeatureCard 
             icon={Target}
-            title="Smart Matching"
-            description="Webby learns what you need in plain English and finds roles that actually fit your life."
+            title="Where You're Going"
+            description="Tell Webby what excites you next—not just what you've done. Your future matters more than your history."
           />
           <WebbyFeatureCard 
-            icon={Zap}
-            title="One-Tap Interest"
-            description="Express interest with AI-drafted messages. No more cover letter fatigue."
+            icon={Users}
+            title="Skills, Not Clones"
+            description="Employers: find the missing piece, not another copy. Someone different who you can develop into your next star."
+          />
+          <WebbyFeatureCard 
+            icon={MessageCircle}
+            title="Real Conversations"
+            description="No cover letters. No keyword games. Just honest conversations between people ready to grow together."
           />
         </div>
         
@@ -137,15 +140,14 @@ export const WebbySection = () => {
             size="lg" 
             variant="ghost" 
             className="text-white border border-white/30 hover:bg-white/10 hover:border-white/50 hover:text-white text-lg px-8 transition-all"
-            onClick={() => {
-              const howItWorks = document.getElementById('how-it-works');
-              howItWorks?.scrollIntoView({ behavior: 'smooth' });
-            }}
+            onClick={() => setIsDemoOpen(true)}
           >
             See How It Works
           </Button>
         </div>
       </div>
+      
+      <WebbyDemoDialog open={isDemoOpen} onOpenChange={setIsDemoOpen} />
     </section>
   );
 };
