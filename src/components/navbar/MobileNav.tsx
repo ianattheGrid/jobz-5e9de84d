@@ -1,6 +1,6 @@
 
 import { Link } from "react-router-dom";
-import { Menu, LogOut } from "lucide-react";
+import { Menu, LogOut, Mail, Heart, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import {
   Sheet,
@@ -10,6 +10,7 @@ import {
   SheetTrigger,
   SheetClose,
 } from "@/components/ui/sheet";
+import { DeleteAccountDialog } from "../shared/DeleteAccountDialog";
 
 interface MobileNavProps {
   isAuthenticated: boolean;
@@ -92,6 +93,27 @@ const MobileNav = ({ isAuthenticated, userType }: MobileNavProps) => {
                   Recommendations
                 </Link>
               )}
+              <div className="h-px bg-border my-2" />
+              <Link to="/contact" className="text-lg text-muted-foreground hover:text-primary transition-colors flex items-center gap-2">
+                <Mail className="h-5 w-5" />
+                Contact Us
+              </Link>
+              <a 
+                href="https://dgrid.co/contribute" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-lg text-muted-foreground hover:text-primary transition-colors flex items-center gap-2"
+              >
+                <Heart className="h-5 w-5" />
+                Contribute
+              </a>
+              <div className="h-px bg-border my-2" />
+              <DeleteAccountDialog>
+                <button className="text-lg text-destructive hover:text-destructive/80 transition-colors flex items-center gap-2 w-full text-left">
+                  <Trash2 className="h-5 w-5" />
+                  Delete Account
+                </button>
+              </DeleteAccountDialog>
               <div className="h-px bg-border my-2" />
               <button 
                 onClick={handleSignOut}

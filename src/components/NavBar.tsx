@@ -3,10 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import MobileNav from "./navbar/MobileNav";
 import { Button } from "@/components/ui/button";
-import { LogIn, UserPlus, Home as HomeIcon, Briefcase, LogOut, User, HelpCircle, QrCode, PoundSterling, Bell } from "lucide-react";
+import { LogIn, UserPlus, Home as HomeIcon, Briefcase, LogOut, User, HelpCircle, QrCode, PoundSterling, Bell, Mail, Heart, Trash2 } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/hooks/useAuth";
 import { useWebPushNotifications } from "@/hooks/useWebPushNotifications";
+import { DeleteAccountDialog } from "./shared/DeleteAccountDialog";
 
 const NavBar = () => {
   const { user, userType, loading } = useAuth();
@@ -146,6 +147,34 @@ const NavBar = () => {
                         Profile
                       </Link>
                     )}
+                    <div className="h-px bg-border my-1" />
+                    <Link 
+                      to="/contact"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left flex items-center"
+                    >
+                      <Mail className="h-4 w-4 mr-2" />
+                      Contact Us
+                    </Link>
+                    <a 
+                      href="https://dgrid.co/contribute" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left flex items-center"
+                    >
+                      <Heart className="h-4 w-4 mr-2" />
+                      Contribute
+                    </a>
+                    <div className="h-px bg-border my-1" />
+                    <DeleteAccountDialog>
+                      <DropdownMenuItem
+                        onSelect={(e) => e.preventDefault()}
+                        className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left flex items-center text-destructive focus:text-destructive"
+                      >
+                        <Trash2 className="h-4 w-4 mr-2" />
+                        Delete Account
+                      </DropdownMenuItem>
+                    </DeleteAccountDialog>
+                    <div className="h-px bg-border my-1" />
                     <DropdownMenuItem
                       onClick={handleSignOut}
                       className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left flex items-center"

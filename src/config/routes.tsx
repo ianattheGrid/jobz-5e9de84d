@@ -34,6 +34,7 @@ import AdminExternalJobs from "@/pages/AdminExternalJobs";
 import AdminUserManagement from "@/pages/AdminUserManagement";
 import AdminCandidates from "@/pages/AdminCandidates";
 import AdminVirtualRecruiters from "@/pages/AdminVirtualRecruiters";
+import Contact from "@/pages/Contact";
 
 import CandidateChat from "@/pages/CandidateChat";
 
@@ -49,6 +50,10 @@ export const routes = [
   {
     path: "/faq",
     element: <FAQ />
+  },
+  {
+    path: "/contact",
+    element: <Contact />
   },
   {
     path: "/candidate/dummy-profile",
