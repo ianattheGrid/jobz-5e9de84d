@@ -122,7 +122,7 @@ export const SpaceBackground = () => {
 
       {/* Subtle Planet Silhouette */}
       <div 
-        className="absolute w-20 h-20 rounded-full opacity-25"
+        className="absolute w-20 h-20 rounded-full opacity-40"
         style={{
           top: '12%',
           left: '8%',
