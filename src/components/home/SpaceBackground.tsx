@@ -120,27 +120,23 @@ export const SpaceBackground = () => {
         }}
       />
 
-      {/* Moon */}
+      {/* Backlit Planet */}
       <div 
-        className="absolute w-20 h-20 rounded-full"
+        className="absolute w-28 h-28 rounded-full"
         style={{
-          top: '10%',
-          left: '8%',
+          top: '8%',
+          left: '6%',
           background: `
-            radial-gradient(circle at 35% 35%, 
-              rgba(255, 255, 255, 0.95) 0%, 
-              rgba(220, 220, 230, 0.9) 25%,
-              rgba(180, 180, 195, 0.85) 50%, 
-              rgba(140, 140, 160, 0.7) 75%,
-              rgba(100, 100, 120, 0.5) 100%
-            )
+            radial-gradient(circle at 50% 50%, #0a0a0f 0%, #0a0a0f 42%, transparent 50%),
+            linear-gradient(135deg, transparent 35%, rgba(100, 180, 255, 0.12) 45%, transparent 55%)
           `,
           boxShadow: `
-            inset -8px -8px 20px rgba(0, 0, 0, 0.4),
-            0 0 30px 8px rgba(255, 255, 255, 0.3), 
-            0 0 60px 20px rgba(200, 200, 255, 0.15),
-            0 0 100px 40px rgba(200, 200, 255, 0.08)
+            inset 0 0 25px 8px rgba(0, 0, 0, 0.9),
+            0 0 20px 4px rgba(100, 180, 255, 0.5),
+            0 0 40px 10px rgba(100, 180, 255, 0.25),
+            0 0 80px 20px rgba(100, 180, 255, 0.1)
           `,
+          border: '1px solid rgba(100, 180, 255, 0.25)',
         }}
       />
 
