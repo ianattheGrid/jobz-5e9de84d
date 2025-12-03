@@ -120,14 +120,27 @@ export const SpaceBackground = () => {
         }}
       />
 
-      {/* Subtle moon */}
+      {/* Moon */}
       <div 
-        className="absolute w-12 h-12 rounded-full opacity-20"
+        className="absolute w-20 h-20 rounded-full"
         style={{
-          top: '12%',
+          top: '10%',
           left: '8%',
-          background: 'radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.8) 0%, rgba(200, 200, 220, 0.4) 50%, transparent 70%)',
-          boxShadow: '0 0 40px 10px rgba(255, 255, 255, 0.1), 0 0 80px 30px rgba(200, 200, 255, 0.05)',
+          background: `
+            radial-gradient(circle at 35% 35%, 
+              rgba(255, 255, 255, 0.95) 0%, 
+              rgba(220, 220, 230, 0.9) 25%,
+              rgba(180, 180, 195, 0.85) 50%, 
+              rgba(140, 140, 160, 0.7) 75%,
+              rgba(100, 100, 120, 0.5) 100%
+            )
+          `,
+          boxShadow: `
+            inset -8px -8px 20px rgba(0, 0, 0, 0.4),
+            0 0 30px 8px rgba(255, 255, 255, 0.3), 
+            0 0 60px 20px rgba(200, 200, 255, 0.15),
+            0 0 100px 40px rgba(200, 200, 255, 0.08)
+          `,
         }}
       />
 
