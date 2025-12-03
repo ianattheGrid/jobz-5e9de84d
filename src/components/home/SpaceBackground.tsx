@@ -120,23 +120,14 @@ export const SpaceBackground = () => {
         }}
       />
 
-      {/* Backlit Planet */}
+      {/* Subtle Planet Silhouette */}
       <div 
-        className="absolute w-28 h-28 rounded-full"
+        className="absolute w-20 h-20 rounded-full opacity-25"
         style={{
-          top: '8%',
-          left: '6%',
-          background: `
-            radial-gradient(circle at 50% 50%, #0a0a0f 0%, #0a0a0f 42%, transparent 50%),
-            linear-gradient(135deg, transparent 35%, rgba(100, 180, 255, 0.12) 45%, transparent 55%)
-          `,
-          boxShadow: `
-            inset 0 0 25px 8px rgba(0, 0, 0, 0.9),
-            0 0 20px 4px rgba(100, 180, 255, 0.5),
-            0 0 40px 10px rgba(100, 180, 255, 0.25),
-            0 0 80px 20px rgba(100, 180, 255, 0.1)
-          `,
-          border: '1px solid rgba(100, 180, 255, 0.25)',
+          top: '12%',
+          left: '8%',
+          background: 'radial-gradient(circle at 50% 50%, rgba(10, 10, 20, 0.8) 0%, rgba(10, 10, 20, 0.4) 40%, transparent 50%)',
+          boxShadow: '0 0 30px 8px rgba(100, 150, 200, 0.08)',
         }}
       />
 
