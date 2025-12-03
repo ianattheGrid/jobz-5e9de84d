@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { Info } from "lucide-react";
+import { SpaceBackground } from "./SpaceBackground";
 
 interface HowItWorksHeroProps {
   activeTab: string;
@@ -12,15 +13,10 @@ export const HowItWorksHero = ({ activeTab, onTabChange }: HowItWorksHeroProps) 
     <>
       {/* Hero Banner Section */}
       <section className="relative h-[300px] overflow-hidden">
-        <img 
-          src="/images/how-it-works-hero.jpg" 
-          alt="Space exploration representing new frontiers in hiring" 
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-black/50" />
+        <SpaceBackground />
         
         <div className="relative container mx-auto px-4 h-full flex items-center justify-center z-10">
-          <h2 className="text-4xl md:text-5xl font-bold text-white text-center drop-shadow-lg">
+          <h2 className="text-4xl md:text-5xl font-bold text-white text-center drop-shadow-[0_0_20px_rgba(255,255,255,0.3)]">
             How Jobz Works
           </h2>
         </div>
