@@ -12,7 +12,7 @@ export const HowItWorksHero = ({ activeTab, onTabChange }: HowItWorksHeroProps) 
   return (
     <>
       {/* Gradient Banner Section */}
-      <section className="relative h-[300px] overflow-hidden bg-gradient-to-br from-[#0a0e27] via-[#1a1047] to-[#0d1b2a]">
+      <section className="relative h-[300px] overflow-hidden bg-black">
         {/* Constellation Network Animation */}
         <ConstellationBackground />
         
