@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { Info } from "lucide-react";
-import { ConstellationBackground } from "./ConstellationBackground";
 
 interface HowItWorksHeroProps {
   activeTab: string;
@@ -11,20 +10,14 @@ interface HowItWorksHeroProps {
 export const HowItWorksHero = ({ activeTab, onTabChange }: HowItWorksHeroProps) => {
   return (
     <>
-      {/* Gradient Banner Section */}
-      <section className="relative h-[300px] overflow-hidden bg-black">
-        {/* Constellation Network Animation */}
-        <ConstellationBackground />
-        
-        {/* Nebula Glow Effects */}
-        <div 
-          className="absolute inset-0 opacity-20 pointer-events-none"
-          style={{
-            backgroundImage: `radial-gradient(circle 600px at 20% 30%, rgba(236, 72, 153, 0.25) 0%, transparent 50%),
-                              radial-gradient(circle 500px at 80% 70%, rgba(168, 85, 247, 0.2) 0%, transparent 50%),
-                              radial-gradient(circle 400px at 50% 50%, rgba(34, 211, 238, 0.15) 0%, transparent 50%)`
-          }}
+      {/* Hero Banner Section */}
+      <section className="relative h-[300px] overflow-hidden">
+        <img 
+          src="/images/how-it-works-hero.jpg" 
+          alt="Space exploration representing new frontiers in hiring" 
+          className="absolute inset-0 w-full h-full object-cover"
         />
+        <div className="absolute inset-0 bg-black/50" />
         
         <div className="relative container mx-auto px-4 h-full flex items-center justify-center z-10">
           <h2 className="text-4xl md:text-5xl font-bold text-white text-center drop-shadow-lg">
