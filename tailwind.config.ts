@@ -70,6 +70,20 @@ export default {
           "0%, 100%": { opacity: "1" },
           "50%": { opacity: "0.4" },
         },
+        "twinkle-far": {
+          "0%, 100%": { opacity: "0.4" },
+          "50%": { opacity: "0.15" },
+        },
+        "twinkle-glow": {
+          "0%, 100%": { 
+            opacity: "1",
+            filter: "drop-shadow(0 0 3px rgba(255, 255, 255, 0.8))"
+          },
+          "50%": { 
+            opacity: "0.4",
+            filter: "drop-shadow(0 0 1px rgba(255, 255, 255, 0.3))"
+          },
+        },
         "pulse-glow": {
           "0%, 100%": { filter: "drop-shadow(0 0 2px rgba(255, 255, 255, 0.8))" },
           "50%": { filter: "drop-shadow(0 0 6px rgba(255, 255, 255, 1))" },
@@ -84,6 +98,34 @@ export default {
             transform: "translateX(-300px) translateY(300px)",
             opacity: "0"
           },
+        },
+        "shooting-star-1": {
+          "0%": { transform: "translateX(0) translateY(0) rotate(-45deg)", opacity: "0" },
+          "5%": { opacity: "1" },
+          "15%": { opacity: "1" },
+          "20%": { transform: "translateX(-200px) translateY(200px) rotate(-45deg)", opacity: "0" },
+          "100%": { transform: "translateX(-200px) translateY(200px) rotate(-45deg)", opacity: "0" },
+        },
+        "shooting-star-2": {
+          "0%": { transform: "translateX(0) translateY(0) rotate(-45deg)", opacity: "0" },
+          "35%": { transform: "translateX(0) translateY(0) rotate(-45deg)", opacity: "0" },
+          "40%": { opacity: "1" },
+          "50%": { opacity: "1" },
+          "55%": { transform: "translateX(-180px) translateY(180px) rotate(-45deg)", opacity: "0" },
+          "100%": { transform: "translateX(-180px) translateY(180px) rotate(-45deg)", opacity: "0" },
+        },
+        "shooting-star-3": {
+          "0%": { transform: "translateX(0) translateY(0) rotate(-45deg)", opacity: "0" },
+          "65%": { transform: "translateX(0) translateY(0) rotate(-45deg)", opacity: "0" },
+          "70%": { opacity: "1" },
+          "80%": { opacity: "1" },
+          "85%": { transform: "translateX(-150px) translateY(150px) rotate(-45deg)", opacity: "0" },
+          "100%": { transform: "translateX(-150px) translateY(150px) rotate(-45deg)", opacity: "0" },
+        },
+        "float-dust": {
+          "0%": { transform: "translateY(0) translateX(0)", opacity: "0.3" },
+          "50%": { transform: "translateY(-50px) translateX(10px)", opacity: "0.5" },
+          "100%": { transform: "translateY(-100px) translateX(0)", opacity: "0" },
         },
         "float": {
           "0%, 100%": { transform: "translateY(0)" },
@@ -121,9 +163,15 @@ export default {
         "card-swipe": "card-swipe 0.5s ease-in-out",
         "twinkle": "twinkle 3s ease-in-out infinite",
         "twinkle-slow": "twinkle-slow 4s ease-in-out infinite",
+        "twinkle-far": "twinkle-far 5s ease-in-out infinite",
+        "twinkle-glow": "twinkle-glow 2.5s ease-in-out infinite",
         "pulse-glow": "pulse-glow 2s ease-in-out infinite",
         "shooting-star": "shooting-star 3s linear infinite",
+        "shooting-star-1": "shooting-star-1 8s linear infinite",
+        "shooting-star-2": "shooting-star-2 12s linear infinite",
+        "shooting-star-3": "shooting-star-3 15s linear infinite",
         "float": "float 5s ease-in-out infinite",
+        "float-dust": "float-dust 20s linear infinite",
         "typewriter": "typewriter 5s steps(120, end) forwards",
         "typewriter-2": "typewriter-2 5s steps(120, end) 5s forwards",
         "typewriter-3": "typewriter-3 5s steps(120, end) 10s forwards",
