@@ -38,7 +38,12 @@ const TypingIndicator = () => (
   </div>
 );
 
-const MatchNotification = () => (
+interface MatchNotificationProps {
+  candidateName: string;
+  employerName: string;
+}
+
+const MatchNotification = ({ candidateName, employerName }: MatchNotificationProps) => (
   <motion.div
     initial={{ scale: 0, opacity: 0 }}
     animate={{ scale: 1, opacity: 1 }}
@@ -66,7 +71,7 @@ const MatchNotification = () => (
       transition={{ delay: 0.5 }}
       className="text-white/80 text-center"
     >
-      Gareth, meet Sarah from GreenScale
+      {candidateName}, meet {employerName}
     </motion.p>
   </motion.div>
 );
@@ -99,10 +104,21 @@ export const WebbyDemoDialog = ({ open, onOpenChange }: WebbyDemoDialogProps) =>
   ];
 
   const employerMessages: Message[] = [
+    // Phase 1: Initial conversation
     { id: "e1", type: "user", content: "My engineering team is brilliant but we keep building features nobody uses. We need someone who thinks differently." },
     { id: "e2", type: "webby", content: "Sounds like you need a different perspective, not another engineer. What skill gaps does your current team have?" },
     { id: "e3", type: "user", content: "Nobody really understands our users. We're all very technical." },
     { id: "e4", type: "webby", content: "I've found a UX researcher who's curious about product engineering, and a former teacher who's been learning to code. Both bring user empathy your team lacks. They're trainable on the technical side—but that fresh perspective? You can't teach that. Want to meet them?" },
+    { id: "e5", type: "user", content: "Yes, let's start with the UX researcher!" },
+    // Phase 2: Match
+    { id: "ematch", type: "match", content: "" },
+    // Phase 3: Connection & Interview Scheduling
+    { id: "e6", type: "webby", content: "Meet Maya—she's spent 5 years in UX research and is eager to get closer to product development." },
+    { id: "e7", type: "employer", content: "Hi! I love your portfolio—especially the user journey mapping work. I'd love to chat about how you approach understanding user needs.", name: "Maya (Candidate)" },
+    { id: "e8", type: "user", content: "Thanks Maya! Your background is exactly what we need. Are you available for an interview this week?" },
+    { id: "e9", type: "employer", content: "I'm free Wednesday afternoon or Friday morning!", name: "Maya" },
+    { id: "e10", type: "user", content: "Friday at 10am works. It'll be a 30-minute video call." },
+    { id: "e11", type: "webby", content: "Interview scheduled! 📅 I've sent calendar invites to both of you. Good luck! 🎉" },
   ];
 
   const messages = activeTab === "looking" ? candidateMessages : employerMessages;
@@ -120,7 +136,7 @@ export const WebbyDemoDialog = ({ open, onOpenChange }: WebbyDemoDialogProps) =>
 
     const phaseOneMessages = activeTab === "looking" 
       ? ["c1", "c2", "c3", "c4", "c5"]
-      : ["e1", "e2", "e3", "e4"];
+      : ["e1", "e2", "e3", "e4", "e5"];
 
     // Phase 1: Initial conversation - slower timing for readability
     for (const msgId of phaseOneMessages) {
@@ -136,29 +152,31 @@ export const WebbyDemoDialog = ({ open, onOpenChange }: WebbyDemoDialogProps) =>
       setVisibleMessages(prev => [...prev, msgId]);
     }
 
-    if (activeTab === "looking") {
-      // Phase 2: Match notification
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      setCurrentPhase(2);
-      setVisibleMessages(prev => [...prev, "match"]);
+    // Phase 2: Match notification
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    setCurrentPhase(2);
+    const matchId = activeTab === "looking" ? "match" : "ematch";
+    setVisibleMessages(prev => [...prev, matchId]);
 
-      // Phase 3: Real connection
-      await new Promise(resolve => setTimeout(resolve, 3000));
-      setCurrentPhase(3);
+    // Phase 3: Real connection & interview scheduling
+    await new Promise(resolve => setTimeout(resolve, 3000));
+    setCurrentPhase(3);
+    
+    const phaseThreeMessages = activeTab === "looking" 
+      ? ["c6", "c7", "c8", "c9", "c10", "c11"]
+      : ["e6", "e7", "e8", "e9", "e10", "e11"];
       
-      const phaseThreeMessages = ["c6", "c7", "c8", "c9", "c10", "c11"];
-      for (const msgId of phaseThreeMessages) {
-        await new Promise(resolve => setTimeout(resolve, 2500));
-        
-        const msg = messages.find(m => m.id === msgId);
-        if (msg?.type === "webby") {
-          setIsTyping(true);
-          await new Promise(resolve => setTimeout(resolve, 1500));
-          setIsTyping(false);
-        }
-        
-        setVisibleMessages(prev => [...prev, msgId]);
+    for (const msgId of phaseThreeMessages) {
+      await new Promise(resolve => setTimeout(resolve, 2500));
+      
+      const msg = messages.find(m => m.id === msgId);
+      if (msg?.type === "webby") {
+        setIsTyping(true);
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        setIsTyping(false);
       }
+      
+      setVisibleMessages(prev => [...prev, msgId]);
     }
 
     setIsPlaying(false);
@@ -184,7 +202,14 @@ export const WebbyDemoDialog = ({ open, onOpenChange }: WebbyDemoDialogProps) =>
 
   const renderMessage = (message: Message) => {
     if (message.type === "match") {
-      return <MatchNotification key={message.id} />;
+      const isEmployerView = activeTab === "hiring";
+      return (
+        <MatchNotification 
+          key={message.id} 
+          candidateName={isEmployerView ? "Maya" : "Gareth"}
+          employerName={isEmployerView ? "your team" : "Sarah from GreenScale"}
+        />
+      );
     }
 
     const isWebby = message.type === "webby";
@@ -307,13 +332,11 @@ export const WebbyDemoDialog = ({ open, onOpenChange }: WebbyDemoDialogProps) =>
         </Tabs>
 
         {/* Progress dots */}
-        {activeTab === "looking" && (
-          <div className="flex justify-center gap-2 py-2">
-            <div className={`w-2 h-2 rounded-full transition-all ${currentPhase >= 1 ? "bg-primary shadow-[0_0_8px_rgba(236,72,153,0.6)]" : "bg-white/20"}`} />
-            <div className={`w-2 h-2 rounded-full transition-all ${currentPhase >= 2 ? "bg-primary shadow-[0_0_8px_rgba(236,72,153,0.6)]" : "bg-white/20"}`} />
-            <div className={`w-2 h-2 rounded-full transition-all ${currentPhase >= 3 ? "bg-primary shadow-[0_0_8px_rgba(236,72,153,0.6)]" : "bg-white/20"}`} />
-          </div>
-        )}
+        <div className="flex justify-center gap-2 py-2">
+          <div className={`w-2 h-2 rounded-full transition-all ${currentPhase >= 1 ? "bg-primary shadow-[0_0_8px_rgba(236,72,153,0.6)]" : "bg-white/20"}`} />
+          <div className={`w-2 h-2 rounded-full transition-all ${currentPhase >= 2 ? "bg-primary shadow-[0_0_8px_rgba(236,72,153,0.6)]" : "bg-white/20"}`} />
+          <div className={`w-2 h-2 rounded-full transition-all ${currentPhase >= 3 ? "bg-primary shadow-[0_0_8px_rgba(236,72,153,0.6)]" : "bg-white/20"}`} />
+        </div>
 
         <div className="flex justify-center gap-3 mt-4">
           {!isPlaying && visibleMessages.length > 0 && (
