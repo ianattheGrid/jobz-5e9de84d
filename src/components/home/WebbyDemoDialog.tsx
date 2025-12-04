@@ -113,10 +113,10 @@ export const WebbyDemoDialog = ({ open, onOpenChange }: WebbyDemoDialogProps) =>
     // Phase 2: Match
     { id: "ematch", type: "match", content: "" },
     // Phase 3: Connection & Interview Scheduling
-    { id: "e6", type: "webby", content: "Meet Maya—she's spent 5 years in UX research and is eager to get closer to product development.", name: "Webby" },
-    { id: "e7", type: "employer", content: "Hi! I love your portfolio—especially the user journey mapping work. I'd love to chat about how you approach understanding user needs.", name: "Maya (Candidate)" },
-    { id: "e8", type: "user", content: "Thanks Maya! Your background is exactly what we need. Are you available for an interview this week?", name: "You" },
-    { id: "e9", type: "employer", content: "I'm free Wednesday afternoon or Friday morning!", name: "Maya" },
+    { id: "e6", type: "webby", content: "Meet Jayne—she's spent 5 years in UX research and is eager to get closer to product development.", name: "Webby" },
+    { id: "e7", type: "employer", content: "Hi! I love your portfolio—especially the user journey mapping work. I'd love to chat about how you approach understanding user needs.", name: "Jayne (Candidate)" },
+    { id: "e8", type: "user", content: "Thanks Jayne! Your background is exactly what we need. Are you available for an interview this week?", name: "You" },
+    { id: "e9", type: "employer", content: "I'm free Wednesday afternoon or Friday morning!", name: "Jayne" },
     { id: "e10", type: "user", content: "Friday at 10am works. It'll be a 30-minute video call.", name: "You" },
     { id: "e11", type: "webby", content: "Interview scheduled! 📅 I've sent calendar invites to both of you. Good luck! 🎉", name: "Webby" },
   ];
@@ -206,7 +206,7 @@ export const WebbyDemoDialog = ({ open, onOpenChange }: WebbyDemoDialogProps) =>
       return (
         <MatchNotification 
           key={message.id} 
-          candidateName={isEmployerView ? "Maya" : "Gareth"}
+          candidateName={isEmployerView ? "Jayne" : "Gareth"}
           employerName={isEmployerView ? "your team" : "Sarah from GreenScale"}
         />
       );
