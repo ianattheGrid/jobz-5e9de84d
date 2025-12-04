@@ -267,13 +267,13 @@ export const WebbyDemoDialog = ({ open, onOpenChange }: WebbyDemoDialogProps) =>
           <TabsList className="grid w-full grid-cols-2 bg-black/50 backdrop-blur-sm border border-white/10">
             <TabsTrigger 
               value="hiring"
-              className="data-[state=active]:bg-primary/40 data-[state=active]:text-white data-[state=active]:shadow-[0_0_20px_rgba(236,72,153,0.4)] data-[state=inactive]:bg-white/10 data-[state=inactive]:text-white text-white font-medium transition-all"
+              className="data-[state=active]:bg-primary/40 data-[state=active]:text-white data-[state=active]:shadow-[0_0_20px_rgba(236,72,153,0.4)] data-[state=inactive]:bg-transparent data-[state=inactive]:!text-white !text-white font-medium transition-all"
             >
               I'm Hiring
             </TabsTrigger>
             <TabsTrigger 
               value="looking"
-              className="data-[state=active]:bg-primary/40 data-[state=active]:text-white data-[state=active]:shadow-[0_0_20px_rgba(236,72,153,0.4)] data-[state=inactive]:bg-white/10 data-[state=inactive]:text-white text-white font-medium transition-all"
+              className="data-[state=active]:bg-primary/40 data-[state=active]:text-white data-[state=active]:shadow-[0_0_20px_rgba(236,72,153,0.4)] data-[state=inactive]:bg-transparent data-[state=inactive]:!text-white !text-white font-medium transition-all"
             >
               I'm Looking
             </TabsTrigger>
