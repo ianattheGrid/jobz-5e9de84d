@@ -122,14 +122,14 @@ export const WebbyDemoDialog = ({ open, onOpenChange }: WebbyDemoDialogProps) =>
       ? ["c1", "c2", "c3", "c4", "c5"]
       : ["e1", "e2", "e3", "e4"];
 
-    // Phase 1: Initial conversation
+    // Phase 1: Initial conversation - slower timing for readability
     for (const msgId of phaseOneMessages) {
-      await new Promise(resolve => setTimeout(resolve, 800));
+      await new Promise(resolve => setTimeout(resolve, 2500));
       
       const msg = messages.find(m => m.id === msgId);
       if (msg?.type === "webby") {
         setIsTyping(true);
-        await new Promise(resolve => setTimeout(resolve, 1200));
+        await new Promise(resolve => setTimeout(resolve, 2000));
         setIsTyping(false);
       }
       
@@ -138,22 +138,22 @@ export const WebbyDemoDialog = ({ open, onOpenChange }: WebbyDemoDialogProps) =>
 
     if (activeTab === "looking") {
       // Phase 2: Match notification
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, 2000));
       setCurrentPhase(2);
       setVisibleMessages(prev => [...prev, "match"]);
 
       // Phase 3: Real connection
-      await new Promise(resolve => setTimeout(resolve, 2500));
+      await new Promise(resolve => setTimeout(resolve, 3000));
       setCurrentPhase(3);
       
       const phaseThreeMessages = ["c6", "c7", "c8", "c9", "c10", "c11"];
       for (const msgId of phaseThreeMessages) {
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        await new Promise(resolve => setTimeout(resolve, 2500));
         
         const msg = messages.find(m => m.id === msgId);
         if (msg?.type === "webby") {
           setIsTyping(true);
-          await new Promise(resolve => setTimeout(resolve, 800));
+          await new Promise(resolve => setTimeout(resolve, 1500));
           setIsTyping(false);
         }
         
@@ -239,16 +239,16 @@ export const WebbyDemoDialog = ({ open, onOpenChange }: WebbyDemoDialogProps) =>
         </DialogHeader>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-2 bg-black/30 backdrop-blur-sm">
+          <TabsList className="grid w-full grid-cols-2 bg-black/50 backdrop-blur-sm border border-white/10">
             <TabsTrigger 
               value="hiring"
-              className="data-[state=active]:bg-primary/30 data-[state=active]:text-white data-[state=active]:shadow-[0_0_20px_rgba(236,72,153,0.4)] text-white/60 transition-all"
+              className="data-[state=active]:bg-primary/40 data-[state=active]:text-white data-[state=active]:shadow-[0_0_20px_rgba(236,72,153,0.4)] text-white font-medium transition-all"
             >
               I'm Hiring
             </TabsTrigger>
             <TabsTrigger 
               value="looking"
-              className="data-[state=active]:bg-primary/30 data-[state=active]:text-white data-[state=active]:shadow-[0_0_20px_rgba(236,72,153,0.4)] text-white/60 transition-all"
+              className="data-[state=active]:bg-primary/40 data-[state=active]:text-white data-[state=active]:shadow-[0_0_20px_rgba(236,72,153,0.4)] text-white font-medium transition-all"
             >
               I'm Looking
             </TabsTrigger>
