@@ -18,7 +18,7 @@ export const PlatformFeatures = ({ activeTab }: PlatformFeaturesProps) => {
   const [bonusFeePercentage, setBonusFeePercentage] = React.useState(7);
   const [bonusSplitPercentage, setBonusSplitPercentage] = React.useState(50);
   return (
-    <section className="py-12 container mx-auto px-4">
+    <section className="py-12 container mx-auto px-4 platform-tabs">
       <Tabs value={activeTab} className="w-full max-w-4xl mx-auto">
         <TabsContent value="hiring" className="mt-0 space-y-8 radix-tabpanel">
           <div className="flex flex-col sm:flex-row sm:justify-start gap-3">
