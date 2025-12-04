@@ -128,21 +128,13 @@ export const WebbySection = () => {
         </div>
         
         {/* CTA buttons */}
-        <div className="flex flex-col sm:flex-row justify-center gap-4 animate-fade-in" style={{ animationDelay: '0.4s' }}>
+        <div className="flex justify-center animate-fade-in" style={{ animationDelay: '0.4s' }}>
           <Button 
             size="lg" 
             className="bg-primary hover:bg-primary/90 text-white text-lg px-8 shadow-[0_0_30px_rgba(236,72,153,0.4)] hover:shadow-[0_0_40px_rgba(236,72,153,0.6)] transition-all"
-            onClick={() => navigate('/webby-candidate')}
-          >
-            Activate Webby
-          </Button>
-          <Button 
-            size="lg" 
-            variant="ghost" 
-            className="text-white border border-white/30 hover:bg-white/10 hover:border-white/50 hover:text-white text-lg px-8 transition-all"
             onClick={() => setIsDemoOpen(true)}
           >
-            See How It Works
+            Watch Webby Work
           </Button>
         </div>
       </div>
