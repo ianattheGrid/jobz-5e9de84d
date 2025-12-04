@@ -1,42 +1,37 @@
 
-/* Platform Features Tab Styles - completely rewritten for proper behavior */
-/* These styles apply to all components using the radix-tab class */
-.radix-tab {
+/* Platform Features Tab Styles - scoped to platform-tabs class only */
+.platform-tabs .radix-tab {
   color: black !important;
   transition: background-color 0.2s ease-in-out !important;
   background-color: transparent !important;
 }
 
-/* Additional style to ensure tab-trigger gets the same styling */
-.tab-trigger {
+.platform-tabs .tab-trigger {
   color: black !important;
   transition: background-color 0.2s ease-in-out !important;
 }
 
-/* Make sure only the hovered tab gets the pink background */
-.radix-tab:hover, .tab-trigger:hover {
+.platform-tabs .radix-tab:hover,
+.platform-tabs .tab-trigger:hover {
   background-color: #FF69B4 !important;
   color: black !important;
 }
 
-/* When hovering anywhere in the tablist, make sure the active tab background is hidden */
-.radix-tablist:hover .radix-tab[data-state="active"]:not(:hover),
-.TabsList:hover .tab-trigger[data-state="active"]:not(:hover),
-[role="tablist"]:hover [role="tab"][data-state="active"]:not(:hover) {
+.platform-tabs .radix-tablist:hover .radix-tab[data-state="active"]:not(:hover),
+.platform-tabs .TabsList:hover .tab-trigger[data-state="active"]:not(:hover),
+.platform-tabs [role="tablist"]:hover [role="tab"][data-state="active"]:not(:hover) {
   background-color: transparent !important;
 }
 
-/* When not hovering the tablist, ensure active tab gets the pink background */
-.radix-tab[data-state="active"],
-.tab-trigger[data-state="active"],
-[role="tab"][data-state="active"] {
+.platform-tabs .radix-tab[data-state="active"],
+.platform-tabs .tab-trigger[data-state="active"],
+.platform-tabs [role="tab"][data-state="active"] {
   background-color: #FF69B4 !important;
   color: black !important;
 }
 
-/* Container styling */
-.radix-tablist,
-[role="tablist"] {
+.platform-tabs .radix-tablist,
+.platform-tabs [role="tablist"] {
   background-color: white !important;
   border: 1px solid #e2e8f0 !important;
   border-radius: 0.5rem !important;
