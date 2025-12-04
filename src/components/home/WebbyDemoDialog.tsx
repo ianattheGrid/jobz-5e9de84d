@@ -87,38 +87,38 @@ export const WebbyDemoDialog = ({ open, onOpenChange }: WebbyDemoDialogProps) =>
 
   const candidateMessages: Message[] = [
     // Phase 1: Initial conversation
-    { id: "c1", type: "user", content: "I've been an accountant for 8 years but I'm fascinated by climate tech. I know I'd have to start over..." },
-    { id: "c2", type: "webby", content: "You wouldn't be starting over—you'd be bringing something rare. What draws you to climate tech?" },
-    { id: "c3", type: "user", content: "I want my work to actually matter. And honestly, I think my financial modeling skills could help these companies grow sustainably." },
-    { id: "c4", type: "webby", content: "You're exactly right, Gareth. I found 3 climate startups actively looking for people with your analytical mindset who care about their mission. One founder said 'I'll teach the industry stuff—I need someone who can build our financial models.' Should I introduce you?" },
-    { id: "c5", type: "user", content: "Yes! That sounds perfect." },
+    { id: "c1", type: "user", content: "I've been an accountant for 8 years but I'm fascinated by climate tech. I know I'd have to start over...", name: "Gareth (Candidate)" },
+    { id: "c2", type: "webby", content: "You wouldn't be starting over—you'd be bringing something rare. What draws you to climate tech?", name: "Webby" },
+    { id: "c3", type: "user", content: "I want my work to actually matter. And honestly, I think my financial modeling skills could help these companies grow sustainably.", name: "Gareth" },
+    { id: "c4", type: "webby", content: "You're exactly right, Gareth. I found 3 climate startups actively looking for people with your analytical mindset who care about their mission. One founder said 'I'll teach the industry stuff—I need someone who can build our financial models.' Should I introduce you?", name: "Webby" },
+    { id: "c5", type: "user", content: "Yes! That sounds perfect.", name: "Gareth" },
     // Phase 2: Match
     { id: "match", type: "match", content: "" },
     // Phase 3: Real connection
-    { id: "c6", type: "webby", content: "Gareth, meet Sarah from GreenScale. Sarah, meet Gareth—the financial analyst ready to make an impact." },
+    { id: "c6", type: "webby", content: "Gareth, meet Sarah from GreenScale. Sarah, meet Gareth—the financial analyst ready to make an impact.", name: "Webby" },
     { id: "c7", type: "employer", content: "Hi Gareth! Your financial modeling background is exactly what we need. We're scaling our carbon offset marketplace and need someone who can build robust financial projections.", name: "Sarah (GreenScale)" },
-    { id: "c8", type: "user", content: "Thanks Sarah! I'd love to hear more about GreenScale's mission. The intersection of finance and climate impact is exactly what I'm looking for." },
+    { id: "c8", type: "user", content: "Thanks Sarah! I'd love to hear more about GreenScale's mission. The intersection of finance and climate impact is exactly what I'm looking for.", name: "Gareth" },
     { id: "c9", type: "employer", content: "Perfect! Are you free for a call this Thursday at 3pm?", name: "Sarah" },
-    { id: "c10", type: "user", content: "Thursday at 3pm works great! Looking forward to it." },
-    { id: "c11", type: "webby", content: "Interview scheduled! 📅 I've sent you both calendar invites. Good luck, Gareth! 🎉" },
+    { id: "c10", type: "user", content: "Thursday at 3pm works great! Looking forward to it.", name: "Gareth" },
+    { id: "c11", type: "webby", content: "Interview scheduled! 📅 I've sent you both calendar invites. Good luck, Gareth! 🎉", name: "Webby" },
   ];
 
   const employerMessages: Message[] = [
     // Phase 1: Initial conversation
-    { id: "e1", type: "user", content: "My engineering team is brilliant but we keep building features nobody uses. We need someone who thinks differently." },
-    { id: "e2", type: "webby", content: "Sounds like you need a different perspective, not another engineer. What skill gaps does your current team have?" },
-    { id: "e3", type: "user", content: "Nobody really understands our users. We're all very technical." },
-    { id: "e4", type: "webby", content: "I've found a UX researcher who's curious about product engineering, and a former teacher who's been learning to code. Both bring user empathy your team lacks. They're trainable on the technical side—but that fresh perspective? You can't teach that. Want to meet them?" },
-    { id: "e5", type: "user", content: "Yes, let's start with the UX researcher!" },
+    { id: "e1", type: "user", content: "My engineering team is brilliant but we keep building features nobody uses. We need someone who thinks differently.", name: "You (Employer)" },
+    { id: "e2", type: "webby", content: "Sounds like you need a different perspective, not another engineer. What skill gaps does your current team have?", name: "Webby" },
+    { id: "e3", type: "user", content: "Nobody really understands our users. We're all very technical.", name: "You" },
+    { id: "e4", type: "webby", content: "I've found a UX researcher who's curious about product engineering, and a former teacher who's been learning to code. Both bring user empathy your team lacks. They're trainable on the technical side—but that fresh perspective? You can't teach that. Want to meet them?", name: "Webby" },
+    { id: "e5", type: "user", content: "Yes, let's start with the UX researcher!", name: "You" },
     // Phase 2: Match
     { id: "ematch", type: "match", content: "" },
     // Phase 3: Connection & Interview Scheduling
-    { id: "e6", type: "webby", content: "Meet Maya—she's spent 5 years in UX research and is eager to get closer to product development." },
+    { id: "e6", type: "webby", content: "Meet Maya—she's spent 5 years in UX research and is eager to get closer to product development.", name: "Webby" },
     { id: "e7", type: "employer", content: "Hi! I love your portfolio—especially the user journey mapping work. I'd love to chat about how you approach understanding user needs.", name: "Maya (Candidate)" },
-    { id: "e8", type: "user", content: "Thanks Maya! Your background is exactly what we need. Are you available for an interview this week?" },
+    { id: "e8", type: "user", content: "Thanks Maya! Your background is exactly what we need. Are you available for an interview this week?", name: "You" },
     { id: "e9", type: "employer", content: "I'm free Wednesday afternoon or Friday morning!", name: "Maya" },
-    { id: "e10", type: "user", content: "Friday at 10am works. It'll be a 30-minute video call." },
-    { id: "e11", type: "webby", content: "Interview scheduled! 📅 I've sent calendar invites to both of you. Good luck! 🎉" },
+    { id: "e10", type: "user", content: "Friday at 10am works. It'll be a 30-minute video call.", name: "You" },
+    { id: "e11", type: "webby", content: "Interview scheduled! 📅 I've sent calendar invites to both of you. Good luck! 🎉", name: "Webby" },
   ];
 
   const messages = activeTab === "looking" ? candidateMessages : employerMessages;
@@ -256,24 +256,24 @@ export const WebbyDemoDialog = ({ open, onOpenChange }: WebbyDemoDialogProps) =>
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-3xl max-h-[85vh] bg-gradient-to-br from-[#1a0a15] via-[#2d1028] to-[#150a1a] border-primary/20 overflow-hidden">
+      <DialogContent className="max-w-3xl max-h-[85vh] bg-gradient-to-br from-[#1a0a15] via-[#2d1028] to-[#150a1a] border-primary/20 overflow-y-auto flex flex-col">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-white text-center">
             See How <span className="text-primary">Webby</span> Works
           </DialogTitle>
         </DialogHeader>
 
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full flex-1 flex flex-col min-h-0">
           <TabsList className="grid w-full grid-cols-2 bg-black/50 backdrop-blur-sm border border-white/10">
             <TabsTrigger 
               value="hiring"
-              className="data-[state=active]:bg-primary/40 data-[state=active]:text-white data-[state=active]:shadow-[0_0_20px_rgba(236,72,153,0.4)] text-white font-medium transition-all"
+              className="data-[state=active]:bg-primary/40 data-[state=active]:text-white data-[state=active]:shadow-[0_0_20px_rgba(236,72,153,0.4)] data-[state=inactive]:bg-white/10 data-[state=inactive]:text-white text-white font-medium transition-all"
             >
               I'm Hiring
             </TabsTrigger>
             <TabsTrigger 
               value="looking"
-              className="data-[state=active]:bg-primary/40 data-[state=active]:text-white data-[state=active]:shadow-[0_0_20px_rgba(236,72,153,0.4)] text-white font-medium transition-all"
+              className="data-[state=active]:bg-primary/40 data-[state=active]:text-white data-[state=active]:shadow-[0_0_20px_rgba(236,72,153,0.4)] data-[state=inactive]:bg-white/10 data-[state=inactive]:text-white text-white font-medium transition-all"
             >
               I'm Looking
             </TabsTrigger>
@@ -281,7 +281,7 @@ export const WebbyDemoDialog = ({ open, onOpenChange }: WebbyDemoDialogProps) =>
 
           <div 
             ref={scrollRef}
-            className="mt-6 space-y-4 overflow-y-auto max-h-[50vh] pr-2 scrollbar-thin scrollbar-thumb-primary/30 scrollbar-track-transparent"
+            className="mt-6 space-y-4 overflow-y-auto max-h-[40vh] pr-2 scrollbar-thin scrollbar-thumb-primary/30 scrollbar-track-transparent flex-1"
           >
             <TabsContent value="hiring" className="space-y-4 mt-0">
               <AnimatePresence mode="wait">
