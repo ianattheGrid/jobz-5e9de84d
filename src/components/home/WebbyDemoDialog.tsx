@@ -263,6 +263,10 @@ export const WebbyDemoDialog = ({ open, onOpenChange }: WebbyDemoDialogProps) =>
           </DialogTitle>
         </DialogHeader>
 
+        <p className="text-white/70 text-sm text-center px-4 -mt-2 mb-2">
+          This is just a glimpse. Webby has already analysed complete profiles—skills, aspirations, work style, and what both parties are truly looking for. The conversation below is where that deep understanding becomes a meaningful connection.
+        </p>
+
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full flex-1 flex flex-col min-h-0">
           <TabsList className="grid w-full grid-cols-2 bg-black/50 backdrop-blur-sm border border-white/10">
             <TabsTrigger 
