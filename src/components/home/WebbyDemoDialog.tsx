@@ -256,7 +256,7 @@ export const WebbyDemoDialog = ({ open, onOpenChange }: WebbyDemoDialogProps) =>
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-3xl max-h-[85vh] bg-gradient-to-br from-[#1a0a15] via-[#2d1028] to-[#150a1a] border-primary/20 overflow-y-auto flex flex-col">
+      <DialogContent className="max-w-3xl max-h-[85vh] bg-gradient-to-br from-[#1a0a15] via-[#2d1028] to-[#150a1a] border-primary/20 overflow-y-auto flex flex-col [&>button]:text-white">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-white text-center">
             See How <span className="text-primary">Webby</span> Works
@@ -338,25 +338,6 @@ export const WebbyDemoDialog = ({ open, onOpenChange }: WebbyDemoDialogProps) =>
           <div className={`w-2 h-2 rounded-full transition-all ${currentPhase >= 3 ? "bg-primary shadow-[0_0_8px_rgba(236,72,153,0.6)]" : "bg-white/20"}`} />
         </div>
 
-        <div className="flex justify-center gap-3 mt-4">
-          {!isPlaying && visibleMessages.length > 0 && (
-            <Button
-              variant="outline"
-              size="lg"
-              className="border-primary/50 text-white hover:bg-primary/10"
-              onClick={playDemo}
-            >
-              ↻ Replay
-            </Button>
-          )}
-          <Button 
-            size="lg"
-            className="bg-primary hover:bg-primary/90 text-white text-lg px-8 shadow-[0_0_30px_rgba(236,72,153,0.4)] hover:shadow-[0_0_40px_rgba(236,72,153,0.6)] transition-all"
-            onClick={handleTryWebby}
-          >
-            Try Webby
-          </Button>
-        </div>
       </DialogContent>
     </Dialog>
   );
