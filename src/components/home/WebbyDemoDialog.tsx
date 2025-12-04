@@ -206,8 +206,8 @@ export const WebbyDemoDialog = ({ open, onOpenChange }: WebbyDemoDialogProps) =>
       return (
         <MatchNotification 
           key={message.id} 
-          candidateName={isEmployerView ? "Jayne" : "Gareth"}
-          employerName={isEmployerView ? "your team" : "Sarah from GreenScale"}
+          candidateName={isEmployerView ? "You've matched with" : "Gareth, meet"}
+          employerName={isEmployerView ? "Jayne!" : "Sarah from GreenScale"}
         />
       );
     }
