@@ -6,6 +6,40 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+// Map Second Chapter sectors to job work areas
+const SECOND_CHAPTER_TO_WORK_AREA_MAP: Record<string, string[]> = {
+  'Education & Training': ['Education', 'Training'],
+  'Hospitality (cafés, bars, restaurants, hotels)': ['Hospitality', 'Food Service', 'Hotel'],
+  'Retail (shops, supermarkets, customer service)': ['Retail', 'Customer Service'],
+  'Travel & Tourism': ['Travel', 'Tourism', 'Hospitality'],
+  'Engineering & Technical': ['Engineering', 'Technical', 'Manufacturing'],
+  'Construction & Trades': ['Construction', 'Trades', 'Building'],
+  'Warehousing & Logistics': ['Warehousing', 'Logistics', 'Supply Chain'],
+  'Office/Admin & Organising': ['Administration', 'Office', 'Admin', 'PA'],
+  'Tech / IT': ['IT', 'Technology', 'Software', 'Developer'],
+  'Creative & Media': ['Creative', 'Media', 'Marketing', 'Design'],
+  'Care / Support Work': ['Care', 'Support', 'Healthcare', 'Social'],
+  'Non-profit / Charity': ['Charity', 'Non-profit', 'NGO'],
+  'Public Sector / Government': ['Public Sector', 'Government', 'Council'],
+  'Consulting / Advisory': ['Consulting', 'Advisory', 'Professional Services'],
+  'Driving & Delivery': ['Driving', 'Delivery', 'Transport'],
+  'Outdoor / Environment / Landscaping': ['Outdoor', 'Environmental', 'Landscaping', 'Agriculture'],
+};
+
+function checkJobMatchesSecondChapter(jobWorkArea: string, secondChapterSectors: string[]): boolean {
+  if (!jobWorkArea || !secondChapterSectors?.length) return false;
+  
+  const normalizedWorkArea = jobWorkArea.toLowerCase();
+  
+  return secondChapterSectors.some(sector => {
+    const mappedWorkAreas = SECOND_CHAPTER_TO_WORK_AREA_MAP[sector] || [];
+    return mappedWorkAreas.some(area => 
+      normalizedWorkArea.includes(area.toLowerCase()) || 
+      area.toLowerCase().includes(normalizedWorkArea)
+    );
+  });
+}
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -30,10 +64,10 @@ serve(async (req) => {
 
     console.log('Fetching matches for user:', user.id);
 
-    // Get candidate's profile data
+    // Get candidate's profile data including Second Chapter and PoP
     const { data: candidateProfile, error: profileError } = await supabaseClient
       .from('candidate_profiles')
-      .select('*')
+      .select('*, second_chapter, show_second_chapter, proof_of_potential, show_proof_of_potential')
       .eq('id', user.id)
       .single();
 
@@ -50,8 +84,16 @@ serve(async (req) => {
 
     console.log('Candidate profile loaded:', {
       jobTitle: candidateProfile.job_title,
-      hasWebbyProfile: !!webbyProfile
+      hasWebbyProfile: !!webbyProfile,
+      hasSecondChapter: !!candidateProfile.second_chapter && candidateProfile.show_second_chapter,
+      hasProofOfPotential: !!candidateProfile.proof_of_potential && candidateProfile.show_proof_of_potential
     });
+
+    // Get Second Chapter and PoP data
+    const secondChapter = candidateProfile.second_chapter as Record<string, any> | null;
+    const showSecondChapter = candidateProfile.show_second_chapter === true;
+    const proofOfPotential = candidateProfile.proof_of_potential as Record<string, any> | null;
+    const showPoP = candidateProfile.show_proof_of_potential !== false;
 
     // Get all active jobs
     const { data: jobs, error: jobsError } = await supabaseClient
@@ -79,7 +121,7 @@ serve(async (req) => {
     const sectorsToAvoid = webbyProfile?.sectors_to_avoid || [];
     const functionsToAvoid = webbyProfile?.functions_to_avoid || [];
     
-    const filteredJobs = jobs?.filter(job => {
+    let filteredJobs = jobs?.filter(job => {
       const jobSpec = jobSpecs?.find(spec => spec.job_id === job.id);
       if (!jobSpec) return true; // Include if no tags
       
@@ -96,13 +138,58 @@ serve(async (req) => {
 
     console.log(`Filtered ${jobs?.length || 0} jobs to ${filteredJobs.length} after avoid lists`);
 
+    // Mark jobs that match Second Chapter sectors
+    const secondChapterSectors = showSecondChapter && secondChapter?.second_chapter_sectors 
+      ? secondChapter.second_chapter_sectors 
+      : [];
+    
+    const jobsWithSecondChapterMatch = filteredJobs.map(job => ({
+      ...job,
+      matchesSecondChapter: checkJobMatchesSecondChapter(job.work_area, secondChapterSectors)
+    }));
+
+    // Build Second Chapter context for AI
+    let secondChapterContext = '';
+    if (showSecondChapter && secondChapter && Object.keys(secondChapter).length > 0) {
+      secondChapterContext = `
+**SECOND CHAPTER (Career Direction Change - IMPORTANT):**
+This candidate is looking for a career change. PRIORITIZE jobs matching their new direction:
+- Target Sectors: ${secondChapter.second_chapter_sectors?.join(', ') || 'Not specified'}
+- Transition Type: ${secondChapter.sector_transition_type || 'Not specified'}
+  ${secondChapter.sector_transition_type === 'new_sector' ? '(They want a COMPLETELY NEW sector - prioritize jobs in their target sectors even if different from current role)' : ''}
+  ${secondChapter.sector_transition_type === 'stay_same_sector_new_role' ? '(They want a NEW ROLE in their current sector)' : ''}
+- Desired Role Shape: ${secondChapter.second_chapter_role_shape_tags?.join(', ') || 'Not specified'}
+- How They Want to Contribute: ${secondChapter.second_chapter_team_contribution_tags?.join(', ') || 'Not specified'}
+- Environment Preferences: ${secondChapter.second_chapter_environment_tags?.join(', ') || 'Not specified'}
+${secondChapter.second_chapter_summary ? `- In Their Own Words: "${secondChapter.second_chapter_summary}"` : ''}
+
+Jobs marked with "⭐ MATCHES SECOND CHAPTER" align with their target sectors - these should be PRIMARY matches!`;
+    }
+
+    // Build PoP context for AI
+    let popContext = '';
+    if (showPoP && proofOfPotential && Object.keys(proofOfPotential).length > 0) {
+      popContext = `
+**PROOF OF POTENTIAL (Life Experience Indicators):**
+This candidate has shared their potential through life experiences:
+- Interested Sectors: ${proofOfPotential.next_chapter_sectors?.join(', ') || 'Not specified'}
+- Work Style: ${proofOfPotential.work_style_tags?.join(', ') || 'Not specified'}
+- Reliability Indicators: ${proofOfPotential.reliability_tags?.join(', ') || 'Not specified'}
+- Life Experience: ${proofOfPotential.experience_context_tags?.join(', ') || 'Not specified'}
+${proofOfPotential.experience_proud_of ? `- Something They're Proud Of: "${proofOfPotential.experience_proud_of}"` : ''}
+- Hobbies: ${proofOfPotential.hobby_tags?.join(', ') || 'Not specified'}
+
+Consider their potential and life experience when matching, not just formal qualifications.`;
+    }
+
     const prompt = `You are Webby, an AI career matchmaker. Analyze these jobs and categorize them for the candidate using their NEXT CHAPTER goals.
 
 **CRITICAL MATCHING RULES:**
 1. Never match based on free-text keywords alone - use structured tags and Next Chapter data
-2. Prioritize jobs that align with moving_towards_sectors and moving_towards_functions
+2. ${showSecondChapter && secondChapterSectors.length > 0 ? 'PRIORITIZE jobs marked with "⭐ MATCHES SECOND CHAPTER" as PRIMARY matches - the candidate is actively seeking these sectors!' : 'Prioritize jobs that align with moving_towards_sectors and moving_towards_functions'}
 3. Consider hobby_work_preferences - only match hobby-related jobs if candidate explicitly wants work in that area
 4. Always explain WHY you're showing each job
+5. ${showSecondChapter && secondChapter?.sector_transition_type === 'new_sector' ? 'This candidate wants a NEW SECTOR - their current job title is LESS important than their target sectors' : ''}
 
 Candidate Profile:
 - Current Job Title: ${candidateProfile.job_title}
@@ -110,7 +197,9 @@ Candidate Profile:
 - Skills: ${candidateProfile.required_skills?.join(', ') || 'Not specified'}
 - Location: ${candidateProfile.location?.join(', ') || 'Not specified'}
 - Salary Range: £${candidateProfile.min_salary} - £${candidateProfile.max_salary}
-${webbyProfile?.next_chapter_summary ? `\n**NEXT CHAPTER (What they want next):**\n"${webbyProfile.next_chapter_summary}"` : ''}
+${secondChapterContext}
+${popContext}
+${webbyProfile?.next_chapter_summary ? `\n**WEBBY NEXT CHAPTER:**\n"${webbyProfile.next_chapter_summary}"` : ''}
 ${webbyProfile?.moving_towards_sectors?.length ? `- Moving towards sectors: ${webbyProfile.moving_towards_sectors.join(', ')}` : ''}
 ${webbyProfile?.moving_towards_functions?.length ? `- Moving towards functions: ${webbyProfile.moving_towards_functions.join(', ')}` : ''}
 ${webbyProfile?.next_chapter_environment?.length ? `- Next chapter environment: ${webbyProfile.next_chapter_environment.join(', ')}` : ''}
@@ -120,10 +209,17 @@ ${webbyProfile?.soft_skills_self_assessed?.length ? `- Soft Skills: ${webbyProfi
 ${webbyProfile?.life_outside_work ? `- Life Outside Work: ${webbyProfile.life_outside_work}` : ''}
 
 Jobs to Analyze (already filtered by avoid lists):
-${JSON.stringify(filteredJobs.slice(0, 20).map(job => {
+${JSON.stringify(jobsWithSecondChapterMatch.slice(0, 20).map(job => {
   const spec = jobSpecs?.find(s => s.job_id === job.id);
   return {
-    ...job,
+    id: job.id,
+    title: job.title,
+    company: job.company,
+    work_area: job.work_area,
+    location: job.location,
+    salary_min: job.salary_min,
+    salary_max: job.salary_max,
+    matchesSecondChapter: job.matchesSecondChapter ? '⭐ MATCHES SECOND CHAPTER' : '',
     sector_tags: spec?.sector_tags || [],
     function_tags: spec?.function_tags || [],
     environment_tags: spec?.environment_tags || []
@@ -131,13 +227,15 @@ ${JSON.stringify(filteredJobs.slice(0, 20).map(job => {
 }), null, 2)}
 
 Categorize each job into ONE of these categories:
-1. PRIMARY: Strong match based on NEXT CHAPTER goals (moving_towards_* fields) - explain how it's a step towards what they want
+1. PRIMARY: ${showSecondChapter && secondChapterSectors.length > 0 ? 'Jobs matching SECOND CHAPTER target sectors (look for ⭐), OR strong match based on Next Chapter goals' : 'Strong match based on NEXT CHAPTER goals (moving_towards_* fields) - explain how it\'s a step towards what they want'}
 2. SERENDIPITOUS: Unexpected match based on hobbies they want work in, or hidden interests
 3. UNEXPECTED: Alternative career path based on transferable skills from current role
 
 For each match, provide:
-- match_score (0-100)
-- match_reason: Start with "I'm showing you this because:" then explain using Next Chapter context (e.g., "you said you'd like to move into admin/office work", "it's within your travel radius", "the pay meets your minimum")
+- match_score (0-100) ${showSecondChapter && secondChapterSectors.length > 0 ? '- Jobs matching Second Chapter sectors should score 80+ if other factors align' : ''}
+- match_reason: Start with "I'm showing you this because:" then explain using Next Chapter/Second Chapter context
+  ${showSecondChapter ? '- For Second Chapter matches: "you said you want to move into [sector], and this role is exactly that..."' : ''}
+  - Be specific about salary, location, environment matches
 - category (primary/serendipitous/unexpected)
 
 Return ONLY valid JSON in this format:
