@@ -1,3 +1,26 @@
+export interface ShowAndTellItem {
+  title: string;
+  type: 'video' | 'image' | 'link';
+  url_or_path: string;
+  short_description: string;
+}
+
+export interface ProofOfPotential {
+  work_style_tags?: string[];
+  experience_context_tags?: string[];
+  experience_context_other?: string | null;
+  experience_proud_of?: string | null;
+  reliability_tags?: string[];
+  preferred_time_of_day?: 'morning' | 'afternoon' | 'evening' | 'flexible';
+  weekend_ok?: boolean;
+  next_chapter_sectors?: string[];
+  next_chapter_sectors_other?: string | null;
+  next_chapter_text?: string | null;
+  hobby_tags?: string[];
+  hobby_other?: string | null;
+  hobby_to_work_note?: string | null;
+  show_and_tell_items?: ShowAndTellItem[];
+}
 
 export interface CandidateProfile {
   id: string;
@@ -33,10 +56,12 @@ export interface CandidateProfile {
   home_postcode: string | null;
   linkedin_url: string | null;
   years_in_current_title: number | null;
-  title_experience?: string | null; // Making this optional since it's not in the database
+  title_experience?: string | null;
   workArea: string | null;
   itSpecialization: string | null;
   personality?: any;
+  proof_of_potential?: ProofOfPotential | any | null;
+  show_proof_of_potential?: boolean;
 }
 
 export interface EmployerProfile {

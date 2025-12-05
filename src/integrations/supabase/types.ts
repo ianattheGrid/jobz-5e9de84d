@@ -354,9 +354,11 @@ export type Database = {
           phone_number: string | null
           preferred_work_type: string | null
           profile_picture_url: string | null
+          proof_of_potential: Json | null
           required_qualifications: string[] | null
           required_skills: string[] | null
           security_clearance: string | null
+          show_proof_of_potential: boolean | null
           signup_date: string | null
           skills_experience: Json | null
           travel_radius: number | null
@@ -403,9 +405,11 @@ export type Database = {
           phone_number?: string | null
           preferred_work_type?: string | null
           profile_picture_url?: string | null
+          proof_of_potential?: Json | null
           required_qualifications?: string[] | null
           required_skills?: string[] | null
           security_clearance?: string | null
+          show_proof_of_potential?: boolean | null
           signup_date?: string | null
           skills_experience?: Json | null
           travel_radius?: number | null
@@ -452,9 +456,11 @@ export type Database = {
           phone_number?: string | null
           preferred_work_type?: string | null
           profile_picture_url?: string | null
+          proof_of_potential?: Json | null
           required_qualifications?: string[] | null
           required_skills?: string[] | null
           security_clearance?: string | null
+          show_proof_of_potential?: boolean | null
           signup_date?: string | null
           skills_experience?: Json | null
           travel_radius?: number | null

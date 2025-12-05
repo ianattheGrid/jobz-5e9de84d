@@ -15,6 +15,7 @@ const defaultSections = {
   gallery: true,
   cv: true,
   linkedin: true,
+  proof_of_potential: true,
 };
 
 interface SectionVisibilityTogglesProps {

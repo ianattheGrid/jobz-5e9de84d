@@ -18,6 +18,7 @@ import { SectionVisibilityToggles } from "@/components/candidate/SectionVisibili
 import { PersonalitySection } from "@/components/candidate/PersonalitySection";
 import { PortfolioSection } from "@/components/candidate/portfolio/PortfolioSection";
 import { CosmicBackground } from "@/components/ui/cosmic-background";
+import { ProofOfPotentialSection } from "@/components/candidate/proof-of-potential/ProofOfPotentialSection";
 
 export default function CandidateProfile() {
   const { toast } = useToast();
@@ -198,6 +199,12 @@ export default function CandidateProfile() {
               />
 
               <VerificationSection />
+
+              {/* Proof of Potential Section - for 18-25 year olds */}
+              <ProofOfPotentialSection 
+                userId={userId}
+                initialData={(profileData as any)?.proof_of_potential || null}
+              />
             </div>
           )}
         </div>
