@@ -357,8 +357,10 @@ export type Database = {
           proof_of_potential: Json | null
           required_qualifications: string[] | null
           required_skills: string[] | null
+          second_chapter: Json | null
           security_clearance: string | null
           show_proof_of_potential: boolean | null
+          show_second_chapter: boolean | null
           signup_date: string | null
           skills_experience: Json | null
           travel_radius: number | null
@@ -408,8 +410,10 @@ export type Database = {
           proof_of_potential?: Json | null
           required_qualifications?: string[] | null
           required_skills?: string[] | null
+          second_chapter?: Json | null
           security_clearance?: string | null
           show_proof_of_potential?: boolean | null
+          show_second_chapter?: boolean | null
           signup_date?: string | null
           skills_experience?: Json | null
           travel_radius?: number | null
@@ -459,8 +463,10 @@ export type Database = {
           proof_of_potential?: Json | null
           required_qualifications?: string[] | null
           required_skills?: string[] | null
+          second_chapter?: Json | null
           security_clearance?: string | null
           show_proof_of_potential?: boolean | null
+          show_second_chapter?: boolean | null
           signup_date?: string | null
           skills_experience?: Json | null
           travel_radius?: number | null

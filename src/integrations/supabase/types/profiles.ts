@@ -22,6 +22,32 @@ export interface ProofOfPotential {
   show_and_tell_items?: ShowAndTellItem[];
 }
 
+export type SectorTransitionType = 'stay_same_sector_new_role' | 'new_sector' | 'either';
+
+export interface SecondChapter {
+  // Block 1: Sectors for My Second Chapter
+  second_chapter_sectors?: string[];
+  second_chapter_sectors_other?: string | null;
+  sector_transition_type?: SectorTransitionType;
+  second_chapter_sector_note?: string | null;
+  
+  // Block 2: Role Shape
+  second_chapter_role_shape_tags?: string[];
+  second_chapter_role_shape_other?: string | null;
+  
+  // Block 3: Team Contribution
+  second_chapter_team_contribution_tags?: string[];
+  second_chapter_team_contribution_other?: string | null;
+  
+  // Block 4: Environment & Structure
+  second_chapter_environment_tags?: string[];
+  second_chapter_work_structure_tags?: string[];
+  second_chapter_environment_other?: string | null;
+  
+  // Block 5: In My Own Words
+  second_chapter_summary?: string | null;
+}
+
 export interface CandidateProfile {
   id: string;
   email: string;
@@ -62,6 +88,8 @@ export interface CandidateProfile {
   personality?: any;
   proof_of_potential?: ProofOfPotential | any | null;
   show_proof_of_potential?: boolean;
+  second_chapter?: SecondChapter | any | null;
+  show_second_chapter?: boolean;
 }
 
 export interface EmployerProfile {
