@@ -1,4 +1,5 @@
 export const industrySectors = [
+  // Corporate/Professional sectors
   "Technology",
   "Healthcare", 
   "Finance",
@@ -14,5 +15,13 @@ export const industrySectors = [
   "Automotive",
   "Aerospace & Defense",
   "Professional Services",
+  // Entry-level friendly sectors
+  "Hospitality & Food Service",
+  "Travel & Tourism",
+  "Warehousing & Logistics",
+  "Care & Support Services",
+  "Outdoor & Environmental",
+  "Transport & Delivery",
+  // Keep at end
   "Other"
 ];
