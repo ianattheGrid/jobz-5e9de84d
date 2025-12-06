@@ -36,6 +36,14 @@ export const HowItWorksHero = ({ activeTab, onTabChange }: HowItWorksHeroProps) 
       {/* Buttons Section */}
       <section className="bg-background py-12">
         <div className="container mx-auto px-4">
+          {/* Section Introduction */}
+          <div className="text-center max-w-3xl mx-auto mb-10">
+            <p className="text-xl text-muted-foreground leading-relaxed">
+              <span className="font-semibold text-foreground">Jobz cuts through the noise</span> to connect people directly. 
+              Select below to see how we make hiring and job hunting faster, fairer, and more human for you.
+            </p>
+          </div>
+          
           <TooltipProvider>
             <div className="flex flex-col sm:flex-row gap-4 w-full max-w-3xl mx-auto">
               <Button

@@ -298,23 +298,37 @@ const FeatureCard = ({
   return (
     <div
       className={cn(
-        "rounded-xl border border-primary/10 bg-card/90 backdrop-blur-md",
-        "p-6 transition-all duration-300",
-        "hover:shadow-[0_0_30px_rgba(var(--primary-rgb),0.15)] hover:border-primary/30",
-        "hover:scale-[1.02] hover:bg-card/95",
-        "relative overflow-hidden group"
+        // Base: gradient background with depth
+        "relative rounded-2xl p-6 overflow-hidden group cursor-pointer",
+        "bg-gradient-to-br from-slate-50 via-white to-slate-100/50",
+        "dark:from-slate-900 dark:via-slate-800 dark:to-slate-900",
+        // Prominent border
+        "border-2 border-primary/20",
+        // Strong shadow for depth
+        "shadow-lg shadow-primary/5",
+        // Hover effects
+        "transition-all duration-500 ease-out",
+        "hover:scale-[1.03] hover:shadow-2xl hover:shadow-primary/20",
+        "hover:border-primary/40"
       )}
     >
-      {/* Subtle gradient overlay on hover */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      {/* Animated gradient shimmer overlay */}
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/5 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+      
+      {/* Corner accent glow */}
+      <div className="absolute -top-20 -right-20 w-40 h-40 bg-primary/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
       
       <div className="relative z-10">
-        {/* Icon with glow container */}
-        <div className="mb-4 inline-flex items-center justify-center w-14 h-14 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors duration-300">
-          <Icon className="h-7 w-7 text-primary group-hover:scale-110 transition-transform duration-300" />
+        {/* Large glowing icon container */}
+        <div className="mb-5 inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/10 border border-primary/30 shadow-[0_0_20px_hsl(var(--primary)/0.2)] group-hover:shadow-[0_0_30px_hsl(var(--primary)/0.4)] group-hover:scale-110 transition-all duration-300">
+          <Icon className="h-8 w-8 text-primary drop-shadow-[0_0_8px_hsl(var(--primary)/0.5)]" />
         </div>
         
-        <h3 className="text-lg font-semibold text-foreground mb-2">{title}</h3>
+        {/* Title */}
+        <h3 className="text-xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors duration-300">
+          {title}
+        </h3>
+        
         <p className="text-muted-foreground text-sm leading-relaxed">{description}</p>
       </div>
     </div>
