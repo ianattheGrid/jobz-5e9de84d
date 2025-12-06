@@ -80,23 +80,23 @@ export const PlatformFeatures = ({ activeTab }: PlatformFeaturesProps) => {
           <div className="grid md:grid-cols-2 gap-6">
             <FeatureCard
               icon={FileText}
-              title="Post Unlimited. Pay Fixed."
-              description="£9/month for all your roles. No per-listing fees, no hidden costs, no surprises."
+              title="Post Unlimited. Search Unlimited."
+              description="Create as many roles as you like and browse a live, swipe‑style candidate database in a few taps—no limits on how much you can use the platform."
             />
             <FeatureCard
-              icon={Coins}
-              title="Bonuses When You Need Them"
-              description="For harder-to-fill roles, set a 'You're Hired' bonus. Only pay when someone gets hired."
+              icon={Bot}
+              title="Webby, Your Hiring Co‑Pilot."
+              description="Use AI to cut through the noise. Webby spots career‑changers, second‑chapter candidates, and 'non‑obvious' matches that job boards and keyword searches overlook."
             />
             <FeatureCard
-              icon={Search}
-              title="Unrivalled Sourcing, On Demand"
-              description="Activate our anonymous Connector network for reach no agency can match—only when you need it."
+              icon={Users}
+              title="Bonuses & Connectors When You Need Them."
+              description="Add optional 'You're Hired' bonuses to make key roles stand out, and switch on our anonymous Connector network to reach talent your usual channels never touch."
             />
             <FeatureCard
               icon={Workflow}
-              title="From First Click to First Day"
-              description="Anonymous introductions, direct conversations, seamless hiring. No middlemen, no delays."
+              title="Direct, Human Hiring. On Your Terms."
+              description="Talk straight to candidates, keep things anonymous until there's a real fit, and move from first contact to start date without agencies slowing everything down."
             />
           </div>
         </TabsContent>
