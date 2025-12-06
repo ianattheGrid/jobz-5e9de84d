@@ -106,8 +106,7 @@ export const PlatformFeatures = ({ activeTab }: PlatformFeaturesProps) => {
           {/* Intro Text */}
           <div className="text-center max-w-2xl mx-auto space-y-3">
             <p className="text-lg text-muted-foreground leading-relaxed">
-              Your next chapter starts here—not in a database. Our AI sees your potential, not just your past. 
-              No recruiter fees means employers hire on <span className="font-semibold text-foreground">merit, not cost</span>.
+              <span className="font-semibold text-foreground">Hiring shouldn't be a barrier to opportunity.</span> The average cost to hire an employee is <span className="font-semibold text-foreground">£6,125</span>, creating huge barriers for SMEs. Jobz changes the game: companies pay just <span className="font-semibold text-foreground">£9/month</span>, making hiring simple and opening up opportunities for you across all sectors. Here, you're not just a number, and progression is often faster in growing businesses.
             </p>
           </div>
 
