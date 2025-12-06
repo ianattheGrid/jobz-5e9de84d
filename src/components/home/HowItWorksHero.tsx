@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { Info } from "lucide-react";
-import { SpaceBackground } from "./SpaceBackground";
+import astronautHelmet from "@/assets/astronaut-helmet.jpg";
 
 interface HowItWorksHeroProps {
   activeTab: string;
@@ -12,11 +12,22 @@ export const HowItWorksHero = ({ activeTab, onTabChange }: HowItWorksHeroProps) 
   return (
     <>
       {/* Hero Banner Section */}
-      <section className="relative h-[300px] overflow-hidden">
-        <SpaceBackground />
+      <section className="relative h-[350px] overflow-hidden">
+        {/* Background Image */}
+        <img 
+          src={astronautHelmet}
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover object-top"
+        />
+        
+        {/* Gradient overlay for text readability */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/60" />
+        
+        {/* Color tint matching the image tones */}
+        <div className="absolute inset-0 bg-gradient-to-r from-purple-900/20 via-transparent to-blue-900/20" />
         
         <div className="relative container mx-auto px-4 h-full flex items-center justify-center z-10">
-          <h2 className="text-4xl md:text-5xl font-bold text-white text-center drop-shadow-[0_0_20px_rgba(255,255,255,0.3)]">
+          <h2 className="text-4xl md:text-5xl font-bold text-white text-center drop-shadow-[0_0_30px_rgba(255,255,255,0.4)]">
             How Jobz Works
           </h2>
         </div>
