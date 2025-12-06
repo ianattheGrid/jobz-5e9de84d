@@ -169,23 +169,23 @@ export const PlatformFeatures = ({ activeTab }: PlatformFeaturesProps) => {
           <div className="grid md:grid-cols-2 gap-6">
             <FeatureCard
               icon={Bot}
-              title="Matched on Potential, Not Keywords"
-              description="Our AI sees where you're going, not just where you've been. Career changers welcome."
-            />
-            <FeatureCard
-              icon={Coins}
-              title="Get Paid When You Get Hired"
-              description="Employers set 'You're Hired' bonuses. Land the role, earn the reward."
+              title="Matched on Potential, Not Just Keywords"
+              description="Our AI focuses on where you're going, not just where you've been. Career changers and second‑chapter candidates are properly seen here."
             />
             <FeatureCard
               icon={ShieldCheck}
-              title="Never Rejected for Being 'Too Expensive'"
-              description="No recruiter fees means employers hire on merit. Your value isn't reduced by hidden costs."
+              title="Hired for Fit, Not Fee"
+              description={`Because employers aren't paying recruiter commissions on Jobz, more of them are open to you—even if your path isn't "typical" on paper.`}
+            />
+            <FeatureCard
+              icon={Coins}
+              title="Extras When Employers Offer Them"
+              description={`Some roles come with optional "You're Hired" bonuses. When an employer chooses to add one and you land the job, you share in the reward.`}
             />
             <FeatureCard
               icon={Target}
-              title="No Black Holes, No Ghosting"
-              description="See your status. Know where you stand. Direct communication with employers."
+              title="Know Where You Stand"
+              description="Stay anonymous while you explore, then talk directly once there's real interest. Clear status updates mean fewer black holes and less ghosting."
             />
           </div>
         </TabsContent>
