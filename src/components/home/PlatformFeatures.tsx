@@ -24,10 +24,9 @@ export const PlatformFeatures = ({ activeTab }: PlatformFeaturesProps) => {
         <TabsContent value="hiring" className="mt-0 space-y-8 radix-tabpanel">
           {/* Intro Text */}
           <div className="text-center max-w-2xl mx-auto space-y-3">
-            <p className="text-lg text-muted-foreground leading-relaxed">
-              Hiring shouldn't cost more than the value you get. Post unlimited roles for <span className="font-semibold text-foreground">£9/month</span>. 
-              Set optional bonuses for harder-to-fill roles. Tap into our anonymous Connector network for unrivalled sourcing—no agencies, no middlemen.
-            </p>
+              <p className="text-lg text-muted-foreground leading-relaxed">
+                Many SMEs end up paying for LinkedIn Recruiter, agency fees, and per‑hire costs that were never designed with them in mind. <span className="font-semibold text-foreground">Jobz is.</span> For <span className="font-semibold text-foreground">£9/month</span>, you get unlimited job posts, direct access to a live candidate database, and <span className="font-semibold text-foreground">Webby—your AI co‑pilot</span>—for smarter, faster hiring, with no tie‑ins and no per‑hire fees.
+              </p>
           </div>
 
           <div className="flex flex-col sm:flex-row sm:justify-center gap-3">
