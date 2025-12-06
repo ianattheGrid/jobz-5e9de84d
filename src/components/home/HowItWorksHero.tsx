@@ -17,7 +17,7 @@ export const HowItWorksHero = ({ activeTab, onTabChange }: HowItWorksHeroProps) 
         <img 
           src={astronautHelmet}
           alt=""
-          className="absolute inset-0 w-full h-full object-cover object-top"
+          className="absolute inset-0 w-full h-full object-cover object-[center_20%] md:object-[center_30%] lg:object-[center_40%]"
         />
         
         {/* Gradient overlay for text readability */}
