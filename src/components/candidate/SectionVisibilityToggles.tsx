@@ -25,11 +25,29 @@ interface SectionVisibilityTogglesProps {
 }
 
 export function SectionVisibilityToggles({ userId, initial, onChange }: SectionVisibilityTogglesProps) {
-  const [sections, setSections] = useState<typeof defaultSections>({ ...defaultSections, ...(initial || {}) });
+  const [sections, setSections] = useState<typeof defaultSections>(() => {
+    const merged = { ...defaultSections };
+    if (initial) {
+      (Object.keys(defaultSections) as (keyof typeof defaultSections)[]).forEach(key => {
+        if (key in initial) {
+          merged[key] = initial[key] ?? defaultSections[key];
+        }
+      });
+    }
+    return merged;
+  });
   const { toast } = useToast();
 
   useEffect(() => {
-    setSections(prev => ({ ...prev, ...(initial || {}) }));
+    setSections(() => {
+      const next = { ...defaultSections };
+      (Object.keys(defaultSections) as (keyof typeof defaultSections)[]).forEach(key => {
+        if (initial && key in initial) {
+          next[key] = initial[key] ?? defaultSections[key];
+        }
+      });
+      return next;
+    });
   }, [initial]);
 
   const updateServer = async (next: typeof defaultSections) => {
