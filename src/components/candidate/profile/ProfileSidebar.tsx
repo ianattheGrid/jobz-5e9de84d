@@ -1,4 +1,4 @@
-import { User, Briefcase, Award, Image, Sparkles, Settings, Check, Circle } from "lucide-react";
+import { User, Briefcase, Award, Image, Sparkles, Settings, Check, Circle, HelpCircle } from "lucide-react";
 import { PROFILE_SECTIONS, ProfileSectionId } from "./types";
 import {
   Sidebar,
@@ -14,7 +14,9 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
-import { Badge } from "@/components/ui/badge";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 
 const iconMap = {
   User,
@@ -42,111 +44,95 @@ export function ProfileSidebar({
   const requiredSections = PROFILE_SECTIONS.filter(s => s.required);
   const optionalSections = PROFILE_SECTIONS.filter(s => !s.required);
 
+  const SectionItem = ({ section }: { section: typeof PROFILE_SECTIONS[0] }) => {
+    const Icon = iconMap[section.icon as keyof typeof iconMap];
+    const isActive = activeSection === section.id;
+    const isComplete = completedSections.has(section.id);
+
+    return (
+      <SidebarMenuItem>
+        <SidebarMenuButton
+          onClick={() => onSectionChange(section.id)}
+          className={cn(
+            "w-full h-10 px-3 gap-3 rounded-md transition-all",
+            isActive 
+              ? "bg-primary/10 text-primary font-medium" 
+              : "hover:bg-muted/50 text-foreground"
+          )}
+          tooltip={collapsed ? section.label : undefined}
+        >
+          <div className="relative flex-shrink-0">
+            <Icon className="h-5 w-5" />
+            {isComplete && (
+              <Check className="absolute -right-1 -bottom-1 h-3 w-3 text-green-500 bg-background rounded-full" />
+            )}
+          </div>
+          {!collapsed && (
+            <span className="text-sm truncate">{section.label}</span>
+          )}
+        </SidebarMenuButton>
+      </SidebarMenuItem>
+    );
+  };
+
   return (
     <Sidebar collapsible="icon" className="border-r border-border/40">
       <SidebarHeader className="border-b border-border/40 p-4">
         {!collapsed && (
-          <div>
+          <div className="flex items-center justify-between">
             <h2 className="font-semibold text-foreground">Profile Builder</h2>
-            <p className="text-xs text-muted-foreground mt-1">
-              Complete required sections to get matched
-            </p>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="ghost" size="icon" className="h-7 w-7">
+                  <HelpCircle className="h-4 w-4 text-muted-foreground" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent side="right" className="w-80">
+                <div className="space-y-3">
+                  <h4 className="font-medium">How Profile Builder Works</h4>
+                  <p className="text-sm text-muted-foreground">
+                    Complete the <strong>Required</strong> sections to get matched with employers. 
+                    Optional sections help you stand out.
+                  </p>
+                  <ul className="text-sm text-muted-foreground list-disc pl-4 space-y-1">
+                    <li>Each section saves independently</li>
+                    <li>Green checkmarks show completed sections</li>
+                    <li>Use Preview to see how employers view your profile</li>
+                  </ul>
+                </div>
+              </PopoverContent>
+            </Popover>
           </div>
         )}
       </SidebarHeader>
 
-      <SidebarContent>
+      <SidebarContent className="px-2 py-4">
         {/* Required Sections */}
         <SidebarGroup>
-          <SidebarGroupLabel className="text-xs uppercase tracking-wider text-muted-foreground">
+          <SidebarGroupLabel className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground px-3 mb-2">
             {!collapsed && "Required"}
           </SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>
-              {requiredSections.map((section) => {
-                const Icon = iconMap[section.icon as keyof typeof iconMap];
-                const isActive = activeSection === section.id;
-                const isComplete = completedSections.has(section.id);
-
-                return (
-                  <SidebarMenuItem key={section.id}>
-                    <SidebarMenuButton
-                      onClick={() => onSectionChange(section.id)}
-                      className={cn(
-                        "w-full justify-start gap-3 transition-colors",
-                        isActive && "bg-primary/10 text-primary border-l-2 border-primary",
-                        !isActive && "hover:bg-muted/50"
-                      )}
-                      tooltip={collapsed ? section.label : undefined}
-                    >
-                      <div className="relative">
-                        <Icon className="h-4 w-4" />
-                        {isComplete && (
-                          <Check className="absolute -right-1 -top-1 h-3 w-3 text-green-500" />
-                        )}
-                      </div>
-                      {!collapsed && (
-                        <div className="flex flex-col items-start flex-1 min-w-0">
-                          <div className="flex items-center gap-2">
-                            <span className="text-sm font-medium truncate">{section.label}</span>
-                            <Badge variant="destructive" className="text-[10px] px-1 py-0 h-4">
-                              Required
-                            </Badge>
-                          </div>
-                          <span className="text-xs text-muted-foreground truncate">
-                            {section.description}
-                          </span>
-                        </div>
-                      )}
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                );
-              })}
+            <SidebarMenu className="space-y-1">
+              {requiredSections.map((section) => (
+                <SectionItem key={section.id} section={section} />
+              ))}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
 
+        {!collapsed && <Separator className="my-4" />}
+
         {/* Optional Sections */}
         <SidebarGroup>
-          <SidebarGroupLabel className="text-xs uppercase tracking-wider text-muted-foreground">
+          <SidebarGroupLabel className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground px-3 mb-2">
             {!collapsed && "Optional"}
           </SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>
-              {optionalSections.map((section) => {
-                const Icon = iconMap[section.icon as keyof typeof iconMap];
-                const isActive = activeSection === section.id;
-                const isComplete = completedSections.has(section.id);
-
-                return (
-                  <SidebarMenuItem key={section.id}>
-                    <SidebarMenuButton
-                      onClick={() => onSectionChange(section.id)}
-                      className={cn(
-                        "w-full justify-start gap-3 transition-colors",
-                        isActive && "bg-primary/10 text-primary border-l-2 border-primary",
-                        !isActive && "hover:bg-muted/50"
-                      )}
-                      tooltip={collapsed ? section.label : undefined}
-                    >
-                      <div className="relative">
-                        <Icon className="h-4 w-4" />
-                        {isComplete && (
-                          <Check className="absolute -right-1 -top-1 h-3 w-3 text-green-500" />
-                        )}
-                      </div>
-                      {!collapsed && (
-                        <div className="flex flex-col items-start flex-1 min-w-0">
-                          <span className="text-sm font-medium truncate">{section.label}</span>
-                          <span className="text-xs text-muted-foreground truncate">
-                            {section.description}
-                          </span>
-                        </div>
-                      )}
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                );
-              })}
+            <SidebarMenu className="space-y-1">
+              {optionalSections.map((section) => (
+                <SectionItem key={section.id} section={section} />
+              ))}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
@@ -155,10 +141,8 @@ export function ProfileSidebar({
       <SidebarFooter className="border-t border-border/40 p-4">
         {!collapsed && (
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
-            <div className="flex items-center gap-1">
-              <Circle className="h-2 w-2 fill-green-500 text-green-500" />
-              <span>{completedSections.size}/{PROFILE_SECTIONS.length} complete</span>
-            </div>
+            <Circle className="h-2 w-2 fill-green-500 text-green-500" />
+            <span>{completedSections.size}/{PROFILE_SECTIONS.length} complete</span>
           </div>
         )}
       </SidebarFooter>
