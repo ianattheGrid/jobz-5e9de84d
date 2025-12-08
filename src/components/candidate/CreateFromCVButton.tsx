@@ -106,7 +106,7 @@ export const CreateFromCVButton = ({ cvUrl, userId, onComplete }: CreateFromCVBu
         <UploadCloud className="h-4 w-4 mr-2" />
         {loading ? 'Creating from CV…' : 'Create profile from CV'}
       </Button>
-      <p className="text-xs text-gray-500">Rules-based extraction. You can edit anything after prefill.</p>
+      <p className="text-xs text-gray-500">We'll automatically fill in your details. You can review and edit everything.</p>
     </div>
   );
 };
