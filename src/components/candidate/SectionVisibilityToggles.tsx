@@ -13,9 +13,9 @@ const defaultSections = {
   qualifications: true,
   location: true,
   gallery: true,
-  cv: true,
-  linkedin: true,
   proof_of_potential: true,
+  second_chapter: true,
+  linkedin: true,
 };
 
 interface SectionVisibilityTogglesProps {
