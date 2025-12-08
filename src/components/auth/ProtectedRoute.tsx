@@ -18,32 +18,55 @@ export const ProtectedRoute = ({ children, userType }: ProtectedRouteProps) => {
 
   useEffect(() => {
     let isMounted = true;
-    let timeoutId: NodeJS.Timeout;
     
+    // Set up auth state listener FIRST
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        console.log(`[ProtectedRoute] Auth state changed:`, { event, hasSession: !!session });
+        
+        if (!isMounted) return;
+        
+        if (event === 'SIGNED_OUT' || !session) {
+          console.log('[ProtectedRoute] User signed out or no session - redirecting');
+          setAuthorized(false);
+          setLoading(false);
+          navigate(`/${userType}/signin`);
+        } else if (session) {
+          console.log('[ProtectedRoute] Session valid - authorizing');
+          setAuthorized(true);
+          setLoading(false);
+        }
+      }
+    );
+
+    // THEN check for existing session
     const checkAuth = async () => {
       try {
-        console.log(`[ProtectedRoute] Starting SIMPLIFIED auth check for ${userType}`);
+        console.log(`[ProtectedRoute] Checking session for ${userType}`);
         
-        // Get session - this should be fast
         const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-        console.log(`[ProtectedRoute] Session check complete:`, { hasSession: !!session, error: sessionError });
+        console.log(`[ProtectedRoute] Session check:`, { hasSession: !!session, error: sessionError });
+        
+        if (!isMounted) return;
         
         if (sessionError || !session) {
           console.log('[ProtectedRoute] No valid session - redirecting to sign in');
+          setAuthorized(false);
+          setLoading(false);
           navigate(`/${userType}/signin`);
           return;
         }
 
-        // For now, just let them through if they have a session
-        // We'll add proper role checking back once this works
         console.log(`[ProtectedRoute] Session found - allowing access`);
         setAuthorized(true);
         setLoading(false);
         
       } catch (error) {
         console.error('[ProtectedRoute] Error in auth check:', error);
-        setLoading(false);
-        navigate(`/${userType}/signin`);
+        if (isMounted) {
+          setLoading(false);
+          navigate(`/${userType}/signin`);
+        }
       }
     };
 
@@ -51,9 +74,7 @@ export const ProtectedRoute = ({ children, userType }: ProtectedRouteProps) => {
     
     return () => {
       isMounted = false;
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
+      subscription.unsubscribe();
     };
   }, [navigate, userType]);
 

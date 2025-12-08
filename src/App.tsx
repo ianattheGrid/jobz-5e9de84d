@@ -98,7 +98,7 @@ const App = () => {
           {/* Candidate routes */}
           <Route path="candidate/signin" element={<CandidateSignIn />} />
           <Route path="candidate/signup" element={<CandidateSignUp />} />
-          <Route path="candidate/dashboard" element={<CandidateDashboard />} />
+          <Route path="candidate/dashboard" element={<ProtectedRouteWithTimeout userType="candidate"><CandidateDashboard /></ProtectedRouteWithTimeout>} />
           <Route path="candidate/profile" element={<ProtectedRouteWithTimeout userType="candidate"><CandidateProfile /></ProtectedRouteWithTimeout>} />
           
           {/* Make the preview route completely public and accessible to everyone */}
