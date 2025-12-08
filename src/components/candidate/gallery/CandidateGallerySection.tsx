@@ -22,9 +22,6 @@ export function CandidateGallerySection({ candidateId }: CandidateGallerySection
       <p className="text-sm text-gray-600 -mt-2 pl-4">
         You are more than words—show the human element. Add up to 9 images (running, skiing, building projects, volunteering, etc.).
       </p>
-      <div className="bg-green-100 border border-green-400 rounded p-2 pl-4">
-        <p className="text-xs text-green-800 font-medium">✅ Updated to 80x80px thumbnails - if still large, there may be CSS caching</p>
-      </div>
 
       <div className="flex flex-wrap gap-2">
         {images.map((img) => (
