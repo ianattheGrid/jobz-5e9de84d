@@ -59,7 +59,7 @@ export function SectionVisibilityToggles({ userId, initial, onChange }: SectionV
         <div className="grid sm:grid-cols-2 gap-4">
           {Object.entries(sections).map(([key, value]) => (
             <label key={key} className="flex items-center justify-between p-3 rounded-md border">
-              <span className="capitalize text-gray-800">{key.replace('_', ' ')}</span>
+              <span className="text-gray-800">{key.replace(/_/g, ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</span>
               <Switch checked={!!value} onCheckedChange={() => toggle(key as keyof typeof defaultSections)} />
             </label>
           ))}
