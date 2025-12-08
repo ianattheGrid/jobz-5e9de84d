@@ -55,7 +55,7 @@ const CandidateDashboard = () => {
   return (
     <CosmicBackground mode="light">
       <NavBar />
-      <div className="container mx-auto py-8 px-4">
+      <div className="container mx-auto py-8 px-4 pt-20">
         <div className="text-center mb-8 pt-4">
           <h1 className="text-4xl font-bold mb-3 bg-gradient-to-r from-primary via-primary/80 to-primary bg-clip-text text-transparent drop-shadow-sm">
             Welcome to Your Dashboard
