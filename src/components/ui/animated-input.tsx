@@ -46,7 +46,7 @@ const AnimatedInput = React.forwardRef<HTMLInputElement, AnimatedInputProps>(
               "absolute left-3 transition-all duration-300 pointer-events-none",
               "text-muted-foreground",
               isFocused || hasValue || props.value
-                ? "top-0 -translate-y-1/2 text-xs px-1 text-primary font-medium bg-black/60 rounded-sm"
+                ? "-top-2.5 text-xs px-1 text-primary font-medium bg-black/60 rounded-sm"
                 : "top-1/2 -translate-y-1/2 text-base"
             )}
           >
