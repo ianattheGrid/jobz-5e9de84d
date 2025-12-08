@@ -201,10 +201,12 @@ export default function CandidateProfile() {
               <VerificationSection />
 
               {/* Proof of Potential Section - for 18-25 year olds */}
-              <ProofOfPotentialSection 
-                userId={userId}
-                initialData={(profileData as any)?.proof_of_potential || null}
-              />
+              {(profileData as any)?.visible_sections?.proof_of_potential !== false && (
+                <ProofOfPotentialSection 
+                  userId={userId}
+                  initialData={(profileData as any)?.proof_of_potential || null}
+                />
+              )}
             </div>
           )}
         </div>
