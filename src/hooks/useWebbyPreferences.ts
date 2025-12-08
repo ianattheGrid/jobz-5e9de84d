@@ -76,6 +76,8 @@ export const useWebbyPreferences = (userType: UserType) => {
           webby_enabled: enabled,
           anonymity_level: preferences?.anonymity_level || 'semi_anonymous',
           onboarding_completed: preferences?.onboarding_completed || false
+        }, {
+          onConflict: 'user_id,user_type'
         });
 
       if (error) throw error;
@@ -111,6 +113,8 @@ export const useWebbyPreferences = (userType: UserType) => {
           webby_enabled: preferences?.webby_enabled || false,
           anonymity_level: level,
           onboarding_completed: preferences?.onboarding_completed || false
+        }, {
+          onConflict: 'user_id,user_type'
         });
 
       if (error) throw error;
