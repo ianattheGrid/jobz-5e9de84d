@@ -3,8 +3,11 @@ export type ProfileSectionId =
   | 'work-preferences'
   | 'skills-experience'
   | 'media'
-  | 'special'
-  | 'settings';
+  | 'proof-of-potential'
+  | 'second-chapter'
+  | 'personality'
+  | 'bonus-scheme'
+  | 'section-visibility';
 
 export interface ProfileSectionGroup {
   id: ProfileSectionId;
@@ -20,7 +23,7 @@ export const PROFILE_SECTIONS: ProfileSectionGroup[] = [
     label: 'About Me',
     icon: 'User',
     required: true,
-    description: 'Contact info & profile picture'
+    description: 'Contact info, verification & preferences'
   },
   {
     id: 'work-preferences',
@@ -44,17 +47,38 @@ export const PROFILE_SECTIONS: ProfileSectionGroup[] = [
     description: 'Gallery, portfolio, CV'
   },
   {
-    id: 'special',
-    label: 'Special Sections',
-    icon: 'Sparkles',
+    id: 'proof-of-potential',
+    label: 'Proof of Potential',
+    icon: 'Star',
     required: false,
-    description: 'Proof of Potential, Personality'
+    description: 'Showcase your potential (18-25)'
   },
   {
-    id: 'settings',
-    label: 'Settings',
-    icon: 'Settings',
+    id: 'second-chapter',
+    label: 'Second Chapter',
+    icon: 'RefreshCw',
     required: false,
-    description: 'Visibility, verification, preferences'
+    description: 'For career changers'
+  },
+  {
+    id: 'personality',
+    label: 'Personality',
+    icon: 'Brain',
+    required: false,
+    description: 'Your working style & traits'
+  },
+  {
+    id: 'bonus-scheme',
+    label: 'Bonus Scheme',
+    icon: 'Percent',
+    required: false,
+    description: '"You\'re Hired" commission settings'
+  },
+  {
+    id: 'section-visibility',
+    label: 'Section Visibility',
+    icon: 'Eye',
+    required: false,
+    description: 'Control what employers see'
   }
 ];

@@ -1,4 +1,4 @@
-import { User, Briefcase, Award, Image, Sparkles, Settings, Check, Circle, HelpCircle } from "lucide-react";
+import { User, Briefcase, Award, Image, Star, RefreshCw, Brain, Percent, Eye, Check, Circle, HelpCircle } from "lucide-react";
 import { PROFILE_SECTIONS, ProfileSectionId } from "./types";
 import {
   Sidebar,
@@ -18,13 +18,16 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 
-const iconMap = {
+const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   User,
   Briefcase,
   Award,
   Image,
-  Sparkles,
-  Settings,
+  Star,
+  RefreshCw,
+  Brain,
+  Percent,
+  Eye,
 };
 
 interface ProfileSidebarProps {
@@ -45,7 +48,7 @@ export function ProfileSidebar({
   const optionalSections = PROFILE_SECTIONS.filter(s => !s.required);
 
   const SectionItem = ({ section }: { section: typeof PROFILE_SECTIONS[0] }) => {
-    const Icon = iconMap[section.icon as keyof typeof iconMap];
+    const Icon = iconMap[section.icon] || User;
     const isActive = activeSection === section.id;
     const isComplete = completedSections.has(section.id);
 

@@ -5,7 +5,6 @@ import { ProfileSidebar } from "./ProfileSidebar";
 import { ProfileSectionId, PROFILE_SECTIONS } from "./types";
 import { Button } from "@/components/ui/button";
 import { LayoutDashboard, Eye, ArrowLeft } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
 import { CandidateProfile } from "@/integrations/supabase/types/profiles";
 
 // Section components
@@ -13,8 +12,11 @@ import { AboutMeSection } from "./sections/AboutMeSection";
 import { WorkPreferencesSection } from "./sections/WorkPreferencesSection";
 import { SkillsExperienceSection } from "./sections/SkillsExperienceSection";
 import { MediaSection } from "./sections/MediaSection";
-import { SpecialSection } from "./sections/SpecialSection";
-import { SettingsSection } from "./sections/SettingsSection";
+import { ProofOfPotentialPageSection } from "./sections/ProofOfPotentialPageSection";
+import { SecondChapterSection } from "./sections/SecondChapterSection";
+import { PersonalityPageSection } from "./sections/PersonalityPageSection";
+import { BonusSchemeSection } from "./sections/BonusSchemeSection";
+import { SectionVisibilitySection } from "./sections/SectionVisibilitySection";
 
 import ProfileDetails from "@/components/candidate-profile/ProfileDetails";
 
@@ -56,16 +58,33 @@ export function ProfileLayout({ userId, profileData, onProfileUpdate }: ProfileL
       completed.add('media');
     }
 
-    // Special - check for personality or proof of potential
-    const personality = profileData.personality as any;
-    if (personality && Object.keys(personality).length > 0) {
-      completed.add('special');
+    // Proof of Potential - check if proof_of_potential has content
+    const proofOfPotential = (profileData as any)?.proof_of_potential;
+    if (proofOfPotential && Object.keys(proofOfPotential).length > 0) {
+      completed.add('proof-of-potential');
     }
 
-    // Settings - always consider complete if visible_sections exists
+    // Second Chapter - check if second_chapter has content
+    const secondChapter = (profileData as any)?.second_chapter;
+    if (secondChapter && Object.keys(secondChapter).length > 0) {
+      completed.add('second-chapter');
+    }
+
+    // Personality - check for personality data
+    const personality = profileData.personality as any;
+    if (personality && Object.keys(personality).length > 0) {
+      completed.add('personality');
+    }
+
+    // Bonus Scheme - check if commission is set
+    if (profileData.commission_percentage !== null) {
+      completed.add('bonus-scheme');
+    }
+
+    // Section Visibility - always consider complete if visible_sections exists
     const visibleSections = (profileData as any).visible_sections;
     if (visibleSections) {
-      completed.add('settings');
+      completed.add('section-visibility');
     }
 
     setCompletedSections(completed);
@@ -87,10 +106,16 @@ export function ProfileLayout({ userId, profileData, onProfileUpdate }: ProfileL
         return <SkillsExperienceSection {...commonProps} />;
       case 'media':
         return <MediaSection {...commonProps} />;
-      case 'special':
-        return <SpecialSection {...commonProps} />;
-      case 'settings':
-        return <SettingsSection {...commonProps} />;
+      case 'proof-of-potential':
+        return <ProofOfPotentialPageSection {...commonProps} />;
+      case 'second-chapter':
+        return <SecondChapterSection {...commonProps} />;
+      case 'personality':
+        return <PersonalityPageSection {...commonProps} />;
+      case 'bonus-scheme':
+        return <BonusSchemeSection {...commonProps} />;
+      case 'section-visibility':
+        return <SectionVisibilitySection {...commonProps} />;
       default:
         return <AboutMeSection {...commonProps} />;
     }

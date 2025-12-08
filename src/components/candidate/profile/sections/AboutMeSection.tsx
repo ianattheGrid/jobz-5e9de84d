@@ -5,13 +5,15 @@ import * as z from "zod";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { CandidateProfile } from "@/integrations/supabase/types/profiles";
-import { GlowCard, GlowCardContent, GlowCardHeader, GlowCardTitle } from "@/components/ui/glow-card";
-import { Loader2, Save, Link } from "lucide-react";
+import { GlowCard, GlowCardContent, GlowCardHeader, GlowCardTitle, GlowCardDescription } from "@/components/ui/glow-card";
+import { Loader2, Save, Link, Shield, MessageSquare } from "lucide-react";
 import HomePostcodeSelect from "@/components/address/HomePostcodeSelect";
 import { FileUploadSection } from "@/components/candidate/FileUploadSection";
+import { VerificationSection } from "@/components/candidate/VerificationSection";
 
 const aboutMeSchema = z.object({
   full_name: z.string().min(1, "Full name is required"),
@@ -21,6 +23,9 @@ const aboutMeSchema = z.object({
   home_postcode: z.string().min(1, "Please select your home postcode"),
   linkedin_url: z.string().url("Please enter a valid LinkedIn URL").optional().or(z.literal('')),
   current_employer: z.string().optional(),
+  contact_phone_ok: z.boolean().default(true),
+  contact_email_ok: z.boolean().default(true),
+  contact_linkedin_ok: z.boolean().default(false),
 });
 
 type AboutMeFormValues = z.infer<typeof aboutMeSchema>;
@@ -34,6 +39,7 @@ interface AboutMeSectionProps {
 export function AboutMeSection({ userId, profileData, onSave }: AboutMeSectionProps) {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const profileAny = profileData as any;
 
   const form = useForm<AboutMeFormValues>({
     resolver: zodResolver(aboutMeSchema),
@@ -45,6 +51,9 @@ export function AboutMeSection({ userId, profileData, onSave }: AboutMeSectionPr
       home_postcode: profileData?.home_postcode || "",
       linkedin_url: profileData?.linkedin_url || "",
       current_employer: profileData?.current_employer || "",
+      contact_phone_ok: profileAny?.contact_phone_ok ?? true,
+      contact_email_ok: profileAny?.contact_email_ok ?? true,
+      contact_linkedin_ok: profileAny?.contact_linkedin_ok ?? false,
     },
   });
 
@@ -61,6 +70,9 @@ export function AboutMeSection({ userId, profileData, onSave }: AboutMeSectionPr
           home_postcode: values.home_postcode,
           linkedin_url: values.linkedin_url || null,
           current_employer: values.current_employer || null,
+          contact_phone_ok: values.contact_phone_ok,
+          contact_email_ok: values.contact_email_ok,
+          contact_linkedin_ok: values.contact_linkedin_ok,
         })
         .eq('id', userId);
 
@@ -89,6 +101,24 @@ export function AboutMeSection({ userId, profileData, onSave }: AboutMeSectionPr
             currentCV={profileData?.cv_url || null}
             onUploadComplete={onSave}
           />
+        </GlowCardContent>
+      </GlowCard>
+
+      {/* Identity Verification */}
+      <GlowCard>
+        <GlowCardHeader>
+          <div className="flex items-center gap-3">
+            <Shield className="h-5 w-5 text-muted-foreground" />
+            <div>
+              <GlowCardTitle className="text-lg">Identity Verification</GlowCardTitle>
+              <GlowCardDescription>
+                Verify your identity to build trust with employers
+              </GlowCardDescription>
+            </div>
+          </div>
+        </GlowCardHeader>
+        <GlowCardContent>
+          <VerificationSection />
         </GlowCardContent>
       </GlowCard>
 
@@ -196,6 +226,73 @@ export function AboutMeSection({ userId, profileData, onSave }: AboutMeSectionPr
               />
 
               <HomePostcodeSelect control={form.control} />
+
+              {/* Contact Preferences */}
+              <div className="border-t pt-6 mt-6">
+                <div className="flex items-center gap-2 mb-4">
+                  <MessageSquare className="h-4 w-4 text-muted-foreground" />
+                  <h4 className="font-medium">Contact Preferences</h4>
+                </div>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Choose how employers can contact you
+                </p>
+                
+                <div className="space-y-3">
+                  <FormField
+                    control={form.control}
+                    name="contact_email_ok"
+                    render={({ field }) => (
+                      <FormItem className="flex items-center space-x-3 space-y-0">
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                        <FormLabel className="font-normal cursor-pointer">
+                          Employers can contact me by email
+                        </FormLabel>
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="contact_phone_ok"
+                    render={({ field }) => (
+                      <FormItem className="flex items-center space-x-3 space-y-0">
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                        <FormLabel className="font-normal cursor-pointer">
+                          Employers can contact me by phone
+                        </FormLabel>
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="contact_linkedin_ok"
+                    render={({ field }) => (
+                      <FormItem className="flex items-center space-x-3 space-y-0">
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                        <FormLabel className="font-normal cursor-pointer">
+                          Employers can contact me via LinkedIn
+                        </FormLabel>
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </div>
 
               <div className="pt-4">
                 <Button type="submit" disabled={isSubmitting} className="w-full sm:w-auto">
