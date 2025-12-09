@@ -56,6 +56,7 @@ export const candidateFormSchema = z.object({
   contact_phone_ok: z.boolean().default(true),
   contact_email_ok: z.boolean().default(true),
   contact_linkedin_ok: z.boolean().default(false),
+  contact_jobz_ok: z.boolean().default(true),
   skills_experience: z.record(z.string(), z.number()).optional(),
   education_details: z.array(z.object({
     institution: z.string(),
