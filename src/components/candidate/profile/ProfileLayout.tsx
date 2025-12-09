@@ -4,8 +4,9 @@ import { SidebarProvider, SidebarTrigger, SidebarInset } from "@/components/ui/s
 import { ProfileSidebar } from "./ProfileSidebar";
 import { ProfileSectionId, PROFILE_SECTIONS } from "./types";
 import { Button } from "@/components/ui/button";
-import { LayoutDashboard, Eye, ArrowLeft } from "lucide-react";
+import { LayoutDashboard, Eye, ArrowLeft, CreditCard, User } from "lucide-react";
 import { CandidateProfile } from "@/integrations/supabase/types/profiles";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 // Section components
 import { AboutMeSection } from "./sections/AboutMeSection";
@@ -19,6 +20,7 @@ import { BonusSchemeSection } from "./sections/BonusSchemeSection";
 import { SectionVisibilitySection } from "./sections/SectionVisibilitySection";
 
 import ProfileDetails from "@/components/candidate-profile/ProfileDetails";
+import { CandidateCardPreview } from "./CandidateCardPreview";
 
 interface ProfileLayoutProps {
   userId: string;
@@ -31,6 +33,7 @@ export function ProfileLayout({ userId, profileData, onProfileUpdate }: ProfileL
   const [activeSection, setActiveSection] = useState<ProfileSectionId>('about');
   const [completedSections, setCompletedSections] = useState<Set<ProfileSectionId>>(new Set());
   const [showPreview, setShowPreview] = useState(false);
+  const [previewTab, setPreviewTab] = useState<'card' | 'profile'>('card');
 
   // Calculate completed sections based on profile data
   useEffect(() => {
@@ -136,14 +139,40 @@ export function ProfileLayout({ userId, profileData, onProfileUpdate }: ProfileL
             Back to Editing
           </Button>
 
-          <div className="bg-pink-100 border-l-4 border-pink-500 p-4 mb-6">
-            <p className="font-medium text-slate-800">Preview Mode</p>
-            <p className="text-sm text-slate-700">
-              This is how your profile appears to employers after they request to view your details.
-            </p>
-          </div>
+          <Tabs value={previewTab} onValueChange={(v) => setPreviewTab(v as 'card' | 'profile')} className="w-full">
+            <TabsList className="grid w-full max-w-md grid-cols-2 mb-6">
+              <TabsTrigger value="card" className="gap-2">
+                <CreditCard className="h-4 w-4" />
+                Card View
+              </TabsTrigger>
+              <TabsTrigger value="profile" className="gap-2">
+                <User className="h-4 w-4" />
+                Full Profile
+              </TabsTrigger>
+            </TabsList>
 
-          <ProfileDetails profile={profileData} />
+            <TabsContent value="card" className="mt-0">
+              <div className="bg-amber-50 border-l-4 border-amber-500 p-4 mb-6">
+                <p className="font-medium text-slate-800">Swipe Card Preview</p>
+                <p className="text-sm text-slate-700">
+                  This is how employers first see you when browsing candidates. Make a great first impression!
+                </p>
+              </div>
+              <div className="flex justify-center py-8">
+                <CandidateCardPreview profile={profileData} />
+              </div>
+            </TabsContent>
+
+            <TabsContent value="profile" className="mt-0">
+              <div className="bg-pink-100 border-l-4 border-pink-500 p-4 mb-6">
+                <p className="font-medium text-slate-800">Full Profile Preview</p>
+                <p className="text-sm text-slate-700">
+                  This is how your profile appears to employers after they express interest and you reveal your details.
+                </p>
+              </div>
+              <ProfileDetails profile={profileData} />
+            </TabsContent>
+          </Tabs>
         </div>
       </div>
     );
