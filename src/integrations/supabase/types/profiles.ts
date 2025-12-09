@@ -90,6 +90,7 @@ export interface CandidateProfile {
   show_proof_of_potential?: boolean;
   second_chapter?: SecondChapter | any | null;
   show_second_chapter?: boolean;
+  personal_statement?: string | null;
 }
 
 export interface EmployerProfile {

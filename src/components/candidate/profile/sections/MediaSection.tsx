@@ -25,6 +25,8 @@ export function MediaSection({ userId, profileData, onSave }: MediaSectionProps)
             currentProfilePicture={profileData?.profile_picture_url || null}
             currentCV={profileData?.cv_url || null}
             onUploadComplete={onSave}
+            showProfilePicture={false}
+            showCV={true}
           />
           <div className="mt-4">
             <CreateFromCVButton

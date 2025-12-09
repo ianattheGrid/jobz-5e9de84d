@@ -4,16 +4,19 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { CandidateProfile } from "@/integrations/supabase/types/profiles";
 import { GlowCard, GlowCardContent, GlowCardHeader, GlowCardTitle, GlowCardDescription } from "@/components/ui/glow-card";
-import { Loader2, Save, Link, Shield, MessageSquare } from "lucide-react";
+import { Loader2, Save, Link, Shield, MessageSquare, Sparkles, User } from "lucide-react";
 import HomePostcodeSelect from "@/components/address/HomePostcodeSelect";
 import { FileUploadSection } from "@/components/candidate/FileUploadSection";
 import { VerificationSection } from "@/components/candidate/VerificationSection";
+
+const MAX_PERSONAL_STATEMENT_LENGTH = 1000;
 
 const aboutMeSchema = z.object({
   full_name: z.string().min(1, "Full name is required"),
@@ -26,6 +29,7 @@ const aboutMeSchema = z.object({
   contact_phone_ok: z.boolean().default(true),
   contact_email_ok: z.boolean().default(true),
   contact_linkedin_ok: z.boolean().default(false),
+  personal_statement: z.string().max(MAX_PERSONAL_STATEMENT_LENGTH, `Maximum ${MAX_PERSONAL_STATEMENT_LENGTH} characters`).optional(),
 });
 
 type AboutMeFormValues = z.infer<typeof aboutMeSchema>;
@@ -39,6 +43,7 @@ interface AboutMeSectionProps {
 export function AboutMeSection({ userId, profileData, onSave }: AboutMeSectionProps) {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isEnhancing, setIsEnhancing] = useState(false);
   const profileAny = profileData as any;
 
   const form = useForm<AboutMeFormValues>({
@@ -54,8 +59,53 @@ export function AboutMeSection({ userId, profileData, onSave }: AboutMeSectionPr
       contact_phone_ok: profileAny?.contact_phone_ok ?? true,
       contact_email_ok: profileAny?.contact_email_ok ?? true,
       contact_linkedin_ok: profileAny?.contact_linkedin_ok ?? false,
+      personal_statement: profileAny?.personal_statement || "",
     },
   });
+
+  const personalStatementValue = form.watch("personal_statement") || "";
+  const characterCount = personalStatementValue.length;
+
+  const handleEnhanceWithAI = async () => {
+    const currentText = form.getValues("personal_statement");
+    
+    if (!currentText || currentText.trim().length === 0) {
+      toast({
+        variant: "destructive",
+        title: "Nothing to enhance",
+        description: "Please write something first, then use AI to enhance it.",
+      });
+      return;
+    }
+
+    setIsEnhancing(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('enhance-about-me', {
+        body: { text: currentText }
+      });
+
+      if (error) throw error;
+
+      if (data?.enhancedText) {
+        form.setValue("personal_statement", data.enhancedText);
+        toast({
+          title: "Text enhanced",
+          description: "Your personal statement has been improved. Review the changes and save when ready.",
+        });
+      } else if (data?.error) {
+        throw new Error(data.error);
+      }
+    } catch (error: any) {
+      console.error('AI enhancement error:', error);
+      toast({
+        variant: "destructive",
+        title: "Enhancement failed",
+        description: error.message || "Failed to enhance text. Please try again.",
+      });
+    } finally {
+      setIsEnhancing(false);
+    }
+  };
 
   const handleSubmit = async (values: AboutMeFormValues) => {
     setIsSubmitting(true);
@@ -73,12 +123,13 @@ export function AboutMeSection({ userId, profileData, onSave }: AboutMeSectionPr
           contact_phone_ok: values.contact_phone_ok,
           contact_email_ok: values.contact_email_ok,
           contact_linkedin_ok: values.contact_linkedin_ok,
+          personal_statement: values.personal_statement || null,
         })
         .eq('id', userId);
 
       if (error) throw error;
 
-      toast({ title: "Success", description: "Contact information saved" });
+      toast({ title: "Success", description: "About me information saved" });
       onSave();
     } catch (error: any) {
       toast({ variant: "destructive", title: "Error", description: error.message });
@@ -89,10 +140,10 @@ export function AboutMeSection({ userId, profileData, onSave }: AboutMeSectionPr
 
   return (
     <div className="space-y-6">
-      {/* Profile Picture & CV */}
+      {/* Profile Picture */}
       <GlowCard>
         <GlowCardHeader>
-          <GlowCardTitle>Profile Picture & CV</GlowCardTitle>
+          <GlowCardTitle>Profile Picture</GlowCardTitle>
         </GlowCardHeader>
         <GlowCardContent>
           <FileUploadSection
@@ -100,6 +151,8 @@ export function AboutMeSection({ userId, profileData, onSave }: AboutMeSectionPr
             currentProfilePicture={profileData?.profile_picture_url || null}
             currentCV={profileData?.cv_url || null}
             onUploadComplete={onSave}
+            showProfilePicture={true}
+            showCV={false}
           />
         </GlowCardContent>
       </GlowCard>
@@ -119,6 +172,72 @@ export function AboutMeSection({ userId, profileData, onSave }: AboutMeSectionPr
         </GlowCardHeader>
         <GlowCardContent>
           <VerificationSection />
+        </GlowCardContent>
+      </GlowCard>
+
+      {/* About Me Free Text */}
+      <GlowCard>
+        <GlowCardHeader>
+          <div className="flex items-center gap-3">
+            <User className="h-5 w-5 text-muted-foreground" />
+            <div>
+              <GlowCardTitle className="text-lg">About Me</GlowCardTitle>
+              <GlowCardDescription>
+                Tell employers about yourself, your motivations, and what makes you unique
+              </GlowCardDescription>
+            </div>
+          </div>
+        </GlowCardHeader>
+        <GlowCardContent>
+          <Form {...form}>
+            <div className="space-y-4">
+              <FormField
+                control={form.control}
+                name="personal_statement"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Write a few sentences about yourself, your career journey, what you're passionate about, and what you're looking for in your next role..."
+                        className="min-h-[150px] resize-none"
+                        maxLength={MAX_PERSONAL_STATEMENT_LENGTH}
+                        {...field}
+                      />
+                    </FormControl>
+                    <div className="flex items-center justify-between">
+                      <FormMessage />
+                      <span className={`text-sm ${characterCount > MAX_PERSONAL_STATEMENT_LENGTH * 0.9 ? 'text-destructive' : 'text-muted-foreground'}`}>
+                        {characterCount}/{MAX_PERSONAL_STATEMENT_LENGTH} characters
+                      </span>
+                    </div>
+                  </FormItem>
+                )}
+              />
+              
+              <Button
+                type="button"
+                variant="outline"
+                onClick={handleEnhanceWithAI}
+                disabled={isEnhancing || !personalStatementValue.trim()}
+                className="w-full sm:w-auto"
+              >
+                {isEnhancing ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Enhancing...
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="mr-2 h-4 w-4" />
+                    Enhance with AI
+                  </>
+                )}
+              </Button>
+              <p className="text-xs text-muted-foreground">
+                AI will improve your text while keeping your authentic voice. You can review and edit the result before saving.
+              </p>
+            </div>
+          </Form>
         </GlowCardContent>
       </GlowCard>
 
@@ -304,7 +423,7 @@ export function AboutMeSection({ userId, profileData, onSave }: AboutMeSectionPr
                   ) : (
                     <>
                       <Save className="mr-2 h-4 w-4" />
-                      Save Contact Information
+                      Save About Me Information
                     </>
                   )}
                 </Button>

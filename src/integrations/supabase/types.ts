@@ -350,6 +350,7 @@ export type Database = {
           max_salary: number
           min_salary: number
           notice_period: string | null
+          personal_statement: string | null
           personality: Json
           phone_number: string | null
           preferred_work_type: string | null
@@ -403,6 +404,7 @@ export type Database = {
           max_salary: number
           min_salary: number
           notice_period?: string | null
+          personal_statement?: string | null
           personality?: Json
           phone_number?: string | null
           preferred_work_type?: string | null
@@ -456,6 +458,7 @@ export type Database = {
           max_salary?: number
           min_salary?: number
           notice_period?: string | null
+          personal_statement?: string | null
           personality?: Json
           phone_number?: string | null
           preferred_work_type?: string | null
