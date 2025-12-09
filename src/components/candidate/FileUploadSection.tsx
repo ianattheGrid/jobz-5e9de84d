@@ -9,13 +9,17 @@ interface FileUploadSectionProps {
   currentProfilePicture?: string | null;
   currentCV?: string | null;
   onUploadComplete?: () => void;
+  showProfilePicture?: boolean;
+  showCV?: boolean;
 }
 
 export const FileUploadSection = ({ 
   userId, 
   currentProfilePicture, 
   currentCV,
-  onUploadComplete 
+  onUploadComplete,
+  showProfilePicture = true,
+  showCV = true
 }: FileUploadSectionProps) => {
   const {
     uploadingPicture,
@@ -32,23 +36,27 @@ export const FileUploadSection = ({
 
   return (
     <div className="space-y-6">
-      <ProfilePictureUpload
-        currentProfilePicture={currentProfilePicture || null}
-        uploadingPicture={uploadingPicture}
-        deletingPicture={deletingPicture}
-        uploadSuccess={uploadSuccess === 'picture'}
-        onUpload={(file) => handleFileUpload(file, 'profile_picture')}
-        onDelete={() => handleFileDelete('profile_picture', currentProfilePicture || null)}
-      />
+      {showProfilePicture && (
+        <ProfilePictureUpload
+          currentProfilePicture={currentProfilePicture || null}
+          uploadingPicture={uploadingPicture}
+          deletingPicture={deletingPicture}
+          uploadSuccess={uploadSuccess === 'picture'}
+          onUpload={(file) => handleFileUpload(file, 'profile_picture')}
+          onDelete={() => handleFileDelete('profile_picture', currentProfilePicture || null)}
+        />
+      )}
 
-      <CVUpload
-        currentCV={currentCV || null}
-        uploadingCV={uploadingCV}
-        deletingCV={deletingCV}
-        uploadSuccess={uploadSuccess === 'cv'}
-        onUpload={(file) => handleFileUpload(file, 'cv')}
-        onDelete={() => handleFileDelete('cv', currentCV || null)}
-      />
+      {showCV && (
+        <CVUpload
+          currentCV={currentCV || null}
+          uploadingCV={uploadingCV}
+          deletingCV={deletingCV}
+          uploadSuccess={uploadSuccess === 'cv'}
+          onUpload={(file) => handleFileUpload(file, 'cv')}
+          onDelete={() => handleFileDelete('cv', currentCV || null)}
+        />
+      )}
     </div>
   );
 };
