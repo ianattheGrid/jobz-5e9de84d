@@ -91,6 +91,7 @@ export interface CandidateProfile {
   second_chapter?: SecondChapter | any | null;
   show_second_chapter?: boolean;
   personal_statement?: string | null;
+  contact_jobz_ok?: boolean | null;
 }
 
 export interface EmployerProfile {

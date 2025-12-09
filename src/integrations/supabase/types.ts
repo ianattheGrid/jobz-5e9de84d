@@ -329,6 +329,7 @@ export type Database = {
           commission_percentage: number | null
           company_address: string | null
           contact_email_ok: boolean | null
+          contact_jobz_ok: boolean | null
           contact_linkedin_ok: boolean | null
           contact_phone_ok: boolean | null
           contract_type_preference: string | null
@@ -383,6 +384,7 @@ export type Database = {
           commission_percentage?: number | null
           company_address?: string | null
           contact_email_ok?: boolean | null
+          contact_jobz_ok?: boolean | null
           contact_linkedin_ok?: boolean | null
           contact_phone_ok?: boolean | null
           contract_type_preference?: string | null
@@ -437,6 +439,7 @@ export type Database = {
           commission_percentage?: number | null
           company_address?: string | null
           contact_email_ok?: boolean | null
+          contact_jobz_ok?: boolean | null
           contact_linkedin_ok?: boolean | null
           contact_phone_ok?: boolean | null
           contract_type_preference?: string | null

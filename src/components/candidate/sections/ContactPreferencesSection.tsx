@@ -81,6 +81,27 @@ const ContactPreferencesSection = ({ control }: ContactPreferencesSectionProps) 
               </FormItem>
             )}
           />
+
+          <FormField
+            control={control}
+            name="contact_jobz_ok"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <div className="space-y-1 leading-none">
+                  <FormLabel>JObz Messages</FormLabel>
+                  <FormDescription>
+                    Allow employers to contact you via the JObz messaging system
+                  </FormDescription>
+                </div>
+              </FormItem>
+            )}
+          />
         </div>
       </div>
     </div>
