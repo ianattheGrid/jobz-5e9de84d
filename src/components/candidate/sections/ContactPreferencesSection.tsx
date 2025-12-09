@@ -94,9 +94,9 @@ const ContactPreferencesSection = ({ control }: ContactPreferencesSectionProps) 
                   />
                 </FormControl>
                 <div className="space-y-1 leading-none">
-                  <FormLabel>JObz Messages</FormLabel>
+                  <FormLabel>Jobz Messages</FormLabel>
                   <FormDescription>
-                    Allow employers to contact you via the JObz messaging system
+                    Allow employers to contact you via the Jobz messaging system
                   </FormDescription>
                 </div>
               </FormItem>
