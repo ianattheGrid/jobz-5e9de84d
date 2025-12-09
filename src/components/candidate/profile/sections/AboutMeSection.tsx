@@ -29,6 +29,7 @@ const aboutMeSchema = z.object({
   contact_phone_ok: z.boolean().default(true),
   contact_email_ok: z.boolean().default(true),
   contact_linkedin_ok: z.boolean().default(false),
+  contact_jobz_ok: z.boolean().default(true),
   personal_statement: z.string().max(MAX_PERSONAL_STATEMENT_LENGTH, `Maximum ${MAX_PERSONAL_STATEMENT_LENGTH} characters`).optional(),
 });
 
@@ -59,6 +60,7 @@ export function AboutMeSection({ userId, profileData, onSave }: AboutMeSectionPr
       contact_phone_ok: profileAny?.contact_phone_ok ?? true,
       contact_email_ok: profileAny?.contact_email_ok ?? true,
       contact_linkedin_ok: profileAny?.contact_linkedin_ok ?? false,
+      contact_jobz_ok: profileAny?.contact_jobz_ok ?? true,
       personal_statement: profileAny?.personal_statement || "",
     },
   });
@@ -123,6 +125,7 @@ export function AboutMeSection({ userId, profileData, onSave }: AboutMeSectionPr
           contact_phone_ok: values.contact_phone_ok,
           contact_email_ok: values.contact_email_ok,
           contact_linkedin_ok: values.contact_linkedin_ok,
+          contact_jobz_ok: values.contact_jobz_ok,
           personal_statement: values.personal_statement || null,
         })
         .eq('id', userId);
@@ -406,6 +409,24 @@ export function AboutMeSection({ userId, profileData, onSave }: AboutMeSectionPr
                         </FormControl>
                         <FormLabel className="font-normal cursor-pointer">
                           Employers can contact me via LinkedIn
+                        </FormLabel>
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="contact_jobz_ok"
+                    render={({ field }) => (
+                      <FormItem className="flex items-center space-x-3 space-y-0">
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                        <FormLabel className="font-normal cursor-pointer">
+                          Employers can contact me via JObz messages
                         </FormLabel>
                       </FormItem>
                     )}
