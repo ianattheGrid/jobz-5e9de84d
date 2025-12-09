@@ -426,7 +426,7 @@ export function AboutMeSection({ userId, profileData, onSave }: AboutMeSectionPr
                           />
                         </FormControl>
                         <FormLabel className="font-normal cursor-pointer">
-                          Employers can contact me via JObz messages
+                          Employers can contact me via Jobz messages
                         </FormLabel>
                       </FormItem>
                     )}
