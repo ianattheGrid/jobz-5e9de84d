@@ -7,12 +7,13 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { CandidateProfile } from "@/integrations/supabase/types/profiles";
-import { GlowCard, GlowCardContent, GlowCardHeader, GlowCardTitle } from "@/components/ui/glow-card";
-import { Loader2, Save } from "lucide-react";
+import { GlowCard, GlowCardContent, GlowCardHeader, GlowCardTitle, GlowCardDescription } from "@/components/ui/glow-card";
+import { Loader2, Save, FolderOpen, Info } from "lucide-react";
 import SkillsSection from "@/components/candidate/sections/SkillsSection";
 import SkillsExperienceSectionFields from "@/components/candidate/sections/SkillsExperienceSection";
 import IndustryProfileSection from "@/components/candidate/sections/IndustryProfileSection";
 import EducationSection from "@/components/candidate/sections/EducationSection";
+import { PortfolioSection } from "@/components/candidate/portfolio/PortfolioSection";
 
 const skillsExperienceSchema = z.object({
   required_skills: z.array(z.string()).optional(),
@@ -106,36 +107,62 @@ export function SkillsExperienceSection({ userId, profileData, onSave }: SkillsE
   };
 
   return (
-    <GlowCard>
-      <GlowCardHeader>
-        <GlowCardTitle>Skills & Experience</GlowCardTitle>
-      </GlowCardHeader>
-      <GlowCardContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
-            <SkillsSection control={form.control} />
-            <SkillsExperienceSectionFields control={form.control} />
-            <IndustryProfileSection control={form.control} />
-            <EducationSection control={form.control} />
+    <div className="space-y-6">
+      <GlowCard>
+        <GlowCardHeader>
+          <GlowCardTitle>Skills & Experience</GlowCardTitle>
+        </GlowCardHeader>
+        <GlowCardContent>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+              <SkillsSection control={form.control} />
+              <SkillsExperienceSectionFields control={form.control} />
+              <IndustryProfileSection control={form.control} />
+              <EducationSection control={form.control} />
 
-            <div className="pt-4">
-              <Button type="submit" disabled={isSubmitting} className="w-full sm:w-auto">
-                {isSubmitting ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Saving...
-                  </>
-                ) : (
-                  <>
-                    <Save className="mr-2 h-4 w-4" />
-                    Save Skills & Experience
-                  </>
-                )}
-              </Button>
+              <div className="pt-4">
+                <Button type="submit" disabled={isSubmitting} className="w-full sm:w-auto">
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Saving...
+                    </>
+                  ) : (
+                    <>
+                      <Save className="mr-2 h-4 w-4" />
+                      Save Skills & Experience
+                    </>
+                  )}
+                </Button>
+              </div>
+            </form>
+          </Form>
+        </GlowCardContent>
+      </GlowCard>
+
+      {/* Portfolio Section */}
+      <GlowCard>
+        <GlowCardHeader>
+          <div className="flex items-center gap-3">
+            <FolderOpen className="h-5 w-5 text-muted-foreground" />
+            <div>
+              <GlowCardTitle className="text-lg">Portfolio</GlowCardTitle>
+              <GlowCardDescription>
+                Showcase your work samples, projects, and documents
+              </GlowCardDescription>
             </div>
-          </form>
-        </Form>
-      </GlowCardContent>
-    </GlowCard>
+          </div>
+        </GlowCardHeader>
+        <GlowCardContent>
+          <PortfolioSection userId={userId} />
+          <div className="flex items-center gap-2 mt-4 p-3 rounded-lg bg-muted/50 border border-border">
+            <Info className="h-4 w-4 text-muted-foreground shrink-0" />
+            <p className="text-xs text-muted-foreground">
+              Portfolio items save automatically when you upload or delete them.
+            </p>
+          </div>
+        </GlowCardContent>
+      </GlowCard>
+    </div>
   );
 }

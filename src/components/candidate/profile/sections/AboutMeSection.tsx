@@ -11,11 +11,12 @@ import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { CandidateProfile } from "@/integrations/supabase/types/profiles";
 import { GlowCard, GlowCardContent, GlowCardHeader, GlowCardTitle, GlowCardDescription } from "@/components/ui/glow-card";
-import { Loader2, Save, Link, Shield, MessageSquare, Sparkles, User, FileText } from "lucide-react";
+import { Loader2, Save, Link, Shield, MessageSquare, Sparkles, User, FileText, Info, ImageIcon } from "lucide-react";
 import { CreateFromCVButton } from "@/components/candidate/CreateFromCVButton";
 import HomePostcodeSelect from "@/components/address/HomePostcodeSelect";
 import { FileUploadSection } from "@/components/candidate/FileUploadSection";
 import { VerificationSection } from "@/components/candidate/VerificationSection";
+import { CandidateGallerySection } from "@/components/candidate/gallery/CandidateGallerySection";
 
 const MAX_PERSONAL_STATEMENT_LENGTH = 1000;
 
@@ -181,6 +182,33 @@ export function AboutMeSection({ userId, profileData, onSave }: AboutMeSectionPr
               userId={userId}
               onComplete={onSave}
             />
+          </div>
+        </GlowCardContent>
+      </GlowCard>
+
+      {/* Gallery Section */}
+      <GlowCard>
+        <GlowCardHeader>
+          <div className="flex items-center gap-3">
+            <ImageIcon className="h-5 w-5 text-muted-foreground" />
+            <div>
+              <GlowCardTitle className="text-lg">Gallery</GlowCardTitle>
+              <GlowCardDescription>
+                You are more than words—show the human element
+              </GlowCardDescription>
+            </div>
+          </div>
+        </GlowCardHeader>
+        <GlowCardContent>
+          <p className="text-sm text-muted-foreground mb-4">
+            Add photos of hobbies, projects, or activities that showcase who you are beyond your CV.
+          </p>
+          <CandidateGallerySection candidateId={userId} />
+          <div className="flex items-center gap-2 mt-4 p-3 rounded-lg bg-muted/50 border border-border">
+            <Info className="h-4 w-4 text-muted-foreground shrink-0" />
+            <p className="text-xs text-muted-foreground">
+              Gallery images save automatically when you upload or delete them.
+            </p>
           </div>
         </GlowCardContent>
       </GlowCard>

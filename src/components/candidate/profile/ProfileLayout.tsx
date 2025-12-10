@@ -12,7 +12,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AboutMeSection } from "./sections/AboutMeSection";
 import { WorkPreferencesSection } from "./sections/WorkPreferencesSection";
 import { SkillsExperienceSection } from "./sections/SkillsExperienceSection";
-import { MediaSection } from "./sections/MediaSection";
 import { GettingStartedPageSection } from "./sections/GettingStartedPageSection";
 import { SecondChapterSection } from "./sections/SecondChapterSection";
 import { PersonalityPageSection } from "./sections/PersonalityPageSection";
@@ -59,11 +58,6 @@ export function ProfileLayout({ userId, profileData, onProfileUpdate }: ProfileL
     // Skills & Experience - check for skills or years experience
     if ((profileData.required_skills && profileData.required_skills.length > 0) || profileData.years_experience > 0) {
       completed.add('skills-experience');
-    }
-
-    // Media - check for any media content
-    if (profileData.cv_url || profileData.profile_picture_url) {
-      completed.add('media');
     }
 
     // Getting Started - check if proof_of_potential has content
@@ -116,8 +110,6 @@ export function ProfileLayout({ userId, profileData, onProfileUpdate }: ProfileL
         return <WorkPreferencesSection {...commonProps} onNavigateToSection={handleNavigateToSection} />;
       case 'skills-experience':
         return <SkillsExperienceSection {...commonProps} />;
-      case 'media':
-        return <MediaSection {...commonProps} />;
       case 'getting-started':
         return <GettingStartedPageSection {...commonProps} />;
       case 'second-chapter':
