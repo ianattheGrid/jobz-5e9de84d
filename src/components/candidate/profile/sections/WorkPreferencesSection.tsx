@@ -161,10 +161,10 @@ export function WorkPreferencesSection({ userId, profileData, onSave, onNavigate
                   type="button" 
                   variant="outline" 
                   className="mt-4 border-primary/50 hover:bg-primary/10"
-                  onClick={() => onNavigateToSection?.("proof-of-potential")}
+                  onClick={() => onNavigateToSection?.("getting-started")}
                 >
                   <Sparkles className="mr-2 h-4 w-4" />
-                  Complete your Proof of Potential
+                  Complete your Getting Started profile
                 </Button>
               </Alert>
             )}

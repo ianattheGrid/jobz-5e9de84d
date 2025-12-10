@@ -13,7 +13,7 @@ import { AboutMeSection } from "./sections/AboutMeSection";
 import { WorkPreferencesSection } from "./sections/WorkPreferencesSection";
 import { SkillsExperienceSection } from "./sections/SkillsExperienceSection";
 import { MediaSection } from "./sections/MediaSection";
-import { ProofOfPotentialPageSection } from "./sections/ProofOfPotentialPageSection";
+import { GettingStartedPageSection } from "./sections/GettingStartedPageSection";
 import { SecondChapterSection } from "./sections/SecondChapterSection";
 import { PersonalityPageSection } from "./sections/PersonalityPageSection";
 import { BonusSchemeSection } from "./sections/BonusSchemeSection";
@@ -66,10 +66,10 @@ export function ProfileLayout({ userId, profileData, onProfileUpdate }: ProfileL
       completed.add('media');
     }
 
-    // Proof of Potential - check if proof_of_potential has content
-    const proofOfPotential = (profileData as any)?.proof_of_potential;
-    if (proofOfPotential && Object.keys(proofOfPotential).length > 0) {
-      completed.add('proof-of-potential');
+    // Getting Started - check if proof_of_potential has content
+    const gettingStartedData = (profileData as any)?.proof_of_potential;
+    if (gettingStartedData && Object.keys(gettingStartedData).length > 0) {
+      completed.add('getting-started');
     }
 
     // Second Chapter - check if second_chapter has content
@@ -118,8 +118,8 @@ export function ProfileLayout({ userId, profileData, onProfileUpdate }: ProfileL
         return <SkillsExperienceSection {...commonProps} />;
       case 'media':
         return <MediaSection {...commonProps} />;
-      case 'proof-of-potential':
-        return <ProofOfPotentialPageSection {...commonProps} />;
+      case 'getting-started':
+        return <GettingStartedPageSection {...commonProps} />;
       case 'second-chapter':
         return <SecondChapterSection {...commonProps} />;
       case 'personality':
