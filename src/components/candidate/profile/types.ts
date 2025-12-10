@@ -2,7 +2,6 @@ export type ProfileSectionId =
   | 'about'
   | 'work-preferences'
   | 'skills-experience'
-  | 'media'
   | 'getting-started'
   | 'second-chapter'
   | 'personality'
@@ -23,7 +22,7 @@ export const PROFILE_SECTIONS: ProfileSectionGroup[] = [
     label: 'About Me',
     icon: 'User',
     required: true,
-    description: 'Contact info, verification & preferences'
+    description: 'Contact info, CV, gallery & verification'
   },
   {
     id: 'work-preferences',
@@ -37,14 +36,7 @@ export const PROFILE_SECTIONS: ProfileSectionGroup[] = [
     label: 'Skills & Experience',
     icon: 'Award',
     required: true,
-    description: 'Skills, experience, education'
-  },
-  {
-    id: 'media',
-    label: 'Media & Portfolio',
-    icon: 'Image',
-    required: false,
-    description: 'Gallery & portfolio'
+    description: 'Skills, experience, education & portfolio'
   },
   {
     id: 'getting-started',
