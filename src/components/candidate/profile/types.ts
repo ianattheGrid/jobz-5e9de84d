@@ -3,7 +3,7 @@ export type ProfileSectionId =
   | 'work-preferences'
   | 'skills-experience'
   | 'media'
-  | 'proof-of-potential'
+  | 'getting-started'
   | 'second-chapter'
   | 'personality'
   | 'bonus-scheme'
@@ -47,11 +47,11 @@ export const PROFILE_SECTIONS: ProfileSectionGroup[] = [
     description: 'Gallery, portfolio, CV'
   },
   {
-    id: 'proof-of-potential',
-    label: 'Proof of Potential',
-    icon: 'Star',
+    id: 'getting-started',
+    label: 'Getting Started',
+    icon: 'Rocket',
     required: false,
-    description: 'Showcase your potential (18-25)'
+    description: 'For first-time job seekers'
   },
   {
     id: 'second-chapter',
