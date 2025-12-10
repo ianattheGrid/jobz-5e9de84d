@@ -44,7 +44,7 @@ export const PROFILE_SECTIONS: ProfileSectionGroup[] = [
     label: 'Media & Portfolio',
     icon: 'Image',
     required: false,
-    description: 'Gallery, portfolio, CV'
+    description: 'Gallery & portfolio'
   },
   {
     id: 'getting-started',
