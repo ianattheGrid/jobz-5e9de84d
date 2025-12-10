@@ -19,7 +19,7 @@ import ExperienceLevelField from "@/components/ExperienceLevelField";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 const workPreferencesSchema = z.object({
   experience_level: z.string().optional(),
-  workArea: z.string().min(1, "Please select your area of work"),
+  workArea: z.string().optional(),
   job_title: z.union([z.string(), z.array(z.string())]).optional(),
   itSpecialization: z.string().optional(),
   min_salary: z.number().min(0, "Minimum salary is required"),
@@ -34,6 +34,15 @@ const workPreferencesSchema = z.object({
 }).refine((data) => data.max_salary >= data.min_salary, {
   message: "Maximum salary must be greater than or equal to minimum salary",
   path: ["max_salary"],
+}).refine((data) => {
+  // Only require workArea if not entry level
+  if (data.experience_level !== "entry" && !data.workArea) {
+    return false;
+  }
+  return true;
+}, {
+  message: "Please select your area of work",
+  path: ["workArea"],
 });
 
 type WorkPreferencesFormValues = z.infer<typeof workPreferencesSchema>;
@@ -42,9 +51,10 @@ interface WorkPreferencesSectionProps {
   userId: string;
   profileData: CandidateProfile | null;
   onSave: () => void;
+  onNavigateToSection?: (section: string) => void;
 }
 
-export function WorkPreferencesSection({ userId, profileData, onSave }: WorkPreferencesSectionProps) {
+export function WorkPreferencesSection({ userId, profileData, onSave, onNavigateToSection }: WorkPreferencesSectionProps) {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -97,13 +107,16 @@ export function WorkPreferencesSection({ userId, profileData, onSave }: WorkPref
         jobTitleValue = [jobTitleValue];
       }
 
+      // For entry-level candidates, clear work area fields
+      const isEntryLevel = values.experience_level === "entry";
+      
       const { error } = await supabase
         .from('candidate_profiles')
         .update({
           experience_level: values.experience_level || null,
-          workArea: values.workArea,
-          job_title: JSON.stringify(jobTitleValue || []),
-          itSpecialization: values.itSpecialization || null,
+          workArea: isEntryLevel ? null : values.workArea,
+          job_title: isEntryLevel ? "[]" : JSON.stringify(jobTitleValue || []),
+          itSpecialization: isEntryLevel ? null : (values.itSpecialization || null),
           min_salary: values.min_salary,
           max_salary: values.max_salary,
           availability: values.availability,
@@ -139,15 +152,26 @@ export function WorkPreferencesSection({ userId, profileData, onSave }: WorkPref
               <Alert className="border-primary/30 bg-primary/5">
                 <Sparkles className="h-4 w-4 text-primary" />
                 <AlertTitle className="text-primary">First job? You're in the right place!</AlertTitle>
-                <AlertDescription className="text-muted-foreground">
+                <AlertDescription className="text-muted-foreground mt-2">
                   Don't worry about years of experience - we help match you based on your potential, 
-                  personality, and eagerness to learn. Make sure to complete the <strong>"Proof of Potential"</strong> section 
-                  to showcase your school achievements, volunteer work, hobbies, and interests!
+                  personality, and eagerness to learn. Showcase your school achievements, volunteer work, 
+                  hobbies, and interests!
                 </AlertDescription>
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  className="mt-4 border-primary/50 hover:bg-primary/10"
+                  onClick={() => onNavigateToSection?.("proof-of-potential")}
+                >
+                  <Sparkles className="mr-2 h-4 w-4" />
+                  Complete your Proof of Potential
+                </Button>
               </Alert>
             )}
 
-            <WorkAreaField control={form.control} />
+            {experienceLevel !== "entry" && (
+              <WorkAreaField control={form.control} />
+            )}
             <SalaryRangeField control={form.control} />
             <AvailabilityField control={form.control} />
             <WorkPreferencesField control={form.control} />

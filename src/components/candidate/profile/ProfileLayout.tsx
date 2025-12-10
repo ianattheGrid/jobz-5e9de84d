@@ -98,6 +98,10 @@ export function ProfileLayout({ userId, profileData, onProfileUpdate }: ProfileL
     setCompletedSections(completed);
   }, [profileData]);
 
+  const handleNavigateToSection = (section: string) => {
+    setActiveSection(section as ProfileSectionId);
+  };
+
   const renderSection = () => {
     const commonProps = {
       userId,
@@ -109,7 +113,7 @@ export function ProfileLayout({ userId, profileData, onProfileUpdate }: ProfileL
       case 'about':
         return <AboutMeSection {...commonProps} />;
       case 'work-preferences':
-        return <WorkPreferencesSection {...commonProps} />;
+        return <WorkPreferencesSection {...commonProps} onNavigateToSection={handleNavigateToSection} />;
       case 'skills-experience':
         return <SkillsExperienceSection {...commonProps} />;
       case 'media':
