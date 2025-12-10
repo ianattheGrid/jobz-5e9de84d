@@ -2,8 +2,7 @@ import { CandidateProfile } from "@/integrations/supabase/types/profiles";
 import { GlowCard, GlowCardContent, GlowCardHeader, GlowCardTitle } from "@/components/ui/glow-card";
 import { CandidateGallerySection } from "@/components/candidate/gallery/CandidateGallerySection";
 import { PortfolioSection } from "@/components/candidate/portfolio/PortfolioSection";
-import { CreateFromCVButton } from "@/components/candidate/CreateFromCVButton";
-import { FileUploadSection } from "@/components/candidate/FileUploadSection";
+import { Info } from "lucide-react";
 
 interface MediaSectionProps {
   userId: string;
@@ -14,29 +13,13 @@ interface MediaSectionProps {
 export function MediaSection({ userId, profileData, onSave }: MediaSectionProps) {
   return (
     <div className="space-y-6">
-      {/* CV Section */}
-      <GlowCard>
-        <GlowCardHeader>
-          <GlowCardTitle>CV / Resume</GlowCardTitle>
-        </GlowCardHeader>
-        <GlowCardContent>
-          <FileUploadSection
-            userId={userId}
-            currentProfilePicture={profileData?.profile_picture_url || null}
-            currentCV={profileData?.cv_url || null}
-            onUploadComplete={onSave}
-            showProfilePicture={false}
-            showCV={true}
-          />
-          <div className="mt-4">
-            <CreateFromCVButton
-              cvUrl={profileData?.cv_url || null}
-              userId={userId}
-              onComplete={onSave}
-            />
-          </div>
-        </GlowCardContent>
-      </GlowCard>
+      {/* Auto-save info banner */}
+      <div className="flex items-center gap-3 p-4 rounded-lg bg-muted/50 border border-border">
+        <Info className="h-5 w-5 text-muted-foreground shrink-0" />
+        <p className="text-sm text-muted-foreground">
+          Gallery and portfolio items save automatically when you upload or delete them.
+        </p>
+      </div>
 
       {/* Gallery Section */}
       <GlowCard>

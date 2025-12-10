@@ -11,7 +11,8 @@ import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { CandidateProfile } from "@/integrations/supabase/types/profiles";
 import { GlowCard, GlowCardContent, GlowCardHeader, GlowCardTitle, GlowCardDescription } from "@/components/ui/glow-card";
-import { Loader2, Save, Link, Shield, MessageSquare, Sparkles, User } from "lucide-react";
+import { Loader2, Save, Link, Shield, MessageSquare, Sparkles, User, FileText } from "lucide-react";
+import { CreateFromCVButton } from "@/components/candidate/CreateFromCVButton";
 import HomePostcodeSelect from "@/components/address/HomePostcodeSelect";
 import { FileUploadSection } from "@/components/candidate/FileUploadSection";
 import { VerificationSection } from "@/components/candidate/VerificationSection";
@@ -157,6 +158,30 @@ export function AboutMeSection({ userId, profileData, onSave }: AboutMeSectionPr
             showProfilePicture={true}
             showCV={false}
           />
+        </GlowCardContent>
+      </GlowCard>
+
+      {/* CV / Resume */}
+      <GlowCard>
+        <GlowCardHeader>
+          <GlowCardTitle>CV / Resume</GlowCardTitle>
+        </GlowCardHeader>
+        <GlowCardContent>
+          <FileUploadSection
+            userId={userId}
+            currentProfilePicture={profileData?.profile_picture_url || null}
+            currentCV={profileData?.cv_url || null}
+            onUploadComplete={onSave}
+            showProfilePicture={false}
+            showCV={true}
+          />
+          <div className="mt-4">
+            <CreateFromCVButton
+              cvUrl={profileData?.cv_url || null}
+              userId={userId}
+              onComplete={onSave}
+            />
+          </div>
         </GlowCardContent>
       </GlowCard>
 
