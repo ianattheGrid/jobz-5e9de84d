@@ -35,6 +35,11 @@ export function ProfileLayout({ userId, profileData, onProfileUpdate }: ProfileL
   const [showPreview, setShowPreview] = useState(false);
   const [previewTab, setPreviewTab] = useState<'card' | 'profile'>('card');
 
+  // Scroll to top when section changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [activeSection]);
+
   // Calculate completed sections based on profile data
   useEffect(() => {
     if (!profileData) return;
