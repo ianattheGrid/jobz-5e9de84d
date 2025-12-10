@@ -339,6 +339,7 @@ export type Database = {
           desired_job_title: string | null
           education_details: Json | null
           email: string
+          experience_level: string | null
           full_name: string | null
           home_postcode: string | null
           id: string
@@ -351,6 +352,7 @@ export type Database = {
           max_salary: number
           min_salary: number
           notice_period: string | null
+          open_to_apprenticeships: boolean | null
           personal_statement: string | null
           personality: Json
           phone_number: string | null
@@ -394,6 +396,7 @@ export type Database = {
           desired_job_title?: string | null
           education_details?: Json | null
           email: string
+          experience_level?: string | null
           full_name?: string | null
           home_postcode?: string | null
           id: string
@@ -406,6 +409,7 @@ export type Database = {
           max_salary: number
           min_salary: number
           notice_period?: string | null
+          open_to_apprenticeships?: boolean | null
           personal_statement?: string | null
           personality?: Json
           phone_number?: string | null
@@ -449,6 +453,7 @@ export type Database = {
           desired_job_title?: string | null
           education_details?: Json | null
           email?: string
+          experience_level?: string | null
           full_name?: string | null
           home_postcode?: string | null
           id?: string
@@ -461,6 +466,7 @@ export type Database = {
           max_salary?: number
           min_salary?: number
           notice_period?: string | null
+          open_to_apprenticeships?: boolean | null
           personal_statement?: string | null
           personality?: Json
           phone_number?: string | null

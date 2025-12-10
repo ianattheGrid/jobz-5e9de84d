@@ -8,6 +8,9 @@ interface AvailabilityFieldProps {
 
 const availabilityOptions = [
   "Immediate",
+  "Student - Available Part Time",
+  "Student - Graduating within 6 months",
+  "Gap Year / Career Break",
   "1 weeks notice",
   "2 weeks notice",
   "3 weeks notice",

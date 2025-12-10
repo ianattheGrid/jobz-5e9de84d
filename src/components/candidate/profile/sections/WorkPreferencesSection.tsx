@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Form } from "@/components/ui/form";
@@ -8,15 +8,17 @@ import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { CandidateProfile } from "@/integrations/supabase/types/profiles";
 import { GlowCard, GlowCardContent, GlowCardHeader, GlowCardTitle } from "@/components/ui/glow-card";
-import { Loader2, Save } from "lucide-react";
+import { Loader2, Save, Sparkles } from "lucide-react";
 import WorkAreaField from "@/components/WorkAreaField";
 import SalaryRangeField from "@/components/SalaryRangeField";
 import AvailabilityField from "@/components/AvailabilityField";
 import WorkPreferencesField from "@/components/WorkPreferencesField";
 import WorkEligibilityField from "@/components/job-details/WorkEligibilityField";
 import JobSeekingMotivation from "@/components/candidate/sections/JobSeekingMotivation";
-
+import ExperienceLevelField from "@/components/ExperienceLevelField";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 const workPreferencesSchema = z.object({
+  experience_level: z.string().optional(),
   workArea: z.string().min(1, "Please select your area of work"),
   job_title: z.union([z.string(), z.array(z.string())]).optional(),
   itSpecialization: z.string().optional(),
@@ -28,6 +30,7 @@ const workPreferencesSchema = z.object({
   location: z.array(z.string()).optional(),
   job_seeking_reasons: z.array(z.string()).optional(),
   other_job_seeking_reason: z.string().optional(),
+  open_to_apprenticeships: z.boolean().optional(),
 }).refine((data) => data.max_salary >= data.min_salary, {
   message: "Maximum salary must be greater than or equal to minimum salary",
   path: ["max_salary"],
@@ -63,6 +66,7 @@ export function WorkPreferencesSection({ userId, profileData, onSave }: WorkPref
   const form = useForm<WorkPreferencesFormValues>({
     resolver: zodResolver(workPreferencesSchema),
     defaultValues: {
+      experience_level: (profileData as any)?.experience_level || "",
       workArea: profileData?.workArea || "",
       job_title: jobTitles,
       itSpecialization: profileData?.itSpecialization || "",
@@ -74,7 +78,14 @@ export function WorkPreferencesSection({ userId, profileData, onSave }: WorkPref
       location: profileData?.location || [],
       job_seeking_reasons: [],
       other_job_seeking_reason: "",
+      open_to_apprenticeships: (profileData as any)?.open_to_apprenticeships || false,
     },
+  });
+
+  // Watch experience level for conditional rendering
+  const experienceLevel = useWatch({
+    control: form.control,
+    name: "experience_level",
   });
 
   const handleSubmit = async (values: WorkPreferencesFormValues) => {
@@ -89,6 +100,7 @@ export function WorkPreferencesSection({ userId, profileData, onSave }: WorkPref
       const { error } = await supabase
         .from('candidate_profiles')
         .update({
+          experience_level: values.experience_level || null,
           workArea: values.workArea,
           job_title: JSON.stringify(jobTitleValue || []),
           itSpecialization: values.itSpecialization || null,
@@ -98,7 +110,8 @@ export function WorkPreferencesSection({ userId, profileData, onSave }: WorkPref
           work_preferences: values.work_preferences,
           work_eligibility: values.work_eligibility || null,
           location: values.location || [],
-        })
+          open_to_apprenticeships: values.open_to_apprenticeships || false,
+        } as any)
         .eq('id', userId);
 
       if (error) throw error;
@@ -120,6 +133,20 @@ export function WorkPreferencesSection({ userId, profileData, onSave }: WorkPref
       <GlowCardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+            <ExperienceLevelField control={form.control} />
+            
+            {experienceLevel === "entry" && (
+              <Alert className="border-primary/30 bg-primary/5">
+                <Sparkles className="h-4 w-4 text-primary" />
+                <AlertTitle className="text-primary">First job? You're in the right place!</AlertTitle>
+                <AlertDescription className="text-muted-foreground">
+                  Don't worry about years of experience - we help match you based on your potential, 
+                  personality, and eagerness to learn. Make sure to complete the <strong>"Proof of Potential"</strong> section 
+                  to showcase your school achievements, volunteer work, hobbies, and interests!
+                </AlertDescription>
+              </Alert>
+            )}
+
             <WorkAreaField control={form.control} />
             <SalaryRangeField control={form.control} />
             <AvailabilityField control={form.control} />
