@@ -24,31 +24,41 @@ const CandidateDashboard = () => {
       title: "Update Profile",
       icon: <UserCircle className="h-6 w-6" />,
       path: "/candidate/profile",
-      description: "Edit your professional details"
+      description: "Edit your professional details",
+      helpTitle: "Your Profile",
+      helpText: "Complete your profile to get matched with employers. Add your skills, experience, and what makes you unique. The more complete your profile, the better your job matches!"
     },
     {
       title: "My Applications",
       icon: <Database className="h-6 w-6" />,
       path: "/candidate/applications",
-      description: "Track your job applications"
+      description: "Track your job applications",
+      helpTitle: "Applications",
+      helpText: "Track the status of jobs you've applied to. See when employers view your application and receive responses directly here."
     },
     {
       title: "My Interviews",
       icon: <Calendar className="h-6 w-6" />,
       path: "/candidate/interviews",
-      description: "View and schedule interviews"
+      description: "View and schedule interviews",
+      helpTitle: "Interview Management",
+      helpText: "View upcoming interview invitations from employers. Schedule times that work for you and prepare for your next opportunity."
     },
     {
       title: "Account Settings",
       icon: <Settings className="h-6 w-6" />,
       path: "/candidate/settings",
-      description: "Manage your account"
+      description: "Manage your account",
+      helpTitle: "Settings",
+      helpText: "Manage your account preferences, notification settings, privacy options, and update your login credentials."
     },
     {
       title: "Webby AI Co-pilot",
       icon: <Sparkles className="h-6 w-6" />,
       path: "/webby-candidate",
-      description: "Get AI-powered job matching & advice"
+      description: "Get AI-powered job matching & advice",
+      helpTitle: "AI Assistant",
+      helpText: "Get personalized job recommendations and career advice from our AI assistant. Webby can help you find roles that match your skills and aspirations."
     }
   ];
 
@@ -70,7 +80,11 @@ const CandidateDashboard = () => {
         
         <div className="grid gap-6 md:grid-cols-2">
           {/* Update Profile */}
-          <DashboardCard onClick={() => navigate("/candidate/profile")}>
+          <DashboardCard 
+            onClick={() => navigate("/candidate/profile")}
+            helpTitle={menuItems[0].helpTitle}
+            helpText={menuItems[0].helpText}
+          >
             <div className="flex flex-col items-center gap-4 text-center">
               <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
                 <UserCircle className="h-6 w-6 text-primary group-hover:drop-shadow-[0_0_8px_rgba(236,72,153,0.6)] transition-all" />
@@ -90,7 +104,12 @@ const CandidateDashboard = () => {
 
           {/* Remaining menu items */}
           {menuItems.slice(1).map((item, index) => (
-            <DashboardCard key={index} onClick={() => navigate(item.path)}>
+            <DashboardCard 
+              key={index} 
+              onClick={() => navigate(item.path)}
+              helpTitle={item.helpTitle}
+              helpText={item.helpText}
+            >
               <div className="flex flex-col items-center gap-4 text-center">
                 <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
                   <div className="text-primary group-hover:drop-shadow-[0_0_8px_rgba(236,72,153,0.6)] transition-all">

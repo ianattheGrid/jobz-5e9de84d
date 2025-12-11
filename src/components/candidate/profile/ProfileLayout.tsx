@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { LayoutDashboard, Eye, ArrowLeft, CreditCard, User } from "lucide-react";
 import { CandidateProfile } from "@/integrations/supabase/types/profiles";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { CosmicBackground } from "@/components/ui/cosmic-background";
 
 // Section components
 import { AboutMeSection } from "./sections/AboutMeSection";
@@ -172,59 +173,60 @@ export function ProfileLayout({ userId, profileData, onProfileUpdate }: ProfileL
 
   if (showPreview && profileData) {
     return (
-      <div className="min-h-screen bg-background">
-        <div className="container mx-auto px-4 py-10">
-          <Button
-            onClick={() => setShowPreview(false)}
-            className="mb-6 flex items-center gap-2"
-            style={{ backgroundColor: '#FF69B4', color: 'white', border: 'none' }}
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Back to Editing
-          </Button>
+      <CosmicBackground mode="light">
+        <div className="min-h-screen">
+          <div className="container mx-auto px-4 py-10">
+            <Button
+              onClick={() => setShowPreview(false)}
+              className="mb-6 flex items-center gap-2 bg-primary hover:bg-primary/90 text-white"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Back to Editing
+            </Button>
 
-          <Tabs value={previewTab} onValueChange={(v) => setPreviewTab(v as 'card' | 'profile')} className="w-full">
-            <TabsList className="grid w-full max-w-md grid-cols-2 mb-6">
-              <TabsTrigger value="card" className="gap-2">
-                <CreditCard className="h-4 w-4" />
-                Card View
-              </TabsTrigger>
-              <TabsTrigger value="profile" className="gap-2">
-                <User className="h-4 w-4" />
-                Full Profile
-              </TabsTrigger>
-            </TabsList>
+            <Tabs value={previewTab} onValueChange={(v) => setPreviewTab(v as 'card' | 'profile')} className="w-full">
+              <TabsList className="grid w-full max-w-md grid-cols-2 mb-6">
+                <TabsTrigger value="card" className="gap-2">
+                  <CreditCard className="h-4 w-4" />
+                  Card View
+                </TabsTrigger>
+                <TabsTrigger value="profile" className="gap-2">
+                  <User className="h-4 w-4" />
+                  Full Profile
+                </TabsTrigger>
+              </TabsList>
 
-            <TabsContent value="card" className="mt-0">
-              <div className="bg-amber-50 border-l-4 border-amber-500 p-4 mb-6">
-                <p className="font-medium text-slate-800">Swipe Card Preview</p>
-                <p className="text-sm text-slate-700">
-                  This is how employers first see you when browsing candidates. Make a great first impression!
-                </p>
-              </div>
-              <div className="flex justify-center py-8">
-                <CandidateCardPreview profile={profileData} />
-              </div>
-            </TabsContent>
+              <TabsContent value="card" className="mt-0">
+                <div className="bg-amber-50/80 backdrop-blur-sm border-l-4 border-amber-500 p-4 mb-6 rounded-r-lg">
+                  <p className="font-medium text-slate-800">Swipe Card Preview</p>
+                  <p className="text-sm text-slate-700">
+                    This is how employers first see you when browsing candidates. Make a great first impression!
+                  </p>
+                </div>
+                <div className="flex justify-center py-8">
+                  <CandidateCardPreview profile={profileData} />
+                </div>
+              </TabsContent>
 
-            <TabsContent value="profile" className="mt-0">
-              <div className="bg-pink-100 border-l-4 border-pink-500 p-4 mb-6">
-                <p className="font-medium text-slate-800">Full Profile Preview</p>
-                <p className="text-sm text-slate-700">
-                  This is how your profile appears to employers after they express interest and you reveal your details.
-                </p>
-              </div>
-              <ProfileDetails profile={profileData} />
-            </TabsContent>
-          </Tabs>
+              <TabsContent value="profile" className="mt-0">
+                <div className="bg-primary/10 backdrop-blur-sm border-l-4 border-primary p-4 mb-6 rounded-r-lg">
+                  <p className="font-medium text-slate-800">Full Profile Preview</p>
+                  <p className="text-sm text-slate-700">
+                    This is how your profile appears to employers after they express interest and you reveal your details.
+                  </p>
+                </div>
+                <ProfileDetails profile={profileData} />
+              </TabsContent>
+            </Tabs>
+          </div>
         </div>
-      </div>
+      </CosmicBackground>
     );
   }
 
   return (
     <SidebarProvider defaultOpen={true}>
-      <div className="min-h-screen flex w-full bg-background">
+      <div className="min-h-screen flex w-full">
         <ProfileSidebar
           activeSection={activeSection}
           onSectionChange={setActiveSection}
@@ -232,47 +234,48 @@ export function ProfileLayout({ userId, profileData, onProfileUpdate }: ProfileL
         />
 
         <SidebarInset className="flex-1">
-          {/* Header */}
-          <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-6">
-            <SidebarTrigger className="-ml-2" />
-            
-            <div className="flex-1">
-              <h1 className="text-lg font-semibold text-foreground">
-                {currentSectionInfo?.label || 'Profile'}
-              </h1>
-              <p className="text-sm text-muted-foreground">
-                {currentSectionInfo?.description}
-              </p>
-            </div>
+          <CosmicBackground mode="light" className="min-h-full">
+            {/* Header */}
+            <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b border-primary/20 bg-white/80 backdrop-blur-md px-6">
+              <SidebarTrigger className="-ml-2" />
+              
+              <div className="flex-1">
+                <h1 className="text-lg font-semibold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+                  {currentSectionInfo?.label || 'Profile'}
+                </h1>
+                <p className="text-sm text-muted-foreground">
+                  {currentSectionInfo?.description}
+                </p>
+              </div>
 
-            <div className="flex items-center gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setShowPreview(true)}
-                className="gap-2"
-              >
-                <Eye className="h-4 w-4" />
-                Preview
-              </Button>
-              <Button
-                size="sm"
-                onClick={() => navigate('/candidate/dashboard')}
-                style={{ backgroundColor: '#FF69B4', color: 'white' }}
-                className="gap-2"
-              >
-                <LayoutDashboard className="h-4 w-4" />
-                Dashboard
-              </Button>
-            </div>
-          </header>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowPreview(true)}
+                  className="gap-2 border-primary/30 hover:bg-primary/10"
+                >
+                  <Eye className="h-4 w-4" />
+                  Preview
+                </Button>
+                <Button
+                  size="sm"
+                  onClick={() => navigate('/candidate/dashboard')}
+                  className="gap-2 bg-primary hover:bg-primary/90 text-white"
+                >
+                  <LayoutDashboard className="h-4 w-4" />
+                  Dashboard
+                </Button>
+              </div>
+            </header>
 
-          {/* Main Content */}
-          <main className="flex-1 p-6">
-            <div className="max-w-3xl mx-auto">
-              {renderSection()}
-            </div>
-          </main>
+            {/* Main Content */}
+            <main className="flex-1 p-6">
+              <div className="max-w-3xl mx-auto">
+                {renderSection()}
+              </div>
+            </main>
+          </CosmicBackground>
         </SidebarInset>
       </div>
     </SidebarProvider>
