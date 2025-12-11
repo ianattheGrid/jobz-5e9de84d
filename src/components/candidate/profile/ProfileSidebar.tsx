@@ -1,4 +1,4 @@
-import { User, Briefcase, Award, Image, Star, RefreshCw, Brain, Percent, Eye, Check, Circle, HelpCircle } from "lucide-react";
+import { User, Briefcase, Award, Image, Star, RefreshCw, Brain, Percent, Eye, Check, Circle, HelpCircle, Compass, Rocket, TrendingUp, Zap } from "lucide-react";
 import { PROFILE_SECTIONS, ProfileSectionId } from "./types";
 import {
   Sidebar,
@@ -28,6 +28,10 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Brain,
   Percent,
   Eye,
+  Compass,
+  Rocket,
+  TrendingUp,
+  Zap,
 };
 
 interface ProfileSidebarProps {
@@ -95,7 +99,7 @@ export function ProfileSidebar({
                   <h4 className="font-medium">How Profile Builder Works</h4>
                   <p className="text-sm text-muted-foreground">
                     Complete the <strong>Required</strong> sections to get matched with employers. 
-                    Optional sections help you stand out.
+                    Optional sections are tailored to your career stage and help you stand out.
                   </p>
                   <ul className="text-sm text-muted-foreground list-disc pl-4 space-y-1">
                     <li>Each section saves independently</li>
@@ -126,10 +130,10 @@ export function ProfileSidebar({
 
         {!collapsed && <Separator className="my-4" />}
 
-        {/* Optional Sections */}
+        {/* Optional / Career Stage Sections */}
         <SidebarGroup>
           <SidebarGroupLabel className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground px-3 mb-2">
-            {!collapsed && "Optional"}
+            {!collapsed && "Career Stages & Optional"}
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu className="space-y-1">

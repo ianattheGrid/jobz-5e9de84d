@@ -1,12 +1,63 @@
 export type ProfileSectionId = 
   | 'about'
-  | 'work-preferences'
+  | 'career-stage'
   | 'skills-experience'
-  | 'getting-started'
-  | 'second-chapter'
+  | 'launchpad'
+  | 'ascent'
+  | 'core'
+  | 'pivot'
+  | 'encore'
   | 'personality'
   | 'bonus-scheme'
   | 'section-visibility';
+
+export type CareerStage = 'launchpad' | 'ascent' | 'core' | 'pivot' | 'encore';
+
+export interface CareerStageInfo {
+  id: CareerStage;
+  label: string;
+  icon: string;
+  description: string;
+  experienceRange: string;
+}
+
+export const CAREER_STAGES: CareerStageInfo[] = [
+  {
+    id: 'launchpad',
+    label: 'The Launchpad',
+    icon: 'Rocket',
+    description: 'First job seekers, graduates, or those with minimal experience',
+    experienceRange: '0-2 years'
+  },
+  {
+    id: 'ascent',
+    label: 'The Ascent',
+    icon: 'TrendingUp',
+    description: 'Building your career, gaining experience and skills',
+    experienceRange: '2-5 years'
+  },
+  {
+    id: 'core',
+    label: 'The Core',
+    icon: 'Zap',
+    description: 'Established professionals with solid experience',
+    experienceRange: '5+ years'
+  },
+  {
+    id: 'pivot',
+    label: 'The Pivot',
+    icon: 'RefreshCw',
+    description: 'Career changers looking for a new direction',
+    experienceRange: 'Any experience'
+  },
+  {
+    id: 'encore',
+    label: 'The Encore',
+    icon: 'Award',
+    description: 'Semi-retired or returning to meaningful part-time work',
+    experienceRange: 'Experienced'
+  }
+];
 
 export interface ProfileSectionGroup {
   id: ProfileSectionId;
@@ -22,14 +73,14 @@ export const PROFILE_SECTIONS: ProfileSectionGroup[] = [
     label: 'About Me',
     icon: 'User',
     required: true,
-    description: 'Contact info, CV, gallery & verification'
+    description: 'Contact info, CV, gallery, availability & verification'
   },
   {
-    id: 'work-preferences',
-    label: 'Work Preferences',
-    icon: 'Briefcase',
+    id: 'career-stage',
+    label: 'Career Stage',
+    icon: 'Compass',
     required: true,
-    description: 'Job type, salary, availability'
+    description: 'Select your career journey stage'
   },
   {
     id: 'skills-experience',
@@ -39,18 +90,39 @@ export const PROFILE_SECTIONS: ProfileSectionGroup[] = [
     description: 'Skills, experience, education & portfolio'
   },
   {
-    id: 'getting-started',
-    label: 'Getting Started',
+    id: 'launchpad',
+    label: 'The Launchpad',
     icon: 'Rocket',
     required: false,
-    description: 'For first-time job seekers'
+    description: 'For first-time job seekers (0-2 years)'
   },
   {
-    id: 'second-chapter',
-    label: 'Second Chapter',
+    id: 'ascent',
+    label: 'The Ascent',
+    icon: 'TrendingUp',
+    required: false,
+    description: 'For those building their career (2-5 years)'
+  },
+  {
+    id: 'core',
+    label: 'The Core',
+    icon: 'Zap',
+    required: false,
+    description: 'For established professionals (5+ years)'
+  },
+  {
+    id: 'pivot',
+    label: 'The Pivot',
     icon: 'RefreshCw',
     required: false,
     description: 'For career changers'
+  },
+  {
+    id: 'encore',
+    label: 'The Encore',
+    icon: 'Award',
+    required: false,
+    description: 'For semi-retired / returning professionals'
   },
   {
     id: 'personality',

@@ -2,21 +2,26 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
+import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage, FormDescription } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { CandidateProfile } from "@/integrations/supabase/types/profiles";
 import { GlowCard, GlowCardContent, GlowCardHeader, GlowCardTitle, GlowCardDescription } from "@/components/ui/glow-card";
-import { Loader2, Save, Link, Shield, MessageSquare, Sparkles, User, FileText, Info, ImageIcon } from "lucide-react";
+import { Loader2, Save, Link, Shield, MessageSquare, Sparkles, User, Info, ImageIcon, CalendarIcon, Car } from "lucide-react";
 import { CreateFromCVButton } from "@/components/candidate/CreateFromCVButton";
 import HomePostcodeSelect from "@/components/address/HomePostcodeSelect";
 import { FileUploadSection } from "@/components/candidate/FileUploadSection";
 import { VerificationSection } from "@/components/candidate/VerificationSection";
 import { CandidateGallerySection } from "@/components/candidate/gallery/CandidateGallerySection";
+import { AvailabilityCalendar } from "../components/AvailabilityCalendar";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
 
 const MAX_PERSONAL_STATEMENT_LENGTH = 1000;
 
@@ -28,6 +33,9 @@ const aboutMeSchema = z.object({
   home_postcode: z.string().min(1, "Please select your home postcode"),
   linkedin_url: z.string().url("Please enter a valid LinkedIn URL").optional().or(z.literal('')),
   current_employer: z.string().optional(),
+  date_of_birth: z.date().optional().nullable(),
+  has_uk_driving_license: z.boolean().default(false),
+  can_drive: z.boolean().default(false),
   contact_phone_ok: z.boolean().default(true),
   contact_email_ok: z.boolean().default(true),
   contact_linkedin_ok: z.boolean().default(false),
@@ -36,6 +44,11 @@ const aboutMeSchema = z.object({
 });
 
 type AboutMeFormValues = z.infer<typeof aboutMeSchema>;
+
+interface UnavailablePeriod {
+  start: string;
+  end: string;
+}
 
 interface AboutMeSectionProps {
   userId: string;
@@ -47,6 +60,9 @@ export function AboutMeSection({ userId, profileData, onSave }: AboutMeSectionPr
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isEnhancing, setIsEnhancing] = useState(false);
+  const [unavailableDates, setUnavailableDates] = useState<UnavailablePeriod[]>(
+    (profileData as any)?.unavailable_dates || []
+  );
   const profileAny = profileData as any;
 
   const form = useForm<AboutMeFormValues>({
@@ -59,6 +75,9 @@ export function AboutMeSection({ userId, profileData, onSave }: AboutMeSectionPr
       home_postcode: profileData?.home_postcode || "",
       linkedin_url: profileData?.linkedin_url || "",
       current_employer: profileData?.current_employer || "",
+      date_of_birth: profileAny?.date_of_birth ? new Date(profileAny.date_of_birth) : null,
+      has_uk_driving_license: profileAny?.has_uk_driving_license ?? false,
+      can_drive: profileAny?.can_drive ?? false,
       contact_phone_ok: profileAny?.contact_phone_ok ?? true,
       contact_email_ok: profileAny?.contact_email_ok ?? true,
       contact_linkedin_ok: profileAny?.contact_linkedin_ok ?? false,
@@ -124,11 +143,15 @@ export function AboutMeSection({ userId, profileData, onSave }: AboutMeSectionPr
           home_postcode: values.home_postcode,
           linkedin_url: values.linkedin_url || null,
           current_employer: values.current_employer || null,
+          date_of_birth: values.date_of_birth ? values.date_of_birth.toISOString().split('T')[0] : null,
+          has_uk_driving_license: values.has_uk_driving_license,
+          can_drive: values.can_drive,
           contact_phone_ok: values.contact_phone_ok,
           contact_email_ok: values.contact_email_ok,
           contact_linkedin_ok: values.contact_linkedin_ok,
           contact_jobz_ok: values.contact_jobz_ok,
           personal_statement: values.personal_statement || null,
+          unavailable_dates: unavailableDates as any,
         })
         .eq('id', userId);
 
@@ -162,10 +185,13 @@ export function AboutMeSection({ userId, profileData, onSave }: AboutMeSectionPr
         </GlowCardContent>
       </GlowCard>
 
-      {/* CV / Resume */}
+      {/* CV / Resume - Optional */}
       <GlowCard>
         <GlowCardHeader>
-          <GlowCardTitle>CV / Resume</GlowCardTitle>
+          <GlowCardTitle>CV / Resume (Optional)</GlowCardTitle>
+          <GlowCardDescription>
+            Upload your CV to help employers understand your experience, or skip this if you prefer.
+          </GlowCardDescription>
         </GlowCardHeader>
         <GlowCardContent>
           <FileUploadSection
@@ -210,6 +236,27 @@ export function AboutMeSection({ userId, profileData, onSave }: AboutMeSectionPr
               Gallery images save automatically when you upload or delete them.
             </p>
           </div>
+        </GlowCardContent>
+      </GlowCard>
+
+      {/* Availability Calendar */}
+      <GlowCard>
+        <GlowCardHeader>
+          <div className="flex items-center gap-3">
+            <CalendarIcon className="h-5 w-5 text-muted-foreground" />
+            <div>
+              <GlowCardTitle className="text-lg">Availability Calendar</GlowCardTitle>
+              <GlowCardDescription>
+                Let employers know when you're available to start or any dates you're unavailable
+              </GlowCardDescription>
+            </div>
+          </div>
+        </GlowCardHeader>
+        <GlowCardContent>
+          <AvailabilityCalendar
+            unavailableDates={unavailableDates}
+            onChange={setUnavailableDates}
+          />
         </GlowCardContent>
       </GlowCard>
 
@@ -347,6 +394,53 @@ export function AboutMeSection({ userId, profileData, onSave }: AboutMeSectionPr
                 )}
               />
 
+              {/* Date of Birth */}
+              <FormField
+                control={form.control}
+                name="date_of_birth"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <FormLabel>Date of Birth</FormLabel>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant="outline"
+                            className={cn(
+                              "w-full pl-3 text-left font-normal",
+                              !field.value && "text-muted-foreground"
+                            )}
+                          >
+                            {field.value ? (
+                              format(field.value, "PPP")
+                            ) : (
+                              <span>Select your date of birth</span>
+                            )}
+                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={field.value || undefined}
+                          onSelect={field.onChange}
+                          disabled={(date) =>
+                            date > new Date() || date < new Date("1940-01-01")
+                          }
+                          initialFocus
+                          className={cn("p-3 pointer-events-auto")}
+                          captionLayout="dropdown-buttons"
+                          fromYear={1940}
+                          toYear={new Date().getFullYear()}
+                        />
+                      </PopoverContent>
+                    </Popover>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
               <FormField
                 control={form.control}
                 name="linkedin_url"
@@ -401,6 +495,52 @@ export function AboutMeSection({ userId, profileData, onSave }: AboutMeSectionPr
               />
 
               <HomePostcodeSelect control={form.control} />
+
+              {/* Driving Section */}
+              <div className="border-t pt-6 mt-6">
+                <div className="flex items-center gap-2 mb-4">
+                  <Car className="h-4 w-4 text-muted-foreground" />
+                  <h4 className="font-medium">Driving</h4>
+                </div>
+                
+                <div className="space-y-3">
+                  <FormField
+                    control={form.control}
+                    name="has_uk_driving_license"
+                    render={({ field }) => (
+                      <FormItem className="flex items-center space-x-3 space-y-0">
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                        <FormLabel className="font-normal cursor-pointer">
+                          I hold a full UK driving license
+                        </FormLabel>
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="can_drive"
+                    render={({ field }) => (
+                      <FormItem className="flex items-center space-x-3 space-y-0">
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                        <FormLabel className="font-normal cursor-pointer">
+                          I'm able to drive for work if required
+                        </FormLabel>
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </div>
 
               {/* Contact Preferences */}
               <div className="border-t pt-6 mt-6">

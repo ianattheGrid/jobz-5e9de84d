@@ -48,6 +48,29 @@ export interface SecondChapter {
   second_chapter_summary?: string | null;
 }
 
+// Career Stage Types
+export type CareerStageType = 'launchpad' | 'ascent' | 'core' | 'pivot' | 'encore';
+
+export interface UnavailablePeriod {
+  start: string;
+  end: string;
+}
+
+export interface AscentProfile {
+  // To be defined in Phase 3
+  [key: string]: any;
+}
+
+export interface CoreProfile {
+  // To be defined in Phase 3
+  [key: string]: any;
+}
+
+export interface EncoreProfile {
+  // To be defined in Phase 3
+  [key: string]: any;
+}
+
 export interface CandidateProfile {
   id: string;
   email: string;
@@ -92,6 +115,24 @@ export interface CandidateProfile {
   show_second_chapter?: boolean;
   personal_statement?: string | null;
   contact_jobz_ok?: boolean | null;
+  
+  // New True Core fields
+  date_of_birth?: string | null;
+  has_uk_driving_license?: boolean;
+  can_drive?: boolean;
+  unavailable_dates?: UnavailablePeriod[] | any | null;
+  
+  // Career Stage fields
+  primary_career_stage?: CareerStageType | string | null;
+  secondary_career_stages?: CareerStageType[] | string[] | null;
+  
+  // Stage-specific profiles
+  ascent_profile?: AscentProfile | any | null;
+  core_profile?: CoreProfile | any | null;
+  encore_profile?: EncoreProfile | any | null;
+  show_ascent_profile?: boolean;
+  show_core_profile?: boolean;
+  show_encore_profile?: boolean;
 }
 
 export interface EmployerProfile {
