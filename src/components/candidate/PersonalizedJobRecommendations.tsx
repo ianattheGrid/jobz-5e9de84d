@@ -1,9 +1,7 @@
 import { usePersonalizedJobs } from "@/hooks/usePersonalizedJobs";
-import { PersonalizedJobCard } from "./PersonalizedJobCard";
-import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { Briefcase, TrendingUp } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { TrendingUp } from "lucide-react";
+import { DashboardCard } from "@/components/ui/dashboard-card";
 
 export const PersonalizedJobRecommendations = () => {
   const { jobs, loading, profile } = usePersonalizedJobs();
@@ -13,48 +11,34 @@ export const PersonalizedJobRecommendations = () => {
     navigate('/candidate/personalized-jobs');
   };
 
-  if (loading) {
-    return (
-      <Button
-        variant="outline"
-        className="h-full min-h-[120px] flex flex-col items-center justify-center p-6 text-left hover:shadow-md transition-shadow"
-        onClick={handleClick}
-      >
-        <TrendingUp className="h-8 w-8 text-[#FF69B4] mb-2" />
-        <h3 className="font-semibold text-lg mb-2 text-gray-900">Jobs Match</h3>
-        <p className="text-sm text-gray-600 text-center">View your profile job matches</p>
-      </Button>
-    );
-  }
-
-  if (!profile) {
-    return (
-      <Button
-        variant="outline"
-        className="h-full min-h-[120px] flex flex-col items-center justify-center p-6 text-left hover:shadow-md transition-shadow"
-        onClick={() => navigate('/candidate/profile')}
-      >
-        <TrendingUp className="h-8 w-8 text-[#FF69B4] mb-2" />
-        <h3 className="font-semibold text-lg mb-2 text-gray-900">Jobs Match</h3>
-        <p className="text-sm text-gray-600 text-center">Complete your profile to see matches</p>
-      </Button>
-    );
-  }
+  const getMessage = () => {
+    if (loading) {
+      return "View your profile job matches";
+    }
+    if (!profile) {
+      return "Complete your profile to see matches";
+    }
+    if (jobs.length === 0) {
+      return "No matches found - click to browse all jobs";
+    }
+    return `${jobs.length} job${jobs.length !== 1 ? 's' : ''} match your profile`;
+  };
 
   return (
-    <Button
-      variant="outline"
-      className="h-full min-h-[120px] flex flex-col items-center justify-center p-6 text-left hover:shadow-md transition-shadow"
-      onClick={handleClick}
+    <DashboardCard
+      onClick={!profile && !loading ? () => navigate('/candidate/profile') : handleClick}
+      helpTitle="Jobs Match"
+      helpText="See job vacancies that match your profile. The more complete your profile, the better your matches will be!"
     >
-      <TrendingUp className="h-8 w-8 text-[#FF69B4] mb-2" />
-      <h3 className="font-semibold text-lg mb-2 text-gray-900">Jobs Match</h3>
-      <p className="text-sm text-gray-600 text-center">
-        {jobs.length === 0 
-          ? "No matches found - click to browse all jobs" 
-          : `${jobs.length} job${jobs.length !== 1 ? 's' : ''} match your profile`
-        }
-      </p>
-    </Button>
+      <div className="flex flex-col items-center gap-4 text-center">
+        <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
+          <TrendingUp className="h-6 w-6 text-primary" />
+        </div>
+        <div>
+          <h3 className="font-semibold text-lg mb-2 text-foreground">Jobs Match</h3>
+          <p className="text-sm text-muted-foreground">{getMessage()}</p>
+        </div>
+      </div>
+    </DashboardCard>
   );
 };
