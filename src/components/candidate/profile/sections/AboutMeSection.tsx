@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage, FormDescription } from "@/components/ui/form";
@@ -9,11 +9,13 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { CandidateProfile } from "@/integrations/supabase/types/profiles";
 import { GlowCard, GlowCardContent, GlowCardHeader, GlowCardTitle, GlowCardDescription } from "@/components/ui/glow-card";
-import { Loader2, Save, Link, Shield, MessageSquare, Sparkles, User, Info, ImageIcon, CalendarIcon, Car } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Loader2, Save, Link, Shield, MessageSquare, Sparkles, User, Info, ImageIcon, CalendarIcon, Car, GraduationCap, Briefcase, Trash2, Plus } from "lucide-react";
 import { CreateFromCVButton } from "@/components/candidate/CreateFromCVButton";
 import HomePostcodeSelect from "@/components/address/HomePostcodeSelect";
 import { FileUploadSection } from "@/components/candidate/FileUploadSection";
@@ -24,6 +26,13 @@ import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 
 const MAX_PERSONAL_STATEMENT_LENGTH = 1000;
+
+const educationEntrySchema = z.object({
+  institution: z.string().optional(),
+  qualification: z.string().optional(),
+  grade: z.string().optional(),
+  year: z.number().optional(),
+});
 
 const aboutMeSchema = z.object({
   full_name: z.string().min(1, "Full name is required"),
@@ -41,6 +50,12 @@ const aboutMeSchema = z.object({
   contact_linkedin_ok: z.boolean().default(false),
   contact_jobz_ok: z.boolean().default(true),
   personal_statement: z.string().max(MAX_PERSONAL_STATEMENT_LENGTH, `Maximum ${MAX_PERSONAL_STATEMENT_LENGTH} characters`).optional(),
+  // Education
+  education_details: z.array(educationEntrySchema).optional(),
+  // Work Status
+  is_currently_employed: z.boolean().default(true),
+  notice_period: z.string().optional(),
+  contract_type_preference: z.string().optional(),
 });
 
 type AboutMeFormValues = z.infer<typeof aboutMeSchema>;
@@ -86,11 +101,21 @@ export function AboutMeSection({ userId, profileData, onSave }: AboutMeSectionPr
       contact_linkedin_ok: profileAny?.contact_linkedin_ok ?? false,
       contact_jobz_ok: profileAny?.contact_jobz_ok ?? true,
       personal_statement: profileAny?.personal_statement || "",
+      education_details: (profileAny?.education_details as any[]) || [],
+      is_currently_employed: profileAny?.is_currently_employed ?? true,
+      notice_period: profileAny?.notice_period || "",
+      contract_type_preference: profileAny?.contract_type_preference || "permanent",
     },
+  });
+
+  const { fields: educationFields, append: appendEducation, remove: removeEducation } = useFieldArray({
+    control: form.control,
+    name: "education_details",
   });
 
   const personalStatementValue = form.watch("personal_statement") || "";
   const characterCount = personalStatementValue.length;
+  const isCurrentlyEmployed = form.watch("is_currently_employed");
 
   const handleEnhanceWithAI = async () => {
     const currentText = form.getValues("personal_statement");
@@ -156,6 +181,10 @@ export function AboutMeSection({ userId, profileData, onSave }: AboutMeSectionPr
           personal_statement: values.personal_statement || null,
           availability: availability || null,
           unavailable_dates: earliestStartDate ? { earliest_start_date: earliestStartDate } : null,
+          education_details: values.education_details || [],
+          is_currently_employed: values.is_currently_employed,
+          notice_period: values.notice_period || null,
+          contract_type_preference: values.contract_type_preference || null,
         })
         .eq('id', userId);
 
@@ -168,6 +197,15 @@ export function AboutMeSection({ userId, profileData, onSave }: AboutMeSectionPr
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const addEducation = () => {
+    appendEducation({
+      institution: "",
+      qualification: "",
+      grade: "",
+      year: new Date().getFullYear(),
+    });
   };
 
   return (
@@ -240,6 +278,216 @@ export function AboutMeSection({ userId, profileData, onSave }: AboutMeSectionPr
               Gallery images save automatically when you upload or delete them.
             </p>
           </div>
+        </GlowCardContent>
+      </GlowCard>
+
+      {/* Education Section */}
+      <GlowCard>
+        <GlowCardHeader>
+          <div className="flex items-center gap-3">
+            <GraduationCap className="h-5 w-5 text-muted-foreground" />
+            <div>
+              <GlowCardTitle className="text-lg">Education & Qualifications</GlowCardTitle>
+              <GlowCardDescription>
+                Add your educational background to help employers understand your qualifications
+              </GlowCardDescription>
+            </div>
+          </div>
+        </GlowCardHeader>
+        <GlowCardContent>
+          <Form {...form}>
+            <div className="space-y-4">
+              {educationFields.map((field, index) => (
+                <Card key={field.id} className="relative">
+                  <CardHeader className="pb-3">
+                    <div className="flex items-center justify-between">
+                      <CardTitle className="text-sm font-medium">
+                        Education #{index + 1}
+                      </CardTitle>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => removeEducation(index)}
+                        className="text-destructive hover:text-destructive"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <FormField
+                        control={form.control}
+                        name={`education_details.${index}.institution`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Institution</FormLabel>
+                            <FormControl>
+                              <Input placeholder="e.g., University of Bristol" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name={`education_details.${index}.qualification`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Qualification</FormLabel>
+                            <FormControl>
+                              <Input placeholder="e.g., BSc Computer Science" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <FormField
+                        control={form.control}
+                        name={`education_details.${index}.grade`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Grade (Optional)</FormLabel>
+                            <FormControl>
+                              <Input placeholder="e.g., 2:1, First Class" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name={`education_details.${index}.year`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Year (Optional)</FormLabel>
+                            <FormControl>
+                              <Input 
+                                type="number" 
+                                placeholder="e.g., 2020" 
+                                {...field}
+                                onChange={(e) => field.onChange(parseInt(e.target.value) || undefined)}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+
+              <Button
+                type="button"
+                variant="outline"
+                onClick={addEducation}
+                className="w-full"
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Add Education
+              </Button>
+            </div>
+          </Form>
+        </GlowCardContent>
+      </GlowCard>
+
+      {/* Work Status Section */}
+      <GlowCard>
+        <GlowCardHeader>
+          <div className="flex items-center gap-3">
+            <Briefcase className="h-5 w-5 text-muted-foreground" />
+            <div>
+              <GlowCardTitle className="text-lg">Work Status</GlowCardTitle>
+              <GlowCardDescription>
+                Let employers know your current employment situation
+              </GlowCardDescription>
+            </div>
+          </div>
+        </GlowCardHeader>
+        <GlowCardContent>
+          <Form {...form}>
+            <div className="space-y-4">
+              <FormField
+                control={form.control}
+                name="is_currently_employed"
+                render={({ field }) => (
+                  <FormItem className="flex items-center space-x-3 space-y-0">
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <FormLabel className="font-normal cursor-pointer">
+                      I am currently employed
+                    </FormLabel>
+                  </FormItem>
+                )}
+              />
+
+              {isCurrentlyEmployed && (
+                <FormField
+                  control={form.control}
+                  name="notice_period"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Notice Period</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select your notice period" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="Immediate">Immediate</SelectItem>
+                          <SelectItem value="1 week">1 week</SelectItem>
+                          <SelectItem value="2 weeks">2 weeks</SelectItem>
+                          <SelectItem value="1 month">1 month</SelectItem>
+                          <SelectItem value="2 months">2 months</SelectItem>
+                          <SelectItem value="3 months">3 months</SelectItem>
+                          <SelectItem value="3+ months">3+ months</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
+
+              <FormField
+                control={form.control}
+                name="contract_type_preference"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Contract Type Preference</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select your preference" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="permanent">Permanent</SelectItem>
+                        <SelectItem value="contract">Contract</SelectItem>
+                        <SelectItem value="temporary">Temporary</SelectItem>
+                        <SelectItem value="part-time">Part-time</SelectItem>
+                        <SelectItem value="freelance">Freelance</SelectItem>
+                        <SelectItem value="any">Open to all</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </Form>
         </GlowCardContent>
       </GlowCard>
 

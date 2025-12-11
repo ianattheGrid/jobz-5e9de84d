@@ -1,15 +1,8 @@
 export type ProfileSectionId = 
   | 'about'
   | 'career-stage'
-  | 'skills-experience'
-  | 'launchpad'
-  | 'ascent'
-  | 'core'
-  | 'pivot'
-  | 'encore'
   | 'personality'
-  | 'bonus-scheme'
-  | 'section-visibility';
+  | 'bonus-scheme';
 
 export type CareerStage = 'launchpad' | 'ascent' | 'core' | 'pivot' | 'encore';
 
@@ -73,56 +66,14 @@ export const PROFILE_SECTIONS: ProfileSectionGroup[] = [
     label: 'About Me',
     icon: 'User',
     required: true,
-    description: 'Contact info, CV, gallery, availability & verification'
+    description: 'Contact info, CV, gallery, education & work status'
   },
   {
     id: 'career-stage',
     label: 'Career Stage',
     icon: 'Compass',
     required: true,
-    description: 'Select your career journey stage'
-  },
-  {
-    id: 'skills-experience',
-    label: 'Skills & Experience',
-    icon: 'Award',
-    required: true,
-    description: 'Skills, experience, education & portfolio'
-  },
-  {
-    id: 'launchpad',
-    label: 'The Launchpad',
-    icon: 'Rocket',
-    required: false,
-    description: 'For first-time job seekers (0-2 years)'
-  },
-  {
-    id: 'ascent',
-    label: 'The Ascent',
-    icon: 'TrendingUp',
-    required: false,
-    description: 'For those building their career (2-5 years)'
-  },
-  {
-    id: 'core',
-    label: 'The Core',
-    icon: 'Zap',
-    required: false,
-    description: 'For established professionals (5+ years)'
-  },
-  {
-    id: 'pivot',
-    label: 'The Pivot',
-    icon: 'RefreshCw',
-    required: false,
-    description: 'For career changers'
-  },
-  {
-    id: 'encore',
-    label: 'The Encore',
-    icon: 'Award',
-    required: false,
-    description: 'For semi-retired / returning professionals'
+    description: 'Select your career journey and answer relevant questions'
   },
   {
     id: 'personality',
@@ -137,12 +88,5 @@ export const PROFILE_SECTIONS: ProfileSectionGroup[] = [
     icon: 'Percent',
     required: false,
     description: '"You\'re Hired" commission settings'
-  },
-  {
-    id: 'section-visibility',
-    label: 'Section Visibility',
-    icon: 'Eye',
-    required: false,
-    description: 'Control what employers see'
   }
 ];
