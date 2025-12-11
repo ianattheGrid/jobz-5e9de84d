@@ -12,12 +12,8 @@ import { CosmicBackground } from "@/components/ui/cosmic-background";
 // Section components
 import { AboutMeSection } from "./sections/AboutMeSection";
 import { CareerStageSection } from "./sections/CareerStageSection";
-import { SkillsExperienceSection } from "./sections/SkillsExperienceSection";
-import { GettingStartedPageSection } from "./sections/GettingStartedPageSection";
-import { SecondChapterSection } from "./sections/SecondChapterSection";
 import { PersonalityPageSection } from "./sections/PersonalityPageSection";
 import { BonusSchemeSection } from "./sections/BonusSchemeSection";
-import { SectionVisibilitySection } from "./sections/SectionVisibilitySection";
 
 import ProfileDetails from "@/components/candidate-profile/ProfileDetails";
 import { CandidateCardPreview } from "./CandidateCardPreview";
@@ -47,49 +43,30 @@ export function ProfileLayout({ userId, profileData, onProfileUpdate }: ProfileL
     const completed = new Set<ProfileSectionId>();
     const profileAny = profileData as any;
 
-    // About Me - check if basic info is filled
+    // About Me - check if basic info is filled (including education)
     if (profileData.full_name && profileData.email && profileData.home_postcode) {
       completed.add('about');
     }
 
-    // Career Stage - check if primary stage is selected
+    // Career Stage - check if primary stage is selected AND has stage-specific data
     if (profileAny.primary_career_stage) {
+      const stage = profileAny.primary_career_stage;
+      let hasStageData = false;
+      
+      if (stage === 'launchpad' && profileAny.proof_of_potential && Object.keys(profileAny.proof_of_potential).length > 0) {
+        hasStageData = true;
+      } else if (stage === 'ascent' && profileAny.ascent_profile && Object.keys(profileAny.ascent_profile).length > 0) {
+        hasStageData = true;
+      } else if (stage === 'core' && profileAny.core_profile && Object.keys(profileAny.core_profile).length > 0) {
+        hasStageData = true;
+      } else if (stage === 'pivot' && profileAny.second_chapter && Object.keys(profileAny.second_chapter).length > 0) {
+        hasStageData = true;
+      } else if (stage === 'encore' && profileAny.encore_profile && Object.keys(profileAny.encore_profile).length > 0) {
+        hasStageData = true;
+      }
+      
+      // Mark complete if stage is selected (questions are optional enhancement)
       completed.add('career-stage');
-    }
-
-    // Skills & Experience - check for skills or years experience
-    if ((profileData.required_skills && profileData.required_skills.length > 0) || profileData.years_experience > 0) {
-      completed.add('skills-experience');
-    }
-
-    // The Launchpad (formerly Getting Started) - check if proof_of_potential has content
-    const launchpadData = profileAny?.proof_of_potential;
-    if (launchpadData && Object.keys(launchpadData).length > 0) {
-      completed.add('launchpad');
-    }
-
-    // The Pivot (formerly Second Chapter) - check if second_chapter has content
-    const pivotData = profileAny?.second_chapter;
-    if (pivotData && Object.keys(pivotData).length > 0) {
-      completed.add('pivot');
-    }
-
-    // The Ascent - check if ascent_profile has content
-    const ascentData = profileAny?.ascent_profile;
-    if (ascentData && Object.keys(ascentData).length > 0) {
-      completed.add('ascent');
-    }
-
-    // The Core - check if core_profile has content
-    const coreData = profileAny?.core_profile;
-    if (coreData && Object.keys(coreData).length > 0) {
-      completed.add('core');
-    }
-
-    // The Encore - check if encore_profile has content
-    const encoreData = profileAny?.encore_profile;
-    if (encoreData && Object.keys(encoreData).length > 0) {
-      completed.add('encore');
     }
 
     // Personality - check for personality data
@@ -103,18 +80,8 @@ export function ProfileLayout({ userId, profileData, onProfileUpdate }: ProfileL
       completed.add('bonus-scheme');
     }
 
-    // Section Visibility - always consider complete if visible_sections exists
-    const visibleSections = profileAny.visible_sections;
-    if (visibleSections) {
-      completed.add('section-visibility');
-    }
-
     setCompletedSections(completed);
   }, [profileData]);
-
-  const handleNavigateToSection = (section: string) => {
-    setActiveSection(section as ProfileSectionId);
-  };
 
   const renderSection = () => {
     const commonProps = {
@@ -128,42 +95,10 @@ export function ProfileLayout({ userId, profileData, onProfileUpdate }: ProfileL
         return <AboutMeSection {...commonProps} />;
       case 'career-stage':
         return <CareerStageSection {...commonProps} />;
-      case 'skills-experience':
-        return <SkillsExperienceSection {...commonProps} />;
-      case 'launchpad':
-        return <GettingStartedPageSection {...commonProps} />;
-      case 'ascent':
-        // Placeholder - will be implemented in Phase 3
-        return (
-          <div className="p-6 text-center text-muted-foreground">
-            <p>The Ascent section will be available soon.</p>
-            <p className="text-sm mt-2">This section is for professionals with 2-5 years experience.</p>
-          </div>
-        );
-      case 'core':
-        // Placeholder - will be implemented in Phase 3
-        return (
-          <div className="p-6 text-center text-muted-foreground">
-            <p>The Core section will be available soon.</p>
-            <p className="text-sm mt-2">This section is for established professionals with 5+ years experience.</p>
-          </div>
-        );
-      case 'pivot':
-        return <SecondChapterSection {...commonProps} />;
-      case 'encore':
-        // Placeholder - will be implemented in Phase 3
-        return (
-          <div className="p-6 text-center text-muted-foreground">
-            <p>The Encore section will be available soon.</p>
-            <p className="text-sm mt-2">This section is for semi-retired or returning professionals.</p>
-          </div>
-        );
       case 'personality':
         return <PersonalityPageSection {...commonProps} />;
       case 'bonus-scheme':
         return <BonusSchemeSection {...commonProps} />;
-      case 'section-visibility':
-        return <SectionVisibilitySection {...commonProps} />;
       default:
         return <AboutMeSection {...commonProps} />;
     }

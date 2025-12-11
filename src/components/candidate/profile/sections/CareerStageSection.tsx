@@ -5,9 +5,10 @@ import { CandidateProfile } from "@/integrations/supabase/types/profiles";
 import { GlowCard, GlowCardContent, GlowCardHeader, GlowCardTitle, GlowCardDescription } from "@/components/ui/glow-card";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Loader2, Save, Rocket, TrendingUp, Zap, RefreshCw, Award, Check } from "lucide-react";
+import { Loader2, Save, Rocket, TrendingUp, Zap, RefreshCw, Award, Check, ArrowLeft, Pencil } from "lucide-react";
 import { CAREER_STAGES, CareerStage } from "../types";
 import { cn } from "@/lib/utils";
+import { GettingStartedSection } from "@/components/candidate/getting-started/GettingStartedSection";
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Rocket,
@@ -28,12 +29,18 @@ export function CareerStageSection({ userId, profileData, onSave }: CareerStageS
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [primaryStage, setPrimaryStage] = useState<CareerStage | null>(null);
   const [secondaryStages, setSecondaryStages] = useState<CareerStage[]>([]);
+  const [showQuestions, setShowQuestions] = useState(false);
 
   useEffect(() => {
     if (profileData) {
       const profileAny = profileData as any;
-      setPrimaryStage(profileAny.primary_career_stage || null);
+      const savedStage = profileAny.primary_career_stage || null;
+      setPrimaryStage(savedStage);
       setSecondaryStages(profileAny.secondary_career_stages || []);
+      // If they already have a saved stage, show questions by default
+      if (savedStage) {
+        setShowQuestions(true);
+      }
     }
   }, [profileData]);
 
@@ -77,6 +84,8 @@ export function CareerStageSection({ userId, profileData, onSave }: CareerStageS
 
       toast({ title: "Success", description: "Career stage saved successfully" });
       onSave();
+      // Show the questions after saving
+      setShowQuestions(true);
     } catch (error: any) {
       toast({ variant: "destructive", title: "Error", description: error.message });
     } finally {
@@ -84,6 +93,130 @@ export function CareerStageSection({ userId, profileData, onSave }: CareerStageS
     }
   };
 
+  const handleChangeStage = () => {
+    setShowQuestions(false);
+  };
+
+  const selectedStageInfo = CAREER_STAGES.find(s => s.id === primaryStage);
+  const profileAny = profileData as any;
+
+  // Render the dynamic questions based on selected stage
+  const renderStageQuestions = () => {
+    if (!primaryStage) return null;
+
+    switch (primaryStage) {
+      case 'launchpad':
+        return (
+          <GettingStartedSection 
+            userId={userId} 
+            initialData={profileAny?.proof_of_potential || null}
+          />
+        );
+      case 'ascent':
+        return (
+          <GlowCard>
+            <GlowCardContent className="py-8">
+              <div className="flex flex-col items-center justify-center text-center">
+                <TrendingUp className="h-10 w-10 text-primary mb-4" />
+                <h3 className="text-lg font-medium text-foreground mb-2">The Ascent Questions</h3>
+                <p className="text-sm text-muted-foreground max-w-md">
+                  Questions for professionals with 2-5 years experience will be available soon.
+                  Focus on your growth trajectory, key achievements, and career goals.
+                </p>
+              </div>
+            </GlowCardContent>
+          </GlowCard>
+        );
+      case 'core':
+        return (
+          <GlowCard>
+            <GlowCardContent className="py-8">
+              <div className="flex flex-col items-center justify-center text-center">
+                <Zap className="h-10 w-10 text-primary mb-4" />
+                <h3 className="text-lg font-medium text-foreground mb-2">The Core Questions</h3>
+                <p className="text-sm text-muted-foreground max-w-md">
+                  Questions for established professionals with 5+ years experience will be available soon.
+                  Showcase your deep expertise and leadership capabilities.
+                </p>
+              </div>
+            </GlowCardContent>
+          </GlowCard>
+        );
+      case 'pivot':
+        return (
+          <GlowCard>
+            <GlowCardContent className="py-8">
+              <div className="flex flex-col items-center justify-center text-center">
+                <RefreshCw className="h-10 w-10 text-primary mb-4" />
+                <h3 className="text-lg font-medium text-foreground mb-2">The Pivot Questions</h3>
+                <p className="text-sm text-muted-foreground max-w-md">
+                  Questions for career changers will be available soon.
+                  Highlight your transferable skills and explain your new direction.
+                </p>
+              </div>
+            </GlowCardContent>
+          </GlowCard>
+        );
+      case 'encore':
+        return (
+          <GlowCard>
+            <GlowCardContent className="py-8">
+              <div className="flex flex-col items-center justify-center text-center">
+                <Award className="h-10 w-10 text-primary mb-4" />
+                <h3 className="text-lg font-medium text-foreground mb-2">The Encore Questions</h3>
+                <p className="text-sm text-muted-foreground max-w-md">
+                  Questions for semi-retired or returning professionals will be available soon.
+                  Share what meaningful work looks like to you now.
+                </p>
+              </div>
+            </GlowCardContent>
+          </GlowCard>
+        );
+      default:
+        return null;
+    }
+  };
+
+  // If showing questions (after stage is saved)
+  if (showQuestions && primaryStage) {
+    const StageIcon = iconMap[selectedStageInfo?.icon || 'Rocket'] || Rocket;
+    
+    return (
+      <div className="space-y-6">
+        {/* Current Stage Header */}
+        <GlowCard>
+          <GlowCardContent className="py-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-primary/10 rounded-full">
+                  <StageIcon className="h-5 w-5 text-primary" />
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">Your Career Stage</p>
+                  <h3 className="font-semibold text-foreground">{selectedStageInfo?.label}</h3>
+                  <p className="text-xs text-muted-foreground">{selectedStageInfo?.experienceRange}</p>
+                </div>
+              </div>
+              <Button variant="outline" size="sm" onClick={handleChangeStage} className="gap-2">
+                <Pencil className="h-4 w-4" />
+                Change Stage
+              </Button>
+            </div>
+          </GlowCardContent>
+        </GlowCard>
+
+        {/* Stage-specific Questions */}
+        <div>
+          <h3 className="text-lg font-semibold text-foreground mb-4">
+            Tell us about your journey
+          </h3>
+          {renderStageQuestions()}
+        </div>
+      </div>
+    );
+  }
+
+  // Stage Selection View
   return (
     <div className="space-y-6">
       <GlowCard>
@@ -190,7 +323,7 @@ export function CareerStageSection({ userId, profileData, onSave }: CareerStageS
           ) : (
             <>
               <Save className="mr-2 h-4 w-4" />
-              Save Career Stage
+              Save & Continue
             </>
           )}
         </Button>
