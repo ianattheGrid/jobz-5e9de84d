@@ -19,7 +19,7 @@ import HomePostcodeSelect from "@/components/address/HomePostcodeSelect";
 import { FileUploadSection } from "@/components/candidate/FileUploadSection";
 import { VerificationSection } from "@/components/candidate/VerificationSection";
 import { CandidateGallerySection } from "@/components/candidate/gallery/CandidateGallerySection";
-import { AvailabilityCalendar } from "../components/AvailabilityCalendar";
+import { AvailabilitySection } from "../components/AvailabilitySection";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 
@@ -45,9 +45,8 @@ const aboutMeSchema = z.object({
 
 type AboutMeFormValues = z.infer<typeof aboutMeSchema>;
 
-interface UnavailablePeriod {
-  start: string;
-  end: string;
+interface AvailabilityData {
+  earliest_start_date?: string | null;
 }
 
 interface AboutMeSectionProps {
@@ -60,8 +59,12 @@ export function AboutMeSection({ userId, profileData, onSave }: AboutMeSectionPr
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isEnhancing, setIsEnhancing] = useState(false);
-  const [unavailableDates, setUnavailableDates] = useState<UnavailablePeriod[]>(
-    (profileData as any)?.unavailable_dates || []
+  const [availability, setAvailability] = useState<string>(
+    profileData?.availability || ""
+  );
+  const availabilityData = (profileData as any)?.unavailable_dates as AvailabilityData | null;
+  const [earliestStartDate, setEarliestStartDate] = useState<string | null>(
+    availabilityData?.earliest_start_date || null
   );
   const profileAny = profileData as any;
 
@@ -151,7 +154,8 @@ export function AboutMeSection({ userId, profileData, onSave }: AboutMeSectionPr
           contact_linkedin_ok: values.contact_linkedin_ok,
           contact_jobz_ok: values.contact_jobz_ok,
           personal_statement: values.personal_statement || null,
-          unavailable_dates: unavailableDates as any,
+          availability: availability || null,
+          unavailable_dates: earliestStartDate ? { earliest_start_date: earliestStartDate } : null,
         })
         .eq('id', userId);
 
@@ -239,23 +243,25 @@ export function AboutMeSection({ userId, profileData, onSave }: AboutMeSectionPr
         </GlowCardContent>
       </GlowCard>
 
-      {/* Availability Calendar */}
+      {/* Availability */}
       <GlowCard>
         <GlowCardHeader>
           <div className="flex items-center gap-3">
             <CalendarIcon className="h-5 w-5 text-muted-foreground" />
             <div>
-              <GlowCardTitle className="text-lg">Availability Calendar</GlowCardTitle>
+              <GlowCardTitle className="text-lg">Availability</GlowCardTitle>
               <GlowCardDescription>
-                Let employers know when you're available to start or any dates you're unavailable
+                Let employers know when you can start
               </GlowCardDescription>
             </div>
           </div>
         </GlowCardHeader>
         <GlowCardContent>
-          <AvailabilityCalendar
-            unavailableDates={unavailableDates}
-            onChange={setUnavailableDates}
+          <AvailabilitySection
+            availability={availability}
+            onAvailabilityChange={setAvailability}
+            earliestStartDate={earliestStartDate}
+            onEarliestStartDateChange={setEarliestStartDate}
           />
         </GlowCardContent>
       </GlowCard>
