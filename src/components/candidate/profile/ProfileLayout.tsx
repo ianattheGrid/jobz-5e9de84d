@@ -10,7 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 // Section components
 import { AboutMeSection } from "./sections/AboutMeSection";
-import { WorkPreferencesSection } from "./sections/WorkPreferencesSection";
+import { CareerStageSection } from "./sections/CareerStageSection";
 import { SkillsExperienceSection } from "./sections/SkillsExperienceSection";
 import { GettingStartedPageSection } from "./sections/GettingStartedPageSection";
 import { SecondChapterSection } from "./sections/SecondChapterSection";
@@ -44,15 +44,16 @@ export function ProfileLayout({ userId, profileData, onProfileUpdate }: ProfileL
     if (!profileData) return;
 
     const completed = new Set<ProfileSectionId>();
+    const profileAny = profileData as any;
 
     // About Me - check if basic info is filled
     if (profileData.full_name && profileData.email && profileData.home_postcode) {
       completed.add('about');
     }
 
-    // Work Preferences - check for work area and salary
-    if (profileData.workArea && profileData.min_salary && profileData.max_salary) {
-      completed.add('work-preferences');
+    // Career Stage - check if primary stage is selected
+    if (profileAny.primary_career_stage) {
+      completed.add('career-stage');
     }
 
     // Skills & Experience - check for skills or years experience
@@ -60,16 +61,34 @@ export function ProfileLayout({ userId, profileData, onProfileUpdate }: ProfileL
       completed.add('skills-experience');
     }
 
-    // Getting Started - check if proof_of_potential has content
-    const gettingStartedData = (profileData as any)?.proof_of_potential;
-    if (gettingStartedData && Object.keys(gettingStartedData).length > 0) {
-      completed.add('getting-started');
+    // The Launchpad (formerly Getting Started) - check if proof_of_potential has content
+    const launchpadData = profileAny?.proof_of_potential;
+    if (launchpadData && Object.keys(launchpadData).length > 0) {
+      completed.add('launchpad');
     }
 
-    // Second Chapter - check if second_chapter has content
-    const secondChapter = (profileData as any)?.second_chapter;
-    if (secondChapter && Object.keys(secondChapter).length > 0) {
-      completed.add('second-chapter');
+    // The Pivot (formerly Second Chapter) - check if second_chapter has content
+    const pivotData = profileAny?.second_chapter;
+    if (pivotData && Object.keys(pivotData).length > 0) {
+      completed.add('pivot');
+    }
+
+    // The Ascent - check if ascent_profile has content
+    const ascentData = profileAny?.ascent_profile;
+    if (ascentData && Object.keys(ascentData).length > 0) {
+      completed.add('ascent');
+    }
+
+    // The Core - check if core_profile has content
+    const coreData = profileAny?.core_profile;
+    if (coreData && Object.keys(coreData).length > 0) {
+      completed.add('core');
+    }
+
+    // The Encore - check if encore_profile has content
+    const encoreData = profileAny?.encore_profile;
+    if (encoreData && Object.keys(encoreData).length > 0) {
+      completed.add('encore');
     }
 
     // Personality - check for personality data
@@ -84,7 +103,7 @@ export function ProfileLayout({ userId, profileData, onProfileUpdate }: ProfileL
     }
 
     // Section Visibility - always consider complete if visible_sections exists
-    const visibleSections = (profileData as any).visible_sections;
+    const visibleSections = profileAny.visible_sections;
     if (visibleSections) {
       completed.add('section-visibility');
     }
@@ -106,14 +125,38 @@ export function ProfileLayout({ userId, profileData, onProfileUpdate }: ProfileL
     switch (activeSection) {
       case 'about':
         return <AboutMeSection {...commonProps} />;
-      case 'work-preferences':
-        return <WorkPreferencesSection {...commonProps} onNavigateToSection={handleNavigateToSection} />;
+      case 'career-stage':
+        return <CareerStageSection {...commonProps} />;
       case 'skills-experience':
         return <SkillsExperienceSection {...commonProps} />;
-      case 'getting-started':
+      case 'launchpad':
         return <GettingStartedPageSection {...commonProps} />;
-      case 'second-chapter':
+      case 'ascent':
+        // Placeholder - will be implemented in Phase 3
+        return (
+          <div className="p-6 text-center text-muted-foreground">
+            <p>The Ascent section will be available soon.</p>
+            <p className="text-sm mt-2">This section is for professionals with 2-5 years experience.</p>
+          </div>
+        );
+      case 'core':
+        // Placeholder - will be implemented in Phase 3
+        return (
+          <div className="p-6 text-center text-muted-foreground">
+            <p>The Core section will be available soon.</p>
+            <p className="text-sm mt-2">This section is for established professionals with 5+ years experience.</p>
+          </div>
+        );
+      case 'pivot':
         return <SecondChapterSection {...commonProps} />;
+      case 'encore':
+        // Placeholder - will be implemented in Phase 3
+        return (
+          <div className="p-6 text-center text-muted-foreground">
+            <p>The Encore section will be available soon.</p>
+            <p className="text-sm mt-2">This section is for semi-retired or returning professionals.</p>
+          </div>
+        );
       case 'personality':
         return <PersonalityPageSection {...commonProps} />;
       case 'bonus-scheme':

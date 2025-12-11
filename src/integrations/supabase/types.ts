@@ -325,7 +325,9 @@ export type Database = {
           ai_synopsis: string | null
           ai_synopsis_last_updated: string | null
           ai_synopsis_status: string | null
+          ascent_profile: Json | null
           availability: string | null
+          can_drive: boolean | null
           commission_percentage: number | null
           company_address: string | null
           contact_email_ok: boolean | null
@@ -333,14 +335,18 @@ export type Database = {
           contact_linkedin_ok: boolean | null
           contact_phone_ok: boolean | null
           contract_type_preference: string | null
+          core_profile: Json | null
           created_at: string
           current_employer: string | null
           cv_url: string | null
+          date_of_birth: string | null
           desired_job_title: string | null
           education_details: Json | null
           email: string
+          encore_profile: Json | null
           experience_level: string | null
           full_name: string | null
+          has_uk_driving_license: boolean | null
           home_postcode: string | null
           id: string
           industry_sector: string | null
@@ -357,17 +363,23 @@ export type Database = {
           personality: Json
           phone_number: string | null
           preferred_work_type: string | null
+          primary_career_stage: string | null
           profile_picture_url: string | null
           proof_of_potential: Json | null
           required_qualifications: string[] | null
           required_skills: string[] | null
           second_chapter: Json | null
+          secondary_career_stages: string[] | null
           security_clearance: string | null
+          show_ascent_profile: boolean | null
+          show_core_profile: boolean | null
+          show_encore_profile: boolean | null
           show_proof_of_potential: boolean | null
           show_second_chapter: boolean | null
           signup_date: string | null
           skills_experience: Json | null
           travel_radius: number | null
+          unavailable_dates: Json | null
           updated_at: string
           visible_sections: Json
           work_eligibility: string | null
@@ -382,7 +394,9 @@ export type Database = {
           ai_synopsis?: string | null
           ai_synopsis_last_updated?: string | null
           ai_synopsis_status?: string | null
+          ascent_profile?: Json | null
           availability?: string | null
+          can_drive?: boolean | null
           commission_percentage?: number | null
           company_address?: string | null
           contact_email_ok?: boolean | null
@@ -390,14 +404,18 @@ export type Database = {
           contact_linkedin_ok?: boolean | null
           contact_phone_ok?: boolean | null
           contract_type_preference?: string | null
+          core_profile?: Json | null
           created_at?: string
           current_employer?: string | null
           cv_url?: string | null
+          date_of_birth?: string | null
           desired_job_title?: string | null
           education_details?: Json | null
           email: string
+          encore_profile?: Json | null
           experience_level?: string | null
           full_name?: string | null
+          has_uk_driving_license?: boolean | null
           home_postcode?: string | null
           id: string
           industry_sector?: string | null
@@ -414,17 +432,23 @@ export type Database = {
           personality?: Json
           phone_number?: string | null
           preferred_work_type?: string | null
+          primary_career_stage?: string | null
           profile_picture_url?: string | null
           proof_of_potential?: Json | null
           required_qualifications?: string[] | null
           required_skills?: string[] | null
           second_chapter?: Json | null
+          secondary_career_stages?: string[] | null
           security_clearance?: string | null
+          show_ascent_profile?: boolean | null
+          show_core_profile?: boolean | null
+          show_encore_profile?: boolean | null
           show_proof_of_potential?: boolean | null
           show_second_chapter?: boolean | null
           signup_date?: string | null
           skills_experience?: Json | null
           travel_radius?: number | null
+          unavailable_dates?: Json | null
           updated_at?: string
           visible_sections?: Json
           work_eligibility?: string | null
@@ -439,7 +463,9 @@ export type Database = {
           ai_synopsis?: string | null
           ai_synopsis_last_updated?: string | null
           ai_synopsis_status?: string | null
+          ascent_profile?: Json | null
           availability?: string | null
+          can_drive?: boolean | null
           commission_percentage?: number | null
           company_address?: string | null
           contact_email_ok?: boolean | null
@@ -447,14 +473,18 @@ export type Database = {
           contact_linkedin_ok?: boolean | null
           contact_phone_ok?: boolean | null
           contract_type_preference?: string | null
+          core_profile?: Json | null
           created_at?: string
           current_employer?: string | null
           cv_url?: string | null
+          date_of_birth?: string | null
           desired_job_title?: string | null
           education_details?: Json | null
           email?: string
+          encore_profile?: Json | null
           experience_level?: string | null
           full_name?: string | null
+          has_uk_driving_license?: boolean | null
           home_postcode?: string | null
           id?: string
           industry_sector?: string | null
@@ -471,17 +501,23 @@ export type Database = {
           personality?: Json
           phone_number?: string | null
           preferred_work_type?: string | null
+          primary_career_stage?: string | null
           profile_picture_url?: string | null
           proof_of_potential?: Json | null
           required_qualifications?: string[] | null
           required_skills?: string[] | null
           second_chapter?: Json | null
+          secondary_career_stages?: string[] | null
           security_clearance?: string | null
+          show_ascent_profile?: boolean | null
+          show_core_profile?: boolean | null
+          show_encore_profile?: boolean | null
           show_proof_of_potential?: boolean | null
           show_second_chapter?: boolean | null
           signup_date?: string | null
           skills_experience?: Json | null
           travel_radius?: number | null
+          unavailable_dates?: Json | null
           updated_at?: string
           visible_sections?: Json
           work_eligibility?: string | null
