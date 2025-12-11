@@ -17,12 +17,6 @@ import { cn } from "@/lib/utils";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   User,
@@ -76,54 +70,72 @@ export function ProfileSidebar({
     const hasExtendedTooltip = isCareerStage(section.id);
     const tooltipText = hasExtendedTooltip ? CAREER_STAGE_TOOLTIPS[section.id] : section.description;
 
-    const buttonContent = (
-      <SidebarMenuButton
-        onClick={() => onSectionChange(section.id)}
-        className={cn(
-          "w-full h-10 px-3 gap-3 rounded-md transition-all",
-          isActive 
-            ? "bg-primary/20 text-primary font-medium shadow-sm" 
-            : "hover:bg-white/50 text-foreground"
-        )}
-        tooltip={collapsed ? section.label : undefined}
-      >
-        <div className="relative flex-shrink-0">
-          <Icon className={cn("h-5 w-5", isActive && "text-primary")} />
-          {isComplete && (
-            <Check className="absolute -right-1 -bottom-1 h-3 w-3 text-green-500 bg-background rounded-full" />
-          )}
-        </div>
-        {!collapsed && (
-          <span className="text-sm truncate flex-1">{section.label}</span>
-        )}
-        {!collapsed && hasExtendedTooltip && (
-          <HelpCircle className="h-3.5 w-3.5 text-muted-foreground/60 flex-shrink-0" />
-        )}
-      </SidebarMenuButton>
-    );
-
-    // Wrap career stage items in tooltip
+    // For career stage items, separate the help icon into a Popover
     if (!collapsed && hasExtendedTooltip) {
       return (
         <SidebarMenuItem>
-          <TooltipProvider delayDuration={300}>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                {buttonContent}
-              </TooltipTrigger>
-              <TooltipContent side="right" className="max-w-xs bg-white border-primary/20 shadow-lg">
+          <div className="flex items-center w-full">
+            <SidebarMenuButton
+              onClick={() => onSectionChange(section.id)}
+              className={cn(
+                "flex-1 h-10 px-3 gap-3 rounded-md transition-all",
+                isActive 
+                  ? "bg-primary/20 text-primary font-medium shadow-sm" 
+                  : "hover:bg-white/50 text-foreground"
+              )}
+              tooltip={collapsed ? section.label : undefined}
+            >
+              <div className="relative flex-shrink-0">
+                <Icon className={cn("h-5 w-5", isActive && "text-primary")} />
+                {isComplete && (
+                  <Check className="absolute -right-1 -bottom-1 h-3 w-3 text-green-500 bg-background rounded-full" />
+                )}
+              </div>
+              <span className="text-sm truncate flex-1">{section.label}</span>
+            </SidebarMenuButton>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="h-7 w-7 flex-shrink-0 hover:bg-primary/10"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <HelpCircle className="h-3.5 w-3.5 text-muted-foreground/60" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent side="right" align="start" className="w-72 z-50 bg-white/95 backdrop-blur-sm border-primary/20">
                 <p className="font-medium text-foreground mb-1">{section.label}</p>
                 <p className="text-sm text-muted-foreground">{tooltipText}</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+              </PopoverContent>
+            </Popover>
+          </div>
         </SidebarMenuItem>
       );
     }
 
     return (
       <SidebarMenuItem>
-        {buttonContent}
+        <SidebarMenuButton
+          onClick={() => onSectionChange(section.id)}
+          className={cn(
+            "w-full h-10 px-3 gap-3 rounded-md transition-all",
+            isActive 
+              ? "bg-primary/20 text-primary font-medium shadow-sm" 
+              : "hover:bg-white/50 text-foreground"
+          )}
+          tooltip={collapsed ? section.label : undefined}
+        >
+          <div className="relative flex-shrink-0">
+            <Icon className={cn("h-5 w-5", isActive && "text-primary")} />
+            {isComplete && (
+              <Check className="absolute -right-1 -bottom-1 h-3 w-3 text-green-500 bg-background rounded-full" />
+            )}
+          </div>
+          {!collapsed && (
+            <span className="text-sm truncate flex-1">{section.label}</span>
+          )}
+        </SidebarMenuButton>
       </SidebarMenuItem>
     );
   };
