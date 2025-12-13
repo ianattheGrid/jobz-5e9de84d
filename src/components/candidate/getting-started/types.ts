@@ -1,3 +1,5 @@
+import { ReferenceEntry } from "@/integrations/supabase/types/profiles";
+
 export interface ShowAndTellItem {
   title: string;
   type: 'video' | 'image' | 'link';
@@ -38,6 +40,9 @@ export interface GettingStartedData {
   
   // Block 6: Show & Tell (max 3 items)
   show_and_tell_items?: ShowAndTellItem[];
+  
+  // Block 7: References (optional)
+  references?: ReferenceEntry[];
 }
 
 export const DEFAULT_GETTING_STARTED_DATA: GettingStartedData = {
@@ -60,6 +65,7 @@ export const DEFAULT_GETTING_STARTED_DATA: GettingStartedData = {
   hobby_other: null,
   hobby_to_work_note: null,
   show_and_tell_items: [],
+  references: [],
 };
 
 // Entry-level salary options (£10K-£38K in £2K increments)

@@ -9,6 +9,7 @@ import { Loader2, Save, Rocket, TrendingUp, Zap, RefreshCw, Award, Check, ArrowL
 import { CAREER_STAGES, CareerStage } from "../types";
 import { cn } from "@/lib/utils";
 import { GettingStartedSection } from "@/components/candidate/getting-started/GettingStartedSection";
+import { AscentSection } from "@/components/candidate/ascent/AscentSection";
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Rocket,
@@ -114,18 +115,10 @@ export function CareerStageSection({ userId, profileData, onSave }: CareerStageS
         );
       case 'ascent':
         return (
-          <GlowCard>
-            <GlowCardContent className="py-8">
-              <div className="flex flex-col items-center justify-center text-center">
-                <TrendingUp className="h-10 w-10 text-primary mb-4" />
-                <h3 className="text-lg font-medium text-foreground mb-2">The Ascent Questions</h3>
-                <p className="text-sm text-muted-foreground max-w-md">
-                  Questions for professionals with 2-5 years experience will be available soon.
-                  Focus on your growth trajectory, key achievements, and career goals.
-                </p>
-              </div>
-            </GlowCardContent>
-          </GlowCard>
+          <AscentSection 
+            userId={userId} 
+            initialData={profileAny?.ascent_profile || null}
+          />
         );
       case 'core':
         return (
