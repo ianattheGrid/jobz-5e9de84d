@@ -12,6 +12,7 @@ import { GettingStartedSection } from "@/components/candidate/getting-started/Ge
 import { AscentSection } from "@/components/candidate/ascent/AscentSection";
 import { CoreSection } from "@/components/candidate/core/CoreSection";
 import { PivotSection } from "@/components/candidate/pivot/PivotSection";
+import { EncoreSection } from "@/components/candidate/encore/EncoreSection";
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Rocket,
@@ -138,18 +139,10 @@ export function CareerStageSection({ userId, profileData, onSave }: CareerStageS
         );
       case 'encore':
         return (
-          <GlowCard>
-            <GlowCardContent className="py-8">
-              <div className="flex flex-col items-center justify-center text-center">
-                <Award className="h-10 w-10 text-primary mb-4" />
-                <h3 className="text-lg font-medium text-foreground mb-2">The Encore Questions</h3>
-                <p className="text-sm text-muted-foreground max-w-md">
-                  Questions for semi-retired or returning professionals will be available soon.
-                  Share what meaningful work looks like to you now.
-                </p>
-              </div>
-            </GlowCardContent>
-          </GlowCard>
+          <EncoreSection 
+            userId={userId} 
+            initialData={profileAny?.encore_profile || null}
+          />
         );
       default:
         return null;

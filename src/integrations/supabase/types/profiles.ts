@@ -207,9 +207,57 @@ export interface CoreProfile {
   recommendations?: CoreReferenceEntry[];
 }
 
+// Encore Experience Entry (simplified)
+export interface EncoreExperienceEntry {
+  id: string;
+  role_title: string;
+  organisation_name: string;
+  role_start_date: string; // YYYY-MM
+  role_end_date: string; // YYYY-MM or 'Retired / Left'
+  role_brief_context: string; // max 150 chars
+  role_key_impacts: string[]; // 1-2 items, each max 140 chars
+}
+
 export interface EncoreProfile {
-  // To be defined in Phase 3
-  [key: string]: any;
+  // Section 1: My Next Chapter at Work
+  encore_modes?: string[];
+  encore_summary?: string | null; // max 250 chars
+
+  // Section 2: Sectors Experience & Open To
+  sectors_experience?: string[];
+  sectors_interested_next?: string[];
+  sector_shift_note?: string | null; // max 150 chars
+
+  // Section 3: Career in a Nutshell
+  primary_career_areas?: string[];
+  years_experience_overall?: string | null;
+  career_headline?: string | null; // max 200 chars
+
+  // Section 4: How I Can Add Value Now
+  encore_value_tags?: string[]; // 3-6 selections
+  encore_value_other?: string | null; // max 80 chars
+  encore_value_note?: string | null; // max 150 chars
+
+  // Section 5: Roles & Responsibility Levels
+  encore_role_types?: string[]; // 1-5 free text items
+  encore_responsibility_level?: string | null;
+
+  // Section 6: Work Pattern & Pace
+  work_hours_preferences?: string[];
+  pace_preferences?: string[];
+
+  // Section 7: Moments I'm Proud Of
+  encore_proud_moments?: string[]; // 2-3 items, each max 220 chars
+
+  // Section 8: Experience Summary (Optional)
+  experience_entries?: EncoreExperienceEntry[];
+
+  // Section 9: Mentoring & Knowledge-Sharing (Optional)
+  open_to_mentoring?: boolean;
+  mentoring_topics?: string[];
+
+  // Section 10: Life Balance & Practical Notes (Optional)
+  life_balance_notes?: string | null; // max 200 chars
 }
 
 // Pivot Experience Entry (simplified)
