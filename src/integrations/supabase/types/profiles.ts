@@ -144,9 +144,67 @@ export interface AscentProfile {
   references?: ReferenceEntry[];
 }
 
+// Core Experience Entry (more detailed than Ascent)
+export interface CoreExperienceEntry {
+  id: string;
+  role_title: string;
+  organisation_name: string;
+  role_start_date: string; // YYYY-MM
+  role_end_date: string; // YYYY-MM or 'current'
+  role_summary: string; // max 220 chars - "What was this job for?"
+  role_team_size?: string | null; // max 60 chars
+  role_budget_responsibility?: string | null; // max 80 chars
+  role_scope?: string | null; // max 120 chars
+  role_key_impacts: string[]; // 2-4 items, each max 140 chars
+}
+
+// Core Reference Entry (extended with role title)
+export interface CoreReferenceEntry {
+  id: string;
+  ref_name: string;
+  ref_role_title: string; // e.g., "Store Manager"
+  ref_relationship: string; // e.g., "Former Line Manager"
+  ref_contact?: string | null; // email or phone
+  ref_snippet?: string | null; // max 250 chars
+}
+
 export interface CoreProfile {
-  // To be defined in Phase 3
-  [key: string]: any;
+  // Section 1: Snapshot
+  current_role_title?: string | null;
+  current_sector?: string | null;
+  years_experience_range?: string | null; // e.g., "5-7", "7-10", "10-15", "15-20", "20+"
+  core_strength_tags?: string[]; // 3-5 selections
+
+  // Section 2: Experience (repeatable)
+  experience_entries?: CoreExperienceEntry[];
+
+  // Section 3: Work I'm Best At
+  core_work_focus_tags?: string[]; // 3-6 selections
+  one_thing_i_do_really_well?: string | null; // max 150 chars
+
+  // Section 4: Things I'm Proud Of
+  proud_moments?: string[]; // 2-4 items, each max 200 chars
+
+  // Section 5: How I Lead & Contribute
+  leadership_contribution_tags?: string[];
+  leadership_note?: string | null; // max 150 chars
+
+  // Section 6: What I Want Next
+  next_role_direction_tags?: string[];
+  next_role_more_of_tags?: string[];
+  next_role_less_of_tags?: string[];
+  next_role_note?: string | null; // max 200 chars
+
+  // Section 7: Work Preferences
+  preferred_work_environment_tags?: string[];
+  work_structure_tags?: string[];
+
+  // Section 8: Outside Work
+  outside_work_summary?: string | null; // max 200 chars
+  volunteering_or_side_projects?: string[]; // each max 120 chars
+
+  // Section 9: Recommendations (repeatable)
+  recommendations?: CoreReferenceEntry[];
 }
 
 export interface EncoreProfile {

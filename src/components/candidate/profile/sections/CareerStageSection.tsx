@@ -10,6 +10,7 @@ import { CAREER_STAGES, CareerStage } from "../types";
 import { cn } from "@/lib/utils";
 import { GettingStartedSection } from "@/components/candidate/getting-started/GettingStartedSection";
 import { AscentSection } from "@/components/candidate/ascent/AscentSection";
+import { CoreSection } from "@/components/candidate/core/CoreSection";
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Rocket,
@@ -122,18 +123,10 @@ export function CareerStageSection({ userId, profileData, onSave }: CareerStageS
         );
       case 'core':
         return (
-          <GlowCard>
-            <GlowCardContent className="py-8">
-              <div className="flex flex-col items-center justify-center text-center">
-                <Zap className="h-10 w-10 text-primary mb-4" />
-                <h3 className="text-lg font-medium text-foreground mb-2">The Core Questions</h3>
-                <p className="text-sm text-muted-foreground max-w-md">
-                  Questions for established professionals with 5+ years experience will be available soon.
-                  Showcase your deep expertise and leadership capabilities.
-                </p>
-              </div>
-            </GlowCardContent>
-          </GlowCard>
+          <CoreSection 
+            userId={userId} 
+            initialData={profileAny?.core_profile || null}
+          />
         );
       case 'pivot':
         return (
