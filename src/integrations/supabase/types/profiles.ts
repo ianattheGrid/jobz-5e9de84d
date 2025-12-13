@@ -56,6 +56,29 @@ export interface UnavailablePeriod {
   end: string;
 }
 
+// Career Break Types
+export interface CareerBreak {
+  id: string;
+  break_type: string[];
+  break_type_other?: string | null;
+  break_start_date: string; // YYYY-MM format
+  break_end_date: string; // YYYY-MM format
+  break_gains_description: string;
+  return_readiness: 'immediate' | 'within_1_3_months' | 'within_3_6_months' | 'flexible';
+  return_type_preference: string[];
+}
+
+// Accessibility Info Types
+export interface AccessibilityInfo {
+  enabled?: boolean;
+  workplace_adjustments?: string[];
+  workplace_adjustments_other?: string | null;
+  preferred_work_environment_traits?: string[];
+  preferred_work_environment_traits_other?: string | null;
+  accessibility_additional_info?: string | null;
+  accessibility_visibility?: 'always' | 'in_conversation_only';
+}
+
 export interface AscentProfile {
   // To be defined in Phase 3
   [key: string]: any;
@@ -133,6 +156,10 @@ export interface CandidateProfile {
   show_ascent_profile?: boolean;
   show_core_profile?: boolean;
   show_encore_profile?: boolean;
+  
+  // Career Breaks & Accessibility
+  career_breaks?: CareerBreak[] | any | null;
+  accessibility_info?: AccessibilityInfo | any | null;
 }
 
 export interface EmployerProfile {
