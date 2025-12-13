@@ -79,9 +79,69 @@ export interface AccessibilityInfo {
   accessibility_visibility?: 'always' | 'in_conversation_only';
 }
 
+// Ascent Profile Types
+export interface WorkExperienceEntry {
+  id: string;
+  role_title: string;
+  organisation_name: string;
+  role_start_date: string; // YYYY-MM
+  role_end_date: string; // YYYY-MM or 'current'
+  role_simple_summary: string; // max 100 chars
+  role_main_responsibilities: string; // max 200 chars
+  role_challenge_handled?: string | null; // max 200 chars
+  role_proud_of?: string | null; // max 200 chars
+}
+
+export interface ReferenceEntry {
+  id: string;
+  ref_name: string;
+  ref_relationship: string; // e.g., "Store Manager"
+  ref_contact: string; // email or phone
+  ref_snippet?: string | null; // max 200 chars - what they'd say
+}
+
+export interface HobbyEntry {
+  id: string;
+  hobby_type: string; // from HOBBY_OPTIONS
+  hobby_detail?: string | null; // max 120 chars
+  skills_demonstrated?: string | null; // max 100 chars
+}
+
 export interface AscentProfile {
-  // To be defined in Phase 3
-  [key: string]: any;
+  // Section 1: Direction & Sectors
+  current_sector_experience?: string[];
+  sectors_interested_next?: string[];
+  direction_note?: string | null; // max 150 chars
+  
+  // Section 2: Work Experience (repeatable)
+  work_experience_entries?: WorkExperienceEntry[];
+  
+  // Section 3: Skills
+  work_skills?: string[]; // max 8 selections
+  tools_or_systems?: string | null; // max 150 chars
+  
+  // Section 4: Work Style Evolution
+  work_style_growth_tags?: string[];
+  work_style_growth_other?: string | null; // max 80 chars
+  
+  // Section 5: More Of / Less Of
+  next_role_more_of_tags?: string[];
+  next_role_more_of_other?: string | null; // max 80 chars
+  next_role_less_of_tags?: string[];
+  next_role_less_of_other?: string | null; // max 80 chars
+  
+  // Section 6: About Me & Outside Work
+  about_me_short?: string | null; // max 200 chars
+  outside_work_proud_of?: string | null; // max 150 chars
+  hobby_entries?: HobbyEntry[];
+  
+  // Section 7: Next Step Up
+  next_step_type_tags?: string[];
+  next_step_other?: string | null; // max 80 chars
+  next_step_note?: string | null; // max 150 chars
+  
+  // Section 8: References (repeatable)
+  references?: ReferenceEntry[];
 }
 
 export interface CoreProfile {

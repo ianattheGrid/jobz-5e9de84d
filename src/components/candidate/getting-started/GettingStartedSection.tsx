@@ -13,6 +13,7 @@ import { ReliabilityBlock } from "./ReliabilityBlock";
 import { NextChapterBlock } from "./NextChapterBlock";
 import { HobbiesBlock } from "./HobbiesBlock";
 import { ShowAndTellBlock } from "./ShowAndTellBlock";
+import { ReferencesBlock } from "../shared/ReferencesBlock";
 
 interface GettingStartedSectionProps {
   userId: string;
@@ -188,10 +189,18 @@ export function GettingStartedSection({ userId, initialData }: GettingStartedSec
               </div>
 
               {/* Block 6: Show & Tell */}
-              <div>
+              <div className="pb-6 border-b border-border">
                 <ShowAndTellBlock
                   items={data.show_and_tell_items || []}
                   onChange={(items) => setData({ ...data, show_and_tell_items: items })}
+                />
+              </div>
+
+              {/* Block 7: References */}
+              <div>
+                <ReferencesBlock
+                  references={data.references || []}
+                  onChange={(refs) => setData({ ...data, references: refs })}
                 />
               </div>
             </div>
