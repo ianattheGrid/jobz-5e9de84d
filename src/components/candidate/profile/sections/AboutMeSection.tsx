@@ -15,7 +15,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { CandidateProfile, CareerBreak, AccessibilityInfo } from "@/integrations/supabase/types/profiles";
 import { GlowCard, GlowCardContent, GlowCardHeader, GlowCardTitle, GlowCardDescription } from "@/components/ui/glow-card";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Loader2, Save, Link, Shield, MessageSquare, Sparkles, User, Info, ImageIcon, CalendarIcon, Car, GraduationCap, Briefcase, Trash2, Plus } from "lucide-react";
+import { Loader2, Save, Link, Shield, MessageSquare, Sparkles, User, Info, ImageIcon, CalendarIcon, Car, GraduationCap, Briefcase, Trash2, Plus, Clock } from "lucide-react";
 import { CreateFromCVButton } from "@/components/candidate/CreateFromCVButton";
 import HomePostcodeSelect from "@/components/address/HomePostcodeSelect";
 import { FileUploadSection } from "@/components/candidate/FileUploadSection";
@@ -58,6 +58,7 @@ const aboutMeSchema = z.object({
   is_currently_employed: z.boolean().default(true),
   notice_period: z.string().optional(),
   contract_type_preference: z.string().optional(),
+  commute_preference_minutes: z.number().optional().nullable(),
 });
 
 type AboutMeFormValues = z.infer<typeof aboutMeSchema>;
@@ -115,6 +116,7 @@ export function AboutMeSection({ userId, profileData, onSave }: AboutMeSectionPr
       is_currently_employed: profileAny?.is_currently_employed ?? true,
       notice_period: profileAny?.notice_period || "",
       contract_type_preference: profileAny?.contract_type_preference || "permanent",
+      commute_preference_minutes: profileAny?.commute_preference_minutes ?? null,
     },
   });
 
@@ -195,6 +197,7 @@ export function AboutMeSection({ userId, profileData, onSave }: AboutMeSectionPr
           is_currently_employed: values.is_currently_employed,
           notice_period: values.notice_period || null,
           contract_type_preference: values.contract_type_preference || null,
+          commute_preference_minutes: values.commute_preference_minutes ?? null,
           career_breaks: careerBreaks as any,
           accessibility_info: accessibilityInfo as any,
         })
@@ -494,6 +497,41 @@ export function AboutMeSection({ userId, profileData, onSave }: AboutMeSectionPr
                         <SelectItem value="any">Open to all</SelectItem>
                       </SelectContent>
                     </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="commute_preference_minutes"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="flex items-center gap-2">
+                      <Clock className="h-4 w-4" />
+                      Maximum Commute (one way)
+                    </FormLabel>
+                    <Select 
+                      onValueChange={(value) => field.onChange(value ? parseInt(value) : null)} 
+                      value={field.value?.toString() || ""}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select commute time" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="15">Up to 15 minutes</SelectItem>
+                        <SelectItem value="30">Up to 30 minutes</SelectItem>
+                        <SelectItem value="45">Up to 45 minutes</SelectItem>
+                        <SelectItem value="60">Up to 1 hour</SelectItem>
+                        <SelectItem value="90">Up to 1.5 hours</SelectItem>
+                        <SelectItem value="0">No preference / Remote only</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormDescription className="text-xs">
+                      How far are you willing to travel for work?
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}

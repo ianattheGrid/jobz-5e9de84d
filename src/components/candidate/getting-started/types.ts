@@ -7,6 +7,13 @@ export interface ShowAndTellItem {
   short_description: string;
 }
 
+export interface HobbyEntry {
+  id: string;
+  hobby_type: string;
+  hobby_detail?: string | null;
+  skills_demonstrated?: string | null;
+}
+
 export interface GettingStartedData {
   // Entry-level essentials
   first_job_salary_min?: number | null;
@@ -33,10 +40,12 @@ export interface GettingStartedData {
   next_chapter_sectors_other?: string | null;
   next_chapter_text?: string | null;
   
-  // Block 5: Hobbies & Interests
-  hobby_tags?: string[];
+  // Block 5: Hobbies & Interests (enhanced with context)
+  hobby_entries?: HobbyEntry[];
   hobby_other?: string | null;
   hobby_to_work_note?: string | null;
+  // Legacy field for backwards compatibility
+  hobby_tags?: string[];
   
   // Block 6: Show & Tell (max 3 items)
   show_and_tell_items?: ShowAndTellItem[];
@@ -61,6 +70,7 @@ export const DEFAULT_GETTING_STARTED_DATA: GettingStartedData = {
   next_chapter_sectors: [],
   next_chapter_sectors_other: null,
   next_chapter_text: null,
+  hobby_entries: [],
   hobby_tags: [],
   hobby_other: null,
   hobby_to_work_note: null,

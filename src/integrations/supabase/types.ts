@@ -331,6 +331,7 @@ export type Database = {
           can_drive: boolean | null
           career_breaks: Json | null
           commission_percentage: number | null
+          commute_preference_minutes: number | null
           company_address: string | null
           contact_email_ok: boolean | null
           contact_jobz_ok: boolean | null
@@ -402,6 +403,7 @@ export type Database = {
           can_drive?: boolean | null
           career_breaks?: Json | null
           commission_percentage?: number | null
+          commute_preference_minutes?: number | null
           company_address?: string | null
           contact_email_ok?: boolean | null
           contact_jobz_ok?: boolean | null
@@ -473,6 +475,7 @@ export type Database = {
           can_drive?: boolean | null
           career_breaks?: Json | null
           commission_percentage?: number | null
+          commute_preference_minutes?: number | null
           company_address?: string | null
           contact_email_ok?: boolean | null
           contact_jobz_ok?: boolean | null
