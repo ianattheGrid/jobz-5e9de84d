@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils";
 import { GettingStartedSection } from "@/components/candidate/getting-started/GettingStartedSection";
 import { AscentSection } from "@/components/candidate/ascent/AscentSection";
 import { CoreSection } from "@/components/candidate/core/CoreSection";
+import { PivotSection } from "@/components/candidate/pivot/PivotSection";
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Rocket,
@@ -130,18 +131,10 @@ export function CareerStageSection({ userId, profileData, onSave }: CareerStageS
         );
       case 'pivot':
         return (
-          <GlowCard>
-            <GlowCardContent className="py-8">
-              <div className="flex flex-col items-center justify-center text-center">
-                <RefreshCw className="h-10 w-10 text-primary mb-4" />
-                <h3 className="text-lg font-medium text-foreground mb-2">The Pivot Questions</h3>
-                <p className="text-sm text-muted-foreground max-w-md">
-                  Questions for career changers will be available soon.
-                  Highlight your transferable skills and explain your new direction.
-                </p>
-              </div>
-            </GlowCardContent>
-          </GlowCard>
+          <PivotSection 
+            userId={userId} 
+            initialData={profileAny?.pivot_profile || null}
+          />
         );
       case 'encore':
         return (

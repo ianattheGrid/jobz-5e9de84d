@@ -212,6 +212,50 @@ export interface EncoreProfile {
   [key: string]: any;
 }
 
+// Pivot Experience Entry (simplified)
+export interface PivotExperienceEntry {
+  id: string;
+  role_title: string;
+  organisation_name: string;
+  role_start_date: string; // YYYY-MM
+  role_end_date: string; // YYYY-MM or 'current'
+  role_brief_context: string; // max 150 chars
+  role_key_achievements_transferable: string[]; // 1-2 items, each max 140 chars
+}
+
+export type PivotType = 'internal' | 'external';
+
+export interface PivotProfile {
+  // Section 1: My Pivot Story
+  pivot_type?: PivotType | null;
+  target_sectors?: string[]; // 1-3 from SECTOR_OPTIONS
+  target_role_types?: string[]; // 1-3 free text
+  pivot_motivation?: string | null; // max 350 chars
+
+  // Section 2: Transferable Strengths
+  top_transferable_skills?: string[]; // 3-6 selections
+  transferable_skills_examples?: string[]; // 2-4 items, each max 200 chars
+
+  // Section 3: Proactive Steps
+  pivot_preparation_activities?: string[];
+  pivot_preparation_details?: string | null; // max 300 chars
+
+  // Section 4: Professional Journey (2-3 roles)
+  professional_journey?: PivotExperienceEntry[];
+
+  // Section 5: What I'm Looking For
+  new_role_more_of_tags?: string[];
+  new_role_less_of_tags?: string[];
+  new_role_note?: string | null; // max 200 chars
+
+  // Section 6: Work Preferences
+  preferred_work_environment_tags?: string[];
+  work_structure_tags?: string[];
+
+  // Section 7: Recommendations
+  recommendations?: CoreReferenceEntry[];
+}
+
 export interface CandidateProfile {
   id: string;
   email: string;
@@ -270,9 +314,11 @@ export interface CandidateProfile {
   // Stage-specific profiles
   ascent_profile?: AscentProfile | any | null;
   core_profile?: CoreProfile | any | null;
+  pivot_profile?: PivotProfile | any | null;
   encore_profile?: EncoreProfile | any | null;
   show_ascent_profile?: boolean;
   show_core_profile?: boolean;
+  show_pivot_profile?: boolean;
   show_encore_profile?: boolean;
   
   // Career Breaks & Accessibility
