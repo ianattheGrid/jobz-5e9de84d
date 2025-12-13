@@ -69,7 +69,7 @@ export function GettingStartedSection({ userId, initialData }: GettingStartedSec
     (data.experience_context_tags?.length ?? 0) > 0 ||
     (data.reliability_tags?.length ?? 0) > 0 ||
     (data.next_chapter_sectors?.length ?? 0) > 0 ||
-    (data.hobby_tags?.length ?? 0) > 0 ||
+    (data.hobby_entries?.length ?? 0) > 0 ||
     (data.show_and_tell_items?.length ?? 0) > 0;
 
   return (
@@ -179,10 +179,10 @@ export function GettingStartedSection({ userId, initialData }: GettingStartedSec
               {/* Block 5: Hobbies */}
               <div className="pb-6 border-b border-border">
                 <HobbiesBlock
-                  selectedTags={data.hobby_tags || []}
+                  hobbyEntries={data.hobby_entries || []}
                   otherText={data.hobby_other || null}
                   workNote={data.hobby_to_work_note || null}
-                  onTagsChange={(tags) => setData({ ...data, hobby_tags: tags })}
+                  onEntriesChange={(entries) => setData({ ...data, hobby_entries: entries })}
                   onOtherChange={(text) => setData({ ...data, hobby_other: text })}
                   onWorkNoteChange={(text) => setData({ ...data, hobby_to_work_note: text })}
                 />

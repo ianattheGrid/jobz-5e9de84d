@@ -76,9 +76,21 @@ export const CHAR_LIMITS = {
   next_chapter_text: 200,
   hobby_other: 80,
   hobby_to_work_note: 120,
+  hobby_detail: 120,
+  hobby_skills: 100,
   show_and_tell_title: 40,
   show_and_tell_description: 80,
 };
+
+// Commute preference options
+export const COMMUTE_PREFERENCE_OPTIONS = [
+  { value: 15, label: "Up to 15 minutes" },
+  { value: 30, label: "Up to 30 minutes" },
+  { value: 45, label: "Up to 45 minutes" },
+  { value: 60, label: "Up to 1 hour" },
+  { value: 90, label: "Up to 1.5 hours" },
+  { value: 0, label: "No preference / Remote only" },
+];
 
 // Selection limits
 export const MAX_WORK_STYLE_SELECTIONS = 4;
