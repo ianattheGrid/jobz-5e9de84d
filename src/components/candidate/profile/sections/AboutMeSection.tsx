@@ -12,7 +12,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { CandidateProfile } from "@/integrations/supabase/types/profiles";
+import { CandidateProfile, CareerBreak, AccessibilityInfo } from "@/integrations/supabase/types/profiles";
 import { GlowCard, GlowCardContent, GlowCardHeader, GlowCardTitle, GlowCardDescription } from "@/components/ui/glow-card";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2, Save, Link, Shield, MessageSquare, Sparkles, User, Info, ImageIcon, CalendarIcon, Car, GraduationCap, Briefcase, Trash2, Plus } from "lucide-react";
@@ -22,6 +22,8 @@ import { FileUploadSection } from "@/components/candidate/FileUploadSection";
 import { VerificationSection } from "@/components/candidate/VerificationSection";
 import { CandidateGallerySection } from "@/components/candidate/gallery/CandidateGallerySection";
 import { AvailabilitySection } from "../components/AvailabilitySection";
+import { CareerBreakSection } from "./CareerBreakSection";
+import { AccessibilitySection } from "./AccessibilitySection";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 
@@ -82,6 +84,14 @@ export function AboutMeSection({ userId, profileData, onSave }: AboutMeSectionPr
     availabilityData?.earliest_start_date || null
   );
   const profileAny = profileData as any;
+  
+  // Career Breaks & Accessibility state
+  const [careerBreaks, setCareerBreaks] = useState<CareerBreak[]>(
+    (profileAny?.career_breaks as CareerBreak[]) || []
+  );
+  const [accessibilityInfo, setAccessibilityInfo] = useState<AccessibilityInfo>(
+    (profileAny?.accessibility_info as AccessibilityInfo) || {}
+  );
 
   const form = useForm<AboutMeFormValues>({
     resolver: zodResolver(aboutMeSchema),
@@ -185,6 +195,8 @@ export function AboutMeSection({ userId, profileData, onSave }: AboutMeSectionPr
           is_currently_employed: values.is_currently_employed,
           notice_period: values.notice_period || null,
           contract_type_preference: values.contract_type_preference || null,
+          career_breaks: careerBreaks as any,
+          accessibility_info: accessibilityInfo as any,
         })
         .eq('id', userId);
 
@@ -514,7 +526,17 @@ export function AboutMeSection({ userId, profileData, onSave }: AboutMeSectionPr
         </GlowCardContent>
       </GlowCard>
 
-      {/* Identity Verification */}
+      {/* Career Break Section - Collapsible */}
+      <CareerBreakSection
+        careerBreaks={careerBreaks}
+        onCareerBreaksChange={setCareerBreaks}
+      />
+
+      {/* Accessibility Section - Collapsible */}
+      <AccessibilitySection
+        accessibilityInfo={accessibilityInfo}
+        onAccessibilityInfoChange={setAccessibilityInfo}
+      />
       <GlowCard>
         <GlowCardHeader>
           <div className="flex items-center gap-3">

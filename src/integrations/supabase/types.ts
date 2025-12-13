@@ -320,6 +320,7 @@ export type Database = {
       }
       candidate_profiles: {
         Row: {
+          accessibility_info: Json | null
           additional_skills: string | null
           address: string | null
           ai_synopsis: string | null
@@ -328,6 +329,7 @@ export type Database = {
           ascent_profile: Json | null
           availability: string | null
           can_drive: boolean | null
+          career_breaks: Json | null
           commission_percentage: number | null
           company_address: string | null
           contact_email_ok: boolean | null
@@ -389,6 +391,7 @@ export type Database = {
           years_in_current_title: number | null
         }
         Insert: {
+          accessibility_info?: Json | null
           additional_skills?: string | null
           address?: string | null
           ai_synopsis?: string | null
@@ -397,6 +400,7 @@ export type Database = {
           ascent_profile?: Json | null
           availability?: string | null
           can_drive?: boolean | null
+          career_breaks?: Json | null
           commission_percentage?: number | null
           company_address?: string | null
           contact_email_ok?: boolean | null
@@ -458,6 +462,7 @@ export type Database = {
           years_in_current_title?: number | null
         }
         Update: {
+          accessibility_info?: Json | null
           additional_skills?: string | null
           address?: string | null
           ai_synopsis?: string | null
@@ -466,6 +471,7 @@ export type Database = {
           ascent_profile?: Json | null
           availability?: string | null
           can_drive?: boolean | null
+          career_breaks?: Json | null
           commission_percentage?: number | null
           company_address?: string | null
           contact_email_ok?: boolean | null
