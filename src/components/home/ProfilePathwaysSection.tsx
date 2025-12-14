@@ -567,15 +567,6 @@ export const ProfilePathwaysSection = () => {
           </div>
         </div>
 
-        <motion.p 
-          className="text-xl md:text-2xl font-semibold text-foreground text-center"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-        >
-          Tell your authentic story. Find your perfect fit.
-        </motion.p>
       </div>
     </section>
   );
