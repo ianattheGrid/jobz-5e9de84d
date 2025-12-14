@@ -9,6 +9,7 @@ import { DemoProfilesSection } from "@/components/home/DemoProfilesSection";
 import { CandidateCostSection } from "@/components/home/CandidateCostSection";
 import { CandidateSectionHero } from "@/components/home/CandidateSectionHero";
 import { ProfilePathwaysSection } from "@/components/home/ProfilePathwaysSection";
+import CostComparisonVisual from "@/components/home/CostComparisonVisual";
 import { InternalE2ETestButton } from "@/components/dev/InternalE2ETestButton";
 import { Footer } from "@/components/Footer";
 import { SoftLaunchBanner } from "@/components/SoftLaunchBanner";
@@ -26,6 +27,7 @@ export default function Index() {
       <PlatformFeatures activeTab={activeTab} />
       <CandidateSectionHero />
       <ProfilePathwaysSection />
+      <CostComparisonVisual />
       <CandidateCostSection />
       <WebbySection />
       <DemoProfilesSection />
