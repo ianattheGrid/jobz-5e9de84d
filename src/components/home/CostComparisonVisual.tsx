@@ -17,7 +17,7 @@ const CostComparisonVisual = () => {
           <img
             src={astronautImage}
             alt="Candidate"
-            className="w-full h-full object-cover object-top"
+            className="w-full h-full object-cover object-center"
           />
           {/* Subtle gradient overlay for text legibility */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
@@ -47,7 +47,7 @@ const CostComparisonVisual = () => {
           <img
             src={astronautImage}
             alt="Candidate"
-            className="w-full h-full object-cover object-top"
+            className="w-full h-full object-cover object-center"
           />
           {/* Subtle gradient overlay for text legibility */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
