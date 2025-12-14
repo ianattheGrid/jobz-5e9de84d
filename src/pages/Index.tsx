@@ -8,10 +8,10 @@ import { PlatformFeatures } from "@/components/home/PlatformFeatures";
 import { DemoProfilesSection } from "@/components/home/DemoProfilesSection";
 import { CandidateCostSection } from "@/components/home/CandidateCostSection";
 import { CandidateSectionHero } from "@/components/home/CandidateSectionHero";
+import { ProfilePathwaysSection } from "@/components/home/ProfilePathwaysSection";
 import { InternalE2ETestButton } from "@/components/dev/InternalE2ETestButton";
 import { Footer } from "@/components/Footer";
 import { SoftLaunchBanner } from "@/components/SoftLaunchBanner";
-
 
 export default function Index() {
   const [activeTab, setActiveTab] = useState("hiring");
@@ -25,6 +25,7 @@ export default function Index() {
       <HowItWorksHero activeTab={activeTab} onTabChange={setActiveTab} />
       <PlatformFeatures activeTab={activeTab} />
       <CandidateSectionHero />
+      <ProfilePathwaysSection />
       <CandidateCostSection />
       <WebbySection />
       <DemoProfilesSection />
