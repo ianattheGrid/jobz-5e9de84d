@@ -1,6 +1,6 @@
 import { PRIMARY_COLOR_PATTERN } from "@/styles/colorPatterns";
 import { motion } from "framer-motion";
-import { Rocket, TrendingUp, Target, Compass, Star } from "lucide-react";
+import { Rocket, TrendingUp, Target, Compass, Star, LucideIcon } from "lucide-react";
 import { useState } from "react";
 
 const pathways = [
@@ -8,34 +8,40 @@ const pathways = [
     name: "The Launchpad", 
     description: "Your first role – where potential meets opportunity",
     icon: Rocket,
-    position: { x: 10, y: 50 }
+    position: { x: 10, y: 55 },
+    tooltipPosition: 'below' as const
   },
   { 
     name: "The Ascent", 
     description: "Early career growth – building your foundation",
     icon: TrendingUp,
-    position: { x: 30, y: 25 }
+    position: { x: 30, y: 30 },
+    tooltipPosition: 'above' as const
   },
   { 
     name: "The Core", 
     description: "Professional mastery – at the peak of your expertise",
     icon: Target,
-    position: { x: 50, y: 50 }
+    position: { x: 50, y: 55 },
+    tooltipPosition: 'below' as const
   },
   { 
     name: "The Pivot", 
     description: "New direction – your skills translate everywhere",
     icon: Compass,
-    position: { x: 70, y: 25 }
+    position: { x: 70, y: 30 },
+    tooltipPosition: 'above' as const
   },
   { 
     name: "The Encore", 
     description: "Your next chapter – wisdom meets new purpose",
     icon: Star,
-    position: { x: 90, y: 50 }
+    position: { x: 90, y: 55 },
+    tooltipPosition: 'below' as const
   },
 ];
 
+// Desktop node with intelligent tooltip positioning
 const PathwayNode = ({ 
   pathway, 
   index, 
@@ -48,14 +54,16 @@ const PathwayNode = ({
   onHover: (index: number | null) => void;
 }) => {
   const Icon = pathway.icon;
+  const isTooltipAbove = pathway.tooltipPosition === 'above';
   
   return (
     <motion.div
-      className="absolute cursor-pointer"
+      className="absolute cursor-pointer z-10"
       style={{ 
         left: `${pathway.position.x}%`, 
         top: `${pathway.position.y}%`,
-        transform: 'translate(-50%, -50%)'
+        transform: 'translate(-50%, -50%)',
+        zIndex: isHovered ? 50 : 10
       }}
       initial={{ opacity: 0, scale: 0 }}
       whileInView={{ opacity: 1, scale: 1 }}
@@ -130,12 +138,14 @@ const PathwayNode = ({
         <Icon className="w-7 h-7 text-white drop-shadow-lg" strokeWidth={2} />
       </motion.div>
 
-      {/* Label */}
+      {/* Label - positioned based on node position */}
       <motion.div
         className="absolute left-1/2 -translate-x-1/2 text-center whitespace-nowrap"
-        style={{ top: isHovered ? 90 : 80 }}
+        style={{ 
+          [isTooltipAbove ? 'bottom' : 'top']: isHovered ? 90 : 80,
+        }}
         animate={{
-          y: isHovered ? 5 : 0,
+          y: isHovered ? (isTooltipAbove ? -5 : 5) : 0,
         }}
         transition={{ duration: 0.3 }}
       >
@@ -157,6 +167,89 @@ const PathwayNode = ({
           {pathway.description}
         </motion.p>
       </motion.div>
+    </motion.div>
+  );
+};
+
+// Mobile/Tablet vertical timeline node
+const MobilePathwayNode = ({ 
+  pathway, 
+  index,
+  isLast
+}: { 
+  pathway: typeof pathways[0]; 
+  index: number;
+  isLast: boolean;
+}) => {
+  const Icon = pathway.icon;
+  
+  return (
+    <motion.div
+      className="relative flex items-start gap-4"
+      initial={{ opacity: 0, x: -20 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ 
+        delay: index * 0.1,
+        duration: 0.5,
+      }}
+    >
+      {/* Node with connecting line */}
+      <div className="relative flex flex-col items-center">
+        {/* Glowing node */}
+        <motion.div
+          className="relative flex items-center justify-center rounded-full bg-gradient-to-br from-primary via-primary/80 to-pink-600 z-10"
+          style={{
+            width: 56,
+            height: 56,
+            minWidth: 56,
+            boxShadow: '0 0 30px rgba(236, 72, 153, 0.5), 0 0 60px rgba(236, 72, 153, 0.2), inset 0 0 15px rgba(255,255,255,0.1)'
+          }}
+          whileHover={{
+            scale: 1.1,
+            boxShadow: '0 0 60px rgba(236, 72, 153, 0.8), 0 0 100px rgba(236, 72, 153, 0.4), inset 0 0 20px rgba(255,255,255,0.2)'
+          }}
+          whileTap={{ scale: 0.95 }}
+        >
+          {/* Pulsing ring */}
+          <motion.div
+            className="absolute inset-0 rounded-full bg-primary/20"
+            animate={{
+              scale: [1, 1.4, 1],
+              opacity: [0.4, 0, 0.4],
+            }}
+            transition={{
+              duration: 2.5,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: index * 0.2
+            }}
+          />
+          <Icon className="w-6 h-6 text-white drop-shadow-lg relative z-10" strokeWidth={2} />
+        </motion.div>
+        
+        {/* Connecting line to next node */}
+        {!isLast && (
+          <motion.div
+            className="w-0.5 h-16 bg-gradient-to-b from-primary/60 via-primary/30 to-primary/60"
+            initial={{ scaleY: 0 }}
+            whileInView={{ scaleY: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: index * 0.1 + 0.3, duration: 0.4 }}
+            style={{ originY: 0 }}
+          />
+        )}
+      </div>
+
+      {/* Content */}
+      <div className="pt-2 pb-8">
+        <h4 className={`font-bold text-lg ${PRIMARY_COLOR_PATTERN}`}>
+          {pathway.name}
+        </h4>
+        <p className="text-sm text-muted-foreground mt-1 max-w-xs">
+          {pathway.description}
+        </p>
+      </div>
     </motion.div>
   );
 };
@@ -278,7 +371,7 @@ export const ProfilePathwaysSection = () => {
       <FloatingParticles />
 
       <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-4xl mx-auto text-center mb-16">
+        <div className="max-w-4xl mx-auto text-center mb-12 lg:mb-16">
           {/* Headline */}
           <motion.h2 
             className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-8 leading-tight ${PRIMARY_COLOR_PATTERN}`}
@@ -318,8 +411,8 @@ export const ProfilePathwaysSection = () => {
           </motion.div>
         </div>
 
-        {/* Constellation visualization */}
-        <div className="relative h-[350px] md:h-[400px] max-w-5xl mx-auto mb-16">
+        {/* Desktop Constellation visualization */}
+        <div className="hidden lg:block relative h-[450px] max-w-5xl mx-auto mb-16">
           {/* Connection lines */}
           {pathways.slice(0, -1).map((pathway, i) => (
             <ConnectionLine
@@ -340,6 +433,20 @@ export const ProfilePathwaysSection = () => {
               onHover={setHoveredIndex}
             />
           ))}
+        </div>
+
+        {/* Mobile/Tablet Vertical Timeline */}
+        <div className="lg:hidden flex justify-center mb-12">
+          <div className="flex flex-col">
+            {pathways.map((pathway, index) => (
+              <MobilePathwayNode
+                key={pathway.name}
+                pathway={pathway}
+                index={index}
+                isLast={index === pathways.length - 1}
+              />
+            ))}
+          </div>
         </div>
 
         {/* Closing Line */}
