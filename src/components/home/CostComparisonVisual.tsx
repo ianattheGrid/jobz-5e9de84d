@@ -4,6 +4,20 @@ import { User, Lock, Sparkles } from "lucide-react";
 const CostComparisonVisual = () => {
   return (
     <section className="relative py-16 md:py-24 overflow-hidden">
+      {/* CSS Keyframes for pulsing glow */}
+      <style>{`
+        @keyframes pulseGlow {
+          0%, 100% { box-shadow: 0 0 20px rgba(236, 72, 153, 0.3); }
+          50% { box-shadow: 0 0 40px rgba(236, 72, 153, 0.5); }
+        }
+        @keyframes pulseBadgeGlow {
+          0%, 100% { box-shadow: 0 0 20px rgba(236, 72, 153, 0.4); }
+          50% { box-shadow: 0 0 40px rgba(236, 72, 153, 0.6); }
+        }
+        .avatar-glow { animation: pulseGlow 2s ease-in-out infinite; }
+        .badge-glow { animation: pulseBadgeGlow 2s ease-in-out infinite; }
+      `}</style>
+
       {/* Background with subtle stars */}
       <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background">
         {[...Array(30)].map((_, i) => (
@@ -22,6 +36,7 @@ const CostComparisonVisual = () => {
               duration: 2 + Math.random() * 2,
               repeat: Infinity,
               delay: Math.random() * 2,
+              type: "tween",
             }}
           />
         ))}
@@ -124,7 +139,7 @@ const CostComparisonVisual = () => {
               <motion.div
                 className="absolute inset-0 pointer-events-none"
                 animate={{ x: [0, -1, 1, -1, 0] }}
-                transition={{ duration: 0.5, repeat: Infinity, repeatDelay: 3 }}
+                transition={{ duration: 0.5, repeat: Infinity, repeatDelay: 3, type: "tween" }}
               />
             </div>
           </motion.div>
@@ -173,33 +188,23 @@ const CostComparisonVisual = () => {
                     duration: 3 + Math.random() * 2,
                     repeat: Infinity,
                     delay: Math.random() * 3,
+                    type: "tween",
                   }}
                 />
               ))}
 
               {/* Content */}
               <div className="relative z-10 flex flex-col items-center">
-                {/* Avatar with sparkle */}
+                {/* Avatar with sparkle - using CSS animation for glow */}
                 <div className="relative mb-6">
-                  <motion.div
-                    animate={{ 
-                      boxShadow: [
-                        "0 0 20px rgba(236, 72, 153, 0.3)",
-                        "0 0 40px rgba(236, 72, 153, 0.5)",
-                        "0 0 20px rgba(236, 72, 153, 0.3)"
-                      ]
-                    }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                    className="w-24 h-24 rounded-full bg-gradient-to-br from-primary/20 to-pink-500/20 border-2 border-primary/50 flex items-center justify-center"
-                  >
+                  <div className="avatar-glow w-24 h-24 rounded-full bg-gradient-to-br from-primary/20 to-pink-500/20 border-2 border-primary/50 flex items-center justify-center">
                     <User className="w-12 h-12 text-primary" />
-                  </motion.div>
+                  </div>
                   <motion.div
                     initial={{ scale: 0 }}
                     whileInView={{ scale: 1 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.7, type: "spring", stiffness: 200 }}
-                    animate={{ rotate: [0, 10, -10, 0] }}
                     className="absolute -bottom-2 -right-2 bg-gradient-to-r from-primary to-pink-500 rounded-full p-2"
                   >
                     <Sparkles className="w-4 h-4 text-white" />
@@ -218,21 +223,14 @@ const CostComparisonVisual = () => {
                   Jobz
                 </span>
 
-                {/* Price Tag */}
+                {/* Price Tag - using CSS animation for glow */}
                 <motion.div
                   initial={{ scale: 0, rotate: 10 }}
                   whileInView={{ scale: 1, rotate: 3 }}
                   viewport={{ once: true }}
                   transition={{ delay: 0.5, type: "spring", stiffness: 200 }}
                   whileHover={{ scale: 1.1, rotate: 0 }}
-                  animate={{
-                    boxShadow: [
-                      "0 0 20px rgba(236, 72, 153, 0.4)",
-                      "0 0 40px rgba(236, 72, 153, 0.6)",
-                      "0 0 20px rgba(236, 72, 153, 0.4)"
-                    ]
-                  }}
-                  className="bg-gradient-to-r from-primary to-pink-500 text-white font-bold text-2xl md:text-3xl px-6 py-3 rounded-lg cursor-pointer"
+                  className="badge-glow bg-gradient-to-r from-primary to-pink-500 text-white font-bold text-2xl md:text-3xl px-6 py-3 rounded-lg cursor-pointer"
                 >
                   £9
                 </motion.div>
