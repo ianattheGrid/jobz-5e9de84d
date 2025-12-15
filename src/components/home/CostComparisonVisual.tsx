@@ -46,7 +46,7 @@ const CostComparisonVisual = () => {
           transition={{ delay: 0.4, duration: 0.6 }}
           className="w-full md:w-1/2 py-4 text-center"
         >
-          <span className="text-muted-foreground text-sm md:text-base font-light tracking-wide">
+          <span className="text-foreground text-sm md:text-base font-semibold tracking-wide">
             £10,000
           </span>
         </motion.div>
@@ -57,7 +57,7 @@ const CostComparisonVisual = () => {
           transition={{ delay: 0.6, duration: 0.6 }}
           className="w-full md:w-1/2 py-4 text-center"
         >
-          <span className="text-muted-foreground text-sm md:text-base font-light tracking-wide">
+          <span className="text-foreground text-sm md:text-base font-semibold tracking-wide">
             £9
           </span>
         </motion.div>
@@ -69,7 +69,7 @@ const CostComparisonVisual = () => {
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
         transition={{ delay: 0.8, duration: 0.6 }}
-        className="text-center text-muted-foreground text-sm md:text-base font-light italic py-4"
+        className="text-center text-foreground text-sm md:text-base font-medium py-4"
       >
         You're an SME, who would you hire?
       </motion.p>
