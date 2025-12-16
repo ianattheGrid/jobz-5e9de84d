@@ -79,7 +79,7 @@ const NavBar = () => {
               <Briefcase className="h-6 w-6 text-primary" />
               <span className="text-primary font-bold tracking-tight">Jobz</span>
             </Link>
-            <div className="hidden md:block">
+            <div className="hidden lg:block">
               <nav className="flex items-center space-x-6">
                 <Link 
                   to="/" 
@@ -122,7 +122,7 @@ const NavBar = () => {
           
           <div className="flex items-center">
             {!loading && user && !isTestAccount ? (
-              <div className="hidden md:flex items-center gap-4">
+              <div className="hidden lg:flex items-center gap-4">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button className="bg-[#FF69B4] hover:bg-[#FF50A8] text-white">
@@ -186,7 +186,7 @@ const NavBar = () => {
                 </DropdownMenu>
               </div>
             ) : (
-              <div className="hidden md:flex items-center gap-4">
+              <div className="hidden lg:flex items-center gap-4">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button className="bg-[#FF69B4] hover:bg-[#FF50A8] text-white">
