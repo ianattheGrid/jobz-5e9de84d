@@ -43,12 +43,7 @@ export default function VirtualRecruiterProfile() {
   });
 
   const handleSubmit = async (values: FormValues) => {
-    setIsSubmitting(true);
-    try {
-      await updateProfile(values);
-    } finally {
-      setIsSubmitting(false);
-    }
+    await updateProfile(values);
   };
 
   if (loading) {
