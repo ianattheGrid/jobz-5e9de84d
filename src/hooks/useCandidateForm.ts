@@ -56,15 +56,12 @@ export const useCandidateForm = () => {
 
   const handleSubmit = async (values: CandidateFormValues) => {
     console.log("Form submitted with values:", values);
-    
+
     const success = await onSubmit(values);
-    
+
     if (success) {
       setFormUpdated(false);
-      toast({
-        title: "Success",
-        description: "Your profile has been updated successfully"
-      });
+      // Note: useProfileSubmit already shows the success toast — no duplicate here.
     }
   };
 

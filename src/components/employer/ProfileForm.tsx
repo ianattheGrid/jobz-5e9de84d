@@ -188,6 +188,9 @@ export function ProfileForm({ profile, setProfile, email }: ProfileFormProps) {
         userId={profile.id}
         currentProfilePicture={profile.profile_picture_url}
         currentCompanyLogo={profile.company_logo_url}
+        onAssetChange={(field, url) => {
+          if (profile) setProfile({ ...profile, [field]: url } as any);
+        }}
       />
 
       <Form {...form}>

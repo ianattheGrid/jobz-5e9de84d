@@ -10,9 +10,9 @@ export const useProfileData = (callback: (data: CandidateProfile | null) => void
   const { toast } = useToast();
   const [hasLoaded, setHasLoaded] = useState(false);
 
-  const loadProfile = useCallback(async () => {
-    if (hasLoaded) return; // Prevent multiple loads
-    
+  const loadProfile = useCallback(async (force = false) => {
+    if (hasLoaded && !force) return; // Prevent duplicate initial loads
+
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user?.id) {
@@ -43,7 +43,6 @@ export const useProfileData = (callback: (data: CandidateProfile | null) => void
       console.log('Loading existing profile:', profile);
       callback(profile);
       setHasLoaded(true);
-      
     } catch (error: any) {
       console.error('Error loading profile:', error);
       toast({
@@ -59,4 +58,8 @@ export const useProfileData = (callback: (data: CandidateProfile | null) => void
   useEffect(() => {
     loadProfile();
   }, [loadProfile]);
+
+  // Expose a refetch so parents can force a refresh after uploads/updates.
+  const refetch = useCallback(() => loadProfile(true), [loadProfile]);
+  return { refetch };
 };

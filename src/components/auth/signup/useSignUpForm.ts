@@ -86,11 +86,9 @@ export const useSignUpForm = ({ userType, onSubmit }: SignUpFormProps) => {
         if (userType === 'employer') {
           await onSubmit(email, password, fullName, jobTitle, companyName, companyWebsite, companySize);
         } else {
-          // Include referralCode in metadata by using jobTitle param (reusing existing param structure)
-          // This is a temporary solution to avoid changing the function signature
-          const metadata = userType === 'candidate' && referralCode ? 
-            { referralCode } : undefined;
-            
+          // Referral attribution is handled server-side by matching the candidate's
+          // email against pending rows in vr_referrals (see handle_referred_user_signup
+          // trigger), so the referral code itself doesn't need to travel through signup.
           await onSubmit(email, password, fullName, jobTitle);
         }
       } catch (err: any) {

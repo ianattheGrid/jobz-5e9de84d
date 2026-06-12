@@ -18,6 +18,7 @@ export const useVRProfile = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [loading, setLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
   const [profile, setProfile] = useState<VRProfile | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -109,7 +110,7 @@ export const useVRProfile = () => {
 
   const updateProfile = async (values: Partial<VRProfile>) => {
     try {
-      setLoading(true);
+      setIsSaving(true);
       const { data: { session } } = await supabase.auth.getSession();
       
       if (!session) {
@@ -151,9 +152,9 @@ export const useVRProfile = () => {
         description: error.message || "Failed to update profile",
       });
     } finally {
-      setLoading(false);
+      setIsSaving(false);
     }
   };
 
-  return { profile, loading, error, updateProfile };
+  return { profile, loading, isSaving, error, updateProfile };
 };
