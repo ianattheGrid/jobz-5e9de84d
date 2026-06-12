@@ -1,8 +1,10 @@
 import React from 'react';
 import NavBar from "@/components/NavBar";
 import { SwipeInterface } from "@/components/swipe/SwipeInterface";
+import { useToast } from "@/components/ui/use-toast";
 
 export default function SwipeEmployers() {
+  const { toast } = useToast();
   const employersData = [
     {
       name: "TechHub Bristol",
@@ -64,18 +66,24 @@ export default function SwipeEmployers() {
   ];
 
   const handleMatch = (employer: any) => {
-    console.log('Interested in employer:', employer.name);
-    // Here you would typically send this to your backend
+    toast({
+      title: `Interested in ${employer.name}`,
+      description: "We've added them to your shortlist.",
+    });
   };
 
   const handlePass = (employer: any) => {
-    console.log('Passed on employer:', employer.name);
-    // Here you would typically track this interaction
+    toast({
+      title: `Passed on ${employer.name}`,
+      description: "We'll show you different employers next.",
+    });
   };
 
   const handlePending = (employer: any) => {
-    console.log('Saved employer for later:', employer.name);
-    // Here you would typically save this to a "maybe" list
+    toast({
+      title: `Saved ${employer.name} for later`,
+      description: "Find them again in your 'Maybe' list.",
+    });
   };
 
   return (

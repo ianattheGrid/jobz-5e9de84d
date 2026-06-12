@@ -1,9 +1,11 @@
 import React from 'react';
 import NavBar from "@/components/NavBar";
 import { SwipeInterface } from "@/components/swipe/SwipeInterface";
+import { useToast } from "@/components/ui/use-toast";
 import sarahProfileImage from "@/assets/sarah-johnson-profile.jpg";
 
 export default function SwipeCandidates() {
+  const { toast } = useToast();
   const candidatesData = [
     {
       name: "Sarah Johnson",
@@ -49,18 +51,24 @@ export default function SwipeCandidates() {
   ];
 
   const handleMatch = (candidate: any) => {
-    console.log('Matched with candidate:', candidate.name);
-    // Here you would typically send this to your backend
+    toast({
+      title: `You liked ${candidate.name}`,
+      description: "We've saved this match to your shortlist.",
+    });
   };
 
   const handlePass = (candidate: any) => {
-    console.log('Passed on candidate:', candidate.name);
-    // Here you would typically track this interaction
+    toast({
+      title: `Passed on ${candidate.name}`,
+      description: "We'll show you different candidates next.",
+    });
   };
 
   const handlePending = (candidate: any) => {
-    console.log('Saved candidate for later:', candidate.name);
-    // Here you would typically save this to a "maybe" list
+    toast({
+      title: `Saved ${candidate.name} for later`,
+      description: "Find them again in your 'Maybe' list.",
+    });
   };
 
   return (
