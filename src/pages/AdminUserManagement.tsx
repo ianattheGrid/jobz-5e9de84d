@@ -8,6 +8,7 @@ import { UserDetailDrawer } from "@/components/admin/UserDetailDrawer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Loader2, Users, Briefcase, UserCheck } from "lucide-react";
+import { toast } from "sonner";
 import { calculateCandidateCompletion, calculateEmployerCompletion, calculateVRCompletion } from "@/utils/admin/calculateProfileCompletion";
 
 const AdminUserManagement = () => {
@@ -70,8 +71,9 @@ const AdminUserManagement = () => {
       setCandidates(candidatesWithCompletion);
       setEmployers(employersWithCompletion);
       setVRs(vrsWithCompletion);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error fetching users:', error);
+      toast.error(error?.message ?? "Failed to load users");
     } finally {
       setLoading(false);
     }

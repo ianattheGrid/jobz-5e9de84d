@@ -80,6 +80,15 @@ export default function VirtualRecruiterProfile() {
         <div className="max-w-4xl mx-auto">
           <h1 className="text-2xl font-bold mb-6">Your Connector Profile</h1>
 
+          {!profile && (
+            <Card className="p-6">
+              <p className="text-muted-foreground">
+                We couldn't load your Connector profile. Please refresh the page,
+                or contact support if the problem persists.
+              </p>
+            </Card>
+          )}
+
           {profile && (
             <div className="space-y-8">
               <ProfileCard
