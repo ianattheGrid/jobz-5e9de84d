@@ -224,19 +224,37 @@ export default function JobApplications() {
                 </div>
               )}
 
-              <div className="flex gap-2 pt-4 border-t">
-                <Button size="sm" variant="outline">
+              <div className="flex gap-2 pt-4 border-t flex-wrap">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => navigate(`/candidate/${application.applicant_id}`)}
+                >
                   View Full Profile
                 </Button>
-                <Button size="sm" variant="outline">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => navigate('/employer/interviews')}
+                >
                   Schedule Interview
                 </Button>
                 {application.employer_accepted === null && (
                   <>
-                    <Button size="sm" className="bg-green-600 hover:bg-green-700 text-white">
+                    <Button
+                      size="sm"
+                      className="bg-green-600 hover:bg-green-700 text-white"
+                      disabled={decisionMutation.isPending}
+                      onClick={() => decisionMutation.mutate({ applicationId: application.id, accepted: true })}
+                    >
                       Accept
                     </Button>
-                    <Button size="sm" variant="destructive">
+                    <Button
+                      size="sm"
+                      variant="destructive"
+                      disabled={decisionMutation.isPending}
+                      onClick={() => decisionMutation.mutate({ applicationId: application.id, accepted: false })}
+                    >
                       Reject
                     </Button>
                   </>
