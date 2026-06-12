@@ -116,7 +116,31 @@ export default function AdminVirtualRecruiters() {
                   <RefreshCw className="h-4 w-4 mr-2" />
                   Refresh
                 </Button>
-                <Button variant="outline" size="sm">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    if (!filteredRecruiters.length) {
+                      toast.info("No connectors to export");
+                      return;
+                    }
+                    exportToCsv(
+                      `connectors-${format(new Date(), "yyyy-MM-dd")}.csv`,
+                      filteredRecruiters.map((v) => ({
+                        vr_number: v.vr_number,
+                        full_name: v.full_name,
+                        email: v.email,
+                        location: v.location,
+                        is_active: v.is_active ? "Yes" : "No",
+                        bank_verified: v.bank_account_verified ? "Yes" : "No",
+                        placements: v.successful_placements ?? 0,
+                        recommendations: v.recommendations_count ?? 0,
+                        created_at: v.created_at,
+                      }))
+                    );
+                    toast.success(`Exported ${filteredRecruiters.length} connectors`);
+                  }}
+                >
                   <Download className="h-4 w-4 mr-2" />
                   Export
                 </Button>
