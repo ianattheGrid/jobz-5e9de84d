@@ -24,8 +24,8 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 export default function VirtualRecruiterProfile() {
-  const { profile, loading, updateProfile } = useVRProfile();
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { profile, loading, isSaving, updateProfile } = useVRProfile();
+  const isSubmitting = isSaving;
   const navigate = useNavigate();
 
   const form = useForm<FormValues>({
