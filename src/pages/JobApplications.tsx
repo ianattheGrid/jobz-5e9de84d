@@ -1,9 +1,10 @@
 import React from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { useToast } from '@/components/ui/use-toast';
 import { LayoutDashboard, ArrowLeft, User, Mail, Phone } from 'lucide-react';
 import {
   Breadcrumb,
@@ -15,6 +16,36 @@ import {
 
 export default function JobApplications() {
   const { jobId } = useParams<{ jobId: string }>();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+
+  const decisionMutation = useMutation({
+    mutationFn: async ({ applicationId, accepted }: { applicationId: number; accepted: boolean }) => {
+      const { error } = await supabase
+        .from('applications')
+        .update({
+          employer_accepted: accepted,
+          status: accepted ? 'accepted' : 'rejected',
+        })
+        .eq('id', applicationId);
+      if (error) throw error;
+    },
+    onSuccess: (_data, variables) => {
+      toast({
+        title: variables.accepted ? 'Application accepted' : 'Application rejected',
+        description: 'The candidate has been notified.',
+      });
+      queryClient.invalidateQueries({ queryKey: ['job-applications', jobId] });
+    },
+    onError: (err: any) => {
+      toast({
+        variant: 'destructive',
+        title: 'Update failed',
+        description: err?.message ?? 'Could not update application.',
+      });
+    },
+  });
 
   const { data: jobData, isLoading: jobLoading } = useQuery({
     queryKey: ['job-details', jobId],
@@ -193,19 +224,37 @@ export default function JobApplications() {
                 </div>
               )}
 
-              <div className="flex gap-2 pt-4 border-t">
-                <Button size="sm" variant="outline">
+              <div className="flex gap-2 pt-4 border-t flex-wrap">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => navigate(`/candidate/${application.applicant_id}`)}
+                >
                   View Full Profile
                 </Button>
-                <Button size="sm" variant="outline">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => navigate('/employer/interviews')}
+                >
                   Schedule Interview
                 </Button>
                 {application.employer_accepted === null && (
                   <>
-                    <Button size="sm" className="bg-green-600 hover:bg-green-700 text-white">
+                    <Button
+                      size="sm"
+                      className="bg-green-600 hover:bg-green-700 text-white"
+                      disabled={decisionMutation.isPending}
+                      onClick={() => decisionMutation.mutate({ applicationId: application.id, accepted: true })}
+                    >
                       Accept
                     </Button>
-                    <Button size="sm" variant="destructive">
+                    <Button
+                      size="sm"
+                      variant="destructive"
+                      disabled={decisionMutation.isPending}
+                      onClick={() => decisionMutation.mutate({ applicationId: application.id, accepted: false })}
+                    >
                       Reject
                     </Button>
                   </>

@@ -74,11 +74,11 @@ const JobCard = ({ job }: JobCardProps) => {
         <div 
           className="absolute inset-0 w-full h-full cursor-pointer"
           style={{ backfaceVisibility: "hidden" }}
-          onClick={() => setIsFlipped(true)}
+          onClick={handleStartApplication}
         >
           <JobCardFront 
             job={job} 
-            onFlip={() => setIsFlipped(true)} 
+            onFlip={handleStartApplication} 
           />
         </div>
         <div 

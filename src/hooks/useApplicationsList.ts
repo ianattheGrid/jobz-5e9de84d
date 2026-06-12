@@ -53,6 +53,7 @@ export const useApplicationsList = () => {
         .select(`
           id,
           created_at,
+          status,
           jobs (
             title,
             company,
@@ -72,7 +73,7 @@ export const useApplicationsList = () => {
         throw error;
       }
 
-      return data.length > 0 ? data : testData;
+      return data ?? [];
     }
   });
 };

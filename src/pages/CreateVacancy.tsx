@@ -97,7 +97,16 @@ export default function CreateVacancy() {
         return;
       }
 
-      const [minSalary, maxSalary] = values.salary.split("-").map(s => parseInt(s.trim()));
+      const salaryParts = values.salary.split("-").map(s => parseInt(s.trim().replace(/[^0-9]/g, ""), 10));
+      const [minSalary, maxSalary] = salaryParts;
+      if (salaryParts.length !== 2 || isNaN(minSalary) || isNaN(maxSalary) || minSalary > maxSalary) {
+        toast({
+          variant: "destructive",
+          title: "Invalid salary range",
+          description: "Please enter salary as 'min-max' (e.g. 30000-40000).",
+        });
+        return;
+      }
       const holidayDays = parseInt(values.holidayEntitlement);
 
       const { error } = await supabase.from('jobs').insert({

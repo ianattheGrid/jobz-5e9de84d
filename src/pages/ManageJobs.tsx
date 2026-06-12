@@ -146,7 +146,9 @@ export default function ManageJobs() {
                         {job.contract_type}
                       </Badge>
                       <Badge variant="outline" className="text-xs">
-                        £{job.salary_min.toLocaleString()} - £{job.salary_max.toLocaleString()}
+                        {job.salary_min != null && job.salary_max != null
+                          ? `£${job.salary_min.toLocaleString()} - £${job.salary_max.toLocaleString()}`
+                          : 'Salary not specified'}
                       </Badge>
                     </div>
                   </div>
