@@ -38,7 +38,7 @@ const PricingPage = () => {
             <Star className="h-5 w-5 text-primary" />
           </div>
           <p className="text-gray-700">
-            We're currently beta testing in the Bristol area. During this period, <strong>all services are completely free!</strong> 
+            We're currently beta testing in the Bristol area. During this period, <strong>all services are completely free!</strong>{" "}
             Regular pricing will apply once we launch nationwide.
           </p>
         </div>
