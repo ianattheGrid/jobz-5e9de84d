@@ -153,7 +153,7 @@ export default function AdminCandidates() {
                         <TableCell>{candidate.job_title}</TableCell>
                         <TableCell>{candidate.years_experience} years</TableCell>
                         <TableCell>
-                          £{candidate.min_salary.toLocaleString()} - £{candidate.max_salary.toLocaleString()}
+                          £{(candidate.min_salary ?? 0).toLocaleString()} - £{(candidate.max_salary ?? 0).toLocaleString()}
                         </TableCell>
                         <TableCell>
                           {candidate.location?.[0] || "—"}

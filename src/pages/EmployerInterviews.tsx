@@ -1,4 +1,5 @@
 
+import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
@@ -9,8 +10,14 @@ import InterviewTabs from "@/components/employer/interviews/InterviewTabs";
 import InterviewStats from "@/components/employer/interviews/InterviewStats";
 
 const EmployerInterviews = () => {
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!authLoading && !user) {
+      navigate("/employer/signin");
+    }
+  }, [user, authLoading, navigate]);
 
   const { data: interviews, isLoading } = useQuery({
     queryKey: ["interviews", user?.id],
@@ -36,9 +43,9 @@ const EmployerInterviews = () => {
   });
 
   if (!user) {
-    navigate("/employer/signin");
     return null;
   }
+
 
   if (isLoading) {
     return (
