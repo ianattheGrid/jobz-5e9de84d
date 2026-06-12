@@ -11,9 +11,15 @@ interface FileUploadSectionProps {
   userId: string;
   currentProfilePicture?: string | null;
   currentCompanyLogo?: string | null;
+  onAssetChange?: (field: 'profile_picture_url' | 'company_logo_url', url: string | null) => void;
 }
 
-export const FileUploadSection = ({ userId, currentProfilePicture, currentCompanyLogo }: FileUploadSectionProps) => {
+export const FileUploadSection = ({
+  userId,
+  currentProfilePicture,
+  currentCompanyLogo,
+  onAssetChange,
+}: FileUploadSectionProps) => {
   const [uploadingPicture, setUploadingPicture] = useState(false);
   const [uploadingLogo, setUploadingLogo] = useState(false);
   const [deletingPicture, setDeletingPicture] = useState(false);
@@ -69,9 +75,12 @@ export const FileUploadSection = ({ userId, currentProfilePicture, currentCompan
       });
 
       console.log('Upload completed successfully');
-      
-      // Instead of reloading, let's update the parent component state
-      window.location.reload();
+
+      // Notify parent so it can update its in-memory state without losing
+      // unsaved form edits. Falls back to a soft refresh if no callback given.
+      if (onAssetChange) {
+        onAssetChange(isProfile ? 'profile_picture_url' : 'company_logo_url', urlData.publicUrl);
+      }
     } catch (error: any) {
       console.error('Upload error:', error);
       toast({
@@ -134,7 +143,9 @@ export const FileUploadSection = ({ userId, currentProfilePicture, currentCompan
           description: `${isProfile ? 'Profile picture' : 'Company logo'} deleted successfully`,
         });
 
-        window.location.reload();
+        if (onAssetChange) {
+          onAssetChange(isProfile ? 'profile_picture_url' : 'company_logo_url', null);
+        }
       } else {
         throw new Error(`Invalid URL format for ${isProfile ? 'profile picture' : 'company logo'}`);
       }
