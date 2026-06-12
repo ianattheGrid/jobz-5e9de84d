@@ -234,7 +234,7 @@ const createVRRecommendation = async (vrId: string, candidateEmail: string, jobI
     job_id: jobId,
     status: 'pending',
     notes: 'Strong candidate with excellent React skills'
-  }).select().single();
+  } as any).select().single();
 
   if (recommendationError) {
     console.error("Error creating recommendation:", recommendationError);
@@ -627,7 +627,7 @@ const acceptJobOfferAndSetupCommission = async (jobId: number, candidateId: stri
     start_date: startDate.toISOString(),
     payment_due_date: paymentDueDate.toISOString(),
     payment_status: 'pending'
-  });
+  } as any);
   
   if (paymentError) {
     console.error("Error creating bonus payment:", paymentError);

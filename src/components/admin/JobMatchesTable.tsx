@@ -15,14 +15,14 @@ interface JobMatch {
   candidate_viewed_at: string | null;
   notified_at: string;
   created_at: string;
-  candidate: Array<{
+  candidate: {
     full_name: string;
     email: string;
-  }>;
-  job: Array<{
+  } | null;
+  job: {
     job_title: string;
     location: string;
-  }>;
+  } | null;
 }
 
 export function JobMatchesTable() {
@@ -42,7 +42,7 @@ export function JobMatchesTable() {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setMatches(data || []);
+      setMatches((data as any) || []);
     } catch (error: any) {
       toast({
         title: "Error loading matches",

@@ -148,7 +148,7 @@ export const useJobTitles = (workArea?: string, specialization?: string) => {
           suggested_by: user.id,
           ai_validation_status: 'pending',
           admin_review_status: 'pending'
-        })
+        } as any)
         .select()
         .single();
 
