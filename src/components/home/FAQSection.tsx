@@ -25,7 +25,7 @@ export const FAQSection = () => {
             </p>
           </div>
 
-          <Tabs defaultValue="employers" className="w-full">
+          <Tabs defaultValue="employers" className="w-full platform-tabs">
             <TabsList className="grid w-full grid-cols-3 rounded-lg overflow-hidden mb-8 radix-tablist">
               <TabsTrigger 
                 value="employers" 
