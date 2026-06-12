@@ -56,7 +56,7 @@ export const FileUploadSection = ({ userId, currentProfilePicture, currentCompan
         .from('employer_profiles')
         .update({
           [isProfile ? 'profile_picture_url' : 'company_logo_url']: urlData.publicUrl,
-        })
+        } as any)
         .eq('id', userId);
 
       console.log('Database update result:', { updateError });
@@ -114,7 +114,7 @@ export const FileUploadSection = ({ userId, currentProfilePicture, currentCompan
           .from('employer_profiles')
           .update({
             [isProfile ? 'profile_picture_url' : 'company_logo_url']: null,
-          })
+          } as any)
           .eq('id', userId);
 
         if (updateError) throw updateError;

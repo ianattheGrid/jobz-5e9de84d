@@ -96,20 +96,20 @@ export const BonusPaymentConfirmation = ({
           payment_due_date: paymentDueDate.toISOString(),
           payment_status: 'pending',
           confirmed_at: new Date().toISOString()
-        });
+        } as any);
 
       if (error) throw error;
       
       await supabase
         .from('applications')
-        .update({ status: 'hired' })
+        .update({ status: 'hired' } as any)
         .eq('job_id', jobId)
         .eq('applicant_id', candidateId);
       
       if (recommendationId) {
         await supabase
           .from('candidate_recommendations')
-          .update({ status: 'hired' })
+          .update({ status: 'hired' } as any)
           .eq('id', recommendationId);
       } else if (vrId && !recommendationId) {
         try {
@@ -121,7 +121,7 @@ export const BonusPaymentConfirmation = ({
               job_id: jobId,
               status: 'hired',
               recommendation_type: 'general'
-            });
+            } as any);
         } catch (recError) {
           console.error('Error creating recommendation record:', recError);
         }

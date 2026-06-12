@@ -57,7 +57,7 @@ export default function WebbyEmployer() {
 
       await supabase
         .from('employer_profiles')
-        .update({ [field]: value })
+        .update({ [field]: value } as any)
         .eq('id', user.id);
 
       toast({

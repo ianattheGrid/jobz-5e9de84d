@@ -122,7 +122,7 @@ export function JobSpecificRecommendationForm({
         recommendation_type: "job_specific",
         commission_percentage: selectedJob.candidate_commission,
         status: "pending",
-      });
+      } as any);
 
       if (error) throw error;
 

@@ -73,7 +73,7 @@ export function GeneralRecommendationForm({
         recommendation_type: "general",
         commission_percentage: 2.5, // Standard 2.5% for general recommendations
         status: "pending",
-      });
+      } as any);
 
       if (error) throw error;
 

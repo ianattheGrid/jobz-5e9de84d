@@ -174,7 +174,7 @@ export const useFileUpload = ({ userId, onUploadComplete }: UseFileUploadProps) 
         .from('candidate_profiles')
         .update({
           [isProfile ? 'profile_picture_url' : 'cv_url']: null,
-        })
+        } as any)
         .eq('id', userId);
 
       if (updateError) throw updateError;
