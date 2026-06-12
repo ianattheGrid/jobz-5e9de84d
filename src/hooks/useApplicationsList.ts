@@ -53,6 +53,7 @@ export const useApplicationsList = () => {
         .select(`
           id,
           created_at,
+          status,
           jobs (
             title,
             company,
