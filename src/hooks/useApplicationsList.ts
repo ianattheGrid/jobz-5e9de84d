@@ -72,7 +72,7 @@ export const useApplicationsList = () => {
         throw error;
       }
 
-      return data.length > 0 ? data : testData;
+      return data ?? [];
     }
   });
 };
