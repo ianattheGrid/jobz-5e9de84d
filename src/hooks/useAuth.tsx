@@ -65,43 +65,43 @@ export const useAuth = () => {
         const { data: { subscription } } = supabase.auth.onAuthStateChange(
           (event, session) => {
             console.log('Auth state changed:', event);
-            
+
             if (session?.user) {
-              // Use setTimeout to defer database calls and prevent infinite loops
+              // Immediately reflect logged-in state to avoid post-signup header flash
+              setAuthState((prev) => ({
+                user: session.user,
+                session,
+                userType: prev.user?.id === session.user.id ? prev.userType : null,
+                loading: false,
+              }));
+
+              // Defer role lookup (avoid recursive auth calls inside the callback)
               setTimeout(async () => {
                 try {
-                  // Fetch user role from database when signed in
                   const { data: roleData } = await supabase
                     .from('user_roles')
                     .select('role')
                     .eq('user_id', session.user.id)
                     .maybeSingle();
-                  
+
                   const userType = roleData?.role as 'employer' | 'candidate' | 'vr' | null;
-                  
+
                   setAuthState({
                     user: session.user,
                     session,
                     userType,
-                    loading: false
+                    loading: false,
                   });
                 } catch (error) {
                   console.error('Error fetching user role:', error);
-                  setAuthState({
-                    user: session.user,
-                    session,
-                    userType: null,
-                    loading: false
-                  });
                 }
               }, 0);
             } else {
-              // When signed out - immediate update, no async calls needed
               setAuthState({
                 user: null,
                 session: null,
                 userType: null,
-                loading: false
+                loading: false,
               });
             }
           }
