@@ -16,6 +16,36 @@ import {
 
 export default function JobApplications() {
   const { jobId } = useParams<{ jobId: string }>();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+
+  const decisionMutation = useMutation({
+    mutationFn: async ({ applicationId, accepted }: { applicationId: number; accepted: boolean }) => {
+      const { error } = await supabase
+        .from('applications')
+        .update({
+          employer_accepted: accepted,
+          status: accepted ? 'accepted' : 'rejected',
+        })
+        .eq('id', applicationId);
+      if (error) throw error;
+    },
+    onSuccess: (_data, variables) => {
+      toast({
+        title: variables.accepted ? 'Application accepted' : 'Application rejected',
+        description: 'The candidate has been notified.',
+      });
+      queryClient.invalidateQueries({ queryKey: ['job-applications', jobId] });
+    },
+    onError: (err: any) => {
+      toast({
+        variant: 'destructive',
+        title: 'Update failed',
+        description: err?.message ?? 'Could not update application.',
+      });
+    },
+  });
 
   const { data: jobData, isLoading: jobLoading } = useQuery({
     queryKey: ['job-details', jobId],
