@@ -1,8 +1,8 @@
 export const MissionSection = () => {
   return (
-    <section className="py-16 bg-background">
-      <div className="container mx-auto px-4 max-w-7xl">
-        <div className="space-y-3 flex flex-col items-start">
+    <section className="py-16 bg-background overflow-hidden">
+      <div className="container mx-auto px-4 max-w-7xl overflow-hidden">
+        <div className="space-y-3 flex flex-col items-start w-full max-w-full overflow-hidden">
           <p className="text-sm md:text-base text-foreground/80 leading-relaxed font-mono pr-4 
                         whitespace-normal lg:whitespace-nowrap lg:overflow-hidden 
                         animate-fade-in lg:animate-typewriter">
