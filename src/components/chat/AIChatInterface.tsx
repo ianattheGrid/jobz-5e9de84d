@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
@@ -26,6 +27,7 @@ interface AIChatInterfaceProps {
 
 const AIChatInterface: React.FC<AIChatInterfaceProps> = ({ userType, onClose }) => {
   const { user } = useAuth();
+  const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
@@ -71,8 +73,13 @@ const AIChatInterface: React.FC<AIChatInterfaceProps> = ({ userType, onClose }) 
       if (data && data.length > 0 && !activeConversation) {
         setActiveConversation(data[0].id);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error loading conversations:', error);
+      toast({
+        variant: 'destructive',
+        title: 'Failed to load conversations',
+        description: error?.message ?? 'Please refresh and try again.',
+      });
     }
   };
 
@@ -94,8 +101,13 @@ const AIChatInterface: React.FC<AIChatInterfaceProps> = ({ userType, onClose }) 
       }));
 
       setMessages(validMessages);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error loading messages:', error);
+      toast({
+        variant: 'destructive',
+        title: 'Failed to load messages',
+        description: error?.message ?? 'Please refresh and try again.',
+      });
     }
   };
 
@@ -190,9 +202,17 @@ const AIChatInterface: React.FC<AIChatInterfaceProps> = ({ userType, onClose }) 
 
       if (error) throw error;
 
+      const replyText = data?.response ?? data?.message;
+      if (!replyText) {
+        toast({
+          variant: 'destructive',
+          title: 'No response received',
+          description: 'The assistant returned an empty reply. Please try again.',
+        });
+      }
       setMessages(prev => [...prev, {
         role: 'assistant',
-        content: data.response
+        content: replyText ?? "I didn't receive a response — please try again.",
       }]);
 
       if (messages.length === 0) {
