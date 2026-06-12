@@ -60,11 +60,12 @@ const CandidateApplications = () => {
                   <TableHead className="text-gray-700">Job Title</TableHead>
                   <TableHead className="text-gray-700">Company</TableHead>
                   <TableHead className="text-gray-700">Salary Range</TableHead>
+                  <TableHead className="text-gray-700">Status</TableHead>
                   <TableHead className="text-gray-700">Applied On</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {applications.map((application) => (
+                {applications.map((application: any) => (
                   <TableRow key={application.id} className="hover:bg-gray-50">
                     <TableCell className="font-medium text-gray-900">
                       {application.jobs?.title}
@@ -80,6 +81,9 @@ const CandidateApplications = () => {
                       ) : (
                         'Not specified'
                       )}
+                    </TableCell>
+                    <TableCell className="text-gray-700 capitalize">
+                      {application.status || 'Pending'}
                     </TableCell>
                     <TableCell className="text-gray-700">
                       {format(new Date(application.created_at), 'dd MMM yyyy')}
