@@ -22,7 +22,10 @@ export const FormField = ({
   required = false,
 }: FormFieldProps) => (
   <div className="space-y-2">
-    <Label htmlFor={id} className="text-white">{label}</Label>
+    <Label htmlFor={id} className="text-white">
+      {label}
+      {required && <span className="text-pink-400 ml-0.5" aria-hidden="true">*</span>}
+    </Label>
     <Input
       id={id}
       type={type}
