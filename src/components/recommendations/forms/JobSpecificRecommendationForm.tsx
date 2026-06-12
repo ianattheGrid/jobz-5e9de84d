@@ -108,8 +108,13 @@ export function JobSpecificRecommendationForm({
 
       // Find the selected job to get its commission rate
       const selectedJob = jobs.find(job => job.id === data.job_id);
-      if (!selectedJob) {
-        throw new Error("Selected job not found");
+      if (!data.job_id || !selectedJob) {
+        toast({
+          title: "Please select a job",
+          description: "Choose the job you're recommending this candidate for.",
+          variant: "destructive",
+        });
+        return;
       }
 
       // Job-specific recommendation with job's commission rate

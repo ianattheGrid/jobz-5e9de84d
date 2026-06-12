@@ -82,9 +82,10 @@ const CandidateInterviews = () => {
 
   const isLoading = interviewsLoading || slotsLoading;
 
-  // Always use dummy data for preview/development
-  const displayInterviews = dummyInterviews;
-  const displaySlots = dummySlots;
+  // Use real data when available; fall back to dummy data only when both are empty
+  // (helpful for new users / preview while they have nothing scheduled).
+  const displayInterviews = interviews && interviews.length > 0 ? interviews : dummyInterviews;
+  const displaySlots = slots && slots.length > 0 ? slots : dummySlots;
 
   return (
     <InterviewsLayout isLoading={isLoading}>
