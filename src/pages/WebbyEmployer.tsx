@@ -55,10 +55,12 @@ export default function WebbyEmployer() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
-      await supabase
+      const { error: updateError } = await supabase
         .from('employer_profiles')
         .update({ [field]: value } as any)
         .eq('id', user.id);
+
+      if (updateError) throw updateError;
 
       toast({
         title: 'Preferences updated',
@@ -218,10 +220,10 @@ export default function WebbyEmployer() {
           onOpenChange={(open) => !open && setQuickLookCandidate(null)}
           data={quickLookCandidate ? {
             id: quickLookCandidate.candidate_id,
-            job_title: quickLookCandidate.candidate.job_title,
-            location: quickLookCandidate.candidate.location,
-            years_experience: quickLookCandidate.candidate.years_experience,
-            skills: quickLookCandidate.candidate.required_skills,
+            job_title: quickLookCandidate.candidate?.job_title ?? '',
+            location: quickLookCandidate.candidate?.location ?? '',
+            years_experience: quickLookCandidate.candidate?.years_experience ?? 0,
+            skills: quickLookCandidate.candidate?.required_skills ?? [],
             match_score: quickLookCandidate.match_score,
             match_reason: quickLookCandidate.match_reason,
             webby_profile: quickLookCandidate.webby_profile,

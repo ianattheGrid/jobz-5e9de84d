@@ -13,15 +13,10 @@ const CandidateChat = () => {
   const [showChat, setShowChat] = useState(false);
 
   useEffect(() => {
-    console.log('[CandidateChat] Auth state:', { user: !!user, authLoading });
-    
-    // Show chat after a short delay to prevent loading issues
-    const timer = setTimeout(() => {
+    if (!authLoading) {
       setShowChat(true);
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, [user, authLoading]);
+    }
+  }, [authLoading]);
 
   const handleClose = () => {
     console.log('[CandidateChat] handleClose called');
