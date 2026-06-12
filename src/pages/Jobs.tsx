@@ -31,10 +31,8 @@ const Jobs = () => {
         .select('*')
         .order('created_at', { ascending: false });
 
-      // Only filter by employer_id if the user is logged in and is an employer
-      if (user && userType === 'employer') {
-        query = query.eq('employer_id', user.id);
-      }
+      // /jobs is the public job board — show all jobs regardless of user type.
+      // Employer-scoped listings live at /employer/manage-jobs.
 
       if (searchFilters) {
         if (searchFilters.workArea) {
