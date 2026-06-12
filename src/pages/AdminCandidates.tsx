@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { RefreshCw, Search, Download } from "lucide-react";
 import { toast } from "sonner";
 import { format } from "date-fns";
+import { exportToCsv } from "@/utils/exportCsv";
 
 interface Candidate {
   id: string;
@@ -113,7 +114,30 @@ export default function AdminCandidates() {
                   <RefreshCw className="h-4 w-4 mr-2" />
                   Refresh
                 </Button>
-                <Button variant="outline" size="sm">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    if (!filteredCandidates.length) {
+                      toast.info("No candidates to export");
+                      return;
+                    }
+                    exportToCsv(
+                      `candidates-${format(new Date(), "yyyy-MM-dd")}.csv`,
+                      filteredCandidates.map((c) => ({
+                        full_name: c.full_name ?? "",
+                        email: c.email,
+                        job_title: c.job_title,
+                        years_experience: c.years_experience,
+                        min_salary: c.min_salary ?? "",
+                        max_salary: c.max_salary ?? "",
+                        location: c.location?.join("; ") ?? "",
+                        created_at: c.created_at,
+                      }))
+                    );
+                    toast.success(`Exported ${filteredCandidates.length} candidates`);
+                  }}
+                >
                   <Download className="h-4 w-4 mr-2" />
                   Export
                 </Button>

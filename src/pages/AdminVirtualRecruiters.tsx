@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { RefreshCw, Search, Download } from "lucide-react";
 import { toast } from "sonner";
 import { format } from "date-fns";
+import { exportToCsv } from "@/utils/exportCsv";
 
 interface VirtualRecruiter {
   id: string;
