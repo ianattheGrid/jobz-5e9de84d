@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { signInWithEmail } from "@/utils/auth/signInWithEmail";
 import { fetchUserRole } from "@/utils/auth/fetchUserRole";
@@ -10,7 +10,18 @@ import { signOut } from "@/utils/auth/signOut";
 export const useSignIn = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
+
+  const getRedirectParam = () => {
+    const params = new URLSearchParams(location.search);
+    const redirect = params.get("redirect");
+    // Only allow same-origin relative paths to prevent open-redirect
+    if (redirect && redirect.startsWith("/") && !redirect.startsWith("//")) {
+      return redirect;
+    }
+    return null;
+  };
 
   const handleSignIn = async (email: string, password: string, intendedUserType?: string) => {
     try {
@@ -83,8 +94,9 @@ export const useSignIn = () => {
         return;
       }
 
-      // Redirect based on the role from the database
-      const redirectPath = `/${userRole.role}/dashboard`;
+      // Redirect: honor ?redirect= if present, else go to dashboard
+      const redirectParam = getRedirectParam();
+      const redirectPath = redirectParam || `/${userRole.role}/dashboard`;
       console.log('Redirecting to:', redirectPath);
       
       toast({

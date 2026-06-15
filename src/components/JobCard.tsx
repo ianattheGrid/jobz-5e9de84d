@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { useNavigate, useLocation } from "react-router-dom";
 import JobCardFront from "./job-card/JobCardFront";
 import JobCardBack from "./job-card/JobCardBack";
 import { Job } from "@/integrations/supabase/types/jobs";
@@ -14,15 +15,18 @@ interface JobCardProps {
 const JobCard = ({ job }: JobCardProps) => {
   const [isFlipped, setIsFlipped] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const handleStartApplication = async () => {
     const { data: { session } } = await supabase.auth.getSession();
     if (!session) {
+      const redirectTo = encodeURIComponent(location.pathname + location.search);
       toast({
-        variant: "destructive",
-        title: "Authentication required",
-        description: "Please sign in to apply for jobs",
+        title: "Sign in to apply",
+        description: "Takes about 10 seconds — we'll bring you right back to this job.",
       });
+      navigate(`/candidate/signin?redirect=${redirectTo}`);
       return;
     }
 
