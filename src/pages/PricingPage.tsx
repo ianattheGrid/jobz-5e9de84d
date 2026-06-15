@@ -26,27 +26,30 @@ const PricingPage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-pink-50">
+    <div className="min-h-screen bg-background text-foreground relative overflow-hidden">
+      {/* Cosmic starfield backdrop */}
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_hsl(var(--primary)/0.15),_transparent_60%)]" />
+      <div className="pointer-events-none absolute inset-0 opacity-40 [background-image:radial-gradient(white_1px,transparent_1px)] [background-size:32px_32px]" />
       <NavBar />
-      <div className="pt-20">
+      <div className="relative pt-20">
         <div className="container mx-auto px-4 py-12">
         {/* Beta Testing Notice */}
-        <div className="bg-gradient-to-r from-blue-100 to-pink-100 border border-primary/20 rounded-lg p-6 mb-12 text-center">
+        <div className="bg-card/60 backdrop-blur border border-primary/30 rounded-lg p-6 mb-12 text-center shadow-[0_0_40px_-10px_hsl(var(--primary)/0.4)]">
           <div className="flex items-center justify-center gap-2 mb-2">
             <Star className="h-5 w-5 text-primary" />
             <h3 className="text-lg font-semibold text-primary">Beta Testing in Bristol</h3>
             <Star className="h-5 w-5 text-primary" />
           </div>
-          <p className="text-gray-700">
-            We're currently beta testing in the Bristol area. During this period, <strong>all services are completely free!</strong>{" "}
+          <p className="text-muted-foreground">
+            We're currently beta testing in the Bristol area. During this period, <strong className="text-foreground">all services are completely free!</strong>{" "}
             Regular pricing will apply once we launch nationwide.
           </p>
         </div>
 
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Simple, Transparent Pricing</h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <h1 className="text-4xl font-bold text-foreground mb-4">Simple, Transparent Pricing</h1>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Choose the plan that works for you. No hidden fees, no long-term contracts.
           </p>
         </div>
@@ -130,25 +133,25 @@ const PricingPage = () => {
 
         {/* FAQ Section */}
         <div className="mt-16 text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Frequently Asked Questions</h2>
+          <h2 className="text-2xl font-bold text-foreground mb-6">Frequently Asked Questions</h2>
           <div className="max-w-3xl mx-auto space-y-6 text-left">
-            <div className="bg-white rounded-lg p-6 shadow-sm border">
-              <h3 className="font-semibold text-gray-900 mb-2">Is there really no charge during beta testing?</h3>
-              <p className="text-gray-600">
+            <div className="bg-card/60 backdrop-blur rounded-lg p-6 shadow-sm border border-border">
+              <h3 className="font-semibold text-foreground mb-2">Is there really no charge during beta testing?</h3>
+              <p className="text-muted-foreground">
                 That's correct! While we're beta testing in Bristol, all services are completely free. 
                 This includes unlimited job postings for employers and full access to all features.
               </p>
             </div>
-            <div className="bg-white rounded-lg p-6 shadow-sm border">
-              <h3 className="font-semibold text-gray-900 mb-2">When will regular pricing start?</h3>
-              <p className="text-gray-600">
+            <div className="bg-card/60 backdrop-blur rounded-lg p-6 shadow-sm border border-border">
+              <h3 className="font-semibold text-foreground mb-2">When will regular pricing start?</h3>
+              <p className="text-muted-foreground">
                 We'll announce the end of our free beta period well in advance. All existing users will receive 
                 at least 30 days notice before any charges begin.
               </p>
             </div>
-            <div className="bg-white rounded-lg p-6 shadow-sm border">
-              <h3 className="font-semibold text-gray-900 mb-2">Can I cancel anytime?</h3>
-              <p className="text-gray-600">
+            <div className="bg-card/60 backdrop-blur rounded-lg p-6 shadow-sm border border-border">
+              <h3 className="font-semibold text-foreground mb-2">Can I cancel anytime?</h3>
+              <p className="text-muted-foreground">
                 Yes, absolutely. There are no long-term contracts. You can cancel your subscription at any time, 
                 and you'll retain access until the end of your billing period.
               </p>
@@ -157,14 +160,14 @@ const PricingPage = () => {
         </div>
 
         {/* CTA Section */}
-        <div className="mt-16 text-center bg-gradient-to-r from-primary/10 to-pink-100 rounded-xl p-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Ready to Get Started?</h2>
-          <p className="text-gray-600 mb-6 max-w-xl mx-auto">
+        <div className="mt-16 text-center bg-gradient-to-r from-primary/15 to-primary/5 border border-primary/20 rounded-xl p-8 backdrop-blur">
+          <h2 className="text-2xl font-bold text-foreground mb-4">Ready to Get Started?</h2>
+          <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
             Join hundreds of employers and candidates in Bristol who are already using Jobz to find the perfect match.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/employer/signup">
-              <Button className="bg-primary hover:bg-primary/90 text-white px-8 py-3">
+              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3">
                 I'm Hiring
               </Button>
             </Link>
