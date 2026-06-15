@@ -1,4 +1,3 @@
-
 import { serve } from "https://deno.land/std@0.131.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
@@ -10,19 +9,38 @@ const corsHeaders = {
 console.log("Loading VR profile creation function");
 
 serve(async (req) => {
-  // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders, status: 204 });
   }
 
   try {
-    const supabaseClient = createClient(
-      Deno.env.get("SUPABASE_URL") ?? "",
-      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
-    );
+    // Require an authenticated caller.
+    const authHeader = req.headers.get("Authorization");
+    if (!authHeader?.startsWith("Bearer ")) {
+      return new Response(
+        JSON.stringify({ error: "Unauthorized" }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 401 }
+      );
+    }
+    const token = authHeader.replace("Bearer ", "");
 
-    // Get request data
-    const { userId, fullName, email } = await req.json();
+    const supabaseUrl = Deno.env.get("SUPABASE_URL") ?? "";
+    const anonKey = Deno.env.get("SUPABASE_ANON_KEY") ?? "";
+    const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
+
+    const authClient = createClient(supabaseUrl, anonKey, {
+      global: { headers: { Authorization: authHeader } },
+    });
+    const { data: userData, error: userError } = await authClient.auth.getUser(token);
+    if (userError || !userData?.user) {
+      return new Response(
+        JSON.stringify({ error: "Unauthorized" }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 401 }
+      );
+    }
+
+    const body = await req.json();
+    const { userId, fullName, email } = body ?? {};
 
     if (!userId || !fullName || !email) {
       return new Response(
@@ -31,10 +49,19 @@ serve(async (req) => {
       );
     }
 
+    // Caller may only create / overwrite their own VR profile.
+    if (userId !== userData.user.id) {
+      return new Response(
+        JSON.stringify({ error: "Forbidden" }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 403 }
+      );
+    }
+
+    const adminClient = createClient(supabaseUrl, serviceKey);
+
     console.log(`Creating VR profile for: ${fullName} (${email})`);
 
-    // Generate VR number
-    const { data: vrNumber, error: vrNumberError } = await supabaseClient
+    const { data: vrNumber, error: vrNumberError } = await adminClient
       .rpc("generate_vr_number");
 
     if (vrNumberError) {
@@ -42,8 +69,7 @@ serve(async (req) => {
       throw vrNumberError;
     }
 
-    // Insert the profile with generated VR number
-    const { error } = await supabaseClient
+    const { error } = await adminClient
       .from("virtual_recruiter_profiles")
       .insert({
         id: userId,
@@ -52,7 +78,7 @@ serve(async (req) => {
         location: "Not specified",
         vr_number: vrNumber,
         bank_account_verified: false,
-        is_active: true
+        is_active: true,
       });
 
     if (error) {
@@ -67,7 +93,7 @@ serve(async (req) => {
   } catch (error) {
     console.error("Error in VR profile creation:", error);
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: (error as Error).message }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 500 }
     );
   }

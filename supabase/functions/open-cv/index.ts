@@ -14,64 +14,60 @@ serve(async (req) => {
 
   try {
     const url = new URL(req.url);
-    const path = url.searchParams.get('path');
-    
+    const path = url.searchParams.get("path");
+
     if (!path) {
-      return new Response("Missing path parameter", { status: 400 });
+      return new Response("Missing path parameter", { status: 400, headers: corsHeaders });
     }
 
-    // Get user ID from JWT token
     const authHeader = req.headers.get("Authorization");
     if (!authHeader?.startsWith("Bearer ")) {
-      return new Response("Unauthorized", { status: 401 });
+      return new Response("Unauthorized", { status: 401, headers: corsHeaders });
     }
-
     const token = authHeader.replace("Bearer ", "");
-    let userId;
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      userId = payload.sub;
-    } catch (e) {
-      return new Response("Invalid token", { status: 401 });
+
+    const supabaseUrl = Deno.env.get("SUPABASE_URL");
+    const anonKey = Deno.env.get("SUPABASE_ANON_KEY");
+    const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+    if (!supabaseUrl || !anonKey || !serviceKey) {
+      return new Response("Server configuration error", { status: 500, headers: corsHeaders });
     }
 
-    // Security check
+    // Verify the JWT signature via Supabase rather than decoding it client-side.
+    const authClient = createClient(supabaseUrl, anonKey, {
+      global: { headers: { Authorization: authHeader } },
+    });
+    const { data: userData, error: userError } = await authClient.auth.getUser(token);
+    if (userError || !userData?.user) {
+      return new Response("Unauthorized", { status: 401, headers: corsHeaders });
+    }
+    const userId = userData.user.id;
+
     const firstSegment = path.split("/")[0];
     if (firstSegment !== userId) {
-      return new Response("Access denied", { status: 403 });
-    }
-
-    // Create admin client and get signed URL
-    const supabaseUrl = Deno.env.get("SUPABASE_URL");
-    const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
-    
-    if (!supabaseUrl || !serviceKey) {
-      return new Response("Server configuration error", { status: 500 });
+      return new Response("Access denied", { status: 403, headers: corsHeaders });
     }
 
     const adminClient = createClient(supabaseUrl, serviceKey);
-    
-    const { data: signed, error } = await adminClient
-      .storage
+
+    const { data: signed, error } = await adminClient.storage
       .from("cvs")
       .createSignedUrl(path, 3600);
 
     if (error || !signed?.signedUrl) {
       console.error("Signed URL error:", error);
-      return new Response("Failed to access file", { status: 400 });
+      return new Response("Failed to access file", { status: 400, headers: corsHeaders });
     }
 
-    // Redirect directly to the signed URL
     return new Response(null, {
       status: 302,
       headers: {
-        "Location": signed.signedUrl,
-        ...corsHeaders
-      }
+        Location: signed.signedUrl,
+        ...corsHeaders,
+      },
     });
-
   } catch (error) {
     console.error("Edge function error:", error);
-    return new Response("Internal server error", { status: 500 });
+    return new Response("Internal server error", { status: 500, headers: corsHeaders });
   }
 });
