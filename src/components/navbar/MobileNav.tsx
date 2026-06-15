@@ -29,7 +29,11 @@ const MobileNav = ({ isAuthenticated, userType }: MobileNavProps) => {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <button className="p-2 hover:bg-accent rounded-md lg:hidden">
+        <button
+          type="button"
+          aria-label="Open navigation menu"
+          className="p-2 hover:bg-accent rounded-md lg:hidden"
+        >
           <Menu className="h-6 w-6 text-foreground" />
         </button>
       </SheetTrigger>

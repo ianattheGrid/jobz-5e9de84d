@@ -86,19 +86,20 @@ export const SoftLaunchBanner = () => {
 
       {/* Mobile Version - Bottom-right badge */}
       <div 
-        className="md:hidden fixed bottom-20 right-4 z-50"
+        className="md:hidden fixed bottom-4 right-3 z-50"
         role="complementary"
         aria-label="Soft launch announcement"
       >
         {!isExpanded ? (
-          // Compact horizontal badge
+          // Compact horizontal badge (smaller on mobile to avoid overlapping body copy)
           <button
             onClick={() => setIsExpanded(true)}
             aria-expanded={isExpanded}
-            className="bg-black/30 backdrop-blur-md border-2 border-brand-pink text-white px-4 py-2 rounded-full shadow-lg flex items-center gap-2 hover:shadow-xl hover:bg-black/40 transition-all duration-300"
+            aria-label="Soft launch info"
+            className="bg-black/40 backdrop-blur-md border border-brand-pink text-white px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1.5 hover:bg-black/60 transition-all duration-300"
           >
-            <Rocket className="w-4 h-4" />
-            <span className="text-sm font-bold">Soft Launch</span>
+            <Rocket className="w-3.5 h-3.5" />
+            <span className="text-xs font-semibold">Soft Launch</span>
           </button>
         ) : (
           // Expanded card
