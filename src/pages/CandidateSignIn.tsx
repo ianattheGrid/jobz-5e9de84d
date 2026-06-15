@@ -122,7 +122,7 @@ const CandidateSignIn = () => {
               </div>
               <div className="text-sm text-white/70">
                 Don't have an account?{" "}
-                <Link to="/candidate/signup" className="text-primary hover:text-primary/80 transition-colors drop-shadow-[0_0_10px_rgba(236,72,153,0.5)]">
+                <Link to={signupHref} className="text-primary hover:text-primary/80 transition-colors drop-shadow-[0_0_10px_rgba(236,72,153,0.5)]">
                   Sign Up
                 </Link>
               </div>
