@@ -17,6 +17,8 @@ const CandidateSignIn = () => {
   const [resetMode, setResetMode] = useState(false);
   const { handleSignIn, loading } = useSignIn();
   const { toast } = useToast();
+  const location = useLocation();
+  const signupHref = `/candidate/signup${location.search}`;
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
