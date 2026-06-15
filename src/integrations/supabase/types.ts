@@ -2472,6 +2472,7 @@ export type Database = {
         Args: { name1: string; name2: string }
         Returns: boolean
       }
+      current_user_is_admin: { Args: never; Returns: boolean }
       generate_referral_code: { Args: never; Returns: string }
       generate_vr_number: { Args: never; Returns: string }
       get_cv_file_path: { Args: { file_path: string }; Returns: Json }
