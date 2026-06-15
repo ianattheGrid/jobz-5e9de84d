@@ -26,10 +26,10 @@ const PricingPage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background text-foreground relative overflow-hidden">
+    <div className="min-h-screen text-white relative overflow-hidden bg-[radial-gradient(ellipse_at_top,_#2a0a3e_0%,_#0a0118_50%,_#000_100%)]">
       {/* Cosmic starfield backdrop */}
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_hsl(var(--primary)/0.15),_transparent_60%)]" />
-      <div className="pointer-events-none absolute inset-0 opacity-40 [background-image:radial-gradient(white_1px,transparent_1px)] [background-size:32px_32px]" />
+      <div className="pointer-events-none absolute inset-0 opacity-30 [background-image:radial-gradient(white_1px,transparent_1px)] [background-size:32px_32px]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,_hsl(var(--primary)/0.15),_transparent_70%)]" />
       <NavBar />
       <div className="relative pt-20">
         <div className="container mx-auto px-4 py-12">
