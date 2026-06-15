@@ -94,8 +94,9 @@ export const useSignIn = () => {
         return;
       }
 
-      // Redirect based on the role from the database
-      const redirectPath = `/${userRole.role}/dashboard`;
+      // Redirect: honor ?redirect= if present, else go to dashboard
+      const redirectParam = getRedirectParam();
+      const redirectPath = redirectParam || `/${userRole.role}/dashboard`;
       console.log('Redirecting to:', redirectPath);
       
       toast({
