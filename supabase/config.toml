@@ -68,3 +68,6 @@ verify_jwt = true
 
 [functions.enhance-about-me]
 verify_jwt = true
+
+[functions.parse-candidate-search]
+verify_jwt = true
