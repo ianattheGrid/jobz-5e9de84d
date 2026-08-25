@@ -3,15 +3,24 @@ import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Eye, MapPin, DollarSign, Calendar, Briefcase, Award } from "lucide-react";
+import { Eye, MapPin, DollarSign, Calendar, Briefcase, Award, Check, AlertCircle } from "lucide-react";
 import { CandidateProfile } from "@/integrations/supabase/types/profiles";
+import { MatchExplanation } from "./searchCriteria";
 
 interface SearchResultsProps {
   candidates: CandidateProfile[];
+  explanations?: Record<string, MatchExplanation>;
 }
 
-export function SearchResults({ candidates }: SearchResultsProps) {
+const scoreTone = (score: number) => {
+  if (score >= 75) return "bg-green-100 text-green-800 border-green-200";
+  if (score >= 50) return "bg-amber-100 text-amber-800 border-amber-200";
+  return "bg-gray-100 text-gray-700 border-gray-200";
+};
+
+export function SearchResults({ candidates, explanations = {} }: SearchResultsProps) {
   const navigate = useNavigate();
+
 
   if (candidates.length === 0) {
     return (
