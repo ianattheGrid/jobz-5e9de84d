@@ -46,7 +46,9 @@ export function SearchResults({ candidates, explanations = {} }: SearchResultsPr
       </div>
       
       <div className="grid gap-6">
-        {candidates.map((candidate) => (
+        {candidates.map((candidate) => {
+          const explanation = explanations[candidate.id];
+          return (
           <Card key={candidate.id} className="hover:shadow-md transition-shadow">
             <CardHeader className="pb-4">
               <div className="flex justify-between items-start">
@@ -60,13 +62,38 @@ export function SearchResults({ candidates, explanations = {} }: SearchResultsPr
                       : candidate.job_title}
                   </p>
                 </div>
-                <Badge variant="secondary" className="ml-4">
-                  {candidate.availability || 'Available'}
-                </Badge>
+                <div className="flex items-center gap-2 ml-4">
+                  {explanation && (
+                    <Badge variant="outline" className={scoreTone(explanation.score)}>
+                      {explanation.score}% match
+                    </Badge>
+                  )}
+                  <Badge variant="secondary">
+                    {candidate.availability || 'Available'}
+                  </Badge>
+                </div>
               </div>
             </CardHeader>
             
             <CardContent className="space-y-4">
+              {explanation && (explanation.reasons.length > 0 || explanation.gaps.length > 0) && (
+                <div className="rounded-lg border border-gray-200 bg-gray-50 p-3 space-y-1">
+                  <p className="text-sm font-medium text-gray-900 mb-1">Why this candidate</p>
+                  {explanation.reasons.map((reason, i) => (
+                    <div key={`r-${i}`} className="flex items-start gap-2 text-sm text-gray-700">
+                      <Check className="h-4 w-4 mt-0.5 text-green-600 shrink-0" />
+                      <span>{reason}</span>
+                    </div>
+                  ))}
+                  {explanation.gaps.map((gap, i) => (
+                    <div key={`g-${i}`} className="flex items-start gap-2 text-sm text-gray-600">
+                      <AlertCircle className="h-4 w-4 mt-0.5 text-amber-600 shrink-0" />
+                      <span>{gap}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 <div className="flex items-center gap-2 text-sm text-gray-600">
                   <Briefcase className="h-4 w-4" />
