@@ -187,7 +187,9 @@ export function SearchResults({ candidates, explanations = {} }: SearchResultsPr
               </div>
             </CardContent>
           </Card>
-        ))}
+          );
+        })}
+
       </div>
     </div>
   );
