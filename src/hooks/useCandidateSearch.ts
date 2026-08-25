@@ -1,4 +1,3 @@
-
 import { searchFormSchema } from "@/components/candidate-search/searchFormSchema";
 import { supabase } from "@/integrations/supabase/client";
 import type { z } from "zod";
@@ -7,6 +6,11 @@ import { useSignupDateFilter } from "./search/useSignupDateFilter";
 import { useSearchState } from "./search/useSearchState";
 import { useAuth } from "@/hooks/useAuth";
 import { useEffect, useState } from "react";
+import {
+  CandidateSearchCriteria,
+  explainCandidateMatch,
+  MatchExplanation,
+} from "@/components/candidate-search/searchCriteria";
 
 export const useCandidateSearch = () => {
   const { buildSalaryQuery } = useSalaryFilter();
@@ -14,6 +18,9 @@ export const useCandidateSearch = () => {
   const { candidates, handleSearchError, handleSearchSuccess } = useSearchState();
   const { user } = useAuth();
   const [employerCompany, setEmployerCompany] = useState<string | null>(null);
+  const [criteria, setCriteria] = useState<CandidateSearchCriteria | null>(null);
+  const [explanations, setExplanations] = useState<Record<string, MatchExplanation>>({});
+  const [searching, setSearching] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -23,48 +30,48 @@ export const useCandidateSearch = () => {
           .select('company_name')
           .eq('id', user.id)
           .maybeSingle();
-        
+
         if (data) {
           setEmployerCompany(data.company_name);
         }
       };
-      
+
       getEmployerCompany();
     }
   }, [user]);
 
-  const searchCandidates = async (values: z.infer<typeof searchFormSchema>) => {
+  /**
+   * Core search. Hard filters run in the database; softer criteria (title
+   * similarity, skills, location) are scored client-side so near-misses still
+   * surface, ranked by match strength with an explanation attached.
+   */
+  const searchByCriteria = async (searchCriteria: CandidateSearchCriteria) => {
+    setSearching(true);
+    setCriteria(searchCriteria);
+
     try {
-      const [minSalary, maxSalary] = values.salary.split(" - ").map(s => 
-        parseInt(s.replace(/[£,]/g, ""))
-      );
+      let query = supabase.from('candidate_profiles').select('*');
 
-      let query = supabase
-        .from('candidate_profiles')
-        .select('*');
+      if (searchCriteria.minSalary != null && searchCriteria.maxSalary != null) {
+        query = buildSalaryQuery(query, searchCriteria.minSalary, searchCriteria.maxSalary);
+      }
 
-      query = buildSalaryQuery(query, minSalary, maxSalary);
-
-      if (values.includeCommissionCandidates) {
+      if (searchCriteria.commissionOnly) {
         query = query.not('commission_percentage', 'is', null);
       }
 
-      if (values.requiresQualification && values.qualificationRequired) {
-        query = query.ilike('qualificationDetails', `%${values.qualificationRequired}%`);
+      if (searchCriteria.securityClearance) {
+        query = query.eq('security_clearance', searchCriteria.securityClearance);
       }
 
-      if (values.required_skills && values.required_skills.length > 0) {
-        query = query.contains('required_skills', values.required_skills);
+      if (searchCriteria.workArea) {
+        query = query.eq('workArea', searchCriteria.workArea);
       }
 
-      if (values.requiresSecurityClearance && values.securityClearanceLevel) {
-        query = query.eq('security_clearance', values.securityClearanceLevel);
+      if (searchCriteria.signupPeriod) {
+        query = buildSignupDateQuery(query, searchCriteria.signupPeriod);
       }
 
-      if (values.signupPeriod) {
-        query = buildSignupDateQuery(query, values.signupPeriod);
-      }
-      
       if (employerCompany) {
         query = query.not('current_employer', 'ilike', `%${employerCompany}%`);
       }
@@ -73,50 +80,71 @@ export const useCandidateSearch = () => {
 
       if (error) throw error;
 
-      const validCandidateProfiles = candidateProfiles.map(profileData => ({
-        id: profileData.id,
-        email: profileData.email,
-        job_title: profileData.job_title,
-        years_experience: profileData.years_experience,
+      const validCandidateProfiles = (candidateProfiles || []).map(profileData => ({
+        ...profileData,
         location: profileData.location || [],
-        min_salary: profileData.min_salary,
-        max_salary: profileData.max_salary,
         required_qualifications: profileData.required_qualifications || [],
         required_skills: profileData.required_skills || null,
-        security_clearance: profileData.security_clearance,
-        commission_percentage: profileData.commission_percentage,
-        created_at: profileData.created_at,
-        updated_at: profileData.updated_at,
-        signup_date: profileData.signup_date,
-        work_eligibility: profileData.work_eligibility,
-        preferred_work_type: profileData.preferred_work_type,
-        availability: profileData.availability,
-        additional_skills: profileData.additional_skills,
-        address: profileData.address,
-        ai_synopsis: profileData.ai_synopsis,
-        ai_synopsis_last_updated: profileData.ai_synopsis_last_updated,
-        ai_synopsis_status: profileData.ai_synopsis_status,
-        current_employer: profileData.current_employer,
-        cv_url: profileData.cv_url,
-        full_name: profileData.full_name,
-        phone_number: profileData.phone_number,
-        profile_picture_url: profileData.profile_picture_url,
-        travel_radius: profileData.travel_radius,
-        work_preferences: profileData.work_preferences,
-        desired_job_title: profileData.desired_job_title,
-        home_postcode: profileData.home_postcode,
-        linkedin_url: profileData.linkedin_url,
         years_in_current_title: profileData.years_in_current_title || null,
-        title_experience: null, // Setting default value since this field is not in the database schema
-        workArea: profileData.workArea || null,
-        itSpecialization: profileData.itSpecialization || null
+        title_experience: null,
+        workArea: (profileData as any).workArea || null,
+        itSpecialization: (profileData as any).itSpecialization || null,
       }));
 
-      handleSearchSuccess(validCandidateProfiles);
+      const scored = validCandidateProfiles.map(profile => ({
+        profile,
+        explanation: explainCandidateMatch(profile, searchCriteria),
+      }));
+
+      // Drop obvious non-matches only when the recruiter gave us something to match on.
+      const hasSoftCriteria = Boolean(
+        searchCriteria.jobTitle ||
+        searchCriteria.skills?.length ||
+        searchCriteria.location ||
+        searchCriteria.minYearsExperience != null ||
+        searchCriteria.qualification
+      );
+
+      const filtered = hasSoftCriteria
+        ? scored.filter(s => s.explanation.score >= 25)
+        : scored;
+
+      filtered.sort((a, b) => b.explanation.score - a.explanation.score);
+
+      const explanationMap: Record<string, MatchExplanation> = {};
+      filtered.forEach(({ profile, explanation }) => {
+        explanationMap[profile.id] = explanation;
+      });
+
+      setExplanations(explanationMap);
+      handleSearchSuccess(filtered.map(s => s.profile) as any);
     } catch (error: any) {
+      console.error('Candidate search failed:', error);
       handleSearchError();
+    } finally {
+      setSearching(false);
     }
   };
 
-  return { candidates, searchCandidates };
+  /** Classic filter-form entry point — maps form values onto the shared criteria. */
+  const searchCandidates = async (values: z.infer<typeof searchFormSchema>) => {
+    const [minSalary, maxSalary] = (values.salary || "").split(" - ").map(s =>
+      parseInt(s.replace(/[£,]/g, ""))
+    );
+
+    await searchByCriteria({
+      workArea: values.workArea || undefined,
+      itSpecialization: values.itSpecialization || undefined,
+      jobTitle: values.title || undefined,
+      minSalary: Number.isFinite(minSalary) ? minSalary : undefined,
+      maxSalary: Number.isFinite(maxSalary) ? maxSalary : undefined,
+      skills: values.required_skills?.length ? values.required_skills : undefined,
+      qualification: values.requiresQualification ? values.qualificationRequired || undefined : undefined,
+      securityClearance: values.requiresSecurityClearance ? values.securityClearanceLevel || undefined : undefined,
+      signupPeriod: values.signupPeriod || undefined,
+      commissionOnly: values.includeCommissionCandidates || undefined,
+    });
+  };
+
+  return { candidates, searchCandidates, searchByCriteria, criteria, explanations, searching };
 };
