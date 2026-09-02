@@ -142,6 +142,7 @@ const App = () => {
           
           {/* Common routes */}
           <Route path="jobs" element={<Jobs />} />
+          <Route path="cv-review" element={<CvReview />} />
           <Route path="faq" element={<FAQ />} />
           
           <Route path="pricing" element={<PricingPage />} />
