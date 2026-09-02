@@ -11,6 +11,7 @@ import { CandidateSectionHero } from "@/components/home/CandidateSectionHero";
 import { ProfilePathwaysSection } from "@/components/home/ProfilePathwaysSection";
 import CostComparisonVisual from "@/components/home/CostComparisonVisual";
 import { MiddlemenComparisonSection } from "@/components/home/MiddlemenComparisonSection";
+import { CosmicDivider } from "@/components/home/CosmicDivider";
 import { InternalE2ETestButton } from "@/components/dev/InternalE2ETestButton";
 import { Footer } from "@/components/Footer";
 import { SoftLaunchBanner } from "@/components/SoftLaunchBanner";
@@ -30,6 +31,7 @@ export default function Index() {
       <ProfilePathwaysSection />
       <CostComparisonVisual />
       <MiddlemenComparisonSection />
+      <CosmicDivider />
       <CandidateCostSection />
       <WebbySection />
       <DemoProfilesSection />
