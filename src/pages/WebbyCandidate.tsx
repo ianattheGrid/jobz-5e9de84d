@@ -142,7 +142,12 @@ export default function WebbyCandidate() {
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-3">
               <Sparkles className="w-8 h-8 text-primary animate-pulse" style={{ animationDuration: '3s' }} />
-              <h1 className="text-3xl font-bold text-white">Webby AI Co-pilot</h1>
+              <div>
+                <span className="inline-block text-xs font-semibold tracking-widest uppercase text-primary mb-1">
+                  For candidates
+                </span>
+                <h1 className="text-3xl font-bold text-white">Webby AI Co-pilot</h1>
+              </div>
             </div>
             {preferences?.webby_enabled && (
               <WebbyLiveIndicator onlineCount={onlineCount} userType="candidate" />
