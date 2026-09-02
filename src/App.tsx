@@ -49,6 +49,7 @@ import WebbyEmployer from './pages/WebbyEmployer';
 // Common routes
 import Jobs from './pages/Jobs';
 import FAQ from './pages/FAQ';
+import CvReview from './pages/CvReview';
 
 import QRCodePage from './pages/QRCodePage';
 import PricingPage from './pages/PricingPage';
@@ -142,6 +143,7 @@ const App = () => {
           
           {/* Common routes */}
           <Route path="jobs" element={<Jobs />} />
+          <Route path="cv-review" element={<CvReview />} />
           <Route path="faq" element={<FAQ />} />
           
           <Route path="pricing" element={<PricingPage />} />
