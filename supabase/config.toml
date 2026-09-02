@@ -75,3 +75,6 @@ verify_jwt = true
 [functions.cv-review]
 verify_jwt = false
 
+
+[functions.tailor-cv]
+verify_jwt = true

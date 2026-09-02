@@ -3,8 +3,10 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import TailorCvPanel from "./TailorCvPanel";
 
 interface ApplicationFormProps {
+  jobId: number;
   onSubmit: (e: React.FormEvent) => Promise<void>;
   onCancel: () => void;
   setCoverLetter: (value: string) => void;
@@ -13,6 +15,7 @@ interface ApplicationFormProps {
 }
 
 const ApplicationForm = ({ 
+  jobId,
   onSubmit, 
   onCancel, 
   setCoverLetter, 
@@ -29,6 +32,7 @@ const ApplicationForm = ({
           onChange={(e) => setResumeFile(e.target.files?.[0] || null)}
         />
       </div>
+      <TailorCvPanel jobId={jobId} onUseCoverLetter={setCoverLetter} />
       <div>
         <label className="block text-sm font-medium mb-1 text-red-800">Cover Letter</label>
         <Textarea

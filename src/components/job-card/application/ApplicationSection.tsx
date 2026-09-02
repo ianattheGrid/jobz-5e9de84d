@@ -37,6 +37,7 @@ const ApplicationSection = ({
         </Button>
       ) : (
         <ApplicationForm
+          jobId={jobId}
           onSubmit={onSubmit}
           onCancel={() => setIsApplying(false)}
           setCoverLetter={setCoverLetter}
