@@ -5,6 +5,12 @@ export interface HiringModel {
   howMuch: string;
   whatHappensToYourCv: string;
   theCatch: string;
+  /** One-line hook shown on the card face */
+  tagline: string;
+  /** Short cost badge shown on the card face */
+  costBadge: string;
+  /** Lucide icon key used by the comparison cards */
+  icon: "briefcase" | "database" | "bot" | "send" | "sparkles";
   highlight?: boolean;
 }
 
@@ -15,6 +21,9 @@ export interface HiringModel {
 export const HIRING_MODELS: HiringModel[] = [
   {
     id: "agencies",
+    tagline: "The classic middleman.",
+    costBadge: "15–25%",
+    icon: "briefcase",
     name: "Recruitment agencies",
     whoPays: "Employer",
     howMuch: "Typically 15–25% of first-year salary, per hire",
@@ -25,6 +34,9 @@ export const HIRING_MODELS: HiringModel[] = [
   },
   {
     id: "boards",
+    tagline: "Pay to be findable.",
+    costBadge: "£5k–£10k/yr",
+    icon: "database",
     name: "Job boards & recruiter licences",
     whoPays: "Employer",
     howMuch: "Often £5,000–£10,000+ a year just for the right to search",
@@ -35,6 +47,9 @@ export const HIRING_MODELS: HiringModel[] = [
   },
   {
     id: "ai-agents",
+    tagline: "A robot on commission.",
+    costBadge: "~10%",
+    icon: "bot",
     name: "AI recruiting agents",
     whoPays: "Employer",
     howMuch:
@@ -46,6 +61,9 @@ export const HIRING_MODELS: HiringModel[] = [
   },
   {
     id: "auto-apply",
+    tagline: "Spray and pray, on subscription.",
+    costBadge: "£15–£50/mo",
+    icon: "send",
     name: "AI auto-apply tools",
     whoPays: "Candidate (subscription)",
     howMuch: "Usually £15–£50 a month, paid by the job seeker",
@@ -56,6 +74,9 @@ export const HIRING_MODELS: HiringModel[] = [
   },
   {
     id: "jobz",
+    tagline: "No cut. No commission. Just £9.",
+    costBadge: "£9 flat",
+    icon: "sparkles",
     name: "Jobz",
     whoPays: "Employer",
     howMuch: "£9 flat. No per-hire cut, no percentage of your salary",
