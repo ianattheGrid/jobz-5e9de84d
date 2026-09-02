@@ -1,60 +1,45 @@
-# AIApply evaluation — what Jobz should (and shouldn't) take
+# Tailor my CV to this vacancy
 
-## What AIApply actually is
+Drop the mock-interview idea. Build one candidate feature: help a candidate adapt their CV (and cover letter) to a specific Jobz vacancy, with the candidate always in control of the final text.
 
-A candidate-side, subscription job-search toolkit. Not a marketplace — it sits on top of everyone else's job boards.
+## What the candidate gets
 
-Their product stack:
-- **Auto Apply** — after a quiz + CV upload, their AI submits 10–100 applications a day to matched roles on external boards. Sold by application volume.
-- **Application Kit** — for one job description, instantly generates a tailored CV, cover letter and follow-up email.
-- **Resume / cover letter builders** — ATS-oriented rewriting.
-- **Mock Interview** — free role-specific practice questions with instant feedback; the main top-of-funnel hook.
-- **Interview Buddy** — a desktop app that listens during a live Zoom/Teams interview and feeds real-time answer suggestions (hidden from screen share). Sold separately, USD 19/mo.
-- Pricing: Toolkit USD 29/mo, Interview Buddy USD 19/mo, Auto Apply separate.
+On a job they can apply to, a "Tailor my CV for this role" action opens a panel that shows:
 
-Their growth engine is the same one Jack & Jill uses and the one we already started copying: free single-purpose AI tools that rank in search, then upsell.
+- A short read of how their CV lines up with this vacancy — what already matches, and what the vacancy asks for that their CV doesn't currently evidence.
+- 3-6 rewritten CV bullet points, using only the experience already in their CV, worded against this vacancy's language and requirements.
+- A suggested professional summary/profile paragraph aimed at this role.
+- Keyword gaps: terms in the job ad that a screener would look for and that are missing from the CV, with guidance on where to add them honestly.
+- A draft cover letter tailored to the vacancy, editable, pre-filled into the existing application cover-letter field when they choose to use it.
 
-## The honest read for Jobz
+Nothing is auto-submitted and nothing is invented — the AI is instructed never to add employers, dates, qualifications or metrics that aren't in the CV. Every suggestion is copy/edit-first.
 
-Jobz is a consent-first two-sided marketplace where employers set a match threshold and candidates apply to real vacancies. AIApply is spray-and-pray volume from the other side of the table. **Most of their model is actively hostile to our employers** — Auto Apply is exactly the noise our match gate exists to stop, and Interview Buddy is covert coaching that would destroy employer trust if Jobz shipped it.
+## Where it appears
 
-So the recommendation is: take their funnel tactics and their preparation tools, reject their volume automation entirely.
+- Inside the job application flow (the apply dialog on a job card), so it is used at the moment of applying.
+- On the candidate's applications area, for applications not yet submitted.
+- The existing public `/cv-review` tool stays as-is (general CV feedback, no vacancy). This new feature is the logged-in, vacancy-specific version.
 
-## Recommended: adopt
+## Scope boundaries
 
-**1. Application Kit, Jobz-flavoured ("Tailor my application")**
-On the apply form for a specific vacancy, a button that drafts a cover letter grounded in the candidate's real profile and that job's description and essential criteria. Editable before submit, never auto-submitted. This raises application quality for employers rather than volume — the opposite of Auto Apply. We already store `cover_letter` on applications and already have the profile + job data, so this is a natural fit.
-
-**2. Free AI mock interview (public tool)**
-Same playbook as the `/cv-review` page we just shipped: a public, no-login page that generates role-specific questions, takes typed answers, and gives structured feedback. Logged-in candidates get questions generated from a real Jobz vacancy they've been matched to. This is our second SEO/top-of-funnel asset and a genuine candidate benefit.
-
-**3. Match-gap coaching**
-Where the match score shows a gap ("missing certification X", "title distance"), tell the candidate concretely what would close it. We already compute reasons and gaps in the matching utilities; this is surfacing what we have as advice rather than a verdict.
-
-**4. Free-tools hub page**
-A single `/tools` landing page linking CV review, mock interview, and the salary/cost calculators, each with its own indexable page. This is the structural piece that makes the individual tools compound.
-
-## Recommended: reject
-
-- **Auto Apply / bulk applying.** Directly undermines the match threshold employers rely on, and would flood the applications table. Non-negotiable no.
-- **Interview Buddy-style live answer feeding.** Covert assistance during an employer's interview. Reputationally fatal for a marketplace that sells honest matching to both sides.
-- **Scraping external boards to apply on the candidate's behalf.** Legal and GDPR exposure, and off-strategy.
-- **Their engagement-bait stats style** ("61% get an interview in 10 days"). We should not publish outcome claims we cannot verify from our own data.
-
-## Suggested build order
-
-1. Tailor-my-application (highest employer value, uses data we already hold)
-2. Free mock interview page (top-of-funnel, mirrors `/cv-review`)
-3. `/tools` hub + nav entry
-4. Match-gap coaching copy in the candidate match UI
+- No mock interview.
+- No bulk/auto apply.
+- No scraping of external job boards for this feature.
+- No rewriting of the stored CV file — suggestions only; the candidate edits their own document.
 
 ## Technical notes
 
-- Tailoring and mock interview both go through new edge functions on the Lovable AI Gateway using `google/gemini-2.5-flash`, following the existing `cv-review` function's shape.
-- Mock interview is public: `verify_jwt = false` in `supabase/config.toml`, no data written for anonymous users.
-- Tailoring is authenticated: the function must verify the JWT and confirm the caller owns the candidate profile before reading it, matching the ownership checks we added to `open-cv`.
-- Cover letter output is written to the existing form state in `useApplication.ts` — no schema change needed.
-- New routes must be added to `src/App.tsx` (the real router), not `src/config/routes.tsx`.
-- Each public tool page needs its own title/description and a link from the homepage or footer to be indexable.
+- New edge function `supabase/functions/tailor-cv/index.ts`, JWT-verified (unlike `cv-review`, which is public). It:
+  - Authenticates the caller, loads the candidate's own profile/CV text and the target job by id, and rejects any request where the caller doesn't own the profile.
+  - Calls the Lovable AI Gateway with `openai/gpt-5.6-sol`, using structured tool-calling output (same pattern as `cv-review`) for: `alignment`, `rewrittenBullets`, `suggestedSummary`, `keywordGaps`, `coverLetterDraft`.
+  - Handles gateway 429/402/403 explicitly and returns the gateway message to the UI; caps input size like `cv-review` does.
+- CV text source: reuse the existing `parse-cv` output / stored CV text where available; fall back to a paste box when the profile has no parsed CV.
+- New component `src/components/job-card/TailorCvPanel.tsx`, opened from the apply dialog; writes the accepted cover-letter draft into `coverLetter` state in `src/components/job-card/hooks/useApplication.ts`.
+- Reuse existing match-explanation data (`utils/matchExplanation.ts`, `useMatchScore`) to seed the alignment section so the AI and the match score tell the same story.
+- Register the function in `supabase/config.toml` with `verify_jwt = true`.
 
-Nothing here is built yet — this plan is the evaluation and the shortlist.
+## Build order
+
+1. `tailor-cv` edge function + ownership checks, tested with a real vacancy.
+2. `TailorCvPanel` UI in the apply flow, with copy-to-clipboard and "use this cover letter".
+3. Wire keyword gaps into the match-score explanation so the advice is consistent.
