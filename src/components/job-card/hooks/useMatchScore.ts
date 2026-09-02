@@ -13,28 +13,50 @@ export const useMatchScore = (profile: CandidateProfile, job: any) => {
 
 
   const specializationMatch = () => {
-    if (!profile.job_title || !job.specialization) return 0;
-    
-    // Handle job_title as either string or array
-    const profileTitles = Array.isArray(profile.job_title) 
-      ? profile.job_title.map(title => title.toLowerCase()) 
-      : [profile.job_title.toLowerCase()];
-    
-    const spec = job.specialization.toLowerCase();
-    
-    // Check if any title includes the specialization
-    if (profileTitles.some(title => title.includes(spec))) return 1;
-    if (profileTitles.some(title => spec.includes(title))) return 0.8;
-    
-    return 0;
+    if (!job.specialization) return 0;
+
+    const spec = job.specialization.toLowerCase().trim();
+
+    // The candidate's declared specialisation is the strongest signal,
+    // then their work area, then their job title(s).
+    const profileTitles = Array.isArray(profile.job_title)
+      ? profile.job_title
+      : profile.job_title
+        ? [profile.job_title]
+        : [];
+
+    const candidates = [
+      (profile as any).itSpecialization,
+      (profile as any).workArea,
+      profile.desired_job_title,
+      ...profileTitles,
+    ].filter(Boolean) as string[];
+
+    let best = 0;
+    for (const value of candidates) {
+      const v = value.toLowerCase().trim();
+      if (!v) continue;
+      if (v === spec) return 1;
+      if (v.includes(spec) || spec.includes(v)) {
+        best = Math.max(best, 0.9);
+        continue;
+      }
+      best = Math.max(best, calculateTitleSimilarity(v, spec));
+    }
+
+    return best;
   };
 
   const locationMatch = () => {
     if (!profile.location || !job.location) return 0;
-    return profile.location.some(loc => 
-      loc.toLowerCase() === job.location.toLowerCase()
-    ) ? 1 : 0;
+    const jobLoc = job.location.toLowerCase().trim();
+    return profile.location.some(loc => {
+      const l = (loc || "").toLowerCase().trim();
+      if (!l) return false;
+      return l === jobLoc || l.includes(jobLoc) || jobLoc.includes(l);
+    }) ? 1 : 0;
   };
+
 
   const experienceMatch = () => {
     if (profile.years_experience === undefined || job.min_years_experience === undefined) return 0;
