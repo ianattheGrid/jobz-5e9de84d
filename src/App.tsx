@@ -209,6 +209,8 @@ const App = () => {
               </AdminProtectedRoute>
             </ErrorBoundary>
           } />
+
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
       <Toaster />
