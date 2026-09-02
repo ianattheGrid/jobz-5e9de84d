@@ -14,15 +14,15 @@ Free standalone tools (resume improver, mock interviews, career clarity) run on 
 
 Jobz is already the same shape: consent-first two-sided marketplace, Webby as the AI layer, Connectors for referrals. Unlike Juicebox, Jack & Jill is **not** a scraping/cold-email model, so most of it is legitimately adoptable.
 
-Where Jobz differs today: Webby is one assistant rather than two clearly branded agents, there is no candidate-side career tooling, and there is no free tool that pulls new candidates in before they're job-hunting.
+Where Jobz differs today: there is no candidate-side career tooling, and no free tool that pulls new candidates in before they're job-hunting. Webby staying a single assistant is fine — it just needs to be obvious, on any given screen, whether it is helping a candidate or an employer.
 
 ## Recommended adoptions (ranked)
 
 ### 1. Free CV/resume improver as the top-of-funnel
 A public, no-login page: drop a CV, get a scored analysis and rewritten bullet points in ~30 seconds, then "save this to your Jobz profile" as the signup call to action. Jobz already parses CVs (`parse-cv`), so this is mostly a new public page plus an AI critique pass. This is Jack & Jill's single biggest growth lever and Jobz is closest to it.
 
-### 2. Split Webby into two named agent personas
-Keep one engine, present two faces: a candidate-side career agent and an employer-side recruiting agent, each with its own landing page explaining what it does for that side. Purely a positioning and UI change over existing `webby-match` / `webby-match-employer`, and it makes the product legible to first-time visitors.
+### 2. Make Webby's two modes obvious (no second agent)
+Keep one Webby. Just make the audience unmistakable: clear "for candidates" / "for employers" framing on the Webby entry points and homepage, and mode-specific intro copy and suggested prompts once inside. Copy and routing only — no new persona, no engine change.
 
 ### 3. Conversational vacancy intake for employers
 Replace the long `VacancyForm` as the *default* path with a chat: the employer describes the role, the agent drafts the structured vacancy (title, salary, skills, criteria, match threshold) and shows it for edit before posting. Mirrors the smart candidate search already shipped, and the form stays available as the manual fallback.
@@ -40,12 +40,13 @@ Let candidates mark themselves as open-but-not-looking with the conditions that 
 
 - Per-hire agency-style fee pricing — it conflicts with the Jobz Connector commission model.
 - Auto-applying on a candidate's behalf without their review, and auto-drafted cold outreach to hiring managers.
+- A second named AI agent. One Webby, clearly signposted per audience, is enough.
 - Detaching the free tools into a separate brand; on Jobz they should feed one account system.
 
 ## Technical notes
 
 - CV improver: public route + edge function wrapping `parse-cv` output with a Lovable AI Gateway critique call; anonymous use rate-limited, results held in session until signup.
-- Agent personas: routing/branding change across `src/components/webby/`, `WebbyCandidate.tsx`, `WebbyEmployer.tsx`; no schema change.
+- Webby signposting: copy and routing across `src/components/webby/`, `WebbyCandidate.tsx`, `WebbyEmployer.tsx`; no schema or engine change.
 - Conversational vacancy intake: new edge function emitting the `VacancyFormSchema` shape via tool-calling (same pattern as `parse-candidate-search`), rendered into the existing form for confirmation.
 - Application coaching: reuse `matchExplanation.ts` / `titleMatching.ts` on the candidate side of the job card.
 - Mock interviews: new table for sessions and feedback with RLS scoped to the candidate, plus grants for `authenticated` / `service_role`.
@@ -53,4 +54,4 @@ Let candidates mark themselves as open-but-not-looking with the conditions that 
 
 ## Suggested first step
 
-Ship item 1 (free CV improver) and item 2 (two named agents) together — one brings strangers in, the other makes the product instantly understandable when they arrive.
+Ship item 1 (free CV improver) and item 2 (clearer Webby signposting) together — one brings strangers in, the other makes it obvious what Webby does for them once they arrive.
