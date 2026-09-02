@@ -77,7 +77,7 @@ const JobCard = ({ job }: JobCardProps) => {
       >
         <div 
           className="absolute inset-0 w-full h-full cursor-pointer"
-          style={{ backfaceVisibility: "hidden" }}
+          style={{ backfaceVisibility: "hidden", pointerEvents: isFlipped ? "none" : "auto" }}
           onClick={handleStartApplication}
         >
           <JobCardFront 
@@ -89,7 +89,8 @@ const JobCard = ({ job }: JobCardProps) => {
           className="absolute inset-0 w-full h-full"
           style={{ 
             backfaceVisibility: "hidden",
-            transform: "rotateY(180deg)"
+            transform: "rotateY(180deg)",
+            pointerEvents: isFlipped ? "auto" : "none"
           }}
         >
           <JobCardBack 
