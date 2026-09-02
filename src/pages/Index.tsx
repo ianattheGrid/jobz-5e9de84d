@@ -10,6 +10,7 @@ import { CandidateCostSection } from "@/components/home/CandidateCostSection";
 import { CandidateSectionHero } from "@/components/home/CandidateSectionHero";
 import { ProfilePathwaysSection } from "@/components/home/ProfilePathwaysSection";
 import CostComparisonVisual from "@/components/home/CostComparisonVisual";
+import { MiddlemenComparisonSection } from "@/components/home/MiddlemenComparisonSection";
 import { InternalE2ETestButton } from "@/components/dev/InternalE2ETestButton";
 import { Footer } from "@/components/Footer";
 import { SoftLaunchBanner } from "@/components/SoftLaunchBanner";
@@ -28,6 +29,7 @@ export default function Index() {
       <CandidateSectionHero />
       <ProfilePathwaysSection />
       <CostComparisonVisual />
+      <MiddlemenComparisonSection />
       <CandidateCostSection />
       <WebbySection />
       <DemoProfilesSection />

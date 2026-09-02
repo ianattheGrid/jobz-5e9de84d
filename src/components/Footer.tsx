@@ -6,6 +6,14 @@ export const Footer = () => {
       <div className="container mx-auto px-4 py-8">
         <div className="border-t border-border pt-8">
           <div className="text-center space-y-2">
+            <p className="text-sm">
+              <Link
+                to="/how-hiring-really-works"
+                className="text-muted-foreground hover:text-primary transition-colors"
+              >
+                How hiring really works
+              </Link>
+            </p>
             <p className="text-sm text-muted-foreground">
               © {new Date().getFullYear()} Jobz. All rights reserved.
             </p>
