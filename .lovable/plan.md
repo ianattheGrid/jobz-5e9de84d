@@ -40,12 +40,13 @@ Let candidates mark themselves as open-but-not-looking with the conditions that 
 
 - Per-hire agency-style fee pricing — it conflicts with the Jobz Connector commission model.
 - Auto-applying on a candidate's behalf without their review, and auto-drafted cold outreach to hiring managers.
+- A second named AI agent. One Webby, clearly signposted per audience, is enough.
 - Detaching the free tools into a separate brand; on Jobz they should feed one account system.
 
 ## Technical notes
 
 - CV improver: public route + edge function wrapping `parse-cv` output with a Lovable AI Gateway critique call; anonymous use rate-limited, results held in session until signup.
-- Agent personas: routing/branding change across `src/components/webby/`, `WebbyCandidate.tsx`, `WebbyEmployer.tsx`; no schema change.
+- Webby signposting: copy and routing across `src/components/webby/`, `WebbyCandidate.tsx`, `WebbyEmployer.tsx`; no schema or engine change.
 - Conversational vacancy intake: new edge function emitting the `VacancyFormSchema` shape via tool-calling (same pattern as `parse-candidate-search`), rendered into the existing form for confirmation.
 - Application coaching: reuse `matchExplanation.ts` / `titleMatching.ts` on the candidate side of the job card.
 - Mock interviews: new table for sessions and feedback with RLS scoped to the candidate, plus grants for `authenticated` / `service_role`.
