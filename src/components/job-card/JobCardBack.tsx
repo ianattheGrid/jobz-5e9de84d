@@ -8,7 +8,8 @@ import ApplicationSection from "./application/ApplicationSection";
 import ApplicationStatus from "./application/ApplicationStatus";
 import { useApplication } from "./hooks/useApplication";
 import { useToast } from "@/components/ui/use-toast";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import { MatchWarningContent } from "./match/MatchWarningContent";
 import { Skeleton } from "@/components/ui/skeleton";
 
