@@ -50,6 +50,8 @@ import WebbyEmployer from './pages/WebbyEmployer';
 import Jobs from './pages/Jobs';
 import FAQ from './pages/FAQ';
 import CvReview from './pages/CvReview';
+import Contact from './pages/Contact';
+import NotFound from './pages/NotFound';
 
 import QRCodePage from './pages/QRCodePage';
 import PricingPage from './pages/PricingPage';
@@ -145,6 +147,7 @@ const App = () => {
           <Route path="jobs" element={<Jobs />} />
           <Route path="cv-review" element={<CvReview />} />
           <Route path="faq" element={<FAQ />} />
+          <Route path="contact" element={<Contact />} />
           
           <Route path="pricing" element={<PricingPage />} />
           <Route path="push-setup" element={<PushSetup />} />
@@ -206,6 +209,8 @@ const App = () => {
               </AdminProtectedRoute>
             </ErrorBoundary>
           } />
+
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
       <Toaster />
