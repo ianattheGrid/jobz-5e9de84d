@@ -71,3 +71,7 @@ verify_jwt = true
 
 [functions.parse-candidate-search]
 verify_jwt = true
+
+[functions.cv-review]
+verify_jwt = false
+
