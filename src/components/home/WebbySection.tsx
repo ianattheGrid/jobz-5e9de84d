@@ -127,6 +127,37 @@ export const WebbySection = () => {
           />
         </div>
         
+        {/* Who is Webby for? — make the two audiences unmistakable */}
+        <div className="grid sm:grid-cols-2 gap-6 max-w-3xl mx-auto mb-10 animate-fade-in" style={{ animationDelay: '0.3s' }}>
+          <div className="rounded-2xl border border-primary/25 bg-white/5 backdrop-blur-sm p-6 text-left">
+            <p className="text-primary text-xs font-semibold tracking-widest uppercase mb-2">For candidates</p>
+            <p className="text-white/80 text-sm leading-relaxed mb-4">
+              Webby learns what you want next and brings matching roles to you — privately, until you say otherwise.
+            </p>
+            <Button
+              variant="secondary"
+              className="w-full"
+              onClick={() => navigate('/candidate/signup')}
+            >
+              I'm looking for work
+            </Button>
+          </div>
+
+          <div className="rounded-2xl border border-primary/25 bg-white/5 backdrop-blur-sm p-6 text-left">
+            <p className="text-primary text-xs font-semibold tracking-widest uppercase mb-2">For employers</p>
+            <p className="text-white/80 text-sm leading-relaxed mb-4">
+              Webby reads your vacancy and surfaces people who fit — with the reasons why, not just keyword hits.
+            </p>
+            <Button
+              variant="secondary"
+              className="w-full"
+              onClick={() => navigate('/employer/signup')}
+            >
+              I'm hiring
+            </Button>
+          </div>
+        </div>
+
         {/* CTA buttons */}
         <div className="flex justify-center animate-fade-in" style={{ animationDelay: '0.4s' }}>
           <Button 
