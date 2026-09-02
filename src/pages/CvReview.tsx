@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { Helmet } from "react-helmet";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import NavBar from "@/components/NavBar";
 import { Footer } from "@/components/Footer";
@@ -41,6 +40,19 @@ export default function CvReview() {
   const [targetRole, setTargetRole] = useState("");
   const [loading, setLoading] = useState(false);
   const [review, setReview] = useState<CvReviewResult | null>(null);
+
+  useEffect(() => {
+    document.title = "Free CV Review | Jobz";
+    const desc = document.querySelector('meta[name="description"]');
+    const previous = desc?.getAttribute("content") ?? null;
+    desc?.setAttribute(
+      "content",
+      "Get a free, instant CV review: an honest score, the fixes that matter and rewritten bullet points you can use today."
+    );
+    return () => {
+      if (previous !== null) desc?.setAttribute("content", previous);
+    };
+  }, []);
 
   const handleFile = async (file: File | undefined) => {
     if (!file) return;
@@ -93,22 +105,6 @@ export default function CvReview() {
 
   return (
     <CosmicBackground mode="full">
-      <Helmet>
-        <title>Free CV Review | Jobz</title>
-        <meta
-          name="description"
-          content="Get a free, instant CV review: an honest score, the fixes that matter and rewritten bullet points you can use today."
-        />
-        <link rel="canonical" href="https://jobz.lovable.app/cv-review" />
-        <meta property="og:title" content="Free CV Review | Jobz" />
-        <meta
-          property="og:description"
-          content="Paste your CV and get an instant, honest review with rewritten bullet points."
-        />
-        <meta property="og:type" content="website" />
-        <meta name="twitter:card" content="summary_large_image" />
-      </Helmet>
-
       <NavBar />
 
       <main className="container mx-auto px-4 pt-24 pb-16 max-w-4xl">
