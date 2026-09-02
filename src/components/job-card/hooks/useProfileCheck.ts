@@ -1,18 +1,20 @@
 
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { CandidateProfile } from "@/integrations/supabase/types/profiles";
 
 export const useProfileCheck = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const checkProfile = async (userId: string) => {
     const { data: profileData, error } = await supabase
       .from('candidate_profiles')
       .select('*')
       .eq('id', userId)
-      .single();
+      .maybeSingle();
 
     if (error) {
       toast({
@@ -22,6 +24,16 @@ export const useProfileCheck = () => {
       });
       return null;
     }
+
+    if (!profileData) {
+      toast({
+        title: "Complete your profile first",
+        description: "Add your details so employers can review your application — it only takes a minute.",
+      });
+      navigate('/candidate/profile');
+      return null;
+    }
+
 
     // Create a properly typed profile object with all required fields
     const profile: CandidateProfile = {
