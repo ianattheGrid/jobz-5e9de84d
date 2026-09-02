@@ -84,7 +84,19 @@ const HowHiringReallyWorks = () => {
                   key={model.id}
                   className={`p-6 space-y-3 ${model.highlight ? "border-primary bg-primary/10" : ""}`}
                 >
-                  <h3 className="text-xl font-bold text-foreground">{model.name}</h3>
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <h3 className="text-xl font-bold text-foreground">{model.name}</h3>
+                    <span
+                      className={`rounded-full px-3 py-1 text-xs font-bold ${
+                        model.highlight
+                          ? "bg-primary text-primary-foreground"
+                          : "bg-muted text-muted-foreground"
+                      }`}
+                    >
+                      {model.costBadge}
+                    </span>
+                  </div>
+                  <p className="text-sm text-muted-foreground">{model.tagline}</p>
                   <div className="grid sm:grid-cols-2 gap-3 text-sm">
                     <p className="text-muted-foreground">
                       <span className="font-semibold text-foreground">Who pays: </span>
