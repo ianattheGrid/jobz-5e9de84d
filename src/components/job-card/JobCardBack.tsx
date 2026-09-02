@@ -8,7 +8,8 @@ import ApplicationSection from "./application/ApplicationSection";
 import ApplicationStatus from "./application/ApplicationStatus";
 import { useApplication } from "./hooks/useApplication";
 import { useToast } from "@/components/ui/use-toast";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import { MatchWarningContent } from "./match/MatchWarningContent";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -111,6 +112,10 @@ const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
       {/* Match warning dialog */}
       <Dialog open={matchWarningOpen} onOpenChange={setMatchWarningOpen}>
         <DialogContent className="sm:max-w-md">
+          <VisuallyHidden.Root>
+            <DialogTitle>Match score for this job</DialogTitle>
+            <DialogDescription>How your profile compares with this employer's requirements.</DialogDescription>
+          </VisuallyHidden.Root>
           {matchWarningInfo && (
             <MatchWarningContent 
               matchWarningInfo={matchWarningInfo} 
