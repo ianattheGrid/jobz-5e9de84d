@@ -50,6 +50,8 @@ import WebbyEmployer from './pages/WebbyEmployer';
 import Jobs from './pages/Jobs';
 import FAQ from './pages/FAQ';
 import CvReview from './pages/CvReview';
+import Contact from './pages/Contact';
+import NotFound from './pages/NotFound';
 
 import QRCodePage from './pages/QRCodePage';
 import PricingPage from './pages/PricingPage';
