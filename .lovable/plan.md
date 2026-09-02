@@ -54,4 +54,4 @@ Let candidates mark themselves as open-but-not-looking with the conditions that 
 
 ## Suggested first step
 
-Ship item 1 (free CV improver) and item 2 (two named agents) together — one brings strangers in, the other makes the product instantly understandable when they arrive.
+Ship item 1 (free CV improver) and item 2 (clearer Webby signposting) together — one brings strangers in, the other makes it obvious what Webby does for them once they arrive.
