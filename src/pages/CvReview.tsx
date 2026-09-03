@@ -107,7 +107,7 @@ export default function CvReview() {
     <CosmicBackground mode="full">
       <NavBar />
 
-      <main className="container mx-auto px-4 pt-24 pb-16 max-w-4xl">
+      <main className="container mx-auto px-4 pt-24 pb-16 max-w-4xl min-h-[calc(100vh-6rem)]">
         <header className="text-center mb-10">
           <Badge className="mb-4 bg-primary/20 text-primary border border-primary/40">Free · No account needed</Badge>
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
@@ -119,7 +119,7 @@ export default function CvReview() {
           </p>
         </header>
 
-        <Card className="bg-black/40 backdrop-blur-xl border-primary/30">
+        <Card className="cosmic-form bg-black/40 backdrop-blur-xl border-primary/30">
           <CardHeader>
             <CardTitle className="text-white">Your CV</CardTitle>
             <CardDescription className="text-white/60">
@@ -152,7 +152,10 @@ export default function CvReview() {
                 placeholder="Open your CV, select all, copy, and paste it here..."
                 className="mt-1 bg-white/5 border-white/20 text-white placeholder:text-white/40"
               />
-              <p className="text-xs text-white/50 mt-1">{cvText.trim().length} characters</p>
+              <p className="text-xs text-white/50 mt-1">
+                {cvText.trim().length} characters
+                {cvText.trim().length < 200 && " — paste at least 200 characters for a useful review"}
+              </p>
             </div>
 
             <div className="flex flex-wrap items-center justify-between gap-3">

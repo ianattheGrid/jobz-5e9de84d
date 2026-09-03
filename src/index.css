@@ -95,6 +95,21 @@ label,
   @apply text-white/80 !important;
 }
 
+/* Text inputs inside cosmic/dark cards stay dark-themed */
+.cosmic-form textarea,
+.cosmic-form input[type="text"],
+.cosmic-form input[type="number"],
+.space-card textarea,
+.space-card input[type="text"],
+.space-card input[type="number"] {
+  @apply bg-white/5 text-white border-white/20 !important;
+}
+
+.cosmic-form ::placeholder,
+.space-card ::placeholder {
+  @apply text-white/40 !important;
+}
+
 /* Select components */
 .select-trigger {
   @apply bg-white text-gray-900 border-gray-200 !important;
