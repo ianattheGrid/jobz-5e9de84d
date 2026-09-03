@@ -107,7 +107,7 @@ export default function CvReview() {
     <CosmicBackground mode="full">
       <NavBar />
 
-      <main className="container mx-auto px-4 pt-24 pb-16 max-w-4xl">
+      <main className="container mx-auto px-4 pt-24 pb-16 max-w-4xl min-h-[calc(100vh-6rem)]">
         <header className="text-center mb-10">
           <Badge className="mb-4 bg-primary/20 text-primary border border-primary/40">Free · No account needed</Badge>
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
@@ -119,7 +119,7 @@ export default function CvReview() {
           </p>
         </header>
 
-        <Card className="bg-black/40 backdrop-blur-xl border-primary/30">
+        <Card className="cosmic-form bg-black/40 backdrop-blur-xl border-primary/30">
           <CardHeader>
             <CardTitle className="text-white">Your CV</CardTitle>
             <CardDescription className="text-white/60">
