@@ -44,7 +44,20 @@ const TailorCvPanel = ({ jobId, onUseCoverLetter }: TailorCvPanelProps) => {
       const { data, error } = await supabase.functions.invoke("tailor-cv", {
         body: { jobId, cvText: cvText.trim() || undefined },
       });
-      if (error) throw error;
+      if (error) {
+        // supabase-js wraps non-2xx responses; the useful message is in the body.
+        let serverMessage = "";
+        const res = (error as any)?.context;
+        if (res && typeof res.json === "function") {
+          try {
+            const body = await res.clone().json();
+            if (typeof body?.error === "string") serverMessage = body.error;
+          } catch {
+            /* body not JSON */
+          }
+        }
+        throw new Error(serverMessage || error.message);
+      }
       if (data?.error) throw new Error(data.error);
       setResult(data.result as TailorResult);
     } catch (e: any) {
@@ -57,6 +70,7 @@ const TailorCvPanel = ({ jobId, onUseCoverLetter }: TailorCvPanelProps) => {
       setLoading(false);
     }
   };
+
 
   if (!open) {
     return (
