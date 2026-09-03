@@ -152,7 +152,10 @@ export default function CvReview() {
                 placeholder="Open your CV, select all, copy, and paste it here..."
                 className="mt-1 bg-white/5 border-white/20 text-white placeholder:text-white/40"
               />
-              <p className="text-xs text-white/50 mt-1">{cvText.trim().length} characters</p>
+              <p className="text-xs text-white/50 mt-1">
+                {cvText.trim().length} characters
+                {cvText.trim().length < 200 && " — paste at least 200 characters for a useful review"}
+              </p>
             </div>
 
             <div className="flex flex-wrap items-center justify-between gap-3">
