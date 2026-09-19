@@ -27,24 +27,18 @@ export const useLoadApplications = () => {
     const { data: { session } } = await supabase.auth.getSession();
     if (!session) return;
 
-    const { data, error } = await supabase
+    const { data: rows, error } = await supabase
       .from('applications')
       .select(`
         *,
-        jobs (
+        jobs!inner (
           title,
           employer_id
-        ),
-        candidate_profiles!applications_applicant_id_fkey (
-          job_title,
-          years_experience,
-          email
         )
       `)
       .eq('jobs.employer_id', session.user.id)
       .is('employer_viewed_at', null)
-      .order('created_at', { ascending: false })
-      .returns<ApplicationResponse[]>();
+      .order('created_at', { ascending: false });
 
     if (error) {
       console.error('Error loading applications:', error);
@@ -56,7 +50,23 @@ export const useLoadApplications = () => {
       return;
     }
 
-    if (!data) return;
+    if (!rows) return;
+
+    // applications.applicant_id references auth.users, so candidate details
+    // have to be fetched separately rather than embedded.
+    const applicantIds = Array.from(new Set(rows.map((a: any) => a.applicant_id)));
+    const { data: profiles } = applicantIds.length
+      ? await supabase
+          .from('candidate_profiles')
+          .select('id, job_title, years_experience, email')
+          .in('id', applicantIds)
+      : { data: [] as any[] };
+
+    const byId = new Map((profiles || []).map((p: any) => [p.id, p]));
+    const data = rows.map((a: any) => ({
+      ...a,
+      candidate_profiles: byId.get(a.applicant_id) ?? null,
+    })) as ApplicationResponse[];
 
     // Filter out applications without candidate profiles
     const validApplications = data.filter(app => app.candidate_profiles !== null);

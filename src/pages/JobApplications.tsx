@@ -26,7 +26,9 @@ export default function JobApplications() {
         .from('applications')
         .update({
           employer_accepted: accepted,
-          status: accepted ? 'accepted' : 'rejected',
+          // allowed statuses: pending | reviewing | interviewed | rejected | hired
+          status: accepted ? 'reviewing' : 'rejected',
+          employer_viewed_at: new Date().toISOString(),
         })
         .eq('id', applicationId);
       if (error) throw error;
@@ -71,21 +73,23 @@ export default function JobApplications() {
       
       const { data, error } = await supabase
         .from('applications')
-        .select(`
-          *,
-          candidate_profiles(
-            full_name,
-            email,
-            phone_number,
-            job_title,
-            years_experience
-          )
-        `)
+        .select('*')
         .eq('job_id', parseInt(jobId))
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      return data;
+      if (!data?.length) return [];
+
+      // applications.applicant_id points at auth.users, so there is no direct
+      // relationship to embed — fetch the candidate profiles separately.
+      const applicantIds = Array.from(new Set(data.map((a: any) => a.applicant_id)));
+      const { data: profiles } = await supabase
+        .from('candidate_profiles')
+        .select('id, full_name, email, phone_number, job_title, years_experience')
+        .in('id', applicantIds);
+
+      const byId = new Map((profiles || []).map((p: any) => [p.id, p]));
+      return data.map((a: any) => ({ ...a, candidate_profiles: byId.get(a.applicant_id) ?? null }));
     },
     enabled: !!jobId,
   });
@@ -163,8 +167,16 @@ export default function JobApplications() {
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-gray-900">
-                      Application #{application.id}
+                      {application.candidate_profiles?.full_name || `Application #${application.id}`}
                     </h3>
+                    {application.candidate_profiles?.job_title && (
+                      <p className="text-gray-600">
+                        {application.candidate_profiles.job_title}
+                        {typeof application.candidate_profiles.years_experience === 'number'
+                          ? ` · ${application.candidate_profiles.years_experience} years' experience`
+                          : ''}
+                      </p>
+                    )}
                     <p className="text-gray-600">
                       Status: {application.status || 'Pending'}
                     </p>
@@ -191,10 +203,19 @@ export default function JobApplications() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                <div className="flex items-center gap-2 text-sm text-gray-600">
-                  <User className="h-4 w-4" />
-                  <span>Applicant ID: {application.applicant_id}</span>
-                </div>
+                {application.candidate_profiles?.email && (
+                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <Mail className="h-4 w-4" />
+                    <span>{application.candidate_profiles.email}</span>
+                  </div>
+                )}
+
+                {application.candidate_profiles?.phone_number && (
+                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <Phone className="h-4 w-4" />
+                    <span>{application.candidate_profiles.phone_number}</span>
+                  </div>
+                )}
                 
                 {application.resume_url && (
                   <div className="flex items-center gap-2 text-sm text-gray-600">

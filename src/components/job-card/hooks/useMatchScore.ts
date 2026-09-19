@@ -7,8 +7,14 @@ import { supabase } from "@/integrations/supabase/client";
 export const useMatchScore = (profile: CandidateProfile, job: any) => {
   const titleMatch = () => {
     // Fuzzy + synonym-aware title comparison.
+    // Candidates are judged on their best title: current/most recent OR the
+    // role they are actively looking for.
     // See src/components/job-card/utils/titleMatching.ts to edit synonym groups.
-    return calculateTitleSimilarity(profile.job_title as any, job.title);
+    const titles = [profile.job_title as any, (profile as any).desired_job_title].filter(Boolean);
+    return titles.reduce(
+      (best: number, t: any) => Math.max(best, calculateTitleSimilarity(t, job.title)),
+      0
+    );
   };
 
 

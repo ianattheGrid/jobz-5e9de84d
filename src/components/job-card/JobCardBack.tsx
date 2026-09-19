@@ -111,7 +111,7 @@ const JobCardBack = ({ job, onClose }: JobCardBackProps) => {
       
       {/* Match warning dialog */}
       <Dialog open={matchWarningOpen} onOpenChange={setMatchWarningOpen}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="sm:max-w-md demo-employer-dark bg-indigo-950 border-indigo-900 text-white">
           <VisuallyHidden.Root>
             <DialogTitle>Match score for this job</DialogTitle>
             <DialogDescription>How your profile compares with this employer's requirements.</DialogDescription>
