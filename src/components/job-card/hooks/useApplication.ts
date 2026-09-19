@@ -271,8 +271,8 @@ export const useApplication = (jobId: number, employerId: string) => {
           cover_letter: coverLetter,
           resume_url: resumeUrl,
           status: 'pending',
-          employer_accepted: false,
-          candidate_accepted: false,
+          employer_accepted: null,
+          candidate_accepted: null,
           match_percentage: matchPercentage,
           match_score_breakdown: scoreBreakdown,
           match_explanation: explanation
