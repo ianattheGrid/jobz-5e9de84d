@@ -17,6 +17,8 @@ interface ScheduleInterviewDialogProps {
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
   applicationId: number;
+  /** The vacancy the interview relates to. Required: interview_slots.job_id references jobs.id. */
+  jobId: number;
   candidateId: string;
   employerId: string;
   jobTitle: string;
@@ -31,6 +33,7 @@ export const ScheduleInterviewDialog = ({
   isOpen,
   onOpenChange,
   applicationId,
+  jobId,
   candidateId,
   employerId,
   jobTitle
@@ -106,7 +109,7 @@ export const ScheduleInterviewDialog = ({
       const { error } = await supabase
         .from('interview_slots')
         .insert({
-          job_id: applicationId,
+          job_id: jobId,
           employer_id: employerId,
           candidate_id: candidateId,
           proposed_times: proposedTimes,

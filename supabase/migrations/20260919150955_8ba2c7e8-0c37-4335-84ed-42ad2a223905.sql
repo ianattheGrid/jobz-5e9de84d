@@ -1,0 +1,13 @@
+REVOKE EXECUTE ON FUNCTION public.notify_candidate_application_status() FROM PUBLIC, anon, authenticated;
+REVOKE EXECUTE ON FUNCTION public.notify_employer_interview_response() FROM PUBLIC, anon, authenticated;
+REVOKE EXECUTE ON FUNCTION public.notify_employer_interview_slot_update() FROM PUBLIC, anon, authenticated;
+REVOKE EXECUTE ON FUNCTION public.notify_matching_employers() FROM PUBLIC, anon, authenticated;
+REVOKE EXECUTE ON FUNCTION public.notify_employers_of_candidate_matches() FROM PUBLIC, anon, authenticated;
+REVOKE EXECUTE ON FUNCTION public.notify_matching_candidates() FROM PUBLIC, anon, authenticated;
+REVOKE EXECUTE ON FUNCTION public.notify_recruiters_new_job() FROM PUBLIC, anon, authenticated;
+REVOKE EXECUTE ON FUNCTION public.assign_user_role() FROM PUBLIC, anon, authenticated;
+REVOKE EXECUTE ON FUNCTION public.handle_referred_user_signup() FROM PUBLIC, anon, authenticated;
+REVOKE EXECUTE ON FUNCTION public.validate_user_type() FROM PUBLIC, anon, authenticated;
+REVOKE EXECUTE ON FUNCTION public.get_cv_file_path(text) FROM PUBLIC, anon;
+REVOKE EXECUTE ON FUNCTION public.check_user_employer_match(uuid, uuid) FROM PUBLIC, anon;
+REVOKE EXECUTE ON FUNCTION public.is_admin(text) FROM PUBLIC, anon, authenticated;

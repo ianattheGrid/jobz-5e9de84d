@@ -79,6 +79,7 @@ const ApplicationCard = ({ application, onAccept, onReject }: ApplicationCardPro
           isOpen={showScheduleDialog}
           onOpenChange={setShowScheduleDialog}
           applicationId={application.id}
+          jobId={application.job_id}
           candidateId={application.applicant_id}
           employerId={user.id}
           jobTitle={application.jobs.title}

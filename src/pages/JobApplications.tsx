@@ -13,12 +13,19 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
+import { ScheduleInterviewDialog } from '@/components/employer/interviews/ScheduleInterviewDialog';
 
 export default function JobApplications() {
   const { jobId } = useParams<{ jobId: string }>();
   const navigate = useNavigate();
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const [employerId, setEmployerId] = React.useState<string | null>(null);
+  const [scheduleFor, setScheduleFor] = React.useState<{ applicationId: number; candidateId: string } | null>(null);
+
+  React.useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => setEmployerId(data.session?.user?.id ?? null));
+  }, []);
 
   const decisionMutation = useMutation({
     mutationFn: async ({ applicationId, accepted }: { applicationId: number; accepted: boolean }) => {
@@ -256,7 +263,10 @@ export default function JobApplications() {
                 <Button
                   size="sm"
                   variant="outline"
-                  onClick={() => navigate('/employer/interviews')}
+                  onClick={() => setScheduleFor({
+                    applicationId: application.id,
+                    candidateId: application.applicant_id,
+                  })}
                 >
                   Schedule Interview
                 </Button>
@@ -291,6 +301,18 @@ export default function JobApplications() {
             Applications will appear here when candidates apply to this job.
           </p>
         </div>
+      )}
+
+      {scheduleFor && employerId && (
+        <ScheduleInterviewDialog
+          isOpen={!!scheduleFor}
+          onOpenChange={(open) => !open && setScheduleFor(null)}
+          applicationId={scheduleFor.applicationId}
+          jobId={Number(jobId)}
+          candidateId={scheduleFor.candidateId}
+          employerId={employerId}
+          jobTitle={jobData?.title || 'this role'}
+        />
       )}
     </div>
   );

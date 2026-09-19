@@ -74,6 +74,7 @@ export const useLoadApplications = () => {
     // Prepare array for enhanced applications
     let enhancedApplications: ApplicationWithDetails[] = validApplications.map(app => ({
       id: app.id,
+      job_id: app.job_id,
       applicant_id: app.applicant_id,
       jobs: {
         title: app.jobs?.title || '',
