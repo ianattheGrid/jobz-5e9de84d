@@ -302,6 +302,17 @@ export default function JobApplications() {
           </p>
         </div>
       )}
+
+      {scheduleFor && employerId && (
+        <ScheduleInterviewDialog
+          isOpen={!!scheduleFor}
+          onOpenChange={(open) => !open && setScheduleFor(null)}
+          applicationId={scheduleFor.applicationId}
+          candidateId={scheduleFor.candidateId}
+          employerId={employerId}
+          jobTitle={jobData?.title || 'this role'}
+        />
+      )}
     </div>
   );
 }
