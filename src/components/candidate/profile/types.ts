@@ -70,6 +70,13 @@ export const PROFILE_SECTIONS: ProfileSectionGroup[] = [
     description: 'Contact info, CV, gallery, education & work status'
   },
   {
+    id: 'job-preferences',
+    label: 'Job Preferences',
+    icon: 'Target',
+    required: true,
+    description: 'Job title, salary and locations used for matching'
+  },
+  {
     id: 'career-stage',
     label: 'Career Stage',
     icon: 'Compass',
