@@ -208,7 +208,11 @@ export const useApplication = (jobId: number, employerId: string) => {
     resumeFile,
     setResumeFile,
     handleStartApply,
-    handleSubmitApplication: async () => {
+    handleSubmitApplication: async (e?: React.FormEvent) => {
+      // Without this the form does a native submit and the page reloads
+      // before the application is ever written.
+      e?.preventDefault?.();
+      e?.stopPropagation?.();
       if (!user) return;
       
       try {
@@ -267,8 +271,8 @@ export const useApplication = (jobId: number, employerId: string) => {
           cover_letter: coverLetter,
           resume_url: resumeUrl,
           status: 'pending',
-          employer_accepted: false,
-          candidate_accepted: false,
+          employer_accepted: null,
+          candidate_accepted: null,
           match_percentage: matchPercentage,
           match_score_breakdown: scoreBreakdown,
           match_explanation: explanation

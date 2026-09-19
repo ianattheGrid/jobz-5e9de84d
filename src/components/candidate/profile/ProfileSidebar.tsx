@@ -1,4 +1,4 @@
-import { User, Brain, Percent, Check, Circle, HelpCircle, Compass } from "lucide-react";
+import { User, Brain, Percent, Check, Circle, HelpCircle, Compass, Target } from "lucide-react";
 import { PROFILE_SECTIONS, ProfileSectionId } from "./types";
 import {
   Sidebar,
@@ -23,6 +23,7 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Brain,
   Percent,
   Compass,
+  Target,
 };
 
 interface ProfileSidebarProps {

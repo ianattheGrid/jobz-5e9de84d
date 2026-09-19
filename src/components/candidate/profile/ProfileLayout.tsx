@@ -12,6 +12,7 @@ import { CosmicBackground } from "@/components/ui/cosmic-background";
 // Section components
 import { AboutMeSection } from "./sections/AboutMeSection";
 import { CareerStageSection } from "./sections/CareerStageSection";
+import { JobPreferencesSection } from "./sections/JobPreferencesSection";
 import { PersonalityPageSection } from "./sections/PersonalityPageSection";
 import { BonusSchemeSection } from "./sections/BonusSchemeSection";
 
@@ -46,6 +47,18 @@ export function ProfileLayout({ userId, profileData, onProfileUpdate }: ProfileL
     // About Me - check if basic info is filled (including education)
     if (profileData.full_name && profileData.email && profileData.home_postcode) {
       completed.add('about');
+    }
+
+    // Job Preferences - matching needs a title, salary range and at least one location
+    if (
+      profileAny.job_title &&
+      profileAny.job_title !== 'Not specified' &&
+      profileAny.min_salary &&
+      profileAny.max_salary &&
+      Array.isArray(profileAny.location) &&
+      profileAny.location.length > 0
+    ) {
+      completed.add('job-preferences');
     }
 
     // Career Stage - check if primary stage is selected AND has stage-specific data
@@ -93,6 +106,8 @@ export function ProfileLayout({ userId, profileData, onProfileUpdate }: ProfileL
     switch (activeSection) {
       case 'about':
         return <AboutMeSection {...commonProps} />;
+      case 'job-preferences':
+        return <JobPreferencesSection {...commonProps} />;
       case 'career-stage':
         return <CareerStageSection {...commonProps} />;
       case 'personality':

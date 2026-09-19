@@ -1,5 +1,6 @@
 export type ProfileSectionId = 
   | 'about'
+  | 'job-preferences'
   | 'career-stage'
   | 'personality'
   | 'bonus-scheme';
@@ -67,6 +68,13 @@ export const PROFILE_SECTIONS: ProfileSectionGroup[] = [
     icon: 'User',
     required: true,
     description: 'Contact info, CV, gallery, education & work status'
+  },
+  {
+    id: 'job-preferences',
+    label: 'Job Preferences',
+    icon: 'Target',
+    required: true,
+    description: 'Job title, salary and locations used for matching'
   },
   {
     id: 'career-stage',
