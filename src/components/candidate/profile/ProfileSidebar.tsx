@@ -23,6 +23,7 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Brain,
   Percent,
   Compass,
+  Target,
 };
 
 interface ProfileSidebarProps {
