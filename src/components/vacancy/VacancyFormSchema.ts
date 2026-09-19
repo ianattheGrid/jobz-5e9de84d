@@ -7,7 +7,9 @@ export const vacancyFormSchema = z.object({
   }),
   itSpecialization: z.string().optional(),
   specialization: z.string().optional(),
-  title: z.string().optional(),
+  title: z.string().min(2, {
+    message: "Job title is required.",
+  }),
   otherWorkArea: z.string().optional(),
   location: z.string().min(2, {
     message: "Location must be at least 2 characters.",
@@ -19,12 +21,12 @@ export const vacancyFormSchema = z.object({
     .max(2000, {
       message: "Job description cannot exceed 2000 characters.",
     }),
-  salary: z.string().min(1, {
-    message: "Salary is required",
-  }),
-  actualSalary: z.string().min(1, {
-    message: "Salary for bonus purposes is required",
-  }),
+  min_salary: z.coerce.number({ invalid_type_error: "Minimum salary is required" })
+    .min(0, "Minimum salary is required"),
+  max_salary: z.coerce.number({ invalid_type_error: "Maximum salary is required" })
+    .min(0, "Maximum salary is required"),
+  salary: z.string().optional(),
+  actualSalary: z.string().optional(),
   workLocation: z.enum(["office", "hybrid", "remote"]).default("office"),
   officePercentage: z.number().min(0).max(100).optional(),
   type: z.literal("Full-time"),
@@ -58,6 +60,9 @@ export const vacancyFormSchema = z.object({
   requireLocationRadius: z.boolean().default(false),
   officePostcode: z.string().optional(),
   locationRadius: z.number().optional(),
+}).refine((values) => values.max_salary >= values.min_salary, {
+  message: "Maximum salary must be the same as or higher than the minimum salary.",
+  path: ["max_salary"],
 });
 
 export type VacancyFormValues = z.infer<typeof vacancyFormSchema>;
