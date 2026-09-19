@@ -47,14 +47,12 @@ const InterviewsHeader = () => {
           </p>
         </div>
         
-        <Button 
-          variant="outline" 
-          className="gap-2"
-          onClick={() => {/* Future functionality for scheduling interviews */}}
-        >
-          <Plus className="h-4 w-4" />
-          Schedule Interview
-        </Button>
+        <Link to="/employer/manage-jobs">
+          <Button variant="outline" className="gap-2">
+            <Plus className="h-4 w-4" />
+            Schedule from an applicant
+          </Button>
+        </Link>
       </div>
       
       <div className="bg-[#FF69B4] h-2 w-full rounded-full"></div>
