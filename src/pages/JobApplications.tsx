@@ -308,6 +308,7 @@ export default function JobApplications() {
           isOpen={!!scheduleFor}
           onOpenChange={(open) => !open && setScheduleFor(null)}
           applicationId={scheduleFor.applicationId}
+          jobId={Number(jobId)}
           candidateId={scheduleFor.candidateId}
           employerId={employerId}
           jobTitle={jobData?.title || 'this role'}
