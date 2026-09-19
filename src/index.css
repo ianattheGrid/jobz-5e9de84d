@@ -200,7 +200,6 @@ select {
 /* Specifically target any dark backgrounds in forms */
 .dark-bg,
 [class*="dark-bg"],
-[class*="dark"],
 [class*="black-bg"] {
   @apply bg-white text-gray-900 !important;
 }

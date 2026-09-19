@@ -15,6 +15,7 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, Save } from "lucide-react";
 import { bristolPostcodes } from "@/data/bristolPostcodes";
+import { workAreas } from "@/components/work-area/constants/work-areas";
 import { cn } from "@/lib/utils";
 
 interface JobPreferencesSectionProps {
@@ -34,6 +35,8 @@ export function JobPreferencesSection({ userId, profileData, onSave }: JobPrefer
   const [minSalary, setMinSalary] = useState("");
   const [maxSalary, setMaxSalary] = useState("");
   const [locations, setLocations] = useState<string[]>([]);
+  const [workArea, setWorkArea] = useState("");
+  const [specialization, setSpecialization] = useState("");
 
   useEffect(() => {
     if (!profileData) return;
@@ -44,6 +47,8 @@ export function JobPreferencesSection({ userId, profileData, onSave }: JobPrefer
     setMinSalary(p.min_salary ? String(p.min_salary) : "");
     setMaxSalary(p.max_salary ? String(p.max_salary) : "");
     setLocations(Array.isArray(p.location) ? p.location : []);
+    setWorkArea(p.workArea || "");
+    setSpecialization(p.itSpecialization || "");
   }, [profileData]);
 
   const toggleLocation = (value: string) => {
@@ -100,6 +105,8 @@ export function JobPreferencesSection({ userId, profileData, onSave }: JobPrefer
           min_salary: min,
           max_salary: max,
           location: locations,
+          workArea: workArea || null,
+          itSpecialization: specialization.trim() || null,
         } as any)
         .eq("id", userId);
 
@@ -154,6 +161,31 @@ export function JobPreferencesSection({ userId, profileData, onSave }: JobPrefer
                 value={yearsExperience}
                 onChange={(e) => setYearsExperience(e.target.value)}
                 placeholder="e.g. 5"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="work_area">Area of work</Label>
+              <select
+                id="work_area"
+                value={workArea}
+                onChange={(e) => setWorkArea(e.target.value)}
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring"
+              >
+                <option value="">Select an area</option>
+                {workAreas.map((area) => (
+                  <option key={area} value={area}>
+                    {area}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="specialization">Specialism</Label>
+              <Input
+                id="specialization"
+                value={specialization}
+                onChange={(e) => setSpecialization(e.target.value)}
+                placeholder="e.g. IT Support"
               />
             </div>
           </div>
