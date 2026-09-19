@@ -1,5 +1,6 @@
 export type ProfileSectionId = 
   | 'about'
+  | 'job-preferences'
   | 'career-stage'
   | 'personality'
   | 'bonus-scheme';
