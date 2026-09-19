@@ -109,7 +109,7 @@ export const ScheduleInterviewDialog = ({
       const { error } = await supabase
         .from('interview_slots')
         .insert({
-          job_id: applicationId,
+          job_id: jobId,
           employer_id: employerId,
           candidate_id: candidateId,
           proposed_times: proposedTimes,
