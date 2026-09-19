@@ -208,7 +208,11 @@ export const useApplication = (jobId: number, employerId: string) => {
     resumeFile,
     setResumeFile,
     handleStartApply,
-    handleSubmitApplication: async () => {
+    handleSubmitApplication: async (e?: React.FormEvent) => {
+      // Without this the form does a native submit and the page reloads
+      // before the application is ever written.
+      e?.preventDefault?.();
+      e?.stopPropagation?.();
       if (!user) return;
       
       try {
