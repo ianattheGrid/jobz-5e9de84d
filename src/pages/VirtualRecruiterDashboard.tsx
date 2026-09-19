@@ -14,6 +14,7 @@ import NavBar from "@/components/NavBar";
 import { useState } from "react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ReferralsList } from "@/components/vr/ReferralsList";
+import { ReferralInvite } from "@/components/vr/ReferralInvite";
 import { CandidateUpdates } from "@/components/vr/CandidateUpdates";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
