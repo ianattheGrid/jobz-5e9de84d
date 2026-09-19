@@ -12,6 +12,7 @@ import { CosmicBackground } from "@/components/ui/cosmic-background";
 // Section components
 import { AboutMeSection } from "./sections/AboutMeSection";
 import { CareerStageSection } from "./sections/CareerStageSection";
+import { JobPreferencesSection } from "./sections/JobPreferencesSection";
 import { PersonalityPageSection } from "./sections/PersonalityPageSection";
 import { BonusSchemeSection } from "./sections/BonusSchemeSection";
 
