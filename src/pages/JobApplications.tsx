@@ -13,6 +13,7 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
+import { ScheduleInterviewDialog } from '@/components/employer/interviews/ScheduleInterviewDialog';
 
 export default function JobApplications() {
   const { jobId } = useParams<{ jobId: string }>();
