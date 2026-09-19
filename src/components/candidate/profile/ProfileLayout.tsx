@@ -49,6 +49,18 @@ export function ProfileLayout({ userId, profileData, onProfileUpdate }: ProfileL
       completed.add('about');
     }
 
+    // Job Preferences - matching needs a title, salary range and at least one location
+    if (
+      profileAny.job_title &&
+      profileAny.job_title !== 'Not specified' &&
+      profileAny.min_salary &&
+      profileAny.max_salary &&
+      Array.isArray(profileAny.location) &&
+      profileAny.location.length > 0
+    ) {
+      completed.add('job-preferences');
+    }
+
     // Career Stage - check if primary stage is selected AND has stage-specific data
     if (profileAny.primary_career_stage) {
       const stage = profileAny.primary_career_stage;
