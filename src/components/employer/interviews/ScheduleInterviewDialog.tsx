@@ -17,6 +17,8 @@ interface ScheduleInterviewDialogProps {
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
   applicationId: number;
+  /** The vacancy the interview relates to. Required: interview_slots.job_id references jobs.id. */
+  jobId: number;
   candidateId: string;
   employerId: string;
   jobTitle: string;
@@ -31,6 +33,7 @@ export const ScheduleInterviewDialog = ({
   isOpen,
   onOpenChange,
   applicationId,
+  jobId,
   candidateId,
   employerId,
   jobTitle
