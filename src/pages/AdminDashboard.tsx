@@ -22,7 +22,7 @@ const AdminDashboard = () => {
       const { data: settings, error: settingsError } = await supabase
         .from('app_settings')
         .select('*')
-        .eq('app_name', 'localz')
+        .eq('app_name', 'jobz')
         .single();
 
       if (settingsError) throw settingsError;

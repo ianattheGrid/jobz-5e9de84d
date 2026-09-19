@@ -48,8 +48,8 @@ serve(async (req) => {
     const candidateNotifications = (candidates || []).map(candidate => ({
       user_id: candidate.id,
       type: 'go_live_announcement',
-      title: '🎉 localz is now LIVE!',
-      message: `Great news! localz has officially launched in Bristol. Your profile is now visible to all employers. Check out your latest job matches!`,
+      title: '🎉 Jobz is now LIVE!',
+      message: `Great news! Jobz has officially launched in Bristol. Your profile is now visible to all employers. Check out your latest job matches!`,
       is_read: false,
     }));
 
@@ -57,8 +57,8 @@ serve(async (req) => {
     const employerNotifications = (employers || []).map(employer => ({
       user_id: employer.id,
       type: 'go_live_announcement',
-      title: '🎉 localz has launched!',
-      message: `localz has officially gone live! Your jobs are now visible to all candidates across Bristol. Check your dashboard for new applications and matches.`,
+      title: '🎉 Jobz has launched!',
+      message: `Jobz has officially gone live! Your jobs are now visible to all candidates across Bristol. Check your dashboard for new applications and matches.`,
       is_read: false,
     }));
 

@@ -3,7 +3,7 @@ import { Rocket, AlertCircle } from 'lucide-react';
 import { useAppStatus } from '@/hooks/useAppStatus';
 
 export const SoftLaunchBanner = () => {
-  const { status, isLoading } = useAppStatus('localz');
+  const { status, isLoading } = useAppStatus('jobz');
   const [isExpanded, setIsExpanded] = useState(false);
   const [isHeroVisible, setIsHeroVisible] = useState(true);
 

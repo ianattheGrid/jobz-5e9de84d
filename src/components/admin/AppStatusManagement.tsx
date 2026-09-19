@@ -47,7 +47,7 @@ export const AppStatusManagement = ({ currentStatus, totalUsers, onStatusChange 
           go_live_date: goLiveDate,
           soft_launch_end_date: goLiveDate,
         })
-        .eq('app_name', 'localz');
+        .eq('app_name', 'jobz');
 
       if (updateError) throw updateError;
 
@@ -167,7 +167,7 @@ export const AppStatusManagement = ({ currentStatus, totalUsers, onStatusChange 
       <AlertDialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>🚀 Go Live with localz?</AlertDialogTitle>
+            <AlertDialogTitle>🚀 Go Live with Jobz?</AlertDialogTitle>
             <AlertDialogDescription className="space-y-3">
               <p>This action will:</p>
               <ul className="list-disc list-inside space-y-1 text-sm">
