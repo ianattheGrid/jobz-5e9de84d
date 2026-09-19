@@ -215,7 +215,7 @@ export default function ManageJobs() {
                   <div className="flex items-center gap-4 text-sm text-gray-500">
                     <div className="flex items-center gap-1">
                       <Users className="h-4 w-4" />
-                      <span>{job.applications?.length || 0} applications</span>
+                      <span>{job.applications?.[0]?.count ?? 0} applications</span>
                     </div>
                     <div className="flex items-center gap-1">
                       <Calendar className="h-4 w-4" />

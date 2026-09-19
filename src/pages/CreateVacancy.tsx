@@ -109,12 +109,21 @@ export default function CreateVacancy() {
       }
       const holidayDays = parseInt(values.holidayEntitlement);
 
+      const { data: profileForName } = await supabase
+        .from('employer_profiles')
+        .select('company_name')
+        .eq('id', session.user.id)
+        .maybeSingle();
+
+      const companyName =
+        profileForName?.company_name ||
+        session.user.user_metadata.company_name ||
+        "Unknown Company";
+
       const { error } = await supabase.from('jobs').insert({
         title: values.title,
         description: values.description,
-        company: values.showCompanyName 
-          ? (session.user.user_metadata.company_name || "Unknown Company")
-          : "Anonymous Company",
+        company: values.showCompanyName ? companyName : "Anonymous Company",
         location: values.location,
         salary_min: minSalary,
         salary_max: maxSalary,
@@ -133,7 +142,7 @@ export default function CreateVacancy() {
         citizenship_essential: values.citizenshipEssential,
         required_citizenship: values.requiredCitizenship,
         work_area: values.workArea || "Other",
-        specialization: values.specialization || "Other",
+        specialization: values.specialization || (values as any).itSpecialization || "Other",
         match_threshold: values.matchThreshold,
         required_skills: [],
         required_qualifications: [],
