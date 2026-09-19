@@ -1,0 +1,10 @@
+ALTER FUNCTION public.notify_candidate_application_status() SECURITY DEFINER;
+ALTER FUNCTION public.notify_candidate_application_status() SET search_path = public;
+ALTER FUNCTION public.notify_employer_interview_response() SECURITY DEFINER;
+ALTER FUNCTION public.notify_employer_interview_response() SET search_path = public;
+ALTER FUNCTION public.notify_employer_interview_slot_update() SECURITY DEFINER;
+ALTER FUNCTION public.notify_employer_interview_slot_update() SET search_path = public;
+ALTER FUNCTION public.notify_matching_employers() SECURITY DEFINER;
+ALTER FUNCTION public.notify_matching_employers() SET search_path = public;
+ALTER FUNCTION public.notify_employers_of_candidate_matches() SECURITY DEFINER;
+ALTER FUNCTION public.notify_employers_of_candidate_matches() SET search_path = public;
