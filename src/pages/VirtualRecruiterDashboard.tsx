@@ -223,6 +223,23 @@ const VirtualRecruiterDashboard = () => {
               </div>
             </CardContent>
           </Card>
+
+          {/* Email referral invitations */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Bell className="h-5 w-5 text-primary" />
+                Invite a Candidate by Email
+              </CardTitle>
+              <CardDescription>
+                Send an invitation with your referral link so the candidate is linked to you when they join.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ReferralInvite />
+            </CardContent>
+          </Card>
+          
           
           {/* Collapsible Sections */}
           <div className="space-y-4">
