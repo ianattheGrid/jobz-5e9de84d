@@ -170,6 +170,35 @@ export function AboutMeSection({ userId, profileData, onSave }: AboutMeSectionPr
     }
   };
 
+  const handleInvalidSubmit = (errors: Record<string, unknown>) => {
+    const fieldLabels: Record<string, string> = {
+      full_name: "Full name",
+      email: "Email address",
+      home_postcode: "Home postcode",
+      linkedin_url: "LinkedIn profile URL",
+      personal_statement: "About me",
+    };
+    const firstField = Object.keys(errors)[0];
+    toast({
+      title: "Please check your details",
+      description: firstField
+        ? `${fieldLabels[firstField] ?? "A required field"} needs your attention before saving.`
+        : "Some required fields are missing.",
+      variant: "destructive",
+    });
+
+    if (firstField) {
+      const el = document.querySelector(
+        `[name="${firstField}"], #${firstField}`
+      ) as HTMLElement | null;
+      const target = el ?? document.querySelector('[id$="form-item-message"]');
+      if (target) {
+        target.scrollIntoView({ behavior: "smooth", block: "center" });
+        (el as HTMLInputElement | null)?.focus?.();
+      }
+    }
+  };
+
   const handleSubmit = async (values: AboutMeFormValues) => {
     setIsSubmitting(true);
     try {
@@ -665,7 +694,7 @@ export function AboutMeSection({ userId, profileData, onSave }: AboutMeSectionPr
         </GlowCardHeader>
         <GlowCardContent>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+            <form onSubmit={form.handleSubmit(handleSubmit, handleInvalidSubmit)} className="space-y-4">
               <FormField
                 control={form.control}
                 name="full_name"
