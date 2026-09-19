@@ -256,7 +256,10 @@ export default function JobApplications() {
                 <Button
                   size="sm"
                   variant="outline"
-                  onClick={() => navigate('/employer/interviews')}
+                  onClick={() => setScheduleFor({
+                    applicationId: application.id,
+                    candidateId: application.applicant_id,
+                  })}
                 >
                   Schedule Interview
                 </Button>
