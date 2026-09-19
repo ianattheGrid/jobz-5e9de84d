@@ -97,13 +97,13 @@ export default function CreateVacancy() {
         return;
       }
 
-      const salaryParts = values.salary.split("-").map(s => parseInt(s.trim().replace(/[^0-9]/g, ""), 10));
-      const [minSalary, maxSalary] = salaryParts;
-      if (salaryParts.length !== 2 || isNaN(minSalary) || isNaN(maxSalary) || minSalary > maxSalary) {
+      const minSalary = Number(values.min_salary);
+      const maxSalary = Number(values.max_salary);
+      if (isNaN(minSalary) || isNaN(maxSalary) || minSalary > maxSalary) {
         toast({
           variant: "destructive",
           title: "Invalid salary range",
-          description: "Please enter salary as 'min-max' (e.g. 30000-40000).",
+          description: "Please choose a maximum salary that is the same as or higher than the minimum.",
         });
         return;
       }

@@ -13,6 +13,9 @@ import QualificationRequirements from "./QualificationRequirements";
 import { LayoutDashboard } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import VacancyCoreFields from "./VacancyCoreFields";
+import BenefitsFields from "@/components/job-details/BenefitsFields";
+import { useToast } from "@/hooks/use-toast";
 
 interface VacancyFormProps {
   form: UseFormReturn<VacancyFormValues>;
@@ -21,10 +24,26 @@ interface VacancyFormProps {
 
 export function VacancyForm({ form, onSubmit }: VacancyFormProps) {
   const [showEssentialCriteria, setShowEssentialCriteria] = useState(false);
+  const { toast } = useToast();
+
+  const handleInvalid = (errors: Record<string, any>) => {
+    const firstKey = Object.keys(errors)[0];
+    const firstMessage = errors[firstKey]?.message as string | undefined;
+    toast({
+      variant: "destructive",
+      title: "Some details are missing",
+      description: firstMessage || "Please complete the highlighted fields and try again.",
+    });
+    const el = document.querySelector(`[name="${firstKey}"]`);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "center" });
+      (el as HTMLElement).focus?.();
+    }
+  };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="bg-white rounded-lg shadow-sm p-8">
+      <form onSubmit={form.handleSubmit(onSubmit, handleInvalid)} className="bg-white rounded-lg shadow-sm p-8">
         <div className="flex justify-end mb-4">
           <Link to="/employer/dashboard">
             <Button 
@@ -46,8 +65,10 @@ export function VacancyForm({ form, onSubmit }: VacancyFormProps) {
           <div className="space-y-8">
             <CompanyVisibilityField form={form} />
             <WorkAreaField control={form.control} />
+            <VacancyCoreFields control={form.control} />
             <QualificationRequirements control={form.control} />
             <JobDetailsFields control={form.control} />
+            <BenefitsFields control={form.control} />
             <MatchThresholdField 
               control={form.control} 
               onMatchingChange={(useMatching) => setShowEssentialCriteria(!useMatching)} 

@@ -75,7 +75,8 @@ export const useSignUpForm = ({ userType, onSubmit }: SignUpFormProps) => {
       }
 
       if (userType === 'employer' && companyWebsite) {
-        const websitePattern = /^(https?:\/\/)?(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\/.*)?$/;
+        // Allow multi-level domains such as company.co.uk, sub.company.org.uk
+        const websitePattern = /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/.*)?$/;
         if (!websitePattern.test(companyWebsite.trim())) {
           setError("Please enter a valid company website (e.g., www.company.com or company.com)");
           return;
@@ -99,7 +100,7 @@ export const useSignUpForm = ({ userType, onSubmit }: SignUpFormProps) => {
         }
       }
     },
-    [email, password, fullName, jobTitle, companyName, companyWebsite, companySize, userType, onSubmit, referralCode]
+    [email, password, fullName, jobTitle, companyName, companyWebsite, companySize, isSME, userType, onSubmit, referralCode]
   );
 
   const formState: FormState = {
