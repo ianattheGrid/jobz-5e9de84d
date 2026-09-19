@@ -94,6 +94,8 @@ export function ProfileLayout({ userId, profileData, onProfileUpdate }: ProfileL
     switch (activeSection) {
       case 'about':
         return <AboutMeSection {...commonProps} />;
+      case 'job-preferences':
+        return <JobPreferencesSection {...commonProps} />;
       case 'career-stage':
         return <CareerStageSection {...commonProps} />;
       case 'personality':
