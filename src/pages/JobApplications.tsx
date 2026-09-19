@@ -19,6 +19,12 @@ export default function JobApplications() {
   const navigate = useNavigate();
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const [employerId, setEmployerId] = React.useState<string | null>(null);
+  const [scheduleFor, setScheduleFor] = React.useState<{ applicationId: number; candidateId: string } | null>(null);
+
+  React.useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => setEmployerId(data.session?.user?.id ?? null));
+  }, []);
 
   const decisionMutation = useMutation({
     mutationFn: async ({ applicationId, accepted }: { applicationId: number; accepted: boolean }) => {
