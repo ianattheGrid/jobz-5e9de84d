@@ -2477,6 +2477,7 @@ export type Database = {
       generate_vr_number: { Args: never; Returns: string }
       get_cv_file_path: { Args: { file_path: string }; Returns: Json }
       is_admin: { Args: { user_email: string }; Returns: boolean }
+      is_employer: { Args: { _user_id: string }; Returns: boolean }
       normalize_company_name: {
         Args: { company_name: string }
         Returns: string
