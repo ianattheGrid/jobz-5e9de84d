@@ -24,7 +24,7 @@ const handler = async (req: Request): Promise<Response> => {
     
     const html = `
       <h1>You've Been Recommended!</h1>
-      <p>${vrName} has recommended you for job opportunities on JobConnect!</p>
+      <p>${vrName} has recommended you for job opportunities on Jobz!</p>
       <p>Click the link below to create your account and start exploring jobs:</p>
       <a href="${req.headers.get("origin")}/candidate/signup?ref=${referralCode}">
         Sign Up Now
@@ -39,7 +39,7 @@ const handler = async (req: Request): Promise<Response> => {
         Authorization: `Bearer ${RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: "JobConnect <onboarding@resend.dev>",
+        from: "Jobz <onboarding@resend.dev>",
         to,
         subject: "You've Been Recommended for Job Opportunities!",
         html,
