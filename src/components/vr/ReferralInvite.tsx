@@ -40,21 +40,16 @@ export const ReferralInvite = () => {
         .eq("id", user.data.user.id)
         .single();
 
-      // Send the email
-      const response = await fetch("/functions/v1/send-referral-email", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${process.env.SUPABASE_ANON_KEY}`,
+      // Send the email via the edge function
+      const { error: emailError } = await supabase.functions.invoke("send-referral-email", {
+        body: {
+          to: [email],
+          vrName: vrProfile?.full_name || "A Connector",
+          referralCode: referralData.referral_code,
         },
-          body: JSON.stringify({
-            to: [email],
-            vrName: vrProfile?.full_name || "A Connector",
-            referralCode: referralData.referral_code,
-          }),
       });
 
-      if (!response.ok) throw new Error("Failed to send email");
+      if (emailError) throw new Error("We saved the referral but could not send the email. Please try again.");
 
       toast({
         title: "Invitation Sent",
