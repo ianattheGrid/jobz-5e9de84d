@@ -1,4 +1,5 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.3'
+import { EMAIL_FROM, EMAIL_REPLY_TO } from '../_shared/email.ts'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -34,7 +35,8 @@ Deno.serve(async (req) => {
         'Authorization': `Bearer ${Deno.env.get('RESEND_API_KEY')}`
       },
       body: JSON.stringify({
-        from: 'Job Matches <notifications@yourdomain.com>',
+        from: EMAIL_FROM,
+        reply_to: EMAIL_REPLY_TO,
         to: candidateEmail,
         subject: `New Job Match: ${jobTitle} at ${companyName}`,
         html: `
@@ -63,7 +65,8 @@ Deno.serve(async (req) => {
         'Authorization': `Bearer ${Deno.env.get('RESEND_API_KEY')}`
       },
       body: JSON.stringify({
-        from: 'Job Matches <notifications@yourdomain.com>',
+        from: EMAIL_FROM,
+        reply_to: EMAIL_REPLY_TO,
         to: employerEmail,
         subject: `New Candidate Match for ${jobTitle}`,
         html: `
