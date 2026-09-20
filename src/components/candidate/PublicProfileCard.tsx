@@ -60,7 +60,11 @@ export const PublicProfileCard = () => {
 
   const publicUrl = slug ? `${window.location.origin}/p/${slug}` : "";
 
-  const save = async (updates: Record<string, unknown>) => {
+  const save = async (updates: {
+    public_profile_enabled?: boolean;
+    public_profile_slug?: string;
+    availability_status?: string;
+  }) => {
     if (!user) return;
     setSaving(true);
     const { error } = await supabase
