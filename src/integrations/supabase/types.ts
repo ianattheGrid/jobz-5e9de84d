@@ -357,6 +357,7 @@ export type Database = {
           is_currently_employed: boolean | null
           itSpecialization: string | null
           job_title: string
+          last_job_digest_sent_at: string | null
           linkedin_url: string | null
           location: string[] | null
           max_salary: number
@@ -388,6 +389,7 @@ export type Database = {
           unavailable_dates: Json | null
           updated_at: string
           visible_sections: Json
+          weekly_job_email: boolean
           work_eligibility: string | null
           work_preferences: string | null
           workArea: string | null
@@ -432,6 +434,7 @@ export type Database = {
           is_currently_employed?: boolean | null
           itSpecialization?: string | null
           job_title: string
+          last_job_digest_sent_at?: string | null
           linkedin_url?: string | null
           location?: string[] | null
           max_salary: number
@@ -463,6 +466,7 @@ export type Database = {
           unavailable_dates?: Json | null
           updated_at?: string
           visible_sections?: Json
+          weekly_job_email?: boolean
           work_eligibility?: string | null
           work_preferences?: string | null
           workArea?: string | null
@@ -507,6 +511,7 @@ export type Database = {
           is_currently_employed?: boolean | null
           itSpecialization?: string | null
           job_title?: string
+          last_job_digest_sent_at?: string | null
           linkedin_url?: string | null
           location?: string[] | null
           max_salary?: number
@@ -538,6 +543,7 @@ export type Database = {
           unavailable_dates?: Json | null
           updated_at?: string
           visible_sections?: Json
+          weekly_job_email?: boolean
           work_eligibility?: string | null
           work_preferences?: string | null
           workArea?: string | null
@@ -930,10 +936,12 @@ export type Database = {
       }
       employer_searches: {
         Row: {
+          alert_frequency: string
           created_at: string | null
           employer_id: string
           id: string
           is_active: boolean | null
+          last_alert_sent_at: string | null
           match_threshold: number | null
           max_salary: number | null
           min_salary: number | null
@@ -944,10 +952,12 @@ export type Database = {
           work_area: string | null
         }
         Insert: {
+          alert_frequency?: string
           created_at?: string | null
           employer_id: string
           id?: string
           is_active?: boolean | null
+          last_alert_sent_at?: string | null
           match_threshold?: number | null
           max_salary?: number | null
           min_salary?: number | null
@@ -958,10 +968,12 @@ export type Database = {
           work_area?: string | null
         }
         Update: {
+          alert_frequency?: string
           created_at?: string | null
           employer_id?: string
           id?: string
           is_active?: boolean | null
+          last_alert_sent_at?: string | null
           match_threshold?: number | null
           max_salary?: number | null
           min_salary?: number | null
