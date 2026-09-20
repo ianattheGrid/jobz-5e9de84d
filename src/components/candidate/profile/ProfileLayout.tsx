@@ -176,14 +176,14 @@ export function ProfileLayout({ userId, profileData, onProfileUpdate }: ProfileL
 
   return (
     <SidebarProvider defaultOpen={true}>
-      <div className="min-h-screen flex w-full">
+      <div className="min-h-screen flex w-full max-w-full overflow-x-hidden">
         <ProfileSidebar
           activeSection={activeSection}
           onSectionChange={setActiveSection}
           completedSections={completedSections}
         />
 
-        <SidebarInset className="flex-1">
+        <SidebarInset className="flex-1 min-w-0 overflow-x-hidden">
           <CosmicBackground mode="light" className="min-h-full">
             {/* Header */}
             <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b border-primary/20 bg-white/80 backdrop-blur-md px-6">
