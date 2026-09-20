@@ -985,6 +985,81 @@ export type Database = {
         }
         Relationships: []
       }
+      employer_shortlist_entries: {
+        Row: {
+          candidate_id: string
+          created_at: string
+          employer_id: string
+          id: string
+          job_id: number | null
+          note: string | null
+          shortlist_id: string
+          tags: string[]
+          updated_at: string
+        }
+        Insert: {
+          candidate_id: string
+          created_at?: string
+          employer_id: string
+          id?: string
+          job_id?: number | null
+          note?: string | null
+          shortlist_id: string
+          tags?: string[]
+          updated_at?: string
+        }
+        Update: {
+          candidate_id?: string
+          created_at?: string
+          employer_id?: string
+          id?: string
+          job_id?: number | null
+          note?: string | null
+          shortlist_id?: string
+          tags?: string[]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "employer_shortlist_entries_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "employer_shortlist_entries_shortlist_id_fkey"
+            columns: ["shortlist_id"]
+            isOneToOne: false
+            referencedRelation: "employer_shortlists"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      employer_shortlists: {
+        Row: {
+          created_at: string
+          employer_id: string
+          id: string
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          employer_id: string
+          id?: string
+          name?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          employer_id?: string
+          id?: string
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       external_job_matches: {
         Row: {
           candidate_id: string
