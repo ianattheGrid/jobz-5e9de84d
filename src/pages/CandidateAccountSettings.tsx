@@ -11,6 +11,7 @@ import { useAuth } from "@/hooks/useAuth";
 import NavBar from "@/components/NavBar";
 import { LayoutDashboard } from "lucide-react";
 import { PublicProfileCard } from "@/components/candidate/PublicProfileCard";
+import { EmailPreferencesCard } from "@/components/candidate/EmailPreferencesCard";
 
 const CandidateAccountSettings = () => {
   const { user } = useAuth();
@@ -107,6 +108,8 @@ const CandidateAccountSettings = () => {
 
           {/* Shareable public profile */}
           <PublicProfileCard />
+
+          <EmailPreferencesCard />
 
           {/* Delete Account */}
           <Card className="bg-white shadow-sm">

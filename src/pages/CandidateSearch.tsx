@@ -10,6 +10,8 @@ import { Header } from "@/components/candidate-search/Header";
 import { SavedSearches } from "@/components/candidate-search/SavedSearches";
 import { NaturalLanguageSearch } from "@/components/candidate-search/NaturalLanguageSearch";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { CosmicBackground } from "@/components/ui/cosmic-background";
+import NavBar from "@/components/NavBar";
 
 export default function CandidateSearch() {
   const {
@@ -69,14 +71,15 @@ export default function CandidateSearch() {
     return <LoadingState />;
   }
 
-  return <div className="min-h-screen bg-white">
-      <div className="container max-w-7xl mx-auto px-4 py-8">
+  return <CosmicBackground mode="full">
+      <NavBar />
+      <div className="container max-w-7xl mx-auto px-4 pt-24 pb-12 relative z-10">
         <Header />
 
         <div className="flex flex-col gap-8">
           {jobTitleSearched && (
             <div className="rounded-lg border border-primary/30 bg-primary/5 p-4">
-              <p className="text-sm text-gray-800">
+              <p className="text-sm text-white/80">
                 Showing people who fit your vacancy <strong>{jobTitleSearched}</strong>. Change
                 anything below to widen or narrow the search.
               </p>
@@ -91,13 +94,13 @@ export default function CandidateSearch() {
             searching={searching}
           />
 
-          <div className="bg-white rounded-lg shadow-md p-6 border border-gray-200">
+          <div className="cosmic-form rounded-lg p-6 bg-black/40 backdrop-blur-xl border border-primary/30">
             <Accordion type="single" collapsible>
               <AccordionItem value="filters" className="border-none">
                 <AccordionTrigger className="hover:no-underline py-0">
                   <div className="text-left">
-                    <h2 className="text-xl font-semibold text-gray-900">Search Filters</h2>
-                    <p className="text-sm text-gray-600 mt-1 font-normal">
+                    <h2 className="text-xl font-semibold text-white">Search Filters</h2>
+                    <p className="text-sm text-white/70 mt-1 font-normal">
                       Prefer to pick filters yourself? Open the classic search.
                     </p>
                   </div>
@@ -109,10 +112,10 @@ export default function CandidateSearch() {
             </Accordion>
           </div>
 
-          <div className="bg-white rounded-lg shadow-md p-6 border border-gray-200">
+          <div className="rounded-lg p-6 bg-black/30 backdrop-blur-xl border border-primary/20">
             <div className="mb-6">
-              <h2 className="text-xl font-semibold text-gray-900">Search Results</h2>
-              <p className="text-sm text-gray-600 mt-1">
+              <h2 className="text-xl font-semibold text-white">Search Results</h2>
+              <p className="text-sm text-white/70 mt-1">
                 Ranked by how well each candidate fits, with the reasoning shown.
               </p>
             </div>
@@ -120,5 +123,5 @@ export default function CandidateSearch() {
           </div>
         </div>
       </div>
-    </div>;
+    </CosmicBackground>;
 }

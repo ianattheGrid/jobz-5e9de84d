@@ -6,7 +6,7 @@ import { Switch } from "@/components/ui/switch";
 import { useSavedSearches } from "@/hooks/search/useSavedSearches";
 
 export function SavedSearches() {
-  const { savedSearches, updateMatchThreshold, toggleSearchActive } = useSavedSearches();
+  const { savedSearches, updateMatchThreshold, toggleSearchActive, setAlertFrequency } = useSavedSearches();
 
   if (savedSearches.length === 0) {
     return null;
@@ -14,12 +14,12 @@ export function SavedSearches() {
 
   return (
     <div className="space-y-4">
-      <h2 className="text-lg font-semibold">Saved Searches</h2>
+      <h2 className="text-lg font-semibold text-white">Saved Searches</h2>
       <div className="grid gap-4">
         {savedSearches.map((search) => (
-          <Card key={search.id}>
+          <Card key={search.id} className="bg-black/40 backdrop-blur-xl border-primary/30 text-white">
             <CardHeader>
-              <CardTitle className="text-base">
+              <CardTitle className="text-base text-white">
                 {search.work_area || "All Areas"}
                 {search.specialization && ` - ${search.specialization}`}
               </CardTitle>
@@ -56,6 +56,18 @@ export function SavedSearches() {
                   <Switch
                     checked={search.is_active}
                     onCheckedChange={(checked) => toggleSearchActive(search.id, checked)}
+                  />
+                </div>
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <p className="text-sm font-medium">Email me new matches daily</p>
+                    <p className="text-xs text-white/60">
+                      One email each morning with anyone new who fits, and why they fit.
+                    </p>
+                  </div>
+                  <Switch
+                    checked={search.alert_frequency === 'daily'}
+                    onCheckedChange={(checked) => setAlertFrequency(search.id, checked ? 'daily' : 'off')}
                   />
                 </div>
               </div>
