@@ -25,9 +25,45 @@ export default function CandidateSearch() {
     searching
   } = useCandidateSearch();
 
+  const [searchParams] = useSearchParams();
+  const jobId = searchParams.get("jobId");
+  const [jobTitleSearched, setJobTitleSearched] = useState<string | null>(null);
+  const prefilledFor = useRef<string | null>(null);
+
   useEffect(() => {
     checkUser();
   }, [checkUser]);
+
+  // "Find people for this role" — build the search straight from the vacancy.
+  useEffect(() => {
+    if (!jobId || prefilledFor.current === jobId) return;
+    prefilledFor.current = jobId;
+
+    const searchFromJob = async () => {
+      const { data: job } = await supabase
+        .from("jobs")
+        .select("title, location, salary_min, salary_max, work_area, specialization, required_skills, min_years_experience")
+        .eq("id", Number(jobId))
+        .maybeSingle();
+
+      if (!job) return;
+
+      setJobTitleSearched(job.title);
+      await searchByCriteria({
+        jobTitle: job.title || undefined,
+        location: job.location || undefined,
+        minSalary: job.salary_min ?? undefined,
+        maxSalary: job.salary_max ?? undefined,
+        workArea: job.work_area || undefined,
+        itSpecialization: job.specialization && job.specialization !== "Other" ? job.specialization : undefined,
+        skills: job.required_skills?.length ? job.required_skills : undefined,
+        minYearsExperience: job.min_years_experience ?? undefined,
+      });
+    };
+
+    searchFromJob();
+  }, [jobId, searchByCriteria]);
+
 
   if (loading) {
     return <LoadingState />;
