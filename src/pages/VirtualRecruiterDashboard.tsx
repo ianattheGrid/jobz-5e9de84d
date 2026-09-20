@@ -117,6 +117,9 @@ const VirtualRecruiterDashboard = () => {
           <div className="text-center pb-6 pt-4">
             <h1 className="text-4xl font-bold mb-3 bg-gradient-to-r from-primary via-primary/80 to-primary bg-clip-text text-transparent drop-shadow-sm">Connector Dashboard</h1>
             <p className="text-foreground/70 text-lg">Grow your network and earn rewards</p>
+            <Button variant="link" className="mt-2" onClick={() => navigate('/vr/settings')}>
+              Account settings
+            </Button>
           </div>
 
           {/* Stats Overview */}
@@ -201,6 +204,9 @@ const VirtualRecruiterDashboard = () => {
               <CardTitle className="flex items-center gap-2 text-green-800">
                 <MessageCircle className="h-5 w-5" />
                 WhatsApp Referrals
+                <span className="ml-2 rounded-full bg-green-200 px-2 py-0.5 text-xs font-medium text-green-800">
+                  Coming soon
+                </span>
               </CardTitle>
               <CardDescription className="text-green-700">
                 Send referral invitations directly via WhatsApp

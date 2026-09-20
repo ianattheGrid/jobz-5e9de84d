@@ -139,6 +139,7 @@ const App = () => {
           <Route path="vr/recommendations" element={<ProtectedRouteWithTimeout userType="vr"><VirtualRecruiterRecommendations /></ProtectedRouteWithTimeout>} />
           <Route path="vr/profile" element={<ProtectedRouteWithTimeout userType="vr"><VirtualRecruiterProfile /></ProtectedRouteWithTimeout>} />
           <Route path="vr/profile/preview" element={<PreviewVRProfile />} />
+          <Route path="vr/settings" element={<ProtectedRouteWithTimeout userType="vr"><VirtualRecruiterAccountSettings /></ProtectedRouteWithTimeout>} />
           
           {/* Webby AI Co-pilot routes */}
           <Route path="webby-candidate" element={<ProtectedRouteWithTimeout userType="candidate"><WebbyCandidate /></ProtectedRouteWithTimeout>} />
