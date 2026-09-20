@@ -10,7 +10,7 @@ export interface HiringModel {
   /** Short cost badge shown on the card face */
   costBadge: string;
   /** Lucide icon key used by the comparison cards */
-  icon: "briefcase" | "database" | "bot" | "send" | "sparkles";
+  icon: "briefcase" | "database" | "bot" | "send" | "sparkles" | "linkedin";
   highlight?: boolean;
 }
 
@@ -33,13 +33,27 @@ export const HIRING_MODELS: HiringModel[] = [
       "The fee is so large that many small employers simply never start the hire — so you never see the role.",
   },
   {
+    id: "linkedin",
+    tagline: "The search fee you never see.",
+    costBadge: "~£13k/yr per seat",
+    icon: "linkedin",
+    name: "LinkedIn Recruiter licences",
+    whoPays: "Recruiter or employer — then you, indirectly",
+    howMuch:
+      "Publicly reported at roughly £1,440 a year for a solo Lite seat and around £13,000 a year for the full Recruiter licence recruiters actually use — about £1,000 a month, per recruiter, before a single hire",
+    whatHappensToYourCv:
+      "Your LinkedIn profile is searched, shortlisted and pitched to employers — often without you being told which company, or that you were put forward at all",
+    theCatch:
+      "That licence has to be paid for. It comes back as a 15–25% placement fee on your first-year salary, so you get marked up to cover the cost of being found.",
+  },
+  {
     id: "boards",
     tagline: "Pay to be findable.",
     costBadge: "£5k–£10k/yr",
     icon: "database",
-    name: "Job boards & recruiter licences",
+    name: "Job boards",
     whoPays: "Employer",
-    howMuch: "Often £5,000–£10,000+ a year just for the right to search",
+    howMuch: "Often £5,000–£10,000+ a year for adverts and CV database access",
     whatHappensToYourCv:
       "Sits in a database where visibility follows whoever paid for reach",
     theCatch:
