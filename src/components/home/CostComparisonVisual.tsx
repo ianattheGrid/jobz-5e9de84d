@@ -23,15 +23,15 @@ const useCountUp = (target: number, active: boolean, duration = 1400) => {
 };
 
 const usualCosts = [
-  { label: "Agency fee, 15% of a £30,000 salary", value: "£4,500" },
-  { label: "LinkedIn Recruiter licence, 12-month contract", value: "£1,440" },
-  { label: "Job ads & AI screening tools", value: "£185" },
+  { label: "Recruitment agency, 20% of salary", value: "£8,000" },
+  { label: "LinkedIn Recruiter licence, 12-month contract", value: "£10,200" },
+  { label: "AI hiring platform, 10% per hire", value: "£4,000" },
 ];
 
 const CostComparisonVisual = () => {
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.3 });
-  const usualTotal = useCountUp(6125, inView);
+  const usualTotal = useCountUp(8000, inView);
   const jobzFee = useCountUp(9, inView, 900);
 
   return (
@@ -81,10 +81,10 @@ const CostComparisonVisual = () => {
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-background/30" />
           <div className="relative h-full flex flex-col justify-end items-center text-center gap-4 p-8 md:p-14">
             <span className="text-xs md:text-sm uppercase tracking-[0.35em] text-muted-foreground">
-              LinkedIn + agency + AI tools
+              Agency, LinkedIn or an AI platform
             </span>
             <span className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight text-foreground tabular-nums">
-              £{usualTotal.toLocaleString("en-GB")}
+              £{usualTotal.toLocaleString("en-GB")}+
             </span>
             <ul className="w-full max-w-xs space-y-2 pt-2">
               {usualCosts.map((item) => (
@@ -178,11 +178,12 @@ const CostComparisonVisual = () => {
           transition={{ delay: 0.2, duration: 0.6 }}
           className="mx-auto mt-4 max-w-2xl text-sm md:text-base text-muted-foreground"
         >
-          Illustrative costs for one hire on a £30,000 salary, using publicly
-          reported market rates. LinkedIn Recruiter is sold as a 12-month
-          contract, and AI hiring platforms such as Jack &amp; Jill take around
-          10% of salary per hire — about £3,000 on the same job. The candidate
-          is the same either way. Only the middlemen change.
+          Illustrative costs for one hire on a £40,000 salary, using publicly
+          reported market rates. A recruitment agency takes around 20% of
+          salary, a LinkedIn Recruiter licence is roughly £10,200 a year on a
+          12-month contract, and AI hiring platforms such as Jack &amp; Jill
+          take about 10% per hire. The candidate is the same either way. Only
+          the middlemen change.
         </motion.p>
       </div>
     </section>
