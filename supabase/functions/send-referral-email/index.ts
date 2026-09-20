@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
+import { EMAIL_FROM, EMAIL_REPLY_TO } from "../_shared/email.ts";
 
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
 
@@ -39,7 +40,8 @@ const handler = async (req: Request): Promise<Response> => {
         Authorization: `Bearer ${RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: "Jobz <onboarding@resend.dev>",
+        from: EMAIL_FROM,
+        reply_to: EMAIL_REPLY_TO,
         to,
         subject: "You've Been Recommended for Job Opportunities!",
         html,

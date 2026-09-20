@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { EMAIL_FROM_ALERTS } from "../_shared/email.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -21,7 +22,7 @@ async function sendAlert(subject: string, text: string) {
     return;
   }
   const body = {
-    from: "alerts@jobz.test",
+    from: EMAIL_FROM_ALERTS,
     to: [ALERT_EMAIL],
     subject,
     text,
