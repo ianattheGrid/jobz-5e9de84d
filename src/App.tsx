@@ -85,6 +85,7 @@ import SwipeCandidates from './pages/SwipeCandidates';
 import SwipeEmployers from './pages/SwipeEmployers';
 import CVRedirect from './pages/CVRedirect';
 import AdminExternalJobs from './pages/AdminExternalJobs';
+import AdminGrowth from './pages/AdminGrowth';
 import AdminSignIn from './pages/AdminSignIn';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminUserManagement from './pages/AdminUserManagement';
