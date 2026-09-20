@@ -113,7 +113,7 @@ const HowHiringReallyWorks = () => {
           {/* Models */}
           <section className="space-y-6">
             <h2 className="text-2xl md:text-3xl font-bold text-foreground">
-              The five models, side by side
+              The six models, side by side
             </h2>
             <div className="grid gap-4">
               {HIRING_MODELS.map((model) => (
