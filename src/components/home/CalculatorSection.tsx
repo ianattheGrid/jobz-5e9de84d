@@ -33,7 +33,7 @@ export const CalculatorSection = () => {
             <DialogTrigger asChild>
               <Button 
                 size="lg" 
-                className="bg-[#FF69B4] hover:bg-[#FF50A8] text-white font-medium"
+                className="font-medium"
               >
                 Calculate Your Potential Bonus
               </Button>

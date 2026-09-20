@@ -19,7 +19,17 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ["Figtree", "system-ui", "-apple-system", "sans-serif"],
+        display: ["Outfit", "system-ui", "-apple-system", "sans-serif"],
+      },
+      boxShadow: {
+        elevated: "0 24px 60px -24px hsl(240 60% 2% / 0.9)",
+        glow: "0 0 40px hsl(var(--glow) / 0.25)",
+      },
       colors: {
+        glass: "hsl(var(--glass))",
+        "surface-2": "hsl(var(--surface-2))",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

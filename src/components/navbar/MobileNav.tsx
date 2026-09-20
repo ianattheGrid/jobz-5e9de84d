@@ -32,72 +32,72 @@ const MobileNav = ({ isAuthenticated, userType }: MobileNavProps) => {
         <button
           type="button"
           aria-label="Open navigation menu"
-          className="p-2 hover:bg-accent rounded-md lg:hidden"
+          className="rounded-full border border-white/10 bg-white/5 p-2 backdrop-blur-md transition-colors hover:bg-white/10 lg:hidden"
         >
           <Menu className="h-6 w-6 text-foreground" />
         </button>
       </SheetTrigger>
-      <SheetContent side="left" className="w-[300px] sm:max-w-sm bg-background border-r border-border">
+      <SheetContent side="left" className="w-[300px] border-r border-white/10 bg-[hsl(var(--surface-2))]/95 backdrop-blur-2xl sm:max-w-sm">
         <SheetHeader>
           <SheetTitle className="text-foreground">Menu</SheetTitle>
         </SheetHeader>
         <nav className="mt-6 flex flex-col space-y-4">
-          <Link to="/" className="text-lg text-muted-foreground hover:text-primary transition-colors">
+          <Link to="/" className="text-lg text-foreground/75 transition-colors hover:text-primary">
             Home
           </Link>
-          <Link to="/jobs" className="text-lg text-muted-foreground hover:text-primary transition-colors">
+          <Link to="/jobs" className="text-lg text-foreground/75 transition-colors hover:text-primary">
             Job Board
           </Link>
-          <Link to="/qr-code" className="text-lg text-muted-foreground hover:text-primary transition-colors">
+          <Link to="/qr-code" className="text-lg text-foreground/75 transition-colors hover:text-primary">
             GetApp
           </Link>
 
           {!isAuthenticated ? (
             <>
-              <div className="h-px bg-border my-2" />
-              <Link to="/employer/signin" className="text-lg text-muted-foreground hover:text-primary transition-colors">
+              <div className="h-px bg-white/10 my-2" />
+              <Link to="/employer/signin" className="text-lg text-foreground/75 transition-colors hover:text-primary">
                 Employer Sign In
               </Link>
-              <Link to="/candidate/signin" className="text-lg text-muted-foreground hover:text-primary transition-colors">
+              <Link to="/candidate/signin" className="text-lg text-foreground/75 transition-colors hover:text-primary">
                 Candidate Sign In
               </Link>
-              <Link to="/vr/signin" className="text-lg text-muted-foreground hover:text-primary transition-colors">
+              <Link to="/vr/signin" className="text-lg text-foreground/75 transition-colors hover:text-primary">
                 Connector Sign In
               </Link>
-              <div className="h-px bg-border my-2" />
+              <div className="h-px bg-white/10 my-2" />
               <Link to="/signup" className="text-lg text-primary [&]:!text-primary hover:text-primary/80 transition-colors font-medium">
                 Sign Up
               </Link>
             </>
           ) : (
             <>
-              <div className="h-px bg-border my-2" />
+              <div className="h-px bg-white/10 my-2" />
               {userType && (
-                <Link to={`/${userType}/dashboard`} className="text-lg text-muted-foreground hover:text-primary transition-colors">
+                <Link to={`/${userType}/dashboard`} className="text-lg text-foreground/75 transition-colors hover:text-primary">
                   Dashboard
                 </Link>
               )}
               {userType && (
-                <Link to={`/${userType}/profile`} className="text-lg text-muted-foreground hover:text-primary transition-colors">
+                <Link to={`/${userType}/profile`} className="text-lg text-foreground/75 transition-colors hover:text-primary">
                   Profile
                 </Link>
               )}
               {userType === 'employer' && (
-                <Link to="/employer/manage-jobs" className="text-lg text-muted-foreground hover:text-primary transition-colors">
+                <Link to="/employer/manage-jobs" className="text-lg text-foreground/75 transition-colors hover:text-primary">
                   Manage Jobs
                 </Link>
               )}
               {userType === 'candidate' && (
-                <Link to="/candidate/applications" className="text-lg text-muted-foreground hover:text-primary transition-colors">
+                <Link to="/candidate/applications" className="text-lg text-foreground/75 transition-colors hover:text-primary">
                   My Applications
                 </Link>
               )}
               {userType === 'vr' && (
-                <Link to="/vr/recommendations" className="text-lg text-muted-foreground hover:text-primary transition-colors">
+                <Link to="/vr/recommendations" className="text-lg text-foreground/75 transition-colors hover:text-primary">
                   Recommendations
                 </Link>
               )}
-              <div className="h-px bg-border my-2" />
+              <div className="h-px bg-white/10 my-2" />
               <Link to="/contact" className="text-lg text-muted-foreground hover:text-primary transition-colors flex items-center gap-2">
                 <Mail className="h-5 w-5" />
                 Contact Us
@@ -111,14 +111,14 @@ const MobileNav = ({ isAuthenticated, userType }: MobileNavProps) => {
                 <Heart className="h-5 w-5" />
                 Contribute
               </a>
-              <div className="h-px bg-border my-2" />
+              <div className="h-px bg-white/10 my-2" />
               <DeleteAccountDialog>
                 <button className="text-lg text-destructive hover:text-destructive/80 transition-colors flex items-center gap-2 w-full text-left">
                   <Trash2 className="h-5 w-5" />
                   Delete Account
                 </button>
               </DeleteAccountDialog>
-              <div className="h-px bg-border my-2" />
+              <div className="h-px bg-white/10 my-2" />
               <button 
                 onClick={handleSignOut}
                 className="text-lg text-muted-foreground hover:text-primary transition-colors flex items-center gap-2"

@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, FileSearch, Link2, Radar } from "lucide-react";
+import { SectionShell } from "@/components/ui/section-shell";
+import { GlassCard } from "@/components/ui/glass-card";
+import { Starfield } from "@/components/ui/starfield";
 
 const STEPS = [
   {
@@ -22,31 +25,29 @@ const STEPS = [
 
 export const CandidateFrontDoorSection = () => {
   return (
-    <section className="relative py-20 bg-background">
-      <div className="container mx-auto px-4">
+    <SectionShell size="lg">
+      <Starfield density="low" />
+      <div>
         <div className="max-w-3xl">
-          <p className="text-primary font-semibold tracking-wide uppercase text-sm mb-3">
-            Looking for work?
-          </p>
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+          <p className="eyebrow mb-4 text-primary">Looking for work?</p>
+          <h2 className="display-heading mb-5 text-3xl tracking-tight text-foreground sm:text-5xl">
             Start with something useful. No sign-up wall.
           </h2>
-          <p className="text-lg text-muted-foreground mb-10">
+          <p className="mb-12 text-lg text-foreground/70">
             You don't need another job board account. Get your CV reviewed for free, and only make a
             profile if you like what you see.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6 mb-10">
+        <div className="mb-12 grid gap-6 md:grid-cols-3">
           {STEPS.map((step) => (
-            <div
-              key={step.title}
-              className="rounded-xl border border-primary/20 bg-card/60 backdrop-blur p-6"
-            >
-              <step.icon className="h-7 w-7 text-primary mb-4" />
-              <h3 className="text-foreground font-semibold text-lg mb-2">{step.title}</h3>
-              <p className="text-muted-foreground text-sm">{step.body}</p>
-            </div>
+            <GlassCard key={step.title} interactive>
+              <step.icon className="mb-5 h-7 w-7 text-primary" />
+              <h3 className="mb-2 font-display text-lg font-semibold text-foreground">
+                {step.title}
+              </h3>
+              <p className="text-sm leading-relaxed text-foreground/65">{step.body}</p>
+            </GlassCard>
           ))}
         </div>
 
@@ -58,6 +59,6 @@ export const CandidateFrontDoorSection = () => {
           </Button>
         </div>
       </div>
-    </section>
+    </SectionShell>
   );
 };

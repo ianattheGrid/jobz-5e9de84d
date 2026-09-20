@@ -17,7 +17,7 @@ export const VideoSection = () => {
             <div className="relative mx-auto overflow-hidden rounded-lg">
               <AspectRatio ratio={16/9}>
                 <div 
-                  className="w-full h-full absolute inset-0 bg-gray-100 rounded-lg"
+                  className="w-full h-full absolute inset-0 bg-white/5 rounded-2xl"
                   dangerouslySetInnerHTML={{ __html: videoEmbed }}
                 />
               </AspectRatio>
