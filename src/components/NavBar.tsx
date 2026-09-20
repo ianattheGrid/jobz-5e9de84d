@@ -64,58 +64,43 @@ const NavBar = () => {
     }
   };
 
+  const navLinks = [
+    { to: "/", label: "Home", Icon: HomeIcon },
+    { to: "/jobs", label: "Job Board", Icon: Briefcase },
+    { to: "/pricing", label: "Pricing", Icon: PoundSterling },
+    { to: "/qr-code", label: "GetApp", Icon: QrCode },
+    { to: "/faq", label: "FAQ", Icon: HelpCircle },
+  ];
+
   return (
-    <header 
-      className="fixed top-0 left-0 right-0 z-50 bg-background h-16" 
-      style={{ 
-        borderBottom: '2px solid #333333',
-        boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
-      }}
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 h-16 border-b transition-all duration-300 ${
+        scrolled
+          ? "border-white/10 bg-background/80 backdrop-blur-xl"
+          : "border-transparent bg-background/40 backdrop-blur-md"
+      }`}
     >
       <div className="container mx-auto px-4 h-full">
         <div className="flex justify-between items-center h-full">
           <div className="flex items-center gap-12">
             <Link to="/" className="text-2xl font-bold flex items-center gap-2">
               <Briefcase className="h-6 w-6 text-primary" />
-              <span className="text-primary font-bold tracking-tight">Jobz</span>
+              <span className="font-display font-bold tracking-tight text-foreground">
+                Jobz
+              </span>
             </Link>
             <div className="hidden lg:block">
-              <nav className="flex items-center space-x-6">
-                <Link 
-                  to="/" 
-                  className="text-black hover:text-black/80 flex items-center gap-2"
-                >
-                  <HomeIcon className="h-4 w-4" />
-                  <span>Home</span>
-                </Link>
-                <Link 
-                  to="/jobs" 
-                  className="text-black hover:text-black/80 flex items-center gap-2"
-                >
-                  <Briefcase className="h-4 w-4" />
-                  <span>Job Board</span>
-                </Link>
-                <Link 
-                  to="/pricing" 
-                  className="text-black hover:text-black/80 flex items-center gap-2"
-                >
-                  <PoundSterling className="h-4 w-4" />
-                  <span>Pricing</span>
-                </Link>
-                <Link 
-                  to="/qr-code" 
-                  className="text-black hover:text-black/80 flex items-center gap-2"
-                >
-                  <QrCode className="h-4 w-4" />
-                  <span>GetApp</span>
-                </Link>
-                <Link 
-                  to="/faq" 
-                  className="text-black hover:text-black/80 flex items-center gap-2"
-                >
-                  <HelpCircle className="h-4 w-4" />
-                  <span>FAQ</span>
-                </Link>
+              <nav className="flex items-center space-x-7">
+                {navLinks.map(({ to, label, Icon }) => (
+                  <Link
+                    key={to}
+                    to={to}
+                    className="flex items-center gap-2 text-sm text-foreground/70 transition-colors hover:text-foreground"
+                  >
+                    <Icon className="h-4 w-4" />
+                    <span>{label}</span>
+                  </Link>
+                ))}
               </nav>
             </div>
           </div>
