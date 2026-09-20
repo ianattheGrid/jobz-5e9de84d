@@ -97,22 +97,27 @@ export default function PublicCandidateProfile() {
                     </Badge>
                   )}
                 </div>
-                <CardDescription className="text-white/80 text-lg pt-1">
-                  {profile.desired_job_title || profile.job_title}
-                </CardDescription>
+                {(profile.desired_job_title || profile.job_title) &&
+                  (profile.desired_job_title || profile.job_title) !== "Not specified" && (
+                    <CardDescription className="text-white/80 text-lg pt-1">
+                      {profile.desired_job_title || profile.job_title}
+                    </CardDescription>
+                  )}
               </CardHeader>
               <CardContent className="grid sm:grid-cols-3 gap-4 text-white/80 text-sm">
-                <div className="flex items-center gap-2">
-                  <Briefcase className="h-4 w-4 text-primary" />
-                  {profile.years_experience ?? 0} years' experience
-                </div>
+                {profile.years_experience ? (
+                  <div className="flex items-center gap-2">
+                    <Briefcase className="h-4 w-4 text-primary" />
+                    {profile.years_experience} years' experience
+                  </div>
+                ) : null}
                 {profile.location?.length ? (
                   <div className="flex items-center gap-2">
                     <MapPin className="h-4 w-4 text-primary" />
                     {profile.location.join(", ")}
                   </div>
                 ) : null}
-                {profile.min_salary != null && profile.max_salary != null ? (
+                {profile.min_salary && profile.max_salary ? (
                   <div className="flex items-center gap-2">
                     <PoundSterling className="h-4 w-4 text-primary" />
                     {profile.min_salary.toLocaleString()} – {profile.max_salary.toLocaleString()}
