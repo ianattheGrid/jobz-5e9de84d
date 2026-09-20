@@ -63,6 +63,7 @@ import PushSetup from './pages/PushSetup';
 import ViewCandidateProfile from './pages/ViewCandidateProfile';
 import ViewEmployerProfile from './pages/ViewEmployerProfile';
 import CandidateSearch from './pages/CandidateSearch';
+import EmployerShortlist from './pages/EmployerShortlist';
 
 // Protected route wrapper
 import { ProtectedRoute } from './components/auth/ProtectedRoute';
@@ -132,6 +133,7 @@ const App = () => {
           <Route path="employer/candidate/:id" element={<ProtectedRouteWithTimeout userType="employer"><ViewCandidateProfile /></ProtectedRouteWithTimeout>} />
           <Route path="employer/candidates" element={<Navigate to="/employer/candidate-search" replace />} />
           <Route path="employer/candidate-search" element={<ProtectedRouteWithTimeout userType="employer"><CandidateSearch /></ProtectedRouteWithTimeout>} />
+          <Route path="employer/shortlist" element={<ProtectedRouteWithTimeout userType="employer"><EmployerShortlist /></ProtectedRouteWithTimeout>} />
           <Route path="employer/calculator" element={<ProtectedRouteWithTimeout userType="employer"><CostCalculatorPage /></ProtectedRouteWithTimeout>} />
           
           {/* Virtual Recruiter routes */}

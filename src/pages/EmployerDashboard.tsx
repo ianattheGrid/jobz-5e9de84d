@@ -95,6 +95,12 @@ const EmployerDashboard = () => {
       description: "Find potential candidates"
     },
     {
+      title: "Your Shortlist",
+      icon: <Search className="h-6 w-6" />,
+      path: "/employer/shortlist",
+      description: "People you've saved, with your notes"
+    },
+    {
       title: "View Interviews",
       icon: <Calendar className="h-6 w-6" />,
       path: "/employer/interviews",

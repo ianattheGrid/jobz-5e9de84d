@@ -9,6 +9,7 @@ import { LoadingState } from "@/components/candidate-search/LoadingState";
 import { Header } from "@/components/candidate-search/Header";
 import { SavedSearches } from "@/components/candidate-search/SavedSearches";
 import { NaturalLanguageSearch } from "@/components/candidate-search/NaturalLanguageSearch";
+import { PastPipeline } from "@/components/candidate-search/PastPipeline";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { CosmicBackground } from "@/components/ui/cosmic-background";
 import NavBar from "@/components/NavBar";
@@ -86,6 +87,8 @@ export default function CandidateSearch() {
             </div>
           )}
 
+          {jobId && <PastPipeline jobId={Number(jobId)} />}
+
           <SavedSearches />
 
           <NaturalLanguageSearch
@@ -119,7 +122,7 @@ export default function CandidateSearch() {
                 Ranked by how well each candidate fits, with the reasoning shown.
               </p>
             </div>
-            <SearchResults candidates={candidates} explanations={explanations} />
+            <SearchResults candidates={candidates} explanations={explanations} jobId={jobId ? Number(jobId) : null} />
           </div>
         </div>
       </div>
