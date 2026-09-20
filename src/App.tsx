@@ -63,6 +63,7 @@ import PushSetup from './pages/PushSetup';
 import ViewCandidateProfile from './pages/ViewCandidateProfile';
 import ViewEmployerProfile from './pages/ViewEmployerProfile';
 import CandidateSearch from './pages/CandidateSearch';
+import EmployerShortlist from './pages/EmployerShortlist';
 
 // Protected route wrapper
 import { ProtectedRoute } from './components/auth/ProtectedRoute';
