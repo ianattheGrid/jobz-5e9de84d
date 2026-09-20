@@ -81,10 +81,10 @@ const CostComparisonVisual = () => {
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-background/30" />
           <div className="relative h-full flex flex-col justify-end items-center text-center gap-4 p-8 md:p-14">
             <span className="text-xs md:text-sm uppercase tracking-[0.35em] text-muted-foreground">
-              LinkedIn + agency + AI tools
+              Agency, LinkedIn or an AI platform
             </span>
             <span className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight text-foreground tabular-nums">
-              £{usualTotal.toLocaleString("en-GB")}
+              £{usualTotal.toLocaleString("en-GB")}+
             </span>
             <ul className="w-full max-w-xs space-y-2 pt-2">
               {usualCosts.map((item) => (
