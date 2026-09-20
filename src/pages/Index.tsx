@@ -8,6 +8,7 @@ import { PlatformFeatures } from "@/components/home/PlatformFeatures";
 import { DemoProfilesSection } from "@/components/home/DemoProfilesSection";
 import { CandidateCostSection } from "@/components/home/CandidateCostSection";
 import { CandidateSectionHero } from "@/components/home/CandidateSectionHero";
+import { CandidateFrontDoorSection } from "@/components/home/CandidateFrontDoorSection";
 import { ProfilePathwaysSection } from "@/components/home/ProfilePathwaysSection";
 import CostComparisonVisual from "@/components/home/CostComparisonVisual";
 import { MiddlemenComparisonSection } from "@/components/home/MiddlemenComparisonSection";
@@ -28,6 +29,7 @@ export default function Index() {
       <HowItWorksHero activeTab={activeTab} onTabChange={setActiveTab} />
       <PlatformFeatures activeTab={activeTab} />
       <CandidateSectionHero />
+      <CandidateFrontDoorSection />
       <ProfilePathwaysSection />
       <CostComparisonVisual />
       <MiddlemenComparisonSection />
