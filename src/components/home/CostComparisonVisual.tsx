@@ -23,9 +23,9 @@ const useCountUp = (target: number, active: boolean, duration = 1400) => {
 };
 
 const usualCosts = [
-  { label: "Recruitment agency fee", value: "£4,500" },
-  { label: "LinkedIn Recruiter licence", value: "£1,075" },
-  { label: "Job ads & AI screening tools", value: "£550" },
+  { label: "Agency fee, 15% of a £30,000 salary", value: "£4,500" },
+  { label: "LinkedIn Recruiter licence, 12-month contract", value: "£1,440" },
+  { label: "Job ads & AI screening tools", value: "£185" },
 ];
 
 const CostComparisonVisual = () => {
