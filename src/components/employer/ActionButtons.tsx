@@ -16,7 +16,7 @@ export default function ActionButtons() {
         Post New Vacancy
       </Button>
       <Button 
-        onClick={() => navigate('/employer/candidates')}
+        onClick={() => navigate('/employer/candidate-search')}
         className="bg-red-800 hover:bg-red-900 text-white"
       >
         <Search className="mr-2 h-4 w-4" />

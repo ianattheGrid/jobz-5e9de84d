@@ -5,7 +5,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { DeleteAccountDialog } from "@/components/employer/DeleteAccountDialog";
+import { DeleteAccountDialog } from "@/components/shared/DeleteAccountDialog";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/hooks/useAuth";
 import NavBar from "@/components/NavBar";
@@ -111,7 +111,9 @@ const CandidateAccountSettings = () => {
               <CardDescription>Permanently delete your account and all associated data</CardDescription>
             </CardHeader>
             <CardContent>
-              <DeleteAccountDialog />
+              <DeleteAccountDialog>
+                <Button variant="destructive">Delete Account</Button>
+              </DeleteAccountDialog>
             </CardContent>
           </Card>
         </div>

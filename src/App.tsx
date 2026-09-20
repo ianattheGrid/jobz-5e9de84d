@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Outlet, Navigate } from 'react-router-dom';
 import './App.css';
 import './styles/tabs.css'; // Directly import the CSS
 import { AppLayout } from './components/layout/AppLayout';
@@ -43,6 +43,7 @@ import VirtualRecruiterDashboard from './pages/VirtualRecruiterDashboard';
 import VirtualRecruiterRecommendations from './pages/VirtualRecruiterRecommendations';
 import VirtualRecruiterProfile from './pages/VirtualRecruiterProfile';
 import PreviewVRProfile from './pages/PreviewVRProfile';
+import VirtualRecruiterAccountSettings from './pages/VirtualRecruiterAccountSettings';
 import WebbyCandidate from './pages/WebbyCandidate';
 import WebbyEmployer from './pages/WebbyEmployer';
 
@@ -110,7 +111,7 @@ const App = () => {
           
           <Route path="candidate/applications" element={<ProtectedRouteWithTimeout userType="candidate"><CandidateApplications /></ProtectedRouteWithTimeout>} />
           <Route path="candidate/interviews" element={<ProtectedRouteWithTimeout userType="candidate"><CandidateInterviews /></ProtectedRouteWithTimeout>} />
-          <Route path="candidate/account" element={<ProtectedRouteWithTimeout userType="candidate"><CandidateAccountSettings /></ProtectedRouteWithTimeout>} />
+          <Route path="candidate/account" element={<Navigate to="/candidate/settings" replace />} />
           <Route path="candidate/settings" element={<ProtectedRouteWithTimeout userType="candidate"><CandidateAccountSettings /></ProtectedRouteWithTimeout>} />
           <Route path="candidate/personalized-jobs" element={<ProtectedRouteWithTimeout userType="candidate"><PersonalizedJobs /></ProtectedRouteWithTimeout>} />
           <Route path="candidate/chat" element={<ProtectedRouteWithTimeout userType="candidate"><CandidateChat /></ProtectedRouteWithTimeout>} />
@@ -128,7 +129,7 @@ const App = () => {
           <Route path="employer/profile/preview" element={<PreviewEmployerProfile />} />
           <Route path="employer/interviews" element={<ProtectedRouteWithTimeout userType="employer"><EmployerInterviews /></ProtectedRouteWithTimeout>} />
           <Route path="employer/candidate/:id" element={<ProtectedRouteWithTimeout userType="employer"><ViewCandidateProfile /></ProtectedRouteWithTimeout>} />
-          <Route path="employer/candidates" element={<ProtectedRouteWithTimeout userType="employer"><CandidateSearch /></ProtectedRouteWithTimeout>} />
+          <Route path="employer/candidates" element={<Navigate to="/employer/candidate-search" replace />} />
           <Route path="employer/candidate-search" element={<ProtectedRouteWithTimeout userType="employer"><CandidateSearch /></ProtectedRouteWithTimeout>} />
           <Route path="employer/calculator" element={<ProtectedRouteWithTimeout userType="employer"><CostCalculatorPage /></ProtectedRouteWithTimeout>} />
           
@@ -139,6 +140,7 @@ const App = () => {
           <Route path="vr/recommendations" element={<ProtectedRouteWithTimeout userType="vr"><VirtualRecruiterRecommendations /></ProtectedRouteWithTimeout>} />
           <Route path="vr/profile" element={<ProtectedRouteWithTimeout userType="vr"><VirtualRecruiterProfile /></ProtectedRouteWithTimeout>} />
           <Route path="vr/profile/preview" element={<PreviewVRProfile />} />
+          <Route path="vr/settings" element={<ProtectedRouteWithTimeout userType="vr"><VirtualRecruiterAccountSettings /></ProtectedRouteWithTimeout>} />
           
           {/* Webby AI Co-pilot routes */}
           <Route path="webby-candidate" element={<ProtectedRouteWithTimeout userType="candidate"><WebbyCandidate /></ProtectedRouteWithTimeout>} />
@@ -152,7 +154,7 @@ const App = () => {
           <Route path="contact" element={<Contact />} />
           
           <Route path="pricing" element={<PricingPage />} />
-          <Route path="push-setup" element={<PushSetup />} />
+          <Route path="push-setup" element={<AdminProtectedRoute><PushSetup /></AdminProtectedRoute>} />
           <Route path="cv-view" element={<CVRedirect />} />
           
           <Route path="qr-code" element={<QRCodePage />} />

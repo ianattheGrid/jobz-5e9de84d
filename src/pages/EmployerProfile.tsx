@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { DeleteAccountDialog } from "@/components/employer/DeleteAccountDialog";
+import { DeleteAccountDialog } from "@/components/shared/DeleteAccountDialog";
 import { ProfileForm } from "@/components/employer/ProfileForm";
 import { useEmployerProfile } from "@/hooks/useEmployerProfile";
 import { Link } from "react-router-dom";
@@ -61,7 +61,9 @@ export default function EmployerProfile() {
               email={email}
             />
             <div className="border-t pt-6">
-              <DeleteAccountDialog />
+              <DeleteAccountDialog>
+                <Button variant="destructive">Delete Account</Button>
+              </DeleteAccountDialog>
             </div>
           </div>
         </CardContent>
