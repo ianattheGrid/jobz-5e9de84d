@@ -179,8 +179,10 @@ const CostComparisonVisual = () => {
           className="mx-auto mt-4 max-w-2xl text-sm md:text-base text-muted-foreground"
         >
           Illustrative costs for one hire on a £30,000 salary, using publicly
-          reported market rates. The candidate is the same either way — only the
-          middlemen change.
+          reported market rates. LinkedIn Recruiter is sold as a 12-month
+          contract, and AI hiring platforms such as Jack &amp; Jill take around
+          10% of salary per hire — about £3,000 on the same job. The candidate
+          is the same either way. Only the middlemen change.
         </motion.p>
       </div>
     </section>
