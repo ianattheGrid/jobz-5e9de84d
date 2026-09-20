@@ -56,9 +56,6 @@ export const CandidateFrontDoorSection = () => {
               Review my CV free <ArrowRight className="h-4 w-4" />
             </Link>
           </Button>
-          <Button asChild size="lg" variant="outline">
-            <Link to="/candidate/signup">Create my free profile</Link>
-          </Button>
         </div>
       </div>
     </section>
