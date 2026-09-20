@@ -156,11 +156,50 @@ const HowHiringReallyWorks = () => {
               ))}
             </div>
             <p className="text-xs text-muted-foreground">
-              Pricing described as publicly stated by each type of platform at the time of
-              writing. Figures describe the charging model rather than a quote from any one
+              Pricing described as publicly stated, or as reported by buyers, at the time of
+              writing. LinkedIn does not publish a public rate card for its higher Recruiter
+              tiers. Figures describe the charging model rather than a quote from any one
               provider.
             </p>
           </section>
+
+          {/* Why you get marked up */}
+          <section className="space-y-6">
+            <h2 className="text-2xl md:text-3xl font-bold text-foreground">
+              Why you get marked up
+            </h2>
+            <p className="text-foreground">
+              Recruiters used to live on job boards. Now they live on LinkedIn — and
+              searching LinkedIn properly is not free. That single fact explains most of
+              what happens to your salary before you ever hear about a job.
+            </p>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {MARKUP_CHAIN.map((item) => (
+                <Card key={item.step} className="p-5 space-y-2">
+                  <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground text-sm font-bold">
+                    {item.step}
+                  </span>
+                  <h3 className="font-semibold text-foreground">{item.title}</h3>
+                  <p className="text-sm text-muted-foreground">{item.detail}</p>
+                </Card>
+              ))}
+            </div>
+            <Card className="p-6 space-y-2 border-primary bg-primary/10">
+              <h3 className="font-bold text-foreground">The £45,000 example</h3>
+              <p className="text-sm text-muted-foreground">
+                One recruiter seat: about £13,000 a year. One placement at 20% of a £45,000
+                salary: £9,000. So a single introduction pays most of the year's licence —
+                and that £9,000 came out of the same budget as your pay, your training or
+                the next hire on the team. On Jobz the employer pays £9 and talks to you
+                directly.
+              </p>
+            </Card>
+            <p className="text-foreground">
+              You are not expensive. Being <em>found</em> is expensive — and you are the one
+              being marked up to pay for it.
+            </p>
+          </section>
+
 
           {/* Candidates */}
           <section className="space-y-4">
