@@ -93,12 +93,12 @@ export function NaturalLanguageSearch({ onSearch, criteria, searching }: Natural
   const busy = parsing || searching;
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 border border-gray-200">
+    <div className="cosmic-form rounded-lg p-6 bg-black/40 backdrop-blur-xl border border-primary/30">
       <div className="flex items-center gap-2 mb-2">
         <Sparkles className="h-5 w-5 text-primary" />
-        <h2 className="text-xl font-semibold text-gray-900">Smart search</h2>
+        <h2 className="text-xl font-semibold text-white">Smart search</h2>
       </div>
-      <p className="text-sm text-gray-600 mb-4">
+      <p className="text-sm text-white/70 mb-4">
         Describe who you're looking for in plain English — we'll turn it into filters and explain every match.
       </p>
 
@@ -113,7 +113,7 @@ export function NaturalLanguageSearch({ onSearch, criteria, searching }: Natural
         }}
         placeholder="e.g. Experienced 2nd line support engineer near Bristol, up to £35k, available now"
         rows={2}
-        className="resize-none"
+        className="resize-none bg-white/5 border-white/20 text-white placeholder:text-white/40"
       />
 
       <div className="flex flex-wrap gap-2 mt-3">
@@ -125,7 +125,7 @@ export function NaturalLanguageSearch({ onSearch, criteria, searching }: Natural
               setPrompt(example);
               runSearch(example);
             }}
-            className="text-xs px-3 py-1 rounded-full border border-gray-200 text-gray-600 hover:border-primary hover:text-primary transition-colors"
+            className="text-xs px-3 py-1 rounded-full border border-white/20 text-white/70 hover:border-primary hover:text-primary transition-colors"
           >
             {example}
           </button>
@@ -140,8 +140,8 @@ export function NaturalLanguageSearch({ onSearch, criteria, searching }: Natural
       </div>
 
       {chips.length > 0 && (
-        <div className="mt-5 pt-4 border-t">
-          <p className="text-sm font-medium text-gray-900 mb-2">Filters we understood:</p>
+        <div className="mt-5 pt-4 border-t border-white/10">
+          <p className="text-sm font-medium text-white mb-2">Filters we understood:</p>
           <div className="flex flex-wrap gap-2">
             {chips.map((chip) => (
               <Badge key={chip.label} variant="secondary" className="gap-1 py-1 pl-3 pr-2">

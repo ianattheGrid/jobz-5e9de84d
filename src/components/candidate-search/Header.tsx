@@ -40,8 +40,8 @@ export function Header() {
       </div>
       
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Candidate Search</h1>
-        <p className="text-gray-600 mt-2">
+        <h1 className="text-3xl font-bold text-white">Candidate Search</h1>
+        <p className="text-white/70 mt-2">
           Search for candidates that match your job requirements. Save searches to get notified when new matching candidates join.
         </p>
       </div>
