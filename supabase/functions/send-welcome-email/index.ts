@@ -22,9 +22,9 @@ const handler = async (req: Request): Promise<Response> => {
   try {
     const { to, userType } = await req.json() as EmailRequest;
     
-    const subject = `Welcome to JobConnect - Your ${userType} Account`;
+    const subject = `Welcome to Jobz - Your ${userType} Account`;
     const html = `
-      <h1>Welcome to JobConnect!</h1>
+      <h1>Welcome to Jobz!</h1>
       <p>Thank you for creating a ${userType} account with us.</p>
       <p>You can now start using our platform to:</p>
       ${userType === 'employer' ? `
@@ -44,7 +44,8 @@ const handler = async (req: Request): Promise<Response> => {
         Authorization: `Bearer ${RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: "JobConnect <onboarding@resend.dev>",
+        from: EMAIL_FROM,
+        reply_to: EMAIL_REPLY_TO,
         to,
         subject,
         html,
