@@ -7,6 +7,7 @@ import NavBar from "@/components/NavBar";
 import BonusNegotiations from "@/components/employer/BonusNegotiations";
 import { BonusPaymentsSection } from "@/components/employer/BonusPaymentsSection";
 import { CosmicBackground } from "@/components/ui/cosmic-background";
+import { InviteLinkCard } from "@/components/invite/InviteLinkCard";
 import { DashboardCard } from "@/components/ui/dashboard-card";
 import { Briefcase, Building2, Search, Calendar, UserCircle, MessageSquare, Sparkles } from "lucide-react";
 
