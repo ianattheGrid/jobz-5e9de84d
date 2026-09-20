@@ -96,6 +96,10 @@ export const useSignUp = () => {
         // Auto sign in after successful account creation
         await signInNewUser(email, password);
 
+        // Credit whoever's invite link brought them here (never blocks signup)
+        await recordInviteSignup(data.user.id, userType);
+
+
         toast({
           title: "Success!",
           description: "Account created successfully. Welcome!",
