@@ -328,6 +328,7 @@ export type Database = {
           ai_synopsis_status: string | null
           ascent_profile: Json | null
           availability: string | null
+          availability_status: string
           can_drive: boolean | null
           career_breaks: Json | null
           commission_percentage: number | null
@@ -369,6 +370,8 @@ export type Database = {
           primary_career_stage: string | null
           profile_picture_url: string | null
           proof_of_potential: Json | null
+          public_profile_enabled: boolean
+          public_profile_slug: string | null
           required_qualifications: string[] | null
           required_skills: string[] | null
           second_chapter: Json | null
@@ -400,6 +403,7 @@ export type Database = {
           ai_synopsis_status?: string | null
           ascent_profile?: Json | null
           availability?: string | null
+          availability_status?: string
           can_drive?: boolean | null
           career_breaks?: Json | null
           commission_percentage?: number | null
@@ -441,6 +445,8 @@ export type Database = {
           primary_career_stage?: string | null
           profile_picture_url?: string | null
           proof_of_potential?: Json | null
+          public_profile_enabled?: boolean
+          public_profile_slug?: string | null
           required_qualifications?: string[] | null
           required_skills?: string[] | null
           second_chapter?: Json | null
@@ -472,6 +478,7 @@ export type Database = {
           ai_synopsis_status?: string | null
           ascent_profile?: Json | null
           availability?: string | null
+          availability_status?: string
           can_drive?: boolean | null
           career_breaks?: Json | null
           commission_percentage?: number | null
@@ -513,6 +520,8 @@ export type Database = {
           primary_career_stage?: string | null
           profile_picture_url?: string | null
           proof_of_potential?: Json | null
+          public_profile_enabled?: boolean
+          public_profile_slug?: string | null
           required_qualifications?: string[] | null
           required_skills?: string[] | null
           second_chapter?: Json | null
@@ -2476,6 +2485,26 @@ export type Database = {
       generate_referral_code: { Args: never; Returns: string }
       generate_vr_number: { Args: never; Returns: string }
       get_cv_file_path: { Args: { file_path: string }; Returns: Json }
+      get_public_candidate_profile: {
+        Args: { _slug: string }
+        Returns: {
+          additional_skills: string
+          availability_status: string
+          desired_job_title: string
+          full_name: string
+          job_title: string
+          location: string[]
+          max_salary: number
+          min_salary: number
+          personal_statement: string
+          required_skills: string[]
+          slug: string
+          specialization: string
+          updated_at: string
+          work_area: string
+          years_experience: number
+        }[]
+      }
       is_admin: { Args: { user_email: string }; Returns: boolean }
       is_employer: { Args: { _user_id: string }; Returns: boolean }
       normalize_company_name: {
