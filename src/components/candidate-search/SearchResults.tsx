@@ -18,6 +18,27 @@ const scoreTone = (score: number) => {
   return "bg-gray-100 text-gray-700 border-gray-200";
 };
 
+/**
+ * How worth contacting this person is right now: what they've said about
+ * looking, plus how recently they touched their profile.
+ */
+const activityFor = (candidate: any) => {
+  const status = candidate.availability_status || "open_to_offers";
+  const updated = candidate.updated_at ? new Date(candidate.updated_at) : null;
+  const days = updated ? (Date.now() - updated.getTime()) / 86_400_000 : Infinity;
+
+  if (status === "not_looking") {
+    return { dot: "bg-gray-400", label: "Not looking right now" };
+  }
+  if (status === "actively_looking" && days <= 30) {
+    return { dot: "bg-green-500", label: "Actively looking" };
+  }
+  if (days <= 60) {
+    return { dot: "bg-amber-500", label: "Open to the right offer" };
+  }
+  return { dot: "bg-gray-400", label: "Quiet lately" };
+};
+
 export function SearchResults({ candidates, explanations = {} }: SearchResultsProps) {
   const navigate = useNavigate();
 
@@ -48,6 +69,7 @@ export function SearchResults({ candidates, explanations = {} }: SearchResultsPr
       <div className="grid gap-6">
         {candidates.map((candidate) => {
           const explanation = explanations[candidate.id];
+          const activity = activityFor(candidate);
           return (
           <Card key={candidate.id} className="hover:shadow-md transition-shadow">
             <CardHeader className="pb-4">
@@ -68,8 +90,9 @@ export function SearchResults({ candidates, explanations = {} }: SearchResultsPr
                       {explanation.score}% match
                     </Badge>
                   )}
-                  <Badge variant="secondary">
-                    {candidate.availability || 'Available'}
+                  <Badge variant="secondary" className="gap-1.5">
+                    <span className={`inline-block h-2 w-2 rounded-full ${activity.dot}`} />
+                    {activity.label}
                   </Badge>
                 </div>
               </div>

@@ -284,9 +284,11 @@ export default function CvReview() {
 
             <Card className="bg-primary/10 backdrop-blur-xl border-primary/40">
               <CardHeader>
-                <CardTitle className="text-white text-xl">Want employers to come to you?</CardTitle>
+                <CardTitle className="text-white text-xl">Want employers to find you?</CardTitle>
                 <CardDescription className="text-white/70">
-                  Create a free Jobz profile and we'll match you to roles automatically — no applying into the void.
+                  Turn this into a free Jobz profile and you'll get a shareable link for your LinkedIn
+                  bio, plus roles matched to you automatically — no applying into the void, and no
+                  agency taking a cut.
                 </CardDescription>
               </CardHeader>
               <CardContent>

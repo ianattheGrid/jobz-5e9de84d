@@ -1,4 +1,6 @@
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 import { useEmployerAuthCheck } from "@/hooks/useEmployerAuthCheck";
 import { useCandidateSearch } from "@/hooks/useCandidateSearch";
 import { SearchForm } from "@/components/candidate-search/SearchForm";
@@ -23,9 +25,45 @@ export default function CandidateSearch() {
     searching
   } = useCandidateSearch();
 
+  const [searchParams] = useSearchParams();
+  const jobId = searchParams.get("jobId");
+  const [jobTitleSearched, setJobTitleSearched] = useState<string | null>(null);
+  const prefilledFor = useRef<string | null>(null);
+
   useEffect(() => {
     checkUser();
   }, [checkUser]);
+
+  // "Find people for this role" — build the search straight from the vacancy.
+  useEffect(() => {
+    if (!jobId || prefilledFor.current === jobId) return;
+    prefilledFor.current = jobId;
+
+    const searchFromJob = async () => {
+      const { data: job } = await supabase
+        .from("jobs")
+        .select("title, location, salary_min, salary_max, work_area, specialization, required_skills, min_years_experience")
+        .eq("id", Number(jobId))
+        .maybeSingle();
+
+      if (!job) return;
+
+      setJobTitleSearched(job.title);
+      await searchByCriteria({
+        jobTitle: job.title || undefined,
+        location: job.location || undefined,
+        minSalary: job.salary_min ?? undefined,
+        maxSalary: job.salary_max ?? undefined,
+        workArea: job.work_area || undefined,
+        itSpecialization: job.specialization && job.specialization !== "Other" ? job.specialization : undefined,
+        skills: job.required_skills?.length ? job.required_skills : undefined,
+        minYearsExperience: job.min_years_experience ?? undefined,
+      });
+    };
+
+    searchFromJob();
+  }, [jobId, searchByCriteria]);
+
 
   if (loading) {
     return <LoadingState />;
@@ -36,6 +74,15 @@ export default function CandidateSearch() {
         <Header />
 
         <div className="flex flex-col gap-8">
+          {jobTitleSearched && (
+            <div className="rounded-lg border border-primary/30 bg-primary/5 p-4">
+              <p className="text-sm text-gray-800">
+                Showing people who fit your vacancy <strong>{jobTitleSearched}</strong>. Change
+                anything below to widen or narrow the search.
+              </p>
+            </div>
+          )}
+
           <SavedSearches />
 
           <NaturalLanguageSearch

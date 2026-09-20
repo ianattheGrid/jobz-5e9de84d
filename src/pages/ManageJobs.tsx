@@ -5,7 +5,7 @@ import { Database } from "@/integrations/supabase/types";
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Pencil, Trash2, LayoutDashboard, Eye, Calendar, Users } from "lucide-react";
+import { Pencil, Trash2, LayoutDashboard, Eye, Calendar, Users, Search } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -223,14 +223,25 @@ export default function ManageJobs() {
                     </div>
                   </div>
                   
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => navigate(`/employer/job-applications/${job.id}`)}
-                    className="text-primary hover:text-primary-foreground hover:bg-primary"
-                  >
-                    View Applications
-                  </Button>
+                  <div className="flex flex-wrap gap-2">
+                    <Button
+                      variant="default"
+                      size="sm"
+                      onClick={() => navigate(`/employer/candidate-search?jobId=${job.id}`)}
+                      className="gap-2"
+                    >
+                      <Search className="h-4 w-4" />
+                      Find people for this role
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => navigate(`/employer/job-applications/${job.id}`)}
+                      className="text-primary hover:text-primary-foreground hover:bg-primary"
+                    >
+                      View Applications
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
