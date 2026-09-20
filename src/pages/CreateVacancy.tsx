@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useNavigate, Link } from "react-router-dom";
 import { useEffect } from "react";
 import { VacancyForm } from "@/components/vacancy/VacancyForm";
+import { VacancyBriefAssistant } from "@/components/vacancy/VacancyBriefAssistant";
 import { vacancyFormSchema, type VacancyFormValues } from "@/components/vacancy/VacancyFormSchema";
 import {
   Breadcrumb,
@@ -185,6 +186,8 @@ export default function CreateVacancy() {
         </BreadcrumbList>
       </Breadcrumb>
       
+      <VacancyBriefAssistant form={form} />
+
       <VacancyForm form={form} onSubmit={onSubmit} />
     </div>
   );
