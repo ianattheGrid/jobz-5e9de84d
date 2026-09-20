@@ -23,15 +23,15 @@ const useCountUp = (target: number, active: boolean, duration = 1400) => {
 };
 
 const usualCosts = [
-  { label: "Agency fee, 15% of a £30,000 salary", value: "£4,500" },
-  { label: "LinkedIn Recruiter licence, 12-month contract", value: "£1,440" },
-  { label: "Job ads & AI screening tools", value: "£185" },
+  { label: "Recruitment agency, 20% of salary", value: "£8,000" },
+  { label: "LinkedIn Recruiter licence, 12-month contract", value: "£10,200" },
+  { label: "AI hiring platform, 10% per hire", value: "£4,000" },
 ];
 
 const CostComparisonVisual = () => {
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.3 });
-  const usualTotal = useCountUp(6125, inView);
+  const usualTotal = useCountUp(8000, inView);
   const jobzFee = useCountUp(9, inView, 900);
 
   return (
