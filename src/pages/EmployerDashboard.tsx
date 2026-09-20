@@ -156,6 +156,15 @@ const EmployerDashboard = () => {
           ))}
         </div>
 
+        <div className="mt-8">
+          <InviteLinkCard
+            role="employer"
+            title="Know another Bristol business that's hiring?"
+            description="Share your link. Anyone who joins through it is credited to you."
+            shareMessage="Hiring in Bristol? Jobz is £9 a month, no agency fee and no contract:"
+          />
+        </div>
+
         {showBonus && userId && (
           <div className="mt-8 space-y-8">
             <BonusNegotiations employerId={userId} />
