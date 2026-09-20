@@ -69,6 +69,7 @@ export function SearchResults({ candidates, explanations = {} }: SearchResultsPr
       <div className="grid gap-6">
         {candidates.map((candidate) => {
           const explanation = explanations[candidate.id];
+          const activity = activityFor(candidate);
           return (
           <Card key={candidate.id} className="hover:shadow-md transition-shadow">
             <CardHeader className="pb-4">
@@ -89,8 +90,9 @@ export function SearchResults({ candidates, explanations = {} }: SearchResultsPr
                       {explanation.score}% match
                     </Badge>
                   )}
-                  <Badge variant="secondary">
-                    {candidate.availability || 'Available'}
+                  <Badge variant="secondary" className="gap-1.5">
+                    <span className={`inline-block h-2 w-2 rounded-full ${activity.dot}`} />
+                    {activity.label}
                   </Badge>
                 </div>
               </div>
