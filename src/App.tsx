@@ -54,6 +54,7 @@ import CvReview from './pages/CvReview';
 import HowHiringReallyWorks from './pages/HowHiringReallyWorks';
 import Contact from './pages/Contact';
 import NotFound from './pages/NotFound';
+import PublicCandidateProfile from './pages/PublicCandidateProfile';
 
 import QRCodePage from './pages/QRCodePage';
 import PricingPage from './pages/PricingPage';
@@ -149,6 +150,7 @@ const App = () => {
           {/* Common routes */}
           <Route path="jobs" element={<Jobs />} />
           <Route path="cv-review" element={<CvReview />} />
+          <Route path="p/:slug" element={<PublicCandidateProfile />} />
           <Route path="faq" element={<FAQ />} />
           <Route path="how-hiring-really-works" element={<HowHiringReallyWorks />} />
           <Route path="contact" element={<Contact />} />
