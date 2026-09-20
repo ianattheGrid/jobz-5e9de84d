@@ -154,6 +154,7 @@ const App = () => {
           <Route path="jobs" element={<Jobs />} />
           <Route path="cv-review" element={<CvReview />} />
           <Route path="p/:slug" element={<PublicCandidateProfile />} />
+          <Route path="join/:code" element={<JoinWithInvite />} />
           <Route path="faq" element={<FAQ />} />
           <Route path="how-hiring-really-works" element={<HowHiringReallyWorks />} />
           <Route path="contact" element={<Contact />} />
