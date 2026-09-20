@@ -3,13 +3,16 @@ import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Eye, MapPin, DollarSign, Calendar, Briefcase, Award, Check, AlertCircle } from "lucide-react";
+import { Eye, MapPin, DollarSign, Calendar, Briefcase, Award, Check, AlertCircle, BookmarkPlus, BookmarkCheck } from "lucide-react";
 import { CandidateProfile } from "@/integrations/supabase/types/profiles";
 import { MatchExplanation } from "./searchCriteria";
+import { useShortlist } from "@/hooks/useShortlist";
 
 interface SearchResultsProps {
   candidates: CandidateProfile[];
   explanations?: Record<string, MatchExplanation>;
+  /** When the search came from a vacancy, remember which one on the shortlist entry. */
+  jobId?: number | null;
 }
 
 const scoreTone = (score: number) => {
@@ -39,8 +42,9 @@ const activityFor = (candidate: any) => {
   return { dot: "bg-gray-400", label: "Quiet lately" };
 };
 
-export function SearchResults({ candidates, explanations = {} }: SearchResultsProps) {
+export function SearchResults({ candidates, explanations = {}, jobId = null }: SearchResultsProps) {
   const navigate = useNavigate();
+  const { savedIds, add: saveToShortlist } = useShortlist();
 
 
   if (candidates.length === 0) {
@@ -201,12 +205,23 @@ export function SearchResults({ candidates, explanations = {} }: SearchResultsPr
                   <Eye className="h-4 w-4" />
                   View Full Profile
                 </Button>
-                <Button variant="outline">
-                  Save Candidate
+                <Button
+                  variant="outline"
+                  className="gap-2"
+                  disabled={savedIds.has(candidate.id)}
+                  onClick={() => saveToShortlist(candidate.id, jobId)}
+                >
+                  {savedIds.has(candidate.id) ? (
+                    <>
+                      <BookmarkCheck className="h-4 w-4" /> On your shortlist
+                    </>
+                  ) : (
+                    <>
+                      <BookmarkPlus className="h-4 w-4" /> Save to shortlist
+                    </>
+                  )}
                 </Button>
-                <Button variant="outline">
-                  Send Message
-                </Button>
+
               </div>
             </CardContent>
           </Card>

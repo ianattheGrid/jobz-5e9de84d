@@ -132,6 +132,7 @@ const App = () => {
           <Route path="employer/candidate/:id" element={<ProtectedRouteWithTimeout userType="employer"><ViewCandidateProfile /></ProtectedRouteWithTimeout>} />
           <Route path="employer/candidates" element={<Navigate to="/employer/candidate-search" replace />} />
           <Route path="employer/candidate-search" element={<ProtectedRouteWithTimeout userType="employer"><CandidateSearch /></ProtectedRouteWithTimeout>} />
+          <Route path="employer/shortlist" element={<ProtectedRouteWithTimeout userType="employer"><EmployerShortlist /></ProtectedRouteWithTimeout>} />
           <Route path="employer/calculator" element={<ProtectedRouteWithTimeout userType="employer"><CostCalculatorPage /></ProtectedRouteWithTimeout>} />
           
           {/* Virtual Recruiter routes */}

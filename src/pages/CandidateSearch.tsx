@@ -119,7 +119,7 @@ export default function CandidateSearch() {
                 Ranked by how well each candidate fits, with the reasoning shown.
               </p>
             </div>
-            <SearchResults candidates={candidates} explanations={explanations} />
+            <SearchResults candidates={candidates} explanations={explanations} jobId={jobId ? Number(jobId) : null} />
           </div>
         </div>
       </div>
