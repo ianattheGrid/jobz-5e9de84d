@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import astronautImage from "@/assets/astronaut-candidate.jpg";
-import rocketImage from "@/assets/rocket-launch.jpg";
 
 const useCountUp = (target: number, active: boolean, duration = 1400) => {
   const [value, setValue] = useState(0);
@@ -23,10 +22,16 @@ const useCountUp = (target: number, active: boolean, duration = 1400) => {
   return value;
 };
 
+const usualCosts = [
+  { label: "Recruitment agency fee", value: "£4,500" },
+  { label: "LinkedIn Recruiter licence", value: "£1,075" },
+  { label: "Job ads & AI screening tools", value: "£550" },
+];
+
 const CostComparisonVisual = () => {
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.3 });
-  const agencyFee = useCountUp(10000, inView);
+  const usualTotal = useCountUp(6125, inView);
   const jobzFee = useCountUp(9, inView, 900);
 
   return (
@@ -34,60 +39,104 @@ const CostComparisonVisual = () => {
       ref={ref}
       className="relative w-screen -mx-[calc((100vw-100%)/2)] overflow-hidden bg-background"
     >
-      <div className="relative flex flex-col md:flex-row w-full min-h-[70vh] md:min-h-[80vh]">
-        {/* Agency side */}
+      {/* Same candidate banner */}
+      <div className="relative py-10 md:py-14 px-6 text-center">
+        <motion.p
+          initial={{ opacity: 0, y: 14 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-xs md:text-sm uppercase tracking-[0.35em] text-muted-foreground"
+        >
+          The same candidate. Two ways to hire them.
+        </motion.p>
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7, delay: 0.1 }}
+          className="mx-auto mt-4 max-w-4xl text-3xl md:text-5xl lg:text-6xl font-black tracking-tight text-foreground"
+        >
+          Same person hired.{" "}
+          <span className="bg-gradient-to-r from-primary via-primary/70 to-primary bg-clip-text text-transparent">
+            Wildly different bill.
+          </span>
+        </motion.h2>
+      </div>
+
+      <div className="relative flex flex-col md:flex-row w-full min-h-[70vh] md:min-h-[78vh]">
+        {/* The usual route */}
         <motion.div
           initial={{ opacity: 0, x: -40 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="group relative w-full md:w-1/2 min-h-[45vh] md:min-h-0 overflow-hidden"
+          className="group relative w-full md:w-1/2 min-h-[55vh] md:min-h-0 overflow-hidden"
         >
           <img
             src={astronautImage}
-            alt="Hiring through a recruitment agency"
+            alt="The same candidate, hired through middlemen"
             className="absolute inset-0 w-full h-full object-cover object-center grayscale contrast-125 transition-transform duration-[1200ms] group-hover:scale-105"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-background/30" />
-          <div className="relative h-full flex flex-col justify-end items-center text-center gap-3 p-8 md:p-14">
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-background/30" />
+          <div className="relative h-full flex flex-col justify-end items-center text-center gap-4 p-8 md:p-14">
             <span className="text-xs md:text-sm uppercase tracking-[0.35em] text-muted-foreground">
-              Recruitment agency
+              LinkedIn + agency + AI tools
             </span>
             <span className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight text-foreground tabular-nums">
-              £{agencyFee.toLocaleString("en-GB")}
+              £{usualTotal.toLocaleString("en-GB")}
             </span>
-            <span className="text-sm md:text-base text-muted-foreground max-w-xs">
-              A typical fee on one £45,000 hire — before they've placed anybody
-              else.
-            </span>
+            <ul className="w-full max-w-xs space-y-2 pt-2">
+              {usualCosts.map((item) => (
+                <li
+                  key={item.label}
+                  className="flex items-center justify-between gap-4 border-b border-border/40 pb-2 text-sm text-muted-foreground"
+                >
+                  <span className="text-left">{item.label}</span>
+                  <span className="font-semibold text-foreground tabular-nums">
+                    {item.value}
+                  </span>
+                </li>
+              ))}
+            </ul>
           </div>
         </motion.div>
 
-        {/* Jobz side */}
+        {/* Jobz route */}
         <motion.div
           initial={{ opacity: 0, x: 40 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.15 }}
-          className="group relative w-full md:w-1/2 min-h-[45vh] md:min-h-0 overflow-hidden"
+          className="group relative w-full md:w-1/2 min-h-[55vh] md:min-h-0 overflow-hidden"
         >
           <img
-            src={rocketImage}
-            alt="Hiring direct with Jobz"
+            src={astronautImage}
+            alt="The same candidate, hired direct through Jobz"
             className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-[1200ms] group-hover:scale-105"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-primary/20" />
-          <div className="relative h-full flex flex-col justify-end items-center text-center gap-3 p-8 md:p-14">
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/75 to-primary/25" />
+          <div className="relative h-full flex flex-col justify-end items-center text-center gap-4 p-8 md:p-14">
             <span className="text-xs md:text-sm uppercase tracking-[0.35em] text-primary">
               Jobz, direct
             </span>
             <span className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight text-primary tabular-nums drop-shadow-[0_0_35px_hsl(var(--primary)/0.55)]">
               £{jobzFee}
             </span>
-            <span className="text-sm md:text-base text-muted-foreground max-w-xs">
-              One flat fee. No percentage, no middleman, no mark-up on the
-              person you hire.
-            </span>
+            <ul className="w-full max-w-xs space-y-2 pt-2">
+              <li className="flex items-center justify-between gap-4 border-b border-primary/25 pb-2 text-sm text-muted-foreground">
+                <span className="text-left">One flat hiring fee</span>
+                <span className="font-semibold text-primary tabular-nums">£9</span>
+              </li>
+              <li className="flex items-center justify-between gap-4 border-b border-primary/25 pb-2 text-sm text-muted-foreground">
+                <span className="text-left">Agency commission</span>
+                <span className="font-semibold text-foreground">£0</span>
+              </li>
+              <li className="flex items-center justify-between gap-4 border-b border-primary/25 pb-2 text-sm text-muted-foreground">
+                <span className="text-left">Licences & tools</span>
+                <span className="font-semibold text-foreground">£0</span>
+              </li>
+            </ul>
           </div>
         </motion.div>
 
@@ -105,30 +154,30 @@ const CostComparisonVisual = () => {
         </motion.div>
       </div>
 
-      {/* Headline */}
-      <div className="relative py-14 md:py-20 px-6 text-center">
+      <div className="relative py-12 md:py-16 px-6 text-center">
         <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
+        <motion.h3
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
-          className="text-3xl md:text-5xl lg:text-6xl font-black tracking-tight text-foreground"
+          transition={{ duration: 0.6 }}
+          className="text-2xl md:text-4xl font-black tracking-tight text-foreground"
         >
           You're an SME.{" "}
           <span className="bg-gradient-to-r from-primary via-primary/70 to-primary bg-clip-text text-transparent">
-            Who would you hire?
+            Which bill would you rather pay?
           </span>
-        </motion.h2>
+        </motion.h3>
         <motion.p
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.25, duration: 0.6 }}
-          className="mx-auto mt-5 max-w-2xl text-base md:text-lg text-muted-foreground"
+          transition={{ delay: 0.2, duration: 0.6 }}
+          className="mx-auto mt-4 max-w-2xl text-sm md:text-base text-muted-foreground"
         >
-          Same candidate. Same job. The only difference is who takes a cut on
-          the way through.
+          Illustrative costs for one hire on a £30,000 salary, using publicly
+          reported market rates. The candidate is the same either way — only the
+          middlemen change.
         </motion.p>
       </div>
     </section>
