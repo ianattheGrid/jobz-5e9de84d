@@ -120,21 +120,24 @@ const CostComparisonVisual = () => {
             <span className="text-xs md:text-sm uppercase tracking-[0.35em] text-primary">
               Jobz, direct
             </span>
-            <span className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight text-primary tabular-nums drop-shadow-[0_0_35px_hsl(var(--primary)/0.55)]">
+            <span className="flex items-baseline gap-2 text-5xl md:text-7xl lg:text-8xl font-black tracking-tight text-primary tabular-nums drop-shadow-[0_0_35px_hsl(var(--primary)/0.55)]">
               £{jobzFee}
+              <span className="text-base md:text-2xl font-bold text-primary/80">
+                /month
+              </span>
             </span>
             <ul className="w-full max-w-xs space-y-2 pt-2">
               <li className="flex items-center justify-between gap-4 border-b border-primary/25 pb-2 text-sm text-muted-foreground">
-                <span className="text-left">One flat hiring fee</span>
+                <span className="text-left">Flat monthly fee, cancel anytime</span>
                 <span className="font-semibold text-primary tabular-nums">£9</span>
               </li>
               <li className="flex items-center justify-between gap-4 border-b border-primary/25 pb-2 text-sm text-muted-foreground">
-                <span className="text-left">Agency commission</span>
+                <span className="text-left">Commission per hire</span>
                 <span className="font-semibold text-foreground">£0</span>
               </li>
               <li className="flex items-center justify-between gap-4 border-b border-primary/25 pb-2 text-sm text-muted-foreground">
-                <span className="text-left">Licences & tools</span>
-                <span className="font-semibold text-foreground">£0</span>
+                <span className="text-left">Yearly contract</span>
+                <span className="font-semibold text-foreground">None</span>
               </li>
             </ul>
           </div>
