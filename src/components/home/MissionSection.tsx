@@ -1,33 +1,46 @@
+import { SectionShell } from "@/components/ui/section-shell";
+import { Starfield } from "@/components/ui/starfield";
+
+const LINES = [
+  {
+    text: "Online and traditional middlemen have made hiring expensive and slow – they profit from complexity.",
+    animation: "lg:animate-typewriter",
+    tone: "text-foreground/70",
+  },
+  {
+    text: "No more per-hire business talk. Candidates get hired for the price of a coffee.",
+    animation: "lg:animate-typewriter-2 lg:opacity-0",
+    tone: "text-foreground/85",
+  },
+  {
+    text: "Employers can attract talent with \u201cYou're Hired\u201d bonuses & anonymously tap into our huge community to find candidates.",
+    animation: "lg:animate-typewriter-3 lg:opacity-0",
+    tone: "text-foreground/70",
+  },
+];
+
 export const MissionSection = () => {
   return (
-    <section className="py-16 bg-background overflow-hidden">
-      <div className="container mx-auto px-4 max-w-7xl overflow-hidden">
-        <div className="space-y-3 flex flex-col items-start w-full max-w-full overflow-hidden">
-          <p className="text-sm md:text-base text-foreground/80 leading-relaxed font-mono pr-4 
-                        whitespace-normal lg:whitespace-nowrap lg:overflow-hidden 
-                        animate-fade-in lg:animate-typewriter">
-            Online and traditional middlemen have made hiring expensive and slow – they profit from complexity.
+    <SectionShell size="md" className="border-y border-white/5">
+      <Starfield density="low" />
+      <div className="flex w-full max-w-full flex-col items-start space-y-4 overflow-hidden">
+        {LINES.map((line) => (
+          <p
+            key={line.text}
+            className={`pr-6 font-mono text-sm leading-relaxed animate-fade-in sm:text-base
+                        whitespace-normal lg:overflow-hidden lg:whitespace-nowrap ${line.tone} ${line.animation}`}
+          >
+            {line.text}
           </p>
-          
-          <p className="text-sm md:text-base text-foreground/90 leading-relaxed font-mono pr-4 
-                        whitespace-normal lg:whitespace-nowrap lg:overflow-hidden 
-                        animate-fade-in lg:animate-typewriter-2 lg:opacity-0">
-            No more per-hire business talk. Candidates get hired for the price of a coffee.
-          </p>
-          
-          <p className="text-sm md:text-base text-foreground/80 leading-relaxed font-mono pr-4 
-                        whitespace-normal lg:whitespace-nowrap lg:overflow-hidden 
-                        animate-fade-in lg:animate-typewriter-3 lg:opacity-0">
-            Employers can attract talent with "You're Hired" bonuses & anonymously tap into our huge community to find candidates.
-          </p>
-          
-          <p className="text-base md:text-lg font-mono font-bold text-primary mt-6 pr-4 
-                        whitespace-normal lg:whitespace-nowrap lg:overflow-hidden 
-                        animate-fade-in lg:animate-typewriter-4 lg:opacity-0">
-            Mission accomplished.
-          </p>
-        </div>
+        ))}
+
+        <p
+          className="mt-4 pr-6 font-mono text-base font-bold text-primary animate-fade-in sm:text-lg
+                     whitespace-normal lg:overflow-hidden lg:whitespace-nowrap lg:animate-typewriter-4 lg:opacity-0"
+        >
+          Mission accomplished.
+        </p>
       </div>
-    </section>
+    </SectionShell>
   );
 };
