@@ -219,6 +219,13 @@ const App = () => {
               </AdminProtectedRoute>
             </ErrorBoundary>
           } />
+          <Route path="admin/growth" element={
+            <ErrorBoundary>
+              <AdminProtectedRoute>
+                <AdminGrowth />
+              </AdminProtectedRoute>
+            </ErrorBoundary>
+          } />
 
           <Route path="*" element={<NotFound />} />
         </Route>
