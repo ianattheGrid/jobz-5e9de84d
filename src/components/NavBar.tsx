@@ -13,6 +13,14 @@ const NavBar = () => {
   const { user, userType, loading } = useAuth();
   const [userName, setUserName] = useState<string | null>(null);
   const navigate = useNavigate();
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   useEffect(() => {
     console.log('NavBar user data:', {
@@ -110,16 +118,16 @@ const NavBar = () => {
               <div className="hidden lg:flex items-center gap-4">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button className="bg-[#FF69B4] hover:bg-[#FF50A8] text-white">
+                    <Button>
                       <User className="h-4 w-4 mr-2" />
                       {userName || userType || 'Account'}
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-48 bg-white">
+                  <DropdownMenuContent align="end" className="w-52">
                     {userType && (
                       <Link 
                         to={`/${userType}/dashboard`}
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                        className="block w-full rounded-lg px-3 py-2 text-left text-sm text-foreground/80 transition-colors hover:bg-white/5 hover:text-foreground"
                       >
                         Dashboard
                       </Link>
@@ -127,7 +135,7 @@ const NavBar = () => {
                     {userType && (
                       <Link 
                         to={`/${userType}/profile`}
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                        className="block w-full rounded-lg px-3 py-2 text-left text-sm text-foreground/80 transition-colors hover:bg-white/5 hover:text-foreground"
                       >
                         Profile
                       </Link>
@@ -135,7 +143,7 @@ const NavBar = () => {
                     <div className="h-px bg-border my-1" />
                     <Link 
                       to="/contact"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left flex items-center"
+                      className="flex w-full items-center rounded-lg px-3 py-2 text-sm text-foreground/80 transition-colors hover:bg-white/5 hover:text-foreground"
                     >
                       <Mail className="h-4 w-4 mr-2" />
                       Contact Us
@@ -144,7 +152,7 @@ const NavBar = () => {
                       href="https://dgrid.co/contribute" 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left flex items-center"
+                      className="flex w-full items-center rounded-lg px-3 py-2 text-sm text-foreground/80 transition-colors hover:bg-white/5 hover:text-foreground"
                     >
                       <Heart className="h-4 w-4 mr-2" />
                       Contribute
@@ -153,7 +161,7 @@ const NavBar = () => {
                     <DeleteAccountDialog>
                       <DropdownMenuItem
                         onSelect={(e) => e.preventDefault()}
-                        className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left flex items-center text-destructive focus:text-destructive"
+                        className="flex w-full cursor-pointer items-center rounded-lg px-3 py-2 text-left text-sm text-destructive focus:text-destructive"
                       >
                         <Trash2 className="h-4 w-4 mr-2" />
                         Delete Account
@@ -162,7 +170,7 @@ const NavBar = () => {
                     <div className="h-px bg-border my-1" />
                     <DropdownMenuItem
                       onClick={handleSignOut}
-                      className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left flex items-center"
+                      className="flex w-full cursor-pointer items-center rounded-lg px-3 py-2 text-left text-sm text-foreground/80 hover:text-foreground"
                     >
                       <LogOut className="h-4 w-4 mr-2" />
                       Sign Out
@@ -174,28 +182,28 @@ const NavBar = () => {
               <div className="hidden lg:flex items-center gap-4">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button className="bg-[#FF69B4] hover:bg-[#FF50A8] text-white">
+                    <Button>
                       <LogIn className="h-4 w-4 mr-2" />
                       Sign In
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-48 bg-white">
+                  <DropdownMenuContent align="end" className="w-52">
                     <div className="py-1">
                       <Link 
                         to="/candidate/signin"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                        className="block w-full rounded-lg px-3 py-2 text-left text-sm text-foreground/80 transition-colors hover:bg-white/5 hover:text-foreground"
                       >
                         Candidate Sign In
                       </Link>
                       <Link 
                         to="/employer/signin"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                        className="block w-full rounded-lg px-3 py-2 text-left text-sm text-foreground/80 transition-colors hover:bg-white/5 hover:text-foreground"
                       >
                         Employer Sign In
                       </Link>
                       <Link 
                         to="/vr/signin"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                        className="block w-full rounded-lg px-3 py-2 text-left text-sm text-foreground/80 transition-colors hover:bg-white/5 hover:text-foreground"
                       >
                         Connector Sign In
                       </Link>
@@ -203,10 +211,7 @@ const NavBar = () => {
                   </DropdownMenuContent>
                 </DropdownMenu>
 
-                <Button 
-                  onClick={() => navigate('/signup')}
-                  className="bg-[#FF69B4] hover:bg-[#FF50A8] text-white"
-                >
+                <Button onClick={() => navigate('/signup')}>
                   <UserPlus className="h-4 w-4 mr-2" />
                   Sign Up
                 </Button>
