@@ -4,6 +4,7 @@ import { NotificationSettings } from "@/components/candidate/NotificationSetting
 import { PersonalizedJobRecommendations } from "@/components/candidate/PersonalizedJobRecommendations";
 import ExternalJobsWidget from "@/components/candidate/ExternalJobsWidget";
 import { CosmicBackground } from "@/components/ui/cosmic-background";
+import { InviteLinkCard } from "@/components/invite/InviteLinkCard";
 import { DashboardCard } from "@/components/ui/dashboard-card";
 import { 
   UserCircle,
