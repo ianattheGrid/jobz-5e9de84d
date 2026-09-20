@@ -23,9 +23,9 @@ const useCountUp = (target: number, active: boolean, duration = 1400) => {
 };
 
 const usualCosts = [
-  { label: "Recruitment agency fee", value: "£4,500" },
-  { label: "LinkedIn Recruiter licence", value: "£1,075" },
-  { label: "Job ads & AI screening tools", value: "£550" },
+  { label: "Agency fee, 15% of a £30,000 salary", value: "£4,500" },
+  { label: "LinkedIn Recruiter licence, 12-month contract", value: "£1,440" },
+  { label: "Job ads & AI screening tools", value: "£185" },
 ];
 
 const CostComparisonVisual = () => {
@@ -120,21 +120,24 @@ const CostComparisonVisual = () => {
             <span className="text-xs md:text-sm uppercase tracking-[0.35em] text-primary">
               Jobz, direct
             </span>
-            <span className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight text-primary tabular-nums drop-shadow-[0_0_35px_hsl(var(--primary)/0.55)]">
+            <span className="flex items-baseline gap-2 text-5xl md:text-7xl lg:text-8xl font-black tracking-tight text-primary tabular-nums drop-shadow-[0_0_35px_hsl(var(--primary)/0.55)]">
               £{jobzFee}
+              <span className="text-base md:text-2xl font-bold text-primary/80">
+                /month
+              </span>
             </span>
             <ul className="w-full max-w-xs space-y-2 pt-2">
               <li className="flex items-center justify-between gap-4 border-b border-primary/25 pb-2 text-sm text-muted-foreground">
-                <span className="text-left">One flat hiring fee</span>
+                <span className="text-left">Flat monthly fee, cancel anytime</span>
                 <span className="font-semibold text-primary tabular-nums">£9</span>
               </li>
               <li className="flex items-center justify-between gap-4 border-b border-primary/25 pb-2 text-sm text-muted-foreground">
-                <span className="text-left">Agency commission</span>
+                <span className="text-left">Commission per hire</span>
                 <span className="font-semibold text-foreground">£0</span>
               </li>
               <li className="flex items-center justify-between gap-4 border-b border-primary/25 pb-2 text-sm text-muted-foreground">
-                <span className="text-left">Licences & tools</span>
-                <span className="font-semibold text-foreground">£0</span>
+                <span className="text-left">Yearly contract</span>
+                <span className="font-semibold text-foreground">None</span>
               </li>
             </ul>
           </div>
@@ -176,8 +179,10 @@ const CostComparisonVisual = () => {
           className="mx-auto mt-4 max-w-2xl text-sm md:text-base text-muted-foreground"
         >
           Illustrative costs for one hire on a £30,000 salary, using publicly
-          reported market rates. The candidate is the same either way — only the
-          middlemen change.
+          reported market rates. LinkedIn Recruiter is sold as a 12-month
+          contract, and AI hiring platforms such as Jack &amp; Jill take around
+          10% of salary per hire — about £3,000 on the same job. The candidate
+          is the same either way. Only the middlemen change.
         </motion.p>
       </div>
     </section>
