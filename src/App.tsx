@@ -55,6 +55,7 @@ import HowHiringReallyWorks from './pages/HowHiringReallyWorks';
 import Contact from './pages/Contact';
 import NotFound from './pages/NotFound';
 import PublicCandidateProfile from './pages/PublicCandidateProfile';
+import JoinWithInvite from './pages/JoinWithInvite';
 
 import QRCodePage from './pages/QRCodePage';
 import PricingPage from './pages/PricingPage';
