@@ -124,6 +124,14 @@ const CandidateDashboard = () => {
             </DashboardCard>
           ))}
         </div>
+
+        <div className="mt-8">
+          <InviteLinkCard
+            role="candidate"
+            title="Know someone looking for work?"
+            description="Share your link. Anyone who joins through it is credited to you."
+          />
+        </div>
       </div>
     </CosmicBackground>
   );
