@@ -6,6 +6,7 @@ import {
   Briefcase,
   Database,
   FileText,
+  Linkedin,
   Send,
   Sparkles,
   TriangleAlert,
