@@ -6,7 +6,7 @@ import { Switch } from "@/components/ui/switch";
 import { useSavedSearches } from "@/hooks/search/useSavedSearches";
 
 export function SavedSearches() {
-  const { savedSearches, updateMatchThreshold, toggleSearchActive } = useSavedSearches();
+  const { savedSearches, updateMatchThreshold, toggleSearchActive, setAlertFrequency } = useSavedSearches();
 
   if (savedSearches.length === 0) {
     return null;
@@ -56,6 +56,18 @@ export function SavedSearches() {
                   <Switch
                     checked={search.is_active}
                     onCheckedChange={(checked) => toggleSearchActive(search.id, checked)}
+                  />
+                </div>
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <p className="text-sm font-medium">Email me new matches daily</p>
+                    <p className="text-xs text-muted-foreground">
+                      One email each morning with anyone new who fits, and why they fit.
+                    </p>
+                  </div>
+                  <Switch
+                    checked={search.alert_frequency === 'daily'}
+                    onCheckedChange={(checked) => setAlertFrequency(search.id, checked ? 'daily' : 'off')}
                   />
                 </div>
               </div>
