@@ -934,6 +934,66 @@ export type Database = {
         }
         Relationships: []
       }
+      employer_prospects: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          company_name: string
+          company_website: string | null
+          contact_email: string | null
+          created_at: string
+          estimated_agency_fee: number | null
+          estimated_salary: number | null
+          id: string
+          notes: string | null
+          role_location: string | null
+          role_title: string | null
+          sent_at: string | null
+          source: string
+          source_url: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          company_name: string
+          company_website?: string | null
+          contact_email?: string | null
+          created_at?: string
+          estimated_agency_fee?: number | null
+          estimated_salary?: number | null
+          id?: string
+          notes?: string | null
+          role_location?: string | null
+          role_title?: string | null
+          sent_at?: string | null
+          source?: string
+          source_url: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          company_name?: string
+          company_website?: string | null
+          contact_email?: string | null
+          created_at?: string
+          estimated_agency_fee?: number | null
+          estimated_salary?: number | null
+          id?: string
+          notes?: string | null
+          role_location?: string | null
+          role_title?: string | null
+          sent_at?: string | null
+          source?: string
+          source_url?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       employer_searches: {
         Row: {
           alert_frequency: string
@@ -1372,6 +1432,84 @@ export type Database = {
           },
         ]
       }
+      invite_codes: {
+        Row: {
+          code: string
+          created_at: string
+          id: string
+          owner_id: string
+          owner_role: string
+          updated_at: string
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          id?: string
+          owner_id: string
+          owner_role: string
+          updated_at?: string
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          id?: string
+          owner_id?: string
+          owner_role?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      invite_signups: {
+        Row: {
+          code: string
+          created_at: string
+          id: string
+          inviter_id: string | null
+          new_user_id: string
+          new_user_role: string | null
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          id?: string
+          inviter_id?: string | null
+          new_user_id: string
+          new_user_role?: string | null
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          id?: string
+          inviter_id?: string | null
+          new_user_id?: string
+          new_user_role?: string | null
+        }
+        Relationships: []
+      }
+      job_locks: {
+        Row: {
+          job_name: string
+          last_run_at: string | null
+          locked_until: string
+          paused_reason: string | null
+          updated_at: string
+        }
+        Insert: {
+          job_name: string
+          last_run_at?: string | null
+          locked_until: string
+          paused_reason?: string | null
+          updated_at?: string
+        }
+        Update: {
+          job_name?: string
+          last_run_at?: string | null
+          locked_until?: string
+          paused_reason?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       job_title_suggestions: {
         Row: {
           admin_notes: string | null
@@ -1678,6 +1816,27 @@ export type Database = {
           specialization?: string | null
           updated_at?: string
           work_area?: string
+        }
+        Relationships: []
+      }
+      outreach_suppressions: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          reason: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          reason?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          reason?: string | null
         }
         Relationships: []
       }
