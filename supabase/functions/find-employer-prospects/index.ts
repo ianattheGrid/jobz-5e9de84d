@@ -1,0 +1,136 @@
+// Nightly agent: builds a queue of Bristol employers who are advertising jobs in
+// public, so an admin can decide whether to invite them to Jobz.
+// It never emails anyone — approval and sending happen separately.
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
+import { corsHeaders } from "../_shared/cors.ts";
+
+const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
+const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+
+const JOB_NAME = "find-employer-prospects";
+const BATCH_LIMIT = 25; // hard cap on prospects created per run
+const LOCK_MINUTES = 15;
+const AGENCY_FEE_RATE = 0.2;
+
+function normalise(name: string) {
+  return name.toLowerCase().replace(/[^a-z0-9]/g, "");
+}
+
+Deno.serve(async (req) => {
+  if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
+
+  const supabase = createClient(SUPABASE_URL, SERVICE_ROLE);
+
+  try {
+    // --- Paused? -----------------------------------------------------------
+    const { data: lock } = await supabase
+      .from("job_locks")
+      .select("*")
+      .eq("job_name", JOB_NAME)
+      .maybeSingle();
+
+    if (lock?.paused_reason) {
+      return new Response(
+        JSON.stringify({ skipped: true, reason: lock.paused_reason }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" } },
+      );
+    }
+
+    // --- Single flight -----------------------------------------------------
+    const now = new Date();
+    const lockedUntil = new Date(now.getTime() + LOCK_MINUTES * 60_000).toISOString();
+
+    if (lock && new Date(lock.locked_until) > now) {
+      return new Response(JSON.stringify({ skipped: true, reason: "already running" }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    const { error: lockError } = await supabase
+      .from("job_locks")
+      .upsert(
+        { job_name: JOB_NAME, locked_until: lockedUntil, last_run_at: now.toISOString(), updated_at: now.toISOString() },
+        { onConflict: "job_name" },
+      );
+    if (lockError) throw lockError;
+
+    // --- Who is already on Jobz, and who have we seen before? --------------
+    const [{ data: employers }, { data: existing }] = await Promise.all([
+      supabase.from("employer_profiles").select("company_name"),
+      supabase.from("employer_prospects").select("source_url, company_name"),
+    ]);
+
+    const onJobz = new Set((employers || []).map((e: any) => normalise(e.company_name || "")));
+    const seenUrls = new Set((existing || []).map((p: any) => p.source_url));
+    const seenCompanies = new Set((existing || []).map((p: any) => normalise(p.company_name || "")));
+
+    // --- Recently advertised roles ----------------------------------------
+    const since = new Date(now.getTime() - 7 * 24 * 60 * 60_000).toISOString();
+    const { data: jobs, error: jobsError } = await supabase
+      .from("external_jobs")
+      .select("id, job_title, location, salary_min, salary_max, job_url, scraped_at, company_id, target_companies(company_name, website, location)")
+      .eq("is_active", true)
+      .gte("scraped_at", since)
+      .order("scraped_at", { ascending: false })
+      .limit(300);
+    if (jobsError) throw jobsError;
+
+    const created: string[] = [];
+
+    for (const job of jobs || []) {
+      if (created.length >= BATCH_LIMIT) break;
+
+      const company = (job as any).target_companies;
+      const companyName: string | undefined = company?.company_name;
+      if (!companyName) continue;
+
+      const key = normalise(companyName);
+      if (onJobz.has(key) || seenCompanies.has(key) || seenUrls.has(job.job_url)) continue;
+
+      const salary = job.salary_max || job.salary_min || null;
+
+      const { error: insertError } = await supabase.from("employer_prospects").insert({
+        company_name: companyName,
+        company_website: company?.website || null,
+        role_title: job.job_title,
+        role_location: job.location || company?.location || null,
+        source_url: job.job_url,
+        source: "external_jobs",
+        estimated_salary: salary,
+        estimated_agency_fee: salary ? Math.round(salary * AGENCY_FEE_RATE) : null,
+        status: "new",
+      });
+
+      // A duplicate simply means another run already queued it.
+      if (insertError && !insertError.message.includes("duplicate")) {
+        console.error("Could not queue prospect:", insertError.message);
+        continue;
+      }
+
+      seenCompanies.add(key);
+      seenUrls.add(job.job_url);
+      created.push(companyName);
+    }
+
+    await supabase
+      .from("job_locks")
+      .update({ locked_until: new Date().toISOString(), updated_at: new Date().toISOString() })
+      .eq("job_name", JOB_NAME);
+
+    return new Response(JSON.stringify({ created: created.length, companies: created }), {
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  } catch (error: any) {
+    console.error("find-employer-prospects failed:", error);
+    await supabase
+      .from("job_locks")
+      .upsert(
+        { job_name: JOB_NAME, locked_until: new Date().toISOString(), paused_reason: `Failed: ${error.message}`.slice(0, 300), updated_at: new Date().toISOString() },
+        { onConflict: "job_name" },
+      );
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+});

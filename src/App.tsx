@@ -55,6 +55,7 @@ import HowHiringReallyWorks from './pages/HowHiringReallyWorks';
 import Contact from './pages/Contact';
 import NotFound from './pages/NotFound';
 import PublicCandidateProfile from './pages/PublicCandidateProfile';
+import JoinWithInvite from './pages/JoinWithInvite';
 
 import QRCodePage from './pages/QRCodePage';
 import PricingPage from './pages/PricingPage';
@@ -84,6 +85,7 @@ import SwipeCandidates from './pages/SwipeCandidates';
 import SwipeEmployers from './pages/SwipeEmployers';
 import CVRedirect from './pages/CVRedirect';
 import AdminExternalJobs from './pages/AdminExternalJobs';
+import AdminGrowth from './pages/AdminGrowth';
 import AdminSignIn from './pages/AdminSignIn';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminUserManagement from './pages/AdminUserManagement';
@@ -153,6 +155,7 @@ const App = () => {
           <Route path="jobs" element={<Jobs />} />
           <Route path="cv-review" element={<CvReview />} />
           <Route path="p/:slug" element={<PublicCandidateProfile />} />
+          <Route path="join/:code" element={<JoinWithInvite />} />
           <Route path="faq" element={<FAQ />} />
           <Route path="how-hiring-really-works" element={<HowHiringReallyWorks />} />
           <Route path="contact" element={<Contact />} />
@@ -214,6 +217,13 @@ const App = () => {
             <ErrorBoundary>
               <AdminProtectedRoute>
                 <AdminExternalJobs />
+              </AdminProtectedRoute>
+            </ErrorBoundary>
+          } />
+          <Route path="admin/growth" element={
+            <ErrorBoundary>
+              <AdminProtectedRoute>
+                <AdminGrowth />
               </AdminProtectedRoute>
             </ErrorBoundary>
           } />

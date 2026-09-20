@@ -340,6 +340,39 @@ export default function CvReview() {
                 </Button>
               </CardContent>
             </Card>
+
+            <Card className="bg-white/5 backdrop-blur-xl border-white/15">
+              <CardHeader>
+                <CardTitle className="text-white text-lg">Know someone job hunting?</CardTitle>
+                <CardDescription className="text-white/70">
+                  The CV review is free and always will be. Pass it on.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="flex flex-wrap gap-2">
+                <Button asChild variant="outline">
+                  <a
+                    href={`https://wa.me/?text=${encodeURIComponent(
+                      `Free CV review, no sign-up needed: ${typeof window !== "undefined" ? window.location.origin : ""}/cv-review`,
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Share on WhatsApp
+                  </a>
+                </Button>
+                <Button asChild variant="outline">
+                  <a
+                    href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
+                      `${typeof window !== "undefined" ? window.location.origin : ""}/cv-review`,
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Share on LinkedIn
+                  </a>
+                </Button>
+              </CardContent>
+            </Card>
           </section>
         )}
       </main>

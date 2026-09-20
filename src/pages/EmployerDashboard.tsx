@@ -7,6 +7,7 @@ import NavBar from "@/components/NavBar";
 import BonusNegotiations from "@/components/employer/BonusNegotiations";
 import { BonusPaymentsSection } from "@/components/employer/BonusPaymentsSection";
 import { CosmicBackground } from "@/components/ui/cosmic-background";
+import { InviteLinkCard } from "@/components/invite/InviteLinkCard";
 import { DashboardCard } from "@/components/ui/dashboard-card";
 import { Briefcase, Building2, Search, Calendar, UserCircle, MessageSquare, Sparkles } from "lucide-react";
 
@@ -154,6 +155,15 @@ const EmployerDashboard = () => {
               </div>
             </DashboardCard>
           ))}
+        </div>
+
+        <div className="mt-8">
+          <InviteLinkCard
+            role="employer"
+            title="Know another Bristol business that's hiring?"
+            description="Share your link. Anyone who joins through it is credited to you."
+            shareMessage="Hiring in Bristol? Jobz is £9 a month, no agency fee and no contract:"
+          />
         </div>
 
         {showBonus && userId && (
