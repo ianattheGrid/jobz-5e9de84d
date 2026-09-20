@@ -7,7 +7,44 @@ import { Button } from "@/components/ui/button";
 import { HIRING_MODELS } from "@/data/hiringModels";
 import { PRIMARY_COLOR_PATTERN } from "@/styles/colorPatterns";
 
+const MARKUP_CHAIN = [
+  {
+    step: "1",
+    title: "The recruiter pays LinkedIn",
+    detail:
+      "Searching LinkedIn properly needs a paid Recruiter seat — publicly reported at roughly £1,440 a year for a solo Lite licence and around £13,000 a year for the full version, about £1,000 a month per recruiter.",
+  },
+  {
+    step: "2",
+    title: "That bill has to be earned back",
+    detail:
+      "A seat costs the same whether or not anyone is placed. The only way to cover it is placement fees, so the pressure sits on every candidate who gets put forward.",
+  },
+  {
+    step: "3",
+    title: "You are marked up",
+    detail:
+      "The employer is charged 15–25% of your first-year salary. On a £45,000 job that is £6,750–£11,250 — for an introduction, not for the work you will do.",
+  },
+  {
+    step: "4",
+    title: "Or the job never appears",
+    detail:
+      "Plenty of smaller employers simply cannot find £9,000 on top of a salary, so the role is delayed or never advertised. You never see it, and you never know it existed.",
+  },
+];
+
 const FAQ_ITEMS = [
+  {
+    question: "What does LinkedIn Recruiter cost?",
+    answer:
+      "LinkedIn does not publish a rate card for its higher tiers. Buyer-reported figures put Recruiter Lite at around £1,440 a year per seat and the full Recruiter licence at roughly £13,000 a year per seat — about £1,000 a month, per recruiter, before anyone is hired.",
+  },
+  {
+    question: "Why do recruiters charge 15–25% of a salary?",
+    answer:
+      "Because being able to find you costs them money. A LinkedIn Recruiter seat, job slots and InMail credits are paid for whether or not a placement happens, so the cost is recovered through a percentage fee on the salary of the people they place — which means you are the one marked up.",
+  },
   {
     question: "What does a recruitment agency cost an employer?",
     answer:
@@ -76,7 +113,7 @@ const HowHiringReallyWorks = () => {
           {/* Models */}
           <section className="space-y-6">
             <h2 className="text-2xl md:text-3xl font-bold text-foreground">
-              The five models, side by side
+              The six models, side by side
             </h2>
             <div className="grid gap-4">
               {HIRING_MODELS.map((model) => (
@@ -119,11 +156,50 @@ const HowHiringReallyWorks = () => {
               ))}
             </div>
             <p className="text-xs text-muted-foreground">
-              Pricing described as publicly stated by each type of platform at the time of
-              writing. Figures describe the charging model rather than a quote from any one
+              Pricing described as publicly stated, or as reported by buyers, at the time of
+              writing. LinkedIn does not publish a public rate card for its higher Recruiter
+              tiers. Figures describe the charging model rather than a quote from any one
               provider.
             </p>
           </section>
+
+          {/* Why you get marked up */}
+          <section className="space-y-6">
+            <h2 className="text-2xl md:text-3xl font-bold text-foreground">
+              Why you get marked up
+            </h2>
+            <p className="text-foreground">
+              Recruiters used to live on job boards. Now they live on LinkedIn — and
+              searching LinkedIn properly is not free. That single fact explains most of
+              what happens to your salary before you ever hear about a job.
+            </p>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {MARKUP_CHAIN.map((item) => (
+                <Card key={item.step} className="p-5 space-y-2">
+                  <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground text-sm font-bold">
+                    {item.step}
+                  </span>
+                  <h3 className="font-semibold text-foreground">{item.title}</h3>
+                  <p className="text-sm text-muted-foreground">{item.detail}</p>
+                </Card>
+              ))}
+            </div>
+            <Card className="p-6 space-y-2 border-primary bg-primary/10">
+              <h3 className="font-bold text-foreground">The £45,000 example</h3>
+              <p className="text-sm text-muted-foreground">
+                One recruiter seat: about £13,000 a year. One placement at 20% of a £45,000
+                salary: £9,000. So a single introduction pays most of the year's licence —
+                and that £9,000 came out of the same budget as your pay, your training or
+                the next hire on the team. On Jobz the employer pays £9 and talks to you
+                directly.
+              </p>
+            </Card>
+            <p className="text-foreground">
+              You are not expensive. Being <em>found</em> is expensive — and you are the one
+              being marked up to pay for it.
+            </p>
+          </section>
+
 
           {/* Candidates */}
           <section className="space-y-4">

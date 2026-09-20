@@ -6,6 +6,7 @@ import {
   Briefcase,
   Database,
   FileText,
+  Linkedin,
   Send,
   Sparkles,
   TriangleAlert,
@@ -28,6 +29,7 @@ const ICONS = {
   bot: Bot,
   send: Send,
   sparkles: Sparkles,
+  linkedin: Linkedin,
 } as const;
 
 export const MiddlemenComparisonSection = () => {
@@ -46,6 +48,11 @@ export const MiddlemenComparisonSection = () => {
           <p className="text-lg text-foreground">
             Agencies are not the only middlemen any more. Tap a model to see what it
             really costs — and what it does with your CV.
+          </p>
+          <p className="text-base text-muted-foreground">
+            Most recruiters now find people on LinkedIn, and a licence to search it
+            properly is reported at around £1,000 a month, per recruiter. That bill does
+            not disappear — it arrives as a percentage of your salary.
           </p>
         </div>
 
