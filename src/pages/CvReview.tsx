@@ -23,6 +23,17 @@ interface CvBullet {
   after: string;
 }
 
+interface CvProfileDraft {
+  fullName?: string;
+  jobTitle?: string;
+  desiredJobTitle?: string;
+  yearsExperience?: number;
+  skills?: string[];
+  location?: string;
+  currentEmployer?: string;
+  summary?: string;
+}
+
 interface CvReviewResult {
   score: number;
   headline: string;
@@ -31,6 +42,7 @@ interface CvReviewResult {
   rewrittenBullets: CvBullet[];
   missingKeywords?: string[];
   suggestedTitles?: string[];
+  profileDraft?: CvProfileDraft;
 }
 
 export default function CvReview() {
@@ -98,6 +110,16 @@ export default function CvReview() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const draft = review?.profileDraft;
+
+  // Hand the draft to the profile builder; nothing is saved until the candidate confirms it there.
+  const startProfile = () => {
+    if (draft) {
+      sessionStorage.setItem("jobz_cv_profile_draft", JSON.stringify(draft));
+    }
+    navigate("/candidate/signup");
   };
 
   const scoreColour = (score: number) =>
@@ -291,9 +313,30 @@ export default function CvReview() {
                   agency taking a cut.
                 </CardDescription>
               </CardHeader>
-              <CardContent>
-                <Button size="lg" className="gap-2" onClick={() => navigate("/candidate/signup")}>
-                  Create my free profile <ArrowRight className="h-4 w-4" />
+              <CardContent className="space-y-4">
+                {draft && (
+                  <div className="rounded-lg border border-white/15 bg-black/30 p-4 space-y-1">
+                    <p className="text-white font-medium mb-2">We'll start your profile with:</p>
+                    {draft.fullName && <p className="text-white/80 text-sm">Name: {draft.fullName}</p>}
+                    {draft.jobTitle && <p className="text-white/80 text-sm">Current role: {draft.jobTitle}</p>}
+                    {draft.desiredJobTitle && (
+                      <p className="text-white/80 text-sm">Looking for: {draft.desiredJobTitle}</p>
+                    )}
+                    {typeof draft.yearsExperience === "number" && (
+                      <p className="text-white/80 text-sm">Experience: {draft.yearsExperience} years</p>
+                    )}
+                    {draft.location && <p className="text-white/80 text-sm">Location: {draft.location}</p>}
+                    {draft.skills?.length ? (
+                      <p className="text-white/80 text-sm">Skills: {draft.skills.slice(0, 10).join(", ")}</p>
+                    ) : null}
+                    <p className="text-white/50 text-xs pt-2">
+                      Taken straight from your CV. You can change any of it before you save.
+                    </p>
+                  </div>
+                )}
+                <Button size="lg" className="gap-2" onClick={startProfile}>
+                  {draft ? "Turn this into my profile" : "Create my free profile"}{" "}
+                  <ArrowRight className="h-4 w-4" />
                 </Button>
               </CardContent>
             </Card>

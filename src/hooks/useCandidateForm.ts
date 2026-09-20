@@ -75,10 +75,52 @@ export const useCandidateForm = () => {
     return () => subscription.unsubscribe();
   }, [form, profileLoaded]);
 
+  /**
+   * A brand new candidate may have come from the free CV review. If they chose
+   * "turn this into my profile", start them off with what their CV already said.
+   */
+  const applyCvDraft = () => {
+    try {
+      const raw = sessionStorage.getItem("jobz_cv_profile_draft");
+      if (!raw) return;
+      sessionStorage.removeItem("jobz_cv_profile_draft");
+      const draft = JSON.parse(raw) as {
+        fullName?: string;
+        jobTitle?: string;
+        desiredJobTitle?: string;
+        yearsExperience?: number;
+        skills?: string[];
+        location?: string;
+        currentEmployer?: string;
+        summary?: string;
+      };
+
+      const titles = [draft.desiredJobTitle, draft.jobTitle].filter(Boolean) as string[];
+
+      form.reset({
+        ...defaultFormValues,
+        full_name: draft.fullName ?? "",
+        job_title: Array.from(new Set(titles)),
+        years_experience: typeof draft.yearsExperience === "number" ? draft.yearsExperience : 0,
+        required_skills: Array.isArray(draft.skills) ? draft.skills.slice(0, 12) : [],
+        current_employer: draft.currentEmployer ?? "",
+        additional_skills: draft.summary ?? "",
+      });
+
+      toast({
+        title: "We've started your profile from your CV",
+        description: "Check everything is right, add what's missing, then save.",
+      });
+    } catch (e) {
+      console.error("Could not apply CV draft", e);
+    }
+  };
+
   // LoadProfile callback
   const loadProfileData = (profile: CandidateProfile | null) => {
     if (!profile) {
       console.log("No profile data received, using defaults");
+      applyCvDraft();
       setProfileLoaded(true);
       setIsLoading(false);
       return;
