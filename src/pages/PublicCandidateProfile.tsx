@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { CosmicBackground } from "@/components/home/CosmicBackground";
+import { CosmicBackground } from "@/components/ui/cosmic-background";
 import { Footer } from "@/components/Footer";
 import NavBar from "@/components/NavBar";
 import { ArrowRight, Briefcase, MapPin, PoundSterling } from "lucide-react";
@@ -62,7 +62,7 @@ export default function PublicCandidateProfile() {
   ].slice(0, 20);
 
   return (
-    <CosmicBackground>
+    <CosmicBackground mode="full">
       <NavBar />
       <main className="container mx-auto px-4 py-16 pt-24 max-w-3xl">
         {loading ? (
