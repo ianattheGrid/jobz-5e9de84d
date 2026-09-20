@@ -74,6 +74,15 @@ export default function CandidateSearch() {
         <Header />
 
         <div className="flex flex-col gap-8">
+          {jobTitleSearched && (
+            <div className="rounded-lg border border-primary/30 bg-primary/5 p-4">
+              <p className="text-sm text-gray-800">
+                Showing people who fit your vacancy <strong>{jobTitleSearched}</strong>. Change
+                anything below to widen or narrow the search.
+              </p>
+            </div>
+          )}
+
           <SavedSearches />
 
           <NaturalLanguageSearch
