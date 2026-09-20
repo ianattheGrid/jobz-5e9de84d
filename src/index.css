@@ -1,480 +1,191 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Figtree:wght@400;500;600&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
- 
+
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 224 71.4% 4.1%;
-    --card: 0 0% 100%;
-    --card-foreground: 224 71.4% 4.1%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 224 71.4% 4.1%;
-    --primary: 330 100% 71%;
+    /* Deep space */
+    --background: 240 39% 5%;            /* #07070F */
+    --foreground: 240 11% 96%;           /* #F5F5F7 */
+
+    --card: 240 40% 12%;                 /* #12122A */
+    --card-foreground: 240 11% 96%;
+
+    --popover: 240 40% 10%;
+    --popover-foreground: 240 11% 96%;
+
+    --primary: 331 100% 59%;             /* #FF2E88 */
     --primary-foreground: 0 0% 100%;
-    --secondary: 220 14.3% 95.9%;
-    --secondary-foreground: 220 8.9% 46.1%;
-    --muted: 220 14.3% 95.9%;
-    --muted-foreground: 220 8.9% 46.1%;
-    --accent: 220 14.3% 95.9%;
-    --accent-foreground: 220 8.9% 46.1%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 330 100% 71%;
-    --radius: 0.5rem;
-    --brand-pink: 330 81% 60%;
-    --brand-purple: 280 87% 65%;
-    --brand-blue: 217 91% 60%;
-    --navy: 226 60% 20%;
-    --navy-foreground: 0 0% 100%;
+
+    --secondary: 240 30% 16%;
+    --secondary-foreground: 240 11% 96%;
+
+    --muted: 240 26% 18%;
+    --muted-foreground: 240 10% 68%;
+
+    --accent: 240 30% 20%;
+    --accent-foreground: 240 11% 96%;
+
+    --destructive: 0 72% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 240 20% 22%;
+    --input: 240 24% 18%;
+    --ring: 331 100% 59%;
+
+    --radius: 1rem;
+
+    /* Surfaces & effects */
+    --surface-2: 240 36% 9%;
+    --glass: 240 40% 12%;
+    --glow: 331 100% 59%;
+    --shadow-elevated: 0 24px 60px -24px hsl(240 60% 2% / 0.9);
+    --glow-primary: 0 0 40px hsl(var(--glow) / 0.25);
+    --gradient-hero: linear-gradient(180deg, hsl(240 39% 5%) 0%, hsl(240 40% 8%) 100%);
+
+    /* Legacy brand aliases kept so existing components keep compiling */
+    --brand-pink: 331 100% 59%;
+    --brand-purple: 268 85% 68%;
+    --brand-blue: 217 91% 62%;
+    --navy: 240 40% 12%;
+    --navy-foreground: 240 11% 96%;
   }
 }
- 
+
 @layer base {
   * {
     @apply border-border;
   }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
-    @apply bg-white text-foreground;
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Figtree', system-ui, -apple-system, sans-serif;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
+
   #root {
-    @apply bg-white min-h-screen;
+    @apply bg-background min-h-screen;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+    @apply tracking-tight;
+  }
+
+  ::selection {
+    background-color: hsl(var(--primary) / 0.35);
+  }
+
+  ::placeholder {
+    color: hsl(var(--muted-foreground));
   }
 }
 
-/* Form field styles */
-.form-field {
-  @apply bg-white text-gray-900 border-gray-200;
+@layer components {
+  /* Frosted glass panel used across the app */
+  .glass-panel {
+    @apply rounded-3xl border border-white/10 bg-card/50 backdrop-blur-xl;
+    box-shadow: var(--shadow-elevated);
+  }
+
+  .glass-panel-hover {
+    @apply transition-all duration-500 hover:bg-card/70 hover:border-primary/30 hover:-translate-y-1;
+  }
+
+  .eyebrow {
+    @apply inline-block text-primary text-xs sm:text-sm font-bold uppercase tracking-[0.2em];
+    font-family: 'Outfit', system-ui, sans-serif;
+  }
+
+  .display-heading {
+    @apply font-bold tracking-tight leading-[1.05];
+    font-family: 'Outfit', system-ui, sans-serif;
+  }
+
+  .text-dim {
+    color: hsl(var(--foreground) / 0.6);
+  }
+
+  .section-header {
+    @apply text-xl font-semibold text-foreground mb-4 border-l-2 border-primary pl-4;
+  }
+
+  .form-field-label {
+    @apply text-foreground font-medium mb-2;
+  }
+
+  .form-field-description {
+    @apply text-muted-foreground text-sm mb-4;
+  }
+
+  /* Legacy wrapper classes retained as no-op aliases so older pages stay coherent */
+  .cosmic-form,
+  .space-card,
+  .calculator-dark,
+  .demo-candidate-dark,
+  .demo-employer-dark,
+  .job-search-card,
+  .profile-card {
+    @apply text-foreground;
+  }
+
+  .select-surface,
+  .select-menu {
+    @apply bg-popover text-popover-foreground border-border;
+  }
 }
 
-/* Form field labels and descriptions */
-.form-field-label {
-  @apply text-gray-900 font-semibold mb-2;
+@layer utilities {
+  /* Card flip helpers */
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+
+  .rotate-y-180 {
+    transform: rotateY(180deg);
+  }
+
+  .text-glow {
+    text-shadow: 0 0 30px hsl(var(--glow) / 0.5);
+  }
+
+  .reveal-up {
+    animation: reveal-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
 }
 
-.form-field-description {
-  @apply text-gray-600 text-sm mb-4;
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* Section headers */
-.section-header {
-  @apply text-xl font-semibold text-gray-900 mb-4 border-l-4 border-primary pl-4;
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }
-
-/* Form labels */
-label,
-.form-label,
-[data-radix-label] {
-  @apply text-gray-900 font-medium !important;
-}
-
-/* Allow dark/cosmic backgrounds to override with white text */
-.cosmic-form label,
-.cosmic-form .form-label,
-.cosmic-form [data-radix-label],
-.space-card label,
-.space-card .form-label,
-.space-card [data-radix-label] {
-  @apply text-white font-medium !important;
-}
-
-/* Same for checkbox labels on dark backgrounds */
-.cosmic-form [type="checkbox"] + label,
-.space-card [type="checkbox"] + label {
-  @apply text-white !important;
-}
-
-/* Helper text and descriptions on dark backgrounds */
-.cosmic-form .text-sm,
-.space-card .text-sm,
-.cosmic-form p,
-.space-card p {
-  @apply text-white/80 !important;
-}
-
-/* Text inputs inside cosmic/dark cards stay dark-themed */
-.cosmic-form textarea,
-.cosmic-form input[type="text"],
-.cosmic-form input[type="number"],
-.space-card textarea,
-.space-card input[type="text"],
-.space-card input[type="number"] {
-  @apply bg-white/5 text-white border-white/20 !important;
-}
-
-.cosmic-form ::placeholder,
-.space-card ::placeholder {
-  @apply text-white/40 !important;
-}
-
-/* Select components */
-.select-trigger {
-  @apply bg-white text-gray-900 border-gray-200 !important;
-}
-
-.select-content {
-  @apply bg-white border border-gray-200 shadow-lg !important;
-}
-
-.select-value {
-  @apply text-gray-900 !important;
-}
-
-.select-item {
-  @apply text-gray-900 hover:bg-gray-100 !important;
-}
-
-/* Select inputs - fixing specifically the dark background issue */
-[role="combobox"] {
-  @apply bg-white text-gray-900 !important;
-}
-
-[role="option"] {
-  @apply bg-white text-gray-900 hover:bg-gray-100 !important;
-}
-
-/* Dropdown content */
-[role="listbox"] {
-  @apply bg-white !important;
-}
-
-/* Radio and checkbox inputs */
-[role="radio"],
-[role="checkbox"],
-[type="radio"],
-[type="checkbox"],
-[type="radio"] + label,
-[type="checkbox"] + label {
-  @apply text-gray-900 !important;
-}
-
-/* Text inputs */
-input[type="text"],
-input[type="number"],
-textarea,
-select {
-  @apply text-gray-900 bg-white border-gray-200 !important;
-}
-
-/* All form controls and interactive elements (scoped to actual form UIs; avoid clobbering app buttons) */
-.form-control,
-.select-item,
-.radio-item,
-.checkbox-item {
-  @apply text-gray-900 bg-white !important;
-}
-
-/* Placeholders */
-::placeholder {
-  @apply text-gray-500 !important;
-}
-
-/* Form descriptions and helper text */
-.description,
-.helper-text {
-  @apply text-gray-600 !important;
-}
-
-/* Form section headings */
-/* Remove global heading color override to allow contextual colors (e.g., white on dark hero) */
-/* h1, h2, h3, h4, h5, h6 { @apply text-gray-900 !important; } */
-
-/* Profile card text override */
-.profile-card h1, 
-.profile-card h2, 
-.profile-card h3, 
-.profile-card h4, 
-.profile-card h5, 
-.profile-card h6 {
-  color: #FFFFFF !important;
-}
-
-/* Error messages */
-.error-message {
-  @apply text-red-600 !important;
-}
-
-/* Specifically target any dark backgrounds in forms */
-.dark-bg,
-[class*="dark-bg"],
-[class*="black-bg"] {
-  @apply bg-white text-gray-900 !important;
-}
-
-/* Fix for dark background in toggle switches and commission sections */
-.flex.flex-row.items-center.justify-between.rounded-lg.border.p-3,
-.flex.flex-row.items-center.justify-between.rounded-lg.border.p-3.bg-card {
-  @apply bg-white text-gray-900 !important;
-}
-
-/* Pink button styles */
-.pink-button,
-button[style*="FF69B4"],
-button.bg-\[\#FF69B4\] {
-  background-color: #FF69B4 !important;
-  color: white !important;
-}
-
-.pink-button:hover,
-button[style*="FF69B4"]:hover,
-button.bg-\[\#FF69B4\]:hover {
-  background-color: #FF50A8 !important;
-}
-
-/* Override button styles to restore the primary pink button */
-button[type="submit"] {
-  background-color: #FF69B4 !important;
-  color: white !important;
-}
-
-button[type="submit"]:hover {
-  background-color: #FF50A8 !important;
-}
-
-/* Fix for commission toggles and other form elements */
-.commission-toggle-container,
-.form-item-container {
-  @apply bg-white text-gray-900 !important;
-}
-
-/* Style for the Yes/No text in commission toggles */
-.commission-toggle-container .text-primary {
-  color: #FF69B4 !important;
-}
-
-/* Enhance switch visibility with background color */
-.switch-container {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-/* Highlight active toggle option */
-.toggle-option {
-  font-size: 0.75rem;
-  transition: all 0.2s ease;
-}
-
-.toggle-option.active {
-  font-weight: 500;
-  color: #FF69B4;
-}
-
-.toggle-option.inactive {
-  color: #6c757d;
-}
-
-/* Add background to switch track */
-[data-state=unchecked].bg-gray-200 {
-  background-color: #e2e8f0 !important;
-}
-
-[data-state=checked].data-\[state\=checked\]\:bg-primary {
-  background-color: #FF69B4 !important;
-}
-
-/* Fix for the forgot password button background */
-a {
-  background-color: transparent !important;
-  box-shadow: none !important;
-  border: none !important;
-}
-
-/* We've moved platform features tab styles to tabs.css */
-
-/* Card flip animation styles */
-.perspective-1000 {
-  perspective: 1000px;
-}
-
-.preserve-3d {
-  transform-style: preserve-3d;
-}
-
-.backface-hidden {
-  backface-visibility: hidden;
-}
-
-.rotate-y-180 {
-  transform: rotateY(180deg);
-}
-
-/* Calculator scoped overrides */
-.calculator-dark label,
-.calculator-dark .form-label,
-.calculator-dark [data-radix-label] {
-  color: hsl(var(--primary-foreground)) !important;
-}
-
-/* Demo Candidate dark wrapper overrides */
-.demo-candidate-dark { 
-  @apply text-white; 
-}
-.demo-candidate-dark [class*="bg-card"],
-.demo-candidate-dark .bg-white {
-  @apply bg-indigo-950 border-indigo-900 !important;
-}
-/* Ensure default card text is white for readability on navy */
-.demo-candidate-dark .text-card-foreground,
-.demo-candidate-dark .text-gray-900,
-.demo-candidate-dark .text-gray-800,
-.demo-candidate-dark .text-gray-700,
-.demo-candidate-dark .text-gray-600,
-.demo-candidate-dark .text-gray-500 {
-  color: hsl(var(--primary-foreground)) !important;
-}
-.demo-candidate-dark h1,
-.demo-candidate-dark h2,
-.demo-candidate-dark h3,
-.demo-candidate-dark h4,
-.demo-candidate-dark h5,
-.demo-candidate-dark h6 {
-  color: hsl(var(--primary-foreground)) !important;
-}
-.demo-candidate-dark .text-muted-foreground,
-.demo-candidate-dark .text-gray-400 {
-  color: hsl(var(--primary-foreground) / 0.85) !important;
-}
-.demo-candidate-dark .text-foreground {
-  color: hsl(var(--primary-foreground)) !important;
-}
-/* Accent links in pink for contrast */
-.demo-candidate-dark a,
-.demo-candidate-dark svg {
-  color: hsl(var(--primary)) !important;
-}
-/* Badge text styling removed - let component handle it */
-/* Fix specific text visibility issues */
-.demo-candidate-dark .text-sm,
-.demo-candidate-dark .text-xs {
-  color: hsl(var(--primary-foreground) / 0.9) !important;
-}
-/* Fix span and div text inside cards - but allow specific overrides */
-.demo-candidate-dark span:not(.personality-question):not(.personality-answer):not([class*="bg-"]),
-.demo-candidate-dark div:not(.personality-item):not(.personality-question):not(.personality-answer):not([class*="bg-"]) {
-  color: hsl(var(--primary-foreground)) !important;
-}
-
-/* Demo Employer dark wrapper overrides */
-.demo-employer-dark { 
-  @apply text-white; 
-}
-.demo-employer-dark [class*="bg-card"],
-.demo-employer-dark .bg-muted,
-.demo-employer-dark .bg-white {
-  @apply bg-indigo-950 border-indigo-900 !important;
-}
-.demo-employer-dark .text-card-foreground {
-  color: hsl(var(--primary-foreground)) !important;
-}
-.demo-employer-dark h1,
-.demo-employer-dark h2,
-.demo-employer-dark h3,
-.demo-employer-dark h4,
-.demo-employer-dark h5,
-.demo-employer-dark h6 {
-  color: hsl(var(--primary-foreground)) !important;
-}
-.demo-employer-dark .text-muted-foreground {
-  color: hsl(var(--primary-foreground) / 0.85) !important;
-}
-
-/* Allow text-gray-700 to remain dark on light backgrounds */
-.demo-employer-dark .bg-white .text-gray-700,
-.demo-employer-dark [class*="bg-white"] .text-gray-700 {
-  color: #374151 !important;
-}
-.demo-employer-dark .text-foreground {
-  color: hsl(var(--primary-foreground)) !important;
-}
-.demo-employer-dark a,
-.demo-employer-dark svg {
-  color: hsl(var(--primary)) !important;
-}
-
-/* Light surface utilities to avoid dark theme overrides */
-.select-surface {
-  background-color: hsl(var(--secondary)) !important; /* typically white */
-  color: hsl(var(--secondary-foreground)) !important; /* typically black */
-  border-color: hsl(var(--border)) !important;
-}
-.select-menu {
-  background-color: hsl(var(--secondary)) !important;
-  color: hsl(var(--secondary-foreground)) !important;
-  border-color: hsl(var(--border)) !important;
-  z-index: 50 !important;
-}
-
-/* Job search card: force readable labels and inputs */
-.job-search-card label,
-.job-search-card .form-label,
-.job-search-card [data-radix-label] {
-  color: hsl(var(--primary-foreground)) !important; /* white */
-}
-
-/* Inputs that use bg-background/text-foreground inside the card should be light */
-.job-search-card .bg-background,
-.job-search-card [class*="bg-background"] {
-  background-color: hsl(var(--secondary)) !important;
-}
-.job-search-card .text-foreground {
-  color: hsl(var(--primary-foreground)) !important;
-}
-.job-search-card .text-muted-foreground,
-.job-search-card .form-description {
-  color: hsl(var(--primary-foreground) / 0.85) !important;
-}
-
-/* Ensure any Tailwind bg-white utilities inside the card remain light
-   (overrides the .demo-employer-dark .bg-white rule) */
-.job-search-card .bg-white {
-  background-color: hsl(var(--secondary)) !important;
-  color: hsl(var(--secondary-foreground)) !important;
-}
-
-/* Also enforce light surfaces for native elements */
-.job-search-card input,
-.job-search-card textarea,
-.job-search-card select {
-  background-color: hsl(var(--secondary)) !important;
-  color: hsl(var(--secondary-foreground)) !important;
-}
-
-/* Bonus filter labels on white surface should use brand color */
-.job-search-card .bonus-label {
-  color: hsl(var(--primary)) !important;
-}
-
-/* Override demo-candidate-dark for preview mode text */
-.demo-candidate-dark .preview-mode-text p {
-  color: #1e293b !important;
-}
-
-/* Override demo-candidate-dark for commission text */
-.demo-candidate-dark .commission-text span {
-  background-color: #dcfce7 !important;
-  color: #166534 !important;
-}
-
-/* Override demo-candidate-dark for job title items */
-.demo-candidate-dark .job-title-item div {
-  color: #4b5563 !important;
-}
-
-/* Override demo-candidate-dark for qualifications badges */
-.demo-candidate-dark .qualifications-badges .bg-blue-50 {
-  background-color: #dbeafe !important;
-  color: #1d4ed8 !important;
-  border-color: #93c5fd !important;
-}
-
-.demo-candidate-dark .security-clearance-badge .bg-green-50 {
-  background-color: #dcfce7 !important;
-  color: #166534 !important;
-  border-color: #86efac !important;
-}
-
-/* Personality items styling removed - let component handle it */
