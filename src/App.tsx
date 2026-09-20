@@ -43,6 +43,7 @@ import VirtualRecruiterDashboard from './pages/VirtualRecruiterDashboard';
 import VirtualRecruiterRecommendations from './pages/VirtualRecruiterRecommendations';
 import VirtualRecruiterProfile from './pages/VirtualRecruiterProfile';
 import PreviewVRProfile from './pages/PreviewVRProfile';
+import VirtualRecruiterAccountSettings from './pages/VirtualRecruiterAccountSettings';
 import WebbyCandidate from './pages/WebbyCandidate';
 import WebbyEmployer from './pages/WebbyEmployer';
 
