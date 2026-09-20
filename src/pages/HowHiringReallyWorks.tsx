@@ -7,7 +7,44 @@ import { Button } from "@/components/ui/button";
 import { HIRING_MODELS } from "@/data/hiringModels";
 import { PRIMARY_COLOR_PATTERN } from "@/styles/colorPatterns";
 
+const MARKUP_CHAIN = [
+  {
+    step: "1",
+    title: "The recruiter pays LinkedIn",
+    detail:
+      "Searching LinkedIn properly needs a paid Recruiter seat — publicly reported at roughly £1,440 a year for a solo Lite licence and around £13,000 a year for the full version, about £1,000 a month per recruiter.",
+  },
+  {
+    step: "2",
+    title: "That bill has to be earned back",
+    detail:
+      "A seat costs the same whether or not anyone is placed. The only way to cover it is placement fees, so the pressure sits on every candidate who gets put forward.",
+  },
+  {
+    step: "3",
+    title: "You are marked up",
+    detail:
+      "The employer is charged 15–25% of your first-year salary. On a £45,000 job that is £6,750–£11,250 — for an introduction, not for the work you will do.",
+  },
+  {
+    step: "4",
+    title: "Or the job never appears",
+    detail:
+      "Plenty of smaller employers simply cannot find £9,000 on top of a salary, so the role is delayed or never advertised. You never see it, and you never know it existed.",
+  },
+];
+
 const FAQ_ITEMS = [
+  {
+    question: "What does LinkedIn Recruiter cost?",
+    answer:
+      "LinkedIn does not publish a rate card for its higher tiers. Buyer-reported figures put Recruiter Lite at around £1,440 a year per seat and the full Recruiter licence at roughly £13,000 a year per seat — about £1,000 a month, per recruiter, before anyone is hired.",
+  },
+  {
+    question: "Why do recruiters charge 15–25% of a salary?",
+    answer:
+      "Because being able to find you costs them money. A LinkedIn Recruiter seat, job slots and InMail credits are paid for whether or not a placement happens, so the cost is recovered through a percentage fee on the salary of the people they place — which means you are the one marked up.",
+  },
   {
     question: "What does a recruitment agency cost an employer?",
     answer:
