@@ -9,6 +9,7 @@ import { LoadingState } from "@/components/candidate-search/LoadingState";
 import { Header } from "@/components/candidate-search/Header";
 import { SavedSearches } from "@/components/candidate-search/SavedSearches";
 import { NaturalLanguageSearch } from "@/components/candidate-search/NaturalLanguageSearch";
+import { PastPipeline } from "@/components/candidate-search/PastPipeline";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { CosmicBackground } from "@/components/ui/cosmic-background";
 import NavBar from "@/components/NavBar";
@@ -85,6 +86,8 @@ export default function CandidateSearch() {
               </p>
             </div>
           )}
+
+          {jobId && <PastPipeline jobId={Number(jobId)} />}
 
           <SavedSearches />
 
