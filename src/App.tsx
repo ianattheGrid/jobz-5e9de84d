@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Outlet, Navigate } from 'react-router-dom';
 import './App.css';
 import './styles/tabs.css'; // Directly import the CSS
 import { AppLayout } from './components/layout/AppLayout';
