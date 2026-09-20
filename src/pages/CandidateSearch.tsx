@@ -1,4 +1,6 @@
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 import { useEmployerAuthCheck } from "@/hooks/useEmployerAuthCheck";
 import { useCandidateSearch } from "@/hooks/useCandidateSearch";
 import { SearchForm } from "@/components/candidate-search/SearchForm";
