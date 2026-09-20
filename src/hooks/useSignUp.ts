@@ -10,6 +10,7 @@ import {
   createUserRole 
 } from "@/utils/profile-creation";
 import { processReferralCode } from "@/utils/referral/processReferralCode";
+import { recordInviteSignup } from "@/utils/referral/recordInviteSignup";
 import { signUpWithEmail } from "@/utils/auth/signUpWithEmail";
 
 export const useSignUp = () => {
