@@ -281,19 +281,32 @@ Deno.serve(async (req) => {
       }
     }
 
-    // --- Turn pages into companies ----------------------------------------
-    const added: string[] = [];
-    const handledDomains = new Set<string>();
-
+    // --- Sift out boards, agencies and directories -------------------------
+    // Keyword rules catch the obvious ones; this second pass judges the rest.
+    const shortlist: SearchHit[] = [];
+    const seenDomains = new Set<string>();
     for (const hit of hits) {
-      if (added.length >= BATCH_LIMIT) break;
-
       const domain = apexDomain(hit.url);
-      if (!domain || handledDomains.has(domain) || knownDomains.has(domain)) continue;
-      handledDomains.add(domain);
-
+      if (!domain || seenDomains.has(domain) || knownDomains.has(domain)) continue;
       if (looksLikeMiddleman(domain)) continue;
       if (!manualWebsite && ADVERT_WORDS.test(hit.title || "")) continue;
+      seenDomains.add(domain);
+      shortlist.push({ ...hit, url: `https://${domain}` });
+    }
+
+    const allowedDomains = manualWebsite
+      ? new Set(shortlist.map((h) => apexDomain(h.url)!))
+      : await keepRealEmployers(shortlist);
+
+    // --- Turn pages into companies ----------------------------------------
+    const added: string[] = [];
+
+    for (const hit of shortlist) {
+      if (added.length >= BATCH_LIMIT) break;
+
+      const domain = apexDomain(hit.url)!;
+      if (!allowedDomains.has(domain)) continue;
+
 
       const name = companyNameFrom(domain);
       if (!name) continue;
