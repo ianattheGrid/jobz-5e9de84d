@@ -84,17 +84,35 @@ function mentionsBristol(text: string) {
   return NEAR_BRISTOL.some((place) => lower.includes(place));
 }
 
+function titleCase(value: string) {
+  return value
+    .split(" ")
+    .filter(Boolean)
+    .map((w) => (w.length > 3 ? w.charAt(0).toUpperCase() + w.slice(1) : w.toUpperCase() === w ? w : w.charAt(0).toUpperCase() + w.slice(1)))
+    .join(" ");
+}
+
 /**
- * The company's name comes from its own web address, not from an advert
- * headline — headlines are job titles and make a mess of the list.
+ * Prefers the readable company name from the page heading ("Careers - Bristol
+ * Water" gives "Bristol Water") and falls back to the web address.
  */
-function companyNameFrom(domain: string) {
+function companyNameFrom(domain: string, title?: string) {
+  const pieces = (title ?? "")
+    .split(/[|\u2013\u2014\u00b7\-:]/)
+    .map((p) =>
+      p
+        .replace(/\b(careers?|jobs?|vacancies|current vacancies|work (for|with) us|join (our team|us)|hiring|home|life at)\b/gi, "")
+        .replace(/\s+/g, " ")
+        .trim(),
+    )
+    .filter((p) => p.length >= 3 && p.length <= 40 && /[a-z]/i.test(p) && !ADVERT_WORDS.test(p));
+
+  const fromTitle = pieces.sort((a, b) => b.length - a.length)[0];
+  if (fromTitle) return titleCase(fromTitle);
+
   const base = domain.split(".")[0].replace(/[-_]+/g, " ").trim();
   if (base.length < 2 || base.length > 40) return null;
-  return base
-    .split(" ")
-    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-    .join(" ");
+  return titleCase(base);
 }
 
 async function fetchPage(url: string, timeoutMs = 6000) {
@@ -370,7 +388,7 @@ Deno.serve(async (req) => {
       if (!allowedDomains.has(domain)) continue;
 
 
-      const name = companyNameFrom(domain);
+      const name = companyNameFrom(domain, hit.title);
       if (!name) continue;
 
       const key = normalise(name);
