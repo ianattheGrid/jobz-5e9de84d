@@ -268,7 +268,11 @@ function tidyTitle(raw: string): string {
 
   // Workday and friends tack the place and date onto the end of the link text.
   text = text.replace(/\s+\d{1,2}\s+(January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{4}$/i, '');
-  return text.replace(/\s+/g, ' ').trim();
+  // Drop internal reference codes at either end: "AGGP2027 ... JR10427541".
+  text = text.replace(/\b[A-Z]{2,}\d{4,}\b/g, ' ');
+  // And any tail after a pipe: "Advisor | Poland | Krakow".
+  text = text.split('|')[0];
+  return text.replace(/[\s\-–_]+$/, '').replace(/^[\s\-–_]+/, '').replace(/\s+/g, ' ').trim();
 }
 
 /** Some hiring systems hide the place in the link itself: /job/Bristol-Area/... */
