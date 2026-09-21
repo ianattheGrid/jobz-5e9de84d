@@ -230,6 +230,23 @@ Deno.serve(async (req) => {
       created.push(companyName);
     }
 
+    // Keep the interest count fresh on prospects that are still waiting.
+    if (viewCounts.size) {
+      const { data: waiting } = await supabase
+        .from("employer_prospects")
+        .select("id, source_url")
+        .eq("status", "new");
+
+      const urlToJobId = new Map((jobs || []).map((j: any) => [j.job_url, j.id]));
+      for (const row of waiting || []) {
+        const jobId = urlToJobId.get((row as any).source_url);
+        const count = jobId ? viewCounts.get(jobId) ?? 0 : 0;
+        if (count > 0) {
+          await supabase.from("employer_prospects").update({ advert_views_7d: count }).eq("id", (row as any).id);
+        }
+      }
+    }
+
     await supabase
       .from("job_locks")
       .update({ locked_until: new Date().toISOString(), updated_at: new Date().toISOString() })
