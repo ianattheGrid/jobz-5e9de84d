@@ -88,6 +88,29 @@ const Jobs = () => {
     retryDelay: 1000,
   });
 
+  // Adverts we found on companies' own careers pages. Shown quietly alongside
+  // Jobz vacancies — we link out to the company, we don't take applications.
+  const { data: foundAdverts } = useQuery({
+    queryKey: ['external-jobs', searchFilters?.title, searchFilters?.location],
+    queryFn: async () => {
+      let query = supabase
+        .from('external_jobs')
+        .select('id, job_title, location, job_url, salary_min, salary_max, target_companies(company_name, website, industry_sector)')
+        .eq('is_active', true)
+        .order('scraped_at', { ascending: false })
+        .limit(30);
+
+      if (searchFilters?.title) {
+        query = query.ilike('job_title', `%${searchFilters.title}%`);
+      }
+
+      const { data, error } = await query;
+      if (error) throw error;
+      return (data || []) as unknown as FoundAdvert[];
+    },
+    staleTime: 5 * 60 * 1000,
+  });
+
   const handleSearch = (filters: JobSearchSchema) => {
     console.log('Applying search filters:', filters);
     setSearchFilters(filters);
