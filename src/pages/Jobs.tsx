@@ -93,20 +93,20 @@ const Jobs = () => {
   const { data: foundAdverts } = useQuery({
     queryKey: ['external-jobs', searchFilters?.title, searchFilters?.location],
     queryFn: async () => {
-      let query = supabase
-        .from('external_jobs')
-        .select('id, job_title, location, job_url, salary_min, salary_max, target_companies(company_name, website, industry_sector)')
-        .eq('is_active', true)
-        .order('scraped_at', { ascending: false })
-        .limit(30);
-
-      if (searchFilters?.title) {
-        query = query.ilike('job_title', `%${searchFilters.title}%`);
-      }
-
-      const { data, error } = await query;
+      const { data, error } = await supabase.rpc('get_found_adverts', {
+        _limit: 30,
+        _search: searchFilters?.title || null,
+      });
       if (error) throw error;
-      return (data || []) as unknown as FoundAdvert[];
+      return (data || []).map((row: any) => ({
+        id: row.id,
+        job_title: row.job_title,
+        location: row.location,
+        job_url: row.job_url,
+        salary_min: row.salary_min,
+        salary_max: row.salary_max,
+        target_companies: { company_name: row.company_name, website: row.company_website },
+      })) as FoundAdvert[];
     },
     staleTime: 5 * 60 * 1000,
   });
