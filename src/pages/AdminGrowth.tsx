@@ -197,6 +197,27 @@ const AdminGrowth = () => {
           </CardHeader>
         </Card>
 
+        <Card>
+          <CardHeader>
+            <CardTitle>Add a company yourself</CardTitle>
+            <CardDescription>
+              Paste a company website. We find their careers page and add them to the list the nightly agent reads.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-2 sm:flex-row">
+            <Input
+              placeholder="acme.co.uk"
+              value={manualSite}
+              onChange={(e) => setManualSite(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && addCompany()}
+            />
+            <Button onClick={addCompany} disabled={addingCompany || !manualSite.trim()} className="gap-2">
+              {addingCompany ? <Loader2 className="h-4 w-4 animate-spin" /> : <Plus className="h-4 w-4" />}
+              Add
+            </Button>
+          </CardContent>
+        </Card>
+
         {loading ? (
           <div className="flex items-center gap-2 text-muted-foreground">
             <Loader2 className="h-4 w-4 animate-spin" /> Loading…
