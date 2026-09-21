@@ -252,6 +252,25 @@ const AdminGrowth = () => {
                       {p.role_title && <Badge variant="secondary">{p.role_title}</Badge>}
                       {p.role_location && <span className="text-sm text-muted-foreground">{p.role_location}</span>}
                     </div>
+                    {p.signal_summary && (
+                      <p className="text-sm text-foreground">
+                        <span className="font-medium">Why now: </span>
+                        {p.signal_summary}
+                        {p.signal_source_url && (
+                          <>
+                            {" "}
+                            <a
+                              href={p.signal_source_url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="underline text-muted-foreground"
+                            >
+                              where we saw it
+                            </a>
+                          </>
+                        )}
+                      </p>
+                    )}
                     <p className="text-sm text-muted-foreground">
                       {p.estimated_agency_fee
                         ? `An agency would charge roughly £${p.estimated_agency_fee.toLocaleString()} for this hire.`
