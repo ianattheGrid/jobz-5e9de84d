@@ -92,10 +92,17 @@ const AdminGrowth = () => {
       supabase.from("job_locks").select("paused_reason").eq("job_name", JOB_NAME).maybeSingle(),
       supabase.from("candidate_profiles").select("signup_source, created_at").gte("created_at", twoWeeksAgo),
       supabase.from("employer_profiles").select("signup_source, created_at").gte("created_at", twoWeeksAgo),
+      supabase
+        .from("target_companies")
+        .select("id, company_name, website, excluded_reason, created_at")
+        .not("excluded_reason", "is", null)
+        .order("created_at", { ascending: false })
+        .limit(50),
     ]);
 
     setProspects((p as Prospect[]) || []);
     setSignups((s as Signup[]) || []);
+    setSkipped((sk as SkippedCompany[]) || []);
     setPaused(Boolean(lock?.paused_reason));
 
     const tally = new Map<string, SourceRow>();
