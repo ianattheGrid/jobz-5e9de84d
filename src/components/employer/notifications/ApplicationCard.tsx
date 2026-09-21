@@ -7,6 +7,7 @@ import RejectionDialog from "./RejectionDialog";
 import { ScheduleInterviewDialog } from "../interviews/ScheduleInterviewDialog";
 import { useAuth } from "@/hooks/useAuth";
 import { ApplicationActivity } from "./ApplicationActivity";
+import { ApplicationFitReasons } from "./ApplicationFitReasons";
 
 interface ApplicationCardProps {
   application: ApplicationWithDetails;
