@@ -117,6 +117,28 @@ const AdminGrowth = () => {
     toast({ title: next ? "Prospect finding paused" : "Prospect finding switched back on" });
   };
 
+  const addCompany = async () => {
+    const website = manualSite.trim();
+    if (!website) return;
+    setAddingCompany(true);
+    const { data, error } = await supabase.functions.invoke("discover-employers", { body: { website } });
+    setAddingCompany(false);
+    if (error) {
+      toast({ variant: "destructive", title: "Couldn't add that", description: error.message });
+      return;
+    }
+    if ((data as any)?.added) {
+      setManualSite("");
+      toast({ title: `Added ${(data as any).companies.join(", ")}` });
+    } else {
+      toast({
+        variant: "destructive",
+        title: "Nothing added",
+        description: "We couldn't find a careers page there, or they're already on the list.",
+      });
+    }
+  };
+
   const saveEmail = async (id: string) => {
     const email = (emailDrafts[id] || "").trim();
     if (!email) return;
