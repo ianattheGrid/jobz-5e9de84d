@@ -317,6 +317,8 @@ Deno.serve(async (req) => {
       for (const query of QUERIES) {
         if (hits.length >= BATCH_LIMIT * 4) break;
         try {
+          // Gentle pacing so we stay inside the search service's limits.
+          if (hits.length) await new Promise((r) => setTimeout(r, 7000));
           hits.push(...(await firecrawlSearch(query)));
         } catch (error: any) {
           const status = error.status;
