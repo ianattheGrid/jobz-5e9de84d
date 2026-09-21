@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, ExternalLink, Building2, MapPin, DollarSign } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { advertClaimLink, openAdvert } from "@/utils/externalJobs";
 
 interface ExternalJob {
   id: string;
