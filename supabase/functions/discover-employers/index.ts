@@ -21,6 +21,17 @@ const NOT_BOARDS =
   "-site:glassdoor.co.uk -site:cv-library.co.uk -site:adzuna.co.uk -site:jobsite.co.uk " +
   "-site:bebee.com -site:jooble.org -site:theguardian.com -site:charityjob.co.uk";
 
+// Every Bristol postal district, plus the ones just outside the city that
+// people still travel in from. We search by postcode as well as by name, so a
+// company based in, say, BS37 turns up even if its site never says "Bristol".
+const BRISTOL_POSTCODES = [
+  "BS1", "BS2", "BS3", "BS4", "BS5", "BS6", "BS7", "BS8", "BS9", "BS10",
+  "BS11", "BS13", "BS14", "BS15", "BS16", "BS20", "BS21", "BS22", "BS23",
+  "BS24", "BS25", "BS26", "BS27", "BS28", "BS29", "BS30", "BS31", "BS32",
+  "BS34", "BS35", "BS36", "BS37", "BS39", "BS40", "BS41", "BS48", "BS49",
+  "BS80", "BS99",
+];
+
 const QUERIES = [
   `"careers" "Bristol" company vacancies ${NOT_BOARDS}`,
   `"we are hiring" Bristol company careers page ${NOT_BOARDS}`,
@@ -29,6 +40,20 @@ const QUERIES = [
   `Bristol finance accountancy firm careers "current vacancies" ${NOT_BOARDS}`,
   `Bristol engineering manufacturing company careers vacancies ${NOT_BOARDS}`,
 ];
+
+/**
+ * A handful of postcode searches for tonight. The list rotates so that over a
+ * few weeks the agent works its way round every Bristol postal district
+ * instead of hammering the same corner of the city.
+ */
+function postcodeQueries(night: number, howMany = 4) {
+  const picked: string[] = [];
+  for (let i = 0; i < howMany; i++) {
+    const code = BRISTOL_POSTCODES[(night * howMany + i) % BRISTOL_POSTCODES.length];
+    picked.push(`"${code}" company careers vacancies "join our team" ${NOT_BOARDS}`);
+  }
+  return picked;
+}
 
 // Middlemen we do not want to invite, and places that are not a single employer.
 // Matched against the web address, which is where boards and agencies give
