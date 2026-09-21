@@ -534,6 +534,135 @@ Deno.serve(async (req) => {
       added.push(name);
     }
 
+    // --- Second pass: read the job boards ---------------------------------
+    // Keeps only companies hiring for themselves; agencies are remembered and
+    // never looked at again.
+    const rejected: string[] = [];
+
+    /** Remembers a rejected advertiser so later runs skip it instantly. */
+    async function remember(name: string, domain: string | null, reason: string) {
+      const key = normalise(name);
+      if (!key || knownNames.has(key)) return;
+      knownNames.add(key);
+      if (domain) knownDomains.add(domain);
+      await supabase.from("target_companies").insert({
+        company_name: name,
+        website: domain ? `https://${domain}` : null,
+        is_active: false,
+        excluded_reason: reason,
+        discovered_from: "job board",
+        notes: "Skipped automatically when reading the job boards",
+      });
+      rejected.push(name);
+    }
+
+    if (!manualWebsite && added.length < BATCH_LIMIT) {
+      const boardQueries = BOARD_SITES.flatMap((site) =>
+        BOARD_AREAS.slice(0, 3).map((area) => `${site} Bristol ${area} job`.trim()),
+      );
+
+      const listings: SearchHit[] = [];
+      try {
+        for (const query of boardQueries) {
+          if (listings.length >= BATCH_LIMIT * 3) break;
+          if (listings.length) await new Promise((r) => setTimeout(r, 7000));
+          listings.push(...(await firecrawlSearch(query)));
+        }
+      } catch (error: any) {
+        if ([402, 403, 429].includes(error?.status)) {
+          await supabase.from("job_locks").upsert(
+            {
+              job_name: JOB_NAME,
+              locked_until: new Date().toISOString(),
+              paused_reason: `Board reading paused: ${error.message}`.slice(0, 300),
+              updated_at: new Date().toISOString(),
+            },
+            { onConflict: "job_name" },
+          );
+          return new Response(JSON.stringify({ added: added.length, companies: added, paused: true }), {
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          });
+        }
+        console.error(error?.message ?? String(error));
+      }
+
+      for (const listing of listings) {
+        if (added.length >= BATCH_LIMIT) break;
+
+        let markdown: string | null = null;
+        try {
+          markdown = await firecrawlScrape(listing.url);
+        } catch (error: any) {
+          console.error(error?.message ?? String(error));
+          break; // credit or rate limit: stop reading boards for tonight
+        }
+        if (!markdown) continue;
+
+        // Test 1: who placed the advert?
+        const advertiser = advertiserFrom(markdown, listing.title || "");
+        if (!advertiser) continue;
+        const key = normalise(advertiser);
+        if (!key || knownNames.has(key)) continue;
+
+        if (looksLikeAgencyName(advertiser)) {
+          await remember(advertiser, null, "agency");
+          continue;
+        }
+
+        // Test 2: does the advert read like an agency wrote it?
+        if (advertWrittenByAgency(markdown)) {
+          await remember(advertiser, null, "agency");
+          continue;
+        }
+
+        // Only roles near Bristol.
+        if (!mentionsBristol(`${listing.title} ${listing.description ?? ""} ${markdown.slice(0, 4000)}`)) continue;
+
+        // Test 3: what does their own website say they do?
+        let domain: string | null = null;
+        try {
+          domain = await resolveWebsite(advertiser);
+        } catch (error: any) {
+          console.error(error?.message ?? String(error));
+          break;
+        }
+        if (!domain || knownDomains.has(domain)) continue;
+        if (looksLikeMiddleman(domain)) {
+          await remember(advertiser, domain, "agency");
+          continue;
+        }
+
+        const judged = await keepRealEmployers([{ url: `https://${domain}`, title: advertiser }]);
+        if (!judged.has(domain)) {
+          await remember(advertiser, domain, "unverified");
+          continue;
+        }
+
+        const website = `https://${domain}`;
+        const careers = await findCareersPage(website);
+        if (!careers || apexDomain(careers) !== domain) continue;
+
+        const { error: insertError } = await supabase.from("target_companies").insert({
+          company_name: advertiser,
+          website,
+          careers_page_url: careers,
+          location: "Bristol",
+          is_active: true,
+          discovered_from: listing.url,
+          notes: `Found advertising on a job board: ${listing.url}`,
+        });
+
+        if (insertError) {
+          if (!insertError.message.includes("duplicate")) console.error("Could not add company:", insertError.message);
+          continue;
+        }
+
+        knownNames.add(key);
+        knownDomains.add(domain);
+        added.push(advertiser);
+      }
+    }
+
     if (!manualWebsite) {
       await supabase
         .from("job_locks")
@@ -541,7 +670,7 @@ Deno.serve(async (req) => {
         .eq("job_name", JOB_NAME);
     }
 
-    return new Response(JSON.stringify({ added: added.length, companies: added }), {
+    return new Response(JSON.stringify({ added: added.length, companies: added, rejected: rejected.length }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (error: any) {
