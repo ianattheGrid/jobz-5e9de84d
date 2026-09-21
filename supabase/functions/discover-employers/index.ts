@@ -567,15 +567,18 @@ Deno.serve(async (req) => {
     }
 
     if (!manualWebsite && added.length < BATCH_LIMIT) {
-      const boardQueries = BOARD_SITES.flatMap((site) =>
-        BOARD_AREAS.slice(0, 3).map((area) => `${site} Bristol ${area} job`.trim()),
-      );
+      // A different pair of boards and work areas each night, so over a week we
+      // cover them all without one long run.
+      const night = new Date().getDate();
+      const boardQueries = [0, 1].map((offset) => {
+        const site = BOARD_SITES[(night + offset) % BOARD_SITES.length];
+        const area = BOARD_AREAS[(night + offset) % BOARD_AREAS.length];
+        return `${site} Bristol ${area} job`.replace(/\s+/g, " ").trim();
+      });
 
       const listings: SearchHit[] = [];
       try {
         for (const query of boardQueries) {
-          if (listings.length >= BATCH_LIMIT * 3) break;
-          if (listings.length) await new Promise((r) => setTimeout(r, 7000));
           listings.push(...(await firecrawlSearch(query)));
         }
       } catch (error: any) {
