@@ -81,7 +81,7 @@ Deno.serve(async (req) => {
         from: EMAIL_FROM_ALERTS,
         reply_to: EMAIL_REPLY_TO,
         to,
-        subject: "Jobz — your Monday round-up",
+        subject: "Jobz — your daily round-up",
         html,
       }),
     });
