@@ -571,14 +571,19 @@ Deno.serve(async (req) => {
       if (!key || knownNames.has(key)) return;
       knownNames.add(key);
       if (domain) knownDomains.add(domain);
-      await supabase.from("target_companies").insert({
+      const { error } = await supabase.from("target_companies").insert({
         company_name: name,
         website: domain ? `https://${domain}` : null,
+        careers_page_url: domain ? `https://${domain}` : "unknown",
         is_active: false,
         excluded_reason: reason,
         discovered_from: "job board",
         notes: "Skipped automatically when reading the job boards",
       });
+      if (error && !error.message.includes("duplicate")) {
+        console.error("Could not remember a skipped company:", error.message);
+        return;
+      }
       rejected.push(name);
     }
 
