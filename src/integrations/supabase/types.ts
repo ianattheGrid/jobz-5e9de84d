@@ -990,6 +990,7 @@ export type Database = {
       }
       employer_prospects: {
         Row: {
+          advert_views_7d: number
           approved_at: string | null
           approved_by: string | null
           company_name: string
@@ -1015,6 +1016,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          advert_views_7d?: number
           approved_at?: string | null
           approved_by?: string | null
           company_name: string
@@ -1040,6 +1042,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          advert_views_7d?: number
           approved_at?: string | null
           approved_by?: string | null
           company_name?: string
@@ -1243,6 +1246,38 @@ export type Database = {
           },
           {
             foreignKeyName: "fk_external_job_matches_external_job"
+            columns: ["external_job_id"]
+            isOneToOne: false
+            referencedRelation: "external_jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      external_job_views: {
+        Row: {
+          candidate_id: string | null
+          external_job_id: string
+          id: string
+          viewed_at: string
+          viewed_on: string
+        }
+        Insert: {
+          candidate_id?: string | null
+          external_job_id: string
+          id?: string
+          viewed_at?: string
+          viewed_on?: string
+        }
+        Update: {
+          candidate_id?: string | null
+          external_job_id?: string
+          id?: string
+          viewed_at?: string
+          viewed_on?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "external_job_views_external_job_id_fkey"
             columns: ["external_job_id"]
             isOneToOne: false
             referencedRelation: "external_jobs"
