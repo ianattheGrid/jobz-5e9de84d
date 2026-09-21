@@ -58,6 +58,37 @@ const NEAR_BRISTOL = [
 
 const CAREERS_PATHS = ["/careers", "/jobs", "/careers/", "/join-us", "/work-with-us", "/about/careers", "/company/careers"];
 
+// --- Reading the job boards -------------------------------------------------
+// Most Bristol vacancies appear on the boards. We read them, work out who is
+// really hiring, and keep only the companies who employ people themselves.
+const BOARD_SITES = [
+  "site:uk.indeed.com",
+  "site:reed.co.uk",
+  "site:totaljobs.com",
+  "site:cv-library.co.uk",
+  "site:adzuna.co.uk",
+];
+
+const BOARD_AREAS = ["", "software developer", "marketing", "finance", "engineering", "customer service"];
+const BOARD_READ_LIMIT = 6; // adverts read per night
+
+// Names that give an agency away.
+const AGENCY_NAME_WORDS = [
+  "recruit", "recruitment", "resourcing", "staffing", "talent", "search", "selection",
+  "personnel", "manpower", "headhunt", "consultancy", "consultants", "appointments",
+  "employment agency", "solutions ltd", "people group", "hays", "reed", "adecco",
+  "randstad", "pertemps", "brook street", "michael page", "robert walters", "sthree",
+  "gi group", "office angels", "blue arrow", "search consultancy", "rise technical",
+];
+
+// Phrases only an agency writes.
+const AGENCY_PHRASES = [
+  "our client", "my client", "on behalf of", "client is looking", "we are recruiting for",
+  "confidential client", "a leading bristol", "acting as an employment agency",
+  "acting as an employment business", "recruitment consultant will", "rec2rec",
+  "we are working with", "our customer", "send us your cv", "one of our clients",
+];
+
 function normalise(name: string) {
   return name.toLowerCase().replace(/[^a-z0-9]/g, "");
 }
@@ -92,6 +123,15 @@ function titleCase(value: string) {
     .join(" ");
 }
 
+/** Does this read like a company name, rather than a scrap of an advert? */
+function plausibleName(value: string) {
+  const trimmed = value.trim();
+  if (trimmed.length < 3 || trimmed.length > 40) return false;
+  if (!/^[A-Za-z0-9&'.\- ]+$/.test(trimmed)) return false;
+  if (trimmed.split(/\s+/).length > 5) return false;
+  return /[a-z]/i.test(trimmed);
+}
+
 /**
  * Prefers the readable company name from the page heading ("Careers - Bristol
  * Water" gives "Bristol Water") and falls back to the web address.
@@ -105,9 +145,14 @@ function companyNameFrom(domain: string, title?: string) {
         .replace(/\s+/g, " ")
         .trim(),
     )
-    .filter((p) => p.length >= 3 && p.length <= 40 && /[a-z]/i.test(p) && !ADVERT_WORDS.test(p));
+    .filter((p) => plausibleName(p) && !ADVERT_WORDS.test(p));
 
-  const fromTitle = pieces.sort((a, b) => b.length - a.length)[0];
+  // Only trust the heading when it actually matches the web address, otherwise
+  // we end up calling a company something like "Early , UK".
+  const stem = domain.split(".")[0].replace(/[^a-z0-9]/g, "");
+  const fromTitle = pieces
+    .filter((p) => stem.length >= 4 && normalise(p).includes(stem.slice(0, 4)))
+    .sort((a, b) => b.length - a.length)[0];
   if (fromTitle) return titleCase(fromTitle);
 
   const base = domain.split(".")[0].replace(/[-_]+/g, " ").trim();
@@ -168,7 +213,16 @@ interface SearchHit {
   description?: string;
 }
 
+// The search service allows ten requests a minute, so we queue ours politely.
+let lastCallAt = 0;
+async function throttle(gapMs = 7000) {
+  const wait = lastCallAt + gapMs - Date.now();
+  if (wait > 0) await new Promise((r) => setTimeout(r, wait));
+  lastCallAt = Date.now();
+}
+
 async function firecrawlSearch(query: string): Promise<SearchHit[]> {
+  await throttle();
   const response = await fetch(`${FIRECRAWL_V2}/search`, {
     method: "POST",
     headers: {
@@ -192,6 +246,85 @@ async function firecrawlSearch(query: string): Promise<SearchHit[]> {
     title: r.title ?? "",
     description: r.description ?? "",
   })).filter((r: SearchHit) => !!r.url);
+}
+
+/** Reads a single board listing so we can see who wrote the advert. */
+async function firecrawlScrape(url: string): Promise<string | null> {
+  try {
+    await throttle();
+    const response = await fetch(`${FIRECRAWL_V2}/scrape`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${FIRECRAWL_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ url, formats: ["markdown"], onlyMainContent: true }),
+    });
+
+    if (!response.ok) {
+      const body = await response.text();
+      const err = new Error(`Firecrawl scrape failed [${response.status}]: ${body.slice(0, 200)}`);
+      (err as any).status = response.status;
+      throw err;
+    }
+
+    const payload = await response.json();
+    const markdown = payload?.markdown ?? payload?.data?.markdown ?? null;
+    return typeof markdown === "string" ? markdown.slice(0, 40_000) : null;
+  } catch (error: any) {
+    if ([402, 403, 429].includes(error?.status)) throw error;
+    console.error(error?.message ?? String(error));
+    return null;
+  }
+}
+
+/** The name of whoever placed the advert, as the board prints it. */
+function advertiserFrom(markdown: string, title: string): string | null {
+  const patterns = [
+    /(?:posted by|advertised by|recruiter|employer|company)\s*[:\-–]\s*([A-Za-z0-9&'.,\- ]{2,60})/i,
+    /\n\s*##?#?\s*([A-Za-z0-9&'.,\- ]{2,60})\s*\n[\s\S]{0,200}?(?:bristol)/i,
+  ];
+  for (const pattern of patterns) {
+    const match = markdown.match(pattern);
+    const value = match?.[1]?.trim();
+    const cleaned = value?.replace(/\s+/g, " ").trim();
+    if (cleaned && plausibleName(cleaned) && !ADVERT_WORDS.test(cleaned)) return cleaned;
+  }
+
+  // Boards often print "Job title - Company - Location" in the page title.
+  const parts = title.split(/[|\u2013\u2014\-]/).map((p) => p.trim()).filter(Boolean);
+  const candidate = parts.find(
+    (p) => plausibleName(p) && !ADVERT_WORDS.test(p) && !/bristol|jobs?$/i.test(p),
+  );
+  return candidate ?? null;
+}
+
+function looksLikeAgencyName(name: string) {
+  const lower = name.toLowerCase();
+  return AGENCY_NAME_WORDS.some((w) => lower.includes(w));
+}
+
+function advertWrittenByAgency(markdown: string) {
+  const lower = markdown.toLowerCase();
+  return AGENCY_PHRASES.some((p) => lower.includes(p));
+}
+
+/** Finds the advertiser's own website so we can look at what they actually do. */
+async function resolveWebsite(name: string): Promise<string | null> {
+  try {
+    const hits = await firecrawlSearch(`"${name}" Bristol official website ${NOT_BOARDS}`);
+    for (const hit of hits) {
+      const domain = apexDomain(hit.url);
+      if (!domain || looksLikeMiddleman(domain)) continue;
+      const stem = normalise(name).slice(0, 8);
+      if (stem.length >= 4 && !normalise(domain).includes(stem.slice(0, 4))) continue;
+      return domain;
+    }
+  } catch (error: any) {
+    if ([402, 403, 429].includes(error?.status)) throw error;
+    console.error(error?.message ?? String(error));
+  }
+  return null;
 }
 
 /**
@@ -427,6 +560,142 @@ Deno.serve(async (req) => {
       added.push(name);
     }
 
+    // --- Second pass: read the job boards ---------------------------------
+    // Keeps only companies hiring for themselves; agencies are remembered and
+    // never looked at again.
+    const rejected: string[] = [];
+
+    /** Remembers a rejected advertiser so later runs skip it instantly. */
+    async function remember(name: string, domain: string | null, reason: string) {
+      const key = normalise(name);
+      if (!key || knownNames.has(key)) return;
+      knownNames.add(key);
+      if (domain) knownDomains.add(domain);
+      await supabase.from("target_companies").insert({
+        company_name: name,
+        website: domain ? `https://${domain}` : null,
+        is_active: false,
+        excluded_reason: reason,
+        discovered_from: "job board",
+        notes: "Skipped automatically when reading the job boards",
+      });
+      rejected.push(name);
+    }
+
+    if (!manualWebsite && added.length < BATCH_LIMIT) {
+      // A different pair of boards and work areas each night, so over a week we
+      // cover them all without one long run.
+      const night = new Date().getDate();
+      const boardQueries = [0, 1].map((offset) => {
+        const site = BOARD_SITES[(night + offset) % BOARD_SITES.length];
+        const area = BOARD_AREAS[(night + offset) % BOARD_AREAS.length];
+        return `${site} Bristol ${area} job`.replace(/\s+/g, " ").trim();
+      });
+
+      const listings: SearchHit[] = [];
+      try {
+        for (const query of boardQueries) {
+          listings.push(...(await firecrawlSearch(query)));
+        }
+      } catch (error: any) {
+        if ([402, 403, 429].includes(error?.status)) {
+          await supabase.from("job_locks").upsert(
+            {
+              job_name: JOB_NAME,
+              locked_until: new Date().toISOString(),
+              paused_reason: `Board reading paused: ${error.message}`.slice(0, 300),
+              updated_at: new Date().toISOString(),
+            },
+            { onConflict: "job_name" },
+          );
+          return new Response(JSON.stringify({ added: added.length, companies: added, paused: true }), {
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          });
+        }
+        console.error(error?.message ?? String(error));
+      }
+
+      // Reading each advert costs two lookups, so keep the night's work bounded.
+      let readSoFar = 0;
+      for (const listing of listings) {
+        if (added.length >= BATCH_LIMIT || readSoFar >= BOARD_READ_LIMIT) break;
+        readSoFar += 1;
+
+
+        let markdown: string | null = null;
+        try {
+          markdown = await firecrawlScrape(listing.url);
+        } catch (error: any) {
+          console.error(error?.message ?? String(error));
+          break; // credit or rate limit: stop reading boards for tonight
+        }
+        if (!markdown) continue;
+
+        // Test 1: who placed the advert?
+        const advertiser = advertiserFrom(markdown, listing.title || "");
+        if (!advertiser) continue;
+        const key = normalise(advertiser);
+        if (!key || knownNames.has(key)) continue;
+
+        if (looksLikeAgencyName(advertiser)) {
+          await remember(advertiser, null, "agency");
+          continue;
+        }
+
+        // Test 2: does the advert read like an agency wrote it?
+        if (advertWrittenByAgency(markdown)) {
+          await remember(advertiser, null, "agency");
+          continue;
+        }
+
+        // Only roles near Bristol.
+        if (!mentionsBristol(`${listing.title} ${listing.description ?? ""} ${markdown.slice(0, 4000)}`)) continue;
+
+        // Test 3: what does their own website say they do?
+        let domain: string | null = null;
+        try {
+          domain = await resolveWebsite(advertiser);
+        } catch (error: any) {
+          console.error(error?.message ?? String(error));
+          break;
+        }
+        if (!domain || knownDomains.has(domain)) continue;
+        if (looksLikeMiddleman(domain)) {
+          await remember(advertiser, domain, "agency");
+          continue;
+        }
+
+        const judged = await keepRealEmployers([{ url: `https://${domain}`, title: advertiser }]);
+        if (!judged.has(domain)) {
+          await remember(advertiser, domain, "unverified");
+          continue;
+        }
+
+        const website = `https://${domain}`;
+        const careers = await findCareersPage(website);
+        if (!careers || apexDomain(careers) !== domain) continue;
+
+        const { error: insertError } = await supabase.from("target_companies").insert({
+          company_name: advertiser,
+          website,
+          careers_page_url: careers,
+          location: "Bristol",
+          is_active: true,
+          discovered_from: listing.url,
+          notes: `Found advertising on a job board: ${listing.url}`,
+        });
+
+        if (insertError) {
+          if (!insertError.message.includes("duplicate")) console.error("Could not add company:", insertError.message);
+          continue;
+        }
+
+        knownNames.add(key);
+        knownDomains.add(domain);
+        added.push(advertiser);
+      }
+    }
+
     if (!manualWebsite) {
       await supabase
         .from("job_locks")
@@ -434,7 +703,7 @@ Deno.serve(async (req) => {
         .eq("job_name", JOB_NAME);
     }
 
-    return new Response(JSON.stringify({ added: added.length, companies: added }), {
+    return new Response(JSON.stringify({ added: added.length, companies: added, rejected: rejected.length }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (error: any) {

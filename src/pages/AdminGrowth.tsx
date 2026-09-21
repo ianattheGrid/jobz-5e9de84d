@@ -37,6 +37,20 @@ interface Signup {
   created_at: string;
 }
 
+interface SkippedCompany {
+  id: string;
+  company_name: string;
+  website: string | null;
+  excluded_reason: string | null;
+  created_at: string;
+}
+
+const SKIP_LABELS: Record<string, string> = {
+  agency: "Recruitment agency",
+  board: "Job board",
+  unverified: "Couldn't tell who they are",
+};
+
 interface SourceRow {
   source: string;
   thisWeek: number;
@@ -54,6 +68,7 @@ const AdminGrowth = () => {
   const [loading, setLoading] = useState(true);
   const [busyId, setBusyId] = useState<string | null>(null);
   const [emailDrafts, setEmailDrafts] = useState<Record<string, string>>({});
+  const [skipped, setSkipped] = useState<SkippedCompany[]>([]);
   const [manualSite, setManualSite] = useState("");
   const [addingCompany, setAddingCompany] = useState(false);
 
@@ -62,7 +77,7 @@ const AdminGrowth = () => {
     const twoWeeksAgo = new Date(Date.now() - 14 * 24 * 60 * 60_000).toISOString();
     const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60_000).toISOString();
 
-    const [{ data: p }, { data: s }, { data: lock }, { data: cands }, { data: emps }] = await Promise.all([
+    const [{ data: p }, { data: s }, { data: lock }, { data: cands }, { data: emps }, { data: sk }] = await Promise.all([
       supabase
         .from("employer_prospects")
         .select("*")
@@ -77,10 +92,17 @@ const AdminGrowth = () => {
       supabase.from("job_locks").select("paused_reason").eq("job_name", JOB_NAME).maybeSingle(),
       supabase.from("candidate_profiles").select("signup_source, created_at").gte("created_at", twoWeeksAgo),
       supabase.from("employer_profiles").select("signup_source, created_at").gte("created_at", twoWeeksAgo),
+      supabase
+        .from("target_companies")
+        .select("id, company_name, website, excluded_reason, created_at")
+        .not("excluded_reason", "is", null)
+        .order("created_at", { ascending: false })
+        .limit(50),
     ]);
 
     setProspects((p as Prospect[]) || []);
     setSignups((s as Signup[]) || []);
+    setSkipped((sk as SkippedCompany[]) || []);
     setPaused(Boolean(lock?.paused_reason));
 
     const tally = new Map<string, SourceRow>();
@@ -137,6 +159,19 @@ const AdminGrowth = () => {
         description: "We couldn't find a careers page there, or they're already on the list.",
       });
     }
+  };
+
+  const allowCompany = async (c: SkippedCompany) => {
+    const { error } = await supabase
+      .from("target_companies")
+      .update({ excluded_reason: null, is_active: true })
+      .eq("id", c.id);
+    if (error) {
+      toast({ variant: "destructive", title: "Couldn't do that", description: error.message });
+      return;
+    }
+    toast({ title: `${c.company_name} is back on the list` });
+    load();
   };
 
   const saveEmail = async (id: string) => {
@@ -362,6 +397,33 @@ const AdminGrowth = () => {
                         <Trash2 className="h-4 w-4" /> Discard
                       </Button>
                     </div>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Skipped when reading the boards ({skipped.length})</CardTitle>
+                <CardDescription>
+                  Agencies and anything we couldn't place. We never look at these again — unless you say otherwise.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                {skipped.length === 0 && <p className="text-sm text-muted-foreground">Nothing skipped yet.</p>}
+                {skipped.map((c) => (
+                  <div key={c.id} className="flex flex-wrap items-center justify-between gap-2 text-sm">
+                    <span>
+                      {c.company_name}
+                      <span className="text-muted-foreground">
+                        {" "}
+                        — {SKIP_LABELS[c.excluded_reason ?? ""] ?? c.excluded_reason} ·{" "}
+                        {new Date(c.created_at).toLocaleDateString("en-GB")}
+                      </span>
+                    </span>
+                    <Button variant="ghost" size="sm" onClick={() => allowCompany(c)}>
+                      Actually, allow this one
+                    </Button>
                   </div>
                 ))}
               </CardContent>
