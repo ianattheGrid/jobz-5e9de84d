@@ -149,7 +149,8 @@ function looksLikeMiddleman(domain: string | null) {
 
 function mentionsBristol(text: string) {
   const lower = text.toLowerCase();
-  return NEAR_BRISTOL.some((place) => lower.includes(place));
+  if (NEAR_BRISTOL.some((place) => lower.includes(place))) return true;
+  return BRISTOL_POSTCODE_PATTERN.test(lower);
 }
 
 function titleCase(value: string) {
