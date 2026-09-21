@@ -1,6 +1,9 @@
 
+import { useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { SignUpForm } from "@/components/auth/SignUpForm";
 import { useSignUp } from "@/hooks/useSignUp";
+import { rememberSource } from "@/utils/growth/source";
 import NavBar from "@/components/NavBar";
 import { CosmicBackground } from "@/components/ui/cosmic-background";
 import { SpaceCard } from "@/components/ui/space-card";
