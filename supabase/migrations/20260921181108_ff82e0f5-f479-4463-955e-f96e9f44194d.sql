@@ -1,0 +1,1 @@
+UPDATE public.target_companies SET last_scraped_at = NULL WHERE is_active = true AND excluded_reason IS NULL;

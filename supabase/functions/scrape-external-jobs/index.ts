@@ -26,6 +26,8 @@ const FIRECRAWL_V2 = 'https://api.firecrawl.dev/v2';
 
 /** How many careers pages we'll pay to render in one run. */
 const RENDER_LIMIT = 15;
+/** How many companies one run reads — keeps each run inside its time limit. */
+const COMPANY_LIMIT = 6;
 /** How many adverts we'll take from any one company in a single run. */
 const PER_COMPANY_LIMIT = 15;
 
@@ -53,17 +55,13 @@ function isNearBristol(text: string | null | undefined): boolean {
   return BRISTOL_POSTCODE_PATTERN.test(lower);
 }
 
-/** Keep the board a Bristol board: the role, or failing that the company, must be local. */
-function jobIsLocal(job: ScrapedJob, company: CompanyToScrape): boolean {
+/** Keep the board a Bristol board: the role itself has to be here. */
+function jobIsLocal(job: ScrapedJob, _company: CompanyToScrape): boolean {
   const roleLocation = (job.location || '').trim();
-  if (roleLocation && roleLocation.toLowerCase() !== 'bristol') {
-    return isNearBristol(roleLocation);
-  }
-  if (roleLocation) return true;
-  // No location on the advert: fall back to what we know about the company,
-  // and give it the benefit of the doubt when we know nothing at all.
-  if (company.location) return isNearBristol(company.location);
-  return true;
+  if (roleLocation) return isNearBristol(roleLocation);
+  // Big employers advertise everywhere and often leave the location off the
+  // link, so fall back to what the advert's own address and title say.
+  return isNearBristol(job.job_url) || isNearBristol(job.job_title);
 }
 
 // --- Which hiring system does this company use? -----------------------------
@@ -213,6 +211,31 @@ async function renderCareersPage(url: string): Promise<{ html: string; links: st
   }
 }
 
+/** Tidy up a link's words so the board reads like a job title, not page furniture. */
+function tidyTitle(raw: string): string {
+  let text = raw
+    .replace(/&nbsp;|&#160;/gi, ' ')
+    .replace(/&amp;/gi, '&')
+    .replace(/&#39;|&apos;|&rsquo;/gi, "'")
+    .replace(/&quot;/gi, '"')
+    .replace(/&#\d+;/g, ' ')
+    .replace(/\u00a0/g, ' ')
+    .replace(/\bXMLNAME\b/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  // Workday and friends tack the place and date onto the end of the link text.
+  text = text.replace(/\s+\d{1,2}\s+(January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{4}$/i, '');
+  return text.replace(/\s+/g, ' ').trim();
+}
+
+/** Some hiring systems hide the place in the link itself: /job/Bristol-Area/... */
+function locationFromUrl(url: string): string {
+  const match = url.match(/\/job\/([^/]+)\//i);
+  if (!match) return '';
+  return decodeURIComponent(match[1]).replace(/[-_]+/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
 /** Turn a rendered page's links into candidate adverts. */
 function jobsFromLinks(links: string[], html: string, company: CompanyToScrape): ScrapedJob[] {
   const titles = new Map<string, string>();
@@ -244,16 +267,18 @@ function jobsFromLinks(links: string[], html: string, company: CompanyToScrape):
       title = slug.replace(/[-_]+/g, ' ').replace(/\b\d{4,}\b/g, '').trim();
       title = title.replace(/\b\w/g, (c) => c.toUpperCase());
     }
+    title = tidyTitle(title);
     if (!title) continue;
 
     jobs.push({
       company_id: company.id,
       job_title: title.slice(0, 120),
       job_description: '',
-      location: '',
+      location: locationFromUrl(link),
       job_url: link,
     });
   }
+
 
   return jobs;
 }
@@ -282,7 +307,9 @@ Deno.serve(async (req) => {
       .select('id, company_name, careers_page_url, ats_type, location')
       .eq('is_active', true)
       .is('excluded_reason', null)
-      .or(`last_scraped_at.is.null,last_scraped_at.lt.${cutoffTime.toISOString()}`);
+      .or(`last_scraped_at.is.null,last_scraped_at.lt.${cutoffTime.toISOString()}`)
+      .order('last_scraped_at', { ascending: true, nullsFirst: true })
+      .limit(COMPANY_LIMIT);
 
     if (companiesError) {
       console.error('Error fetching companies:', companiesError);
@@ -541,7 +568,21 @@ const NON_ROLE_PATTERNS: RegExp[] = [
   /\bmeet the team\b/i,
   /\bcookie|privacy|terms\b/i,
   /\bsign in|log ?in|register\b/i,
+  /^skip to\b/i,
+  /\bsaved (jobs?|vacanc)/i,
+  /\bfind your\b/i,
+  /\bchoose (a )?(country|region|location)\b/i,
+  /^discover\b/i,
+  /^jumpstart\b/i,
+  /\bmore tips\b/i,
+  /^work at\b/i,
+  /^view (job|vacanc|role)/i,
+  /^apply\b/i,
+  /^students? and graduates?\b/i,
 ];
+
+/** Addresses that are a listing page or a site control, never one advert. */
+const NON_ADVERT_URL = /(search-results|savedvacancies|choose-country|search|page=)/i;
 
 /**
  * Is this a single advert, or just another page on the careers site?
@@ -561,6 +602,9 @@ function isRealVacancy(job: ScrapedJob): boolean {
   } catch {
     return false;
   }
+
+  const lastPart = path.split('/').filter(Boolean).pop() || '';
+  if (NON_ADVERT_URL.test(lastPart) || /savedvacancies|[?&]page=/i.test(url) || url.includes('#')) return false;
 
   // A specific posting: an id, or a slug of its own under a jobs-ish path.
   const hasId = /\/\d{3,}(\/|$|[-_])/.test(path) || /[?&](jobid|id|req|requisition|gh_jid)=/i.test(url);
