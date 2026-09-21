@@ -60,7 +60,10 @@ function jobIsLocal(job: ScrapedJob, company: CompanyToScrape): boolean {
     return isNearBristol(roleLocation);
   }
   if (roleLocation) return true;
-  return isNearBristol(company.location) || isNearBristol(company.careers_page_url);
+  // No location on the advert: fall back to what we know about the company,
+  // and give it the benefit of the doubt when we know nothing at all.
+  if (company.location) return isNearBristol(company.location);
+  return true;
 }
 
 // --- Which hiring system does this company use? -----------------------------
