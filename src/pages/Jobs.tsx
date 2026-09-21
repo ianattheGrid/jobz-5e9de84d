@@ -15,6 +15,8 @@ import { bristolPostcodes } from "@/data/bristolPostcodes";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { LayoutDashboard } from "lucide-react";
+import ExternalJobCard from "@/components/jobs/ExternalJobCard";
+import { FoundAdvert } from "@/utils/externalJobs";
 
 const Jobs = () => {
   const { user, userType } = useAuth();
@@ -86,6 +88,29 @@ const Jobs = () => {
     retryDelay: 1000,
   });
 
+  // Adverts we found on companies' own careers pages. Shown quietly alongside
+  // Jobz vacancies — we link out to the company, we don't take applications.
+  const { data: foundAdverts } = useQuery({
+    queryKey: ['external-jobs', searchFilters?.title, searchFilters?.location],
+    queryFn: async () => {
+      let query = supabase
+        .from('external_jobs')
+        .select('id, job_title, location, job_url, salary_min, salary_max, target_companies(company_name, website, industry_sector)')
+        .eq('is_active', true)
+        .order('scraped_at', { ascending: false })
+        .limit(30);
+
+      if (searchFilters?.title) {
+        query = query.ilike('job_title', `%${searchFilters.title}%`);
+      }
+
+      const { data, error } = await query;
+      if (error) throw error;
+      return (data || []) as unknown as FoundAdvert[];
+    },
+    staleTime: 5 * 60 * 1000,
+  });
+
   const handleSearch = (filters: JobSearchSchema) => {
     console.log('Applying search filters:', filters);
     setSearchFilters(filters);
@@ -97,13 +122,6 @@ const Jobs = () => {
       <div className="container mx-auto py-8 px-4 bg-background min-h-screen demo-employer-dark">
         <div className="mb-6">
           <JobsHeader userType={userType} />
-        </div>
-        
-        {/* Example Jobs Notice */}
-        <div className="mb-6 p-4 bg-primary/20 border border-primary/40 rounded-lg">
-          <p className="text-sm text-white">
-            <span className="font-semibold text-primary">Note:</span> These are example jobs for demonstration purposes.
-          </p>
         </div>
         
         <JobSearch onSearch={handleSearch} userType={userType} />
@@ -126,6 +144,21 @@ const Jobs = () => {
           <EmptyJobsList userType={userType} />
         ) : (
           <JobList jobs={jobs} />
+        )}
+
+        {!!foundAdverts?.length && (
+          <section className="mt-12">
+            <h2 className="text-xl font-bold text-white">Also hiring in Bristol</h2>
+            <p className="text-sm text-muted-foreground mt-1 mb-6 max-w-2xl">
+              These roles are advertised on the companies' own sites. We link you straight to
+              them — no middleman, nothing added on top.
+            </p>
+            <div className="grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+              {foundAdverts.map((advert) => (
+                <ExternalJobCard key={advert.id} job={advert} candidateId={user?.id ?? null} />
+              ))}
+            </div>
+          </section>
         )}
       </div>
     </>

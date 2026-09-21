@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, ExternalLink, Building2, MapPin, DollarSign } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { advertClaimLink, openAdvert } from "@/utils/externalJobs";
 
 interface ExternalJob {
   id: string;
@@ -92,34 +93,8 @@ const ExternalJobsView = () => {
     }
   };
 
-  /**
-   * Notes that somebody opened this advert. The advert and the date only —
-   * used to tell the company how much interest their role is getting here.
-   * One row per person per advert per day; repeats are silently ignored.
-   */
-  const recordView = async (jobId: string) => {
-    try {
-      await supabase
-        .from('external_job_views')
-        .insert({ external_job_id: jobId, candidate_id: user?.id ?? null });
-    } catch {
-      /* never block the candidate on this */
-    }
-  };
-
-  const openAdvert = (job: ExternalJob) => {
-    void recordView(job.id);
-    window.open(job.job_url, '_blank');
-  };
-
-  const claimLink = (job: ExternalJob) => {
-    const params = new URLSearchParams({
-      claim: job.id,
-      company: job.target_companies?.company_name || '',
-      site: job.target_companies?.website || '',
-    });
-    return `/employer/signup?${params.toString()}`;
-  };
+  const openJobAdvert = (job: ExternalJob) => openAdvert(job as any, user?.id ?? null);
+  const claimLink = (job: ExternalJob) => advertClaimLink(job as any);
 
   const markAsInterested = async (jobId: string, interested: boolean) => {
     try {
@@ -231,7 +206,7 @@ const ExternalJobsView = () => {
 
                 <div className="flex gap-2 flex-wrap">
                   <Button
-                    onClick={() => openAdvert(job)}
+                    onClick={() => openJobAdvert(job)}
                     className="flex items-center gap-2"
                   >
                     <ExternalLink className="h-4 w-4" />

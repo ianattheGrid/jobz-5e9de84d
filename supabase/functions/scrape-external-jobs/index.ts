@@ -56,8 +56,11 @@ Deno.serve(async (req) => {
       console.log(`Scraping ${company.company_name}...`);
       
       try {
-        const jobs = await scrapeCompanyJobs(company);
-        console.log(`Found ${jobs.length} jobs for ${company.company_name}`);
+        const found = await scrapeCompanyJobs(company);
+        // Only keep things that actually read like a vacancy, and never let one
+        // badly built careers page flood the board.
+        const jobs = found.filter(isRealVacancy).slice(0, PER_COMPANY_LIMIT);
+        console.log(`Found ${found.length} links, kept ${jobs.length} vacancies for ${company.company_name}`);
         
         for (const job of jobs) {
           // Check if job already exists (by URL)
@@ -264,6 +267,71 @@ function parseWorkdayJobs(html: string, company: CompanyToScrape, baseUrl: strin
   }
 
   return jobs;
+}
+
+/** How many adverts we'll take from any one company in a single run. */
+const PER_COMPANY_LIMIT = 15;
+
+/** Page headings and section names that keep getting mistaken for vacancies. */
+const NON_ROLE_PATTERNS: RegExp[] = [
+  /^(our|the)\s/i,
+  /^what\s/i,
+  /^why\s/i,
+  /^how\s/i,
+  /^working at\b/i,
+  /^life at\b/i,
+  /^belonging\b/i,
+  /^rewards?\b/i,
+  /^benefits\b/i,
+  /^locations?\b/i,
+  /^adjustments?\b/i,
+  /^diversity\b/i,
+  /^inclusion\b/i,
+  /^early careers?\b/i,
+  /^experienced professionals\b/i,
+  /^graduate (scheme|programme)s?\b/i,
+  /^apprenticeships?\b/i,
+  /\bcareers? (in|at|home)\b/i,
+  /\blatest vacanc/i,
+  /\bcurrent vacanc/i,
+  /\bjob search\b/i,
+  /\bsearch results\b/i,
+  /\bagenda\b/i,
+  /\bstories\b/i,
+  /\bblog\b/i,
+  /\bnews\b/i,
+  /\bevents?\b/i,
+  /\bfaqs?\b/i,
+  /\bour people\b/i,
+  /\bmeet the team\b/i,
+];
+
+/**
+ * Is this a single advert, or just another page on the careers site?
+ * A real advert has a role-sounding title and a link that points at one posting.
+ */
+function isRealVacancy(job: ScrapedJob): boolean {
+  const title = (job.job_title || "").replace(/&#\d+;/g, "'").trim();
+  if (title.length < 4 || title.length > 100) return false;
+  if (NON_ROLE_PATTERNS.some((p) => p.test(title))) return false;
+
+  const url = job.job_url || "";
+  if (/javascript:|^#|mailto:/i.test(url)) return false;
+
+  let path = "";
+  try {
+    path = new URL(url).pathname.replace(/\/+$/, "");
+  } catch {
+    return false;
+  }
+
+  // A specific posting: an id, or a slug of its own under a jobs-ish path.
+  const hasId = /\/\d{3,}(\/|$|[-_])/.test(path) || /[?&](jobid|id|req|requisition)=/i.test(url);
+  const underJobsPath = /\/(job|jobs|vacancy|vacancies|opening|openings|position|positions|role|roles)\//i.test(path);
+  const slug = path.split("/").filter(Boolean).pop() || "";
+  const hasOwnSlug = slug.split("-").length >= 3;
+
+  return hasId || (underJobsPath && hasOwnSlug);
 }
 
 function parseGenericJobs(html: string, company: CompanyToScrape, baseUrl: string): ScrapedJob[] {
