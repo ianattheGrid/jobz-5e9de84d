@@ -335,9 +335,13 @@ Deno.serve(async (req) => {
         // Only keep things that actually read like a vacancy, that are near
         // Bristol, and never let one careers page flood the board.
         const vacancies = found.filter(isRealVacancy);
-        const local = vacancies.filter((job) => jobIsLocal(job, company));
-        skippedNotLocal += vacancies.length - local.length;
-        const jobs = local.slice(0, PER_COMPANY_LIMIT);
+        const local: ScrapedJob[] = [];
+        for (const job of vacancies) {
+          if (local.length >= PER_COMPANY_LIMIT) break;
+          if (await confirmLocal(job, company)) local.push(job);
+          else skippedNotLocal++;
+        }
+        const jobs = local;
         console.log(
           `${company.company_name}: ${found.length} links, ${vacancies.length} vacancies, ${jobs.length} local`,
         );
