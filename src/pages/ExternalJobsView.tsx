@@ -274,6 +274,14 @@ const ExternalJobsView = () => {
                 <div className="text-xs text-muted-foreground">
                   Industry: {job.target_companies.industry_sector}
                 </div>
+
+                <p className="text-xs text-muted-foreground border-t border-border pt-3">
+                  Are you {job.target_companies?.company_name || "this company"}?{" "}
+                  <Link to={claimLink(job)} className="text-primary underline underline-offset-2">
+                    Claim this role on Jobz
+                  </Link>{" "}
+                  — £9 a month, no contract, no commission.
+                </p>
               </CardContent>
             </Card>
           ))}
