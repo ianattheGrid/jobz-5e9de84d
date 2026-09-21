@@ -7,6 +7,7 @@ import { corsHeaders } from "../_shared/cors.ts";
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const FIRECRAWL_API_KEY = Deno.env.get("FIRECRAWL_API_KEY");
+const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
 const FIRECRAWL_V2 = "https://api.firecrawl.dev/v2";
 
 const JOB_NAME = "discover-employers";
@@ -14,13 +15,19 @@ const BATCH_LIMIT = 20; // hard cap on new companies added per run
 const LOCK_MINUTES = 20;
 const SEARCH_LIMIT = 10; // results per query
 
+// Keep the big job boards out of the results so we land on companies' own pages.
+const NOT_BOARDS =
+  "-site:indeed.com -site:reed.co.uk -site:totaljobs.com -site:linkedin.com " +
+  "-site:glassdoor.co.uk -site:cv-library.co.uk -site:adzuna.co.uk -site:jobsite.co.uk " +
+  "-site:bebee.com -site:jooble.org -site:theguardian.com -site:charityjob.co.uk";
+
 const QUERIES = [
-  "Bristol jobs careers site",
-  "Bristol software developer jobs company careers page",
-  "Bristol marketing jobs company careers page",
-  "Bristol finance jobs company careers page",
-  "Bristol engineering jobs company careers page",
-  "Bristol operations jobs company careers page",
+  `"careers" "Bristol" company vacancies ${NOT_BOARDS}`,
+  `"we are hiring" Bristol company careers page ${NOT_BOARDS}`,
+  `Bristol software developer "join our team" careers ${NOT_BOARDS}`,
+  `Bristol marketing agency careers "current vacancies" ${NOT_BOARDS}`,
+  `Bristol finance accountancy firm careers "current vacancies" ${NOT_BOARDS}`,
+  `Bristol engineering manufacturing company careers vacancies ${NOT_BOARDS}`,
 ];
 
 // Middlemen we do not want to invite, and places that are not a single employer.
@@ -169,6 +176,59 @@ async function firecrawlSearch(query: string): Promise<SearchHit[]> {
   })).filter((r: SearchHit) => !!r.url);
 }
 
+/**
+ * Second pass over the shortlist: keeps companies that employ people directly
+ * and drops job boards, recruitment agencies and directories. If this check is
+ * unavailable we keep nothing rather than filling the list with rubbish.
+ */
+async function keepRealEmployers(hits: SearchHit[]): Promise<Set<string>> {
+  const kept = new Set<string>();
+  if (!hits.length || !LOVABLE_API_KEY) return kept;
+
+  const listing = hits
+    .map((h, i) => `${i + 1}. ${apexDomain(h.url)} — ${(h.title || "").slice(0, 120)}`)
+    .join("\n");
+
+  try {
+    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${LOVABLE_API_KEY}`, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "openai/gpt-6-astra",
+        reasoning_effort: "low",
+        messages: [
+          {
+            role: "system",
+            content:
+              "You sort web addresses into two piles. KEEP an address only if it belongs to a single organisation that employs people directly (a business, charity, school or public body). DROP job boards, job aggregators, recruitment or staffing agencies, careers advice sites, directories, news sites and social networks. Reply with only the numbers to keep, comma separated. If none, reply NONE.",
+          },
+          { role: "user", content: listing },
+        ],
+      }),
+    });
+
+    if (!response.ok) {
+      const body = await response.text();
+      const err = new Error(`Employer check failed [${response.status}]: ${body.slice(0, 200)}`);
+      (err as any).status = response.status;
+      throw err;
+    }
+
+    const payload = await response.json();
+    const answer: string = payload?.choices?.[0]?.message?.content ?? "";
+    for (const match of answer.matchAll(/\d+/g)) {
+      const hit = hits[Number(match[0]) - 1];
+      const domain = hit ? apexDomain(hit.url) : null;
+      if (domain) kept.add(domain);
+    }
+  } catch (error: any) {
+    console.error(error.message);
+    if ([402, 403, 429].includes(error.status)) throw error;
+  }
+
+  return kept;
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
 
@@ -257,6 +317,8 @@ Deno.serve(async (req) => {
       for (const query of QUERIES) {
         if (hits.length >= BATCH_LIMIT * 4) break;
         try {
+          // Gentle pacing so we stay inside the search service's limits.
+          if (hits.length) await new Promise((r) => setTimeout(r, 7000));
           hits.push(...(await firecrawlSearch(query)));
         } catch (error: any) {
           const status = error.status;
@@ -281,19 +343,32 @@ Deno.serve(async (req) => {
       }
     }
 
-    // --- Turn pages into companies ----------------------------------------
-    const added: string[] = [];
-    const handledDomains = new Set<string>();
-
+    // --- Sift out boards, agencies and directories -------------------------
+    // Keyword rules catch the obvious ones; this second pass judges the rest.
+    const shortlist: SearchHit[] = [];
+    const seenDomains = new Set<string>();
     for (const hit of hits) {
-      if (added.length >= BATCH_LIMIT) break;
-
       const domain = apexDomain(hit.url);
-      if (!domain || handledDomains.has(domain) || knownDomains.has(domain)) continue;
-      handledDomains.add(domain);
-
+      if (!domain || seenDomains.has(domain) || knownDomains.has(domain)) continue;
       if (looksLikeMiddleman(domain)) continue;
       if (!manualWebsite && ADVERT_WORDS.test(hit.title || "")) continue;
+      seenDomains.add(domain);
+      shortlist.push({ ...hit, url: `https://${domain}` });
+    }
+
+    const allowedDomains = manualWebsite
+      ? new Set(shortlist.map((h) => apexDomain(h.url)!))
+      : await keepRealEmployers(shortlist);
+
+    // --- Turn pages into companies ----------------------------------------
+    const added: string[] = [];
+
+    for (const hit of shortlist) {
+      if (added.length >= BATCH_LIMIT) break;
+
+      const domain = apexDomain(hit.url)!;
+      if (!allowedDomains.has(domain)) continue;
+
 
       const name = companyNameFrom(domain);
       if (!name) continue;
