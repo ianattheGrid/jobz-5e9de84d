@@ -65,6 +65,11 @@ const FAQ_ITEMS = [
     answer:
       "£9 flat to the employer. There is no percentage of salary, no per-hire fee and no charge to candidates.",
   },
+  {
+    question: "Does Jobz let people mass-apply?",
+    answer:
+      "No. A candidate can send at most 10 applications a day on Jobz, and that limit is enforced in our database, not just on the screen. Nothing is ever sent on a candidate's behalf: our AI can help tailor an application, but a person reads it and presses send. Employers also see how many roles a candidate has applied for on Jobz in the last 30 days, so it is obvious who applied on purpose.",
+  },
 ];
 
 const HowHiringReallyWorks = () => {

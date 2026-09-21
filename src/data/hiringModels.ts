@@ -82,7 +82,7 @@ export const HIRING_MODELS: HiringModel[] = [
     whoPays: "Candidate (subscription)",
     howMuch: "Usually £15–£50 a month, paid by the job seeker",
     whatHappensToYourCv:
-      "Rewritten by AI and fired at hundreds of roles, often without you reading what was sent",
+      "Rewritten by AI and fired at hundreds of roles — some tools advertise up to 70 applications a day — often without you reading what was sent",
     theCatch:
       "Employers get flooded with near-identical generated CVs, so genuine applicants get buried — including the person who paid for the tool.",
   },
@@ -97,7 +97,7 @@ export const HIRING_MODELS: HiringModel[] = [
     whatHappensToYourCv:
       "Stays yours. Anonymous until you choose to be seen, and never auto-submitted",
     theCatch:
-      "You apply yourself. Our AI helps you tailor and improve an application — it never sends one on your behalf.",
+      "You apply yourself, and you can send at most 10 applications a day. Our AI helps you tailor and improve an application — it never sends one on your behalf.",
     highlight: true,
   },
 ];
