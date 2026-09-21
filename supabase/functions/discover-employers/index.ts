@@ -58,6 +58,36 @@ const NEAR_BRISTOL = [
 
 const CAREERS_PATHS = ["/careers", "/jobs", "/careers/", "/join-us", "/work-with-us", "/about/careers", "/company/careers"];
 
+// --- Reading the job boards -------------------------------------------------
+// Most Bristol vacancies appear on the boards. We read them, work out who is
+// really hiring, and keep only the companies who employ people themselves.
+const BOARD_SITES = [
+  "site:uk.indeed.com",
+  "site:reed.co.uk",
+  "site:totaljobs.com",
+  "site:cv-library.co.uk",
+  "site:adzuna.co.uk",
+];
+
+const BOARD_AREAS = ["", "software developer", "marketing", "finance", "engineering", "customer service"];
+
+// Names that give an agency away.
+const AGENCY_NAME_WORDS = [
+  "recruit", "recruitment", "resourcing", "staffing", "talent", "search", "selection",
+  "personnel", "manpower", "headhunt", "consultancy", "consultants", "appointments",
+  "employment agency", "solutions ltd", "people group", "hays", "reed", "adecco",
+  "randstad", "pertemps", "brook street", "michael page", "robert walters", "sthree",
+  "gi group", "office angels", "blue arrow", "search consultancy", "rise technical",
+];
+
+// Phrases only an agency writes.
+const AGENCY_PHRASES = [
+  "our client", "my client", "on behalf of", "client is looking", "we are recruiting for",
+  "confidential client", "a leading bristol", "acting as an employment agency",
+  "acting as an employment business", "recruitment consultant will", "rec2rec",
+  "we are working with", "our customer", "send us your cv", "one of our clients",
+];
+
 function normalise(name: string) {
   return name.toLowerCase().replace(/[^a-z0-9]/g, "");
 }
