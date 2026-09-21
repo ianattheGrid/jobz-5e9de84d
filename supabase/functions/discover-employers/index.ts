@@ -288,7 +288,10 @@ function advertiserFrom(markdown: string, title: string): string | null {
     const match = markdown.match(pattern);
     const value = match?.[1]?.trim();
     const cleaned = value?.replace(/\s+/g, " ").trim();
-    if (cleaned && plausibleName(cleaned) && !ADVERT_WORDS.test(cleaned)) return cleaned;
+    // A real advertiser name is capitalised or more than one word; a stray
+    // lowercase word like "logos" is page furniture, not a company.
+    const looksNamed = !!cleaned && (/[A-Z]/.test(cleaned) || cleaned.includes(" "));
+    if (cleaned && looksNamed && plausibleName(cleaned) && !ADVERT_WORDS.test(cleaned)) return cleaned;
   }
 
   // Boards often print "Job title - Company - Location" in the page title.
