@@ -24,14 +24,22 @@ const QUERIES = [
 ];
 
 // Middlemen we do not want to invite, and places that are not a single employer.
-const EXCLUDED_KEYWORDS = [
-  "recruit", "recruitment", "talent", "staffing", "resourcing", "headhunt",
-  "indeed", "totaljobs", "reed", "hays", "michaelpage", "adecco", "randstad",
-  "glassdoor", "linkedin", "monster", "cv-library", "cvlibrary", "jobsite",
-  "ziprecruiter", "workable", "greenhouse", "lever", "bamboohr", "jobserve",
-  "guardianjobs", "jobs", "careerjet", "adzuna", "gov.uk", "wikipedia",
-  "facebook", "twitter", "youtube", "reddit",
+// Matched against the web address, which is where boards and agencies give
+// themselves away ("...jobs.co.uk", "...recruitment.com").
+const EXCLUDED_DOMAIN_PARTS = [
+  "job", "vacanc", "career", "hiring", "recruit", "talent", "staffing",
+  "resourcing", "headhunt", "employment", "graduate", "placement", "apprentice",
+  "indeed", "totaljobs", "reed.co", "hays", "michaelpage", "adecco", "randstad",
+  "manpower", "experis", "pertemps", "brookstreet", "sthree", "robertwalters",
+  "glassdoor", "linkedin", "monster", "cv-library", "cvlibrary", "ziprecruiter",
+  "workable", "greenhouse", "lever.co", "bamboohr", "workday", "smartrecruiters",
+  "adzuna", "careerjet", "jooble", "bebee", "neuvoo", "trovit", "jobrapido",
+  "gov.uk", "nhs.uk", "ac.uk", "wikipedia", "facebook", "twitter", "x.com",
+  "youtube", "reddit", "medium.com", "eventbrite", "glassdoor",
 ];
+
+// Words that mean the page title is an advert, not a company.
+const ADVERT_WORDS = /\b(salary|per annum|£|apply now|full[- ]time|part[- ]time|vacanc|hiring now|\d{2,}\+)\b/i;
 
 const NEAR_BRISTOL = [
   "bristol", "bs1", "bs2", "bs3", "bs4", "bs5", "bs6", "bs7", "bs8", "bs9",
