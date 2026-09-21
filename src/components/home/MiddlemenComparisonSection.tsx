@@ -54,6 +54,13 @@ export const MiddlemenComparisonSection = () => {
             properly is reported at around £1,000 a month, per recruiter. That bill does
             not disappear — it arrives as a percentage of your salary.
           </p>
+          <p className="text-base text-foreground">
+            <span className="font-semibold">No spray-and-pray.</span> Nobody can fire
+            hundreds of AI-written applications through Jobz: 10 a day is the hard limit,
+            and every one is sent by a person who chose to. Employers see how many roles
+            someone has applied for here in the last month, so it is obvious the
+            application in front of them was meant for them.
+          </p>
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
