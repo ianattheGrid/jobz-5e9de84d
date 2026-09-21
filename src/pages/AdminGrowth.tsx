@@ -161,6 +161,19 @@ const AdminGrowth = () => {
     }
   };
 
+  const allowCompany = async (c: SkippedCompany) => {
+    const { error } = await supabase
+      .from("target_companies")
+      .update({ excluded_reason: null, is_active: true })
+      .eq("id", c.id);
+    if (error) {
+      toast({ variant: "destructive", title: "Couldn't do that", description: error.message });
+      return;
+    }
+    toast({ title: `${c.company_name} is back on the list` });
+    load();
+  };
+
   const saveEmail = async (id: string) => {
     const email = (emailDrafts[id] || "").trim();
     if (!email) return;
