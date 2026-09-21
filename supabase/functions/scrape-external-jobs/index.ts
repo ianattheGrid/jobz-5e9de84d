@@ -568,7 +568,21 @@ const NON_ROLE_PATTERNS: RegExp[] = [
   /\bmeet the team\b/i,
   /\bcookie|privacy|terms\b/i,
   /\bsign in|log ?in|register\b/i,
+  /^skip to\b/i,
+  /\bsaved (jobs?|vacanc)/i,
+  /\bfind your\b/i,
+  /\bchoose (a )?(country|region|location)\b/i,
+  /^discover\b/i,
+  /^jumpstart\b/i,
+  /\bmore tips\b/i,
+  /^work at\b/i,
+  /^view (job|vacanc|role)/i,
+  /^apply\b/i,
+  /^students? and graduates?\b/i,
 ];
+
+/** Addresses that are a listing page or a site control, never one advert. */
+const NON_ADVERT_URL = /(search-results|savedvacancies|choose-country|\/search\b|\?page=|#)/i;
 
 /**
  * Is this a single advert, or just another page on the careers site?
@@ -588,6 +602,8 @@ function isRealVacancy(job: ScrapedJob): boolean {
   } catch {
     return false;
   }
+
+  if (NON_ADVERT_URL.test(path)) return false;
 
   // A specific posting: an id, or a slug of its own under a jobs-ish path.
   const hasId = /\/\d{3,}(\/|$|[-_])/.test(path) || /[?&](jobid|id|req|requisition|gh_jid)=/i.test(url);
