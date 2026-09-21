@@ -70,6 +70,7 @@ const BOARD_SITES = [
 ];
 
 const BOARD_AREAS = ["", "software developer", "marketing", "finance", "engineering", "customer service"];
+const BOARD_READ_LIMIT = 6; // adverts read per night
 
 // Names that give an agency away.
 const AGENCY_NAME_WORDS = [
