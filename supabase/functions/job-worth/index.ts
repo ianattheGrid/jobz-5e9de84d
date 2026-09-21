@@ -130,14 +130,17 @@ Deno.serve(async (req) => {
     (result as any).agencyFee = mid ? Math.round(mid * 0.2) : null;
     (result as any).jobzMonthly = 9;
 
-    // Only if they explicitly asked us to follow up.
+    // Only if they explicitly asked us to follow up. A duplicate simply means
+    // they've already asked once — the unique index keeps it to one email.
     if (followUpEmail && /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(followUpEmail)) {
-      await supabase
-        .from("growth_followups")
-        .upsert(
-          { email: followUpEmail, kind: "salary_tool", due_at: new Date(Date.now() + 7 * 24 * 60 * 60_000).toISOString() },
-          { onConflict: "email,kind", ignoreDuplicates: true },
-        );
+      const { error: followUpError } = await supabase.from("growth_followups").insert({
+        email: followUpEmail,
+        kind: "salary_tool",
+        due_at: new Date(Date.now() + 7 * 24 * 60 * 60_000).toISOString(),
+      });
+      if (followUpError && !followUpError.message.includes("duplicate")) {
+        console.error("Could not record follow-up:", followUpError.message);
+      }
     }
 
     return json({ result });
