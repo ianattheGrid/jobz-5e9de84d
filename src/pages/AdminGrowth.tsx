@@ -77,7 +77,7 @@ const AdminGrowth = () => {
     const twoWeeksAgo = new Date(Date.now() - 14 * 24 * 60 * 60_000).toISOString();
     const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60_000).toISOString();
 
-    const [{ data: p }, { data: s }, { data: lock }, { data: cands }, { data: emps }] = await Promise.all([
+    const [{ data: p }, { data: s }, { data: lock }, { data: cands }, { data: emps }, { data: sk }] = await Promise.all([
       supabase
         .from("employer_prospects")
         .select("*")
