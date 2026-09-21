@@ -55,17 +55,13 @@ function isNearBristol(text: string | null | undefined): boolean {
   return BRISTOL_POSTCODE_PATTERN.test(lower);
 }
 
-/** Keep the board a Bristol board: the role, or failing that the company, must be local. */
-function jobIsLocal(job: ScrapedJob, company: CompanyToScrape): boolean {
+/** Keep the board a Bristol board: the role itself has to be here. */
+function jobIsLocal(job: ScrapedJob, _company: CompanyToScrape): boolean {
   const roleLocation = (job.location || '').trim();
-  if (roleLocation && roleLocation.toLowerCase() !== 'bristol') {
-    return isNearBristol(roleLocation);
-  }
-  if (roleLocation) return true;
-  // No location on the advert: fall back to what we know about the company,
-  // and give it the benefit of the doubt when we know nothing at all.
-  if (company.location) return isNearBristol(company.location);
-  return true;
+  if (roleLocation) return isNearBristol(roleLocation);
+  // Big employers advertise everywhere and often leave the location off the
+  // link, so fall back to what the advert's own address and title say.
+  return isNearBristol(job.job_url) || isNearBristol(job.job_title);
 }
 
 // --- Which hiring system does this company use? -----------------------------
