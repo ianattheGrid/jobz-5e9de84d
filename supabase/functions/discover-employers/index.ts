@@ -198,7 +198,16 @@ interface SearchHit {
   description?: string;
 }
 
+// The search service allows ten requests a minute, so we queue ours politely.
+let lastCallAt = 0;
+async function throttle(gapMs = 7000) {
+  const wait = lastCallAt + gapMs - Date.now();
+  if (wait > 0) await new Promise((r) => setTimeout(r, wait));
+  lastCallAt = Date.now();
+}
+
 async function firecrawlSearch(query: string): Promise<SearchHit[]> {
+  await throttle();
   const response = await fetch(`${FIRECRAWL_V2}/search`, {
     method: "POST",
     headers: {
