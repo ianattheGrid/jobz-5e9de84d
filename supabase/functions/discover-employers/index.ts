@@ -24,14 +24,22 @@ const QUERIES = [
 ];
 
 // Middlemen we do not want to invite, and places that are not a single employer.
-const EXCLUDED_KEYWORDS = [
-  "recruit", "recruitment", "talent", "staffing", "resourcing", "headhunt",
-  "indeed", "totaljobs", "reed", "hays", "michaelpage", "adecco", "randstad",
-  "glassdoor", "linkedin", "monster", "cv-library", "cvlibrary", "jobsite",
-  "ziprecruiter", "workable", "greenhouse", "lever", "bamboohr", "jobserve",
-  "guardianjobs", "jobs", "careerjet", "adzuna", "gov.uk", "wikipedia",
-  "facebook", "twitter", "youtube", "reddit",
+// Matched against the web address, which is where boards and agencies give
+// themselves away ("...jobs.co.uk", "...recruitment.com").
+const EXCLUDED_DOMAIN_PARTS = [
+  "job", "vacanc", "career", "hiring", "recruit", "talent", "staffing",
+  "resourcing", "headhunt", "employment", "graduate", "placement", "apprentice",
+  "indeed", "totaljobs", "reed.co", "hays", "michaelpage", "adecco", "randstad",
+  "manpower", "experis", "pertemps", "brookstreet", "sthree", "robertwalters",
+  "glassdoor", "linkedin", "monster", "cv-library", "cvlibrary", "ziprecruiter",
+  "workable", "greenhouse", "lever.co", "bamboohr", "workday", "smartrecruiters",
+  "adzuna", "careerjet", "jooble", "bebee", "neuvoo", "trovit", "jobrapido",
+  "gov.uk", "nhs.uk", "ac.uk", "wikipedia", "facebook", "twitter", "x.com",
+  "youtube", "reddit", "medium.com", "eventbrite", "glassdoor",
 ];
+
+// Words that mean the page title is an advert, not a company.
+const ADVERT_WORDS = /\b(salary|per annum|£|apply now|full[- ]time|part[- ]time|vacanc|hiring now|\d{2,}\+)\b/i;
 
 const NEAR_BRISTOL = [
   "bristol", "bs1", "bs2", "bs3", "bs4", "bs5", "bs6", "bs7", "bs8", "bs9",
@@ -47,19 +55,21 @@ function normalise(name: string) {
   return name.toLowerCase().replace(/[^a-z0-9]/g, "");
 }
 
+/** The company's own address, with hosting subdomains like careers. stripped off. */
 function apexDomain(url: string | null): string | null {
   if (!url) return null;
   try {
-    const host = new URL(url.startsWith("http") ? url : `https://${url}`).hostname.replace(/^www\./, "");
-    return host.toLowerCase();
+    let host = new URL(url.startsWith("http") ? url : `https://${url}`).hostname.toLowerCase();
+    host = host.replace(/^(www|careers?|jobs?|apply|boards|hire|hiring|recruiting|talent|work)\./, "");
+    return host;
   } catch {
     return null;
   }
 }
 
-function looksLikeMiddleman(name: string, domain: string | null) {
-  const haystack = `${name} ${domain ?? ""}`.toLowerCase();
-  return EXCLUDED_KEYWORDS.some((k) => haystack.includes(k));
+function looksLikeMiddleman(domain: string | null) {
+  if (!domain) return true;
+  return EXCLUDED_DOMAIN_PARTS.some((k) => domain.includes(k));
 }
 
 function mentionsBristol(text: string) {
@@ -67,17 +77,17 @@ function mentionsBristol(text: string) {
   return NEAR_BRISTOL.some((place) => lower.includes(place));
 }
 
-/** Tidies "Careers at Acme Ltd | Jobs" into "Acme Ltd". */
-function companyNameFrom(title: string, domain: string | null) {
-  const cleaned = title
-    .split(/[|\u2013\u2014\u00b7:]/)[0]
-    .replace(/\b(careers?|jobs?|vacancies|work with us|join us|hiring|home)\b/gi, "")
-    .replace(/\s+/g, " ")
-    .trim();
-  if (cleaned.length >= 2 && cleaned.length <= 80) return cleaned;
-  if (!domain) return null;
-  const base = domain.split(".")[0];
-  return base.charAt(0).toUpperCase() + base.slice(1);
+/**
+ * The company's name comes from its own web address, not from an advert
+ * headline — headlines are job titles and make a mess of the list.
+ */
+function companyNameFrom(domain: string) {
+  const base = domain.split(".")[0].replace(/[-_]+/g, " ").trim();
+  if (base.length < 2 || base.length > 40) return null;
+  return base
+    .split(" ")
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(" ");
 }
 
 async function fetchPage(url: string, timeoutMs = 6000) {
@@ -282,16 +292,20 @@ Deno.serve(async (req) => {
       if (!domain || handledDomains.has(domain) || knownDomains.has(domain)) continue;
       handledDomains.add(domain);
 
-      const name = companyNameFrom(hit.title || domain, domain);
+      if (looksLikeMiddleman(domain)) continue;
+      if (!manualWebsite && ADVERT_WORDS.test(hit.title || "")) continue;
+
+      const name = companyNameFrom(domain);
       if (!name) continue;
 
       const key = normalise(name);
       if (knownNames.has(key)) continue;
-      if (looksLikeMiddleman(name, domain)) continue;
 
       const website = `https://${domain}`;
       const careers = await findCareersPage(website);
       if (!careers) continue;
+      // The careers page must live on the company's own site, not a board.
+      if (apexDomain(careers) !== domain) continue;
 
       // Only companies within reach of Bristol.
       if (!manualWebsite) {
