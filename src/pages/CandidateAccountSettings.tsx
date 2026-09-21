@@ -46,11 +46,11 @@ const CandidateAccountSettings = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">
       <NavBar />
       <div className="container mx-auto px-4 py-8 pt-20">
         <div className="flex justify-between items-start">
-          <h1 className="text-3xl font-bold mb-8 text-gray-900">Account Settings</h1>
+          <h1 className="text-3xl font-bold mb-8 text-foreground">Account Settings</h1>
           <Button
             onClick={() => navigate('/candidate/dashboard')}
             className="bg-[#FF69B4] hover:bg-[#FF50A8] text-white"
@@ -63,7 +63,7 @@ const CandidateAccountSettings = () => {
         
         <div className="space-y-6 max-w-2xl mx-auto">
           {/* Account Info */}
-          <Card className="bg-white shadow-sm">
+          <Card className="shadow-sm">
             <CardHeader>
               <CardTitle>Account Information</CardTitle>
               <CardDescription>Your login details and account management</CardDescription>
@@ -71,15 +71,15 @@ const CandidateAccountSettings = () => {
             <CardContent>
               <div className="space-y-4">
                 <div>
-                  <label className="text-sm font-medium text-gray-700">Email</label>
-                  <p className="mt-1 text-gray-900 p-2 bg-gray-50 rounded-md">{user?.email}</p>
+                  <label className="text-sm font-medium text-muted-foreground">Email</label>
+                  <p className="mt-1 text-foreground p-2 bg-white/5 rounded-md">{user?.email}</p>
                 </div>
               </div>
             </CardContent>
           </Card>
 
           {/* Password Change */}
-          <Card className="bg-white shadow-sm">
+          <Card className="shadow-sm">
             <CardHeader>
               <CardTitle>Change Password</CardTitle>
               <CardDescription>Update your password to keep your account secure</CardDescription>
@@ -92,7 +92,7 @@ const CandidateAccountSettings = () => {
                     placeholder="New password"
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
-                    className="max-w-md bg-gray-50"
+                    className="max-w-md"
                   />
                 </div>
                 <Button 
@@ -112,7 +112,7 @@ const CandidateAccountSettings = () => {
           <EmailPreferencesCard />
 
           {/* Delete Account */}
-          <Card className="bg-white shadow-sm">
+          <Card className="shadow-sm">
             <CardHeader>
               <CardTitle>Delete Account</CardTitle>
               <CardDescription>Permanently delete your account and all associated data</CardDescription>

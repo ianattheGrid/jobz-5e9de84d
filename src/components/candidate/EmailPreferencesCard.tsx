@@ -53,7 +53,7 @@ export const EmailPreferencesCard = () => {
   };
 
   return (
-    <Card className="bg-white shadow-sm">
+    <Card className="shadow-sm">
       <CardHeader>
         <CardTitle>Emails from Jobz</CardTitle>
         <CardDescription>Choose what lands in your inbox</CardDescription>
@@ -61,8 +61,8 @@ export const EmailPreferencesCard = () => {
       <CardContent>
         <div className="flex items-start justify-between gap-4">
           <div>
-            <p className="font-medium text-gray-900">Weekly roles that fit you</p>
-            <p className="text-sm text-gray-600">
+            <p className="font-medium text-foreground">Weekly roles that fit you</p>
+            <p className="text-sm text-muted-foreground">
               A short Monday email with new jobs matching what you're after. Nothing else.
             </p>
           </div>
