@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { AddJobDialog } from "@/components/candidate/job-hunt/AddJobDialog";
 import { JobHuntCard } from "@/components/candidate/job-hunt/JobHuntCard";
