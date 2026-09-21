@@ -131,6 +131,22 @@ Deno.serve(async (req) => {
       advertCounts.set(id, (advertCounts.get(id) ?? 0) + 1);
     }
 
+    // --- How many people looked at each advert here in the last week? ------
+    // A count only: nothing about who looked.
+    const viewsSince = new Date(now.getTime() - 7 * 24 * 60 * 60_000).toISOString();
+    const { data: recentViews } = await supabase
+      .from("external_job_views")
+      .select("external_job_id")
+      .gte("viewed_at", viewsSince)
+      .limit(5000);
+
+    const viewCounts = new Map<string, number>();
+    for (const row of recentViews || []) {
+      const id = (row as any).external_job_id;
+      if (!id) continue;
+      viewCounts.set(id, (viewCounts.get(id) ?? 0) + 1);
+    }
+
     /** A short, plain "why now" line an admin can actually use. */
     function signalFor(job: any) {
       const count = advertCounts.get(job.company_id) ?? 1;
