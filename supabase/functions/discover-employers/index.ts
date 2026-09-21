@@ -73,13 +73,17 @@ const EXCLUDED_DOMAIN_PARTS = [
 // Words that mean the page title is an advert, not a company.
 const ADVERT_WORDS = /\b(salary|per annum|£|apply now|full[- ]time|part[- ]time|vacanc|hiring now|\d{2,}\+)\b/i;
 
+// Place names that count as "near enough to Bristol".
 const NEAR_BRISTOL = [
-  "bristol", "bs1", "bs2", "bs3", "bs4", "bs5", "bs6", "bs7", "bs8", "bs9",
-  "bs10", "bs11", "bs13", "bs14", "bs15", "bs16", "bs20", "bs30", "bs31",
-  "bs32", "bs34", "bs35", "bs37", "bs48", "bath", "portishead", "clevedon",
-  "thornbury", "yate", "keynsham", "nailsea", "weston-super-mare", "filton",
-  "avonmouth", "aztec west",
+  "bristol", "bath", "portishead", "clevedon", "thornbury", "yate", "keynsham",
+  "nailsea", "weston-super-mare", "weston super mare", "filton", "avonmouth",
+  "aztec west", "bradley stoke", "kingswood", "hanham", "long ashton",
+  "backwell", "chipping sodbury", "emersons green", "severn beach", "pill",
+  "winterbourne", "frampton cotterell", "almondsbury", "patchway", "shirehampton",
 ];
+
+// A Bristol postcode anywhere in the text also counts — "BS16 1QD", "BS1 4DJ".
+const BRISTOL_POSTCODE_PATTERN = /\bbs\s?([1-9]|[1-4][0-9]|80|99)\b/i;
 
 const CAREERS_PATHS = ["/careers", "/jobs", "/careers/", "/join-us", "/work-with-us", "/about/careers", "/company/careers"];
 
