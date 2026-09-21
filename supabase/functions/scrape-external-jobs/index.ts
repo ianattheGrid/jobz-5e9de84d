@@ -647,6 +647,8 @@ function isRealVacancy(job: ScrapedJob): boolean {
 
   const url = job.job_url || '';
   if (/javascript:|^#|mailto:/i.test(url)) return false;
+  // Adverts written for another country's site are never Bristol jobs.
+  if (/\/(en-us|en_us|us|en-ca|en-au|fr-fr|de-de)\//i.test(url)) return false;
 
   let path = '';
   try {
