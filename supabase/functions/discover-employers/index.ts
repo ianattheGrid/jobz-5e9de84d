@@ -288,7 +288,10 @@ function advertiserFrom(markdown: string, title: string): string | null {
     const match = markdown.match(pattern);
     const value = match?.[1]?.trim();
     const cleaned = value?.replace(/\s+/g, " ").trim();
-    if (cleaned && plausibleName(cleaned) && !ADVERT_WORDS.test(cleaned)) return cleaned;
+    // A real advertiser name is capitalised or more than one word; a stray
+    // lowercase word like "logos" is page furniture, not a company.
+    const looksNamed = !!cleaned && (/[A-Z]/.test(cleaned) || cleaned.includes(" "));
+    if (cleaned && looksNamed && plausibleName(cleaned) && !ADVERT_WORDS.test(cleaned)) return cleaned;
   }
 
   // Boards often print "Job title - Company - Location" in the page title.
@@ -571,14 +574,19 @@ Deno.serve(async (req) => {
       if (!key || knownNames.has(key)) return;
       knownNames.add(key);
       if (domain) knownDomains.add(domain);
-      await supabase.from("target_companies").insert({
+      const { error } = await supabase.from("target_companies").insert({
         company_name: name,
         website: domain ? `https://${domain}` : null,
+        careers_page_url: domain ? `https://${domain}` : "unknown",
         is_active: false,
         excluded_reason: reason,
         discovered_from: "job board",
         notes: "Skipped automatically when reading the job boards",
       });
+      if (error && !error.message.includes("duplicate")) {
+        console.error("Could not remember a skipped company:", error.message);
+        return;
+      }
       rejected.push(name);
     }
 
