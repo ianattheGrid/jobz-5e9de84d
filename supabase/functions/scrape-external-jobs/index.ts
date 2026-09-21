@@ -26,6 +26,8 @@ const FIRECRAWL_V2 = 'https://api.firecrawl.dev/v2';
 
 /** How many careers pages we'll pay to render in one run. */
 const RENDER_LIMIT = 15;
+/** How many companies one run reads — keeps each run inside its time limit. */
+const COMPANY_LIMIT = 6;
 /** How many adverts we'll take from any one company in a single run. */
 const PER_COMPANY_LIMIT = 15;
 
@@ -282,7 +284,9 @@ Deno.serve(async (req) => {
       .select('id, company_name, careers_page_url, ats_type, location')
       .eq('is_active', true)
       .is('excluded_reason', null)
-      .or(`last_scraped_at.is.null,last_scraped_at.lt.${cutoffTime.toISOString()}`);
+      .or(`last_scraped_at.is.null,last_scraped_at.lt.${cutoffTime.toISOString()}`)
+      .order('last_scraped_at', { ascending: true, nullsFirst: true })
+      .limit(COMPANY_LIMIT);
 
     if (companiesError) {
       console.error('Error fetching companies:', companiesError);
