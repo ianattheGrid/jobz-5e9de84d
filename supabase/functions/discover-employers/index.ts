@@ -236,6 +236,7 @@ async function firecrawlSearch(query: string): Promise<SearchHit[]> {
 /** Reads a single board listing so we can see who wrote the advert. */
 async function firecrawlScrape(url: string): Promise<string | null> {
   try {
+    await throttle();
     const response = await fetch(`${FIRECRAWL_V2}/scrape`, {
       method: "POST",
       headers: {
