@@ -169,6 +169,59 @@ async function firecrawlSearch(query: string): Promise<SearchHit[]> {
   })).filter((r: SearchHit) => !!r.url);
 }
 
+/**
+ * Second pass over the shortlist: keeps companies that employ people directly
+ * and drops job boards, recruitment agencies and directories. If this check is
+ * unavailable we keep nothing rather than filling the list with rubbish.
+ */
+async function keepRealEmployers(hits: SearchHit[]): Promise<Set<string>> {
+  const kept = new Set<string>();
+  if (!hits.length || !LOVABLE_API_KEY) return kept;
+
+  const listing = hits
+    .map((h, i) => `${i + 1}. ${apexDomain(h.url)} — ${(h.title || "").slice(0, 120)}`)
+    .join("\n");
+
+  try {
+    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${LOVABLE_API_KEY}`, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "openai/gpt-6-astra",
+        reasoning_effort: "low",
+        messages: [
+          {
+            role: "system",
+            content:
+              "You sort web addresses into two piles. KEEP an address only if it belongs to a single organisation that employs people directly (a business, charity, school or public body). DROP job boards, job aggregators, recruitment or staffing agencies, careers advice sites, directories, news sites and social networks. Reply with only the numbers to keep, comma separated. If none, reply NONE.",
+          },
+          { role: "user", content: listing },
+        ],
+      }),
+    });
+
+    if (!response.ok) {
+      const body = await response.text();
+      const err = new Error(`Employer check failed [${response.status}]: ${body.slice(0, 200)}`);
+      (err as any).status = response.status;
+      throw err;
+    }
+
+    const payload = await response.json();
+    const answer: string = payload?.choices?.[0]?.message?.content ?? "";
+    for (const match of answer.matchAll(/\d+/g)) {
+      const hit = hits[Number(match[0]) - 1];
+      const domain = hit ? apexDomain(hit.url) : null;
+      if (domain) kept.add(domain);
+    }
+  } catch (error: any) {
+    console.error(error.message);
+    if ([402, 403, 429].includes(error.status)) throw error;
+  }
+
+  return kept;
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
 
