@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, FileSearch, Link2, Radar } from "lucide-react";
+import { ArrowRight, FileSearch, Link2, PoundSterling, Radar } from "lucide-react";
 import { SectionShell } from "@/components/ui/section-shell";
 import { GlassCard } from "@/components/ui/glass-card";
 import { Starfield } from "@/components/ui/starfield";
@@ -55,6 +55,11 @@ export const CandidateFrontDoorSection = () => {
           <Button asChild size="lg" className="gap-2">
             <Link to="/cv-review">
               Review my CV free <ArrowRight className="h-4 w-4" />
+            </Link>
+          </Button>
+          <Button asChild size="lg" variant="outline" className="gap-2">
+            <Link to="/what-is-this-job-worth">
+              What's this job worth? <PoundSterling className="h-4 w-4" />
             </Link>
           </Button>
         </div>
