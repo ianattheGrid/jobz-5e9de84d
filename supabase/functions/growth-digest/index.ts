@@ -32,12 +32,22 @@ Deno.serve(async (req) => {
   try {
     const since = new Date(Date.now() - 7 * 24 * 60 * 60_000).toISOString();
 
-    const [candidates, employers, invites, waiting, sent] = await Promise.all([
+    const [candidates, employers, invites, waiting, needEmail, sent, messages] = await Promise.all([
       supabase.from("candidate_profiles").select("signup_source").gte("created_at", since),
       supabase.from("employer_profiles").select("signup_source").gte("created_at", since),
       supabase.from("invite_signups").select("id", { count: "exact", head: true }).gte("created_at", since),
-      supabase.from("employer_prospects").select("id", { count: "exact", head: true }).eq("status", "new"),
+      supabase
+        .from("employer_prospects")
+        .select("id", { count: "exact", head: true })
+        .eq("status", "new")
+        .not("contact_email", "is", null),
+      supabase
+        .from("employer_prospects")
+        .select("id", { count: "exact", head: true })
+        .eq("status", "new")
+        .is("contact_email", null),
       supabase.from("employer_prospects").select("id", { count: "exact", head: true }).gte("sent_at", since),
+      supabase.from("contact_submissions").select("id", { count: "exact", head: true }).gte("created_at", since),
     ]);
 
     const counts = new Map<string, number>();
@@ -51,10 +61,32 @@ Deno.serve(async (req) => {
       .map(([key, n]) => `<li>${SOURCE_LABELS[key] ?? key}: <strong>${n}</strong></li>`)
       .join("") || "<li>Nobody new this week.</li>";
 
+    // One short list of things that need a decision, each a button straight to it.
+    const actionRow = (label: string, href: string) => `
+      <tr><td style="padding:6px 0;">
+        <a href="${href}" style="display:block;background:#12122A;color:#fff;border:1px solid #FF2E88;padding:12px 16px;border-radius:10px;text-decoration:none;">${label} →</a>
+      </td></tr>`;
+
+    const actions: string[] = [];
+    if ((waiting.count ?? 0) > 0) {
+      actions.push(actionRow(`${waiting.count} employer${waiting.count === 1 ? "" : "s"} ready to approve`, `${SITE_URL}/admin/growth`));
+    }
+    if ((needEmail.count ?? 0) > 0) {
+      actions.push(actionRow(`${needEmail.count} waiting for a contact address`, `${SITE_URL}/admin/growth`));
+    }
+    if ((messages.count ?? 0) > 0) {
+      actions.push(actionRow(`${messages.count} new message${messages.count === 1 ? "" : "s"} through the contact form`, `${SITE_URL}/admin`));
+    }
+    const actionBlock = actions.length
+      ? `<table style="width:100%;border-collapse:collapse;">${actions.join("")}</table>`
+      : `<p style="color:#666;">Nothing needs you today.</p>`;
+
     const html = `
       <div style="font-family:system-ui,-apple-system,Segoe UI,sans-serif;max-width:560px;margin:0 auto;color:#222;">
         <h2 style="margin-bottom:4px;">Jobz — the last seven days</h2>
         <p style="color:#666;margin-top:0;">Your daily round-up.</p>
+        <h3>Needs you</h3>
+        ${actionBlock}
         <p>
           <strong>${candidates.data?.length ?? 0}</strong> new candidates ·
           <strong>${employers.data?.length ?? 0}</strong> new employers ·
@@ -62,9 +94,7 @@ Deno.serve(async (req) => {
         </p>
         <h3>Where they came from</h3>
         <ul>${sourceRows}</ul>
-        <h3>Waiting for you</h3>
-        <p><strong>${waiting.count ?? 0}</strong> employers ready to approve. We emailed <strong>${sent.count ?? 0}</strong> last week.</p>
-        <p><a href="${SITE_URL}/admin/growth" style="background:#FF2E88;color:#fff;padding:12px 20px;border-radius:8px;text-decoration:none;">Open the approval list</a></p>
+        <p style="color:#666;">We emailed <strong>${sent.count ?? 0}</strong> employers in the last week. One message each, never a chase.</p>
       </div>`;
 
     const { data: admins } = await supabase.from("admins").select("email");

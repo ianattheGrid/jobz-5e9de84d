@@ -24,6 +24,10 @@ interface Prospect {
   status: string;
   sent_at: string | null;
   created_at: string;
+  signal_kind: string | null;
+  signal_summary: string | null;
+  signal_source_url: string | null;
+  signal_at: string | null;
 }
 
 interface Signup {
@@ -57,7 +61,12 @@ const AdminGrowth = () => {
     const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60_000).toISOString();
 
     const [{ data: p }, { data: s }, { data: lock }, { data: cands }, { data: emps }] = await Promise.all([
-      supabase.from("employer_prospects").select("*").order("created_at", { ascending: false }).limit(100),
+      supabase
+        .from("employer_prospects")
+        .select("*")
+        .order("signal_at", { ascending: false, nullsFirst: false })
+        .order("created_at", { ascending: false })
+        .limit(100),
       supabase
         .from("invite_signups")
         .select("id, code, new_user_role, created_at")
@@ -243,6 +252,25 @@ const AdminGrowth = () => {
                       {p.role_title && <Badge variant="secondary">{p.role_title}</Badge>}
                       {p.role_location && <span className="text-sm text-muted-foreground">{p.role_location}</span>}
                     </div>
+                    {p.signal_summary && (
+                      <p className="text-sm text-foreground">
+                        <span className="font-medium">Why now: </span>
+                        {p.signal_summary}
+                        {p.signal_source_url && (
+                          <>
+                            {" "}
+                            <a
+                              href={p.signal_source_url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="underline text-muted-foreground"
+                            >
+                              where we saw it
+                            </a>
+                          </>
+                        )}
+                      </p>
+                    )}
                     <p className="text-sm text-muted-foreground">
                       {p.estimated_agency_fee
                         ? `An agency would charge roughly £${p.estimated_agency_fee.toLocaleString()} for this hire.`

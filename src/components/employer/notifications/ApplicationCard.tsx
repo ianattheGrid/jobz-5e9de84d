@@ -7,6 +7,7 @@ import RejectionDialog from "./RejectionDialog";
 import { ScheduleInterviewDialog } from "../interviews/ScheduleInterviewDialog";
 import { useAuth } from "@/hooks/useAuth";
 import { ApplicationActivity } from "./ApplicationActivity";
+import { ApplicationFitReasons } from "./ApplicationFitReasons";
 
 interface ApplicationCardProps {
   application: ApplicationWithDetails;
@@ -42,6 +43,7 @@ const ApplicationCard = ({ application, onAccept, onReject }: ApplicationCardPro
           : 'Candidate profile not available'
         }
       </p>
+      <ApplicationFitReasons candidateId={application.applicant_id} jobId={application.job_id} />
       <ApplicationActivity candidateId={application.applicant_id} />
       <div className="mt-2 flex gap-2">
         <Button

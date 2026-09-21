@@ -114,6 +114,42 @@ Deno.serve(async (req) => {
     const seenUrls = new Set((existing || []).map((p: any) => p.source_url));
     const seenCompanies = new Set((existing || []).map((p: any) => normalise(p.company_name || "")));
 
+    // --- Hiring signals: how busy has each company been lately? ------------
+    // Company facts from public adverts only — nothing about any individual.
+    const signalSince = new Date(now.getTime() - 30 * 24 * 60 * 60_000).toISOString();
+    const { data: recentAdverts } = await supabase
+      .from("external_jobs")
+      .select("company_id, scraped_at")
+      .eq("is_active", true)
+      .gte("scraped_at", signalSince)
+      .limit(2000);
+
+    const advertCounts = new Map<string, number>();
+    for (const row of recentAdverts || []) {
+      const id = (row as any).company_id;
+      if (!id) continue;
+      advertCounts.set(id, (advertCounts.get(id) ?? 0) + 1);
+    }
+
+    /** A short, plain "why now" line an admin can actually use. */
+    function signalFor(job: any) {
+      const count = advertCounts.get(job.company_id) ?? 1;
+      const posted = job.scraped_at ? new Date(job.scraped_at) : now;
+      const daysOld = Math.floor((now.getTime() - posted.getTime()) / 86_400_000);
+
+      if (count >= 5) {
+        return { kind: "hiring_burst", summary: `Advertising ${count} roles in the last 30 days`, at: posted };
+      }
+      if (count >= 2) {
+        return { kind: "hiring_volume", summary: `Advertising ${count} roles in the last 30 days`, at: posted };
+      }
+      return {
+        kind: "new_advert",
+        summary: daysOld <= 1 ? "Posted a role today" : `Posted a role ${daysOld} days ago`,
+        at: posted,
+      };
+    }
+
     // --- Recently advertised roles ----------------------------------------
     const since = new Date(now.getTime() - 7 * 24 * 60 * 60_000).toISOString();
     const { data: jobs, error: jobsError } = await supabase
@@ -125,9 +161,14 @@ Deno.serve(async (req) => {
       .limit(300);
     if (jobsError) throw jobsError;
 
+    // Strongest reason to get in touch first.
+    const sortedJobs = [...(jobs || [])].sort(
+      (a: any, b: any) => (advertCounts.get(b.company_id) ?? 0) - (advertCounts.get(a.company_id) ?? 0),
+    );
+
     const created: string[] = [];
 
-    for (const job of jobs || []) {
+    for (const job of sortedJobs) {
       if (created.length >= BATCH_LIMIT) break;
 
       const company = (job as any).target_companies;
@@ -141,6 +182,7 @@ Deno.serve(async (req) => {
 
       // Published business contact address on the company's own site, if there is one.
       const contact = await findContactEmail(company?.website || null);
+      const signal = signalFor(job);
 
       const { error: insertError } = await supabase.from("employer_prospects").insert({
         company_name: companyName,
@@ -154,6 +196,10 @@ Deno.serve(async (req) => {
         estimated_salary: salary,
         estimated_agency_fee: salary ? Math.round(salary * AGENCY_FEE_RATE) : null,
         status: "new",
+        signal_kind: signal.kind,
+        signal_summary: signal.summary,
+        signal_source_url: job.job_url,
+        signal_at: signal.at.toISOString(),
       });
 
       // A duplicate simply means another run already queued it.

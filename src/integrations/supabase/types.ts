@@ -1004,6 +1004,10 @@ export type Database = {
           role_location: string | null
           role_title: string | null
           sent_at: string | null
+          signal_at: string | null
+          signal_kind: string | null
+          signal_source_url: string | null
+          signal_summary: string | null
           skip_reason: string | null
           source: string
           source_url: string
@@ -1025,6 +1029,10 @@ export type Database = {
           role_location?: string | null
           role_title?: string | null
           sent_at?: string | null
+          signal_at?: string | null
+          signal_kind?: string | null
+          signal_source_url?: string | null
+          signal_summary?: string | null
           skip_reason?: string | null
           source?: string
           source_url: string
@@ -1046,6 +1054,10 @@ export type Database = {
           role_location?: string | null
           role_title?: string | null
           sent_at?: string | null
+          signal_at?: string | null
+          signal_kind?: string | null
+          signal_source_url?: string | null
+          signal_summary?: string | null
           skip_reason?: string | null
           source?: string
           source_url?: string
