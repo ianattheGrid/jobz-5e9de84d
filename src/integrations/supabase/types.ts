@@ -282,6 +282,48 @@ export type Database = {
         }
         Relationships: []
       }
+      candidate_job_hunt: {
+        Row: {
+          applied_on: string
+          candidate_id: string
+          company: string
+          created_at: string
+          id: string
+          job_url: string | null
+          notes: string | null
+          role_title: string
+          source: string | null
+          stage: string
+          updated_at: string
+        }
+        Insert: {
+          applied_on?: string
+          candidate_id: string
+          company: string
+          created_at?: string
+          id?: string
+          job_url?: string | null
+          notes?: string | null
+          role_title: string
+          source?: string | null
+          stage?: string
+          updated_at?: string
+        }
+        Update: {
+          applied_on?: string
+          candidate_id?: string
+          company?: string
+          created_at?: string
+          id?: string
+          job_url?: string | null
+          notes?: string | null
+          role_title?: string
+          source?: string | null
+          stage?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       candidate_portfolio: {
         Row: {
           candidate_id: string
@@ -2781,6 +2823,10 @@ export type Database = {
       can_apply_to_job: {
         Args: { candidate_employer: string; job_company: string }
         Returns: boolean
+      }
+      candidate_recent_application_count: {
+        Args: { _candidate_id: string }
+        Returns: number
       }
       check_signup_attempts: {
         Args: {
