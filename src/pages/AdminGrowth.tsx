@@ -68,6 +68,7 @@ const AdminGrowth = () => {
   const [loading, setLoading] = useState(true);
   const [busyId, setBusyId] = useState<string | null>(null);
   const [emailDrafts, setEmailDrafts] = useState<Record<string, string>>({});
+  const [skipped, setSkipped] = useState<SkippedCompany[]>([]);
   const [manualSite, setManualSite] = useState("");
   const [addingCompany, setAddingCompany] = useState(false);
 
