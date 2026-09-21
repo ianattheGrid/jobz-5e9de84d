@@ -6,6 +6,7 @@ import { UserCheck } from "lucide-react";
 import RejectionDialog from "./RejectionDialog";
 import { ScheduleInterviewDialog } from "../interviews/ScheduleInterviewDialog";
 import { useAuth } from "@/hooks/useAuth";
+import { ApplicationActivity } from "./ApplicationActivity";
 
 interface ApplicationCardProps {
   application: ApplicationWithDetails;
@@ -41,6 +42,7 @@ const ApplicationCard = ({ application, onAccept, onReject }: ApplicationCardPro
           : 'Candidate profile not available'
         }
       </p>
+      <ApplicationActivity candidateId={application.applicant_id} />
       <div className="mt-2 flex gap-2">
         <Button
           size="sm"

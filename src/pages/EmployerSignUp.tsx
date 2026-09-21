@@ -48,6 +48,11 @@ const EmployerSignUp = () => {
             <p className="text-white/80 drop-shadow-lg">
               Join the future of recruitment. Your perfect candidate is out there.
             </p>
+            <p className="text-sm text-white/70 drop-shadow-lg">
+              No spray-and-pray: candidates can send at most 10 applications a day here,
+              and you can see how many roles each one applied for in the last month.
+              Everyone who applies to you, meant to.
+            </p>
           </div>
           <SpaceCard>
             <SignUpForm 

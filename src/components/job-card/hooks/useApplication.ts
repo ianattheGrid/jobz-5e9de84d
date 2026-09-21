@@ -293,10 +293,14 @@ export const useApplication = (jobId: number, employerId: string) => {
         setResumeFile(null);
       } catch (error: any) {
         console.error("Application error:", error);
+        const message: string = error?.message || "Failed to submit application";
+        const hitDailyLimit = message.includes("daily limit on Jobz");
         toast({
           variant: "destructive",
-          title: "Application Failed",
-          description: error.message || "Failed to submit application",
+          title: hitDailyLimit ? "That's ten for today" : "Application Failed",
+          description: hitDailyLimit
+            ? "You've applied for 10 roles today. Employers here know every application is a real one, so we cap it. Come back tomorrow."
+            : message,
         });
       }
     },

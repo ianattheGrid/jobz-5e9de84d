@@ -189,3 +189,37 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* Printable CV: the deep-space theme must not bleed onto paper. */
+@media print {
+  html,
+  body,
+  #root {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  nav,
+  header.site-header,
+  footer,
+  .print\:hidden {
+    display: none !important;
+  }
+
+  .cv-sheet,
+  .cv-sheet * {
+    background: #ffffff !important;
+    color: #000000 !important;
+    box-shadow: none !important;
+  }
+
+  .cv-sheet {
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  @page {
+    margin: 18mm;
+  }
+}
