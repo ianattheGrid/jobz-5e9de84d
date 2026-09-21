@@ -54,7 +54,12 @@ const CandidateApplications = () => {
               on their own. Add the ones you found elsewhere. Nobody else can see this page.
             </p>
           </div>
-          <AddJobDialog onAdd={addJob} />
+          <div className="flex items-center gap-3">
+            <Button variant="outline" asChild>
+              <Link to="/candidate/my-cv">Download my CV</Link>
+            </Button>
+            <AddJobDialog onAdd={addJob} />
+          </div>
         </div>
 
         {error && (
