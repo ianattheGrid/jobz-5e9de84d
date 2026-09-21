@@ -11,7 +11,7 @@ const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
 const FIRECRAWL_V2 = "https://api.firecrawl.dev/v2";
 
 const JOB_NAME = "discover-employers";
-const BATCH_LIMIT = 20; // hard cap on new companies added per run
+const BATCH_LIMIT = 40; // hard cap on new companies added per run
 const LOCK_MINUTES = 20;
 const SEARCH_LIMIT = 10; // results per query
 
@@ -46,7 +46,7 @@ const QUERIES = [
  * few weeks the agent works its way round every Bristol postal district
  * instead of hammering the same corner of the city.
  */
-function postcodeQueries(night: number, howMany = 4) {
+function postcodeQueries(night: number, howMany = 8) {
   const picked: string[] = [];
   for (let i = 0; i < howMany; i++) {
     const code = BRISTOL_POSTCODES[(night * howMany + i) % BRISTOL_POSTCODES.length];
