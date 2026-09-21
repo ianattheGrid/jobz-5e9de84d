@@ -53,8 +53,8 @@ Deno.serve(async (req) => {
 
     const html = `
       <div style="font-family:system-ui,-apple-system,Segoe UI,sans-serif;max-width:560px;margin:0 auto;color:#222;">
-        <h2 style="margin-bottom:4px;">Jobz — last seven days</h2>
-        <p style="color:#666;margin-top:0;">Your Monday round-up.</p>
+        <h2 style="margin-bottom:4px;">Jobz — the last seven days</h2>
+        <p style="color:#666;margin-top:0;">Your daily round-up.</p>
         <p>
           <strong>${candidates.data?.length ?? 0}</strong> new candidates ·
           <strong>${employers.data?.length ?? 0}</strong> new employers ·
