@@ -589,6 +589,12 @@ const NON_ROLE_PATTERNS: RegExp[] = [
 /** Addresses that are a listing page or a site control, never one advert. */
 const NON_ADVERT_URL = /(search-results|savedvacancies|choose-country|search|page=)/i;
 
+/** Files and pictures are never a vacancy. */
+const FILE_ENDING = /\.(jpe?g|png|gif|svg|webp|pdf|docx?|zip|mp4)$/i;
+
+/** Words that make a line of text read like an actual job. */
+const ROLE_WORDS = /\b(manager|director|engineer|developer|designer|analyst|coordinator|specialist|lead|senior|junior|assistant|officer|executive|administrator|consultant|technician|supervisor|architect|scientist|researcher|apprentice|graduate|trainee|teacher|teaching|tutor|lecturer|nurse|carer|care worker|support worker|chef|driver|cleaner|receptionist|accountant|bookkeeper|solicitor|paralegal|surveyor|electrician|plumber|fitter|operative|warehouse|sales|advisor|adviser|agent|buyer|planner|controller|auditor|marketer|copywriter|editor|producer|animator|programmer|tester|nursery|practitioner|therapist|technologist|partner|associate|intern|placement|head of|sous|barista|bartender|porter|steward|paramedic|pharmacist|dentist|doctor|vet)\b/i;
+
 /**
  * Is this a single advert, or just another page on the careers site?
  * A real advert has a role-sounding title and a link that points at one posting.
@@ -609,15 +615,20 @@ function isRealVacancy(job: ScrapedJob): boolean {
   }
 
   const lastPart = path.split('/').filter(Boolean).pop() || '';
-  if (NON_ADVERT_URL.test(lastPart) || /savedvacancies|[?&]page=/i.test(url) || url.includes('#')) return false;
+  if (NON_ADVERT_URL.test(lastPart) || FILE_ENDING.test(lastPart)) return false;
+  if (/savedvacancies|[?&]page=/i.test(url) || url.includes('#')) return false;
 
-  // A specific posting: an id, or a slug of its own under a jobs-ish path.
-  const hasId = /\/\d{3,}(\/|$|[-_])/.test(path) || /[?&](jobid|id|req|requisition|gh_jid)=/i.test(url);
-  const underJobsPath = /\/(job|jobs|vacancy|vacancies|opening|openings|position|positions|role|roles|careers)\//i.test(path);
-  const slug = path.split('/').filter(Boolean).pop() || '';
-  const hasOwnSlug = slug.split('-').length >= 3;
+  // A specific posting: its own reference number, or its own slug under a
+  // jobs-only part of the site. Either way it has to read like a job.
+  const hasId = /\/\d{3,}(\/|$|[-_])/.test(path)
+    || /[?&](jobid|id|req|requisition|gh_jid)=/i.test(url)
+    || /\b[A-Z]{2}\d{5,}\b/.test(url);
+  const underJobsPath = /\/(job|jobs|vacancy|vacancies|opening|openings|position|positions|role|roles)\//i.test(path);
+  const hasOwnSlug = lastPart.split('-').length >= 3;
+  const readsLikeRole = ROLE_WORDS.test(title);
 
-  return hasId || (underJobsPath && hasOwnSlug);
+  if (hasId && (underJobsPath || readsLikeRole)) return true;
+  return underJobsPath && hasOwnSlug && readsLikeRole;
 }
 
 function parseGenericJobs(html: string, company: CompanyToScrape, baseUrl: string): ScrapedJob[] {
