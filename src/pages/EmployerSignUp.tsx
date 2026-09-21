@@ -11,6 +11,13 @@ import { Building2, Sparkles } from "lucide-react";
 
 const EmployerSignUp = () => {
   const { signUp, loading } = useSignUp();
+  const [searchParams] = useSearchParams();
+  const claimId = searchParams.get("claim");
+  const claimedCompany = searchParams.get("company");
+
+  useEffect(() => {
+    if (claimId) rememberSource("claimed_advert", claimId);
+  }, [claimId]);
 
   const handleSubmit = async (
     email: string, 
