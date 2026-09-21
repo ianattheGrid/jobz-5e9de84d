@@ -404,6 +404,33 @@ const AdminGrowth = () => {
 
             <Card>
               <CardHeader>
+                <CardTitle>Skipped when reading the boards ({skipped.length})</CardTitle>
+                <CardDescription>
+                  Agencies and anything we couldn't place. We never look at these again — unless you say otherwise.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                {skipped.length === 0 && <p className="text-sm text-muted-foreground">Nothing skipped yet.</p>}
+                {skipped.map((c) => (
+                  <div key={c.id} className="flex flex-wrap items-center justify-between gap-2 text-sm">
+                    <span>
+                      {c.company_name}
+                      <span className="text-muted-foreground">
+                        {" "}
+                        — {SKIP_LABELS[c.excluded_reason ?? ""] ?? c.excluded_reason} ·{" "}
+                        {new Date(c.created_at).toLocaleDateString("en-GB")}
+                      </span>
+                    </span>
+                    <Button variant="ghost" size="sm" onClick={() => allowCompany(c)}>
+                      Actually, allow this one
+                    </Button>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
                 <CardTitle>Already contacted ({sent.length})</CardTitle>
                 <CardDescription>One message each. We never chase.</CardDescription>
               </CardHeader>
