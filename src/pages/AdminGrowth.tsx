@@ -54,6 +54,8 @@ const AdminGrowth = () => {
   const [loading, setLoading] = useState(true);
   const [busyId, setBusyId] = useState<string | null>(null);
   const [emailDrafts, setEmailDrafts] = useState<Record<string, string>>({});
+  const [manualSite, setManualSite] = useState("");
+  const [addingCompany, setAddingCompany] = useState(false);
 
   const load = useCallback(async () => {
     setLoading(true);
