@@ -61,7 +61,12 @@ const AdminGrowth = () => {
     const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60_000).toISOString();
 
     const [{ data: p }, { data: s }, { data: lock }, { data: cands }, { data: emps }] = await Promise.all([
-      supabase.from("employer_prospects").select("*").order("created_at", { ascending: false }).limit(100),
+      supabase
+        .from("employer_prospects")
+        .select("*")
+        .order("signal_at", { ascending: false, nullsFirst: false })
+        .order("created_at", { ascending: false })
+        .limit(100),
       supabase
         .from("invite_signups")
         .select("id, code, new_user_role, created_at")
