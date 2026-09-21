@@ -133,7 +133,7 @@ export const PublicProfileCard = () => {
   if (loading) return null;
 
   return (
-    <Card className="bg-white shadow-sm">
+    <Card className="shadow-sm">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Share2 className="h-5 w-5" /> Your shareable profile link
@@ -147,7 +147,7 @@ export const PublicProfileCard = () => {
         <div className="flex items-center justify-between gap-4">
           <div>
             <Label htmlFor="public-profile">Turn my shareable page on</Label>
-            <p className="text-sm text-gray-600 mt-1">
+            <p className="text-sm text-muted-foreground mt-1">
               Shows your name, role, experience, salary range and skills. Never your email, phone
               number or address.
             </p>
@@ -162,7 +162,7 @@ export const PublicProfileCard = () => {
 
         {enabled && slug && (
           <div className="space-y-3">
-            <div className="rounded-md border border-gray-200 bg-gray-50 p-3 text-sm break-all text-gray-800">
+            <div className="rounded-md border border-border bg-white/5 p-3 text-sm break-all text-foreground">
               {publicUrl}
             </div>
             <div className="flex flex-wrap gap-2">
@@ -201,7 +201,7 @@ export const PublicProfileCard = () => {
               ))}
             </SelectContent>
           </Select>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-muted-foreground">
             Employers searching for people see this, so they know whether it's worth getting in
             touch. Your current employer can't see it.
           </p>
