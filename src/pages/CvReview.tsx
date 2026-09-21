@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { rememberSource } from "@/utils/growth/source";
 import { Sparkles, Loader2, CheckCircle2, AlertTriangle, ArrowRight, Upload } from "lucide-react";
 
 interface CvIssue {
@@ -50,10 +51,12 @@ export default function CvReview() {
   const navigate = useNavigate();
   const [cvText, setCvText] = useState("");
   const [targetRole, setTargetRole] = useState("");
+  const [followUpEmail, setFollowUpEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [review, setReview] = useState<CvReviewResult | null>(null);
 
   useEffect(() => {
+    rememberSource("cv_review");
     document.title = "Free CV Review | Jobz";
     const desc = document.querySelector('meta[name="description"]');
     const previous = desc?.getAttribute("content") ?? null;
