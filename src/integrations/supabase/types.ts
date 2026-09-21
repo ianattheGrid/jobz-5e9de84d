@@ -384,6 +384,8 @@ export type Database = {
           show_proof_of_potential: boolean | null
           show_second_chapter: boolean | null
           signup_date: string | null
+          signup_source: string | null
+          signup_source_detail: string | null
           skills_experience: Json | null
           travel_radius: number | null
           unavailable_dates: Json | null
@@ -461,6 +463,8 @@ export type Database = {
           show_proof_of_potential?: boolean | null
           show_second_chapter?: boolean | null
           signup_date?: string | null
+          signup_source?: string | null
+          signup_source_detail?: string | null
           skills_experience?: Json | null
           travel_radius?: number | null
           unavailable_dates?: Json | null
@@ -538,6 +542,8 @@ export type Database = {
           show_proof_of_potential?: boolean | null
           show_second_chapter?: boolean | null
           signup_date?: string | null
+          signup_source?: string | null
+          signup_source_detail?: string | null
           skills_experience?: Json | null
           travel_radius?: number | null
           unavailable_dates?: Json | null
@@ -874,6 +880,8 @@ export type Database = {
           office_amenities: string | null
           open_to_career_switchers: boolean | null
           profile_picture_url: string | null
+          signup_source: string | null
+          signup_source_detail: string | null
           updated_at: string
           values_soft_skills_over_experience: boolean | null
           willing_to_train_on_the_job: boolean | null
@@ -901,6 +909,8 @@ export type Database = {
           office_amenities?: string | null
           open_to_career_switchers?: boolean | null
           profile_picture_url?: string | null
+          signup_source?: string | null
+          signup_source_detail?: string | null
           updated_at?: string
           values_soft_skills_over_experience?: boolean | null
           willing_to_train_on_the_job?: boolean | null
@@ -928,6 +938,8 @@ export type Database = {
           office_amenities?: string | null
           open_to_career_switchers?: boolean | null
           profile_picture_url?: string | null
+          signup_source?: string | null
+          signup_source_detail?: string | null
           updated_at?: string
           values_soft_skills_over_experience?: boolean | null
           willing_to_train_on_the_job?: boolean | null
@@ -941,6 +953,7 @@ export type Database = {
           company_name: string
           company_website: string | null
           contact_email: string | null
+          contact_source: string | null
           created_at: string
           estimated_agency_fee: number | null
           estimated_salary: number | null
@@ -949,6 +962,7 @@ export type Database = {
           role_location: string | null
           role_title: string | null
           sent_at: string | null
+          skip_reason: string | null
           source: string
           source_url: string
           status: string
@@ -960,6 +974,7 @@ export type Database = {
           company_name: string
           company_website?: string | null
           contact_email?: string | null
+          contact_source?: string | null
           created_at?: string
           estimated_agency_fee?: number | null
           estimated_salary?: number | null
@@ -968,6 +983,7 @@ export type Database = {
           role_location?: string | null
           role_title?: string | null
           sent_at?: string | null
+          skip_reason?: string | null
           source?: string
           source_url: string
           status?: string
@@ -979,6 +995,7 @@ export type Database = {
           company_name?: string
           company_website?: string | null
           contact_email?: string | null
+          contact_source?: string | null
           created_at?: string
           estimated_agency_fee?: number | null
           estimated_salary?: number | null
@@ -987,6 +1004,7 @@ export type Database = {
           role_location?: string | null
           role_title?: string | null
           sent_at?: string | null
+          skip_reason?: string | null
           source?: string
           source_url?: string
           status?: string
@@ -1254,6 +1272,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      growth_followups: {
+        Row: {
+          context: Json | null
+          created_at: string
+          due_at: string
+          email: string
+          id: string
+          kind: string
+          sent_at: string | null
+          suppressed: boolean
+          updated_at: string
+        }
+        Insert: {
+          context?: Json | null
+          created_at?: string
+          due_at?: string
+          email: string
+          id?: string
+          kind: string
+          sent_at?: string | null
+          suppressed?: boolean
+          updated_at?: string
+        }
+        Update: {
+          context?: Json | null
+          created_at?: string
+          due_at?: string
+          email?: string
+          id?: string
+          kind?: string
+          sent_at?: string | null
+          suppressed?: boolean
+          updated_at?: string
+        }
+        Relationships: []
       }
       interview_feedback: {
         Row: {
@@ -1837,6 +1891,27 @@ export type Database = {
           email?: string
           id?: string
           reason?: string | null
+        }
+        Relationships: []
+      }
+      public_tool_usage: {
+        Row: {
+          id: string
+          ip_address: string
+          tool: string
+          used_at: string
+        }
+        Insert: {
+          id?: string
+          ip_address: string
+          tool: string
+          used_at?: string
+        }
+        Update: {
+          id?: string
+          ip_address?: string
+          tool?: string
+          used_at?: string
         }
         Relationships: []
       }
