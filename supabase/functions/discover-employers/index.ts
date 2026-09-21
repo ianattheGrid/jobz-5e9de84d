@@ -55,19 +55,21 @@ function normalise(name: string) {
   return name.toLowerCase().replace(/[^a-z0-9]/g, "");
 }
 
+/** The company's own address, with hosting subdomains like careers. stripped off. */
 function apexDomain(url: string | null): string | null {
   if (!url) return null;
   try {
-    const host = new URL(url.startsWith("http") ? url : `https://${url}`).hostname.replace(/^www\./, "");
-    return host.toLowerCase();
+    let host = new URL(url.startsWith("http") ? url : `https://${url}`).hostname.toLowerCase();
+    host = host.replace(/^(www|careers?|jobs?|apply|boards|hire|hiring|recruiting|talent|work)\./, "");
+    return host;
   } catch {
     return null;
   }
 }
 
-function looksLikeMiddleman(name: string, domain: string | null) {
-  const haystack = `${name} ${domain ?? ""}`.toLowerCase();
-  return EXCLUDED_KEYWORDS.some((k) => haystack.includes(k));
+function looksLikeMiddleman(domain: string | null) {
+  if (!domain) return true;
+  return EXCLUDED_DOMAIN_PARTS.some((k) => domain.includes(k));
 }
 
 function mentionsBristol(text: string) {
@@ -75,17 +77,17 @@ function mentionsBristol(text: string) {
   return NEAR_BRISTOL.some((place) => lower.includes(place));
 }
 
-/** Tidies "Careers at Acme Ltd | Jobs" into "Acme Ltd". */
-function companyNameFrom(title: string, domain: string | null) {
-  const cleaned = title
-    .split(/[|\u2013\u2014\u00b7:]/)[0]
-    .replace(/\b(careers?|jobs?|vacancies|work with us|join us|hiring|home)\b/gi, "")
-    .replace(/\s+/g, " ")
-    .trim();
-  if (cleaned.length >= 2 && cleaned.length <= 80) return cleaned;
-  if (!domain) return null;
-  const base = domain.split(".")[0];
-  return base.charAt(0).toUpperCase() + base.slice(1);
+/**
+ * The company's name comes from its own web address, not from an advert
+ * headline — headlines are job titles and make a mess of the list.
+ */
+function companyNameFrom(domain: string) {
+  const base = domain.split(".")[0].replace(/[-_]+/g, " ").trim();
+  if (base.length < 2 || base.length > 40) return null;
+  return base
+    .split(" ")
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(" ");
 }
 
 async function fetchPage(url: string, timeoutMs = 6000) {
