@@ -2905,6 +2905,20 @@ export type Database = {
       generate_referral_code: { Args: never; Returns: string }
       generate_vr_number: { Args: never; Returns: string }
       get_cv_file_path: { Args: { file_path: string }; Returns: Json }
+      get_found_adverts: {
+        Args: { _limit?: number; _search?: string }
+        Returns: {
+          company_name: string
+          company_website: string
+          id: string
+          job_title: string
+          job_url: string
+          location: string
+          salary_max: number
+          salary_min: number
+          scraped_at: string
+        }[]
+      }
       get_public_candidate_profile: {
         Args: { _slug: string }
         Returns: {
