@@ -78,3 +78,12 @@ verify_jwt = false
 
 [functions.tailor-cv]
 verify_jwt = true
+
+[functions.job-worth]
+verify_jwt = false
+
+[functions.growth-digest]
+verify_jwt = false
+
+[functions.growth-followups]
+verify_jwt = false

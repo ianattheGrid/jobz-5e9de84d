@@ -86,6 +86,7 @@ import SwipeEmployers from './pages/SwipeEmployers';
 import CVRedirect from './pages/CVRedirect';
 import AdminExternalJobs from './pages/AdminExternalJobs';
 import AdminGrowth from './pages/AdminGrowth';
+import JobWorth from './pages/JobWorth';
 import AdminSignIn from './pages/AdminSignIn';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminUserManagement from './pages/AdminUserManagement';
@@ -154,6 +155,7 @@ const App = () => {
           {/* Common routes */}
           <Route path="jobs" element={<Jobs />} />
           <Route path="cv-review" element={<CvReview />} />
+          <Route path="what-is-this-job-worth" element={<JobWorth />} />
           <Route path="p/:slug" element={<PublicCandidateProfile />} />
           <Route path="join/:code" element={<JoinWithInvite />} />
           <Route path="faq" element={<FAQ />} />

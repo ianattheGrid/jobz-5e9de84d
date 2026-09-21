@@ -1,3 +1,4 @@
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.45.0';
 import { corsHeaders } from '../_shared/cors.ts';
 
 Deno.serve(async (req) => {
@@ -6,7 +7,27 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const { cvText, targetRole } = await req.json();
+    const { cvText, targetRole, followUpEmail } = await req.json();
+
+    // Only if they explicitly asked us to follow up. One row per person, ever.
+    if (typeof followUpEmail === 'string' && /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(followUpEmail.trim())) {
+      try {
+        const admin = createClient(
+          Deno.env.get('SUPABASE_URL')!,
+          Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,
+        );
+        const { error: followUpError } = await admin.from('growth_followups').insert({
+          email: followUpEmail.trim(),
+          kind: 'cv_review',
+          due_at: new Date(Date.now() + 7 * 24 * 60 * 60_000).toISOString(),
+        });
+        if (followUpError && !followUpError.message.includes('duplicate')) {
+          console.error('Could not record follow-up:', followUpError.message);
+        }
+      } catch (e) {
+        console.error('Follow-up capture failed:', e);
+      }
+    }
 
     if (!cvText || typeof cvText !== 'string' || cvText.trim().length < 200) {
       return new Response(
