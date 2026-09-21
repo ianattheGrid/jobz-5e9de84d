@@ -211,6 +211,31 @@ async function renderCareersPage(url: string): Promise<{ html: string; links: st
   }
 }
 
+/** Tidy up a link's words so the board reads like a job title, not page furniture. */
+function tidyTitle(raw: string): string {
+  let text = raw
+    .replace(/&nbsp;|&#160;/gi, ' ')
+    .replace(/&amp;/gi, '&')
+    .replace(/&#39;|&apos;|&rsquo;/gi, "'")
+    .replace(/&quot;/gi, '"')
+    .replace(/&#\d+;/g, ' ')
+    .replace(/\u00a0/g, ' ')
+    .replace(/\bXMLNAME\b/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  // Workday and friends tack the place and date onto the end of the link text.
+  text = text.replace(/\s+\d{1,2}\s+(January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{4}$/i, '');
+  return text.replace(/\s+/g, ' ').trim();
+}
+
+/** Some hiring systems hide the place in the link itself: /job/Bristol-Area/... */
+function locationFromUrl(url: string): string {
+  const match = url.match(/\/job\/([^/]+)\//i);
+  if (!match) return '';
+  return decodeURIComponent(match[1]).replace(/[-_]+/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
 /** Turn a rendered page's links into candidate adverts. */
 function jobsFromLinks(links: string[], html: string, company: CompanyToScrape): ScrapedJob[] {
   const titles = new Map<string, string>();
@@ -242,16 +267,18 @@ function jobsFromLinks(links: string[], html: string, company: CompanyToScrape):
       title = slug.replace(/[-_]+/g, ' ').replace(/\b\d{4,}\b/g, '').trim();
       title = title.replace(/\b\w/g, (c) => c.toUpperCase());
     }
+    title = tidyTitle(title);
     if (!title) continue;
 
     jobs.push({
       company_id: company.id,
       job_title: title.slice(0, 120),
       job_description: '',
-      location: '',
+      location: locationFromUrl(link),
       job_url: link,
     });
   }
+
 
   return jobs;
 }
