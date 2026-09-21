@@ -15,6 +15,8 @@ import { bristolPostcodes } from "@/data/bristolPostcodes";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { LayoutDashboard } from "lucide-react";
+import ExternalJobCard from "@/components/jobs/ExternalJobCard";
+import { FoundAdvert } from "@/utils/externalJobs";
 
 const Jobs = () => {
   const { user, userType } = useAuth();
