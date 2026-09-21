@@ -506,7 +506,8 @@ Deno.serve(async (req) => {
     if (manualWebsite) {
       hits.push({ url: manualWebsite, title: "" });
     } else {
-      for (const query of QUERIES) {
+      const tonight = new Date().getDate();
+      for (const query of [...QUERIES, ...postcodeQueries(tonight)]) {
         if (hits.length >= BATCH_LIMIT * 4) break;
         try {
           // Gentle pacing so we stay inside the search service's limits.
