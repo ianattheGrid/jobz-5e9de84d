@@ -582,7 +582,7 @@ const NON_ROLE_PATTERNS: RegExp[] = [
 ];
 
 /** Addresses that are a listing page or a site control, never one advert. */
-const NON_ADVERT_URL = /(search-results|savedvacancies|choose-country|\/search\b|\?page=|#)/i;
+const NON_ADVERT_URL = /(search-results|savedvacancies|choose-country|search|page=)/i;
 
 /**
  * Is this a single advert, or just another page on the careers site?
@@ -603,7 +603,8 @@ function isRealVacancy(job: ScrapedJob): boolean {
     return false;
   }
 
-  if (NON_ADVERT_URL.test(path)) return false;
+  const lastPart = path.split('/').filter(Boolean).pop() || '';
+  if (NON_ADVERT_URL.test(lastPart) || /savedvacancies|[?&]page=/i.test(url) || url.includes('#')) return false;
 
   // A specific posting: an id, or a slug of its own under a jobs-ish path.
   const hasId = /\/\d{3,}(\/|$|[-_])/.test(path) || /[?&](jobid|id|req|requisition|gh_jid)=/i.test(url);
