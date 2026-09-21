@@ -216,6 +216,7 @@ Deno.serve(async (req) => {
         signal_summary: signal.summary,
         signal_source_url: job.job_url,
         signal_at: signal.at.toISOString(),
+        advert_views_7d: viewCounts.get((job as any).id) ?? 0,
       });
 
       // A duplicate simply means another run already queued it.
