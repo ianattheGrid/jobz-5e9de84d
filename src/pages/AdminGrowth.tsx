@@ -7,13 +7,15 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
-import { Loader2, Send, Trash2 } from "lucide-react";
+import { Loader2, Send, Trash2, Ban } from "lucide-react";
+import { SOURCE_LABELS } from "@/utils/growth/source";
 
 interface Prospect {
   id: string;
   company_name: string;
   company_website: string | null;
   contact_email: string | null;
+  contact_source: string | null;
   role_title: string | null;
   role_location: string | null;
   source_url: string;
@@ -31,12 +33,19 @@ interface Signup {
   created_at: string;
 }
 
+interface SourceRow {
+  source: string;
+  thisWeek: number;
+  lastWeek: number;
+}
+
 const JOB_NAME = "find-employer-prospects";
 
 const AdminGrowth = () => {
   const { toast } = useToast();
   const [prospects, setProspects] = useState<Prospect[]>([]);
   const [signups, setSignups] = useState<Signup[]>([]);
+  const [sources, setSources] = useState<SourceRow[]>([]);
   const [paused, setPaused] = useState(false);
   const [loading, setLoading] = useState(true);
   const [busyId, setBusyId] = useState<string | null>(null);
@@ -44,14 +53,35 @@ const AdminGrowth = () => {
 
   const load = useCallback(async () => {
     setLoading(true);
-    const [{ data: p }, { data: s }, { data: lock }] = await Promise.all([
+    const twoWeeksAgo = new Date(Date.now() - 14 * 24 * 60 * 60_000).toISOString();
+    const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60_000).toISOString();
+
+    const [{ data: p }, { data: s }, { data: lock }, { data: cands }, { data: emps }] = await Promise.all([
       supabase.from("employer_prospects").select("*").order("created_at", { ascending: false }).limit(100),
-      supabase.from("invite_signups").select("id, code, new_user_role, created_at").order("created_at", { ascending: false }).limit(50),
+      supabase
+        .from("invite_signups")
+        .select("id, code, new_user_role, created_at")
+        .order("created_at", { ascending: false })
+        .limit(50),
       supabase.from("job_locks").select("paused_reason").eq("job_name", JOB_NAME).maybeSingle(),
+      supabase.from("candidate_profiles").select("signup_source, created_at").gte("created_at", twoWeeksAgo),
+      supabase.from("employer_profiles").select("signup_source, created_at").gte("created_at", twoWeeksAgo),
     ]);
+
     setProspects((p as Prospect[]) || []);
     setSignups((s as Signup[]) || []);
     setPaused(Boolean(lock?.paused_reason));
+
+    const tally = new Map<string, SourceRow>();
+    for (const row of [...(cands || []), ...(emps || [])] as any[]) {
+      const key = row.signup_source || "direct";
+      const entry = tally.get(key) || { source: key, thisWeek: 0, lastWeek: 0 };
+      if (row.created_at >= weekAgo) entry.thisWeek += 1;
+      else entry.lastWeek += 1;
+      tally.set(key, entry);
+    }
+    setSources([...tally.values()].sort((a, b) => b.thisWeek - a.thisWeek));
+
     setLoading(false);
   }, []);
 
@@ -79,7 +109,10 @@ const AdminGrowth = () => {
   const saveEmail = async (id: string) => {
     const email = (emailDrafts[id] || "").trim();
     if (!email) return;
-    const { error } = await supabase.from("employer_prospects").update({ contact_email: email }).eq("id", id);
+    const { error } = await supabase
+      .from("employer_prospects")
+      .update({ contact_email: email, contact_source: "Added by an admin" })
+      .eq("id", id);
     if (error) {
       toast({ variant: "destructive", title: "Couldn't save", description: error.message });
       return;
@@ -112,6 +145,20 @@ const AdminGrowth = () => {
     load();
   };
 
+  const skip = async (p: Prospect) => {
+    const reason = window.prompt(`Why are we skipping ${p.company_name}? (optional)`) ?? "";
+    const { error } = await supabase
+      .from("employer_prospects")
+      .update({ status: "skipped", skip_reason: reason || "Skipped by an admin" })
+      .eq("id", p.id);
+    if (error) {
+      toast({ variant: "destructive", title: "Couldn't skip", description: error.message });
+      return;
+    }
+    toast({ title: "Skipped", description: `${p.company_name} won't come back on the list.` });
+    load();
+  };
+
   const waiting = prospects.filter((p) => p.status === "new");
   const sent = prospects.filter((p) => p.status === "sent");
 
@@ -122,7 +169,7 @@ const AdminGrowth = () => {
         <div>
           <h1 className="text-3xl font-display font-bold">Growth</h1>
           <p className="text-muted-foreground">
-            Employers found advertising in public, and people who joined through invite links.
+            Employers found advertising in public, where new people came from, and who joined through invite links.
           </p>
         </div>
 
@@ -149,8 +196,41 @@ const AdminGrowth = () => {
           <>
             <Card>
               <CardHeader>
+                <CardTitle>Where new people came from</CardTitle>
+                <CardDescription>Candidates and employers who registered in the last fortnight.</CardDescription>
+              </CardHeader>
+              <CardContent>
+                {sources.length === 0 ? (
+                  <p className="text-sm text-muted-foreground">Nobody new yet.</p>
+                ) : (
+                  <div className="space-y-1">
+                    <div className="flex justify-between text-xs text-muted-foreground pb-1 border-b border-border">
+                      <span>Where from</span>
+                      <span className="flex gap-6">
+                        <span className="w-20 text-right">This week</span>
+                        <span className="w-20 text-right">Week before</span>
+                      </span>
+                    </div>
+                    {sources.map((row) => (
+                      <div key={row.source} className="flex justify-between text-sm py-1">
+                        <span>{SOURCE_LABELS[row.source] ?? row.source}</span>
+                        <span className="flex gap-6">
+                          <span className="w-20 text-right font-medium">{row.thisWeek}</span>
+                          <span className="w-20 text-right text-muted-foreground">{row.lastWeek}</span>
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
                 <CardTitle>Waiting for you ({waiting.length})</CardTitle>
-                <CardDescription>Add an email address, then send one message.</CardDescription>
+                <CardDescription>
+                  We fill in the contact address where the company publishes one. Check it, then send one message.
+                </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 {waiting.length === 0 && (
@@ -171,6 +251,19 @@ const AdminGrowth = () => {
                         See the advert
                       </a>
                     </p>
+                    {p.contact_email && p.contact_source && (
+                      <p className="text-xs text-muted-foreground">
+                        Address found on{" "}
+                        {p.contact_source.startsWith("http") ? (
+                          <a href={p.contact_source} target="_blank" rel="noopener noreferrer" className="underline">
+                            their own site
+                          </a>
+                        ) : (
+                          p.contact_source
+                        )}
+                        .
+                      </p>
+                    )}
                     <div className="flex flex-wrap gap-2">
                       <Input
                         className="max-w-xs"
@@ -188,6 +281,9 @@ const AdminGrowth = () => {
                       >
                         {busyId === p.id ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
                         Send one invitation
+                      </Button>
+                      <Button variant="ghost" onClick={() => skip(p)} className="gap-2">
+                        <Ban className="h-4 w-4" /> Never this company
                       </Button>
                       <Button variant="ghost" onClick={() => discard(p.id)} className="gap-2">
                         <Trash2 className="h-4 w-4" /> Discard
