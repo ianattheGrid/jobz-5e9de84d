@@ -87,3 +87,6 @@ verify_jwt = false
 
 [functions.growth-followups]
 verify_jwt = false
+
+[functions.discover-employers]
+verify_jwt = false

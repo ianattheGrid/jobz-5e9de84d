@@ -2198,7 +2198,9 @@ export type Database = {
           careers_page_url: string
           company_name: string
           created_at: string | null
+          discovered_from: string | null
           estimated_size: number | null
+          excluded_reason: string | null
           id: string
           industry_sector: string | null
           is_active: boolean | null
@@ -2214,7 +2216,9 @@ export type Database = {
           careers_page_url: string
           company_name: string
           created_at?: string | null
+          discovered_from?: string | null
           estimated_size?: number | null
+          excluded_reason?: string | null
           id?: string
           industry_sector?: string | null
           is_active?: boolean | null
@@ -2230,7 +2234,9 @@ export type Database = {
           careers_page_url?: string
           company_name?: string
           created_at?: string | null
+          discovered_from?: string | null
           estimated_size?: number | null
+          excluded_reason?: string | null
           id?: string
           industry_sector?: string | null
           is_active?: boolean | null

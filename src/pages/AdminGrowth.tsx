@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
-import { Loader2, Send, Trash2, Ban } from "lucide-react";
+import { Loader2, Send, Trash2, Ban, Plus } from "lucide-react";
 import { SOURCE_LABELS } from "@/utils/growth/source";
 
 interface Prospect {
@@ -54,6 +54,8 @@ const AdminGrowth = () => {
   const [loading, setLoading] = useState(true);
   const [busyId, setBusyId] = useState<string | null>(null);
   const [emailDrafts, setEmailDrafts] = useState<Record<string, string>>({});
+  const [manualSite, setManualSite] = useState("");
+  const [addingCompany, setAddingCompany] = useState(false);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -113,6 +115,28 @@ const AdminGrowth = () => {
     }
     setPaused(next);
     toast({ title: next ? "Prospect finding paused" : "Prospect finding switched back on" });
+  };
+
+  const addCompany = async () => {
+    const website = manualSite.trim();
+    if (!website) return;
+    setAddingCompany(true);
+    const { data, error } = await supabase.functions.invoke("discover-employers", { body: { website } });
+    setAddingCompany(false);
+    if (error) {
+      toast({ variant: "destructive", title: "Couldn't add that", description: error.message });
+      return;
+    }
+    if ((data as any)?.added) {
+      setManualSite("");
+      toast({ title: `Added ${(data as any).companies.join(", ")}` });
+    } else {
+      toast({
+        variant: "destructive",
+        title: "Nothing added",
+        description: "We couldn't find a careers page there, or they're already on the list.",
+      });
+    }
   };
 
   const saveEmail = async (id: string) => {
@@ -195,6 +219,27 @@ const AdminGrowth = () => {
               <Switch checked={!paused} onCheckedChange={(v) => togglePaused(!v)} />
             </div>
           </CardHeader>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Add a company yourself</CardTitle>
+            <CardDescription>
+              Paste a company website. We find their careers page and add them to the list the nightly agent reads.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-2 sm:flex-row">
+            <Input
+              placeholder="acme.co.uk"
+              value={manualSite}
+              onChange={(e) => setManualSite(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && addCompany()}
+            />
+            <Button onClick={addCompany} disabled={addingCompany || !manualSite.trim()} className="gap-2">
+              {addingCompany ? <Loader2 className="h-4 w-4 animate-spin" /> : <Plus className="h-4 w-4" />}
+              Add
+            </Button>
+          </CardContent>
         </Card>
 
         {loading ? (
