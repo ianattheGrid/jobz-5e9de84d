@@ -145,9 +145,10 @@ export const ProfileCard = ({
 
         {/* Back of card */}
         <CardContent 
-          className="absolute inset-0 w-full h-full p-6 bg-gradient-to-br from-gray-900 via-gray-800 to-black profile-card"
+          className="absolute inset-0 w-full h-full p-6 rounded-3xl bg-gradient-to-br from-gray-900 via-gray-800 to-black profile-card"
           style={{ 
             backfaceVisibility: 'hidden',
+            WebkitBackfaceVisibility: 'hidden',
             transform: 'rotateY(180deg)'
           }}
         >
