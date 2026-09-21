@@ -97,7 +97,11 @@ export default function CvReview() {
     setReview(null);
     try {
       const { data, error } = await supabase.functions.invoke("cv-review", {
-        body: { cvText, targetRole: targetRole || undefined },
+        body: {
+          cvText,
+          targetRole: targetRole || undefined,
+          followUpEmail: followUpEmail || undefined,
+        },
       });
 
       if (error) throw error;
@@ -180,6 +184,23 @@ export default function CvReview() {
               <p className="text-xs text-white/50 mt-1">
                 {cvText.trim().length} characters
                 {cvText.trim().length < 200 && " — paste at least 200 characters for a useful review"}
+              </p>
+            </div>
+
+            <div>
+              <Label htmlFor="follow-up" className="text-white/80">
+                Email me a reminder (optional)
+              </Label>
+              <Input
+                id="follow-up"
+                type="email"
+                value={followUpEmail}
+                onChange={(e) => setFollowUpEmail(e.target.value)}
+                placeholder="you@example.com"
+                className="mt-1 bg-white/5 border-white/20 text-white placeholder:text-white/40 max-w-sm"
+              />
+              <p className="text-xs text-white/50 mt-1">
+                One follow-up email, once. No mailing list, no chasing.
               </p>
             </div>
 
