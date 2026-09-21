@@ -54,7 +54,7 @@ const JobSearch = ({ onSearch, userType }: JobSearchProps) => {
   };
 
   return (
-    <div className="job-search-card bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6 text-left">
+    <div className="job-search-card glass rounded-xl border border-border p-4 mb-6 text-left">
       <div className="flex justify-between items-center mb-4">
         <div className="flex items-center">
           <Search className="h-5 w-5 text-primary mr-2" />

@@ -119,7 +119,7 @@ const Jobs = () => {
   return (
     <>
       <NavBar />
-      <div className="container mx-auto py-8 px-4 bg-background min-h-screen demo-employer-dark">
+      <div className="container mx-auto pt-28 pb-12 px-4 bg-background min-h-screen demo-employer-dark">
         <div className="mb-6">
           <JobsHeader userType={userType} />
         </div>
