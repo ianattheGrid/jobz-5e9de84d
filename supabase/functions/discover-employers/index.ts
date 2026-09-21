@@ -21,6 +21,17 @@ const NOT_BOARDS =
   "-site:glassdoor.co.uk -site:cv-library.co.uk -site:adzuna.co.uk -site:jobsite.co.uk " +
   "-site:bebee.com -site:jooble.org -site:theguardian.com -site:charityjob.co.uk";
 
+// Every Bristol postal district, plus the ones just outside the city that
+// people still travel in from. We search by postcode as well as by name, so a
+// company based in, say, BS37 turns up even if its site never says "Bristol".
+const BRISTOL_POSTCODES = [
+  "BS1", "BS2", "BS3", "BS4", "BS5", "BS6", "BS7", "BS8", "BS9", "BS10",
+  "BS11", "BS13", "BS14", "BS15", "BS16", "BS20", "BS21", "BS22", "BS23",
+  "BS24", "BS25", "BS26", "BS27", "BS28", "BS29", "BS30", "BS31", "BS32",
+  "BS34", "BS35", "BS36", "BS37", "BS39", "BS40", "BS41", "BS48", "BS49",
+  "BS80", "BS99",
+];
+
 const QUERIES = [
   `"careers" "Bristol" company vacancies ${NOT_BOARDS}`,
   `"we are hiring" Bristol company careers page ${NOT_BOARDS}`,
@@ -29,6 +40,20 @@ const QUERIES = [
   `Bristol finance accountancy firm careers "current vacancies" ${NOT_BOARDS}`,
   `Bristol engineering manufacturing company careers vacancies ${NOT_BOARDS}`,
 ];
+
+/**
+ * A handful of postcode searches for tonight. The list rotates so that over a
+ * few weeks the agent works its way round every Bristol postal district
+ * instead of hammering the same corner of the city.
+ */
+function postcodeQueries(night: number, howMany = 4) {
+  const picked: string[] = [];
+  for (let i = 0; i < howMany; i++) {
+    const code = BRISTOL_POSTCODES[(night * howMany + i) % BRISTOL_POSTCODES.length];
+    picked.push(`"${code}" company careers vacancies "join our team" ${NOT_BOARDS}`);
+  }
+  return picked;
+}
 
 // Middlemen we do not want to invite, and places that are not a single employer.
 // Matched against the web address, which is where boards and agencies give
@@ -48,13 +73,17 @@ const EXCLUDED_DOMAIN_PARTS = [
 // Words that mean the page title is an advert, not a company.
 const ADVERT_WORDS = /\b(salary|per annum|£|apply now|full[- ]time|part[- ]time|vacanc|hiring now|\d{2,}\+)\b/i;
 
+// Place names that count as "near enough to Bristol".
 const NEAR_BRISTOL = [
-  "bristol", "bs1", "bs2", "bs3", "bs4", "bs5", "bs6", "bs7", "bs8", "bs9",
-  "bs10", "bs11", "bs13", "bs14", "bs15", "bs16", "bs20", "bs30", "bs31",
-  "bs32", "bs34", "bs35", "bs37", "bs48", "bath", "portishead", "clevedon",
-  "thornbury", "yate", "keynsham", "nailsea", "weston-super-mare", "filton",
-  "avonmouth", "aztec west",
+  "bristol", "bath", "portishead", "clevedon", "thornbury", "yate", "keynsham",
+  "nailsea", "weston-super-mare", "weston super mare", "filton", "avonmouth",
+  "aztec west", "bradley stoke", "kingswood", "hanham", "long ashton",
+  "backwell", "chipping sodbury", "emersons green", "severn beach", "pill",
+  "winterbourne", "frampton cotterell", "almondsbury", "patchway", "shirehampton",
 ];
+
+// A Bristol postcode anywhere in the text also counts — "BS16 1QD", "BS1 4DJ".
+const BRISTOL_POSTCODE_PATTERN = /\bbs\s?([1-9]|[1-4][0-9]|80|99)\b/i;
 
 const CAREERS_PATHS = ["/careers", "/jobs", "/careers/", "/join-us", "/work-with-us", "/about/careers", "/company/careers"];
 
@@ -120,7 +149,8 @@ function looksLikeMiddleman(domain: string | null) {
 
 function mentionsBristol(text: string) {
   const lower = text.toLowerCase();
-  return NEAR_BRISTOL.some((place) => lower.includes(place));
+  if (NEAR_BRISTOL.some((place) => lower.includes(place))) return true;
+  return BRISTOL_POSTCODE_PATTERN.test(lower);
 }
 
 function titleCase(value: string) {
@@ -476,7 +506,8 @@ Deno.serve(async (req) => {
     if (manualWebsite) {
       hits.push({ url: manualWebsite, title: "" });
     } else {
-      for (const query of QUERIES) {
+      const tonight = new Date().getDate();
+      for (const query of [...QUERIES, ...postcodeQueries(tonight)]) {
         if (hits.length >= BATCH_LIMIT * 4) break;
         try {
           // Gentle pacing so we stay inside the search service's limits.
