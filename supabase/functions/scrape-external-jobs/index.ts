@@ -56,8 +56,11 @@ Deno.serve(async (req) => {
       console.log(`Scraping ${company.company_name}...`);
       
       try {
-        const jobs = await scrapeCompanyJobs(company);
-        console.log(`Found ${jobs.length} jobs for ${company.company_name}`);
+        const found = await scrapeCompanyJobs(company);
+        // Only keep things that actually read like a vacancy, and never let one
+        // badly built careers page flood the board.
+        const jobs = found.filter(isRealVacancy).slice(0, PER_COMPANY_LIMIT);
+        console.log(`Found ${found.length} links, kept ${jobs.length} vacancies for ${company.company_name}`);
         
         for (const job of jobs) {
           // Check if job already exists (by URL)
