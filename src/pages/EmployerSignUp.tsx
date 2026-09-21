@@ -58,6 +58,12 @@ const EmployerSignUp = () => {
             <p className="text-white/80 drop-shadow-lg">
               Join the future of recruitment. Your perfect candidate is out there.
             </p>
+            {claimId && (
+              <p className="text-sm text-white bg-primary/15 border border-primary/40 rounded-xl px-4 py-3">
+                Claiming the role you advertised{claimedCompany ? ` for ${claimedCompany}` : ""}.
+                We've filled in your details — £9 a month, no contract, no fee when you hire.
+              </p>
+            )}
             <p className="text-sm text-white/70 drop-shadow-lg">
               No spray-and-pray: candidates can send at most 10 applications a day here,
               and you can see how many roles each one applied for in the last month.
