@@ -37,6 +37,20 @@ interface Signup {
   created_at: string;
 }
 
+interface SkippedCompany {
+  id: string;
+  company_name: string;
+  website: string | null;
+  excluded_reason: string | null;
+  created_at: string;
+}
+
+const SKIP_LABELS: Record<string, string> = {
+  agency: "Recruitment agency",
+  board: "Job board",
+  unverified: "Couldn't tell who they are",
+};
+
 interface SourceRow {
   source: string;
   thisWeek: number;
