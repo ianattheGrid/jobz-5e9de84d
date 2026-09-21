@@ -178,6 +178,17 @@ Deno.serve(async (req) => {
       throw new Error("FIRECRAWL_API_KEY is not configured");
     }
 
+    // Adding a company by hand is an admin-only action.
+    if (manualWebsite) {
+      const token = req.headers.get("Authorization")?.replace("Bearer ", "");
+      if (!token) return new Response(JSON.stringify({ error: "Not signed in" }), { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      const { data: userData } = await supabase.auth.getUser(token);
+      const email = userData?.user?.email;
+      if (!email) return new Response(JSON.stringify({ error: "Not signed in" }), { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      const { data: admin } = await supabase.from("admins").select("id").eq("email", email).maybeSingle();
+      if (!admin) return new Response(JSON.stringify({ error: "Admins only" }), { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
+
     const now = new Date();
 
     // --- Paused, or already running? --------------------------------------
