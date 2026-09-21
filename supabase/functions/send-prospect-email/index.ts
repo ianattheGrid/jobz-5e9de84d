@@ -21,10 +21,16 @@ function renderEmail(p: any) {
     ? `<p>On a ${p.role_title || "role"} like that, a 20% agency fee would be about <strong>£${p.estimated_agency_fee.toLocaleString()}</strong>.</p>`
     : "";
 
+  // Only said when it's actually true — never padded out.
+  const views = p.advert_views_7d && p.advert_views_7d > 0
+    ? `<p><strong>${p.advert_views_7d} ${p.advert_views_7d === 1 ? "person" : "people"}</strong> looking for work in Bristol opened your ${p.role_title || "role"} advert on Jobz this week. On Jobz you'd see them for £9 a month — no contract, no fee when you hire.</p>`
+    : "";
+
   return `
   <div style="font-family:system-ui,-apple-system,Segoe UI,sans-serif;max-width:560px;margin:0 auto;color:#222;">
     <p>Hello ${p.company_name},</p>
     <p>I saw you're advertising ${p.role_title ? `for a ${p.role_title}` : "a role"}${p.role_location ? ` in ${p.role_location}` : ""}.</p>
+    ${views}
     ${fee}
     <p>Jobz is a Bristol hiring site for small businesses: <strong>£9 a month, no contract, no commission and no agency in the middle</strong>. Candidates apply to you directly.</p>
     <p><a href="${SITE_URL}/employer/signup" style="background:#FF2E88;color:#fff;padding:12px 20px;border-radius:8px;text-decoration:none;">Have a look at Jobz</a></p>
