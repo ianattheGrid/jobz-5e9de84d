@@ -287,13 +287,14 @@ function advertiserFrom(markdown: string, title: string): string | null {
   for (const pattern of patterns) {
     const match = markdown.match(pattern);
     const value = match?.[1]?.trim();
-    if (value && value.length >= 2 && !ADVERT_WORDS.test(value)) return value.replace(/\s+/g, " ");
+    const cleaned = value?.replace(/\s+/g, " ").trim();
+    if (cleaned && plausibleName(cleaned) && !ADVERT_WORDS.test(cleaned)) return cleaned;
   }
 
   // Boards often print "Job title - Company - Location" in the page title.
   const parts = title.split(/[|\u2013\u2014\-]/).map((p) => p.trim()).filter(Boolean);
   const candidate = parts.find(
-    (p) => p.length >= 3 && p.length <= 60 && !ADVERT_WORDS.test(p) && !/bristol|jobs?$/i.test(p),
+    (p) => plausibleName(p) && !ADVERT_WORDS.test(p) && !/bristol|jobs?$/i.test(p),
   );
   return candidate ?? null;
 }
