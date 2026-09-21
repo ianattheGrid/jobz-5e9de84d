@@ -231,7 +231,7 @@ const ExternalJobsView = () => {
 
                 <div className="flex gap-2 flex-wrap">
                   <Button
-                    onClick={() => window.open(job.job_url, '_blank')}
+                    onClick={() => openAdvert(job)}
                     className="flex items-center gap-2"
                   >
                     <ExternalLink className="h-4 w-4" />
