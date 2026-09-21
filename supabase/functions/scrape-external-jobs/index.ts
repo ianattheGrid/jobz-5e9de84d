@@ -60,6 +60,43 @@ const NATIONWIDE_SYSTEMS = /(myworkdayjobs|greenhouse|lever\.co|ashbyhq|smartrec
 
 /** Keep the board a Bristol board. */
 function jobIsLocal(job: ScrapedJob, company: CompanyToScrape): boolean {
+  return jobIsLocalInner(job, company);
+}
+
+/** How many adverts we'll open to check where the job actually is. */
+const PLACE_CHECK_LIMIT = 25;
+let placeChecks = 0;
+
+/**
+ * When the listing doesn't say where the job is, open the advert itself and
+ * look for Bristol or a BS postcode. Keeps national employers' adverts out.
+ */
+async function confirmLocal(job: ScrapedJob, company: CompanyToScrape): Promise<boolean> {
+  if ((job.location || '').trim()) return isNearBristol(job.location);
+  if (isNearBristol(job.job_url) || isNearBristol(job.job_title)) return true;
+
+  if (placeChecks >= PLACE_CHECK_LIMIT) return false;
+  placeChecks++;
+  try {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 8000);
+    const res = await fetch(job.job_url, {
+      headers: { 'User-Agent': 'JobzBot/1.0 (+https://jobz.dgrid.co)' },
+      redirect: 'follow',
+      signal: controller.signal,
+    });
+    clearTimeout(timer);
+    if (!res.ok) return false;
+    const html = (await res.text()).replace(/<[^>]*>/g, ' ');
+    if (!isNearBristol(html)) return false;
+    job.location = 'Bristol';
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function jobIsLocalInner(job: ScrapedJob, company: CompanyToScrape): boolean {
   const roleLocation = (job.location || '').trim();
   if (roleLocation) return isNearBristol(roleLocation);
   if (isNearBristol(job.job_url) || isNearBristol(job.job_title)) return true;
