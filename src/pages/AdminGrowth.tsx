@@ -28,6 +28,7 @@ interface Prospect {
   signal_summary: string | null;
   signal_source_url: string | null;
   signal_at: string | null;
+  advert_views_7d: number | null;
 }
 
 interface Signup {
@@ -81,6 +82,7 @@ const AdminGrowth = () => {
       supabase
         .from("employer_prospects")
         .select("*")
+        .order("advert_views_7d", { ascending: false, nullsFirst: false })
         .order("signal_at", { ascending: false, nullsFirst: false })
         .order("created_at", { ascending: false })
         .limit(100),
@@ -331,6 +333,11 @@ const AdminGrowth = () => {
                       <span className="font-semibold">{p.company_name}</span>
                       {p.role_title && <Badge variant="secondary">{p.role_title}</Badge>}
                       {p.role_location && <span className="text-sm text-muted-foreground">{p.role_location}</span>}
+                      {!!p.advert_views_7d && p.advert_views_7d > 0 && (
+                        <Badge>
+                          {p.advert_views_7d} {p.advert_views_7d === 1 ? "candidate" : "candidates"} viewed this week
+                        </Badge>
+                      )}
                     </div>
                     {p.signal_summary && (
                       <p className="text-sm text-foreground">

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -90,6 +90,35 @@ const ExternalJobsView = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  /**
+   * Notes that somebody opened this advert. The advert and the date only —
+   * used to tell the company how much interest their role is getting here.
+   * One row per person per advert per day; repeats are silently ignored.
+   */
+  const recordView = async (jobId: string) => {
+    try {
+      await supabase
+        .from('external_job_views')
+        .insert({ external_job_id: jobId, candidate_id: user?.id ?? null });
+    } catch {
+      /* never block the candidate on this */
+    }
+  };
+
+  const openAdvert = (job: ExternalJob) => {
+    void recordView(job.id);
+    window.open(job.job_url, '_blank');
+  };
+
+  const claimLink = (job: ExternalJob) => {
+    const params = new URLSearchParams({
+      claim: job.id,
+      company: job.target_companies?.company_name || '',
+      site: job.target_companies?.website || '',
+    });
+    return `/employer/signup?${params.toString()}`;
   };
 
   const markAsInterested = async (jobId: string, interested: boolean) => {
@@ -202,7 +231,7 @@ const ExternalJobsView = () => {
 
                 <div className="flex gap-2 flex-wrap">
                   <Button
-                    onClick={() => window.open(job.job_url, '_blank')}
+                    onClick={() => openAdvert(job)}
                     className="flex items-center gap-2"
                   >
                     <ExternalLink className="h-4 w-4" />
@@ -245,6 +274,14 @@ const ExternalJobsView = () => {
                 <div className="text-xs text-muted-foreground">
                   Industry: {job.target_companies.industry_sector}
                 </div>
+
+                <p className="text-xs text-muted-foreground border-t border-border pt-3">
+                  Are you {job.target_companies?.company_name || "this company"}?{" "}
+                  <Link to={claimLink(job)} className="text-primary underline underline-offset-2">
+                    Claim this role on Jobz
+                  </Link>{" "}
+                  — £9 a month, no contract, no commission.
+                </p>
               </CardContent>
             </Card>
           ))}

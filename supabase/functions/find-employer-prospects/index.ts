@@ -131,6 +131,22 @@ Deno.serve(async (req) => {
       advertCounts.set(id, (advertCounts.get(id) ?? 0) + 1);
     }
 
+    // --- How many people looked at each advert here in the last week? ------
+    // A count only: nothing about who looked.
+    const viewsSince = new Date(now.getTime() - 7 * 24 * 60 * 60_000).toISOString();
+    const { data: recentViews } = await supabase
+      .from("external_job_views")
+      .select("external_job_id")
+      .gte("viewed_at", viewsSince)
+      .limit(5000);
+
+    const viewCounts = new Map<string, number>();
+    for (const row of recentViews || []) {
+      const id = (row as any).external_job_id;
+      if (!id) continue;
+      viewCounts.set(id, (viewCounts.get(id) ?? 0) + 1);
+    }
+
     /** A short, plain "why now" line an admin can actually use. */
     function signalFor(job: any) {
       const count = advertCounts.get(job.company_id) ?? 1;
@@ -200,6 +216,7 @@ Deno.serve(async (req) => {
         signal_summary: signal.summary,
         signal_source_url: job.job_url,
         signal_at: signal.at.toISOString(),
+        advert_views_7d: viewCounts.get((job as any).id) ?? 0,
       });
 
       // A duplicate simply means another run already queued it.
@@ -211,6 +228,23 @@ Deno.serve(async (req) => {
       seenCompanies.add(key);
       seenUrls.add(job.job_url);
       created.push(companyName);
+    }
+
+    // Keep the interest count fresh on prospects that are still waiting.
+    if (viewCounts.size) {
+      const { data: waiting } = await supabase
+        .from("employer_prospects")
+        .select("id, source_url")
+        .eq("status", "new");
+
+      const urlToJobId = new Map((jobs || []).map((j: any) => [j.job_url, j.id]));
+      for (const row of waiting || []) {
+        const jobId = urlToJobId.get((row as any).source_url);
+        const count = jobId ? viewCounts.get(jobId) ?? 0 : 0;
+        if (count > 0) {
+          await supabase.from("employer_prospects").update({ advert_views_7d: count }).eq("id", (row as any).id);
+        }
+      }
     }
 
     await supabase
