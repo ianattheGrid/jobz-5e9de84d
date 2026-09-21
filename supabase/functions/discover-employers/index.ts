@@ -292,16 +292,20 @@ Deno.serve(async (req) => {
       if (!domain || handledDomains.has(domain) || knownDomains.has(domain)) continue;
       handledDomains.add(domain);
 
-      const name = companyNameFrom(hit.title || domain, domain);
+      if (looksLikeMiddleman(domain)) continue;
+      if (!manualWebsite && ADVERT_WORDS.test(hit.title || "")) continue;
+
+      const name = companyNameFrom(domain);
       if (!name) continue;
 
       const key = normalise(name);
       if (knownNames.has(key)) continue;
-      if (looksLikeMiddleman(name, domain)) continue;
 
       const website = `https://${domain}`;
       const careers = await findCareersPage(website);
       if (!careers) continue;
+      // The careers page must live on the company's own site, not a board.
+      if (apexDomain(careers) !== domain) continue;
 
       // Only companies within reach of Bristol.
       if (!manualWebsite) {
