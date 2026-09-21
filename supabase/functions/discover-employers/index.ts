@@ -136,9 +136,14 @@ function companyNameFrom(domain: string, title?: string) {
         .replace(/\s+/g, " ")
         .trim(),
     )
-    .filter((p) => p.length >= 3 && p.length <= 40 && /[a-z]/i.test(p) && !ADVERT_WORDS.test(p));
+    .filter((p) => plausibleName(p) && !ADVERT_WORDS.test(p));
 
-  const fromTitle = pieces.sort((a, b) => b.length - a.length)[0];
+  // Only trust the heading when it actually matches the web address, otherwise
+  // we end up calling a company something like "Early , UK".
+  const stem = domain.split(".")[0].replace(/[^a-z0-9]/g, "");
+  const fromTitle = pieces
+    .filter((p) => stem.length >= 4 && normalise(p).includes(stem.slice(0, 4)))
+    .sort((a, b) => b.length - a.length)[0];
   if (fromTitle) return titleCase(fromTitle);
 
   const base = domain.split(".")[0].replace(/[-_]+/g, " ").trim();
