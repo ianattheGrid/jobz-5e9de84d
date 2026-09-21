@@ -388,7 +388,7 @@ Deno.serve(async (req) => {
       if (!allowedDomains.has(domain)) continue;
 
 
-      const name = companyNameFrom(domain);
+      const name = companyNameFrom(domain, hit.title);
       if (!name) continue;
 
       const key = normalise(name);
