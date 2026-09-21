@@ -87,6 +87,7 @@ import CVRedirect from './pages/CVRedirect';
 import AdminExternalJobs from './pages/AdminExternalJobs';
 import AdminGrowth from './pages/AdminGrowth';
 import JobWorth from './pages/JobWorth';
+import MyCv from './pages/MyCv';
 import AdminSignIn from './pages/AdminSignIn';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminUserManagement from './pages/AdminUserManagement';
@@ -114,6 +115,7 @@ const App = () => {
           {/* Make the preview route completely public and accessible to everyone */}
           <Route path="candidate/profile/preview" element={<PreviewCandidateProfile />} />
           
+          <Route path="candidate/my-cv" element={<ProtectedRouteWithTimeout userType="candidate"><MyCv /></ProtectedRouteWithTimeout>} />
           <Route path="candidate/applications" element={<ProtectedRouteWithTimeout userType="candidate"><CandidateApplications /></ProtectedRouteWithTimeout>} />
           <Route path="candidate/interviews" element={<ProtectedRouteWithTimeout userType="candidate"><CandidateInterviews /></ProtectedRouteWithTimeout>} />
           <Route path="candidate/account" element={<Navigate to="/candidate/settings" replace />} />
