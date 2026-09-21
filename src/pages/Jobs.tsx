@@ -145,6 +145,21 @@ const Jobs = () => {
         ) : (
           <JobList jobs={jobs} />
         )}
+
+        {!!foundAdverts?.length && (
+          <section className="mt-12">
+            <h2 className="text-xl font-bold text-white">Also hiring in Bristol</h2>
+            <p className="text-sm text-muted-foreground mt-1 mb-6 max-w-2xl">
+              These roles are advertised on the companies' own sites. We link you straight to
+              them — no middleman, nothing added on top.
+            </p>
+            <div className="grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+              {foundAdverts.map((advert) => (
+                <ExternalJobCard key={advert.id} job={advert} candidateId={user?.id ?? null} />
+              ))}
+            </div>
+          </section>
+        )}
       </div>
     </>
   );
