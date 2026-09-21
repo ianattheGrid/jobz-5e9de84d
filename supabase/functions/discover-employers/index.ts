@@ -123,6 +123,15 @@ function titleCase(value: string) {
     .join(" ");
 }
 
+/** Does this read like a company name, rather than a scrap of an advert? */
+function plausibleName(value: string) {
+  const trimmed = value.trim();
+  if (trimmed.length < 3 || trimmed.length > 40) return false;
+  if (!/^[A-Za-z0-9&'.\- ]+$/.test(trimmed)) return false;
+  if (trimmed.split(/\s+/).length > 5) return false;
+  return /[a-z]/i.test(trimmed);
+}
+
 /**
  * Prefers the readable company name from the page heading ("Careers - Bristol
  * Water" gives "Bristol Water") and falls back to the web address.
