@@ -139,9 +139,14 @@ Deno.serve(async (req) => {
 
       const salary = job.salary_max || job.salary_min || null;
 
+      // Published business contact address on the company's own site, if there is one.
+      const contact = await findContactEmail(company?.website || null);
+
       const { error: insertError } = await supabase.from("employer_prospects").insert({
         company_name: companyName,
         company_website: company?.website || null,
+        contact_email: contact?.email || null,
+        contact_source: contact?.source || null,
         role_title: job.job_title,
         role_location: job.location || company?.location || null,
         source_url: job.job_url,
