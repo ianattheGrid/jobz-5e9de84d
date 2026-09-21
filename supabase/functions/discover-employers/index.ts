@@ -224,6 +224,83 @@ async function firecrawlSearch(query: string): Promise<SearchHit[]> {
   })).filter((r: SearchHit) => !!r.url);
 }
 
+/** Reads a single board listing so we can see who wrote the advert. */
+async function firecrawlScrape(url: string): Promise<string | null> {
+  try {
+    const response = await fetch(`${FIRECRAWL_V2}/scrape`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${FIRECRAWL_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ url, formats: ["markdown"], onlyMainContent: true }),
+    });
+
+    if (!response.ok) {
+      const body = await response.text();
+      const err = new Error(`Firecrawl scrape failed [${response.status}]: ${body.slice(0, 200)}`);
+      (err as any).status = response.status;
+      throw err;
+    }
+
+    const payload = await response.json();
+    const markdown = payload?.markdown ?? payload?.data?.markdown ?? null;
+    return typeof markdown === "string" ? markdown.slice(0, 40_000) : null;
+  } catch (error: any) {
+    if ([402, 403, 429].includes(error?.status)) throw error;
+    console.error(error?.message ?? String(error));
+    return null;
+  }
+}
+
+/** The name of whoever placed the advert, as the board prints it. */
+function advertiserFrom(markdown: string, title: string): string | null {
+  const patterns = [
+    /(?:posted by|advertised by|recruiter|employer|company)\s*[:\-–]\s*([A-Za-z0-9&'.,\- ]{2,60})/i,
+    /\n\s*##?#?\s*([A-Za-z0-9&'.,\- ]{2,60})\s*\n[\s\S]{0,200}?(?:bristol)/i,
+  ];
+  for (const pattern of patterns) {
+    const match = markdown.match(pattern);
+    const value = match?.[1]?.trim();
+    if (value && value.length >= 2 && !ADVERT_WORDS.test(value)) return value.replace(/\s+/g, " ");
+  }
+
+  // Boards often print "Job title - Company - Location" in the page title.
+  const parts = title.split(/[|\u2013\u2014\-]/).map((p) => p.trim()).filter(Boolean);
+  const candidate = parts.find(
+    (p) => p.length >= 3 && p.length <= 60 && !ADVERT_WORDS.test(p) && !/bristol|jobs?$/i.test(p),
+  );
+  return candidate ?? null;
+}
+
+function looksLikeAgencyName(name: string) {
+  const lower = name.toLowerCase();
+  return AGENCY_NAME_WORDS.some((w) => lower.includes(w));
+}
+
+function advertWrittenByAgency(markdown: string) {
+  const lower = markdown.toLowerCase();
+  return AGENCY_PHRASES.some((p) => lower.includes(p));
+}
+
+/** Finds the advertiser's own website so we can look at what they actually do. */
+async function resolveWebsite(name: string): Promise<string | null> {
+  try {
+    const hits = await firecrawlSearch(`"${name}" Bristol official website ${NOT_BOARDS}`);
+    for (const hit of hits) {
+      const domain = apexDomain(hit.url);
+      if (!domain || looksLikeMiddleman(domain)) continue;
+      const stem = normalise(name).slice(0, 8);
+      if (stem.length >= 4 && !normalise(domain).includes(stem.slice(0, 4))) continue;
+      return domain;
+    }
+  } catch (error: any) {
+    if ([402, 403, 429].includes(error?.status)) throw error;
+    console.error(error?.message ?? String(error));
+  }
+  return null;
+}
+
 /**
  * Second pass over the shortlist: keeps companies that employ people directly
  * and drops job boards, recruitment agencies and directories. If this check is
