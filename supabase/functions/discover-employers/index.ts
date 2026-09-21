@@ -61,12 +61,20 @@ const CAREERS_PATHS = ["/careers", "/jobs", "/careers/", "/join-us", "/work-with
 // --- Reading the job boards -------------------------------------------------
 // Most Bristol vacancies appear on the boards. We read them, work out who is
 // really hiring, and keep only the companies who employ people themselves.
+// Places Bristol roles get advertised. Two are read each night, on rotation,
+// so every board comes round roughly once a week.
 const BOARD_SITES = [
   "site:uk.indeed.com",
   "site:reed.co.uk",
   "site:totaljobs.com",
   "site:cv-library.co.uk",
   "site:adzuna.co.uk",
+  "site:jobsite.co.uk",
+  "site:jobs.theguardian.com",
+  "site:jobs.bristolpost.co.uk",
+  "site:charityjob.co.uk",
+  "site:otta.com",
+  "site:workinstartups.com",
 ];
 
 const BOARD_AREAS = ["", "software developer", "marketing", "finance", "engineering", "customer service"];
