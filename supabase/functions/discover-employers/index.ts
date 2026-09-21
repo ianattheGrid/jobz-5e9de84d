@@ -15,13 +15,19 @@ const BATCH_LIMIT = 20; // hard cap on new companies added per run
 const LOCK_MINUTES = 20;
 const SEARCH_LIMIT = 10; // results per query
 
+// Keep the big job boards out of the results so we land on companies' own pages.
+const NOT_BOARDS =
+  "-site:indeed.com -site:reed.co.uk -site:totaljobs.com -site:linkedin.com " +
+  "-site:glassdoor.co.uk -site:cv-library.co.uk -site:adzuna.co.uk -site:jobsite.co.uk " +
+  "-site:bebee.com -site:jooble.org -site:theguardian.com -site:charityjob.co.uk";
+
 const QUERIES = [
-  "Bristol jobs careers site",
-  "Bristol software developer jobs company careers page",
-  "Bristol marketing jobs company careers page",
-  "Bristol finance jobs company careers page",
-  "Bristol engineering jobs company careers page",
-  "Bristol operations jobs company careers page",
+  `"careers" "Bristol" company vacancies ${NOT_BOARDS}`,
+  `"we are hiring" Bristol company careers page ${NOT_BOARDS}`,
+  `Bristol software developer "join our team" careers ${NOT_BOARDS}`,
+  `Bristol marketing agency careers "current vacancies" ${NOT_BOARDS}`,
+  `Bristol finance accountancy firm careers "current vacancies" ${NOT_BOARDS}`,
+  `Bristol engineering manufacturing company careers vacancies ${NOT_BOARDS}`,
 ];
 
 // Middlemen we do not want to invite, and places that are not a single employer.
