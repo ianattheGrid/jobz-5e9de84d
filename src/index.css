@@ -201,7 +201,7 @@
 
   nav,
   header.site-header,
-  footer:not(.cv-sheet footer),
+  footer,
   .print\:hidden {
     display: none !important;
   }

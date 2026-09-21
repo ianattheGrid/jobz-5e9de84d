@@ -162,9 +162,9 @@ const MyCv = () => {
             </section>
           )}
 
-          <footer className="mt-8 border-t border-gray-300 pt-3 text-xs text-gray-600">
+          <div className="mt-8 border-t border-gray-300 pt-3 text-xs text-gray-600">
             {profileLink ? `Profile: ${profileLink}` : "Profile: jobz.dgrid.co"}
-          </footer>
+          </div>
         </div>
       </div>
     </div>
