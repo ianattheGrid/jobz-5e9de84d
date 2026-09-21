@@ -124,13 +124,6 @@ const Jobs = () => {
           <JobsHeader userType={userType} />
         </div>
         
-        {/* Example Jobs Notice */}
-        <div className="mb-6 p-4 bg-primary/20 border border-primary/40 rounded-lg">
-          <p className="text-sm text-white">
-            <span className="font-semibold text-primary">Note:</span> These are example jobs for demonstration purposes.
-          </p>
-        </div>
-        
         <JobSearch onSearch={handleSearch} userType={userType} />
         
         {isLoading ? (
