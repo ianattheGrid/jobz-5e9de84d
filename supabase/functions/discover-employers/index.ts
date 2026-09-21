@@ -599,8 +599,12 @@ Deno.serve(async (req) => {
         console.error(error?.message ?? String(error));
       }
 
+      // Reading each advert costs two lookups, so keep the night's work bounded.
+      let readSoFar = 0;
       for (const listing of listings) {
-        if (added.length >= BATCH_LIMIT) break;
+        if (added.length >= BATCH_LIMIT || readSoFar >= BOARD_READ_LIMIT) break;
+        readSoFar += 1;
+
 
         let markdown: string | null = null;
         try {
