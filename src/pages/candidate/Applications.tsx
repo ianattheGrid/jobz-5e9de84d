@@ -1,89 +1,43 @@
-import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { useAuth } from "@/hooks/useAuth";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { useCandidateAuthCheck } from "@/hooks/useCandidateAuthCheck";
-import MatchScoreDisplay from "@/components/candidate/MatchScoreDisplay";
-import { CalendarIcon, MapPinIcon, Building2Icon } from "lucide-react";
-import { format } from "date-fns";
-
-interface Application {
-  id: number;
-  job_id: number;
-  status: string;
-  created_at: string;
-  match_percentage: number | null;
-  match_score_breakdown: any;
-  match_explanation: string | null;
-  jobs: {
-    title: string;
-    company: string;
-    location: string;
-    salary_min: number;
-    salary_max: number;
-  } | null;
-}
+import { useToast } from "@/hooks/use-toast";
+import { AddJobDialog } from "@/components/candidate/job-hunt/AddJobDialog";
+import { JobHuntCard } from "@/components/candidate/job-hunt/JobHuntCard";
+import { STAGES, Stage, useJobHuntBoard } from "@/hooks/useJobHuntBoard";
 
 const CandidateApplications = () => {
-  const { user } = useAuth();
-  const { loading: authLoading } = useCandidateAuthCheck();
-  const [applications, setApplications] = useState<Application[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
+  const { items, loading, error, addJob, moveJob, removeJob } = useJobHuntBoard();
 
-  useEffect(() => {
-    if (user && !authLoading) {
-      fetchApplications();
-    }
-  }, [user, authLoading]);
-
-  const fetchApplications = async () => {
+  const handleMove = async (id: string, stage: Stage) => {
     try {
-      const { data, error } = await supabase
-        .from('applications')
-        .select(`
-          id,
-          job_id,
-          status,
-          created_at,
-          match_percentage,
-          match_score_breakdown,
-          match_explanation,
-          jobs!inner (
-            title,
-            company,
-            location,
-            salary_min,
-            salary_max
-          )
-        `)
-        .eq('applicant_id', user?.id)
-        .order('created_at', { ascending: false });
-
-      if (error) throw error;
-      setApplications(data as any || []);
-    } catch (error) {
-      console.error('Error fetching applications:', error);
-    } finally {
-      setLoading(false);
+      await moveJob(id, stage);
+    } catch (e: any) {
+      toast({
+        title: "Could not move that",
+        description: e.message || "Please try again.",
+        variant: "destructive",
+      });
     }
   };
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'pending': return 'bg-yellow-100 text-yellow-800';
-      case 'accepted': return 'bg-green-100 text-green-800';
-      case 'rejected': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+  const handleRemove = async (id: string) => {
+    try {
+      await removeJob(id);
+      toast({ title: "Removed from your board" });
+    } catch (e: any) {
+      toast({
+        title: "Could not remove that",
+        description: e.message || "Please try again.",
+        variant: "destructive",
+      });
     }
   };
 
-  if (authLoading || loading) {
+  if (loading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="flex min-h-screen items-center justify-center bg-background">
         <div className="text-center">
-          <div className="animate-spin h-8 w-8 border-b-2 border-primary mx-auto"></div>
-          <p className="mt-2 text-muted-foreground">Loading your applications...</p>
+          <div className="mx-auto h-8 w-8 animate-spin rounded-full border-b-2 border-primary" />
+          <p className="mt-2 text-muted-foreground">Loading your job hunt…</p>
         </div>
       </div>
     );
@@ -92,89 +46,58 @@ const CandidateApplications = () => {
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-foreground mb-2">My Applications</h1>
-          <p className="text-muted-foreground">
-            Track your job applications and view your match scores
-          </p>
+        <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <h1 className="mb-2 text-3xl font-bold text-foreground">My job hunt</h1>
+            <p className="max-w-2xl text-muted-foreground">
+              Everything you've applied for, in one place. Jobs you applied for on Jobz appear here
+              on their own. Add the ones you found elsewhere. Nobody else can see this page.
+            </p>
+          </div>
+          <AddJobDialog onAdd={addJob} />
         </div>
 
-        {applications.length === 0 ? (
-          <Card>
-            <CardContent className="pt-6">
-              <div className="text-center py-8">
-                <p className="text-muted-foreground mb-4">You haven't applied to any jobs yet.</p>
-                <a 
-                  href="/jobs" 
-                  className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
-                >
-                  Browse Jobs
-                </a>
-              </div>
-            </CardContent>
-          </Card>
-        ) : (
-          <div className="space-y-6">
-            {applications.map((application) => (
-              <Card key={application.id} className="overflow-hidden">
-                <CardHeader>
-                  <div className="flex justify-between items-start">
-                    <div className="space-y-2">
-                      <CardTitle className="text-xl">
-                        {application.jobs?.title || 'Job Title Unavailable'}
-                      </CardTitle>
-                      <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                        {application.jobs && (
-                          <>
-                            <div className="flex items-center gap-1">
-                              <Building2Icon className="h-4 w-4" />
-                              {application.jobs.company}
-                            </div>
-                            <div className="flex items-center gap-1">
-                              <MapPinIcon className="h-4 w-4" />
-                              {application.jobs.location}
-                            </div>
-                          </>
-                        )}
-                        <div className="flex items-center gap-1">
-                          <CalendarIcon className="h-4 w-4" />
-                          Applied {format(new Date(application.created_at), 'MMM dd, yyyy')}
-                        </div>
-                      </div>
-                    </div>
-                    <Badge className={getStatusColor(application.status)}>
-                      {application.status.charAt(0).toUpperCase() + application.status.slice(1)}
-                    </Badge>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                      <div className="space-y-4">
-                      <div>
-                        <h4 className="font-semibold mb-2">Job Details</h4>
-                        <div className="text-sm text-muted-foreground space-y-1">
-                          {application.jobs && (
-                            <p>Salary: £{application.jobs.salary_min?.toLocaleString()} - £{application.jobs.salary_max?.toLocaleString()}</p>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                    
-                    {application.match_percentage && (
-                      <div>
-                        <MatchScoreDisplay
-                          matchPercentage={application.match_percentage}
-                          scoreBreakdown={application.match_score_breakdown}
-                          matchExplanation={application.match_explanation}
-                        />
-                      </div>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+        {error && (
+          <div className="mb-6 rounded-xl border border-destructive/40 bg-destructive/10 p-4 text-sm text-foreground">
+            {error}
           </div>
         )}
+
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
+          {STAGES.map((stage) => {
+            const columnItems = items.filter((i) => i.stage === stage.key);
+            return (
+              <div key={stage.key} className="rounded-3xl border border-border bg-card/40 p-4">
+                <div className="mb-4">
+                  <div className="flex items-center justify-between">
+                    <h2 className="font-semibold text-foreground">{stage.label}</h2>
+                    <span className="rounded-full bg-white/10 px-2 py-0.5 text-xs text-muted-foreground">
+                      {columnItems.length}
+                    </span>
+                  </div>
+                  <p className="text-xs text-muted-foreground">{stage.hint}</p>
+                </div>
+
+                <div className="space-y-3">
+                  {columnItems.length === 0 ? (
+                    <p className="rounded-2xl border border-dashed border-border p-4 text-sm text-muted-foreground">
+                      Nothing here yet.
+                    </p>
+                  ) : (
+                    columnItems.map((item) => (
+                      <JobHuntCard
+                        key={item.id}
+                        item={item}
+                        onMove={handleMove}
+                        onRemove={handleRemove}
+                      />
+                    ))
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
