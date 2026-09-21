@@ -25,7 +25,7 @@ const FIRECRAWL_API_KEY = Deno.env.get('FIRECRAWL_API_KEY');
 const FIRECRAWL_V2 = 'https://api.firecrawl.dev/v2';
 
 /** How many careers pages we'll pay to render in one run. */
-const RENDER_LIMIT = 15;
+const RENDER_LIMIT = 6;
 /** How many companies one run reads — keeps each run inside its time limit. */
 const COMPANY_LIMIT = 6;
 /** How many adverts we'll take from any one company in a single run. */
@@ -55,13 +55,18 @@ function isNearBristol(text: string | null | undefined): boolean {
   return BRISTOL_POSTCODE_PATTERN.test(lower);
 }
 
-/** Keep the board a Bristol board: the role itself has to be here. */
-function jobIsLocal(job: ScrapedJob, _company: CompanyToScrape): boolean {
+/** Hiring systems used by employers who advertise all over the world. */
+const NATIONWIDE_SYSTEMS = /(myworkdayjobs|greenhouse|lever\.co|ashbyhq|smartrecruiters|teamtailor|successfactors|taleo|icims)/i;
+
+/** Keep the board a Bristol board. */
+function jobIsLocal(job: ScrapedJob, company: CompanyToScrape): boolean {
   const roleLocation = (job.location || '').trim();
   if (roleLocation) return isNearBristol(roleLocation);
-  // Big employers advertise everywhere and often leave the location off the
-  // link, so fall back to what the advert's own address and title say.
-  return isNearBristol(job.job_url) || isNearBristol(job.job_title);
+  if (isNearBristol(job.job_url) || isNearBristol(job.job_title)) return true;
+  // No place given. A big employer's worldwide careers system could mean
+  // anywhere, so we leave it out; a local company's own site we trust.
+  if (NATIONWIDE_SYSTEMS.test(job.job_url)) return false;
+  return isNearBristol(company.location ?? '');
 }
 
 // --- Which hiring system does this company use? -----------------------------
@@ -182,7 +187,7 @@ async function renderCareersPage(url: string): Promise<{ html: string; links: st
   rendersUsed++;
 
   try {
-    await sleep(1500);
+    await sleep(7000);
     const response = await fetch(`${FIRECRAWL_V2}/scrape`, {
       method: 'POST',
       headers: {
