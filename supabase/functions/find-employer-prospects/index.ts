@@ -16,6 +16,56 @@ function normalise(name: string) {
   return name.toLowerCase().replace(/[^a-z0-9]/g, "");
 }
 
+const GENERIC_PREFIXES = ["careers", "jobs", "recruitment", "hr", "people", "hello", "info", "enquiries", "contact"];
+
+/**
+ * Looks for a published business contact address on the company's own site.
+ * Business contact details only — never anything belonging to a named person.
+ */
+async function findContactEmail(website: string | null): Promise<{ email: string; source: string } | null> {
+  if (!website) return null;
+
+  let base: URL;
+  try {
+    base = new URL(website.startsWith("http") ? website : `https://${website}`);
+  } catch {
+    return null;
+  }
+
+  const paths = ["/contact", "/contact-us", "/careers", "/jobs", "/"];
+
+  for (const path of paths) {
+    try {
+      const target = new URL(path, base).toString();
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 6000);
+      const response = await fetch(target, {
+        signal: controller.signal,
+        headers: { "User-Agent": "JobzBot/1.0 (+https://jobz.lovable.app)" },
+      });
+      clearTimeout(timer);
+      if (!response.ok) continue;
+
+      const html = (await response.text()).slice(0, 200_000);
+      const matches = [...html.matchAll(/mailto:([^"'?\s>]+@[^"'?\s>]+)/gi)].map((m) =>
+        m[1].toLowerCase().trim(),
+      );
+      if (!matches.length) continue;
+
+      // Prefer a general business inbox over anything that looks personal.
+      const generic = matches.find((e) => GENERIC_PREFIXES.some((p) => e.startsWith(`${p}@`)));
+      const chosen = generic ?? matches[0];
+      if (!chosen.includes("@")) continue;
+
+      return { email: chosen, source: target };
+    } catch (_e) {
+      continue;
+    }
+  }
+
+  return null;
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
 
