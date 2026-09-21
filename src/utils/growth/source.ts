@@ -12,6 +12,7 @@ export type SignupSource =
   | "salary_tool"
   | "employer_email"
   | "shared_profile"
+  | "claimed_advert"
   | "direct";
 
 /** Call this on a public tool or landing page to note how somebody arrived. */
