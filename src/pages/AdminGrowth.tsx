@@ -24,6 +24,10 @@ interface Prospect {
   status: string;
   sent_at: string | null;
   created_at: string;
+  signal_kind: string | null;
+  signal_summary: string | null;
+  signal_source_url: string | null;
+  signal_at: string | null;
 }
 
 interface Signup {

@@ -43,6 +43,7 @@ const ApplicationCard = ({ application, onAccept, onReject }: ApplicationCardPro
           : 'Candidate profile not available'
         }
       </p>
+      <ApplicationFitReasons candidateId={application.applicant_id} jobId={application.job_id} />
       <ApplicationActivity candidateId={application.applicant_id} />
       <div className="mt-2 flex gap-2">
         <Button
