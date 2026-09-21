@@ -39,8 +39,9 @@ export const useSignUpForm = ({ userType, onSubmit }: SignUpFormProps) => {
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [jobTitle, setJobTitle] = useState("");
-  const [companyName, setCompanyName] = useState("");
-  const [companyWebsite, setCompanyWebsite] = useState("");
+  // A company claiming its own advert arrives with these already filled in.
+  const [companyName, setCompanyName] = useState(searchParams.get("company") || "");
+  const [companyWebsite, setCompanyWebsite] = useState(searchParams.get("site") || "");
   const [companySize, setCompanySize] = useState(0);
   const [linkedinUrl, setLinkedinUrl] = useState("");
   const [isSME, setIsSME] = useState(false);

@@ -67,5 +67,6 @@ export const SOURCE_LABELS: Record<string, string> = {
   salary_tool: "Salary check",
   employer_email: "Our email to them",
   shared_profile: "A shared profile",
+  claimed_advert: "Claimed their own advert",
   direct: "Came straight to the site",
 };
