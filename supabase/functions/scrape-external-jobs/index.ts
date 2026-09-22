@@ -354,16 +354,30 @@ Deno.serve(async (req) => {
 
     console.log(`Starting external job scraping (hop ${hop})...`);
 
-    // Get companies that need scraping (haven't been scraped in the last 24 hours or never scraped)
-    const cutoffTime = new Date();
-    cutoffTime.setHours(cutoffTime.getHours() - 24);
+    // Which companies are due a read? Ones that have given us a real vacancy
+    // before are read every day; the rest come round every few days, and ones
+    // that never give us anything drop back to weekly and then stop.
+    const hoursAgo = (h: number) => {
+      const t = new Date();
+      t.setHours(t.getHours() - h);
+      return t.toISOString();
+    };
+    const cutoffTime = new Date(hoursAgo(24));
+    const dueFilter = [
+      'last_scraped_at.is.null',
+      `and(read_frequency.eq.daily,last_scraped_at.lt.${hoursAgo(24)})`,
+      `and(read_frequency.eq.rotating,last_scraped_at.lt.${hoursAgo(72)})`,
+      `and(read_frequency.eq.weekly,last_scraped_at.lt.${hoursAgo(168)})`,
+    ].join(',');
 
     const { data: companies, error: companiesError } = await supabase
       .from('target_companies')
-      .select('id, company_name, careers_page_url, ats_type, location')
+      .select('id, company_name, careers_page_url, ats_type, location, read_frequency, last_vacancy_at')
       .eq('is_active', true)
       .is('excluded_reason', null)
-      .or(`last_scraped_at.is.null,last_scraped_at.lt.${cutoffTime.toISOString()}`)
+      .neq('read_frequency', 'dormant')
+      .or(dueFilter)
+      .order('read_frequency', { ascending: true })
       .order('last_scraped_at', { ascending: true, nullsFirst: true })
       .limit(COMPANY_LIMIT);
 
