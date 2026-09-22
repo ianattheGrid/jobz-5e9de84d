@@ -497,6 +497,7 @@ Deno.serve(async (req) => {
         total_jobs_found: totalJobsScraped,
         skipped_not_local: skippedNotLocal,
         paused: searchPaused,
+        continuing: nextHop,
       }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
