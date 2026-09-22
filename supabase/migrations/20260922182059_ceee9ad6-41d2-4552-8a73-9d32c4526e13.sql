@@ -1,0 +1,2 @@
+ALTER TABLE public.applications DROP CONSTRAINT status_check;
+ALTER TABLE public.applications ADD CONSTRAINT status_check CHECK (status = ANY (ARRAY['pending','reviewing','matched','interviewed','rejected','hired']));
