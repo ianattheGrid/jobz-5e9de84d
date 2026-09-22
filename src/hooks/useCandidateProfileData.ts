@@ -10,6 +10,8 @@ export const useCandidateProfileData = (id: string | undefined) => {
   const [profile, setProfile] = useState<CandidateProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [vrRecommendation, setVrRecommendation] = useState<VRRecommendation | null>(null);
+  const [notShared, setNotShared] = useState(false);
+
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -159,5 +161,5 @@ export const useCandidateProfileData = (id: string | undefined) => {
     fetchProfile();
   }, [id, toast]);
 
-  return { profile, loading, vrRecommendation };
+  return { profile, loading, vrRecommendation, notShared };
 };
