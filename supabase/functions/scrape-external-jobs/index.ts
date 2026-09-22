@@ -498,7 +498,8 @@ Deno.serve(async (req) => {
         .select('id', { count: 'exact', head: true })
         .eq('is_active', true)
         .is('excluded_reason', null)
-        .or(`last_scraped_at.is.null,last_scraped_at.lt.${cutoffTime.toISOString()}`);
+        .neq('read_frequency', 'dormant')
+        .or(dueFilter);
 
       if ((count || 0) > 0) {
         nextHop = true;
