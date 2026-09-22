@@ -18,6 +18,7 @@ import {
 import { InfoIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { InterviewFeedbackButton } from "./InterviewFeedbackButton";
+import { EmployerDecisionCell } from "./EmployerDecisionCell";
 
 interface Interview {
   id: number | string;
@@ -61,6 +62,7 @@ const InterviewsTable = ({ interviews }: InterviewsTableProps) => {
           <TableHead className="text-gray-900">Time</TableHead>
           <TableHead className="text-gray-900">Interviewer</TableHead>
           <TableHead className="text-gray-900">Status</TableHead>
+          <TableHead className="text-gray-900">Outcome</TableHead>
           <TableHead className="text-gray-900">Actions</TableHead>
         </TableRow>
       </TableHeader>
@@ -97,6 +99,9 @@ const InterviewsTable = ({ interviews }: InterviewsTableProps) => {
                   </TooltipProvider>
                 )}
               </div>
+            </TableCell>
+            <TableCell>
+              <EmployerDecisionCell interviewId={interview.id} />
             </TableCell>
             <TableCell>
               <InterviewFeedbackButton 

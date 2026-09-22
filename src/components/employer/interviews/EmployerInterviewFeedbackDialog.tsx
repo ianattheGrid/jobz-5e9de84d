@@ -9,6 +9,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { CalendarIcon, Plus, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { useQueryClient } from "@tanstack/react-query";
 import { cn } from "@/lib/utils";
 
 interface EmployerInterviewFeedbackDialogProps {
@@ -37,6 +38,7 @@ export const EmployerInterviewFeedbackDialog = ({
   employerId
 }: EmployerInterviewFeedbackDialogProps) => {
   const { toast } = useToast();
+  const queryClient = useQueryClient();
   const [feedbackType, setFeedbackType] = useState<string>("");
   const [message, setMessage] = useState("");
   const [timeSlots, setTimeSlots] = useState<TimeSlot[]>([{ date: undefined, time: "" }]);
@@ -105,6 +107,8 @@ export const EmployerInterviewFeedbackDialog = ({
         });
 
       if (error) throw error;
+
+      queryClient.invalidateQueries({ queryKey: ['employer_interview_feedback', interview.id] });
 
       toast({
         title: "Feedback submitted successfully",
