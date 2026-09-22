@@ -28,6 +28,8 @@ const FIRECRAWL_V2 = 'https://api.firecrawl.dev/v2';
 const RENDER_LIMIT = 6;
 /** How many companies one run reads — keeps each run inside its time limit. */
 const COMPANY_LIMIT = 6;
+/** How many times a run may hand on to a fresh run before stopping. */
+const MAX_HOPS = 8;
 /** How many adverts we'll take from any one company in a single run. */
 const PER_COMPANY_LIMIT = 15;
 
@@ -452,6 +454,41 @@ Deno.serve(async (req) => {
     }
 
     console.log(`Scraping complete. Total new jobs: ${totalJobsScraped}`);
+
+    // Keep going through the rest of the list in a fresh run, so every company
+    // gets read each night rather than the first handful.
+    let nextHop = false;
+    if (!searchPaused && hop < MAX_HOPS && (companies?.length || 0) === COMPANY_LIMIT) {
+      const { count } = await supabase
+        .from('target_companies')
+        .select('id', { count: 'exact', head: true })
+        .eq('is_active', true)
+        .is('excluded_reason', null)
+        .or(`last_scraped_at.is.null,last_scraped_at.lt.${cutoffTime.toISOString()}`);
+
+      if ((count || 0) > 0) {
+        nextHop = true;
+        const kick = async () => {
+          await new Promise((r) => setTimeout(r, 3000));
+          await fetch(`${supabaseUrl}/functions/v1/scrape-external-jobs`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${supabaseServiceKey}`,
+            },
+            body: JSON.stringify({ hop: hop + 1 }),
+          }).catch((e) => console.error('Next hop failed:', e));
+        };
+        // @ts-ignore EdgeRuntime is available in Supabase functions
+        if (typeof EdgeRuntime !== 'undefined' && EdgeRuntime.waitUntil) {
+          // @ts-ignore
+          EdgeRuntime.waitUntil(kick());
+        } else {
+          kick();
+        }
+      }
+    }
+
 
     return new Response(
       JSON.stringify({
