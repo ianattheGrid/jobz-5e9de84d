@@ -674,8 +674,12 @@ function isRealVacancy(job: ScrapedJob): boolean {
   const hasOwnSlug = lastPart.split('-').length >= 3;
   const readsLikeRole = ROLE_WORDS.test(title);
 
-  if (hasId && (underJobsPath || readsLikeRole)) return true;
-  return underJobsPath && hasOwnSlug && readsLikeRole;
+  // A reference number or its own slug under a jobs-only path is enough on its
+  // own — the reject lists above already throw out the menu links. The
+  // role-word list is only a tiebreaker for links with neither.
+  if (hasId) return true;
+  if (underJobsPath && hasOwnSlug) return true;
+  return readsLikeRole && (underJobsPath || hasOwnSlug);
 }
 
 function parseGenericJobs(html: string, company: CompanyToScrape, baseUrl: string): ScrapedJob[] {

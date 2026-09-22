@@ -54,6 +54,9 @@ verify_jwt = true
 [functions.webby-decline-job]
 verify_jwt = true
 
+[functions.fetch-adzuna-jobs]
+verify_jwt = false
+
 [functions.scrape-external-jobs]
 verify_jwt = false
 
