@@ -35,6 +35,53 @@ function tidyName(name: string) {
     .slice(0, 120);
 }
 
+const PER_COMPANY_LIMIT = 5;
+const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
+
+/**
+ * Ask which of these advertisers employ people themselves. Returns the
+ * normalised names to keep, or null when the AI is unavailable.
+ */
+async function judgeEmployers(names: string[]): Promise<Set<string> | null> {
+  if (!LOVABLE_API_KEY || names.length === 0) return null;
+  try {
+    const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${LOVABLE_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "openai/gpt-6-astra",
+        reasoning_effort: "low",
+        messages: [
+          {
+            role: "system",
+            content:
+              "You are told a list of names that advertised jobs in Bristol, UK. " +
+              "Reply with only the names that are ordinary employers hiring for themselves. " +
+              "Leave out recruitment agencies, staffing firms, job boards, talent marketplaces, " +
+              "umbrella companies and anyone advertising on another company's behalf. " +
+              "Answer as a plain list, one name per line, nothing else.",
+          },
+          { role: "user", content: names.join("\n") },
+        ],
+      }),
+    });
+    if (res.status === 402 || res.status === 403 || res.status === 429) return null;
+    if (!res.ok) return null;
+    const data = await res.json();
+    const text: string = data?.choices?.[0]?.message?.content ?? "";
+    const keep = new Set<string>();
+    for (const line of text.split("\n")) {
+      const cleaned = line.replace(/^[-*\d.\s]+/, "").trim();
+      if (cleaned) keep.add(normalise(cleaned));
+    }
+    return keep;
+  } catch {
+    return null;
+  }
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
 
