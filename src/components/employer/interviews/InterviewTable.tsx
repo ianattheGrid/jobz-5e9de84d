@@ -11,6 +11,9 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/components/ui/use-toast";
 import { InterviewFeedbackButton } from './InterviewFeedbackButton';
 import { Clock, MapPin, User, Phone, Video, Calendar } from "lucide-react";
 
@@ -36,6 +39,32 @@ interface InterviewTableProps {
 }
 
 const InterviewTable = ({ interviews }: InterviewTableProps) => {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  // Once the interview has happened, the employer marks it done so both sides
+  // can leave feedback.
+  const markDone = useMutation({
+    mutationFn: async (interviewId: number) => {
+      const { error } = await supabase
+        .from("interviews")
+        .update({ status: "completed" })
+        .eq("id", interviewId);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["interviews"] });
+      toast({ title: "Interview marked as done", description: "You can now leave feedback." });
+    },
+    onError: (error: any) => {
+      toast({
+        variant: "destructive",
+        title: "Could not update the interview",
+        description: error?.message || "Please try again.",
+      });
+    },
+  });
+
   const formatDateTime = (dateString: string) => {
     const date = new Date(dateString);
     return {
@@ -139,10 +168,17 @@ const InterviewTable = ({ interviews }: InterviewTableProps) => {
                 
                 <TableCell>
                   <div className="flex gap-2">
+                    {interview.status === 'scheduled' && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        disabled={markDone.isPending}
+                        onClick={() => markDone.mutate(interview.id)}
+                      >
+                        Mark as done
+                      </Button>
+                    )}
                     <InterviewFeedbackButton interview={interview} />
-                    <Button variant="outline" size="sm">
-                      View Details
-                    </Button>
                   </div>
                 </TableCell>
               </TableRow>

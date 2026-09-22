@@ -260,16 +260,18 @@ export default function JobApplications() {
                 >
                   View Full Profile
                 </Button>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => setScheduleFor({
-                    applicationId: application.id,
-                    candidateId: application.applicant_id,
-                  })}
-                >
-                  Schedule Interview
-                </Button>
+                {application.employer_accepted !== false && (
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => setScheduleFor({
+                      applicationId: application.id,
+                      candidateId: application.applicant_id,
+                    })}
+                  >
+                    Schedule Interview
+                  </Button>
+                )}
                 {application.employer_accepted === null && (
                   <>
                     <Button
