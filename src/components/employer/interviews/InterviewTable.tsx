@@ -15,6 +15,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
 import { InterviewFeedbackButton } from './InterviewFeedbackButton';
+import { CandidateFeedbackCell } from './CandidateFeedbackCell';
 import { Clock, MapPin, User, Phone, Video, Calendar } from "lucide-react";
 
 interface Interview {
@@ -111,6 +112,7 @@ const InterviewTable = ({ interviews }: InterviewTableProps) => {
             <TableHead className="text-gray-900 font-semibold">Interview Details</TableHead>
             <TableHead className="text-gray-900 font-semibold">Date & Time</TableHead>
             <TableHead className="text-gray-900 font-semibold">Status</TableHead>
+            <TableHead className="text-gray-900 font-semibold">Candidate feedback</TableHead>
             <TableHead className="text-gray-900 font-semibold">Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -164,6 +166,10 @@ const InterviewTable = ({ interviews }: InterviewTableProps) => {
                 
                 <TableCell>
                   {getStatusBadge(interview.status)}
+                </TableCell>
+
+                <TableCell>
+                  <CandidateFeedbackCell interviewId={interview.id} candidateId={interview.candidate_id} />
                 </TableCell>
                 
                 <TableCell>
