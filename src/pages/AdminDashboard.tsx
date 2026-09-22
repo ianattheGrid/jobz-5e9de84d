@@ -4,6 +4,8 @@ import { AdminProtectedRoute } from "@/components/auth/AdminProtectedRoute";
 import { AdminNavigation } from "@/components/admin/AdminNavigation";
 import { AppStatusManagement } from "@/components/admin/AppStatusManagement";
 import { SoftLaunchMetrics } from "@/components/admin/SoftLaunchMetrics";
+import { EmployerVerificationQueue } from "@/components/admin/EmployerVerificationQueue";
+
 import { Loader2 } from "lucide-react";
 
 const AdminDashboard = () => {

@@ -112,7 +112,12 @@ const CandidateAccountSettings = () => {
           {/* Shareable public profile */}
           <PublicProfileCard />
 
+          <BoardVisibilityCard />
+
+          <RevealRequestsCard />
+
           <EmailPreferencesCard />
+
 
           {/* Delete Account */}
           <Card className="shadow-sm">
