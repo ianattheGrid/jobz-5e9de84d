@@ -744,6 +744,8 @@ function isRealVacancy(job: ScrapedJob): boolean {
   const lastPart = path.split('/').filter(Boolean).pop() || '';
   if (NON_ADVERT_URL.test(lastPart) || FILE_ENDING.test(lastPart)) return false;
   if (/savedvacancies|[?&]page=/i.test(url) || url.includes('#')) return false;
+  // Blogs, news, referral pages and the like sit on careers sites but are not roles.
+  if (/\/(blog|news|press|insights?|stories|story|referrals?|events?|policies|guides?)\//i.test(path)) return false;
 
   // A specific posting: its own reference number, or its own slug under a
   // jobs-only part of the site. Either way it has to read like a job.
