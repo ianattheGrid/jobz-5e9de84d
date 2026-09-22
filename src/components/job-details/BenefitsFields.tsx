@@ -30,7 +30,7 @@ const BenefitsFields = ({ control }: BenefitsFieldsProps) => {
         name="holidayEntitlement"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Holiday Entitlement (days)</FormLabel>
+            <FormLabel>Holiday Entitlement (days) (required)</FormLabel>
             <Select 
               onValueChange={field.onChange} 
               defaultValue={field.value}
@@ -58,7 +58,7 @@ const BenefitsFields = ({ control }: BenefitsFieldsProps) => {
         name="companyBenefits"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Company Benefits</FormLabel>
+            <FormLabel>Company Benefits (required)</FormLabel>
             <Select 
               onValueChange={(value) => {
                 field.onChange(value);
