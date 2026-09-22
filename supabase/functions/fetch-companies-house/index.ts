@@ -14,7 +14,7 @@ const JOB_NAME = "fetch-companies-house";
 const POSTCODES_PER_RUN = 3;
 const PAGE_SIZE = 100;
 const PAGES_PER_POSTCODE = 2;
-const PROFILE_BUDGET = 60; // size checks per run
+const PROFILE_BUDGET = 250; // size checks per run
 const BATCH_LIMIT = 40; // new companies added per run
 const LOCK_MINUTES = 20;
 
