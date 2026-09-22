@@ -33,11 +33,29 @@ const EmployerInterviews = () => {
 
       if (error) throw error;
 
-      return (interviewsData || []).map(interview => ({
-        ...interview,
-        candidate_email: interview.candidate_id,
-        job: interview.job as { id: number; title: string; company: string }
-      })) as Interview[];
+      // Show who the interview is with, rather than an internal reference.
+      const candidateIds = Array.from(
+        new Set((interviewsData || []).map((i: any) => i.candidate_id).filter(Boolean))
+      );
+
+      let namesById = new Map<string, { full_name?: string | null; email?: string | null }>();
+      if (candidateIds.length > 0) {
+        const { data: profiles } = await supabase
+          .from("candidate_profiles")
+          .select("id, full_name, email")
+          .in("id", candidateIds);
+        namesById = new Map((profiles || []).map((p: any) => [p.id, p]));
+      }
+
+      return (interviewsData || []).map(interview => {
+        const profile = namesById.get(interview.candidate_id);
+        return {
+          ...interview,
+          candidate_name: profile?.full_name || null,
+          candidate_email: profile?.full_name || profile?.email || "Candidate",
+          job: interview.job as { id: number; title: string; company: string }
+        };
+      }) as Interview[];
     },
     enabled: !!user,
   });
