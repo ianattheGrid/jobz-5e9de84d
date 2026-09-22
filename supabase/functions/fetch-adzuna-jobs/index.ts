@@ -35,6 +35,53 @@ function tidyName(name: string) {
     .slice(0, 120);
 }
 
+const PER_COMPANY_LIMIT = 5;
+const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
+
+/**
+ * Ask which of these advertisers employ people themselves. Returns the
+ * normalised names to keep, or null when the AI is unavailable.
+ */
+async function judgeEmployers(names: string[]): Promise<Set<string> | null> {
+  if (!LOVABLE_API_KEY || names.length === 0) return null;
+  try {
+    const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${LOVABLE_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "openai/gpt-6-astra",
+        reasoning_effort: "low",
+        messages: [
+          {
+            role: "system",
+            content:
+              "You are told a list of names that advertised jobs in Bristol, UK. " +
+              "Reply with only the names that are ordinary employers hiring for themselves. " +
+              "Leave out recruitment agencies, staffing firms, job boards, talent marketplaces, " +
+              "umbrella companies and anyone advertising on another company's behalf. " +
+              "Answer as a plain list, one name per line, nothing else.",
+          },
+          { role: "user", content: names.join("\n") },
+        ],
+      }),
+    });
+    if (res.status === 402 || res.status === 403 || res.status === 429) return null;
+    if (!res.ok) return null;
+    const data = await res.json();
+    const text: string = data?.choices?.[0]?.message?.content ?? "";
+    const keep = new Set<string>();
+    for (const line of text.split("\n")) {
+      const cleaned = line.replace(/^[-*\d.\s]+/, "").trim();
+      if (cleaned) keep.add(normalise(cleaned));
+    }
+    return keep;
+  } catch {
+    return null;
+  }
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
 
@@ -101,10 +148,24 @@ Deno.serve(async (req) => {
       .select("job_url");
     const seenUrls = new Set((existingJobs ?? []).map((j) => j.job_url));
 
-    let addedJobs = 0;
-    let addedCompanies = 0;
-    let rejected = 0;
+    type Candidate = {
+      companyName: string;
+      key: string;
+      title: string;
+      titleKey: string;
+      url: string;
+      location: string;
+      description: string | null;
+      salaryMin: number | null;
+      salaryMax: number | null;
+      contract: string | null;
+      created: string | null;
+    };
+
+    const candidates: Candidate[] = [];
+    const seenTitles = new Set<string>();
     let looked = 0;
+    let rejected = 0;
 
     for (let page = 1; page <= PAGES; page++) {
       const url =
@@ -141,81 +202,121 @@ Deno.serve(async (req) => {
       for (const r of results) {
         const advertUrl: string | undefined = r.redirect_url;
         const rawName: string | undefined = r.company?.display_name;
-        const title: string | undefined = r.title;
-        if (!advertUrl || !rawName || !title) continue;
+        const rawTitle: string | undefined = r.title;
+        if (!advertUrl || !rawName || !rawTitle) continue;
         if (seenUrls.has(advertUrl)) continue;
 
         const companyName = tidyName(rawName);
         const key = normalise(companyName);
         if (!key) continue;
+        if (byName.get(key)?.excluded) continue;
 
-        const known = byName.get(key);
-        if (known?.excluded) continue;
+        const title = String(rawTitle).replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
+        const titleKey = `${key}|${normalise(title)}`;
+        // The same advert is often repeated for every neighbourhood — keep one.
+        if (seenTitles.has(titleKey)) continue;
+        seenTitles.add(titleKey);
 
-        if (!known && looksLikeAgency(companyName)) {
-          // Remember the middleman so we stop looking at their adverts.
-          const { data: inserted } = await supabase
-            .from("target_companies")
-            .insert({
-              company_name: companyName,
-              careers_page_url: advertUrl,
-              location: r.location?.display_name ?? "Bristol",
-              is_active: false,
-              excluded_reason: "agency",
-              discovered_from: "adzuna",
-              notes: "Rejected from the Adzuna feed — looks like a recruitment agency",
-            })
-            .select("id")
-            .maybeSingle();
-          byName.set(key, { id: inserted?.id ?? "", excluded: "agency" });
+        candidates.push({
+          companyName,
+          key,
+          title: title.slice(0, 200),
+          titleKey,
+          url: advertUrl,
+          location: r.location?.display_name ?? "Bristol",
+          description: r.description
+            ? String(r.description).replace(/<[^>]*>/g, "").slice(0, 2000)
+            : null,
+          salaryMin: r.salary_min ? Math.round(r.salary_min) : null,
+          salaryMax: r.salary_max ? Math.round(r.salary_max) : null,
+          contract: r.contract_time ?? null,
+          created: r.created ?? null,
+        });
+      }
+    }
+
+    // Who's new to us, and is each of them an employer or a middleman?
+    const newNames = [...new Set(candidates.filter((c) => !byName.has(c.key)).map((c) => c.companyName))];
+    const verdicts = new Map<string, boolean>();
+    for (const name of newNames) {
+      if (looksLikeAgency(name)) verdicts.set(normalise(name), false);
+    }
+    const toJudge = newNames.filter((n) => !verdicts.has(normalise(n)));
+    for (let i = 0; i < toJudge.length; i += 30) {
+      const batch = toJudge.slice(i, i + 30);
+      const keep = await judgeEmployers(batch);
+      if (keep === null) break; // AI unavailable — leave the rest for next run
+      for (const name of batch) {
+        verdicts.set(normalise(name), keep.has(normalise(name)));
+      }
+    }
+
+    let addedJobs = 0;
+    let addedCompanies = 0;
+    const perCompany = new Map<string, number>();
+
+    for (const c of candidates) {
+      let known = byName.get(c.key);
+      if (known?.excluded) continue;
+
+      if (!known) {
+        const verdict = verdicts.get(c.key);
+        if (verdict === undefined) continue; // not judged this run
+        const { data: inserted } = await supabase
+          .from("target_companies")
+          .insert({
+            company_name: c.companyName,
+            careers_page_url: c.url,
+            location: c.location,
+            is_active: false, // we haven't found a careers page of their own yet
+            excluded_reason: verdict ? null : "agency",
+            discovered_from: "adzuna",
+            notes: verdict
+              ? "Found advertising in Bristol on the Adzuna feed"
+              : "Rejected from the Adzuna feed — advertising on someone else's behalf",
+          })
+          .select("id")
+          .maybeSingle();
+        if (!inserted) continue;
+        known = { id: inserted.id, excluded: verdict ? null : "agency" };
+        byName.set(c.key, known);
+        if (verdict) addedCompanies++;
+        else {
           rejected++;
           continue;
         }
+      }
 
-        let companyId = known?.id;
-        if (!companyId) {
-          const { data: inserted, error } = await supabase
-            .from("target_companies")
-            .insert({
-              company_name: companyName,
-              careers_page_url: advertUrl,
-              location: r.location?.display_name ?? "Bristol",
-              is_active: false, // no careers page of their own yet
-              discovered_from: "adzuna",
-              notes: "Found advertising in Bristol on the Adzuna feed",
-            })
-            .select("id")
-            .maybeSingle();
-          if (error || !inserted) continue;
-          companyId = inserted.id;
-          byName.set(key, { id: companyId, excluded: null });
-          addedCompanies++;
-        }
+      const count = perCompany.get(c.key) ?? 0;
+      if (count >= PER_COMPANY_LIMIT) continue;
 
-        const clean = String(title).replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
-        const { error: jobError } = await supabase.from("external_jobs").insert({
-          company_id: companyId,
-          job_title: clean.slice(0, 200),
-          job_description: r.description
-            ? String(r.description).replace(/<[^>]*>/g, "").slice(0, 2000)
-            : null,
-          location: r.location?.display_name ?? "Bristol",
-          job_url: advertUrl,
-          salary_min: r.salary_min ? Math.round(r.salary_min) : null,
-          salary_max: r.salary_max ? Math.round(r.salary_max) : null,
-          contract_type: r.contract_time ?? null,
-          posting_date: r.created ?? null,
-          is_active: true,
-        });
-        if (!jobError) {
-          seenUrls.add(advertUrl);
-          addedJobs++;
-        }
+      const { error: jobError } = await supabase.from("external_jobs").insert({
+        company_id: known.id,
+        job_title: c.title,
+        job_description: c.description,
+        location: c.location,
+        job_url: c.url,
+        salary_min: c.salaryMin,
+        salary_max: c.salaryMax,
+        contract_type: c.contract,
+        posting_date: c.created,
+        is_active: true,
+      });
+      if (!jobError) {
+        seenUrls.add(c.url);
+        perCompany.set(c.key, count + 1);
+        addedJobs++;
       }
     }
 
     await release();
-    return json({ looked, added_jobs: addedJobs, added_companies: addedCompanies, rejected });
+    return json({
+      looked,
+      considered: candidates.length,
+      added_jobs: addedJobs,
+      added_companies: addedCompanies,
+      rejected,
+    });
   } catch (e) {
     await release();
     return json({ error: String(e) }, 500);
