@@ -22,7 +22,7 @@ const ExternalJobCard = ({ job, candidateId }: ExternalJobCardProps) => {
     <Card className="h-full flex flex-col border-dashed">
       <CardHeader className="space-y-2">
         <Badge variant="outline" className="w-fit text-xs font-normal">
-          Found on their careers page
+          Advertised by the employer
         </Badge>
         <CardTitle className="text-lg leading-snug">{job.job_title}</CardTitle>
         <div className="text-sm text-muted-foreground space-y-1">
