@@ -94,7 +94,7 @@ const Jobs = () => {
     queryKey: ['external-jobs', searchFilters?.title, searchFilters?.location],
     queryFn: async () => {
       const { data, error } = await supabase.rpc('get_found_adverts', {
-        _limit: 30,
+        _limit: 60,
         _search: searchFilters?.title || null,
       });
       if (error) throw error;
@@ -150,8 +150,8 @@ const Jobs = () => {
           <section className="mt-12">
             <h2 className="text-xl font-bold text-white">Also hiring in Bristol</h2>
             <p className="text-sm text-muted-foreground mt-1 mb-6 max-w-2xl">
-              These roles are advertised on the companies' own sites. We link you straight to
-              them — no middleman, nothing added on top.
+              Roles advertised by the companies themselves, never by an agency. We link you
+              straight to them — no middleman, nothing added on top.
             </p>
             <div className="grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
               {foundAdverts.map((advert) => (
