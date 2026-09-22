@@ -39,11 +39,20 @@ export const useCandidateProfileData = (id: string | undefined) => {
           .from('candidate_profiles')
           .select('*')
           .eq('id', id)
-          .single();
+          .maybeSingle();
 
         if (error) throw error;
 
+        // No row means this person hasn't applied to us and hasn't shared
+        // their details — their profile stays closed.
+        if (!data) {
+          setNotShared(true);
+          setLoading(false);
+          return;
+        }
+
         if (data) {
+
           const validProfile: CandidateProfile = {
             id: data.id,
             email: data.email,
