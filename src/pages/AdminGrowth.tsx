@@ -72,6 +72,7 @@ const AdminGrowth = () => {
   const [skipped, setSkipped] = useState<SkippedCompany[]>([]);
   const [manualSite, setManualSite] = useState("");
   const [addingCompany, setAddingCompany] = useState(false);
+  const [listStats, setListStats] = useState({ total: 0, readable: 0, readToday: 0, vacancyThisWeek: 0 });
 
   const load = useCallback(async () => {
     setLoading(true);
