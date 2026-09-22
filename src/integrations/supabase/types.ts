@@ -371,6 +371,9 @@ export type Database = {
           ascent_profile: Json | null
           availability: string | null
           availability_status: string
+          board_blocked_companies: string[]
+          board_enabled: boolean
+          board_visible_fields: Json
           can_drive: boolean | null
           career_breaks: Json | null
           commission_percentage: number | null
@@ -450,6 +453,9 @@ export type Database = {
           ascent_profile?: Json | null
           availability?: string | null
           availability_status?: string
+          board_blocked_companies?: string[]
+          board_enabled?: boolean
+          board_visible_fields?: Json
           can_drive?: boolean | null
           career_breaks?: Json | null
           commission_percentage?: number | null
@@ -529,6 +535,9 @@ export type Database = {
           ascent_profile?: Json | null
           availability?: string | null
           availability_status?: string
+          board_blocked_companies?: string[]
+          board_enabled?: boolean
+          board_visible_fields?: Json
           can_drive?: boolean | null
           career_breaks?: Json | null
           commission_percentage?: number | null
@@ -630,6 +639,42 @@ export type Database = {
           status?: string | null
           updated_at?: string | null
           vr_id?: string
+        }
+        Relationships: []
+      }
+      candidate_reveal_requests: {
+        Row: {
+          candidate_id: string
+          created_at: string
+          employer_id: string
+          id: string
+          job_id: number | null
+          note: string | null
+          responded_at: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          candidate_id: string
+          created_at?: string
+          employer_id: string
+          id?: string
+          job_id?: number | null
+          note?: string | null
+          responded_at?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          candidate_id?: string
+          created_at?: string
+          employer_id?: string
+          id?: string
+          job_id?: number | null
+          note?: string | null
+          responded_at?: string | null
+          status?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -900,6 +945,7 @@ export type Database = {
       }
       employer_profiles: {
         Row: {
+          companies_house_number: string | null
           company_address: string | null
           company_culture: string | null
           company_description: string | null
@@ -926,9 +972,13 @@ export type Database = {
           signup_source_detail: string | null
           updated_at: string
           values_soft_skills_over_experience: boolean | null
+          verification_method: string | null
+          verification_status: string
+          verified_at: string | null
           willing_to_train_on_the_job: boolean | null
         }
         Insert: {
+          companies_house_number?: string | null
           company_address?: string | null
           company_culture?: string | null
           company_description?: string | null
@@ -955,9 +1005,13 @@ export type Database = {
           signup_source_detail?: string | null
           updated_at?: string
           values_soft_skills_over_experience?: boolean | null
+          verification_method?: string | null
+          verification_status?: string
+          verified_at?: string | null
           willing_to_train_on_the_job?: boolean | null
         }
         Update: {
+          companies_house_number?: string | null
           company_address?: string | null
           company_culture?: string | null
           company_description?: string | null
@@ -984,6 +1038,9 @@ export type Database = {
           signup_source_detail?: string | null
           updated_at?: string
           values_soft_skills_over_experience?: boolean | null
+          verification_method?: string | null
+          verification_status?: string
+          verified_at?: string | null
           willing_to_train_on_the_job?: boolean | null
         }
         Relationships: []
@@ -2916,6 +2973,45 @@ export type Database = {
       current_user_is_admin: { Args: never; Returns: boolean }
       generate_referral_code: { Args: never; Returns: string }
       generate_vr_number: { Args: never; Returns: string }
+      get_candidate_full: {
+        Args: { _candidate_id: string; _job_id?: number }
+        Returns: {
+          candidate_id: string
+          current_employer: string
+          cv_url: string
+          email: string
+          full_name: string
+          linkedin_url: string
+          phone_number: string
+          profile_picture_url: string
+          shared: boolean
+        }[]
+      }
+      get_candidate_matches_for_job: {
+        Args: { _job_id: number }
+        Returns: {
+          additional_skills: string
+          availability_status: string
+          candidate_id: string
+          commission_percentage: number
+          desired_job_title: string
+          home_postcode: string
+          itSpecialization: string
+          job_title: string
+          location: string[]
+          max_salary: number
+          min_salary: number
+          personal_statement: string
+          required_qualifications: string[]
+          required_skills: string[]
+          reveal_status: string
+          security_clearance: string
+          updated_at: string
+          workArea: string
+          years_experience: number
+          years_in_current_title: number
+        }[]
+      }
       get_cv_file_path: { Args: { file_path: string }; Returns: Json }
       get_found_adverts: {
         Args: { _limit?: number; _search?: string }
@@ -2948,6 +3044,19 @@ export type Database = {
           specialization: string
           updated_at: string
           work_area: string
+          years_experience: number
+        }[]
+      }
+      get_public_preview_cards: {
+        Args: { _limit?: number }
+        Returns: {
+          area: string
+          availability_status: string
+          job_title: string
+          max_salary: number
+          min_salary: number
+          token: string
+          top_skills: string[]
           years_experience: number
         }[]
       }
