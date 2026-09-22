@@ -2240,9 +2240,13 @@ export type Database = {
           industry_sector: string | null
           is_active: boolean | null
           last_scraped_at: string | null
+          last_vacancy_at: string | null
           location: string
           notes: string | null
+          read_frequency: string
           scrape_frequency_hours: number | null
+          site_lookup_at: string | null
+          staff_band: string | null
           updated_at: string | null
           website: string | null
         }
@@ -2258,9 +2262,13 @@ export type Database = {
           industry_sector?: string | null
           is_active?: boolean | null
           last_scraped_at?: string | null
+          last_vacancy_at?: string | null
           location?: string
           notes?: string | null
+          read_frequency?: string
           scrape_frequency_hours?: number | null
+          site_lookup_at?: string | null
+          staff_band?: string | null
           updated_at?: string | null
           website?: string | null
         }
@@ -2276,9 +2284,13 @@ export type Database = {
           industry_sector?: string | null
           is_active?: boolean | null
           last_scraped_at?: string | null
+          last_vacancy_at?: string | null
           location?: string
           notes?: string | null
+          read_frequency?: string
           scrape_frequency_hours?: number | null
+          site_lookup_at?: string | null
+          staff_band?: string | null
           updated_at?: string | null
           website?: string | null
         }
