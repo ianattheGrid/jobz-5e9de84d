@@ -305,6 +305,26 @@ const AdminGrowth = () => {
           </CardContent>
         </Card>
 
+        <Card>
+          <CardHeader>
+            <CardTitle>The company list</CardTitle>
+            <CardDescription>Bristol companies we hold, and how much of the list we got through.</CardDescription>
+          </CardHeader>
+          <CardContent className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+            {[
+              { label: "Companies held", value: listStats.total },
+              { label: "With a careers page", value: listStats.readable },
+              { label: "Read today", value: listStats.readToday },
+              { label: "Advertising this week", value: listStats.vacancyThisWeek },
+            ].map((stat) => (
+              <div key={stat.label}>
+                <p className="text-2xl font-semibold text-foreground">{stat.value}</p>
+                <p className="text-sm text-muted-foreground">{stat.label}</p>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+
         {loading ? (
           <div className="flex items-center gap-2 text-muted-foreground">
             <Loader2 className="h-4 w-4 animate-spin" /> Loading…
