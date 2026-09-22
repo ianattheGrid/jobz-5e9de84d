@@ -87,7 +87,14 @@ export const useJobMatches = (jobId: number | null) => {
       })) as JobMatch[];
 
       scored.sort((a, b) => b.explanation.score - a.explanation.score);
-      setMatches(scored.filter((m) => m.explanation.score >= 25));
+
+      // Someone from a completely different line of work is not a match, however
+      // close to the office they live. Keep the list honest and short.
+      const jobArea = (jobRow as any)?.work_area?.toLowerCase?.() ?? null;
+      const sameField = (m: JobMatch) =>
+        !jobArea || !m.workArea || m.workArea.toLowerCase() === jobArea;
+
+      setMatches(scored.filter((m) => sameField(m) && m.explanation.score >= 40));
     } catch (err) {
       console.error("Failed to load matches for job:", err);
       setMatches([]);
