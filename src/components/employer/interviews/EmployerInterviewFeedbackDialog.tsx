@@ -106,6 +106,8 @@ export const EmployerInterviewFeedbackDialog = ({
 
       if (error) throw error;
 
+      queryClient.invalidateQueries({ queryKey: ['employer_interview_feedback', interview.id] });
+
       toast({
         title: "Feedback submitted successfully",
         description: "The candidate will be notified of your decision",
