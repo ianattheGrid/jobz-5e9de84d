@@ -28,6 +28,8 @@ const FIRECRAWL_V2 = 'https://api.firecrawl.dev/v2';
 const RENDER_LIMIT = 6;
 /** How many companies one run reads — keeps each run inside its time limit. */
 const COMPANY_LIMIT = 6;
+/** How many times a run may hand on to a fresh run before stopping. */
+const MAX_HOPS = 8;
 /** How many adverts we'll take from any one company in a single run. */
 const PER_COMPANY_LIMIT = 15;
 
@@ -334,6 +336,14 @@ Deno.serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
+  let hop = 0;
+  try {
+    const body = req.method === 'POST' ? await req.json().catch(() => ({})) : {};
+    hop = Number(body?.hop) || 0;
+  } catch {
+    hop = 0;
+  }
+
   try {
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
@@ -342,7 +352,7 @@ Deno.serve(async (req) => {
     rendersUsed = 0;
     searchPaused = null;
 
-    console.log('Starting external job scraping...');
+    console.log(`Starting external job scraping (hop ${hop})...`);
 
     // Get companies that need scraping (haven't been scraped in the last 24 hours or never scraped)
     const cutoffTime = new Date();
@@ -445,6 +455,41 @@ Deno.serve(async (req) => {
 
     console.log(`Scraping complete. Total new jobs: ${totalJobsScraped}`);
 
+    // Keep going through the rest of the list in a fresh run, so every company
+    // gets read each night rather than the first handful.
+    let nextHop = false;
+    if (!searchPaused && hop < MAX_HOPS && (companies?.length || 0) === COMPANY_LIMIT) {
+      const { count } = await supabase
+        .from('target_companies')
+        .select('id', { count: 'exact', head: true })
+        .eq('is_active', true)
+        .is('excluded_reason', null)
+        .or(`last_scraped_at.is.null,last_scraped_at.lt.${cutoffTime.toISOString()}`);
+
+      if ((count || 0) > 0) {
+        nextHop = true;
+        const kick = async () => {
+          await new Promise((r) => setTimeout(r, 3000));
+          await fetch(`${supabaseUrl}/functions/v1/scrape-external-jobs`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${supabaseServiceKey}`,
+            },
+            body: JSON.stringify({ hop: hop + 1 }),
+          }).catch((e) => console.error('Next hop failed:', e));
+        };
+        // @ts-ignore EdgeRuntime is available in Supabase functions
+        if (typeof EdgeRuntime !== 'undefined' && EdgeRuntime.waitUntil) {
+          // @ts-ignore
+          EdgeRuntime.waitUntil(kick());
+        } else {
+          kick();
+        }
+      }
+    }
+
+
     return new Response(
       JSON.stringify({
         success: true,
@@ -452,6 +497,7 @@ Deno.serve(async (req) => {
         total_jobs_found: totalJobsScraped,
         skipped_not_local: skippedNotLocal,
         paused: searchPaused,
+        continuing: nextHop,
       }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -674,8 +720,12 @@ function isRealVacancy(job: ScrapedJob): boolean {
   const hasOwnSlug = lastPart.split('-').length >= 3;
   const readsLikeRole = ROLE_WORDS.test(title);
 
-  if (hasId && (underJobsPath || readsLikeRole)) return true;
-  return underJobsPath && hasOwnSlug && readsLikeRole;
+  // A reference number or its own slug under a jobs-only path is enough on its
+  // own — the reject lists above already throw out the menu links. The
+  // role-word list is only a tiebreaker for links with neither.
+  if (hasId) return true;
+  if (underJobsPath && hasOwnSlug) return true;
+  return readsLikeRole && (underJobsPath || hasOwnSlug);
 }
 
 function parseGenericJobs(html: string, company: CompanyToScrape, baseUrl: string): ScrapedJob[] {
