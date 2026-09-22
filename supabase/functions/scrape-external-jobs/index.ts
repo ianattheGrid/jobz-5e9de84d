@@ -334,6 +334,14 @@ Deno.serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
+  let hop = 0;
+  try {
+    const body = req.method === 'POST' ? await req.json().catch(() => ({})) : {};
+    hop = Number(body?.hop) || 0;
+  } catch {
+    hop = 0;
+  }
+
   try {
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
@@ -342,7 +350,7 @@ Deno.serve(async (req) => {
     rendersUsed = 0;
     searchPaused = null;
 
-    console.log('Starting external job scraping...');
+    console.log(`Starting external job scraping (hop ${hop})...`);
 
     // Get companies that need scraping (haven't been scraped in the last 24 hours or never scraped)
     const cutoffTime = new Date();
