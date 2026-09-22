@@ -50,10 +50,10 @@ export const useJobHuntBoard = () => {
       const user = auth.user;
       if (!user) throw new Error("Please sign in to see your job hunt.");
 
-      const [jobz, manual] = await Promise.all([
+      const [jobz, manual, booked] = await Promise.all([
         supabase
           .from("applications")
-          .select("id, status, created_at, jobs(title, company)")
+          .select("id, job_id, status, created_at, jobs(title, company)")
           .eq("applicant_id", user.id)
           .order("created_at", { ascending: false }),
         supabase
@@ -61,10 +61,21 @@ export const useJobHuntBoard = () => {
           .select("*")
           .eq("candidate_id", user.id)
           .order("applied_on", { ascending: false }),
+        supabase
+          .from("interviews")
+          .select("job_id, status")
+          .eq("candidate_id", user.id),
       ]);
 
       if (jobz.error) throw jobz.error;
       if (manual.error) throw manual.error;
+
+      // A confirmed interview always beats whatever the application status says.
+      const jobsWithInterview = new Set(
+        (booked.data || [])
+          .filter((i: any) => i.status !== "cancelled")
+          .map((i: any) => i.job_id)
+      );
 
       const fromJobz: BoardItem[] = (jobz.data || []).map((a: any) => ({
         id: `jobz-${a.id}`,
@@ -73,7 +84,7 @@ export const useJobHuntBoard = () => {
         jobUrl: null,
         source: "Jobz",
         appliedOn: a.created_at,
-        stage: stageFromStatus(a.status || ""),
+        stage: jobsWithInterview.has(a.job_id) ? "interview" : stageFromStatus(a.status || ""),
         notes: null,
         onJobz: true,
       }));
