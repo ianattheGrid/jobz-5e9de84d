@@ -119,15 +119,26 @@ export const explainCandidateMatch = (
 
   // Location
   if (criteria.location) {
-    const haystack = [
+    const pieces = [
       ...asArray(candidate.location),
       candidate.address,
       candidate.home_postcode,
-    ]
-      .filter(Boolean)
-      .join(" ")
-      .toLowerCase();
-    const match = haystack.includes(criteria.location.toLowerCase());
+    ].filter(Boolean) as string[];
+    const haystack = pieces.join(" ").toLowerCase();
+    const wanted = criteria.location.toLowerCase();
+    // People pick postcode areas (BS1, BA2), vacancies name a town. Treat the
+    // town's own postcode areas as the same place so the reason reads honestly.
+    const townPrefixes: Record<string, string[]> = {
+      bristol: ["bs"],
+      bath: ["ba"],
+    };
+    const prefixes = Object.entries(townPrefixes)
+      .filter(([town]) => wanted.includes(town))
+      .flatMap(([, p]) => p);
+    const postcodeMatch = prefixes.some((prefix) =>
+      pieces.some((piece) => /^[a-z]{1,2}\d/i.test(piece.trim()) && piece.trim().toLowerCase().startsWith(prefix))
+    );
+    const match = haystack.includes(wanted) || postcodeMatch;
     parts.push(match ? 1 : 0);
     if (match) reasons.push(`Based near ${criteria.location}`);
     else gaps.push(`Location not confirmed as ${criteria.location}`);
