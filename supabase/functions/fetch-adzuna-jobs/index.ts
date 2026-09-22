@@ -81,6 +81,8 @@ async function judgeEmployers(names: string[]): Promise<Set<string> | null> {
   } catch {
     return null;
   }
+}
+
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
