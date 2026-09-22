@@ -3027,6 +3027,20 @@ export type Database = {
           scraped_at: string
         }[]
       }
+      get_my_reveal_requests: {
+        Args: never
+        Returns: {
+          candidate_id: string
+          company_name: string
+          created_at: string
+          employer_id: string
+          id: string
+          job_id: number
+          job_title: string
+          note: string
+          status: string
+        }[]
+      }
       get_public_candidate_profile: {
         Args: { _slug: string }
         Returns: {

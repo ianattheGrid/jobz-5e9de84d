@@ -65,33 +65,11 @@ export const useMyRevealRequests = () => {
     if (!user) return;
     setLoading(true);
 
-    const { data } = await supabase
-      .from("candidate_reveal_requests")
-      .select("*")
-      .eq("candidate_id", user.id)
-      .order("created_at", { ascending: false });
+    // The candidate must be able to see who is asking, so the company name and
+    // role title come back with the request itself.
+    const { data } = await supabase.rpc("get_my_reveal_requests" as any);
 
-    const rows = (data || []) as any[];
-
-    const employerIds = [...new Set(rows.map((r) => r.employer_id))];
-    const jobIds = [...new Set(rows.map((r) => r.job_id).filter(Boolean))];
-
-    const [{ data: employers }, { data: jobs }] = await Promise.all([
-      employerIds.length
-        ? supabase.from("employer_profiles").select("id, company_name").in("id", employerIds)
-        : Promise.resolve({ data: [] as any[] }),
-      jobIds.length
-        ? supabase.from("jobs").select("id, title").in("id", jobIds as number[])
-        : Promise.resolve({ data: [] as any[] }),
-    ]);
-
-    setRequests(
-      rows.map((r) => ({
-        ...r,
-        company_name: employers?.find((e: any) => e.id === r.employer_id)?.company_name ?? null,
-        job_title: jobs?.find((j: any) => j.id === r.job_id)?.title ?? null,
-      }))
-    );
+    setRequests(((data || []) as any[]).map((r) => ({ ...r })));
     setLoading(false);
   }, [user]);
 
