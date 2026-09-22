@@ -362,7 +362,6 @@ Deno.serve(async (req) => {
       t.setHours(t.getHours() - h);
       return t.toISOString();
     };
-    const cutoffTime = new Date(hoursAgo(24));
     const dueFilter = [
       'last_scraped_at.is.null',
       `and(read_frequency.eq.daily,last_scraped_at.lt.${hoursAgo(24)})`,
