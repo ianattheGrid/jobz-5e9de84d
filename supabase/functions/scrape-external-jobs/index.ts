@@ -453,9 +453,29 @@ Deno.serve(async (req) => {
           }
         }
 
+        // Earn your place in the daily list by actually advertising jobs.
+        const nowIso = new Date().toISOString();
+        const lastVacancy = jobs.length ? nowIso : (company as any).last_vacancy_at;
+        const daysSince = lastVacancy
+          ? (Date.now() - new Date(lastVacancy).getTime()) / 86_400_000
+          : Infinity;
+        const frequency = jobs.length
+          ? 'daily'
+          : daysSince > 60
+            ? 'dormant'
+            : daysSince > 30
+              ? 'weekly'
+              : (company as any).read_frequency === 'daily'
+                ? 'rotating'
+                : (company as any).read_frequency ?? 'rotating';
+
         await supabase
           .from('target_companies')
-          .update({ last_scraped_at: new Date().toISOString() })
+          .update({
+            last_scraped_at: nowIso,
+            read_frequency: frequency,
+            ...(jobs.length ? { last_vacancy_at: nowIso } : {}),
+          })
           .eq('id', company.id);
       } catch (error) {
         console.error(`Error scraping ${company.company_name}:`, error);
