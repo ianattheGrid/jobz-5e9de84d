@@ -722,19 +722,34 @@ Deno.serve(async (req) => {
         const careers = await findCareersPage(website);
         if (!careers || apexDomain(careers) !== domain) continue;
 
-        const { error: insertError } = await supabase.from("target_companies").insert({
-          company_name: advertiser,
-          website,
-          careers_page_url: careers,
-          location: "Bristol",
-          is_active: true,
-          discovered_from: listing.url,
-          notes: `Found advertising on a job board: ${listing.url}`,
-        });
+        const { data: insertedCompany, error: insertError } = await supabase
+          .from("target_companies")
+          .insert({
+            company_name: advertiser,
+            website,
+            careers_page_url: careers,
+            location: "Bristol",
+            is_active: true,
+            discovered_from: listing.url,
+            notes: `Found advertising on a job board: ${listing.url}`,
+          })
+          .select("id")
+          .maybeSingle();
 
         if (insertError) {
           if (!insertError.message.includes("duplicate")) console.error("Could not add company:", insertError.message);
           continue;
+        }
+
+        // Keep the advert itself, not just the company behind it.
+        if (insertedCompany?.id && listing.title) {
+          await supabase.from("external_jobs").insert({
+            company_id: insertedCompany.id,
+            job_title: listing.title.replace(/\s*[-|]\s*[^-|]*$/, "").trim().slice(0, 200),
+            location: "Bristol",
+            job_url: listing.url,
+            is_active: true,
+          });
         }
 
         knownNames.add(key);
