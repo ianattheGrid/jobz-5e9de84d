@@ -3,9 +3,9 @@ import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
 
 const FEELING_LABELS: Record<string, string> = {
-  very_positive: "Felt very positive",
-  still_interested: "Still interested",
-  neutral: "Neutral",
+  felt_positive: "Felt very positive",
+  still_interested: "Still interested and hopeful",
+  neutral: "Neutral - waiting to see",
   not_interested: "No longer interested",
 };
 
@@ -35,8 +35,8 @@ export const CandidateFeedbackCell = ({ interviewId, candidateId }: Props) => {
     return <span className="text-sm text-gray-500">Not shared yet</span>;
   }
 
-  const feeling = data.overall_feeling || data.feeling || data.sentiment;
-  const notes = data.general_feedback || data.additional_info || data.clarification;
+  const feeling = data.overall_sentiment;
+  const notes = data.general_feedback || data.additional_clarifications;
 
   return (
     <div className="space-y-1">
