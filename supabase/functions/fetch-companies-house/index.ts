@@ -202,15 +202,12 @@ Deno.serve(async (req) => {
       }
 
       const accountsType = String(profile?.accounts?.last_accounts?.type ?? "null").toLowerCase();
-      if (TOO_SMALL.includes(accountsType)) {
+      if (!BIG_ENOUGH.includes(accountsType)) {
         tooSmall += 1;
         continue;
       }
 
-      const band =
-        accountsType.includes("group") || accountsType.includes("full") || accountsType.includes("medium")
-          ? "50+"
-          : "25-50";
+      const band = BAND_50_PLUS.includes(accountsType) ? "50+" : "25-50";
 
       const { error } = await supabase.from("target_companies").insert({
         company_name: candidate.name,
