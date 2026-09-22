@@ -118,6 +118,31 @@ const AdminGrowth = () => {
     }
     setSources([...tally.values()].sort((a, b) => b.thisWeek - a.thisWeek));
 
+    // How healthy is the company list itself?
+    const dayAgo = new Date(Date.now() - 24 * 60 * 60_000).toISOString();
+    const counts = await Promise.all([
+      supabase.from("target_companies").select("id", { count: "exact", head: true }),
+      supabase
+        .from("target_companies")
+        .select("id", { count: "exact", head: true })
+        .eq("is_active", true)
+        .is("excluded_reason", null),
+      supabase
+        .from("target_companies")
+        .select("id", { count: "exact", head: true })
+        .gte("last_scraped_at", dayAgo),
+      supabase
+        .from("target_companies")
+        .select("id", { count: "exact", head: true })
+        .gte("last_vacancy_at", weekAgo),
+    ]);
+    setListStats({
+      total: counts[0].count ?? 0,
+      readable: counts[1].count ?? 0,
+      readToday: counts[2].count ?? 0,
+      vacancyThisWeek: counts[3].count ?? 0,
+    });
+
     setLoading(false);
   }, []);
 
