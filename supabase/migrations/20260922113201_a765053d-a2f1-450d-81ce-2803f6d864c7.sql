@@ -1,0 +1,1 @@
+ALTER TABLE public.target_companies ALTER COLUMN careers_page_url DROP NOT NULL;
