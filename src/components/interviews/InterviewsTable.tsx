@@ -61,6 +61,7 @@ const InterviewsTable = ({ interviews }: InterviewsTableProps) => {
           <TableHead className="text-gray-900">Time</TableHead>
           <TableHead className="text-gray-900">Interviewer</TableHead>
           <TableHead className="text-gray-900">Status</TableHead>
+          <TableHead className="text-gray-900">Outcome</TableHead>
           <TableHead className="text-gray-900">Actions</TableHead>
         </TableRow>
       </TableHeader>
