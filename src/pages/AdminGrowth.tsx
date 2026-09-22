@@ -72,6 +72,7 @@ const AdminGrowth = () => {
   const [skipped, setSkipped] = useState<SkippedCompany[]>([]);
   const [manualSite, setManualSite] = useState("");
   const [addingCompany, setAddingCompany] = useState(false);
+  const [listStats, setListStats] = useState({ total: 0, readable: 0, readToday: 0, vacancyThisWeek: 0 });
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -116,6 +117,31 @@ const AdminGrowth = () => {
       tally.set(key, entry);
     }
     setSources([...tally.values()].sort((a, b) => b.thisWeek - a.thisWeek));
+
+    // How healthy is the company list itself?
+    const dayAgo = new Date(Date.now() - 24 * 60 * 60_000).toISOString();
+    const counts = await Promise.all([
+      supabase.from("target_companies").select("id", { count: "exact", head: true }),
+      supabase
+        .from("target_companies")
+        .select("id", { count: "exact", head: true })
+        .eq("is_active", true)
+        .is("excluded_reason", null),
+      supabase
+        .from("target_companies")
+        .select("id", { count: "exact", head: true })
+        .gte("last_scraped_at", dayAgo),
+      supabase
+        .from("target_companies")
+        .select("id", { count: "exact", head: true })
+        .gte("last_vacancy_at", weekAgo),
+    ]);
+    setListStats({
+      total: counts[0].count ?? 0,
+      readable: counts[1].count ?? 0,
+      readToday: counts[2].count ?? 0,
+      vacancyThisWeek: counts[3].count ?? 0,
+    });
 
     setLoading(false);
   }, []);
@@ -276,6 +302,26 @@ const AdminGrowth = () => {
               {addingCompany ? <Loader2 className="h-4 w-4 animate-spin" /> : <Plus className="h-4 w-4" />}
               Add
             </Button>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>The company list</CardTitle>
+            <CardDescription>Bristol companies we hold, and how much of the list we got through.</CardDescription>
+          </CardHeader>
+          <CardContent className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+            {[
+              { label: "Companies held", value: listStats.total },
+              { label: "With a careers page", value: listStats.readable },
+              { label: "Read today", value: listStats.readToday },
+              { label: "Advertising this week", value: listStats.vacancyThisWeek },
+            ].map((stat) => (
+              <div key={stat.label}>
+                <p className="text-2xl font-semibold text-foreground">{stat.value}</p>
+                <p className="text-sm text-muted-foreground">{stat.label}</p>
+              </div>
+            ))}
           </CardContent>
         </Card>
 
