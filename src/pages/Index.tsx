@@ -9,6 +9,8 @@ import { DemoProfilesSection } from "@/components/home/DemoProfilesSection";
 import { CandidateCostSection } from "@/components/home/CandidateCostSection";
 import { CandidateSectionHero } from "@/components/home/CandidateSectionHero";
 import { CandidateFrontDoorSection } from "@/components/home/CandidateFrontDoorSection";
+import { AnonymousTalentPreview } from "@/components/home/AnonymousTalentPreview";
+
 import { ProfilePathwaysSection } from "@/components/home/ProfilePathwaysSection";
 import CostComparisonVisual from "@/components/home/CostComparisonVisual";
 import { MiddlemenComparisonSection } from "@/components/home/MiddlemenComparisonSection";
@@ -30,6 +32,8 @@ export default function Index() {
       <PlatformFeatures activeTab={activeTab} />
       <CandidateSectionHero />
       <CandidateFrontDoorSection />
+      <AnonymousTalentPreview />
+
       <ProfilePathwaysSection />
       <CostComparisonVisual />
       <MiddlemenComparisonSection />

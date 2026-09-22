@@ -100,6 +100,9 @@ const AdminDashboard = () => {
             totalUsers={totalUsers}
             onStatusChange={fetchData}
           />
+
+          <EmployerVerificationQueue />
+
         </div>
       </div>
     </AdminProtectedRoute>
