@@ -10,10 +10,25 @@ import { VRRecommendationBadge } from "@/components/recommendations/VRRecommenda
 function ViewCandidateProfile() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { profile, loading, vrRecommendation } = useCandidateProfileData(id);
+  const { profile, loading, vrRecommendation, notShared } = useCandidateProfileData(id);
 
   if (loading) {
     return <LoadingState />;
+  }
+
+  if (notShared) {
+    return (
+      <div className="container mx-auto px-4 py-8 max-w-2xl bg-background min-h-screen">
+        <h1 className="text-2xl font-semibold mb-3">This person hasn't shared their details yet</h1>
+        <p className="text-muted-foreground">
+          On Jobz, people stay anonymous until they agree to share. Go back to your matches and use
+          "Ask to see full profile" — they'll get your message and decide.
+        </p>
+        <Button variant="outline" onClick={() => navigate(-1)} className="mt-6">
+          Go Back
+        </Button>
+      </div>
+    );
   }
 
   if (!profile) {
@@ -39,7 +54,7 @@ function ViewCandidateProfile() {
         className="mb-6 flex items-center gap-2"
       >
         <ArrowLeft className="h-4 w-4" />
-        Back to Search
+        Back
       </Button>
 
       {vrRecommendation && <VRRecommendationBadge recommendation={vrRecommendation} className="mb-6" />}

@@ -11,7 +11,10 @@ import { useAuth } from "@/hooks/useAuth";
 import NavBar from "@/components/NavBar";
 import { LayoutDashboard } from "lucide-react";
 import { PublicProfileCard } from "@/components/candidate/PublicProfileCard";
+import { BoardVisibilityCard } from "@/components/candidate/BoardVisibilityCard";
+import { RevealRequestsCard } from "@/components/candidate/RevealRequestsCard";
 import { EmailPreferencesCard } from "@/components/candidate/EmailPreferencesCard";
+
 
 const CandidateAccountSettings = () => {
   const { user } = useAuth();
