@@ -100,6 +100,9 @@ const InterviewsTable = ({ interviews }: InterviewsTableProps) => {
               </div>
             </TableCell>
             <TableCell>
+              <EmployerDecisionCell interviewId={interview.id} />
+            </TableCell>
+            <TableCell>
               <InterviewFeedbackButton 
                 interview={{
                   id: typeof interview.id === 'string' ? parseInt(interview.id) : interview.id,
