@@ -28,10 +28,12 @@ const BRISTOL_POSTCODES = [
 // Recruitment, employment agencies and temp staffing — the middlemen.
 const AGENCY_SIC = ["78100", "78101", "78109", "78200", "78300"];
 
-// Accounts types that mean too small or not trading. Everything else files as
-// small or bigger, which is the "25 or more staff" line as closely as the
-// public record allows.
-const TOO_SMALL = ["dormant", "micro-entity", "micro entity", "no-accounts-type-filed", "null"];
+// Only companies filing proper (medium or large) accounts are kept. Everything
+// else — dormant, micro-entity, and the small-company exemptions like
+// "total-exemption-full" and "unaudited-abridged" — is a firm below the
+// 25-staff line as closely as the public record allows.
+const BIG_ENOUGH = ["full", "group", "medium", "audited-abridged", "audit-exemption-subsidiary"];
+const BAND_50_PLUS = ["full", "group", "medium"];
 
 const NAME_AGENCY_WORDS = [
   "recruit", "resourcing", "staffing", "personnel", "headhunt", "employment agency",
