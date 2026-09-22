@@ -3,9 +3,9 @@ import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
 
 const DECISION_LABELS: Record<string, string> = {
-  offer: "They want to offer you the job",
+  offer_position: "They want to offer you the job",
   another_interview: "They'd like another interview",
-  take_control: "They'll take it from here",
+  employer_control: "They'll take it from here",
   not_proceeding: "Not going further this time",
 };
 
