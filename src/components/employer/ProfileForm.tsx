@@ -152,6 +152,10 @@ export function ProfileForm({ profile, setProfile, email }: ProfileFormProps) {
       
       console.log("ProfileForm: Database update successful");
 
+      // Re-run the automatic company check in the background; it never blocks saving.
+      supabase.functions.invoke("verify-employer").catch(() => undefined);
+
+
       setProfile({
         ...profile,
         ...updateData

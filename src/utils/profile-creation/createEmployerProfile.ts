@@ -25,4 +25,8 @@ export const createEmployerProfile = async (
     });
 
   if (error) throw error;
+
+  // Automatic company check runs in the background; signup never waits on it.
+  supabase.functions.invoke("verify-employer").catch(() => undefined);
 };
+

@@ -10,6 +10,8 @@ export const useCandidateProfileData = (id: string | undefined) => {
   const [profile, setProfile] = useState<CandidateProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [vrRecommendation, setVrRecommendation] = useState<VRRecommendation | null>(null);
+  const [notShared, setNotShared] = useState(false);
+
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -39,11 +41,20 @@ export const useCandidateProfileData = (id: string | undefined) => {
           .from('candidate_profiles')
           .select('*')
           .eq('id', id)
-          .single();
+          .maybeSingle();
 
         if (error) throw error;
 
+        // No row means this person hasn't applied to us and hasn't shared
+        // their details — their profile stays closed.
+        if (!data) {
+          setNotShared(true);
+          setLoading(false);
+          return;
+        }
+
         if (data) {
+
           const validProfile: CandidateProfile = {
             id: data.id,
             email: data.email,
@@ -150,5 +161,5 @@ export const useCandidateProfileData = (id: string | undefined) => {
     fetchProfile();
   }, [id, toast]);
 
-  return { profile, loading, vrRecommendation };
+  return { profile, loading, vrRecommendation, notShared };
 };
