@@ -5,6 +5,7 @@ import { Job } from "@/integrations/supabase/types/jobs";
 import { CandidateProfile } from "@/integrations/supabase/types/profiles";
 import { useMatchScore } from "@/components/job-card/hooks/useMatchScore";
 import { calculateJobTitleMatchScore } from "@/utils/jobTitleMatching";
+import { locationsOverlap } from "@/utils/locationMatching";
 
 interface JobWithScore extends Job {
   matchScore?: number;
@@ -74,21 +75,36 @@ export const usePersonalizedJobs = () => {
             let totalCriteria = 0;
 
             // Enhanced Title/Work Area match (30% weight)
-            if (candidateProfile.job_title && job.work_area) {
+            if (candidateProfile.job_title && (job.work_area || job.title)) {
               totalCriteria += 30;
-              const titleMatchScore = calculateJobTitleMatchScore(
-                candidateProfile.job_title,
-                job.work_area,
-                job.specialization
-              );
-              matchScore += titleMatchScore * 30;
+              const areaScore = job.work_area
+                ? calculateJobTitleMatchScore(
+                    candidateProfile.job_title,
+                    job.work_area,
+                    job.specialization
+                  )
+                : 0;
+              // Also compare against the advertised job title, which is usually
+              // the closest thing to what the person calls themselves.
+              const titleScore = job.title
+                ? calculateJobTitleMatchScore(
+                    candidateProfile.job_title,
+                    job.title,
+                    job.specialization
+                  )
+                : 0;
+              matchScore += Math.max(areaScore, titleScore) * 30;
             }
 
             // Location match (20% weight)
             if (candidateProfile.location && candidateProfile.location.length > 0 && job.location) {
               totalCriteria += 20;
-              const candidateLocations = candidateProfile.location.map(loc => loc.toLowerCase());
-              if (candidateLocations.some(loc => job.location.toLowerCase().includes(loc))) {
+              if (
+                locationsOverlap(
+                  [...candidateProfile.location, (candidateProfile as any).home_postcode],
+                  job.location
+                )
+              ) {
                 matchScore += 20;
               }
             }
