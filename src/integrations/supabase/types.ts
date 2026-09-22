@@ -2230,7 +2230,7 @@ export type Database = {
       target_companies: {
         Row: {
           ats_type: string | null
-          careers_page_url: string
+          careers_page_url: string | null
           company_name: string
           created_at: string | null
           discovered_from: string | null
@@ -2252,7 +2252,7 @@ export type Database = {
         }
         Insert: {
           ats_type?: string | null
-          careers_page_url: string
+          careers_page_url?: string | null
           company_name: string
           created_at?: string | null
           discovered_from?: string | null
@@ -2274,7 +2274,7 @@ export type Database = {
         }
         Update: {
           ats_type?: string | null
-          careers_page_url?: string
+          careers_page_url?: string | null
           company_name?: string
           created_at?: string | null
           discovered_from?: string | null
