@@ -67,7 +67,7 @@ export const useJobMatches = (jobId: number | null) => {
 
       setJob(jobRow ?? null);
 
-      if (verification?.data && (verification.data as any).verification_status !== "verified") {
+      if (verification && (verification as any).verification_status !== "verified") {
         setNotVerified(true);
         setMatches([]);
         return;
