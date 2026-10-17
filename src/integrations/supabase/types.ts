@@ -418,6 +418,7 @@ export type Database = {
           proof_of_potential: Json | null
           public_profile_enabled: boolean
           public_profile_slug: string | null
+          radar_status: string
           required_qualifications: string[] | null
           required_skills: string[] | null
           second_chapter: Json | null
@@ -500,6 +501,7 @@ export type Database = {
           proof_of_potential?: Json | null
           public_profile_enabled?: boolean
           public_profile_slug?: string | null
+          radar_status?: string
           required_qualifications?: string[] | null
           required_skills?: string[] | null
           second_chapter?: Json | null
@@ -582,6 +584,7 @@ export type Database = {
           proof_of_potential?: Json | null
           public_profile_enabled?: boolean
           public_profile_slug?: string | null
+          radar_status?: string
           required_qualifications?: string[] | null
           required_skills?: string[] | null
           second_chapter?: Json | null
@@ -3072,6 +3075,13 @@ export type Database = {
           token: string
           top_skills: string[]
           years_experience: number
+        }[]
+      }
+      get_radar_statuses_for_job: {
+        Args: { _job_id: number }
+        Returns: {
+          candidate_id: string
+          radar_status: string
         }[]
       }
       is_admin: { Args: { user_email: string }; Returns: boolean }
