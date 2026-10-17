@@ -6,6 +6,8 @@ import {
 } from "@/components/candidate-search/searchCriteria";
 import { criteriaFromJob } from "@/utils/matching/matchReasons";
 
+export const QUIET_RADAR_MIN_SCORE = 85;
+
 export interface JobMatch {
   candidate_id: string;
   job_title: string | null;
@@ -73,11 +75,16 @@ export const useJobMatches = (jobId: number | null) => {
         return;
       }
 
-      const { data, error } = await supabase.rpc("get_candidate_matches_for_job", {
-        _job_id: jobId,
-      });
+      const [{ data, error }, { data: radar }] = await Promise.all([
+        supabase.rpc("get_candidate_matches_for_job", { _job_id: jobId }),
+        (supabase.rpc as any)("get_radar_statuses_for_job", { _job_id: jobId }),
+      ]);
 
       if (error) throw error;
+
+      const radarById = new Map<string, string>(
+        ((radar as any[]) || []).map((r) => [r.candidate_id, r.radar_status])
+      );
 
       const criteria = criteriaFromJob(jobRow);
 
@@ -94,7 +101,11 @@ export const useJobMatches = (jobId: number | null) => {
       const sameField = (m: JobMatch) =>
         !jobArea || !m.workArea || m.workArea.toLowerCase() === jobArea;
 
-      setMatches(scored.filter((m) => sameField(m) && m.explanation.score >= 40));
+      // Quiet Radar candidates only surface for exceptional fits.
+      const minScoreFor = (m: JobMatch) =>
+        radarById.get(m.candidate_id) === "active" ? 40 : QUIET_RADAR_MIN_SCORE;
+
+      setMatches(scored.filter((m) => sameField(m) && m.explanation.score >= minScoreFor(m)));
     } catch (err) {
       console.error("Failed to load matches for job:", err);
       setMatches([]);

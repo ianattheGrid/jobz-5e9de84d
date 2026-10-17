@@ -17,6 +17,14 @@ const FIELDS: { key: string; label: string }[] = [
   { key: "profile_picture_url", label: "My photo" },
 ];
 
+type Radar = "off" | "quiet" | "active";
+
+const RADAR_OPTIONS: { value: Radar; label: string; body: string }[] = [
+  { value: "off", label: "Off", body: "Invisible. No employer sees you, even as a match." },
+  { value: "quiet", label: "Quiet radar", body: "Only exceptional fits (85%+) that match your pay and location." },
+  { value: "active", label: "Actively looking", body: "Shown to verified employers whenever you fit a live vacancy." },
+];
+
 const DEFAULT_VISIBILITY = FIELDS.reduce(
   (acc, f) => ({ ...acc, [f.key]: false }),
   {} as Record<string, boolean>
@@ -33,6 +41,7 @@ export const BoardVisibilityCard = () => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [enabled, setEnabled] = useState(false);
+  const [radar, setRadar] = useState<Radar>("off");
   const [visible, setVisible] = useState<Record<string, boolean>>(DEFAULT_VISIBILITY);
 
   useEffect(() => {
@@ -40,12 +49,14 @@ export const BoardVisibilityCard = () => {
     const load = async () => {
       const { data } = await supabase
         .from("candidate_profiles")
-        .select("board_enabled, board_visible_fields")
+        .select("board_enabled, board_visible_fields, radar_status")
         .eq("id", user.id)
         .maybeSingle();
 
       if (data) {
-        setEnabled(Boolean((data as any).board_enabled));
+        const on = Boolean((data as any).board_enabled);
+        setEnabled(on);
+        setRadar(on ? (((data as any).radar_status as Radar) || "quiet") : "off");
         setVisible({ ...DEFAULT_VISIBILITY, ...(((data as any).board_visible_fields || {}) as Record<string, boolean>) });
       }
       setLoading(false);
@@ -53,11 +64,12 @@ export const BoardVisibilityCard = () => {
     load();
   }, [user]);
 
-  const save = async (next: { enabled?: boolean; visible?: Record<string, boolean> }) => {
+  const save = async (next: { enabled?: boolean; radar?: Radar; visible?: Record<string, boolean> }) => {
     if (!user) return;
     setSaving(true);
     const payload: any = {};
     if (next.enabled !== undefined) payload.board_enabled = next.enabled;
+    if (next.radar && next.radar !== "off") payload.radar_status = next.radar;
     if (next.visible) payload.board_visible_fields = next.visible;
 
     const { error } = await supabase.from("candidate_profiles").update(payload).eq("id", user.id);
@@ -81,25 +93,34 @@ export const BoardVisibilityCard = () => {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <Label htmlFor="board-enabled" className="font-medium">
-              Show me in employer match results
-            </Label>
-            <p className="text-sm text-muted-foreground mt-1">
-              You appear only against real vacancies you fit — never in a list anyone can browse.
-              Your name, contact details and current employer stay hidden.
-            </p>
+        <div className="space-y-3">
+          <p className="text-sm font-medium">My radar</p>
+          <div className="grid gap-3 sm:grid-cols-3" role="radiogroup" aria-label="My radar">
+            {RADAR_OPTIONS.map((o) => (
+              <button
+                key={o.value}
+                type="button"
+                role="radio"
+                aria-checked={radar === o.value}
+                disabled={saving}
+                onClick={() => {
+                  setRadar(o.value);
+                  setEnabled(o.value !== "off");
+                  save({ enabled: o.value !== "off", radar: o.value });
+                }}
+                className={`rounded-lg border p-4 text-left transition-colors ${
+                  radar === o.value ? "border-primary bg-primary/10" : "border-border hover:bg-muted/50"
+                }`}
+              >
+                <p className="font-medium text-foreground">{o.label}</p>
+                <p className="mt-1 text-xs text-muted-foreground">{o.body}</p>
+              </button>
+            ))}
           </div>
-          <Switch
-            id="board-enabled"
-            checked={enabled}
-            disabled={saving}
-            onCheckedChange={(v) => {
-              setEnabled(v);
-              save({ enabled: v });
-            }}
-          />
+          <p className="text-xs text-muted-foreground">
+            No public badge, ever. You only appear against real vacancies, your name and employer stay hidden,
+            and your current company can never see you.
+          </p>
         </div>
 
         <div className="space-y-3 border-t pt-4">

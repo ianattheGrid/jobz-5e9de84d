@@ -37,6 +37,9 @@ export const CandidateFrontDoorSection = () => {
             You don't need another job board account. Get your CV reviewed for free, and only make a
             profile if you like what you see.
           </p>
+          <p className="-mt-8 mb-12 font-display text-xl font-semibold text-foreground">
+            No feed. No recruiter spam. 100% private matching — only when you want it.
+          </p>
         </div>
 
         <div className="mb-12 grid gap-6 md:grid-cols-3">

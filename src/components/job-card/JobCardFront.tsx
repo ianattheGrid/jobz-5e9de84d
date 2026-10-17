@@ -4,6 +4,7 @@ import { formatSalary } from "./utils";
 import { JobCardFrontProps } from "./types";
 import { formatDistanceToNow } from "date-fns";
 import { PRIMARY_COLOR_PATTERN } from "@/styles/colorPatterns";
+import { EmployerTrustLine } from "./EmployerTrustLine";
 
 const JobCardFront = ({ job, showEmployerDetails = false, onFlip }: JobCardFrontProps) => {
   const hasBonus = !!job.candidate_commission;
@@ -38,6 +39,7 @@ const JobCardFront = ({ job, showEmployerDetails = false, onFlip }: JobCardFront
             {showEmployerDetails ? job.company : "Company details hidden until match"}
           </p>
         </div>
+        <EmployerTrustLine employerId={(job as any).employer_id} />
       </div>
 
       {/* Key Details Section */}

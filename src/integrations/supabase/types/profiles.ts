@@ -162,10 +162,14 @@ export interface CoreExperienceEntry {
 export interface CoreReferenceEntry {
   id: string;
   ref_name: string;
-  ref_role_title: string; // e.g., "Store Manager"
-  ref_relationship: string; // e.g., "Former Line Manager"
-  ref_contact?: string | null; // email or phone
-  ref_snippet?: string | null; // max 250 chars
+  ref_company?: string | null; // where they work
+  ref_role_title: string; // their job title, e.g. "Store Manager"
+  ref_relationship: string; // position relative to candidate, e.g. "Former Line Manager"
+  ref_will_vouch?: boolean; // ticked: happy to vouch for the candidate
+  /** @deprecated no longer collected */
+  ref_contact?: string | null;
+  /** @deprecated no longer collected */
+  ref_snippet?: string | null;
 }
 
 export interface CoreProfile {
