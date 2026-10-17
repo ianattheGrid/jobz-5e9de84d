@@ -3016,6 +3016,15 @@ export type Database = {
         }[]
       }
       get_cv_file_path: { Args: { file_path: string }; Returns: Json }
+      get_employer_trust: {
+        Args: { _employer_id: string }
+        Returns: {
+          avg_response_hours: number
+          company_size: number
+          member_since: string
+          verified: boolean
+        }[]
+      }
       get_found_adverts: {
         Args: { _limit?: number; _search?: string }
         Returns: {
