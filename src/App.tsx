@@ -95,13 +95,16 @@ import AdminCandidates from './pages/AdminCandidates';
 import AdminVirtualRecruiters from './pages/AdminVirtualRecruiters';
 import { AdminProtectedRoute } from './components/auth/AdminProtectedRoute';
 import { ErrorBoundary } from './components/ErrorBoundary';
+import { BetaPreview, LaunchInterestPage } from './components/beta/BetaPreview';
 
 const App = () => {
   return (
     <BrowserRouter>
+      <BetaPreview>
       <Routes>
         <Route path="/" element={<AppLayout><Outlet /></AppLayout>}>
           <Route index element={<Index />} />
+          <Route path="register-interest" element={<LaunchInterestPage />} />
           
           {/* Auth routes */}
           <Route path="signup" element={<SignUp />} />
@@ -236,6 +239,7 @@ const App = () => {
         </Route>
       </Routes>
       <Toaster />
+      </BetaPreview>
     </BrowserRouter>
   );
 };

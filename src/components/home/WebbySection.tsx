@@ -137,9 +137,9 @@ export const WebbySection = () => {
             <Button
               variant="secondary"
               className="w-full"
-              onClick={() => navigate('/candidate/signup')}
+              onClick={() => navigate('/register-interest')}
             >
-              I'm looking for work
+              Register interest
             </Button>
           </div>
 
@@ -151,9 +151,9 @@ export const WebbySection = () => {
             <Button
               variant="secondary"
               className="w-full"
-              onClick={() => navigate('/employer/signup')}
+              onClick={() => navigate('/register-interest')}
             >
-              I'm hiring
+              Register interest
             </Button>
           </div>
         </div>

@@ -220,8 +220,8 @@ export default function JobWorth() {
               </CardHeader>
               <CardContent className="flex flex-wrap gap-3">
                 <Button asChild size="lg" className="gap-2">
-                  <Link to="/candidate/signup?from=salary_tool">
-                    Create my free profile <ArrowRight className="h-4 w-4" />
+                  <Link to="/register-interest">
+                    Register interest <ArrowRight className="h-4 w-4" />
                   </Link>
                 </Button>
                 <Button asChild variant="outline" size="lg">

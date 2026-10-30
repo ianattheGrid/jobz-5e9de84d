@@ -90,7 +90,7 @@ export const AnonymousTalentPreview = () => {
 
         <div className="text-center mt-10">
           <Button asChild size="lg">
-            <Link to="/employer/create-vacancy">Post a vacancy and see who fits</Link>
+            <Link to="/register-interest">Register interest</Link>
           </Button>
         </div>
       </div>

@@ -11,6 +11,9 @@ import {
   SheetClose,
 } from "@/components/ui/sheet";
 import { DeleteAccountDialog } from "../shared/DeleteAccountDialog";
+import { Button } from "@/components/ui/button";
+import { BETA_PREVIEW } from "@/lib/beta";
+import { useBetaPreview } from "../beta/BetaPreview";
 
 interface MobileNavProps {
   isAuthenticated: boolean;
@@ -18,6 +21,7 @@ interface MobileNavProps {
 }
 
 const MobileNav = ({ isAuthenticated, userType }: MobileNavProps) => {
+  const { openInterest, isOwner } = useBetaPreview();
   const handleSignOut = async () => {
     try {
       await supabase.auth.signOut();
@@ -52,7 +56,13 @@ const MobileNav = ({ isAuthenticated, userType }: MobileNavProps) => {
             GetApp
           </Link>
 
-          {!isAuthenticated ? (
+          {BETA_PREVIEW ? (
+            <>
+              <SheetClose asChild><Button onClick={openInterest}>Register interest</Button></SheetClose>
+              {isOwner && <Link to="/admin/dashboard">Admin</Link>}
+              <a href="https://dgrid.co" className="text-sm text-muted-foreground">Back to theGrid</a>
+            </>
+          ) : !isAuthenticated ? (
             <>
               <div className="h-px bg-white/10 my-2" />
               <Link to="/employer/signin" className="text-lg text-foreground/75 transition-colors hover:text-primary">

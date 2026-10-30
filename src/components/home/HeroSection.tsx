@@ -37,8 +37,8 @@ export const HeroSection = () => {
 
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
             <Button asChild size="lg">
-              <Link to="/signup">
-                Get started
+              <Link to="/register-interest">
+                Register interest
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </Button>

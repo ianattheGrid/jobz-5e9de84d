@@ -17,6 +17,7 @@ export const Footer = () => {
           </Link>
 
           <nav className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm">
+            <a href="https://dgrid.co" className="text-foreground/70 transition-colors hover:text-primary">Back to theGrid</a>
             <Link
               to="/how-hiring-really-works"
               className="text-foreground/70 transition-colors hover:text-primary"

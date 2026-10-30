@@ -16,15 +16,5 @@ export const signUpWithEmail = async ({
   fullName, 
   referralCode 
 }: SignUpOptions) => {
-  return await supabase.auth.signUp({
-    email,
-    password,
-    options: {
-      data: {
-        user_type: userType,
-        full_name: fullName,
-        referral_code: referralCode,
-      },
-    },
-  });
+  return { data: { user: null, session: null }, error: new Error("Jobz is in beta. Register interest to hear when we launch.") };
 };

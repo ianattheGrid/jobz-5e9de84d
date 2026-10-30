@@ -25,7 +25,6 @@ export default function Index() {
   return (
     <div className="min-h-screen bg-background">
       <NavBar />
-      <SoftLaunchBanner />
       <HeroSection />
       <MissionSection />
       <HowItWorksHero activeTab={activeTab} onTabChange={setActiveTab} />
