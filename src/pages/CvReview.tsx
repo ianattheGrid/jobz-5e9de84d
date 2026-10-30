@@ -123,10 +123,7 @@ export default function CvReview() {
 
   // Hand the draft to the profile builder; nothing is saved until the candidate confirms it there.
   const startProfile = () => {
-    if (draft) {
-      sessionStorage.setItem("jobz_cv_profile_draft", JSON.stringify(draft));
-    }
-    navigate("/candidate/signup");
+    navigate("/register-interest");
   };
 
   const scoreColour = (score: number) =>
@@ -359,7 +356,7 @@ export default function CvReview() {
                   </div>
                 )}
                 <Button size="lg" className="gap-2" onClick={startProfile}>
-                  {draft ? "Turn this into my profile" : "Create my free profile"}{" "}
+                  Register interest{" "}
                   <ArrowRight className="h-4 w-4" />
                 </Button>
               </CardContent>

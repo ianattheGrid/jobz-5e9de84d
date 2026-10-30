@@ -1881,6 +1881,33 @@ export type Database = {
         }
         Relationships: []
       }
+      launch_interest_registrations: {
+        Row: {
+          app_name: string
+          created_at: string
+          email: string
+          id: string
+          launch_email_consent: boolean
+          name: string | null
+        }
+        Insert: {
+          app_name?: string
+          created_at?: string
+          email: string
+          id?: string
+          launch_email_consent: boolean
+          name?: string | null
+        }
+        Update: {
+          app_name?: string
+          created_at?: string
+          email?: string
+          id?: string
+          launch_email_consent?: boolean
+          name?: string | null
+        }
+        Relationships: []
+      }
       master_certifications: {
         Row: {
           certification_name: string

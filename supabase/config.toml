@@ -102,3 +102,6 @@ verify_jwt = false
 
 [functions.verify-employer]
 verify_jwt = true
+
+[functions.register-launch-interest]
+verify_jwt = false

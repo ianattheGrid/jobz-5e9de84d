@@ -84,9 +84,9 @@ const PricingPage = () => {
               ))}
               
               <div className="pt-6">
-                <Link to="/employer/signup">
+                <Link to="/register-interest">
                   <Button className="w-full bg-white hover:bg-gray-100 text-slate-800 py-4 text-lg font-bold shadow-xl transform hover:scale-105 transition-all duration-300 border-2 border-white/30">
-                    🚀 Get Started Now
+                    Register interest
                   </Button>
                 </Link>
               </div>
@@ -121,9 +121,9 @@ const PricingPage = () => {
               ))}
               
               <div className="pt-6">
-                <Link to="/candidate/signup">
+                <Link to="/register-interest">
                   <Button className="w-full bg-white hover:bg-gray-100 text-slate-800 py-4 text-lg font-bold shadow-xl transform hover:scale-105 transition-all duration-300 border-2 border-white/30">
-                    💚 Join Free Today
+                    Register interest
                   </Button>
                 </Link>
               </div>
@@ -166,14 +166,14 @@ const PricingPage = () => {
             Join hundreds of employers and candidates in Bristol who are already using Jobz to find the perfect match.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/employer/signup">
+            <Link to="/register-interest">
               <Button className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3">
-                I'm Hiring
+                Register interest
               </Button>
             </Link>
-            <Link to="/candidate/signup">
+            <Link to="/register-interest">
               <Button variant="outline" className="border-primary text-primary hover:bg-primary/10 px-8 py-3">
-                I'm Job Seeking
+                Register interest
               </Button>
             </Link>
           </div>

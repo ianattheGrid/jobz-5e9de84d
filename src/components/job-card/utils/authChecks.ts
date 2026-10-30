@@ -1,13 +1,17 @@
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
 import { useNavigate, useLocation } from "react-router-dom";
+import { BETA_PREVIEW } from "@/lib/beta";
+import { useBetaPreview } from "@/components/beta/BetaPreview";
 
 export const useAuthenticationCheck = () => {
+  const { openInterest } = useBetaPreview();
   const { toast } = useToast();
   const navigate = useNavigate();
   const location = useLocation();
 
   const checkAuthentication = async () => {
+    if (BETA_PREVIEW) { openInterest(); return false; }
     const { data: { session } } = await supabase.auth.getSession();
     if (!session) {
       const redirectTo = encodeURIComponent(location.pathname + location.search);

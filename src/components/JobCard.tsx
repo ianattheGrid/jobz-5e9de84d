@@ -7,18 +7,22 @@ import { useNavigate, useLocation } from "react-router-dom";
 import JobCardFront from "./job-card/JobCardFront";
 import JobCardBack from "./job-card/JobCardBack";
 import { Job } from "@/integrations/supabase/types/jobs";
+import { BETA_PREVIEW } from "@/lib/beta";
+import { useBetaPreview } from "./beta/BetaPreview";
 
 interface JobCardProps {
   job: Job;
 }
 
 const JobCard = ({ job }: JobCardProps) => {
+  const { openInterest } = useBetaPreview();
   const [isFlipped, setIsFlipped] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
   const location = useLocation();
 
   const handleStartApplication = async () => {
+    if (BETA_PREVIEW) { openInterest(); return; }
     const { data: { session } } = await supabase.auth.getSession();
     if (!session) {
       const redirectTo = encodeURIComponent(location.pathname + location.search);

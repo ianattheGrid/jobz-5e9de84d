@@ -18,14 +18,15 @@ import { CosmicDivider } from "@/components/home/CosmicDivider";
 import { InternalE2ETestButton } from "@/components/dev/InternalE2ETestButton";
 import { Footer } from "@/components/Footer";
 import { SoftLaunchBanner } from "@/components/SoftLaunchBanner";
+import { useBetaPreview } from "@/components/beta/BetaPreview";
 
 export default function Index() {
+  const { isOwner } = useBetaPreview();
   const [activeTab, setActiveTab] = useState("hiring");
 
   return (
     <div className="min-h-screen bg-background">
       <NavBar />
-      <SoftLaunchBanner />
       <HeroSection />
       <MissionSection />
       <HowItWorksHero activeTab={activeTab} onTabChange={setActiveTab} />
@@ -41,7 +42,7 @@ export default function Index() {
       <CandidateCostSection />
       <WebbySection />
       <DemoProfilesSection />
-      <InternalE2ETestButton />
+      {isOwner && <InternalE2ETestButton />}
       <Footer />
     </div>
   );

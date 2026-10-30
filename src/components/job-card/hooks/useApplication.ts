@@ -5,8 +5,11 @@ import { useAuth } from "@/hooks/useAuth";
 import { useMatchScore } from "./useMatchScore";
 import { validateEssentialCriteria } from "../utils/applicationValidation";
 import { generateMatchExplanation } from "../utils/matchExplanation";
+import { BETA_PREVIEW } from "@/lib/beta";
+import { useBetaPreview } from "@/components/beta/BetaPreview";
 
 export const useApplication = (jobId: number, employerId: string) => {
+  const { openInterest } = useBetaPreview();
   const { user } = useAuth();
   const { toast } = useToast();
   const [isApplying, setIsApplying] = useState(false);
@@ -90,6 +93,7 @@ export const useApplication = (jobId: number, employerId: string) => {
 
   const handleStartApply = async (e: React.MouseEvent) => {
     e.stopPropagation();
+    if (BETA_PREVIEW) { openInterest(); return; }
 
     if (!user) {
       toast({

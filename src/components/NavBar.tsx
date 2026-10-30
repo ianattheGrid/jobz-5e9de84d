@@ -8,8 +8,11 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuIte
 import { useAuth } from "@/hooks/useAuth";
 import { useWebPushNotifications } from "@/hooks/useWebPushNotifications";
 import { DeleteAccountDialog } from "./shared/DeleteAccountDialog";
+import { useBetaPreview } from "./beta/BetaPreview";
+import { BETA_PREVIEW } from "@/lib/beta";
 
 const NavBar = () => {
+  const { openInterest, isOwner } = useBetaPreview();
   const { user, userType, loading } = useAuth();
   const [userName, setUserName] = useState<string | null>(null);
   const navigate = useNavigate();
@@ -114,7 +117,12 @@ const NavBar = () => {
           </div>
           
           <div className="flex items-center">
-            {!loading && user && !isTestAccount ? (
+            {BETA_PREVIEW ? (
+              <div className="hidden lg:flex items-center gap-4">
+                {isOwner && <Button asChild variant="outline"><Link to="/admin/dashboard">Admin</Link></Button>}
+                <Button onClick={openInterest}>Register interest</Button>
+              </div>
+            ) : !loading && user && !isTestAccount ? (
               <div className="hidden lg:flex items-center gap-4">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
