@@ -1,5 +1,7 @@
 
 import { supabase } from "@/integrations/supabase/client";
+import type { AuthResponse } from "@supabase/supabase-js";
+import { AuthError } from "@supabase/supabase-js";
 
 interface SignUpOptions {
   email: string;
@@ -15,6 +17,6 @@ export const signUpWithEmail = async ({
   userType, 
   fullName, 
   referralCode 
-}: SignUpOptions) => {
-  return { data: { user: null, session: null }, error: new Error("Jobz is in beta. Register interest to hear when we launch.") };
+}: SignUpOptions): Promise<AuthResponse> => {
+  return { data: { user: null, session: null }, error: new AuthError("Jobz is in beta. Register interest to hear when we launch.") };
 };
