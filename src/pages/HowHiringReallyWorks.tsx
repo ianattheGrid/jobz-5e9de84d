@@ -279,10 +279,10 @@ const HowHiringReallyWorks = () => {
 
           <section className="flex flex-wrap gap-3">
             <Button asChild>
-              <Link to="/candidate/signup">Create a candidate profile</Link>
+              <Link to="/register-interest">Register interest</Link>
             </Button>
             <Button asChild variant="outline">
-              <Link to="/employer/signup">Post a role for £9</Link>
+              <Link to="/register-interest">Register interest</Link>
             </Button>
           </section>
         </div>

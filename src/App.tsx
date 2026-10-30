@@ -95,7 +95,12 @@ import AdminCandidates from './pages/AdminCandidates';
 import AdminVirtualRecruiters from './pages/AdminVirtualRecruiters';
 import { AdminProtectedRoute } from './components/auth/AdminProtectedRoute';
 import { ErrorBoundary } from './components/ErrorBoundary';
-import { BetaPreview, LaunchInterestPage } from './components/beta/BetaPreview';
+import { BetaPreview, LaunchInterestPage, useBetaPreview } from './components/beta/BetaPreview';
+
+const BetaProfilePreview = ({ children, demo }: { children: React.ReactNode; demo: React.ReactNode }) => {
+  const { isOwner } = useBetaPreview();
+  return <>{isOwner ? children : demo}</>;
+};
 
 const App = () => {
   return (
@@ -116,7 +121,7 @@ const App = () => {
           <Route path="candidate/profile" element={<ProtectedRouteWithTimeout userType="candidate"><CandidateProfile /></ProtectedRouteWithTimeout>} />
           
           {/* Make the preview route completely public and accessible to everyone */}
-          <Route path="candidate/profile/preview" element={<PreviewCandidateProfile />} />
+          <Route path="candidate/profile/preview" element={<BetaProfilePreview demo={<PreviewCandidateRealDemo />}><PreviewCandidateProfile /></BetaProfilePreview>} />
           
           <Route path="candidate/my-cv" element={<ProtectedRouteWithTimeout userType="candidate"><MyCv /></ProtectedRouteWithTimeout>} />
           <Route path="candidate/applications" element={<ProtectedRouteWithTimeout userType="candidate"><CandidateApplications /></ProtectedRouteWithTimeout>} />
@@ -136,7 +141,7 @@ const App = () => {
           <Route path="employer/edit-job/:id" element={<ProtectedRouteWithTimeout userType="employer"><EditJob /></ProtectedRouteWithTimeout>} />
           <Route path="employer/job-applications/:jobId" element={<ProtectedRouteWithTimeout userType="employer"><JobApplications /></ProtectedRouteWithTimeout>} />
           <Route path="employer/profile" element={<ProtectedRouteWithTimeout userType="employer"><EmployerProfile /></ProtectedRouteWithTimeout>} />
-          <Route path="employer/profile/preview" element={<PreviewEmployerProfile />} />
+          <Route path="employer/profile/preview" element={<BetaProfilePreview demo={<PreviewEmployerRealDemo />}><PreviewEmployerProfile /></BetaProfilePreview>} />
           <Route path="employer/interviews" element={<ProtectedRouteWithTimeout userType="employer"><EmployerInterviews /></ProtectedRouteWithTimeout>} />
           <Route path="employer/candidate/:id" element={<ProtectedRouteWithTimeout userType="employer"><ViewCandidateProfile /></ProtectedRouteWithTimeout>} />
           <Route path="employer/candidates" element={<Navigate to="/employer/candidate-search" replace />} />
@@ -150,7 +155,7 @@ const App = () => {
           <Route path="vr/dashboard" element={<ProtectedRouteWithTimeout userType="vr"><VirtualRecruiterDashboard /></ProtectedRouteWithTimeout>} />
           <Route path="vr/recommendations" element={<ProtectedRouteWithTimeout userType="vr"><VirtualRecruiterRecommendations /></ProtectedRouteWithTimeout>} />
           <Route path="vr/profile" element={<ProtectedRouteWithTimeout userType="vr"><VirtualRecruiterProfile /></ProtectedRouteWithTimeout>} />
-          <Route path="vr/profile/preview" element={<PreviewVRProfile />} />
+          <Route path="vr/profile/preview" element={<BetaProfilePreview demo={<DemoVirtualRecruiterProfile />}><PreviewVRProfile /></BetaProfilePreview>} />
           <Route path="vr/settings" element={<ProtectedRouteWithTimeout userType="vr"><VirtualRecruiterAccountSettings /></ProtectedRouteWithTimeout>} />
           
           {/* Webby AI Co-pilot routes */}
