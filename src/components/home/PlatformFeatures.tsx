@@ -6,7 +6,6 @@ import { FileText, Coins, Bot, Calculator, User, Target, Users, MapPin, HandCoin
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { EmployeeRecruitmentCalculator } from "@/components/calculators/EmployeeRecruitmentCalculator";
 import { BonusCalculator } from "@/components/candidate/sections/commission/BonusCalculator";
-import { cn } from "@/lib/utils";
 
 interface PlatformFeaturesProps {
   activeTab: string;
@@ -295,35 +294,19 @@ const FeatureCard = ({
 }) => {
   return (
     <div
-      className={cn(
-        // Base: gradient background with depth
-        "relative rounded-2xl p-6 overflow-hidden group cursor-pointer",
-        "bg-gradient-to-br from-slate-50 via-white to-slate-100/50",
-        "dark:from-slate-900 dark:via-slate-800 dark:to-slate-900",
-        // Prominent border
-        "border-2 border-primary/20",
-        // Strong shadow for depth
-        "shadow-lg shadow-primary/5",
-        // Hover effects
-        "transition-all duration-500 ease-out",
-        "hover:scale-[1.03] hover:shadow-2xl hover:shadow-primary/20",
-        "hover:border-primary/40"
-      )}
+      className="platform-feature-card relative min-w-0 rounded-2xl p-6 overflow-hidden border-2 border-primary/20 bg-card text-card-foreground motion-reduce:transition-none"
     >
       {/* Animated gradient shimmer overlay */}
-      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/5 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
-      
-      {/* Corner accent glow */}
-      <div className="absolute -top-20 -right-20 w-40 h-40 bg-primary/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      <div aria-hidden="true" className="platform-feature-shimmer pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent via-primary/5 to-transparent -translate-x-full" />
       
       <div className="relative z-10">
         {/* Large glowing icon container */}
-        <div className="mb-5 inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/10 border border-primary/30 shadow-[0_0_20px_hsl(var(--primary)/0.2)] group-hover:shadow-[0_0_30px_hsl(var(--primary)/0.4)] group-hover:scale-110 transition-all duration-300">
-          <Icon className="h-8 w-8 text-primary drop-shadow-[0_0_8px_hsl(var(--primary)/0.5)]" />
+        <div className="platform-feature-icon mb-5 inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/10 border border-primary/30">
+          <Icon aria-hidden="true" className="h-8 w-8 text-primary" />
         </div>
         
         {/* Title */}
-        <h3 className="text-xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors duration-300">
+        <h3 className="text-xl font-bold text-foreground mb-3 break-words">
           {title}
         </h3>
         
