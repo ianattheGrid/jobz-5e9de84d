@@ -124,6 +124,41 @@
     @apply text-muted-foreground text-sm mb-4;
   }
 
+  .platform-feature-card {
+    box-shadow: var(--shadow-elevated);
+    transition: transform 500ms ease-out, border-color 500ms ease-out, box-shadow 500ms ease-out;
+  }
+
+  .platform-feature-icon {
+    box-shadow: var(--glow-primary);
+    transition: transform 300ms ease-out;
+  }
+
+  .platform-feature-shimmer {
+    transition: transform 1000ms ease-out;
+  }
+
+  /* Touch screens keep the full readable appearance, without sticky hover states. */
+  @media (min-width: 1024px) and (hover: hover) and (pointer: fine) {
+    .platform-feature-card:hover {
+      transform: scale(1.03);
+      border-color: hsl(var(--primary) / 0.4);
+      box-shadow: var(--shadow-elevated), var(--glow-primary);
+    }
+
+    .platform-feature-card:hover .platform-feature-shimmer {
+      transform: translateX(100%);
+    }
+
+    .platform-feature-card:hover .platform-feature-icon {
+      transform: scale(1.1);
+    }
+
+    .platform-feature-card:hover h3 {
+      color: hsl(var(--primary));
+    }
+  }
+
   /* Legacy wrapper classes retained as no-op aliases so older pages stay coherent */
   .cosmic-form,
   .space-card,
